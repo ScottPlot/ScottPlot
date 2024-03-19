@@ -141,8 +141,13 @@ public class Heatmap : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             // plot the heatmap on top of the line chart
-            var hm = myPlot.Add.Heatmap(data);
-            hm.Extent = new(10, 40, -1, .5);
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Extent = new(10, 35, -1.5, .5);
+
+            // the NaN transparency color can be customized
+            var hm2 = myPlot.Add.Heatmap(data);
+            hm2.Extent = new(40, 55, -.5, .75);
+            hm2.NaNCellColor = Colors.Magenta.WithAlpha(.4);
         }
     }
 }

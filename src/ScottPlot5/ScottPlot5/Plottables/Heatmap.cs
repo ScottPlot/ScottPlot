@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Heatmap : IPlottable, IHasColorAxis
+public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -155,37 +155,74 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// After editing contents users must call <see cref="Update"/> before changes
     /// appear on the heatmap.
     /// </summary>
-    public readonly double[,] Intensities;
+    public readonly double[,] Intensities = intensities;
 
-    private byte[,] _alphaMap;
-    public byte[,] AlphaMap
+    /// <summary>
+    /// Defines what color will be used to fill cells containing NaN.
+    /// </summary>
+    public Color NaNCellColor
     {
-        get { return _alphaMap; }
+        get => _NaNCellColor;
         set
         {
-            if (value.GetLength(0) != Height) throw new Exception("AlphaMap height must match the height of the Intensity map.");
-            if (value.GetLength(1) != Width) throw new Exception("AlphaMap width must match the width of the Intensity map.");
-            _alphaMap = value;
+            _NaNCellColor = value;
             Update();
         }
     }
-    private byte _globalAlpha;
-    public byte GlobalAlpha
+    private Color _NaNCellColor = Colors.Transparent;
+
+    private byte[,]? _alphaMap;
+
+    /// <summary>
+    /// If present, this array defines transparency for each cell in the heatmap.
+    /// Values range from 0 (transparent) through 255 (opaque).
+    /// </summary>
+    public byte[,]? AlphaMap
     {
-        get { return _globalAlpha; }
+        get => _alphaMap;
         set
         {
+            if (value?.GetLength(0) != Height)
+                throw new Exception("AlphaMap height must match the height of the Intensity map.");
+
+            if (value?.GetLength(1) != Width)
+                throw new Exception("AlphaMap width must match the width of the Intensity map.");
+
+            _alphaMap = value;
+
+            Update();
+        }
+    }
+
+    private byte _globalAlpha = 255;
+
+    /// <summary>
+    /// Controls the transparency of the entire heatmap
+    /// </summary>
+    public byte GlobalAlpha
+    {
+        get => _globalAlpha;
+        set
+        {
+
             _globalAlpha = value;
-            var UpdatedAlphaMap = new byte[Height, Width];
+
+            if (GlobalAlpha == 255)
+            {
+                AlphaMap = null;
+                return;
+            }
+
+            AlphaMap = new byte[Height, Width];
 
             for (int i = 0; i < Height; i++)
             {
                 for (int j = 0; j < Width; j++)
                 {
-                    UpdatedAlphaMap[i, j] = value;
+                    AlphaMap[i, j] = value;
                 }
             }
-            AlphaMap = UpdatedAlphaMap;
+
             Update();
         }
     }
@@ -204,23 +241,6 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
     private SKBitmap? Bitmap = null;
-
-    public Heatmap(double[,] intensities)
-    {
-        Intensities = intensities;
-        // Create the Alpha array with the same size as Intensities
-        _alphaMap = new byte[Height, Width];
-        GlobalAlpha = (byte)255;
-    }
-
-    public Heatmap(double[,] intensities, byte globalAlpha)
-    {
-        Intensities = intensities;
-        // Create the Alpha array with the same size as Intensities
-        _alphaMap = new byte[Height, Width];
-        GlobalAlpha = globalAlpha;
-    }
-
 
     ~Heatmap()
     {
@@ -241,7 +261,7 @@ public class Heatmap : IPlottable, IHasColorAxis
         bool FlipY = FlipVertically ^ ExtentOrDefault.IsInvertedY;
         bool FlipX = FlipHorizontally ^ ExtentOrDefault.IsInvertedX;
 
-        uint transparentBlack = 0x00000000;
+        uint nanCellArgb = NaNCellColor.PremultipliedARGB;
 
         for (int y = 0; y < Height; y++)
         {
@@ -249,23 +269,31 @@ public class Heatmap : IPlottable, IHasColorAxis
             for (int x = 0; x < Width; x++)
             {
                 int xIndex = FlipX ? (Width - 1 - x) : x;
-                if (Double.IsNaN(Intensities[y, xIndex]))
+
+                // Make NaN cells transparent
+                if (double.IsNaN(Intensities[y, xIndex]))
                 {
-                    argb[rowOffset + x] = transparentBlack;
+                    argb[rowOffset + x] = nanCellArgb;
                     continue;
                 }
-                var colorWithoutAlpha = Colormap.GetColor(Intensities[y, xIndex], range).ARGB;
-                var alpha = AlphaMap[y, xIndex];
+
                 // Extract the RGB components
-                byte Red = (byte)((colorWithoutAlpha >> 16) & 0xFF);
-                byte Green = (byte)((colorWithoutAlpha >> 8) & 0xFF);
-                byte Blue = (byte)(colorWithoutAlpha & 0xFF);
+                Color cellColor = Colormap.GetColor(Intensities[y, xIndex], range);
+                uint cellArgb = cellColor.ARGB;
+                byte Red = (byte)((cellArgb >> 16) & 0xFF);
+                byte Green = (byte)((cellArgb >> 8) & 0xFF);
+                byte Blue = (byte)(cellArgb & 0xFF);
 
                 // Calculate premultiplied RGB components
+                byte alpha = AlphaMap is null ? cellColor.Alpha : AlphaMap[y, xIndex];
                 byte premultipliedRed = (byte)((Red * alpha) / 255);
                 byte premultipliedGreen = (byte)((Green * alpha) / 255);
                 byte premultipliedBlue = (byte)((Blue * alpha) / 255);
-                argb[rowOffset + x] = ((uint)alpha << 24) | ((uint)premultipliedRed << 16) | ((uint)premultipliedGreen << 8) | premultipliedBlue;
+                argb[rowOffset + x] =
+                    ((uint)alpha << 24) |
+                    ((uint)premultipliedRed << 16) |
+                    ((uint)premultipliedGreen << 8) |
+                    ((uint)premultipliedBlue << 0);
             }
         }
 
