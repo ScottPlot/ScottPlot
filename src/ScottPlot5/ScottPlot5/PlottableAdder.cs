@@ -22,7 +22,7 @@ public class PlottableAdder(Plot plot)
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
     }
 
-    public Annotation Annotation(string text, Alignment alignment)
+    public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)
     {
         Annotation an = new()
         {
