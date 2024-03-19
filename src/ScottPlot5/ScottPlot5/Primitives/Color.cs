@@ -319,4 +319,19 @@ public readonly struct Color
         }
         return array;
     }
+
+    public uint PremultipliedARGB
+    {
+        get
+        {
+            byte premultipliedRed = (byte)((Red * Alpha) / 255);
+            byte premultipliedGreen = (byte)((Green * Alpha) / 255);
+            byte premultipliedBlue = (byte)((Blue * Alpha) / 255);
+            return
+                ((uint)Alpha << 24) |
+                ((uint)premultipliedRed << 16) |
+                ((uint)premultipliedGreen << 8) |
+                ((uint)premultipliedBlue << 0);
+        }
+    }
 }
