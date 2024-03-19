@@ -14,6 +14,7 @@ public class Marker : IPlottable
     public bool IsVisible { get; set; } = true;
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public float Size { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public float LineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
     public MarkerShape Shape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public Color Color
     {
