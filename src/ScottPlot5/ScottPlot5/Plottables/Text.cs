@@ -7,7 +7,9 @@ public class Text : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-    public PixelSize PixelOffset { get; set; }
+
+    public float OffsetX { get; set; }
+    public float OffsetY { get; set; }
 
     public Color Color { get => Label.ForeColor; set => Label.ForeColor = value; }
     public Color FontColor { get => Label.ForeColor; set => Label.ForeColor = value; }
@@ -36,8 +38,8 @@ public class Text : IPlottable
     public void Render(RenderPack rp)
     {
         Pixel pixelLocation = Axes.GetPixel(Location);
-        pixelLocation.X += PixelOffset.Width;
-        pixelLocation.Y += PixelOffset.Height;
+        pixelLocation.X += OffsetX;
+        pixelLocation.Y += OffsetY;
         Label.Render(rp.Canvas, pixelLocation);
     }
 }
