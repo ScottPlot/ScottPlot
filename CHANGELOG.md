@@ -11,6 +11,8 @@ _Not yet on NuGet..._
 * SignalXY: Improved support for inverted vertical axes (#3495) @MareMare
 * Controls: Ignore mouse wheel zooming if a zoom rectangle is being drawn (#3498) @BrianAtZetica
 * Controls: Improve axis lock behavior when dragging the mouse on a control (#3498) @BrianAtZetica
+* Heatmap: Added `Opacity` and `AlphaMap` properties to enhance transparency customization (#3499, #3349) @BrianAtZetica
+* Heatmap: Intensity values that are `double.NaN` are now displayed as transparent cells (#3499, #3349) @BrianAtZetica
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
