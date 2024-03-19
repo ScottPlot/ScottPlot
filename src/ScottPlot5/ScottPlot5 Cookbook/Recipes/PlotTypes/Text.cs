@@ -70,4 +70,36 @@ public class Text : ICategory
             myPlot.Axes.SetLimitsX(-.5, 4);
         }
     }
+
+    public class TextOffset : RecipeBase
+    {
+        public override string Name => "Text Offset";
+        public override string Description => "The offset properties can be used " +
+            "to fine-tune text position in pixel units";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 25; i += 5)
+            {
+                // place a marker at the point
+                var marker = myPlot.Add.Marker(i, 1);
+
+                // place a styled text label at the point
+                var txt = myPlot.Add.Text($"{i}", i, 1);
+                txt.FontSize = 16;
+                txt.BorderColor = Colors.Black;
+                txt.BorderWidth = 1;
+                txt.Padding = 2;
+                txt.Bold = true;
+                txt.BackColor = marker.Color.WithAlpha(.5);
+
+                // offset the text label by the given number of pixels
+                txt.OffsetX = i;
+                txt.OffsetY = i;
+            }
+
+            myPlot.Axes.SetLimitsX(-5, 30);
+        }
+    }
 }
