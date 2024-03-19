@@ -1,4 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
+using ScottPlot.Grids;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -68,14 +70,27 @@ public class AxisManager
     public IYAxis Right => YAxes.First(x => x.Edge == Edge.Right);
 
     /// <summary>
-    /// All grids
+    /// The standard grid that is added when a Plot is created.
+    /// Users can achieve custom grid functionality by disabling the visibility
+    /// of this grid and adding their own classes to the List of <see cref="CustomGrids"/>.
     /// </summary>
-    public List<IGrid> Grids { get; } = new();
+    public DefaultGrid DefaultGrid { get; set; }
+
+    /// <summary>
+    /// List of custom grids.
+    /// If in use, it is likely the default grid visibility should be disabled.
+    /// </summary>
+    public List<IGrid> CustomGrids { get; } = [];
+
+    /// <summary>
+    /// Return the <see cref="DefaultGrid"/> and all <see cref="CustomGrids"/>
+    /// </summary>
+    public List<IGrid> AllGrids => [.. (new IGrid[] { DefaultGrid }), .. CustomGrids];
 
     /// <summary>
     /// Rules that are applied before each render
     /// </summary>
-    public List<IAxisRule> Rules { get; } = new();
+    public List<IAxisRule> Rules { get; } = [];
 
     /// <summary>
     /// Contains state and logic for axes
@@ -90,23 +105,60 @@ public class AxisManager
         XAxes.Add(xAxisPrimary);
         YAxes.Add(yAxisPrimary);
 
-        // add labeless secondary axes to get right side ticks and padding
+        // add a secondary axes with no label to get right side ticks and padding
         IXAxis xAxisSecondary = new TopAxis();
         IYAxis yAxisSecondary = new RightAxis();
         XAxes.Add(xAxisSecondary);
         YAxes.Add(yAxisSecondary);
 
-        // add a default grid using the primary axes
-        IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
-        Grids.Add(grid);
+        // setup the default grid with the primary axes
+        DefaultGrid = new DefaultGrid(xAxisPrimary, yAxisPrimary);
     }
 
-    public void Clear()
+    /// <summary>
+    /// Apply a single color to the label, tick labels, tick marks, and frame of all axes
+    /// </summary>
+    public void Color(Color color)
     {
-        Grids.Clear();
-        Panels.Clear();
-        YAxes.Clear();
-        XAxes.Clear();
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.Color(color);
+        }
+
+        Plot.Axes.Title.Label.ForeColor = color;
+    }
+
+    /// <summary>
+    /// Set visibility of the frame on every axis
+    /// </summary>
+    public void Frame(bool enable)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.IsVisible = enable;
+        }
+    }
+
+    /// <summary>
+    /// Set thickness of the frame on every axis
+    /// </summary>
+    public void FrameWidth(float width)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.Width = width;
+        }
+    }
+
+    /// <summary>
+    /// Set color of the frame on every axis
+    /// </summary>
+    public void FrameColor(Color color)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.Color = color;
+        }
     }
 
     /// <summary>
@@ -142,40 +194,20 @@ public class AxisManager
     }
 
     /// <summary>
-    /// Remove the given Grid
-    /// </summary>
-    public void Remove(IGrid grid)
-    {
-        Grids.Remove(grid);
-    }
-
-    [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
-    public void DateTimeTicks(Edge edge)
-    {
-        Remove(edge);
-
-        IXAxis dateAxis = edge switch
-        {
-            Edge.Left => throw new NotImplementedException(), // TODO: support vertical DateTime axes
-            Edge.Right => throw new NotImplementedException(),
-            Edge.Bottom => new DateTimeXAxis(),
-            Edge.Top => throw new NotImplementedException(),
-            _ => throw new NotImplementedException(),
-        };
-
-        Plot.Axes.XAxes.Add(dateAxis);
-        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
-    }
-
-    /// <summary>
     /// Remove all bottom axes, create a DateTime bottom axis, add it to the plot, and return it.
     /// </summary>
     public DateTimeXAxis DateTimeTicksBottom()
     {
+        // remove all bottom axes
         Plot.Axes.Remove(Edge.Bottom);
+
+        // create a new bottom axis and add it
         DateTimeXAxis dateAxis = new();
         Plot.Axes.XAxes.Add(dateAxis);
-        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
+
+        // setup the grid to use the new bottom axis
+        Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+
         return dateAxis;
     }
 
