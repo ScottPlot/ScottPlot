@@ -7,6 +7,8 @@ _Not yet on NuGet..._
 * Style: `Plot.Style.AxisFrame()` has moved to `Plot.Axes.Frame()`
 * Style: `Plot.Style.SetBestFonts()` has moved to `Plot.Font.Automatic()`
 * Grid: Added `Plot.Grid` with axis-specific styling options as seen in the cookbook (#3291, #3293) @bjschwarz, @PaxITIS
+* SignalXY: Fixed a bug where the final line segment was not drawn (#3495, #3423) @MareMare @mjazd
+* SignalXY: Improved support for inverted vertical axes (#3495) @MareMare
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
