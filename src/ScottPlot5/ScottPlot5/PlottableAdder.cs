@@ -22,6 +22,23 @@ public class PlottableAdder(Plot plot)
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
     }
 
+    public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)
+    {
+        Annotation an = new()
+        {
+            Alignment = alignment,
+        };
+
+        an.Label.Text = text;
+        an.Label.BackColor = Colors.Yellow.WithAlpha(.75);
+        an.Label.BorderColor = Colors.Black;
+        an.Label.Padding = 5;
+
+        Plot.PlottableList.Add(an);
+
+        return an;
+    }
+
     public Arrow Arrow(Coordinates @base, Coordinates tip)
     {
         Arrow ar = new()

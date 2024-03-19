@@ -131,6 +131,11 @@ public class Label
         Render(canvas, x, y, paint);
     }
 
+    public void Render(SKCanvas canvas, Pixel pixel, SKPaint paint)
+    {
+        Render(canvas, pixel.X, pixel.Y, paint);
+    }
+
     public PixelSize Measure()
     {
         using SKPaint paint = new();
@@ -182,6 +187,51 @@ public class Label
         /// - rect.width contains the length of the text __without__ leading or trailing white spaces
         var fullTextWidth = paint.MeasureText(text, ref textBounds);
         return new PixelSize(fullTextWidth, textBounds.Height);
+    }
+
+
+    /// <summary>
+    /// Use the Label's size and <see cref="Alignment"/> to determine where it should be drawn
+    /// relative to the given rectangle (aligned to the rectangle according to <paramref name="rectAlignment"/>).
+    /// </summary>
+    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY)
+    {
+        PixelSize textSize = Measure();
+        float textWidth = textSize.Width;
+        float textHeight = textSize.Height;
+
+        if (Alignment != Alignment.UpperLeft)
+            throw new NotImplementedException("This method only works for labels with upper-left aligned text");
+
+        float x = rectAlignment switch
+        {
+            Alignment.UpperLeft => rect.Left + 4 + offsetX,
+            Alignment.UpperCenter => rect.TopCenter.X - 0.5f * textWidth,
+            Alignment.UpperRight => rect.Right - textWidth - 4 - offsetX,
+            Alignment.MiddleLeft => rect.Left + 4 + offsetX,
+            Alignment.MiddleCenter => rect.BottomCenter.X - 0.5f * textWidth,
+            Alignment.MiddleRight => rect.Right - textWidth - 4 - offsetX,
+            Alignment.LowerLeft => rect.Left + 4 + offsetX,
+            Alignment.LowerCenter => rect.BottomCenter.X - 0.5f * textWidth,
+            Alignment.LowerRight => rect.Right - textWidth - 4 - offsetX,
+            _ => throw new NotImplementedException()
+        };
+
+        float y = rectAlignment switch
+        {
+            Alignment.UpperLeft => rect.Top + 0.5f * textHeight + offsetY,
+            Alignment.UpperCenter => rect.Top + 0.5f * textHeight + offsetY,
+            Alignment.UpperRight => rect.Top + 0.5f * textHeight + offsetY,
+            Alignment.MiddleLeft => rect.LeftCenter.Y - 0.5f * textHeight,
+            Alignment.MiddleCenter => rect.LeftCenter.Y - 0.5f * textHeight,
+            Alignment.MiddleRight => rect.LeftCenter.Y - 0.5f * textHeight,
+            Alignment.LowerLeft => rect.Bottom - textHeight - 4 - offsetY,
+            Alignment.LowerCenter => rect.Bottom - textHeight - 4 - offsetY,
+            Alignment.LowerRight => rect.Bottom - textHeight - 4 - offsetY,
+            _ => throw new NotImplementedException()
+        };
+
+        return new Pixel(x, y);
     }
 
     public void Render(SKCanvas canvas, float x, float y, SKPaint paint)
