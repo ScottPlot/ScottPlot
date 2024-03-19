@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Heatmap: Added `Opacity` and `AlphaMap` properties to enhance transparency customization (#3499, #3349) @BrianAtZetica
 * Heatmap: Intensity values that are `double.NaN` are now displayed as transparent cells (#3499, #3349) @BrianAtZetica
 * Text: Added an `OffsetX` and `OffsetY` properties for adjusting text position in pixel units (#3506) @jamaa
+* Demo: Added a demonstration window for highlight the point nearest the cursor across multiple scatter plots (#3507, #3503) @jamaa @RubensMigliore
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
