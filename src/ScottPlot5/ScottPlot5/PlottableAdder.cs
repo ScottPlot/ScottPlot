@@ -30,9 +30,9 @@ public class PlottableAdder(Plot plot)
         };
 
         an.Label.Text = text;
-        an.Label.BackColor = Colors.Yellow;
+        an.Label.BackColor = Colors.Yellow.WithAlpha(.75);
         an.Label.BorderColor = Colors.Black;
-        an.Label.Padding = 0;
+        an.Label.Padding = 5;
 
         Plot.PlottableList.Add(an);
 
