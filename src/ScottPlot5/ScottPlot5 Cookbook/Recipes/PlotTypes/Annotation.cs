@@ -23,4 +23,42 @@ public class Annotation : ICategory
             myPlot.Add.Annotation("This is an Annotation");
         }
     }
+
+    public class AnnotationCustomize : RecipeBase
+    {
+        public override string Name => "Annotation Customization";
+        public override string Description => "Annotations can be extensively customized.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            var anno = myPlot.Add.Annotation("Customized\nAnnotation");
+            anno.Label.FontSize = 32;
+            anno.Label.FontName = Fonts.Serif;
+            anno.Label.BackColor = Colors.RebeccaPurple.WithAlpha(.3);
+            anno.Label.ForeColor = Colors.RebeccaPurple;
+            anno.Label.BorderColor = Colors.Green;
+            anno.Label.BorderWidth = 3;
+            anno.OffsetY = 40;
+            anno.OffsetX = 20;
+        }
+    }
+
+    public class AnnotationPositions : RecipeBase
+    {
+        public override string Name => "Annotation Positions";
+        public override string Description => "Annotations are aligned with the data area.";
+
+        [Test]
+        public override void Execute()
+        {
+            foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
+            {
+                myPlot.Add.Annotation(alignment.ToString(), alignment);
+            }
+        }
+    }
 }
