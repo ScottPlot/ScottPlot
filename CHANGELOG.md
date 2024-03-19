@@ -9,6 +9,8 @@ _Not yet on NuGet..._
 * Grid: Added `Plot.Grid` with axis-specific styling options as seen in the cookbook (#3291, #3293) @bjschwarz, @PaxITIS
 * SignalXY: Fixed a bug where the final line segment was not drawn (#3495, #3423) @MareMare @mjazd
 * SignalXY: Improved support for inverted vertical axes (#3495) @MareMare
+* Controls: Ignore mouse wheel zooming if a zoom rectangle is being drawn (#3498) @BrianAtZetica
+* Controls: Improve axis lock behavior when dragging the mouse on a control (#3498) @BrianAtZetica
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
