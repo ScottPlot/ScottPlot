@@ -13,38 +13,44 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
     List<ScottPlot.Plottables.Scatter> MyScatters = new();
     ScottPlot.Plottables.Crosshair MyCrosshair;
-    ScottPlot.Plottables.Marker MyMarker;
-    ScottPlot.Plottables.Text MyText;
-
-    int NumScatters = 3;
+    ScottPlot.Plottables.Marker MyHighlightMarker;
+    ScottPlot.Plottables.Text MyHighlightText;
 
     public ShowValueOnHoverMultiple()
     {
         InitializeComponent();
 
-        // create multiple scatter plots with random points
-        for (int i = 0; i < NumScatters; i++)
+        // create 3 scatter plots with random points
+        for (int i = 0; i < 3; i++)
         {
             double[] xs = Generate.RandomSample(30);
             double[] ys = Generate.RandomSample(30);
             ScottPlot.Plottables.Scatter scatter = formsPlot1.Plot.Add.ScatterPoints(xs, ys);
             scatter.Label = $"Scatter {i}";
+            scatter.MarkerStyle.Size = 10;
             MyScatters.Add(scatter);
         }
-
         formsPlot1.Plot.ShowLegend();
 
+        // Create a marker to highlight the point under the cursor
         MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
+        MyHighlightMarker = formsPlot1.Plot.Add.Marker(0, 0);
+        MyHighlightMarker.Shape = MarkerShape.OpenCircle;
+        MyHighlightMarker.Size = 17;
+        MyHighlightMarker.LineWidth = 2;
 
-        MyMarker = formsPlot1.Plot.Add.Marker(0, 0, MarkerShape.OpenCircle);
+        // Create a text label to place near the highlighted value
+        MyHighlightText = formsPlot1.Plot.Add.Text("", 0, 0);
+        MyHighlightText.Label.Alignment = Alignment.LowerLeft;
+        MyHighlightText.Bold = true;
+        MyHighlightText.OffsetX = 7;
+        MyHighlightText.OffsetY = -7;
 
-        MyText = formsPlot1.Plot.Add.Text("", 0, 0);
-        MyText.Label.Alignment = Alignment.LowerLeft;
-        MyText.PixelOffset = new PixelSize(5, -5);
-
-        formsPlot1.Plot.Axes.AutoScale();
+        // Render the plot
         formsPlot1.Refresh();
 
+        // Evaluate points every time the mouse moves.
+        // Indicate the nearest point by modifying the crosshair, text, marker, and window title.
         formsPlot1.MouseMove += (s, e) =>
         {
             // determine where the mouse is
@@ -53,7 +59,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
             // get the nearest point of each scatter
             Dictionary<int, DataPoint> nearestPoints = new();
-            for (int i = 0; i < NumScatters; i++)
+            for (int i = 0; i < MyScatters.Count; i++)
             {
                 DataPoint nearestPoint = MyScatters[i].Data.GetNearest(mouseLocation, formsPlot1.Plot.LastRender);
                 nearestPoints.Add(i, nearestPoint);
@@ -63,7 +69,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
             bool pointSelected = false;
             int scatterIndex = -1;
             double smallestDistance = double.MaxValue;
-            for (int i = 0; i < NumScatters; i++)
+            for (int i = 0; i < nearestPoints.Count; i++)
             {
                 if (nearestPoints[i].IsReal)
                 {
@@ -88,14 +94,14 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
                 MyCrosshair.Position = point.Coordinates;
                 MyCrosshair.LineStyle.Color = scatter.MarkerStyle.Fill.Color;
 
-                MyMarker.IsVisible = true;
-                MyMarker.Location = point.Coordinates;
-                MyMarker.MarkerStyle.Outline.Color = scatter.MarkerStyle.Fill.Color;
+                MyHighlightMarker.IsVisible = true;
+                MyHighlightMarker.Location = point.Coordinates;
+                MyHighlightMarker.MarkerStyle.Outline.Color = scatter.MarkerStyle.Fill.Color;
 
-                MyText.IsVisible = true;
-                MyText.Location = point.Coordinates;
-                MyText.LabelText = $"{point.X:0.##}, {point.Y:0.##}";
-                MyText.Color = scatter.MarkerStyle.Fill.Color;
+                MyHighlightText.IsVisible = true;
+                MyHighlightText.Location = point.Coordinates;
+                MyHighlightText.LabelText = $"{point.X:0.##}, {point.Y:0.##}";
+                MyHighlightText.Color = scatter.MarkerStyle.Fill.Color;
 
                 formsPlot1.Refresh();
                 base.Text = $"Selected Scatter={scatter.Label}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";
@@ -105,8 +111,8 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
             if (!pointSelected && MyCrosshair.IsVisible)
             {
                 MyCrosshair.IsVisible = false;
-                MyMarker.IsVisible = false;
-                MyText.IsVisible = false;
+                MyHighlightMarker.IsVisible = false;
+                MyHighlightText.IsVisible = false;
                 formsPlot1.Refresh();
                 base.Text = $"No point selected";
             }
