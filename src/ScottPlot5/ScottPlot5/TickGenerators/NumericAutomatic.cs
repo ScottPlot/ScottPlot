@@ -17,6 +17,7 @@ public class NumericAutomatic : ITickGenerator
     public IMinorTickGenerator MinorTickGenerator { get; set; } = new EvenlySpacedMinorTickGenerator(5);
 
     public DecimalTickSpacingCalculator TickSpacingCalculator = new();
+    public float MinimumTickSpacing { get; set; } = 0;
 
     public static string DefaultLabelFormatter(double value)
     {
@@ -45,10 +46,11 @@ public class NumericAutomatic : ITickGenerator
     private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, int depth = 0)
     {
         if (depth > 3)
-            Debug.WriteLine($"Warning: Tick recusion depth = {depth}");
+            Debug.WriteLine($"Warning: Tick recursion depth = {depth}");
 
         // generate ticks and labels based on predicted maximum label size
-        double[] majorTickPositions = TickSpacingCalculator.GenerateTickPositions(range, axisLength, maxLabelLength.Length);
+        float labelWidth = Math.Max(MinimumTickSpacing, maxLabelLength.Length);
+        double[] majorTickPositions = TickSpacingCalculator.GenerateTickPositions(range, axisLength, labelWidth);
         string[] majorTickLabels = majorTickPositions.Select(x => LabelFormatter(x)).ToArray();
 
         // determine if the actual tick labels are larger than predicted,
