@@ -196,6 +196,30 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class TickDensity : RecipeBase
+    {
+        public override string Name => "Tick Density";
+        public override string Description =>
+            "Tick density can be adjusted as a fraction of the default value. " +
+            "Unlike MinimumTickSpacing, this strategy is aware of the size of " +
+            "tick labels and adjusts accordingly.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.TickDensity = 0.2;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.TickDensity = 0.2;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
     public class StandardMinorTickDistribution : RecipeBase
     {
         public override string Name => "Minor Tick Density";

@@ -18,6 +18,7 @@ public class NumericAutomatic : ITickGenerator
 
     public DecimalTickSpacingCalculator TickSpacingCalculator = new();
     public float MinimumTickSpacing { get; set; } = 0;
+    public double TickDensity { get; set; } = 1.0; // TODO: consider adding logic to make this a fraction of the width in pixels
 
     public static string DefaultLabelFormatter(double value)
     {

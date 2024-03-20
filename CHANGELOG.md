@@ -17,7 +17,7 @@ _Not yet on NuGet..._
 * Demo: Added a demonstration window for highlight the point nearest the cursor across multiple scatter plots (#3507, #3503) @jamaa @RubensMigliore
 * Polygon: Improved automatic axis limit detection of polygons (#3501) @drphobos
 * Annotation: New plot type for adding text labels aligned to the data area which are always visible (#3510, #3356) @dlampa
-* Ticks: Added `MinimumTickSpacing` property to the automatic tick generator to allow custom tick density
+* Ticks: Added `MinimumTickSpacing`, `TickDensity`, and `` properties to the automatic tick generator (see Cookbook)
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
