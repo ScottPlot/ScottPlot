@@ -173,6 +173,29 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class MinimumTickSpacing : RecipeBase
+    {
+        public override string Name => "Minimum Tick Spacing";
+        public override string Description =>
+            "Space between ticks can be increased by setting a value to indicate " +
+            "the minimum distance between tick labels (in pixels).";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.MinimumTickSpacing = 50;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.MinimumTickSpacing = 25;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
     public class StandardMinorTickDistribution : RecipeBase
     {
         public override string Name => "Minor Tick Density";
