@@ -220,6 +220,30 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class TickCount : RecipeBase
+    {
+        public override string Name => "Tick Count";
+        public override string Description =>
+            "A target number of ticks can be provided and the automatic " +
+            "tick generator will attempt to place that number of ticks. " +
+            "This strategy allows tick density to decrease as the image size increases.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.TargetTickCount = 3;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.TargetTickCount = 3;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
     public class StandardMinorTickDistribution : RecipeBase
     {
         public override string Name => "Minor Tick Density";
