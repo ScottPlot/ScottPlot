@@ -1,4 +1,6 @@
-﻿namespace Sandbox.WinForms;
+﻿using ScottPlot;
+
+namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
@@ -6,13 +8,34 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        for (int i = 0; i < 10; i++)
+        // plot sample data
+        Coordinates[] dataPoints = GetSampleData();
+        for (int i = 0; i < dataPoints.Length; i++)
         {
-            formsPlot1.Plot.Add.Marker(i, i);
+            var marker = formsPlot1.Plot.Add.Marker(dataPoints[i]);
+            marker.Label = $"#{i + 1}";
         }
 
+        // add a legend
+        //formsPlot1.Plot.ShowLegend(Alignment.UpperLeft);
+
+        // create isolines, style them, and add them to the plot
         ScottPlot.Plottables.IsoLines isoLines = new();
+        isoLines.LineStyle.Color = Colors.Blue.WithAlpha(.5);
+        isoLines.TickLabelStyle.ForeColor = Colors.Blue.WithAlpha(.5);
+        isoLines.TickLabelStyle.FontSize = 16;
         formsPlot1.Plot.Add.Plottable(isoLines);
+
+        // if manual isoline positions are defined, only those positions will be used.
+        // Values are the Y position when X is zero.
+        isoLines.ManualPositions.Add((14, "0.01 pM"));
+        isoLines.ManualPositions.Add((10, "100 pM"));
+        isoLines.ManualPositions.Add((6, "1 µM"));
+        isoLines.ManualPositions.Add((2, "10 mM"));
+        isoLines.ManualPositions.Add((-2, "100 M"));
+        isoLines.ManualPositions.Add((-6, "1e6 M"));
+        isoLines.ManualPositions.Add((-10, "1e10 M"));
+        isoLines.ManualPositions.Add((-14, "1e14 M"));
 
         // space major ticks farther apart so isolines aren't too dense
         ScottPlot.TickGenerators.NumericAutomatic tickGenX = new() { MinimumTickSpacing = 50 };
@@ -20,6 +43,72 @@ public partial class Form1 : Form
         ScottPlot.TickGenerators.NumericAutomatic tickGenY = new() { MinimumTickSpacing = 50 };
         formsPlot1.Plot.Axes.Left.TickGenerator = tickGenY;
 
+        // set axis limits to mimic the screenshot
+        formsPlot1.Plot.Axes.SetLimits(-8, 6, -10, 10);
+
+        // style the plot and update the display
+        formsPlot1.Plot.YLabel("log kOn (1/s)");
+        formsPlot1.Plot.XLabel("log kOff (1/Ms)");
         formsPlot1.Refresh();
+    }
+
+    private static Coordinates[] GetSampleData()
+    {
+        // note points manually
+        Coordinates[] points =
+        {
+            new(13, -8),
+            new(37, -10),
+            new(45, -6),
+            new(16, -12),
+            new(49, -13),
+            new(66, -13),
+            new(36, -13),
+            new(64, -14),
+            new(61, -14),
+            new(60, -16),
+            new(61, -15),
+            new(66, -18),
+            new(64, -18),
+            new(65, -20),
+            new(66, -20),
+            new(62, -21),
+            new(64, -25),
+            new(68, -29),
+            new(67, -42),
+            new(69, -47),
+            new(70, -54),
+        };
+
+        // scale 0-1
+        double[] ys = points.Select(p => p.Y).ToArray();
+        double minY = ys.Min();
+        ys = ys.Select(y => y - minY).ToArray();
+        double maxY = ys.Max();
+        ys = ys.Select(y => y / maxY).ToArray();
+
+        // scale 0-1
+        double[] xs = points.Select(p => p.X).ToArray();
+        double minX = xs.Min();
+        xs = xs.Select(x => x - minX).ToArray();
+        double maxX = xs.Max();
+        xs = xs.Select(x => x / maxX).ToArray();
+
+        // scale to custom range
+        double targetMinY = -7;
+        double targetMaxY = 8.5;
+        double targetSpanY = targetMaxY - targetMinY;
+        ys = ys.Select(y => y * targetSpanY + targetMinY).ToArray();
+
+        // scale to custom range
+        double targetMinX = -6;
+        double targetMaxX = 1;
+        double targetSpanX = targetMaxX - targetMinX;
+        xs = xs.Select(x => x * targetSpanX + targetMinX).ToArray();
+
+        return Enumerable
+            .Range(0, xs.Length)
+            .Select(i => new Coordinates(xs[i], ys[i]))
+            .ToArray();
     }
 }
