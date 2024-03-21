@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.DataSources;
+
+namespace ScottPlot.Plottables;
 
 public class IsoLines : IPlottable
 {
@@ -6,10 +8,13 @@ public class IsoLines : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
+    public Label TickLabelStyle = new();
+
     LineStyle LineStyle { get; set; } = new()
     {
-        Width = 3,
-        Color = Colors.Blue.WithAlpha(.2),
+        Width = 1,
+        Color = Colors.Black.WithAlpha(.2),
+        Pattern = LinePattern.DenselyDashed,
     };
 
     public void Render(RenderPack rp)
@@ -19,13 +24,49 @@ public class IsoLines : IPlottable
         List<PixelLine> lines = isWider ? GetLinesByX(rp) : GetLinesByY(rp);
 
         using SKPaint paint = new();
+        RenderLines(rp, paint, lines);
+
+        RenderLabels(rp, paint, lines);
+    }
+
+    private void RenderLines(RenderPack rp, SKPaint paint, List<PixelLine> lines)
+    {
         LineStyle.ApplyToPaint(paint);
-        lines.ForEach(line => Drawing.DrawLine(rp.Canvas, paint, line));
+        lines.ForEach(line => LineStyle.Render(rp.Canvas, paint, line));
+    }
+
+    private void RenderLabels(RenderPack rp, SKPaint paint, List<PixelLine> lines)
+    {
+        float padding = 5;
+
+        foreach (var line in lines)
+        {
+            // TODO: rotate text to match the slope of the isoline
+
+            bool topEdge = line.Pixel2.X < rp.DataRect.Right;
+
+            Pixel px = topEdge
+                ? new(line.Pixel2.X, line.Pixel2.Y + padding)
+                : new(rp.DataRect.Right - padding, line.Y(rp.DataRect.Right));
+
+            TickLabelStyle.Alignment = topEdge
+            ? Alignment.UpperCenter
+            : Alignment.MiddleRight;
+
+            // TODO: pass a CoordinateLine instead of a PixelLine
+            Coordinates c1 = Axes.GetCoordinates(line.Pixel1);
+            Coordinates c2 = Axes.GetCoordinates(line.Pixel2);
+            CoordinateLine cLine = new(c1, c2);
+            double isoValue = Math.Round(cLine.YIntercept, 5);
+            TickLabelStyle.Text = $"{isoValue}";
+
+            TickLabelStyle.Render(rp.Canvas, px, paint);
+        }
     }
 
     private List<PixelLine> GetLinesByX(RenderPack rp)
     {
-        List<PixelLine> lines = new();
+        List<PixelLine> lines = [];
 
         // determine where X ticks are placed and how far apart they are
         var xTickPositions = Axes.XAxis.TickGenerator.Ticks
@@ -68,7 +109,7 @@ public class IsoLines : IPlottable
 
     private List<PixelLine> GetLinesByY(RenderPack rp)
     {
-        List<PixelLine> lines = new();
+        List<PixelLine> lines = [];
 
         // determine where X ticks are placed and how far apart they are
         var yTickPositions = Axes.YAxis.TickGenerator.Ticks
