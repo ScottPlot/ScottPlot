@@ -58,19 +58,19 @@ public readonly struct CoordinateLine
     /// <summary>
     /// Return the X position on the line at the given Y
     /// </summary>
-    public Coordinates X(double y = 0)
+    public double X(double y = 0)
     {
         double dX = Y1 - y;
         double x = X1 - dX * Slope;
-        return new Coordinates(x, y);
+        return x;
     }
 
     /// <summary>
     /// Return the Y position on the line at the given X
     /// </summary>
-    public Coordinates Y(double x = 0)
+    public double Y(double x = 0)
     {
         double y = Slope * x + YIntercept;
-        return new Coordinates(x, y);
+        return y;
     }
 }
