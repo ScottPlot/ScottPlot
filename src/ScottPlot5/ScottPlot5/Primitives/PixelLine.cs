@@ -12,7 +12,10 @@ public readonly struct PixelLine
     public float XSpan => X2 - X1;
     public float YSpan => Y2 - Y1;
     public float Slope => (X1 == X2) ? float.NaN : YSpan / XSpan;
+    public double SlopeRadians => Math.Atan(Slope);
+    public double SlopeDegrees => SlopeRadians * 180 / Math.PI;
     public float YIntercept => Y1 - Slope * X1;
+    public float Length => (float)Math.Sqrt(XSpan * XSpan + YSpan * YSpan);
 
     public Pixel Pixel1 => new(X1, Y1);
 
