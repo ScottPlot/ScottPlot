@@ -6,20 +6,20 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
-        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
-
-        button1.Click += (s, e) =>
+        for (int i = 0; i < 10; i++)
         {
-            formsPlot1.Plot.Axes.Left.TickLabelStyle.FontSize = 64;
-            formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 64;
-            formsPlot1.Refresh();
-        };
+            formsPlot1.Plot.Add.Marker(i, i);
+        }
 
-        button2.Click += (s, e) =>
-        {
-            formsPlot1.Reset();
-            formsPlot1.Refresh();
-        };
+        ScottPlot.Plottables.IsoLines isoLines = new();
+        formsPlot1.Plot.Add.Plottable(isoLines);
+
+        // space major ticks farther apart so isolines aren't too dense
+        ScottPlot.TickGenerators.NumericAutomatic tickGenX = new() { MinimumTickSpacing = 50 };
+        formsPlot1.Plot.Axes.Bottom.TickGenerator = tickGenX;
+        ScottPlot.TickGenerators.NumericAutomatic tickGenY = new() { MinimumTickSpacing = 50 };
+        formsPlot1.Plot.Axes.Left.TickGenerator = tickGenY;
+
+        formsPlot1.Refresh();
     }
 }

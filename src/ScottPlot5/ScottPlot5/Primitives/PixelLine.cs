@@ -9,6 +9,10 @@ public readonly struct PixelLine
     public readonly float X2;
     public readonly float Y1;
     public readonly float Y2;
+    public float XSpan => X2 - X1;
+    public float YSpan => Y2 - Y1;
+    public float Slope => (X1 == X2) ? float.NaN : YSpan / XSpan;
+    public float YIntercept => Y1 - Slope * X1;
 
     public Pixel Pixel1 => new(X1, Y1);
 
@@ -32,11 +36,42 @@ public readonly struct PixelLine
 
     public override string ToString()
     {
-        return $"Line from {Pixel1} to {Pixel2}";
+        return $"PixelLine from ({X1}, {Y1}) to ({X2}, {Y2})";
     }
 
-    public void Draw(SKCanvas canvas, SKPaint paint)
+    /// <summary>
+    /// Adjust the line to fit within the boundaries of the given rectangle.
+    /// The slope and Y intercept will not be changed.
+    /// </summary>
+    public PixelLine ExtendTo(PixelRect rect)
     {
-        canvas.DrawLine(X1, Y1, X2, Y2, paint);
+        float dBottomX = Y1 - rect.Bottom;
+        float xAtBottom = X1 - dBottomX * Slope;
+        Pixel bottom = new(xAtBottom, rect.Bottom);
+
+        float dTopX = rect.Top - Y1;
+        float xAtTop = X1 + dTopX * Slope;
+        Pixel top = new(xAtTop, rect.Top);
+
+        return new PixelLine(bottom, top);
+    }
+
+    /// <summary>
+    /// Return the X position on the line at the given Y
+    /// </summary>
+    public float X(float y = 0)
+    {
+        float dX = Y1 - y;
+        float x = X1 - dX * Slope;
+        return x;
+    }
+
+    /// <summary>
+    /// Return the Y position on the line at the given X
+    /// </summary>
+    public float Y(float x = 0)
+    {
+        float y = Slope * x + YIntercept;
+        return y;
     }
 }

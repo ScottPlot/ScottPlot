@@ -120,11 +120,13 @@ public class Label
         ApplyTextPaint(paint);
     }
 
+    // TODO: obsolete this (require a paint)
     public void Render(SKCanvas canvas, Pixel pixel)
     {
         Render(canvas, pixel.X, pixel.Y);
     }
 
+    // TODO: obsolete this (require a paint)
     public void Render(SKCanvas canvas, float x, float y)
     {
         using SKPaint paint = new();

@@ -173,6 +173,77 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class MinimumTickSpacing : RecipeBase
+    {
+        public override string Name => "Minimum Tick Spacing";
+        public override string Description =>
+            "Space between ticks can be increased by setting a value to indicate " +
+            "the minimum distance between tick labels (in pixels).";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.MinimumTickSpacing = 50;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.MinimumTickSpacing = 25;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
+    public class TickDensity : RecipeBase
+    {
+        public override string Name => "Tick Density";
+        public override string Description =>
+            "Tick density can be adjusted as a fraction of the default value. " +
+            "Unlike MinimumTickSpacing, this strategy is aware of the size of " +
+            "tick labels and adjusts accordingly.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.TickDensity = 0.2;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.TickDensity = 0.2;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
+    public class TickCount : RecipeBase
+    {
+        public override string Name => "Tick Count";
+        public override string Description =>
+            "A target number of ticks can be provided and the automatic " +
+            "tick generator will attempt to place that number of ticks. " +
+            "This strategy allows tick density to decrease as the image size increases.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.TargetTickCount = 3;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.TargetTickCount = 3;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
     public class StandardMinorTickDistribution : RecipeBase
     {
         public override string Name => "Minor Tick Density";
