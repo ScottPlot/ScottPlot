@@ -104,7 +104,7 @@ public class IsoLines : IPlottable
             Coordinates c2 = Axes.GetCoordinates(line.Pixel2);
             CoordinateLine cLine = new(c1, c2);
 
-            string label = ManualPositions.Count == 0 
+            string label = ManualPositions.Count == 0
                 ? $"{cLine.YIntercept:0.000}"
                 : ManualPositions[i].Item2;
 
