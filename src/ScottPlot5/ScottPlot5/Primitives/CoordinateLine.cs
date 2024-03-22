@@ -12,7 +12,10 @@ public readonly struct CoordinateLine
     public double XSpan => X2 - X1;
     public double YSpan => Y2 - Y1;
     public double Slope => (X1 == X2) ? double.NaN : YSpan / XSpan;
+    public double SlopeRadians => Math.Atan(Slope);
+    public double SlopeDegrees => SlopeRadians * 180 / Math.PI;
     public double YIntercept => Y1 - Slope * X1;
+    public float Length => (float)Math.Sqrt(XSpan * XSpan + YSpan * YSpan);
 
     public Coordinates Start => new(X1, Y1);
     public Coordinates End => new(X2, Y2);
