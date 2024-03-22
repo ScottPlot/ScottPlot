@@ -104,7 +104,6 @@ public class RenderManager(Plot plot)
             rp.Canvas.Save();
             action.Render(rp);
             rp.Canvas.Restore();
-            rp.DisableClipping();
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 

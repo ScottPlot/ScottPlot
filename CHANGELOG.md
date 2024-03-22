@@ -18,6 +18,7 @@ _Not yet on NuGet..._
 * Polygon: Improved automatic axis limit detection of polygons (#3501) @drphobos
 * Annotation: New plot type for adding text labels aligned to the data area which are always visible (#3510, #3356) @dlampa
 * Ticks: Added `MinimumTickSpacing`, `TickDensity`, and `TargetTickCount` properties to the automatic tick generator (see Cookbook)
+* Avalonia: Fixed transparent background issue introduced in the previous version (#3502, #3516) @chjrom @MrOldOwl @kebox7
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
