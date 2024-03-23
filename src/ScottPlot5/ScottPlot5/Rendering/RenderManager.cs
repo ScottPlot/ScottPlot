@@ -87,7 +87,7 @@ public class RenderManager(Plot plot)
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
-        if (EnableRendering == false)
+        if (EnableRendering == false || IsRendering)
             return;
 
         IsRendering = true;
