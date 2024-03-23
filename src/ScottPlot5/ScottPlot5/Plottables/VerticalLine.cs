@@ -59,6 +59,9 @@ public class VerticalLine : AxisLine
         if (!rp.DataRect.ContainsX(x))
             return;
 
+        SKCanvas canvas = rp.Canvas;
+        canvas.Save();
+
         float y = LabelOppositeAxis
             ? rp.DataRect.Top - Label.Padding
             : rp.DataRect.Bottom + Label.Padding;
@@ -67,10 +70,9 @@ public class VerticalLine : AxisLine
             ? Alignment.LowerCenter
             : Alignment.UpperCenter;
 
-        // draw label outside the data area
-        rp.DisableClipping();
-
         using SKPaint paint = new();
-        Label.Render(rp.Canvas, x, y, paint);
+        Label.Render(canvas, x, y, paint);
+
+        canvas.Restore();
     }
 }
