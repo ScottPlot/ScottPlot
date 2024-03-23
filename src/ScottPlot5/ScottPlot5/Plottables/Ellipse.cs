@@ -82,6 +82,8 @@ public class Ellipse : IPlottable
     {
         if (!IsVisible || RadiusX.IsInfiniteOrNaN() || RadiusY.IsInfiniteOrNaN()) { return; }
 
+        SKCanvas canvas = rp.Canvas;
+        canvas.Save();
         using var paint = new SKPaint();
 
         rp.Canvas.Translate(Axes.GetPixel(Center).ToSKPoint());
