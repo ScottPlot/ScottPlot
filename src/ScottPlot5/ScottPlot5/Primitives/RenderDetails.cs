@@ -41,6 +41,11 @@ public readonly struct RenderDetails
     public readonly AxisLimits AxisLimits;
 
     /// <summary>
+    /// Axis limits of the primary axes for the previous render
+    /// </summary>
+    public readonly AxisLimits PreviousAxisLimits;
+
+    /// <summary>
     /// Axis limits for every axis
     /// </summary>
     public readonly Dictionary<IAxis, CoordinateRange> AxisLimitsByAxis;
@@ -80,6 +85,7 @@ public readonly struct RenderDetails
         Timestamp = DateTime.Now;
         TimedActions = actionTimes;
         AxisLimits = rp.Plot.Axes.GetLimits();
+        PreviousAxisLimits = lastRender.AxisLimits;
         AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange);
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
