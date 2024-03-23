@@ -42,13 +42,43 @@ public class RenderPack
         return $"RenderPack FigureRect={FigureRect} DataRect={DataRect}";
     }
 
+    public RestoreState PushClip(PixelRect rect)
+    {
+        Canvas.Save();
+        Canvas.ClipRect(rect.ToSKRect());
+
+        return new(this);
+    }
+
+    public RestoreState PushClipToDataArea()
+    {
+        return PushClip(DataRect);
+    }
+
+    [Obsolete($"Use {nameof(PushClipToDataArea)} instead.")]
     public void ClipToDataArea()
     {
         Canvas.ClipRect(DataRect.ToSKRect());
     }
 
+    [Obsolete($"Use {nameof(PushClipToDataArea)} instead.")]
     public void DisableClipping()
     {
         Canvas.Restore();
+    }
+
+    public readonly struct RestoreState : IDisposable
+    {
+        private readonly RenderPack _rp;
+
+        public RestoreState(RenderPack rp)
+        {
+            _rp = rp;
+        }
+
+        public void Dispose()
+        {
+            _rp.Canvas.Restore();
+        }
     }
 }

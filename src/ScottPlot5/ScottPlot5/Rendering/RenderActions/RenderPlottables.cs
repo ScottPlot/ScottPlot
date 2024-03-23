@@ -18,11 +18,11 @@ public class RenderPlottables : IRenderAction
             }
             else
             {
-                rp.ClipToDataArea();
+                using RenderPack.RestoreState _ = rp.PushClipToDataArea();
                 plottable.Render(rp);
             }
 
-            rp.DisableClipping();
+            rp.Canvas.Restore();
         }
     }
 }

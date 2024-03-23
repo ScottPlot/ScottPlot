@@ -67,9 +67,6 @@ public class VerticalLine : AxisLine
             ? Alignment.LowerCenter
             : Alignment.UpperCenter;
 
-        // draw label outside the data area
-        rp.DisableClipping();
-
         using SKPaint paint = new();
         Label.Render(rp.Canvas, x, y, paint);
     }
