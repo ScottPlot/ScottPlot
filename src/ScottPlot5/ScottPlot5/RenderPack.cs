@@ -47,8 +47,4 @@ public class RenderPack
         Canvas.ClipRect(DataRect.ToSKRect());
     }
 
-    public void DisableClipping()
-    {
-        Canvas.Restore();
-    }
 }
