@@ -51,8 +51,11 @@ public interface ISignalSource
     /// Return an object for working with all Y values.
     /// </summary>
     IReadOnlyList<double> GetYs();
-    // NOTE: GetYs() is only called in low density mode to plot a few ploints
-    // TODO: Add min/max X arguments so large datasets are not copied
+
+    /// <summary>
+    /// Return an IEnumerable for working with Y values of selected index range
+    /// </summary>
+    IEnumerable<double> GetYs(int i1, int i2);
 
     public CoordinateRange GetLimitsX(); // TODO: struct
 

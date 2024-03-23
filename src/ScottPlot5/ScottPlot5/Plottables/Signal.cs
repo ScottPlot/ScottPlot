@@ -97,16 +97,29 @@ public class Signal : IPlottable
         int i1 = Data.GetIndex(visibleXRange.Min, true);
         int i2 = Data.GetIndex(visibleXRange.Max + Data.Period, true);
 
-        IReadOnlyList<double> Ys = Data.GetYs();
+        
 
         List<Pixel> points = new();
-        for (int i = i1; i <= i2; i++)
+
+        IEnumerable<double> Ys = Data.GetYs(i1, i2);
+        int i = i1;
+        foreach (double yValue in Ys)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Ys[i] + Data.YOffset);
+            float y = Axes.GetPixelY(yValue + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
+            i++;
         }
+
+        //IReadOnlyList<double> Ys = Data.GetYs();
+        //for (int i = i1; i <= i2; i++)
+        //{
+        //    float x = Axes.GetPixelX(Data.GetX(i));
+        //    float y = Axes.GetPixelY(Ys[i] + Data.YOffset);
+        //    Pixel px = new(x, y);
+        //    points.Add(px);
+        //}
 
         using SKPath path = new();
         path.MoveTo(points[0].ToSKPoint());
