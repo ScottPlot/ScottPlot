@@ -10,7 +10,9 @@ public class RenderPlottables : IRenderAction
                 continue;
 
             plottable.Axes.DataRect = rp.DataRect;
-            rp.Canvas.Save();
+            SKCanvas canvas = rp.Canvas;
+            canvas.Save();
+
 
             if (plottable is IPlottableGL plottableGL)
             {
@@ -22,7 +24,7 @@ public class RenderPlottables : IRenderAction
                 plottable.Render(rp);
             }
 
-            rp.DisableClipping();
+            canvas.Restore();
         }
     }
 }
