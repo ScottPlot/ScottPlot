@@ -50,7 +50,6 @@ public class HorizontalLine : AxisLine
 
     public override void RenderLast(RenderPack rp)
     {
-
         if (Label.IsVisible == false || string.IsNullOrEmpty(Label.Text))
             return;
 
@@ -61,9 +60,6 @@ public class HorizontalLine : AxisLine
         if (!rp.DataRect.ContainsY(y))
             return;
 
-        SKCanvas canvas = rp.Canvas;
-        canvas.Save();
-
         float x = LabelOppositeAxis
             ? rp.DataRect.Right + Label.Padding
             : rp.DataRect.Left - Label.Padding;
@@ -72,9 +68,10 @@ public class HorizontalLine : AxisLine
             ? Alignment.UpperCenter
             : Alignment.LowerCenter;
 
-        using SKPaint paint = new();
-        Label.Render(canvas, x, y, paint);
+        // draw label outside the data area
+        rp.CanvasState.DisableClipping();
 
-        canvas.Restore();
+        using SKPaint paint = new();
+        Label.Render(rp.Canvas, x, y, paint);
     }
 }
