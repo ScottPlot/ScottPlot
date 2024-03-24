@@ -1,4 +1,3 @@
-﻿using System.Threading;
 
 namespace ScottPlot.Rendering;
 
@@ -104,11 +103,6 @@ public class RenderManager(Plot plot)
         if (EnableRendering == false)
             return;
 
-        try
-        {
-            // Acquire the semaphore, waiting until it's available if necessary
-            renderSemaphore.Wait(TimeSpan.FromSeconds(15));
-
             IsRendering = true;
             canvas.Scale(Plot.ScaleFactorF);
 
@@ -139,17 +133,6 @@ public class RenderManager(Plot plot)
             RenderCount += 1;
             IsRendering = false;
 
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions (replace with appropriate exception handling)
-            Console.WriteLine("An error occurred during rendering: " + ex.Message);
-        }
-        finally
-        {
-            // Release the semaphore
-            renderSemaphore.Release();
-
             if (EnableEvents)
             {
                 RenderFinished.Invoke(Plot, LastRender);
@@ -167,4 +150,3 @@ public class RenderManager(Plot plot)
             // TODO: event for when layout changes
         }
     }
-}
