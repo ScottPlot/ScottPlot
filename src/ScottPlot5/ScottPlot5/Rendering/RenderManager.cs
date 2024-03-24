@@ -95,6 +95,7 @@ public class RenderManager(Plot plot)
         IsRendering = true;
         canvas.Scale(Plot.ScaleFactorF);
 
+        // TODO: make this an object
         List<(string, TimeSpan)> actionTimes = new();
 
         RenderPack rp = new(Plot, rect, canvas);
@@ -109,7 +110,8 @@ public class RenderManager(Plot plot)
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
-        LastRender = new(rp, actionTimes.ToArray(), LastRender);
+        RenderDetails thisRenderDetails = new(rp, actionTimes.ToArray(), LastRender);
+        LastRender = thisRenderDetails;
         RenderCount += 1;
         IsRendering = false;
 

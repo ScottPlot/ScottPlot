@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System.Collections.ObjectModel;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Details about a completed render
@@ -51,6 +53,11 @@ public readonly struct RenderDetails
     public readonly Dictionary<IAxis, CoordinateRange> AxisLimitsByAxis;
 
     /// <summary>
+    /// Axis limits of all axes from the previous render
+    /// </summary>
+    public readonly Dictionary<IAxis, CoordinateRange> PreviousAxisLimitsByAxis;
+
+    /// <summary>
     /// Indicates whether the axis view (coordinate units) of this render differs from the previous
     /// </summary>
     public readonly bool AxisLimitsChanged { get; }
@@ -86,12 +93,33 @@ public readonly struct RenderDetails
         TimedActions = actionTimes;
         AxisLimits = rp.Plot.Axes.GetLimits();
         PreviousAxisLimits = lastRender.AxisLimits;
+        PreviousAxisLimitsByAxis = lastRender.AxisLimitsByAxis;
         AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange);
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
-
-        // TODO: evaluate multi-axis limits (not just the primary axes)
-        AxisLimitsChanged = !AxisLimits.Equals(lastRender.AxisLimits);
+        AxisLimitsChanged = AxisLimitsChangedChecker();
         SizeChanged = !DataRect.Equals(lastRender.DataRect);
+    }
+
+    private bool AxisLimitsChangedChecker()
+    {
+        if (PreviousAxisLimitsByAxis is null)
+            return true;
+
+        foreach (IAxis axis in AxisLimitsByAxis.Keys)
+        {
+            if (axis is null)
+                continue;
+
+            if (!PreviousAxisLimitsByAxis.ContainsKey(axis))
+                return true;
+
+            CoordinateRange rangeNow = AxisLimitsByAxis[axis];
+            CoordinateRange rangeBefore = PreviousAxisLimitsByAxis[axis];
+            if (rangeNow != rangeBefore)
+                return true;
+        }
+
+        return false;
     }
 }

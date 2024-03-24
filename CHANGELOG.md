@@ -77,6 +77,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
 * Bar: Added `Label` property to allow values to be displayed above bars (#3477) @DouglasWatt
 * Axes: Added `Plot.Axes.SquareUnits()` helper method for adding an axis rule that enforces equal axis scales (#3451)
 * Pie: Fixed issue were pie charts may have duplicate legends (#3445)
+* Axes: Improved render event behavior and support for multi-axis plots (#3525) @BrianAtZetica
 
 ## ScottPlot 4.1.72
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
