@@ -5,9 +5,9 @@
         <PlatformTarget>AnyCPU</PlatformTarget>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.72</Version>
-        <AssemblyVersion>4.1.72.0</AssemblyVersion>
-        <FileVersion>4.1.72.0</FileVersion>
+        <Version>4.1.73</Version>
+        <AssemblyVersion>4.1.73.0</AssemblyVersion>
+        <FileVersion>4.1.73.0</FileVersion>
 
         <AssemblyName>ScottPlot.Avalonia</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>
