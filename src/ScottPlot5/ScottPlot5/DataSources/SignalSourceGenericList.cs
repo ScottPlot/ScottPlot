@@ -25,6 +25,12 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
         }
     }
 
+    public double GetY(int index)
+    {
+        T genericValue = Ys[index];
+        return NumericConversion.GenericToDouble(ref genericValue);
+    }
+
     public override SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
         double min = double.PositiveInfinity;

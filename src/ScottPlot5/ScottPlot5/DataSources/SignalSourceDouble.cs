@@ -24,6 +24,11 @@ public class SignalSourceDouble : SignalSourceBase, ISignalSource
         }
     }
 
+    public double GetY(int index)
+    {
+        return Ys[index];
+    }
+
     public override SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
         double min = double.PositiveInfinity;

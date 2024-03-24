@@ -45,7 +45,12 @@ public interface ISignalSource
     /// <summary>
     /// Returns the X position for a given index.
     /// </summary>
-    double GetX(int index); // TODO: there should be a complimentary GetY
+    double GetX(int index);
+
+    /// <summary>
+    /// Returns the Y position for a given index.
+    /// </summary>
+    double GetY(int index);
 
     /// <summary>
     /// Return an object for working with all Y values.
@@ -57,9 +62,9 @@ public interface ISignalSource
     /// </summary>
     IEnumerable<double> GetYs(int index1, int index2);
 
-    public CoordinateRange GetLimitsX(); // TODO: struct
+    public CoordinateRange GetLimitsX();
 
-    public CoordinateRange GetLimitsY(); // TODO: struct
+    public CoordinateRange GetLimitsY();
 
     AxisLimits GetLimits();
 }
