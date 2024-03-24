@@ -76,10 +76,4 @@ internal static class SourceCodeParsing
 
         return methodNames;
     }
-
-    // TODO: cache source file paths and their contents for quicker searching by multiple tests
-    public static string[] GetSourceFilePaths()
-    {
-        return Directory.GetFiles(SourceFolder, "*.cs", SearchOption.AllDirectories);
-    }
 }
