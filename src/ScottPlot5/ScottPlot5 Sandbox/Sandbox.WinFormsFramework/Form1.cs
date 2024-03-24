@@ -12,14 +12,25 @@ public partial class Form1 : Form
         FormsPlot formsPlot1 = new() { Dock = DockStyle.Fill };
         Controls.Add(formsPlot1);
 
-        var crosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
+        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        formsPlot1.Plot.Add.Signal(Generate.Cos());
 
-        formsPlot1.MouseMove += (s, e) =>
+        var an = formsPlot1.Plot.Add.Annotation("test", Alignment.UpperCenter);
+
+        formsPlot1.Plot.RenderManager.RenderStarting += (object sender, RenderPack rp) =>
         {
-            Pixel mousePixel = new(e.X, e.Y);
-            Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(mousePixel);
-            crosshair.Position = mouseCoordinates;
-            formsPlot1.Refresh();
+            AxisLimits thisRenderLimits = rp.Plot.Axes.GetLimits();
+            AxisLimits lastRenderLimits = rp.Plot.LastRender.AxisLimits;
+
+            if (thisRenderLimits == lastRenderLimits)
+            {
+                // test this by resizing the window
+                an.Label.Text = "limits unchanged";
+            }
+            else
+            {
+                an.Label.Text = thisRenderLimits.ToString(2);
+            }
         };
     }
 }
