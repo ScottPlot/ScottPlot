@@ -16,7 +16,7 @@ internal class BarTests
         };
 
         plt.Add.Bars(bars);
-        plt.Render();
+        plt.Should().RenderInMemoryWithoutThrowing();
         plt.Axes.SetLimits(bottom: 0);
 
         plt.SaveTestImage();

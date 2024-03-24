@@ -11,7 +11,7 @@ internal class ScatterTests
         double[] xs = { };
         double[] ys = { };
         plt.Add.Scatter(xs, ys);
-        Assert.DoesNotThrow(() => plt.Render());
+        plt.Should().RenderInMemoryWithoutThrowing();
     }
 
     [Test]
@@ -23,10 +23,10 @@ internal class ScatterTests
         var sp = plt.Add.Scatter(xs, ys);
 
         sp.ConnectStyle = ConnectStyle.StepHorizontal;
-        Assert.DoesNotThrow(() => plt.Render());
+        plt.Should().RenderInMemoryWithoutThrowing();
 
         sp.ConnectStyle = ConnectStyle.StepVertical;
-        Assert.DoesNotThrow(() => plt.Render());
+        plt.Should().RenderInMemoryWithoutThrowing();
     }
 
     [Test]
@@ -36,7 +36,7 @@ internal class ScatterTests
         double[] xs = { 1 };
         double[] ys = { 1 };
         plt.Add.Scatter(xs, ys);
-        plt.Render();
+        plt.Should().RenderInMemoryWithoutThrowing();
         plt.SaveTestImage();
 
         Assert.That(plt.Axes.GetLimits().Rect.Area, Is.Not.Zero);
@@ -50,7 +50,7 @@ internal class ScatterTests
         double[] xs = { 1, 2, 3, 4, 5 };
         double[] ys = { 7, 7, 7, 7, 7 };
         plt.Add.Scatter(xs, ys);
-        plt.Render();
+        plt.Should().RenderInMemoryWithoutThrowing();
         plt.SaveTestImage();
 
         Assert.That(plt.Axes.GetLimits().Rect.Area, Is.Not.Zero);

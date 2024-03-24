@@ -1,4 +1,5 @@
-﻿namespace ScottPlot.Rendering;
+﻿
+namespace ScottPlot.Rendering;
 
 public class RenderManager(Plot plot)
 {
@@ -37,7 +38,8 @@ public class RenderManager(Plot plot)
     public EventHandler<RenderDetails> SizeChanged { get; set; } = delegate { };
 
     /// <summary>
-    /// This event a render where the axis limits (in coordinate units) changed from the previous render
+    /// This event is invoked during a render where the axis limits (in coordinate units) changed from the previous render
+    /// This event occurs after render actions are performed.
     /// </summary>
     public EventHandler<RenderDetails> AxisLimitsChanged { get; set; } = delegate { };
 
@@ -93,6 +95,7 @@ public class RenderManager(Plot plot)
         IsRendering = true;
         canvas.Scale(Plot.ScaleFactorF);
 
+        // TODO: make this an object
         List<(string, TimeSpan)> actionTimes = new();
 
         RenderPack rp = new(Plot, rect, canvas);
@@ -107,7 +110,10 @@ public class RenderManager(Plot plot)
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
-        LastRender = new(rp, actionTimes.ToArray(), LastRender);
+        RenderDetails thisRenderDetails = new(rp, actionTimes.ToArray(), LastRender);
+        LastRender = thisRenderDetails;
+        RenderCount += 1;
+        IsRendering = false;
 
         if (EnableEvents)
         {
@@ -123,11 +129,6 @@ public class RenderManager(Plot plot)
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
         }
-
         // TODO: event for when layout changes
-
-        RenderCount += 1;
-
-        IsRendering = false;
     }
 }

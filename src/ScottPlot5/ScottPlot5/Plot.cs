@@ -208,19 +208,8 @@ public class Plot : IDisposable
 
     #region Rendering and Image Creation
 
-    /// <summary>
-    /// Force the plot to render once by calling <see cref="GetImage(int, int)"/> but don't return what was rendered.
-    /// </summary>
-    public void Render(int width = 400, int height = 300)
-    {
-        if (width < 1)
-            throw new ArgumentException($"{nameof(width)} must be greater than 0");
-
-        if (height < 1)
-            throw new ArgumentException($"{nameof(height)} must be greater than 0");
-
-        GetImage(width, height);
-    }
+    [Obsolete("Call GetImage() to create a new image, or Render() to render onto an existing canvas.", true)]
+    public void Render(int width = 400, int height = 300) { }
 
     /// <summary>
     /// Render onto an existing canvas
