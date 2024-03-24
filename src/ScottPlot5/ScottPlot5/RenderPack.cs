@@ -1,5 +1,10 @@
 ﻿namespace ScottPlot;
 
+/// <summary>
+/// This object pairs a Plot with pixel/canvas information
+/// and is passed throughout the render system to provide
+/// screen and canvas information to methods performing rendering.
+/// </summary>
 public class RenderPack
 {
     public SKCanvas Canvas { get; }

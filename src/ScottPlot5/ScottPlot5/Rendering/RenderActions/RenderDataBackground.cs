@@ -6,6 +6,6 @@ public class RenderDataBackground : IRenderAction
     {
         rp.CanvasState.Clip(rp.DataRect);
         rp.Plot.DataBackground?.Render(rp.Canvas, rp.DataRect);
-        rp.CanvasState.RestoreAll();
+        rp.CanvasState.DisableClipping();
     }
 }

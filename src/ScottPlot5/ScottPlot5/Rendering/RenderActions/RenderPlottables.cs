@@ -22,7 +22,7 @@ public class RenderPlottables : IRenderAction
                 plottable.Render(rp);
             }
 
-            rp.CanvasState.RestoreAll();
+            rp.CanvasState.DisableClipping();
         }
     }
 }
