@@ -1,5 +1,8 @@
-## ScottPlot 5.0.23
+## ScottPlot 5.0.24
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.23
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
 * Plot: Added `ShowLegend()` overload that does not override the current `Orientation` (#3450) @aespitia
 * Grid: The standard grid can be accessed via `Plot.Grid` instead of `GetDefaultGrid()`
 * Style: `Plot.Style.ColorLegend()` is deprecated. Access `Plot.Legend` properties directly as seen in the cookbook.
@@ -23,7 +26,7 @@ _Not yet on NuGet..._
 * Signal: Improved performance of large signal plots when zoomed in (#3530, #3229) @minjjKang 
 
 ## ScottPlot 4.1.73
-_Not yet on NuGet..._
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
 * Image: Improve automatic axis limit detection for images with manually defined positions (#3529, #3515) @bukkideme
 
 ## ScottPlot 5.0.22
