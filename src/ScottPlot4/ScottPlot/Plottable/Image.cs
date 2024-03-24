@@ -84,11 +84,14 @@ namespace ScottPlot.Plottable
             if (Bitmap is null)
                 return AxisLimits.NoLimits;
 
+            float xOffset = (float)(WidthInAxisUnits ?? 0) / 2;
+            float yOffset = (float)(HeightInAxisUnits ?? 0) / 2;
+
             return new AxisLimits(
-                xMin: X,
-                xMax: X + WidthInAxisUnits ?? 0,
-                yMin: Y - HeightInAxisUnits ?? 0,
-                yMax: Y);
+                xMin: X - xOffset,
+                xMax: X + xOffset,
+                yMin: Y - yOffset,
+                yMax: Y + yOffset);
         }
 
         public LegendItem[] GetLegendItems() => LegendItem.None;
