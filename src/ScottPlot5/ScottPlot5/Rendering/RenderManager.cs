@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Rendering;
+﻿using System.Threading;
+
+namespace ScottPlot.Rendering;
 
 public class RenderManager(Plot plot)
 {
@@ -67,6 +69,11 @@ public class RenderManager(Plot plot)
     /// </summary>
     public int RenderCount { get; private set; } = 0;
 
+    /// <summary>
+    /// Semaphore to ensure only one render happens at a time, and that no render requests are left unimplemented.
+    /// </summary>
+    private static readonly SemaphoreSlim renderSemaphore = new SemaphoreSlim(1, 1);
+
     public static List<IRenderAction> DefaultRenderActions => new()
     {
         new RenderActions.PreRenderLock(),
@@ -94,56 +101,70 @@ public class RenderManager(Plot plot)
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
-        if (EnableRendering == false || IsRendering)
+        if (EnableRendering == false)
             return;
 
-        IsRendering = true;
-        canvas.Scale(Plot.ScaleFactorF);
-
-        List<(string, TimeSpan)> actionTimes = new();
-
-        RenderPack rp = new(Plot, rect, canvas);
-
-        if (EnableEvents)
+        try
         {
-            if (LastRender.AxisLimits != Plot.Axes.GetLimits())
+            // Acquire the semaphore, waiting until it's available if necessary
+            renderSemaphore.Wait(TimeSpan.FromSeconds(15));
+
+            IsRendering = true;
+            canvas.Scale(Plot.ScaleFactorF);
+
+            List<(string, TimeSpan)> actionTimes = new();
+
+            RenderPack rp = new(Plot, rect, canvas);
+
+            if (EnableEvents)
             {
-                AxesChangingArgs axesChangingArgs = new AxesChangingArgs(LastRender.AxisLimits, Plot.Axes.GetLimits());
-                AxisLimitsChanging.Invoke(Plot, axesChangingArgs);
-            }
-        }
-
-        Stopwatch sw = new();
-        foreach (IRenderAction action in RenderActions)
-        {
-            sw.Restart();
-            rp.Canvas.Save();
-            action.Render(rp);
-            rp.Canvas.Restore();
-            actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
-        }
-
-        LastRender = new(rp, actionTimes.ToArray(), LastRender);
-
-        if (EnableEvents)
-        {
-            RenderFinished.Invoke(Plot, LastRender);
-
-            if (LastRender.SizeChanged)
-            {
-                SizeChanged.Invoke(Plot, LastRender);
+                if (LastRender.AxisLimits != Plot.Axes.GetLimits())
+                {
+                    AxesChangingArgs axesChangingArgs = new AxesChangingArgs(LastRender.AxisLimits, Plot.Axes.GetLimits());
+                    AxisLimitsChanging.Invoke(Plot, axesChangingArgs);
+                }
             }
 
-            if (LastRender.AxisLimitsChanged)
+            Stopwatch sw = new();
+            foreach (IRenderAction action in RenderActions)
             {
-                AxisLimitsChanged.Invoke(Plot, LastRender);
+                sw.Restart();
+                rp.Canvas.Save();
+                action.Render(rp);
+                rp.Canvas.Restore();
+                actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
             }
+
+            LastRender = new(rp, actionTimes.ToArray(), LastRender);
+            RenderCount += 1;
+            IsRendering = false;
+
         }
+        catch (Exception ex)
+        {
+            // Handle exceptions (replace with appropriate exception handling)
+            Console.WriteLine("An error occurred during rendering: " + ex.Message);
+        }
+        finally
+        {
+            // Release the semaphore
+            renderSemaphore.Release();
 
-        // TODO: event for when layout changes
+            if (EnableEvents)
+            {
+                RenderFinished.Invoke(Plot, LastRender);
 
-        RenderCount += 1;
+                if (LastRender.SizeChanged)
+                {
+                    SizeChanged.Invoke(Plot, LastRender);
+                }
 
-        IsRendering = false;
+                if (LastRender.AxisLimitsChanged)
+                {
+                    AxisLimitsChanged.Invoke(Plot, LastRender);
+                }
+            }
+            // TODO: event for when layout changes
+        }
     }
 }
