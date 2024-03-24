@@ -7,6 +7,7 @@ public class Annotation : IPlottable
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     public Label Label { get; set; } = new();
+    public string Text { get => Label.Text; set => Label.Text = value; }
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float OffsetX { get; set; } = 5;
     public float OffsetY { get; set; } = 5;

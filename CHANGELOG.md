@@ -19,6 +19,11 @@ _Not yet on NuGet..._
 * Annotation: New plot type for adding text labels aligned to the data area which are always visible (#3510, #3356) @dlampa
 * Ticks: Added `MinimumTickSpacing`, `TickDensity`, and `TargetTickCount` properties to the automatic tick generator (see Cookbook)
 * Avalonia: Fixed transparent background issue introduced in the previous version (#3502, #3516) @chjrom @MrOldOwl @kebox7
+* Rendering: Improved canvas state management to prevent duplicate restoration calls (#3527, #3523, #3528) @BrianAtZetica @chjrom
+
+## ScottPlot 4.1.73
+_Not yet on NuGet..._
+* Image: Improve automatic axis limit detection for images with manually defined positions (#3529, #3515) @bukkideme
 
 ## ScottPlot 5.0.22
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
@@ -72,6 +77,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
 * Bar: Added `Label` property to allow values to be displayed above bars (#3477) @DouglasWatt
 * Axes: Added `Plot.Axes.SquareUnits()` helper method for adding an axis rule that enforces equal axis scales (#3451)
 * Pie: Fixed issue were pie charts may have duplicate legends (#3445)
+* Axes: Improved render event behavior and support for multi-axis plots (#3525) @BrianAtZetica
 
 ## ScottPlot 4.1.72
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-16_
