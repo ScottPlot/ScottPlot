@@ -99,9 +99,9 @@ public class Signal : IPlottable
 
         List<Pixel> points = new();
 
-        IEnumerable<double> Ys = Data.GetYs(i1, i2);
+        IEnumerable<double> ysInRange = Data.GetYs(i1, i2);
         int i = i1;
-        foreach (double yValue in Ys)
+        foreach (double yValue in ysInRange)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
             float y = Axes.GetPixelY(yValue + Data.YOffset);

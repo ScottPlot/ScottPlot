@@ -45,17 +45,17 @@ public interface ISignalSource
     /// <summary>
     /// Returns the X position for a given index.
     /// </summary>
-    double GetX(int index);
+    double GetX(int index); // TODO: there should be a complimentary GetY
 
     /// <summary>
     /// Return an object for working with all Y values.
     /// </summary>
-    IReadOnlyList<double> GetYs();
+    IReadOnlyList<double> GetYs(); // TODO: should this be IEnumerable?
 
     /// <summary>
-    /// Return an IEnumerable for working with Y values of selected index range
+    /// Y values between a range of indexes (inclusive).
     /// </summary>
-    IEnumerable<double> GetYs(int i1, int i2);
+    IEnumerable<double> GetYs(int index1, int index2);
 
     public CoordinateRange GetLimitsX(); // TODO: struct
 
