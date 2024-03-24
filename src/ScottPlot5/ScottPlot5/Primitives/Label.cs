@@ -246,7 +246,7 @@ public class Label
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
 
-        canvas.Save();
+        canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
         canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding
         canvas.RotateDegrees(Rotation);
         ApplyBackgroundPaint(paint);
@@ -272,9 +272,9 @@ public class Label
 
         ApplyBorderPaint(paint);
         canvas.DrawRect(backgroundRect.ToSKRect(), paint);
-        canvas.Restore();
+        canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
 
-        canvas.Save();
+        canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
         canvas.Translate(x, y); // do not compensate for padding
         canvas.RotateDegrees(Rotation);
 
@@ -286,6 +286,6 @@ public class Label
 
         canvas.DrawLine(-PointSize, 0, PointSize, 0, paint);
         canvas.DrawLine(0, -PointSize, 0, PointSize, paint);
-        canvas.Restore();
+        canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
     }
 }
