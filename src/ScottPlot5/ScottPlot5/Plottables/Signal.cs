@@ -97,13 +97,12 @@ public class Signal : IPlottable
         int i1 = Data.GetIndex(visibleXRange.Min, true);
         int i2 = Data.GetIndex(visibleXRange.Max + Data.Period, true);
 
-        IReadOnlyList<double> Ys = Data.GetYs();
+        List<Pixel> points = [];
 
-        List<Pixel> points = new();
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Ys[i] + Data.YOffset);
+            float y = Axes.GetPixelY(Data.GetY(i) + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }
