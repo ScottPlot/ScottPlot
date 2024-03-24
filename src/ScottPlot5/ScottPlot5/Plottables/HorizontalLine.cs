@@ -69,7 +69,7 @@ public class HorizontalLine : AxisLine
             : Alignment.LowerCenter;
 
         // draw label outside the data area
-        rp.CanvasState.DisableClipping();
+        rp.DisableClipping();
 
         using SKPaint paint = new();
         Label.Render(rp.Canvas, x, y, paint);

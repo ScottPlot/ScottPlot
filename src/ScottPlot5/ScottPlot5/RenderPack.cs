@@ -3,7 +3,6 @@
 public class RenderPack
 {
     public SKCanvas Canvas { get; }
-    public CanvasState CanvasState { get; }
     public PixelRect FigureRect { get; }
     public PixelRect DataRect { get; private set; }
     public Layout Layout { get; private set; }
@@ -18,7 +17,6 @@ public class RenderPack
     public RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas)
     {
         Canvas = canvas;
-        CanvasState = new(canvas);
         FigureRect = figureRect;
         Plot = plot;
         Stopwatch = Stopwatch.StartNew();
@@ -44,15 +42,13 @@ public class RenderPack
         return $"RenderPack FigureRect={FigureRect} DataRect={DataRect}";
     }
 
-    [Obsolete("Call CanvasState.Clip() instead", true)]
     public void ClipToDataArea()
     {
-        CanvasState.Clip(DataRect);
+        Canvas.ClipRect(DataRect.ToSKRect());
     }
 
-    [Obsolete("Call CanvasState.DisableClipping() instead", true)]
     public void DisableClipping()
     {
-        CanvasState.DisableClipping();
+        Canvas.Restore();
     }
 }

@@ -93,5 +93,7 @@ public class Ellipse : IPlottable
         PixelRect rect = new(-rx, rx, ry, -ry);
         Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
         Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
+
+        rp.Canvas.Restore();
     }
 }

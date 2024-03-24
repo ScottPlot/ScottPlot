@@ -10,7 +10,7 @@ public class RenderPlottables : IRenderAction
                 continue;
 
             plottable.Axes.DataRect = rp.DataRect;
-            rp.CanvasState.Save();
+            rp.Canvas.Save();
 
             if (plottable is IPlottableGL plottableGL)
             {
@@ -18,11 +18,11 @@ public class RenderPlottables : IRenderAction
             }
             else
             {
-                rp.CanvasState.Clip(rp.DataRect);
+                rp.ClipToDataArea();
                 plottable.Render(rp);
             }
 
-            rp.CanvasState.RestoreAll();
+            rp.DisableClipping();
         }
     }
 }

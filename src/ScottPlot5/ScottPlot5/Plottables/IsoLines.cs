@@ -38,7 +38,7 @@ public class IsoLines : IPlottable
         using SKPaint paint = new();
         RenderLines(rp, paint, lines);
 
-        rp.CanvasState.RestoreAll();
+        rp.DisableClipping();
         if (RotateLabels)
         {
             RenderLabelsRotated(rp, paint, lines);
