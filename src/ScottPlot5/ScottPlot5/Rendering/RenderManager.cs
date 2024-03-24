@@ -101,9 +101,9 @@ public class RenderManager(Plot plot)
         foreach (IRenderAction action in RenderActions)
         {
             sw.Restart();
-            rp.Canvas.Save();
+            rp.CanvasState.Save();
             action.Render(rp);
-            rp.Canvas.Restore();
+            rp.CanvasState.RestoreAll();
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
