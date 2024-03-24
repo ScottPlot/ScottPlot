@@ -1,4 +1,4 @@
-
+﻿
 namespace ScottPlot.Rendering;
 
 public class RenderManager(Plot plot)
@@ -38,12 +38,6 @@ public class RenderManager(Plot plot)
     public EventHandler<RenderDetails> SizeChanged { get; set; } = delegate { };
 
     /// <summary>
-    /// This event is invoked during a render where the axis limits (in coordinate units) changed from the previous render.
-    /// This event occurs before render actions are performed
-    /// </summary>
-    public EventHandler<AxesChangingArgs> AxisLimitsChanging { get; set; } = delegate { };
-
-    /// <summary>
     /// This event is invoked during a render where the axis limits (in coordinate units) changed from the previous render
     /// This event occurs after render actions are performed.
     /// </summary>
@@ -67,11 +61,6 @@ public class RenderManager(Plot plot)
     /// Total number of renders completed
     /// </summary>
     public int RenderCount { get; private set; } = 0;
-
-    /// <summary>
-    /// Semaphore to ensure only one render happens at a time, and that no render requests are left unimplemented.
-    /// </summary>
-    private static readonly SemaphoreSlim renderSemaphore = new SemaphoreSlim(1, 1);
 
     public static List<IRenderAction> DefaultRenderActions => new()
     {
@@ -103,50 +92,41 @@ public class RenderManager(Plot plot)
         if (EnableRendering == false)
             return;
 
-            IsRendering = true;
-            canvas.Scale(Plot.ScaleFactorF);
+        IsRendering = true;
+        canvas.Scale(Plot.ScaleFactorF);
 
-            List<(string, TimeSpan)> actionTimes = new();
+        List<(string, TimeSpan)> actionTimes = new();
 
-            RenderPack rp = new(Plot, rect, canvas);
+        RenderPack rp = new(Plot, rect, canvas);
 
-            if (EnableEvents)
-            {
-                if (LastRender.AxisLimits != Plot.Axes.GetLimits())
-                {
-                    AxesChangingArgs axesChangingArgs = new AxesChangingArgs(LastRender.AxisLimits, Plot.Axes.GetLimits());
-                    AxisLimitsChanging.Invoke(Plot, axesChangingArgs);
-                }
-            }
-
-            Stopwatch sw = new();
-            foreach (IRenderAction action in RenderActions)
-            {
-                sw.Restart();
-                rp.Canvas.Save();
-                action.Render(rp);
-                rp.Canvas.Restore();
-                actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
-            }
-
-            LastRender = new(rp, actionTimes.ToArray(), LastRender);
-            RenderCount += 1;
-            IsRendering = false;
-
-            if (EnableEvents)
-            {
-                RenderFinished.Invoke(Plot, LastRender);
-
-                if (LastRender.SizeChanged)
-                {
-                    SizeChanged.Invoke(Plot, LastRender);
-                }
-
-                if (LastRender.AxisLimitsChanged)
-                {
-                    AxisLimitsChanged.Invoke(Plot, LastRender);
-                }
-            }
-            // TODO: event for when layout changes
+        Stopwatch sw = new();
+        foreach (IRenderAction action in RenderActions)
+        {
+            sw.Restart();
+            rp.Canvas.Save();
+            action.Render(rp);
+            rp.Canvas.Restore();
+            actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
+
+        LastRender = new(rp, actionTimes.ToArray(), LastRender);
+        RenderCount += 1;
+        IsRendering = false;
+
+        if (EnableEvents)
+        {
+            RenderFinished.Invoke(Plot, LastRender);
+
+            if (LastRender.SizeChanged)
+            {
+                SizeChanged.Invoke(Plot, LastRender);
+            }
+
+            if (LastRender.AxisLimitsChanged)
+            {
+                AxisLimitsChanged.Invoke(Plot, LastRender);
+            }
+        }
+        // TODO: event for when layout changes
     }
+}
