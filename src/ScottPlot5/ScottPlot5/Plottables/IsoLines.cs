@@ -14,12 +14,20 @@ public class IsoLines : IPlottable
 
     public readonly List<(double, string)> ManualPositions = [];
 
+    public Func<double, string> TickLabelFormatter = DefaultTickFormatter;
+    public bool ExteriorTickLabels { get; set; } = false;
+
     public LineStyle LineStyle { get; set; } = new()
     {
         Width = 1,
         Color = Colors.Black.WithAlpha(.2),
         Pattern = LinePattern.DenselyDashed,
     };
+
+    public static string DefaultTickFormatter(double yIntercept)
+    {
+        return Math.Round(yIntercept, 3).ToString();
+    }
 
     public void Render(RenderPack rp)
     {
@@ -30,6 +38,7 @@ public class IsoLines : IPlottable
         using SKPaint paint = new();
         RenderLines(rp, paint, lines);
 
+        rp.DisableClipping();
         if (RotateLabels)
         {
             RenderLabelsRotated(rp, paint, lines);
@@ -50,24 +59,41 @@ public class IsoLines : IPlottable
     {
         float padding = 5;
 
-        foreach (PixelLine line in lines)
+        for (int i = 0; i < lines.Count; i++)
         {
+            PixelLine line = lines[i];
             bool topEdge = line.Pixel2.X < rp.DataRect.Right;
 
-            Pixel px = topEdge
-                ? new(line.Pixel2.X, line.Pixel2.Y + padding)
-                : new(rp.DataRect.Right - padding, line.Y(rp.DataRect.Right));
+            Pixel px;
+            if (ExteriorTickLabels)
+            {
+                px = topEdge
+                    ? new(line.Pixel2.X, line.Pixel2.Y - padding)
+                    : new(rp.DataRect.Right + padding, line.Y(rp.DataRect.Right));
 
-            TickLabelStyle.Alignment = topEdge
-                ? Alignment.UpperCenter
-                : Alignment.MiddleRight;
+                TickLabelStyle.Alignment = topEdge
+                    ? Alignment.LowerCenter
+                    : Alignment.MiddleLeft;
+            }
+            else
+            {
+                px = topEdge
+                    ? new(line.Pixel2.X, line.Pixel2.Y + padding)
+                    : new(rp.DataRect.Right - padding, line.Y(rp.DataRect.Right));
+
+                TickLabelStyle.Alignment = topEdge
+                    ? Alignment.UpperCenter
+                    : Alignment.MiddleRight;
+            }
 
             // TODO: pass a CoordinateLine instead of a PixelLine
             Coordinates c1 = Axes.GetCoordinates(line.Pixel1);
             Coordinates c2 = Axes.GetCoordinates(line.Pixel2);
             CoordinateLine cLine = new(c1, c2);
-            double isoValue = Math.Round(cLine.YIntercept, 3);
-            TickLabelStyle.Text = $"{isoValue}";
+
+            TickLabelStyle.Text = ManualPositions.Count == 0
+                ? TickLabelFormatter.Invoke(cLine.YIntercept)
+                : ManualPositions[i].Item2;
 
             TickLabelStyle.Render(rp.Canvas, px, paint);
         }
@@ -81,23 +107,42 @@ public class IsoLines : IPlottable
 
             bool topEdge = line.Pixel2.X < rp.DataRect.Right;
 
-            Pixel px = topEdge
-                ? new(
-                    x: line.Pixel2.X,
-                    y: line.Pixel2.Y + 5)
-                : new(
-                    x: rp.DataRect.Right - 10,
-                    y: line.Y(rp.DataRect.Right) + 10);
+            Pixel px;
+            if (ExteriorTickLabels)
+            {
+                px = topEdge
+                   ? new(
+                       x: line.Pixel2.X + 15,
+                       y: line.Pixel2.Y - 15)
+                   : new(
+                       x: rp.DataRect.Right + 10,
+                       y: line.Y(rp.DataRect.Right) - 10);
 
-            // don't render labels too close to the left edge
-            if (topEdge && (px.X < (rp.DataRect.Left + 50)))
+                TickLabelStyle.Alignment = Alignment.MiddleLeft;
+            }
+            else
+            {
+                px = topEdge
+                   ? new(
+                       x: line.Pixel2.X,
+                       y: line.Pixel2.Y + 5)
+                   : new(
+                       x: rp.DataRect.Right - 10,
+                       y: line.Y(rp.DataRect.Right) + 10);
+
+                TickLabelStyle.Alignment = Alignment.UpperRight;
+
+                // don't render labels too close to the left edge
+                if (topEdge && (px.X < (rp.DataRect.Left + 50)))
+                    continue;
+
+                // don't render labels too close to the bottom edge
+                if (!topEdge && (px.Y > (rp.DataRect.Bottom - 40)))
+                    continue;
+            }
+
+            if (px.Y > rp.DataRect.Bottom || px.X < rp.DataRect.Left)
                 continue;
-
-            // don't render labels too close to the bottom edge
-            if (!topEdge && (px.Y > (rp.DataRect.Bottom - 40)))
-                continue;
-
-            TickLabelStyle.Alignment = Alignment.UpperRight;
 
             // TODO: pass a CoordinateLine instead of a PixelLine
             Coordinates c1 = Axes.GetCoordinates(line.Pixel1);
@@ -105,7 +150,7 @@ public class IsoLines : IPlottable
             CoordinateLine cLine = new(c1, c2);
 
             string label = ManualPositions.Count == 0
-                ? $"{cLine.YIntercept:0.000}"
+                ? TickLabelFormatter.Invoke(cLine.YIntercept)
                 : ManualPositions[i].Item2;
 
             TickLabelStyle.Text = label;

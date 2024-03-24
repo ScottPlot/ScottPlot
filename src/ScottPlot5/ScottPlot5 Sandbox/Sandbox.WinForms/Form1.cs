@@ -8,6 +8,21 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
+        cbManual.Checked = true;
+        cbInterior.Checked = true;
+        cbRotated.Checked = true;
+
+        cbInterior.CheckedChanged += (s, e) => SetupPlot();
+        cbManual.CheckedChanged += (s, e) => SetupPlot();
+        cbRotated.CheckedChanged += (s, e) => SetupPlot();
+
+        SetupPlot();
+    }
+
+    private void SetupPlot()
+    {
+        formsPlot1.Reset();
+
         // plot sample data
         Coordinates[] dataPoints = GetSampleData();
         for (int i = 0; i < dataPoints.Length; i++)
@@ -17,25 +32,43 @@ public partial class Form1 : Form
         }
 
         // add a legend
+        // TODO: add row and column support to legend
+        // https://github.com/ScottPlot/ScottPlot/issues/3531
         //formsPlot1.Plot.ShowLegend(Alignment.UpperLeft);
+        //formsPlot1.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
 
         // create isolines, style them, and add them to the plot
         ScottPlot.Plottables.IsoLines isoLines = new();
         isoLines.LineStyle.Color = Colors.Blue.WithAlpha(.5);
         isoLines.TickLabelStyle.ForeColor = Colors.Blue.WithAlpha(.5);
         isoLines.TickLabelStyle.FontSize = 16;
+        isoLines.RotateLabels = cbRotated.Checked;
+        isoLines.ExteriorTickLabels = !cbInterior.Checked;
         formsPlot1.Plot.Add.Plottable(isoLines);
 
-        // if manual isoline positions are defined, only those positions will be used.
-        // Values are the Y position when X is zero.
-        isoLines.ManualPositions.Add((14, "0.01 pM"));
-        isoLines.ManualPositions.Add((10, "100 pM"));
-        isoLines.ManualPositions.Add((6, "1 µM"));
-        isoLines.ManualPositions.Add((2, "10 mM"));
-        isoLines.ManualPositions.Add((-2, "100 M"));
-        isoLines.ManualPositions.Add((-6, "1e6 M"));
-        isoLines.ManualPositions.Add((-10, "1e10 M"));
-        isoLines.ManualPositions.Add((-14, "1e14 M"));
+        if (cbManual.Checked)
+        {
+            // if manual isoline positions are defined, only those positions will be used.
+            // Values are the Y position when X is zero.
+            isoLines.ManualPositions.Add((14, "0.01 pM"));
+            isoLines.ManualPositions.Add((10, "100 pM"));
+            isoLines.ManualPositions.Add((6, "1 µM"));
+            isoLines.ManualPositions.Add((2, "10 mM"));
+            isoLines.ManualPositions.Add((-2, "100 M"));
+            isoLines.ManualPositions.Add((-6, "1e6 M"));
+            isoLines.ManualPositions.Add((-10, "1e10 M"));
+            isoLines.ManualPositions.Add((-14, "1e14 M"));
+        }
+        else
+        {
+            static string IsolineLabelFormatter(double value)
+            {
+                return (value >= 0)
+                    ? $"1E+{Math.Round(value, 0)}"
+                    : $"1E{Math.Round(value, 0)}";
+            }
+            isoLines.TickLabelFormatter = IsolineLabelFormatter;
+        }
 
         // space major ticks farther apart so isolines aren't too dense
         ScottPlot.TickGenerators.NumericAutomatic tickGenX = new() { MinimumTickSpacing = 50 };
@@ -43,7 +76,19 @@ public partial class Form1 : Form
         ScottPlot.TickGenerators.NumericAutomatic tickGenY = new() { MinimumTickSpacing = 50 };
         formsPlot1.Plot.Axes.Left.TickGenerator = tickGenY;
 
-        // set axis limits to mimic the screenshot
+        // configure minor tick marks to display with log-scaling distribution
+        ScottPlot.TickGenerators.LogMinorTickGenerator logMinorTickGen = new();
+        tickGenX.MinorTickGenerator = logMinorTickGen;
+        tickGenY.MinorTickGenerator = logMinorTickGen;
+
+        if (!cbInterior.Checked)
+        {
+            // add more space for ticks outside the data area
+            PixelPadding padding = new(50, 100, 50, 70);
+            formsPlot1.Plot.Layout.Fixed(padding);
+        }
+
+        // set axis limits to mimic the original screenshot
         formsPlot1.Plot.Axes.SetLimits(-8, 6, -10, 10);
 
         // style the plot and update the display
