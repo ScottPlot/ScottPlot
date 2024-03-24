@@ -20,6 +20,7 @@ _Not yet on NuGet..._
 * Ticks: Added `MinimumTickSpacing`, `TickDensity`, and `TargetTickCount` properties to the automatic tick generator (see Cookbook)
 * Avalonia: Fixed transparent background issue introduced in the previous version (#3502, #3516) @chjrom @MrOldOwl @kebox7
 * Rendering: Improved canvas state management to prevent duplicate restoration calls (#3527, #3523, #3528) @BrianAtZetica @chjrom
+* Signal: Improved performance of large signal plots when zoomed in (#3530, #3229) @minjjKang 
 
 ## ScottPlot 4.1.73
 _Not yet on NuGet..._
