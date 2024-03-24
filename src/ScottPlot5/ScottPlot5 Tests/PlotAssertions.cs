@@ -30,6 +30,6 @@ internal class PlotAssertions(Plot plot)
 
     public void RenderInMemoryWithoutThrowing(int width = 400, int height = 300)
     {
-        Plot.Render(width, height);
+        Plot.GetImage(width, height);
     }
 }

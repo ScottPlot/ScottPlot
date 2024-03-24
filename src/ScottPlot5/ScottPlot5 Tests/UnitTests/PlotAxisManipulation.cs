@@ -26,7 +26,8 @@ internal class PlotAxisManipulation
         Action panBeforeRender = () => plt.Axes.Pan(panDistance);
         panBeforeRender.Should().Throw<InvalidOperationException>();
 
-        plt.Render();
+        plt.Should().RenderInMemoryWithoutThrowing();
+
         plt.Axes.Pan(panDistance);
         AxisLimits newLimits = plt.Axes.GetLimits();
         newLimits.Left.Should().BeGreaterThan(initialLimits.Left);
