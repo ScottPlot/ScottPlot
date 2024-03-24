@@ -9,25 +9,40 @@ internal class ForbiddenCodeTests
     [Test]
     public void Test_CanvasSave_IsNotCalledDirectly()
     {
+        int offences = 0;
         StringBuilder errorMessages = new();
         foreach (string filePath in SourceFilePaths)
         {
+            if (filePath.EndsWith("CanvasState.cs"))
+                continue;
+
             string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; i++)
             {
                 string file2 = filePath.Replace(SourceCodeParsing.SourceFolder, string.Empty);
                 string line = lines[i];
-                if (line.Contains(".Save();"))
-                {
-                    errorMessages.AppendLine($"{file2} line {i + 1}");
-                    errorMessages.AppendLine(line.Trim());
-                    errorMessages.AppendLine();
-                }
+
+                bool offense = false;
+                offense |= line.Contains(".Save();") && !line.Contains("CanvasState.Save();");
+                offense |= line.Contains(".Restore();") && !line.Contains("CanvasState.Restore();");
+
+                if (offense && line.Contains("WARNING", StringComparison.InvariantCultureIgnoreCase))
+                    continue;
+
+                if (!offense)
+                    continue;
+
+                offences += 1;
+                errorMessages.AppendLine($"{file2} line {i + 1}");
+                errorMessages.AppendLine(line.Trim());
+                errorMessages.AppendLine();
             }
         }
 
-        errorMessages.ToString().Should().BeEmpty(
-            $"SKCanvas.Save() should never be called directly.\n" +
+        offences.Should().Be(0,
+            $"SKCanvas Save() and Restore() should never be called directly. " +
+            $"Call RenderPack.CanvasState Save() and Restore() instead." +
+            $"{offences} offences:\n" +
             $"{errorMessages}");
     }
 }

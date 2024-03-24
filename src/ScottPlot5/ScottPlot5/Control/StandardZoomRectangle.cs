@@ -72,7 +72,7 @@ public class StandardZoomRectangle : IZoomRectangle
 
         SKRect rect = new(MouseDown.X, MouseDown.Y, MouseUp.X, MouseUp.Y);
 
-        canvas.Save();
+        rp.CanvasState.Save();
         canvas.ClipRect(dataRect.ToSKRect());
 
         if (HorizontalSpan)
@@ -101,6 +101,6 @@ public class StandardZoomRectangle : IZoomRectangle
         paint.IsStroke = true;
         canvas.DrawRect(rect, paint);
 
-        canvas.Restore();
+        rp.CanvasState.Restore();
     }
 }
