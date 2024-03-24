@@ -213,11 +213,6 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(int width = 400, int height = 300)
     {
-        if (RenderManager.IsRendering)
-        {
-            return;
-        }
-
         if (width < 1)
             throw new ArgumentException($"{nameof(width)} must be greater than 0");
 

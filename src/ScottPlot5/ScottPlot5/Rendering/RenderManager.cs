@@ -37,14 +37,7 @@ public class RenderManager(Plot plot)
     public EventHandler<RenderDetails> SizeChanged { get; set; } = delegate { };
 
     /// <summary>
-    /// This event is invoked during a render where the axis limits (in coordinate units) changed from the previous render.
-    /// This event occurs before render actions are performed
-    /// </summary>
-    public EventHandler<AxesChangingArgs> AxisLimitsChanging { get; set; } = delegate { };
-
-    /// <summary>
-    /// This event is invoked during a render where the axis limits (in coordinate units) changed from the previous render
-    /// This event occurs after render actions are performed.
+    /// This event a render where the axis limits (in coordinate units) changed from the previous render
     /// </summary>
     public EventHandler<RenderDetails> AxisLimitsChanged { get; set; } = delegate { };
 
@@ -94,7 +87,7 @@ public class RenderManager(Plot plot)
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
-        if (EnableRendering == false || IsRendering)
+        if (EnableRendering == false)
             return;
 
         IsRendering = true;
@@ -103,15 +96,6 @@ public class RenderManager(Plot plot)
         List<(string, TimeSpan)> actionTimes = new();
 
         RenderPack rp = new(Plot, rect, canvas);
-
-        if (EnableEvents)
-        {
-            if (LastRender.AxisLimits != Plot.Axes.GetLimits())
-            {
-                AxesChangingArgs axesChangingArgs = new AxesChangingArgs(LastRender.AxisLimits, Plot.Axes.GetLimits());
-                AxisLimitsChanging.Invoke(Plot, axesChangingArgs);
-            }
-        }
 
         Stopwatch sw = new();
         foreach (IRenderAction action in RenderActions)
