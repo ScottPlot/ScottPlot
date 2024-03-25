@@ -77,7 +77,7 @@ public class Bar : ICategory
     {
         public override string Name => "Bar with Value Labels (horizontal)";
         public override string Description => "Set the `Label` property of bars " +
-            "to have text displayed above each bar.";
+            "to have text displayed beside (left or right) of each bar.";
 
         [Test]
         public override void Execute()
