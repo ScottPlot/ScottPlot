@@ -94,7 +94,7 @@ public class Bar : ICategory
             // customize label style
             barPlot.ValueLabelStyle.Bold = true;
             barPlot.ValueLabelStyle.FontSize = 18;
-            barPlot.Horizontal= true;
+            barPlot.Horizontal = true;
 
             myPlot.Axes.Margins(bottom: 0, top: .2);
         }

@@ -109,14 +109,16 @@ public class Bar
         {
             Pixel labelPixel = new(rect.HorizontalCenter, rect.Top - LabelOffset);
             label.Render(rp.Canvas, labelPixel);
-        } else        
+        }
+        else
         {
             if (Value < 0)
             {
                 Pixel labelPixel = new(rect.LeftCenter.X - (LabelOffset + label.Measure().Width), rect.LeftCenter.Y);
                 label.Render(rp.Canvas, labelPixel);
             }
-            else {
+            else
+            {
                 Pixel labelPixel = new(rect.RightCenter.X + (LabelOffset + label.Measure().Width), rect.RightCenter.Y);
                 label.Render(rp.Canvas, labelPixel);
             }
