@@ -72,6 +72,35 @@ public class Bar : ICategory
         }
     }
 
+
+    public class BarValuesHorizontal : RecipeBase
+    {
+        public override string Name => "Bar with Value Labels (horizontal)";
+        public override string Description => "Set the `Label` property of bars " +
+            "to have text displayed above each bar.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] values = { -5, 10, 7, 13 };
+            var barPlot = myPlot.Add.Bars(values);
+
+            // define the content of labels
+            foreach (var bar in barPlot.Bars)
+            {
+                bar.Label = bar.Value.ToString();
+            }
+
+            // customize label style
+            barPlot.ValueLabelStyle.Bold = true;
+            barPlot.ValueLabelStyle.FontSize = 18;
+            barPlot.Horizontal= true;
+
+            myPlot.Axes.Margins(bottom: 0, top: .2);
+        }
+    }
+
+
     public class BarPosition : RecipeBase
     {
         public override string Name => "Bar Positioning";
