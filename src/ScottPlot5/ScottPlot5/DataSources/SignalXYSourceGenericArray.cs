@@ -229,7 +229,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         for (int i = 0; i < Xs.Length; i++)
         {
-            double dX = (NumericConversion.GenericToDouble(Xs,i) + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
+            double dX = (NumericConversion.GenericToDouble(Xs, i) + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
             double dY = (NumericConversion.GenericToDouble(Ys, i) + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
 
