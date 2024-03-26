@@ -4,6 +4,7 @@ namespace ScottPlot.Plottables;
 public class Rectangle : IPlottable
 {
     public bool IsVisible { get; set; } = true;
+    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, FillStyle, LineStyle);
     public LineStyle LineStyle { get; set; } = new() { Color = Colors.Black, Width = 1 };

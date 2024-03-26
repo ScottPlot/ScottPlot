@@ -12,6 +12,7 @@ public class Marker : IPlottable
 
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
+    public object Tag { get; set; } = new();
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public float Size { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public float LineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }

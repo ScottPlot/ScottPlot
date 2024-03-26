@@ -5,6 +5,7 @@ public class SignalXY : IPlottable
     public ISignalXYSource Data { get; set; }
 
     public bool IsVisible { get; set; } = true;
+    public object Tag { get; set; } = new();
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public IAxes Axes { get; set; } = new Axes();
@@ -20,6 +21,8 @@ public class SignalXY : IPlottable
     }
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
+
+    public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) => Data.GetNearest(location, renderInfo, maxDistance);
 
     public void Render(RenderPack rp)
     {

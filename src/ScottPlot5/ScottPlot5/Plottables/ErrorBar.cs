@@ -5,6 +5,7 @@
         // TODO: use an errorbar source instead of so many lists
 
         public bool IsVisible { get; set; } = true;
+        public object Tag { get; set; } = new();
         public IAxes Axes { get; set; } = new Axes();
 
         public IReadOnlyList<double> Xs { get; set; }
