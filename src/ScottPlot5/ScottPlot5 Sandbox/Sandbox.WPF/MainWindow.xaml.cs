@@ -36,7 +36,8 @@ public partial class MainWindow : Window
             if (value)
             {
                 WpfPlot1.Plot.Axes.Rules.Add(lockedHorizontalRule);
-            } else
+            }
+            else
             {
                 WpfPlot1.Plot.Axes.Rules.Remove(lockedHorizontalRule);
             }
@@ -365,10 +366,10 @@ public partial class MainWindow : Window
         }
         set
         {
-            var oldLimits = WpfPlot1.Plot.Axes.GetLimits(WpfPlot1.Plot.Axes.Bottom,WpfPlot1.Plot.Axes.Left);
+            var oldLimits = WpfPlot1.Plot.Axes.GetLimits(WpfPlot1.Plot.Axes.Bottom, WpfPlot1.Plot.Axes.Left);
             if (_isInvertYLeftChecked != value)
             {
-                WpfPlot1.Plot.Axes.SetLimitsY(bottom: oldLimits.Top,top: oldLimits.Bottom, WpfPlot1.Plot.Axes.Left);
+                WpfPlot1.Plot.Axes.SetLimitsY(bottom: oldLimits.Top, top: oldLimits.Bottom, WpfPlot1.Plot.Axes.Left);
             }
             _isInvertYLeftChecked = value;
             WpfPlot1.Refresh();
@@ -413,10 +414,10 @@ public partial class MainWindow : Window
         snapYRuleLeft = new(yAxis: WpfPlot1.Plot.Axes.Left);
         snapYRuleRight = new(yAxis: WpfPlot1.Plot.Axes.Right);
 
-        WpfPlot1.Plot.Axes.SetLimits(left:-1,right:1,top:-1,bottom:1);
+        WpfPlot1.Plot.Axes.SetLimits(left: -1, right: 1, top: -1, bottom: 1);
 
         var sig1 = WpfPlot1.Plot.Add.Signal(Generate.Sin(51));
-        var sig2 = WpfPlot1.Plot.Add.Signal(Generate.Cos(51).Select(x => x *0.5).ToArray());
+        var sig2 = WpfPlot1.Plot.Add.Signal(Generate.Cos(51).Select(x => x * 0.5).ToArray());
         // tell each signal plot to use a different axis
         sig1.Axes.YAxis = WpfPlot1.Plot.Axes.Left;
         sig2.Axes.YAxis = WpfPlot1.Plot.Axes.Right;

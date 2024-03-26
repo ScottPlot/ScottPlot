@@ -22,7 +22,7 @@ public class SnapToTicksY : IAxisRule
         {
             if (rule is LockedVertical lockedVerticalRule)
             {
-                if(lockedVerticalRule.YAxis == YAxis)
+                if (lockedVerticalRule.YAxis == YAxis)
                 {
                     // the requested axis already has a vertical lock
                     return;
@@ -51,7 +51,7 @@ public class SnapToTicksY : IAxisRule
         var newLimits = YAxis.Range;
         var ticks = YAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
         //var ticks = rp.Plot.Axes.Bottom.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
-        
+
         if (ticks.Count < 2) return;
         var tickInterval = ticks[1].Position - ticks[0].Position;
 

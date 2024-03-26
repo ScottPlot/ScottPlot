@@ -50,9 +50,9 @@ public class SnapToTicksX : IAxisRule
 
 
         var newLimits = XAxis.Range;
-        var ticks =XAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
+        var ticks = XAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
         //var ticks = rp.Plot.Axes.Bottom.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
-        
+
         if (ticks.Count < 2) return;
         var tickInterval = ticks[1].Position - ticks[0].Position;
 
