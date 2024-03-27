@@ -104,7 +104,25 @@ public class Bar
         }
 
         float offset = Value >= ValueBase ? -LabelOffset : LabelOffset;
-        Pixel labelPixel = new(rect.HorizontalCenter, rect.Top + offset);
-        label.Render(rp.Canvas, labelPixel);
+
+        if (Orientation == Orientation.Vertical)
+        {
+            Pixel labelPixel = new(rect.HorizontalCenter, rect.Top - LabelOffset);
+            label.Render(rp.Canvas, labelPixel);
+        }
+        else
+        {
+            if (Value < 0)
+            {
+                Pixel labelPixel = new(rect.LeftCenter.X - (LabelOffset + label.Measure().Width), rect.LeftCenter.Y);
+                label.Render(rp.Canvas, labelPixel);
+            }
+            else
+            {
+                Pixel labelPixel = new(rect.RightCenter.X + (LabelOffset + label.Measure().Width), rect.RightCenter.Y);
+                label.Render(rp.Canvas, labelPixel);
+            }
+        }
+
     }
 }
