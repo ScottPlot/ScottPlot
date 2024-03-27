@@ -138,6 +138,7 @@ public class Legend(Plot plot)
     public LegendItem[] GetItems()
     {
         LegendItem[] items = Plot.PlottableList
+            .Where(item => item.IsVisible)
             .SelectMany(x => x.LegendItems)
             .Concat(ManualItems)
             .ToArray();
