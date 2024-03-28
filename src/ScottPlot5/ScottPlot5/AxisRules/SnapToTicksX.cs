@@ -50,6 +50,7 @@ public class SnapToTicksX : IAxisRule
 
 
         var newLimits = XAxis.Range;
+        XAxis.RegenerateTicks(rp.FigureRect.Width);
         var ticks = XAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
         //var ticks = rp.Plot.Axes.Bottom.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
 

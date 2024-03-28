@@ -49,6 +49,7 @@ public class SnapToTicksY : IAxisRule
         }
 
         var newLimits = YAxis.Range;
+        YAxis.RegenerateTicks(rp.FigureRect.Height);
         var ticks = YAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
         //var ticks = rp.Plot.Axes.Bottom.TickGenerator.Ticks.Where(tick => tick.IsMajor).ToList();
 
