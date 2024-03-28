@@ -117,7 +117,6 @@ public class RadialGaugePlot : IPlottable
     public SkiaSharp.SKStrokeCap StartCap { get; set; } = SKStrokeCap.Round;
 
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
 

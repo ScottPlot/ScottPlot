@@ -4,7 +4,6 @@ public class FillY : IPlottable
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(

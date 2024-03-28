@@ -3,7 +3,6 @@
 public class Benchmark : IPlottable
 {
     public bool IsVisible { get; set; }
-    public object Tag { get; set; } = new();
 
     public IAxes Axes { get; set; } = new Axes();
 

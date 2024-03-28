@@ -3,7 +3,6 @@
 public abstract class AxisLine : IPlottable, IRenderLast
 {
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = new Axes();
 
     public readonly Label Label = new();

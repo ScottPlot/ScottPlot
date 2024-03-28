@@ -7,7 +7,6 @@ namespace ScottPlot.Plottables;
 public class Signal : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = new Axes();
 
     public readonly ISignalSource Data;

@@ -3,7 +3,6 @@
 public abstract class AxisSpan : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = new Axes();
 
 

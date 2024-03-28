@@ -6,7 +6,6 @@ namespace ScottPlot.Plottables;
 public class DataStreamer : IPlottable, IManagesAxisLimits
 {
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 

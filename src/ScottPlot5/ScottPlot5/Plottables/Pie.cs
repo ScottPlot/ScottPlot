@@ -5,7 +5,6 @@ public class Pie(IList<PieSlice> slices) : IPlottable
     public IList<PieSlice> Slices { get; set; } = slices;
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public double ExplodeFraction { get; set; } = 0;
     public double SliceLabelDistance { get; set; } = 1.2;
     public bool ShowSliceLabels { get; set; } = false;

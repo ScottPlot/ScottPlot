@@ -7,7 +7,6 @@ namespace ScottPlot.Plottables;
 public class DataLogger : IPlottable, IManagesAxisLimits
 {
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
     public DataLoggerSource Data { get; set; } = new();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;

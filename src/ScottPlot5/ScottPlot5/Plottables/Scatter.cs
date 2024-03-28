@@ -4,7 +4,6 @@ public class Scatter(IScatterSource data) : IPlottable
 {
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public IAxes Axes { get; set; } = new Axes();
     public LineStyle LineStyle { get; set; } = new();
 

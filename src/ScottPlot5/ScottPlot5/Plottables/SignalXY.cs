@@ -5,7 +5,6 @@ public class SignalXY : IPlottable
     public ISignalXYSource Data { get; set; }
 
     public bool IsVisible { get; set; } = true;
-    public object Tag { get; set; } = new();
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public IAxes Axes { get; set; } = new Axes();
