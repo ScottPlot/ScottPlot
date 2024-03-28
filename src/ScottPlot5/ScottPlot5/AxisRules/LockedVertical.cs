@@ -2,7 +2,7 @@
 
 public class LockedVertical : IAxisRule
 {
-    readonly IYAxis YAxis;
+    public readonly IYAxis YAxis;
 
     public LockedVertical(IYAxis yAxis)
     {
@@ -15,9 +15,8 @@ public class LockedVertical : IAxisRule
         if (rp.Plot.LastRender.Count == 0)
             return;
 
-        // TODO: reference the correct axis from the previous render
-        double yMin = rp.Plot.LastRender.AxisLimits.Bottom;
-        double yTop = rp.Plot.LastRender.AxisLimits.Top;
+        double yMin = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Min;
+        double yTop = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Max;
         YAxis.Range.Set(yMin, yTop);
     }
 }

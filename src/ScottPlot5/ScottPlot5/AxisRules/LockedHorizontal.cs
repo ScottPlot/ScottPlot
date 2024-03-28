@@ -2,7 +2,7 @@
 
 public class LockedHorizontal : IAxisRule
 {
-    readonly IXAxis XAxis;
+    public readonly IXAxis XAxis;
 
     public LockedHorizontal(IXAxis xAxis)
     {
@@ -15,9 +15,8 @@ public class LockedHorizontal : IAxisRule
         if (rp.Plot.LastRender.Count == 0)
             return;
 
-        // TODO: reference the correct axis from the previous render
-        double xMin = rp.Plot.LastRender.AxisLimits.Left;
-        double xMax = rp.Plot.LastRender.AxisLimits.Right;
+        double xMin = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
+        double xMax = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
         XAxis.Range.Set(xMin, xMax);
     }
 }

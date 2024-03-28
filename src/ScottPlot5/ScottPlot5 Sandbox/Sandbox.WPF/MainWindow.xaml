@@ -8,6 +8,36 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="ScottPlot 5 - WPF Sandbox" 
-        Height="600" Width="800">
-    <ScottPlot:WpfPlot Name="WpfPlot1" />
+        Height="600" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto">
+            <TextBlock Text="Select an Axis Rule:" FontWeight="Bold" />
+            <CheckBox Content="LockHorizontal (Bottom)" Name="CheckBoxLockHorizontal" IsChecked="{Binding IsLockHorizontalChecked, Mode=TwoWay}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockVertical (Left)" Name="CheckBoxLockVerticalLeft" IsChecked="{Binding IsLockVerticalLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockVertical (Right)" Name="CheckBoxLockVerticalRight" IsChecked="{Binding IsLockVerticalRightChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockCenterX (Bottom)" Name="CheckBoxLockCenterX" IsChecked="{Binding IsLockCenterXChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockCenterY (Left)" Name="CheckBoxLockCenterLeft" IsChecked="{Binding IsLockCenterLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockCenterY (Right)" Name="CheckBoxLockCenterRight" IsChecked="{Binding IsLockCenterRightChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockLeft (Bottom)" Name="CheckBoxLockLeft" IsChecked="{Binding IsLockLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockRight (Bottom)" Name="CheckBoxLockRight" IsChecked="{Binding IsLockRightChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockTop (Left)" Name="CheckBoxLockTopLeft" IsChecked="{Binding IsLockTopLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockBottom (Left)" Name="CheckBoxLockBottomLeft" IsChecked="{Binding IsLockBottomLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockTop (Right)" Name="CheckBoxLockTopRight" IsChecked="{Binding IsLockTopRightChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="LockBottom (Right)" Name="CheckBoxLockBottomRight" IsChecked="{Binding IsLockBottomRightChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="SnapToTicksX (Bottom)" Name="CheckBoxSnapTicksX" IsChecked="{Binding IsSnapTicksXChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="SnapToTicksY (Left)" Name="CheckBoxSnapTicksYLeft" IsChecked="{Binding IsSnapTicksYLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="SnapToTicksY (Right)" Name="CheckBoxSnapTicksYRight" IsChecked="{Binding IsSnapTicksYRightChecked}" Margin="0 0 0 5"/>
+            <TextBlock Text="Change the Axis Directions:" FontWeight="Bold" />
+            <CheckBox Content="InvertY (Left)" Name="CheckBoxInvertYLeft" IsChecked="{Binding IsInvertYLeftChecked}" Margin="0 0 0 5"/>
+            <CheckBox Content="InvertY (Right)" Name="CheckBoxInvertYRight" IsChecked="{Binding IsInvertYRightChecked}" Margin="0 0 0 5"/>
+            <TextBlock Text="(Inverted X Axis doesn't work for Signal Plots)" FontWeight="Normal" />
+            <CheckBox Content="InvertX (Bottom)" Name="CheckBoxInvertX" IsChecked="{Binding IsInvertXChecked}" Margin="0 0 0 5" IsEnabled="False"/>
+        </StackPanel>
+        <ScottPlot:WpfPlot Grid.Column="1" Name="WpfPlot1" Padding="10 10 10 10"/>
+    </Grid>
 </Window>
