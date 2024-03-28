@@ -3,6 +3,7 @@
 public class OhlcPlot(IOHLCSource data) : IPlottable
 {
     public bool IsVisible { get; set; } = true;
+
     public IAxes Axes { get; set; } = new Axes();
 
     private readonly IOHLCSource Data = data;
