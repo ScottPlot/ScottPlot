@@ -62,24 +62,30 @@ public class SnapToTicksX : IAxisRule
 
         if (!rightIsLocked)
         {
-            if (newLimits.Max >= rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max)
-            {
-                newRight = Math.Ceiling(newLimits.Max / tickInterval) * tickInterval;
+            var oldRight = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
+            var proposedNewRight = Math.Ceiling(newLimits.Max / tickInterval) * tickInterval;
+
+            if (newLimits.Max >= oldRight || proposedNewRight < oldRight)
+            { // we'll snap outwards if we can 
+                newRight = proposedNewRight;
             }
             else
-            {
+            { // but if the snapped limit expands the range when a user requested to reduce the range we'll snap inwards
                 newRight = Math.Floor(newLimits.Max / tickInterval) * tickInterval;
             }
         }
 
         if (!leftIsLocked)
         {
-            if (newLimits.Min <= rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min)
-            {
-                newLeft = Math.Floor(newLimits.Min / tickInterval) * tickInterval;
+            var oldLeft = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
+            var proposedNewLeft = Math.Floor(newLimits.Min / tickInterval) * tickInterval;
+            
+            if (newLimits.Min <= oldLeft || proposedNewLeft > oldLeft)
+            { // we'll snap outwards if we can 
+                newLeft = proposedNewLeft;
             }
             else
-            {
+            { // but if the snapped limit expands the range when a user requested to reduce the range we'll snap inwards
                 newLeft = Math.Ceiling(newLimits.Min / tickInterval) * tickInterval;
             }
         }
