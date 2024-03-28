@@ -82,7 +82,6 @@ public class SnapToTicksX : IAxisRule
                 newLeft = Math.Ceiling(newLimits.Min / tickInterval) * tickInterval;
             }
         }
-
-        XAxis.Range.Set(newLeft, newRight);
+        if(newLeft!=newRight) XAxis.Range.Set(newLeft, newRight);
     }
 }

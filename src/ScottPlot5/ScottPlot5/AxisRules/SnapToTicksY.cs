@@ -82,6 +82,6 @@ public class SnapToTicksY : IAxisRule
             }
         }
 
-        YAxis.Range.Set(newBottom, newTop);
+        if (newTop != newBottom) YAxis.Range.Set(newBottom, newTop);
     }
 }
