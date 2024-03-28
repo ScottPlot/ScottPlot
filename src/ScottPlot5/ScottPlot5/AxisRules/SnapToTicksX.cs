@@ -79,7 +79,7 @@ public class SnapToTicksX : IAxisRule
         {
             var oldLeft = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
             var proposedNewLeft = Math.Floor(newLimits.Min / tickInterval) * tickInterval;
-            
+
             if (newLimits.Min <= oldLeft || proposedNewLeft > oldLeft)
             { // we'll snap outwards if we can 
                 newLeft = proposedNewLeft;
@@ -89,6 +89,6 @@ public class SnapToTicksX : IAxisRule
                 newLeft = Math.Ceiling(newLimits.Min / tickInterval) * tickInterval;
             }
         }
-        if(newLeft!=newRight) XAxis.Range.Set(newLeft, newRight);
+        if (newLeft != newRight) XAxis.Range.Set(newLeft, newRight);
     }
 }
