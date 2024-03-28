@@ -217,4 +217,33 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         return (SearchedPosition: index, LimitedIndex: index > indexRange.Max ? indexRange.Max : index);
     }
+
+    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        double maxDistanceSquared = maxDistance * maxDistance;
+        double closestDistanceSquared = double.PositiveInfinity;
+
+        int closestIndex = 0;
+        double closestX = double.PositiveInfinity;
+        double closestY = double.PositiveInfinity;
+
+        for (int i = 0; i < Xs.Length; i++)
+        {
+            double dX = (NumericConversion.GenericToDouble(Xs, i) + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
+            double dY = (NumericConversion.GenericToDouble(Ys, i) + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
+            double distanceSquared = dX * dX + dY * dY;
+
+            if (distanceSquared <= closestDistanceSquared)
+            {
+                closestDistanceSquared = distanceSquared;
+                closestX = NumericConversion.GenericToDouble(Xs, i) + XOffset;
+                closestY = NumericConversion.GenericToDouble(Ys, i) + YOffset;
+                closestIndex = i;
+            }
+        }
+
+        return closestDistanceSquared <= maxDistanceSquared
+            ? new DataPoint(closestX, closestY, closestIndex)
+            : DataPoint.None;
+    }
 }
