@@ -35,6 +35,8 @@ public class Plot : IDisposable
 
     public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
 
+    public object Sync { get; } = new();
+
     public Plot()
     {
         Axes = new(this);
@@ -218,7 +220,7 @@ public class Plot : IDisposable
     {
         // TODO: obsolete this
         PixelRect rect = new(0, width, height, 0);
-        RenderManager.Render(canvas, rect);
+        Render(canvas, rect);
     }
 
     /// <summary>
@@ -226,7 +228,10 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, PixelRect rect)
     {
-        RenderManager.Render(canvas, rect);
+        lock (Sync)
+        {
+            RenderManager.Render(canvas, rect);
+        }
     }
 
     public Image GetImage(int width, int height)
