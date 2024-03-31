@@ -3,8 +3,14 @@ using ScottPlot.Plottables;
 
 namespace WinForms_Demo.Demos;
 
-public partial class SignalXYDrag : Form
+public partial class SignalXYDrag : Form, IDemoWindow
 {
+    public string Title => "Mouse Interactive SignalXY Plots";
+
+    public string Description => "Demonstrates how to create SignalXY plots " +
+        "which can be dragged with the mouse, and also how to display informatoin " +
+        "about which point is nearest the cursor.";
+
     SignalXY? PlottableBeingDragged = null;
     DataPoint StartingDragPosition = DataPoint.None;
     double StartingDragOffset = 0;
