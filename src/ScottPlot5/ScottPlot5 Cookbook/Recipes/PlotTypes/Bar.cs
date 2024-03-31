@@ -85,7 +85,7 @@ public class Bar : ICategory
             double[] values = { -5, 10, 7, 13 };
             var barPlot = myPlot.Add.Bars(values);
 
-            // define the content of labels
+            // set the label for each bar
             foreach (var bar in barPlot.Bars)
             {
                 bar.Label = bar.Value.ToString();
@@ -96,7 +96,8 @@ public class Bar : ICategory
             barPlot.ValueLabelStyle.FontSize = 18;
             barPlot.Horizontal = true;
 
-            myPlot.Axes.Margins(bottom: 0, top: .2);
+            // add extra margin to account for label
+            myPlot.Axes.Margins(left: .2, right: .2);
         }
     }
 
