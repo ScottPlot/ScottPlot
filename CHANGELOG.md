@@ -1,5 +1,5 @@
 ## ScottPlot 5.0.24
-_Not yet on NuGet..._
+* Ticks: Modified `NumericFixedInterval` to add support for inverted axes (#3567) _@Alexander-png_
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
