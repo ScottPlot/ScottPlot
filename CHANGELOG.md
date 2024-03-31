@@ -3,6 +3,7 @@
 * Bar plot: Improved support for labels on horizontally oriented bar plots (#3546, #3520) @aespitia @yui1227
 * Axis: Added new axis rules for edge locking, center locking, and tick snapping (#3547) @BrianAtZetica
 * SignalXY: Added `GetNearest()` for locating the data point nearest the cursor (#3550) @endreew
+* Demo: Added demonstration for draggable `SignalXY` plots which respond to the cursor (#3550) @endreew
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
