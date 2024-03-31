@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.24
 * Ticks: Modified `NumericFixedInterval` to add support for inverted axes (#3567) _@Alexander-png_
+* Bar plot: Improved support for labels on horizontally oriented bar plots (#3546) _@aespitia_
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
