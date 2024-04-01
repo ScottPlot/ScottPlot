@@ -173,7 +173,7 @@ public class Plot : IDisposable
     public IAxis? GetAxis(Pixel pixel)
     {
         IPanel? panel = GetPanel(pixel, axesOnly: true);
-        return panel is null ? null : (IAxis)panel;
+        return panel is IAxis axis ? axis : null;
     }
 
     /// <summary>
@@ -187,8 +187,8 @@ public class Plot : IDisposable
 
         // Reverse here so the "highest" axis is returned in the case some overlap.
         var panels = axesOnly
-            ? Axes.GetPanels().Reverse()
-            : Axes.GetPanels().Reverse().OfType<IAxis>();
+            ? Axes.GetPanels().Reverse().OfType<IAxis>()
+            : Axes.GetPanels().Reverse();
 
         foreach (IPanel panel in panels)
         {
