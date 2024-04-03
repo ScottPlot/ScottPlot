@@ -44,4 +44,42 @@ public readonly record struct CoordinateRange(double Min, double Max)
 
         return false;
     }
+
+    /// <summary>
+    /// Return the range of values spanned by the given collection
+    /// </summary>
+    public static CoordinateRange MinMax(IEnumerable<double> values)
+    {
+        if (values.Any())
+            return NotSet;
+
+        double min = double.MaxValue;
+        double max = double.MinValue;
+
+        foreach (double value in values)
+        {
+            min = Math.Min(min, value);
+            max = Math.Max(max, value);
+        }
+
+        return new CoordinateRange(min, max);
+    }
+
+    /// <summary>
+    /// Return the range of values spanned by the given collection (ignoring NaN)
+    /// </summary>
+    public static CoordinateRange MinMaxNan(IEnumerable<double> values)
+    {
+        double min = double.NaN;
+        double max = double.NaN;
+
+        foreach (double value in values)
+        {
+            if (double.IsNaN(value)) continue;
+            min = double.IsNaN(min) ? value : Math.Min(min, value);
+            max = double.IsNaN(max) ? value : Math.Max(max, value);
+        }
+
+        return new CoordinateRange(min, max);
+    }
 }
