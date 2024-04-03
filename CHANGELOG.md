@@ -1,5 +1,9 @@
 ## ScottPlot 5.0.24
-_Not yet on NuGet..._
+* Ticks: Modified `NumericFixedInterval` to add support for inverted axes (#3567) @Alexander-png
+* Bar plot: Improved support for labels on horizontally oriented bar plots (#3546, #3520) @aespitia @yui1227
+* Axis: Added new axis rules for edge locking, center locking, and tick snapping (#3547) @BrianAtZetica
+* SignalXY: Added `GetNearest()` for locating the data point nearest the cursor (#3550) @endreew
+* Demo: Added demonstration for draggable `SignalXY` plots which respond to the cursor (#3550) @endreew
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
@@ -9,7 +13,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
 * Style: `Plot.Style.ColorAxes()` has moved to `Plot.Axes.Color()`
 * Style: `Plot.Style.AxisFrame()` has moved to `Plot.Axes.Frame()`
 * Style: `Plot.Style.SetBestFonts()` has moved to `Plot.Font.Automatic()`
-* Grid: Added `Plot.Grid` with axis-specific styling options as seen in the cookbook (#3291, #3293) @bjschwarz, @PaxITIS
+* Grid: Added `Plot.Grid` with axis-specific styling options as seen in the cookbook (#3291, #3293) @bjschwarz @PaxITIS
 * SignalXY: Fixed a bug where the final line segment was not drawn (#3495, #3423) @MareMare @mjazd
 * SignalXY: Improved support for inverted vertical axes (#3495) @MareMare
 * Controls: Ignore mouse wheel zooming if a zoom rectangle is being drawn (#3498) @BrianAtZetica
