@@ -9,8 +9,8 @@ public class Annotation : IPlottable
     public Label Label { get; set; } = new();
     public string Text { get => Label.Text; set => Label.Text = value; }
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
-    public float OffsetX { get; set; } = 5;
-    public float OffsetY { get; set; } = 5;
+    public float OffsetX { get; set; } = 10;
+    public float OffsetY { get; set; } = 10;
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
