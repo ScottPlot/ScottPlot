@@ -270,8 +270,11 @@ public class Label
             canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
         }
 
-        ApplyBorderPaint(paint);
-        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        if (BorderWidth > 0)
+        {
+            ApplyBorderPaint(paint);
+            canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        }
         canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
 
         canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
