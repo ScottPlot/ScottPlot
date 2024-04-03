@@ -1,8 +1,8 @@
-﻿using System;
-
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Control;
 
 // TODO: refactor individual actions into their own classes which inherit IControlAction
+
+// NOTE: every action should lock the plot so its actions do not affect concurrent renders
 
 public static class StandardActions
 {

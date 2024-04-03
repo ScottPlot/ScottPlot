@@ -35,6 +35,11 @@ public class Plot : IDisposable
 
     public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
 
+    /// <summary>
+    /// This object is locked by the Render() methods.
+    /// Logic that manipulates the plot (UI inputs or editing data)
+    /// can lock this object to prevent rendering artifacts.
+    /// </summary>
     public object Sync { get; } = new();
 
     public Plot()
