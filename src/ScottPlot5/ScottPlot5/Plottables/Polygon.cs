@@ -92,17 +92,17 @@ public class Polygon : IPlottable
 
         bool close = true; // TODO: make property
         var coordinates = close
-            ? Coordinates.Concat(new Coordinates[] { Coordinates.First() })
+            ? Coordinates.Concat(new[] { Coordinates.First() })
             : Coordinates;
-        IEnumerable<Pixel> pixels = coordinates.Select(Axes.GetPixel);
+        Pixel[] pixels = coordinates.Select(Axes.GetPixel).ToArray();
 
         // TODO: stop using skia primitives directly
-        IEnumerable<SKPoint> skPoints = pixels.Select(x => x.ToSKPoint());
+        SKPoint[] skPoints = pixels.Select(x => x.ToSKPoint()).ToArray();
         using SKPath path = new();
-        path.MoveTo(skPoints.First());
+        path.MoveTo(skPoints[0]);
         float xMax, xMin, yMax, yMin;
-        xMax = xMin = skPoints.First().X;
-        yMax = yMin = skPoints.First().Y;
+        xMax = xMin = skPoints[0].X;
+        yMax = yMin = skPoints[0].Y;
         foreach (SKPoint p in skPoints.Skip(1))
         {
             xMax = Math.Max(xMax, p.X);
@@ -113,14 +113,14 @@ public class Polygon : IPlottable
         }
 
         using var paint = new SKPaint();
-        if (FillStyle != null && FillStyle.HasValue)
+        if (FillStyle.HasValue)
         {
             FillStyle.ApplyToPaint(paint, new PixelRect(xMin, xMax, yMin, yMax));
             paint.Style = SKPaintStyle.Fill;
             rp.Canvas.DrawPath(path, paint);
         }
 
-        if (LineStyle != null && LineStyle.IsVisible && LineStyle.Width > 0)
+        if (LineStyle is { IsVisible: true, Width: > 0 })
         {
             paint.Style = SKPaintStyle.Stroke;
             LineStyle.ApplyToPaint(paint);
@@ -128,7 +128,7 @@ public class Polygon : IPlottable
             Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
         }
 
-        if (MarkerStyle != null && MarkerStyle.IsVisible)
+        if (MarkerStyle.IsVisible)
         {
             Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
         }
