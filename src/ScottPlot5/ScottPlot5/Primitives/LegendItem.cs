@@ -16,7 +16,14 @@ public class LegendItem
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
     public IEnumerable<LegendItem> Children { get; set; } = Array.Empty<LegendItem>();
     public bool HasSymbol => Line.Width > 0 || Marker.IsVisible || Fill.HasValue;
-    public bool IsVisible => !string.IsNullOrEmpty(Label);
+
+    private bool _IsVisible = true;
+    public bool IsVisible
+    {
+        get => _IsVisible && !string.IsNullOrEmpty(Label);
+        set => _IsVisible = value;
+    }
+
     internal FontStyle? CustomFontStyle { get; set; } = null;
 
     public static IEnumerable<LegendItem> None => Array.Empty<LegendItem>();

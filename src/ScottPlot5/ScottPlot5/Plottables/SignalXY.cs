@@ -21,6 +21,8 @@ public class SignalXY : IPlottable
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
 
+    public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) => Data.GetNearest(location, renderInfo, maxDistance);
+
     public void Render(RenderPack rp)
     {
         Pixel[] pixels = Data.GetPixelsToDraw(rp, Axes);
