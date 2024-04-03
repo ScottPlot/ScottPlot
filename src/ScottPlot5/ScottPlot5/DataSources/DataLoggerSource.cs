@@ -9,15 +9,11 @@ public class DataLoggerSource
     public readonly List<Coordinates> Coordinates = [];
     public double Period = 1;
 
-    double YMin = double.PositiveInfinity;
-    double YMax = double.NegativeInfinity;
+    double YMin = double.NaN;
+    double YMax = double.NaN;
 
     public int CountOnLastRender = -1;
     public int CountTotal => Coordinates.Count;
-
-    public DataLoggerSource()
-    {
-    }
 
     public void Add(double y)
     {
@@ -41,15 +37,22 @@ public class DataLoggerSource
         }
 
         Coordinates.Add(coordinates);
-        YMin = Math.Min(YMin, coordinates.Y);
-        YMax = Math.Max(YMax, coordinates.Y);
+
+        double y = coordinates.Y;
+
+        if (!double.IsNaN(y))
+        {
+            YMin = double.IsNaN(YMin) ? y : Math.Min(YMin, y);
+            YMax = double.IsNaN(YMax) ? y : Math.Max(YMax, y);
+        }
     }
 
     public void Clear()
     {
         Coordinates.Clear();
-        YMin = double.PositiveInfinity;
-        YMax = double.NegativeInfinity;
+
+        YMin = double.NaN;
+        YMax = double.NaN;
     }
 
     public AxisLimits GetAxisLimits()
