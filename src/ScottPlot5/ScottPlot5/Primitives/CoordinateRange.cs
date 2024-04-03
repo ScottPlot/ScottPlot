@@ -8,14 +8,16 @@ public readonly record struct CoordinateRange(double Min, double Max)
     public static CoordinateRange NotSet => new(double.PositiveInfinity, double.NegativeInfinity);
     public bool IsReal => NumericConversion.IsReal(Max) && NumericConversion.IsReal(Min);
 
+    // TODO: ranges could be inverted, so min/max should be renamed start/stop
+    public bool IsInverted => Min > Max;
+    public double TrueMin => Math.Min(Min, Max);
+    public double TrueMax => Math.Max(Min, Max);
+
     public bool Contains(double value)
     {
-        var trueMin = Math.Min(Min, Max);
-        var trueMax = Math.Max(Min, Max);
-
-        if (value < trueMin)
+        if (value < TrueMin)
             return false;
-        else if (value > trueMax)
+        else if (value > TrueMax)
             return false;
         else
             return true;
