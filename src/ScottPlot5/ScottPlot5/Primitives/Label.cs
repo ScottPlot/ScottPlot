@@ -207,29 +207,29 @@ public class Label
 
         float x = rectAlignment switch
         {
-            Alignment.UpperLeft => rect.Left + 4 + offsetX,
+            Alignment.UpperLeft => rect.Left + offsetX,
             Alignment.UpperCenter => rect.TopCenter.X - 0.5f * textWidth,
-            Alignment.UpperRight => rect.Right - textWidth - 4 - offsetX,
-            Alignment.MiddleLeft => rect.Left + 4 + offsetX,
+            Alignment.UpperRight => rect.Right - textWidth - offsetX,
+            Alignment.MiddleLeft => rect.Left + offsetX,
             Alignment.MiddleCenter => rect.BottomCenter.X - 0.5f * textWidth,
-            Alignment.MiddleRight => rect.Right - textWidth - 4 - offsetX,
-            Alignment.LowerLeft => rect.Left + 4 + offsetX,
+            Alignment.MiddleRight => rect.Right - textWidth - offsetX,
+            Alignment.LowerLeft => rect.Left + offsetX,
             Alignment.LowerCenter => rect.BottomCenter.X - 0.5f * textWidth,
-            Alignment.LowerRight => rect.Right - textWidth - 4 - offsetX,
+            Alignment.LowerRight => rect.Right - textWidth - offsetX,
             _ => throw new NotImplementedException()
         };
 
         float y = rectAlignment switch
         {
-            Alignment.UpperLeft => rect.Top + 0.5f * textHeight + offsetY,
-            Alignment.UpperCenter => rect.Top + 0.5f * textHeight + offsetY,
-            Alignment.UpperRight => rect.Top + 0.5f * textHeight + offsetY,
+            Alignment.UpperLeft => rect.Top + offsetY,
+            Alignment.UpperCenter => rect.Top + offsetY,
+            Alignment.UpperRight => rect.Top + offsetY,
             Alignment.MiddleLeft => rect.LeftCenter.Y - 0.5f * textHeight,
             Alignment.MiddleCenter => rect.LeftCenter.Y - 0.5f * textHeight,
             Alignment.MiddleRight => rect.LeftCenter.Y - 0.5f * textHeight,
-            Alignment.LowerLeft => rect.Bottom - textHeight - 4 - offsetY,
-            Alignment.LowerCenter => rect.Bottom - textHeight - 4 - offsetY,
-            Alignment.LowerRight => rect.Bottom - textHeight - 4 - offsetY,
+            Alignment.LowerLeft => rect.Bottom - textHeight - offsetY,
+            Alignment.LowerCenter => rect.Bottom - textHeight - offsetY,
+            Alignment.LowerRight => rect.Bottom - textHeight - offsetY,
             _ => throw new NotImplementedException()
         };
 
