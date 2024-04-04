@@ -1,0 +1,406 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.9.0.0",
+        "fileVersion": "4.9.0-3.24081.11 (98911739)",
+        "semanticVersion": "4.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "S3442",
+          "level": "warning",
+          "message": "Change the visibility of this constructor to 'protected'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/GLProgramBase.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 5,
+                  "endLine": 15,
+                  "endColumn": 11
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'attribName' to 'name' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/GLProgramBase.cs",
+                "region": {
+                  "startLine": 47,
+                  "startColumn": 41,
+                  "endLine": 47,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'attribName' to 'name' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/GLProgramBase.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 42,
+                  "endLine": 52,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1186",
+          "level": "warning",
+          "message": "Add a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/MarkerOpenSquareProgram.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 26,
+                  "endLine": 54,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'openFactor' to 'factor' to match the base class declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/MarkerOpenSquareProgram.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 46,
+                  "endLine": 59,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1186",
+          "level": "warning",
+          "message": "Add a nested comment explaining why this method is empty, throw a 'NotSupportedException' or complete the implementation.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/MarkerOpenCircleProgram.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 26,
+                  "endLine": 22,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'openFactor' to 'factor' to match the base class declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/GLPrograms/MarkerOpenCircleProgram.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 46,
+                  "endLine": 27,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.NullReferenceException' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGLCustom.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 19,
+                  "endLine": 45,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.NullReferenceException' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGLCustom.cs",
+                "region": {
+                  "startLine": 63,
+                  "startColumn": 23,
+                  "endLine": 63,
+                  "endColumn": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1905",
+          "level": "warning",
+          "message": "Remove this unnecessary cast to 'float'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGL.cs",
+                "region": {
+                  "startLine": 155,
+                  "startColumn": 45,
+                  "endLine": 155,
+                  "endColumn": 50
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.NullReferenceException' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGL.cs",
+                "region": {
+                  "startLine": 115,
+                  "startColumn": 19,
+                  "endLine": 115,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2583",
+          "level": "warning",
+          "message": "Change this condition so that it does not always evaluate to 'False'. Some code paths are unreachable.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGL.cs",
+                "region": {
+                  "startLine": 146,
+                  "startColumn": 13,
+                  "endLine": 146,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGL.cs",
+                "region": {
+                  "startLine": 147,
+                  "startColumn": 19,
+                  "endLine": 147,
+                  "endColumn": 68
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S112",
+          "level": "warning",
+          "message": "'System.NullReferenceException' should not be thrown by user code.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.OpenGL/Plottables/ScatterGL.cs",
+                "region": {
+                  "startLine": 147,
+                  "startColumn": 19,
+                  "endLine": 147,
+                  "endColumn": 68
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "S112": {
+          "id": "S112",
+          "shortDescription": "General or reserved exceptions should never be thrown",
+          "fullDescription": "This rule raises an issue when a general or reserved exception is thrown.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-112",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1186": {
+          "id": "S1186",
+          "shortDescription": "Methods should not be empty",
+          "fullDescription": "An empty method is generally considered bad practice and can lead to confusion, readability, and maintenance issues. Empty methods bring no functionality and are misleading to others as they might think the method implementation fulfills a specific and identified requirement.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1186",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1905": {
+          "id": "S1905",
+          "shortDescription": "Redundant casts should not be used",
+          "fullDescription": "Casting expressions are utilized to convert one data type to another, such as transforming an integer into a string. This is especially crucial in strongly typed languages like C, C++, C#, Java, Python, and others.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1905",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2583": {
+          "id": "S2583",
+          "shortDescription": "Conditionally executed code should be reachable",
+          "fullDescription": "Conditional expressions which are always true or false can lead to unreachable code.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2583",
+          "properties": {
+            "category": "Major Bug",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3442": {
+          "id": "S3442",
+          "shortDescription": "\"abstract\" classes should not have \"public\" constructors",
+          "fullDescription": "The abstract modifier in a class declaration is used to indicate that a class is intended only to be a base class of other classes, not instantiated on its own.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3442",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S927": {
+          "id": "S927",
+          "shortDescription": "Parameter names should match base declaration and other partial definitions",
+          "fullDescription": "Parameters are part of the method signature and its identity.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-927",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

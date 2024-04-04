@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>ScottPlot</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>9ebde18f-f155-4c30-aedc-624d4aa13e8c</ProjectGuid>
+  <FullPath>C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5\ScottPlot.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResults>
+    <AnalysisResult Id="FilesToAnalyze" Location="C:\Users\there\source\ScottPlot\src\ScottPlot5\.sonarqube\conf\0\FilesToAnalyze.txt" />
+  </AnalysisResults>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">C:\Users\there\source\ScottPlot\src\ScottPlot5\.sonarqube\out\0\Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">C:\Users\there\source\ScottPlot\src\ScottPlot5\.sonarqube\out\0</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+  <TargetFramework>net462</TargetFramework>
+</ProjectInfo>

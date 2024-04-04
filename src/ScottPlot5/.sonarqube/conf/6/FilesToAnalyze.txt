@@ -1,0 +1,9 @@
+﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlot.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlotBase.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlotExtensions.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlotGL.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlotMenu.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlotViewer.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\FormsPlotBase.resx
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinForms\nuget-readme.md
+C:\Users\there\source\ScottPlot\dev\icon\v5\scottplot-icon-rounded-border-128.png

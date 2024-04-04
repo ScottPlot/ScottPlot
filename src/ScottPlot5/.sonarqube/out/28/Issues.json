@@ -1,0 +1,641 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.9.0.0",
+        "fileVersion": "4.9.0-3.24081.11 (98911739)",
+        "semanticVersion": "4.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "CS0618",
+          "level": "warning",
+          "message": "'SKPaintGLSurfaceEventArgs.SKPaintGLSurfaceEventArgs(SKSurface, GRBackendRenderTarget, GRSurfaceOrigin, SKColorType, GRGlFramebufferInfo)' is obsolete: 'Use SKPaintGLSurfaceEventArgs(SKSurface, GRBackendRenderTarget, GRSurfaceOrigin, SKColorType) instead.'",
+          "suppressionStates": [
+            "suppressedInSource"
+          ],
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 222,
+                  "startColumn": 32,
+                  "endLine": 222,
+                  "endColumn": 118
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 2
+          }
+        },
+        {
+          "ruleId": "S2933",
+          "level": "warning",
+          "message": "Make 'toDestroy' 'readonly'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 64,
+                  "startColumn": 48,
+                  "endLine": 64,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'SKGLElement' to match pascal case naming rules, consider using 'SkglElement'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 18,
+                  "endLine": 19,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3881",
+          "level": "warning",
+          "message": "Fix this implementation of 'IDisposable' to conform to the dispose pattern.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 18,
+                  "endLine": 19,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 260,
+                  "startColumn": 21,
+                  "endLine": 260,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "'SKGLElement.Dispose()' should also call 'GC.SuppressFinalize(this)'."
+            }
+          }
+        },
+        {
+          "ruleId": "S101",
+          "level": "warning",
+          "message": "Rename class 'SKGLElementWindowListener' to match pascal case naming rules, consider using 'SkglElementWindowListener'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 23,
+                  "endLine": 62,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3881",
+          "level": "warning",
+          "message": "Fix this implementation of 'IDisposable' to conform to the dispose pattern.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 23,
+                  "endLine": 62,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 113,
+                  "startColumn": 25,
+                  "endLine": 113,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "'SKGLElementWindowListener.Dispose()' should also call 'GC.SuppressFinalize(this)'."
+            }
+          }
+        },
+        {
+          "ruleId": "S1117",
+          "level": "warning",
+          "message": "Rename 'listener' which hides the field with the same name.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 43,
+                  "endLine": 54,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1066",
+          "level": "warning",
+          "message": "Merge this if statement with the enclosing one.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 21,
+                  "endLine": 82,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 80,
+                  "startColumn": 17,
+                  "endLine": 80,
+                  "endColumn": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'position' to 'pixel' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/WpfPlotMenu.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 39,
+                  "endLine": 62,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2589",
+          "level": "warning",
+          "message": "Change this condition so that it does not always evaluate to 'True'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 25,
+                  "endLine": 82,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1066",
+          "level": "warning",
+          "message": "Merge this if statement with the enclosing one.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 103,
+                  "startColumn": 21,
+                  "endLine": 103,
+                  "endColumn": 23
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 101,
+                  "startColumn": 17,
+                  "endLine": 101,
+                  "endColumn": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2589",
+          "level": "warning",
+          "message": "Change this condition so that it does not always evaluate to 'True'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 103,
+                  "startColumn": 25,
+                  "endLine": 103,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1905",
+          "level": "warning",
+          "message": "Remove this unnecessary cast to 'float'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/WpfPlot.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 32,
+                  "endLine": 33,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1905",
+          "level": "warning",
+          "message": "Remove this unnecessary cast to 'float'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/WpfPlot.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 33,
+                  "endLine": 34,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change SKGLElement.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/SKGLElement.cs",
+                "region": {
+                  "startLine": 260,
+                  "startColumn": 21,
+                  "endLine": 260,
+                  "endColumn": 28
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3442",
+          "level": "warning",
+          "message": "Change the visibility of this constructor to 'protected'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/WpfPlotBase.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 9,
+                  "endLine": 29,
+                  "endColumn": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1905",
+          "level": "warning",
+          "message": "Remove this unnecessary cast to 'float'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/WpfPlotGL.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 28,
+                  "endLine": 34,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1905",
+          "level": "warning",
+          "message": "Remove this unnecessary cast to 'float'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Controls/ScottPlot.WPF/WpfPlotGL.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 29,
+                  "endLine": 35,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1816": {
+          "id": "CA1816",
+          "shortDescription": "Dispose methods should call SuppressFinalize",
+          "fullDescription": "A method that is an implementation of Dispose does not call GC.SuppressFinalize; or a method that is not an implementation of Dispose calls GC.SuppressFinalize; or a method calls GC.SuppressFinalize and passes something other than this (Me in Visual Basic).",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1816",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CS0618": {
+          "id": "CS0618",
+          "shortDescription": "Type or member is obsolete",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0618)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "S101": {
+          "id": "S101",
+          "shortDescription": "Types should be named in PascalCase",
+          "fullDescription": "Shared naming conventions allow teams to collaborate efficiently.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-101",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1066": {
+          "id": "S1066",
+          "shortDescription": "Mergeable \"if\" statements should be combined",
+          "fullDescription": "Nested code - blocks of code inside blocks of code - is eventually necessary, but increases complexity. This is why keeping the code as flat as possible, by avoiding unnecessary nesting, is considered a good practice.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1066",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1117": {
+          "id": "S1117",
+          "shortDescription": "Local variables should not shadow class fields or properties",
+          "fullDescription": "Shadowing occurs when a local variable has the same name as a variable, field, or property in an outer scope.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1117",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S1905": {
+          "id": "S1905",
+          "shortDescription": "Redundant casts should not be used",
+          "fullDescription": "Casting expressions are utilized to convert one data type to another, such as transforming an integer into a string. This is especially crucial in strongly typed languages like C, C++, C#, Java, Python, and others.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1905",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2589": {
+          "id": "S2589",
+          "shortDescription": "Boolean expressions should not be gratuitous",
+          "fullDescription": "Gratuitous boolean expressions are conditions that do not change the evaluation of a program. This issue can indicate logical errors and affect the correctness of an application, as well as its maintainability.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2589",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2933": {
+          "id": "S2933",
+          "shortDescription": "Fields that are only assigned in the constructor should be \"readonly\"",
+          "fullDescription": "readonly fields can only be assigned in a class constructor. If a class has a field that’s not marked readonly but is only set in the constructor, it could cause confusion about the field’s intended use. To avoid confusion, such fields should be marked readonly to make their intended use explicit, and to prevent future maintainers from inadvertently changing their use.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2933",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3442": {
+          "id": "S3442",
+          "shortDescription": "\"abstract\" classes should not have \"public\" constructors",
+          "fullDescription": "The abstract modifier in a class declaration is used to indicate that a class is intended only to be a base class of other classes, not instantiated on its own.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3442",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3881": {
+          "id": "S3881",
+          "shortDescription": "\"IDisposable\" should be implemented correctly",
+          "fullDescription": "The IDisposable interface is a mechanism to release unmanaged resources, if not implemented correctly this could result in resource leaks or more severe bugs.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3881",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S927": {
+          "id": "S927",
+          "shortDescription": "Parameter names should match base declaration and other partial definitions",
+          "fullDescription": "Parameters are part of the method signature and its identity.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-927",
+          "properties": {
+            "category": "Critical Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

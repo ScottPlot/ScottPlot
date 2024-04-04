@@ -31,7 +31,10 @@ public class FormsPlot : FormsPlotBase
 
         Controls.Add(SKElement);
 
-        HandleDestroyed += (s, e) => SKElement.Dispose();
+        HandleDestroyed += (s, e) => {
+            SKElement.Dispose();
+            Plot.Dispose();
+        };
     }
 
     private void SKElement_PaintSurface(object? sender, SKPaintSurfaceEventArgs e)

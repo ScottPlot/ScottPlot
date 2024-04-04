@@ -1,0 +1,3627 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.9.0.0",
+        "fileVersion": "4.9.0-3.24081.11 (98911739)",
+        "semanticVersion": "4.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "CA2211",
+          "level": "note",
+          "message": "Non-constant fields should not be visible",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/RecipeBase.cs",
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 23,
+                  "endLine": 13,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "NUnit1028",
+          "level": "note",
+          "message": "Only test methods should be public",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/RecipeBase.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 17,
+                  "endLine": 27,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA2211",
+          "level": "note",
+          "message": "Non-constant fields should not be visible",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/RecipeBase.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 23,
+                  "endLine": 15,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Member 'AddVersionInformation' does not access instance data and can be marked as static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Website/PageBase.cs",
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 17,
+                  "endLine": 7,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1822",
+          "level": "note",
+          "message": "Member 'SaveSearchPage' does not access instance data and can be marked as static",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Website/PageBase.cs",
+                "region": {
+                  "startLine": 67,
+                  "startColumn": 17,
+                  "endLine": 67,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/MultiAxis.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 30,
+                  "endLine": 43,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Text.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 30,
+                  "endLine": 81,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Statistics/Regression.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/MultiAxis.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 30,
+                  "endLine": 17,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Text.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 30,
+                  "endLine": 52,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Text.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 30,
+                  "endLine": 29,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Text.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/DateTimeAxes.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 30,
+                  "endLine": 70,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 168,
+                  "startColumn": 30,
+                  "endLine": 168,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 146,
+                  "startColumn": 30,
+                  "endLine": 146,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 30,
+                  "endLine": 128,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Website/Generate.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/DateTimeAxes.cs",
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 30,
+                  "endLine": 36,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 107,
+                  "startColumn": 30,
+                  "endLine": 107,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/DateTimeAxes.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 30,
+                  "endLine": 71,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 45,
+                  "startColumn": 30,
+                  "endLine": 45,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 283,
+                  "startColumn": 30,
+                  "endLine": 283,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 255,
+                  "startColumn": 30,
+                  "endLine": 255,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalXY.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 30,
+                  "endLine": 20,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 232,
+                  "startColumn": 30,
+                  "endLine": 232,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/SignalConst.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 30,
+                  "endLine": 20,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 208,
+                  "startColumn": 30,
+                  "endLine": 208,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 184,
+                  "startColumn": 30,
+                  "endLine": 184,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 159,
+                  "startColumn": 30,
+                  "endLine": 159,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 142,
+                  "startColumn": 30,
+                  "endLine": 142,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 166,
+                  "startColumn": 30,
+                  "endLine": 166,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 30,
+                  "endLine": 106,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 125,
+                  "startColumn": 30,
+                  "endLine": 125,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 78,
+                  "startColumn": 30,
+                  "endLine": 78,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 107,
+                  "startColumn": 30,
+                  "endLine": 107,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 55,
+                  "startColumn": 30,
+                  "endLine": 55,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 30,
+                  "endLine": 74,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 30,
+                  "endLine": 59,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 30,
+                  "endLine": 33,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Signal.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 30,
+                  "endLine": 17,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingTicks.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 30,
+                  "endLine": 20,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingGrids.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 30,
+                  "endLine": 70,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Shapes.cs",
+                "region": {
+                  "startLine": 113,
+                  "startColumn": 30,
+                  "endLine": 113,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingGrids.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 30,
+                  "endLine": 50,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Shapes.cs",
+                "region": {
+                  "startLine": 92,
+                  "startColumn": 30,
+                  "endLine": 92,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingGrids.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 30,
+                  "endLine": 32,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Shapes.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 30,
+                  "endLine": 71,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/CustomizingGrids.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/AdvancedAxis.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 30,
+                  "endLine": 50,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Shapes.cs",
+                "region": {
+                  "startLine": 44,
+                  "startColumn": 30,
+                  "endLine": 44,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/AdvancedAxis.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 30,
+                  "endLine": 33,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Axis/AdvancedAxis.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Shapes.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 30,
+                  "endLine": 17,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 222,
+                  "startColumn": 30,
+                  "endLine": 222,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 204,
+                  "startColumn": 30,
+                  "endLine": 204,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 207,
+                  "startColumn": 30,
+                  "endLine": 207,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 188,
+                  "startColumn": 30,
+                  "endLine": 188,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 192,
+                  "startColumn": 30,
+                  "endLine": 192,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 153,
+                  "startColumn": 30,
+                  "endLine": 153,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 156,
+                  "startColumn": 30,
+                  "endLine": 156,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 125,
+                  "startColumn": 30,
+                  "endLine": 125,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 30,
+                  "endLine": 106,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 125,
+                  "startColumn": 30,
+                  "endLine": 125,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 88,
+                  "startColumn": 30,
+                  "endLine": 88,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 104,
+                  "startColumn": 30,
+                  "endLine": 104,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 30,
+                  "endLine": 72,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 30,
+                  "endLine": 84,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 30,
+                  "endLine": 54,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 30,
+                  "endLine": 32,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Scatter.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 30,
+                  "endLine": 43,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 287,
+                  "startColumn": 30,
+                  "endLine": 287,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Styling.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 30,
+                  "endLine": 17,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 269,
+                  "startColumn": 30,
+                  "endLine": 269,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 250,
+                  "startColumn": 30,
+                  "endLine": 250,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/AxisAndTicks.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 30,
+                  "endLine": 70,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Legend.cs",
+                "region": {
+                  "startLine": 114,
+                  "startColumn": 30,
+                  "endLine": 114,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 233,
+                  "startColumn": 30,
+                  "endLine": 233,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/AxisAndTicks.cs",
+                "region": {
+                  "startLine": 51,
+                  "startColumn": 30,
+                  "endLine": 51,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 216,
+                  "startColumn": 30,
+                  "endLine": 216,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Legend.cs",
+                "region": {
+                  "startLine": 93,
+                  "startColumn": 30,
+                  "endLine": 93,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 199,
+                  "startColumn": 30,
+                  "endLine": 199,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/AxisAndTicks.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 30,
+                  "endLine": 30,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/AxisAndTicks.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 181,
+                  "startColumn": 30,
+                  "endLine": 181,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 163,
+                  "startColumn": 30,
+                  "endLine": 163,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 116,
+                  "startColumn": 30,
+                  "endLine": 116,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Legend.cs",
+                "region": {
+                  "startLine": 68,
+                  "startColumn": 30,
+                  "endLine": 68,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 145,
+                  "startColumn": 30,
+                  "endLine": 145,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 95,
+                  "startColumn": 30,
+                  "endLine": 95,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 30,
+                  "endLine": 128,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 111,
+                  "startColumn": 30,
+                  "endLine": 111,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 77,
+                  "startColumn": 30,
+                  "endLine": 77,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Legend.cs",
+                "region": {
+                  "startLine": 34,
+                  "startColumn": 30,
+                  "endLine": 34,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 63,
+                  "startColumn": 30,
+                  "endLine": 63,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Legend.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 92,
+                  "startColumn": 30,
+                  "endLine": 92,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 47,
+                  "startColumn": 30,
+                  "endLine": 47,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 30,
+                  "endLine": 74,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 30,
+                  "endLine": 30,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Miscellaneous/Internationalization.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 30,
+                  "endLine": 40,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 30,
+                  "endLine": 58,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Introduction/Quickstart.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 30,
+                  "endLine": 42,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Miscellaneous/Internationalization.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 28,
+                  "startColumn": 30,
+                  "endLine": 28,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/RadialGauge.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Miscellaneous/AdvancedStyling.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 30,
+                  "endLine": 70,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Annotation.cs",
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 30,
+                  "endLine": 56,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Pie.cs",
+                "region": {
+                  "startLine": 80,
+                  "startColumn": 30,
+                  "endLine": 80,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Annotation.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 30,
+                  "endLine": 33,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Miscellaneous/AdvancedStyling.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 30,
+                  "endLine": 38,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Annotation.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 30,
+                  "endLine": 18,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Pie.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 30,
+                  "endLine": 54,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/Miscellaneous/AdvancedStyling.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Pie.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 30,
+                  "endLine": 29,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Arrow.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Pie.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/AxisLines.cs",
+                "region": {
+                  "startLine": 63,
+                  "startColumn": 30,
+                  "endLine": 63,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/AxisLines.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/AxisLines.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 30,
+                  "endLine": 32,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Marker.cs",
+                "region": {
+                  "startLine": 78,
+                  "startColumn": 30,
+                  "endLine": 78,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Marker.cs",
+                "region": {
+                  "startLine": 57,
+                  "startColumn": 30,
+                  "endLine": 57,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/AxisSpans.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 30,
+                  "endLine": 37,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/AxisSpans.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 30,
+                  "endLine": 17,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Marker.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 30,
+                  "endLine": 35,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 276,
+                  "startColumn": 30,
+                  "endLine": 276,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Box.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 30,
+                  "endLine": 42,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Marker.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 30,
+                  "endLine": 18,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Box.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 223,
+                  "startColumn": 30,
+                  "endLine": 223,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Ellipse.cs",
+                "region": {
+                  "startLine": 101,
+                  "startColumn": 30,
+                  "endLine": 101,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Line.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 30,
+                  "endLine": 61,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 183,
+                  "startColumn": 30,
+                  "endLine": 183,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Ellipse.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 30,
+                  "endLine": 81,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Line.cs",
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 30,
+                  "endLine": 31,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Ellipse.cs",
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 30,
+                  "endLine": 59,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Line.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 30,
+                  "endLine": 17,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 153,
+                  "startColumn": 30,
+                  "endLine": 153,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Ellipse.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 30,
+                  "endLine": 38,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 130,
+                  "startColumn": 30,
+                  "endLine": 130,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Ellipse.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 111,
+                  "startColumn": 30,
+                  "endLine": 111,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 182,
+                  "startColumn": 30,
+                  "endLine": 182,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 30,
+                  "endLine": 32,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 160,
+                  "startColumn": 30,
+                  "endLine": 160,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 83,
+                  "startColumn": 30,
+                  "endLine": 83,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Bar.cs",
+                "region": {
+                  "startLine": 56,
+                  "startColumn": 30,
+                  "endLine": 56,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 127,
+                  "startColumn": 30,
+                  "endLine": 127,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/ErrorBar.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/ErrorBar.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 30,
+                  "endLine": 35,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 30,
+                  "endLine": 106,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 30,
+                  "endLine": 72,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/FillY.cs",
+                "region": {
+                  "startLine": 85,
+                  "startColumn": 30,
+                  "endLine": 85,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 30,
+                  "endLine": 54,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 30,
+                  "endLine": 30,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Finance.cs",
+                "region": {
+                  "startLine": 140,
+                  "startColumn": 30,
+                  "endLine": 140,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/FillY.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 30,
+                  "endLine": 58,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Heatmap.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/FillY.cs",
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 30,
+                  "endLine": 35,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Finance.cs",
+                "region": {
+                  "startLine": 100,
+                  "startColumn": 30,
+                  "endLine": 100,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Function.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 30,
+                  "endLine": 16,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/FillY.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 30,
+                  "endLine": 15,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Finance.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 30,
+                  "endLine": 33,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Finance.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 30,
+                  "endLine": 18,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Finance.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 30,
+                  "endLine": 48,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Cookbook/Recipes/PlotTypes/Finance.cs",
+                "region": {
+                  "startLine": 70,
+                  "startColumn": 30,
+                  "endLine": 70,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CA1822": {
+          "id": "CA1822",
+          "shortDescription": "Mark members as static",
+          "fullDescription": "Members that do not access instance data or call instance methods can be marked as static. After you mark the methods as static, the compiler will emit nonvirtual call sites to these members. This can give you a measurable performance gain for performance-sensitive code.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "CA2211": {
+          "id": "CA2211",
+          "shortDescription": "Non-constant fields should not be visible",
+          "fullDescription": "Static fields that are neither constants nor read-only are not thread-safe. Access to such a field must be carefully controlled and requires advanced programming techniques to synchronize access to the class object.",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2211",
+          "properties": {
+            "category": "Usage",
+            "isEnabledByDefault": true,
+            "tags": [
+              "PortedFromFxCop",
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "NUnit1028": {
+          "id": "NUnit1028",
+          "shortDescription": "The non-test method is public",
+          "fullDescription": "A fixture should not contain any public non-test methods.",
+          "defaultLevel": "note",
+          "helpUri": "https://github.com/nunit/nunit.analyzers/tree/master/documentation/NUnit1028.md",
+          "properties": {
+            "category": "Structure",
+            "isEnabledByDefault": true
+          }
+        },
+        "S2699": {
+          "id": "S2699",
+          "shortDescription": "Tests should include assertions",
+          "fullDescription": "The rule targets test methods that lack an assertion and consist solely of an action and, optionally, a setup.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2699",
+          "properties": {
+            "category": "Blocker Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1277 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.9.0.0",
+        "fileVersion": "4.9.0-3.24081.11 (98911739)",
+        "semanticVersion": "4.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "NUnit1028",
+          "level": "note",
+          "message": "Only test methods should be public",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/SourceCodeParsing.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 26,
+                  "endLine": 43,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "NUnit1028",
+          "level": "note",
+          "message": "Only test methods should be public",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/SourceCodeParsing.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 32,
+                  "endLine": 48,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "NUnit1028",
+          "level": "note",
+          "message": "Only test methods should be public",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/SourceCodeParsing.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 28,
+                  "endLine": 81,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/CodeTests/CodeFormatTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 48
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/SignalTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/SignalTests.cs",
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 17,
+                  "endLine": 23,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/SignalTests.cs",
+                "region": {
+                  "startLine": 39,
+                  "startColumn": 17,
+                  "endLine": 39,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Figure/BasicImageTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/SignalTests.cs",
+                "region": {
+                  "startLine": 49,
+                  "startColumn": 17,
+                  "endLine": 49,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Figure/BasicImageTests.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 17,
+                  "endLine": 17,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/SignalTests.cs",
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 17,
+                  "endLine": 61,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/GenerateTests.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 17,
+                  "endLine": 17,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/Sandbox.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/SignalTests.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 17,
+                  "endLine": 71,
+                  "endColumn": 43
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1825",
+          "level": "note",
+          "message": "Avoid unnecessary zero-length array allocations.  Use Array.Empty<double>() instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 23,
+                  "endLine": 11,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1825",
+          "level": "note",
+          "message": "Avoid unnecessary zero-length array allocations.  Use Array.Empty<double>() instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 23,
+                  "endLine": 12,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1825",
+          "level": "note",
+          "message": "Avoid unnecessary zero-length array allocations.  Use Array.Empty<double>() instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 23,
+                  "endLine": 21,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1825",
+          "level": "note",
+          "message": "Avoid unnecessary zero-length array allocations.  Use Array.Empty<double>() instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 23,
+                  "endLine": 22,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/FontTests/FontDetectionTests.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 24,
+                  "endLine": 48,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/SharedPaletteTests.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 17,
+                  "endLine": 12,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/SharedPaletteTests.cs",
+                "region": {
+                  "startLine": 22,
+                  "startColumn": 17,
+                  "endLine": 22,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/AutoScaleTests.cs",
+                "region": {
+                  "startLine": 37,
+                  "startColumn": 17,
+                  "endLine": 37,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 96,
+                  "startColumn": 17,
+                  "endLine": 96,
+                  "endColumn": 45
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 107,
+                  "startColumn": 17,
+                  "endLine": 107,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/ScatterTests.cs",
+                "region": {
+                  "startLine": 120,
+                  "startColumn": 17,
+                  "endLine": 120,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/PieTests.cs",
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 17,
+                  "endLine": 29,
+                  "endColumn": 32
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/AxisLineTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/AxisLineTests.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 17,
+                  "endLine": 25,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/AxisLineTests.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 17,
+                  "endLine": 40,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/AxisLineTests.cs",
+                "region": {
+                  "startLine": 62,
+                  "startColumn": 17,
+                  "endLine": 62,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/AxisLineTests.cs",
+                "region": {
+                  "startLine": 75,
+                  "startColumn": 17,
+                  "endLine": 75,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/Plottable/AnnotationTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 21,
+                  "endLine": 6,
+                  "endColumn": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LegendTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 35
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LegendTests.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 17,
+                  "endLine": 25,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LegendTests.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 17,
+                  "endLine": 43,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LegendTests.cs",
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 17,
+                  "endLine": 58,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LayoutTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LayoutTests.cs",
+                "region": {
+                  "startLine": 49,
+                  "startColumn": 17,
+                  "endLine": 49,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LayoutTests.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 17,
+                  "endLine": 71,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LayoutTests.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 17,
+                  "endLine": 27,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LayoutTests.cs",
+                "region": {
+                  "startLine": 94,
+                  "startColumn": 17,
+                  "endLine": 94,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/AxisLabelTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/AxisTicksTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/AxisTicksTests.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 17,
+                  "endLine": 19,
+                  "endColumn": 40
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FileFormatTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FileFormatTests.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 17,
+                  "endLine": 15,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FontTests.cs",
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 17,
+                  "endLine": 6,
+                  "endColumn": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FileFormatTests.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 17,
+                  "endLine": 24,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FileFormatTests.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 17,
+                  "endLine": 33,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FileFormatTests.cs",
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 17,
+                  "endLine": 42,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LabelTests.cs",
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 17,
+                  "endLine": 8,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FileFormatTests.cs",
+                "region": {
+                  "startLine": 53,
+                  "startColumn": 17,
+                  "endLine": 53,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/AxisTicksTests.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 17,
+                  "endLine": 33,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LabelTests.cs",
+                "region": {
+                  "startLine": 75,
+                  "startColumn": 17,
+                  "endLine": 75,
+                  "endColumn": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LabelTests.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 17,
+                  "endLine": 41,
+                  "endColumn": 36
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/LabelTests.cs",
+                "region": {
+                  "startLine": 141,
+                  "startColumn": 17,
+                  "endLine": 141,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2699",
+          "level": "warning",
+          "message": "Add at least one assertion to this test case.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Tests/RenderTests/FontTests.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 17,
+                  "endLine": 16,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "AD0001",
+          "level": "warning",
+          "message": "Analyzer 'NUnit.Analyzers.UseAssertMultiple.UseAssertMultipleAnalyzer' threw an exception of type 'System.IndexOutOfRangeException' with message 'Index was outside the bounds of the array.'.\u000d\u000aException occurred with following context:\u000d\u000aCompilation: ScottPlot Tests\u000d\u000aIOperation: Invocation\u000d\u000aSyntaxTree: C:\\Users\\there\\source\\ScottPlot\\src\\ScottPlot5\\ScottPlot5 Tests\\RenderTests\\LabelTests.cs\u000d\u000aSyntaxNode: Assert.Pass() [InvocationExpressionSyntax]@[3706..3719) (136,8)-(136,21)\u000d\u000a\u000d\u000aSystem.IndexOutOfRangeException: Index was outside the bounds of the array.\u000d\u000a   at NUnit.Analyzers.UseAssertMultiple.UseAssertMultipleAnalyzer.AnalyzeAssertInvocation(OperationAnalysisContext context, IInvocationOperation assertOperation)\u000d\u000a   at NUnit.Analyzers.BaseAssertionAnalyzer.AnalyzeInvocation(OperationAnalysisContext context)\u000d\u000a   at Microsoft.CodeAnalysis.Diagnostics.AnalyzerExecutor.ExecuteAndCatchIfThrows_NoLock[TArg](DiagnosticAnalyzer analyzer, Action`1 analyze, TArg argument, Nullable`1 info, CancellationToken cancellationToken)\u000d\u000a-----\u000d\u000a\u000d\u000aSuppress the following diagnostics to disable this analyzer: NUnit2045",
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "AD0001": {
+          "id": "AD0001",
+          "shortDescription": "Analyzer Failure",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "AnalyzerException"
+            ]
+          }
+        },
+        "CA1825": {
+          "id": "CA1825",
+          "shortDescription": "Avoid zero-length array allocations",
+          "defaultLevel": "note",
+          "helpUri": "https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1825",
+          "properties": {
+            "category": "Performance",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry",
+              "EnabledRuleInAggressiveMode"
+            ]
+          }
+        },
+        "NUnit1028": {
+          "id": "NUnit1028",
+          "shortDescription": "The non-test method is public",
+          "fullDescription": "A fixture should not contain any public non-test methods.",
+          "defaultLevel": "note",
+          "helpUri": "https://github.com/nunit/nunit.analyzers/tree/master/documentation/NUnit1028.md",
+          "properties": {
+            "category": "Structure",
+            "isEnabledByDefault": true
+          }
+        },
+        "S2699": {
+          "id": "S2699",
+          "shortDescription": "Tests should include assertions",
+          "fullDescription": "The rule targets test methods that lack an assertion and consist solely of an action and, optionally, a setup.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2699",
+          "properties": {
+            "category": "Blocker Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

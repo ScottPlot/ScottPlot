@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.9.0.0",
+        "fileVersion": "4.9.0-3.24081.11 (98911739)",
+        "semanticVersion": "4.9.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "S6562",
+          "level": "warning",
+          "message": "Provide the \"DateTimeKind\" when creating this object.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/there/source/ScottPlot/src/ScottPlot5/ScottPlot5%20Sandbox/Sandbox.ConsoleFramework/Program.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 34,
+                  "endLine": 81,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "S6562": {
+          "id": "S6562",
+          "shortDescription": "Always set the \"DateTimeKind\" when creating new \"DateTime\" instances",
+          "fullDescription": "Not knowing the Kind of the DateTime object that an application is using can lead to misunderstandings when displaying or comparing them. Explicitly setting the Kind property helps the application to stay consistent, and its maintainers understand what kind of date is being managed. To achieve this, when instantiating a new DateTime object you should always use a constructor overload that allows you to define the Kind property.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-6562",
+          "properties": {
+            "category": "Major Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.ConsoleFramework\Program.cs
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.win32\2.88.7\runtimes\win-x86\native\libSkiaSharp.dll
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.win32\2.88.7\runtimes\win-x64\native\libSkiaSharp.dll
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.win32\2.88.7\runtimes\win-arm64\native\libSkiaSharp.dll
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.macos\2.88.7\runtimes\osx\native\libSkiaSharp.dylib
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.linux.nodependencies\2.88.7\runtimes\linux-x64\native\libSkiaSharp.so
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.linux.nodependencies\2.88.7\runtimes\linux-arm\native\libSkiaSharp.so
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.linux.nodependencies\2.88.7\runtimes\linux-arm64\native\libSkiaSharp.so
+C:\Users\there\.nuget\packages\skiasharp.nativeassets.linux.nodependencies\2.88.7\runtimes\linux-musl-x64\native\libSkiaSharp.so

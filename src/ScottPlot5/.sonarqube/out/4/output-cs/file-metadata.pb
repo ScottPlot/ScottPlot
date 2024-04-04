@@ -1,0 +1,20 @@
+‘
+…C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\obj\Debug\net462\ScottPlot.OpenGL.AssemblyInfo.csutf-8£
+—C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\obj\Debug\net462\.NETFramework,Version=v4.6.2.AssemblyAttributes.csutf-8z
+qC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\Plottables\ScatterGLCustom.csutf-8t
+kC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\Plottables\ScatterGL.csutf-8x
+oC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\MarkerProgram.csutf-8‚
+yC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\MarkerOpenSquareProgram.csutf-8‚
+yC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\MarkerOpenCircleProgram.csutf-8‚
+yC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\MarkerFillSquareProgram.csutf-8‚
+yC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\MarkerFillCircleProgram.csutf-8}
+tC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\LinesProgramCustom.csutf-8w
+nC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\LinesProgram.csutf-8~
+uC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\IMarkersDrawProgram.csutf-8|
+sC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\ILinesDrawProgram.csutf-8u
+lC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\IGLProgram.csutf-8s
+jC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\GLShader.csutf-8x
+oC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLPrograms\GLProgramBase.csutf-8x
+oC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLFallbackRenderStrategy.csutf-8l
+cC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\GLExtensions.csutf-8v
+mC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.OpenGL\AddPlottableExtensions.csutf-8

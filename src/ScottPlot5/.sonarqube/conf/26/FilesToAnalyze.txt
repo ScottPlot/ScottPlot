@@ -1,0 +1,6 @@
+﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\App.axaml.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\MainView.axaml.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\MainWindow.axaml.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\Program.cs
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\obj\Debug\net8.0\Avalonia\resources
+C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\app.manifest
