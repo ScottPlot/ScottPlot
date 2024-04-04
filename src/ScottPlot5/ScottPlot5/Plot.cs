@@ -115,38 +115,6 @@ public class Plot : IDisposable
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
-    {
-        float leftPx = (x - radius);
-        float rightPx = (x + radius);
-        float topPx = (y - radius);
-        float bottomPx = (y + radius);
-
-        if (ScaleFactor != 1)
-        {
-            leftPx /= ScaleFactorF;
-            rightPx /= ScaleFactorF;
-            topPx /= ScaleFactorF;
-            bottomPx /= ScaleFactorF;
-        }
-
-        PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = Axes.Bottom.GetCoordinate(leftPx, dataRect);
-        double right = Axes.Bottom.GetCoordinate(rightPx, dataRect);
-        double top = Axes.Left.GetCoordinate(topPx, dataRect);
-        double bottom = Axes.Left.GetCoordinate(bottomPx, dataRect);
-
-        return new CoordinateRect(left, right, bottom, top);
-    }
-
-    /// <summary>
-    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
-    /// from the most recent render.
-    /// <param name="x">Center point pixel's x</param>
-    /// <param name="y">Center point pixel's y</param>
-    /// <param name="radius">Radius in pixels</param>
-    /// <returns>The coordinate rectangle</returns>
-    /// </summary>
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         float leftPx = (x - radius);
@@ -177,9 +145,9 @@ public class Plot : IDisposable
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
+    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        return GetCoordinateRect(pixel.X, pixel.Y, radius);
+        return GetCoordinateRect(pixel.X, pixel.Y, radius, xAxis, yAxis);
     }
 
     /// <summary>
