@@ -149,11 +149,24 @@ public class Plot : IDisposable
     /// </summary>
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
+        float leftPx = (x - radius);
+        float rightPx = (x + radius);
+        float topPx = (y - radius);
+        float bottomPx = (y + radius);
+
+        if (ScaleFactor != 1)
+        {
+            leftPx /= ScaleFactorF;
+            rightPx /= ScaleFactorF;
+            topPx /= ScaleFactorF;
+            bottomPx /= ScaleFactorF;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = (xAxis ?? Axes.Bottom).GetCoordinate(x - radius, dataRect);
-        double right = (xAxis ?? Axes.Bottom).GetCoordinate(x + radius, dataRect);
-        double top = (yAxis ?? Axes.Left).GetCoordinate(y - radius, dataRect);
-        double bottom = (yAxis ?? Axes.Left).GetCoordinate(y + radius, dataRect);
+        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
         return new CoordinateRect(left, right, bottom, top);
     }
 
