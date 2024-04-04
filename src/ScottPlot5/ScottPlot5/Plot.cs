@@ -142,6 +142,24 @@ public class Plot : IDisposable
     /// <summary>
     /// Return a coordinate rectangle centered at a pixel.  Uses measurements
     /// from the most recent render.
+    /// <param name="x">Center point pixel's x</param>
+    /// <param name="y">Center point pixel's y</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
+    /// </summary>
+    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        PixelRect dataRect = RenderManager.LastRender.DataRect;
+        double left = (xAxis ?? Axes.Bottom).GetCoordinate(x - radius, dataRect);
+        double right = (xAxis ?? Axes.Bottom).GetCoordinate(x + radius, dataRect);
+        double top = (yAxis ?? Axes.Left).GetCoordinate(y - radius, dataRect);
+        double bottom = (yAxis ?? Axes.Left).GetCoordinate(y + radius, dataRect);
+        return new CoordinateRect(left, right, bottom, top);
+    }
+
+    /// <summary>
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
     /// <param name="pixel">Center point pixel</param>
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
