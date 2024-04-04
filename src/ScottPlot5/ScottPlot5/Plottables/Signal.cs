@@ -102,11 +102,9 @@ public class Signal : IPlottable
     /// </summary>
     private void RenderLowDensity(RenderPack rp)
     {
-        CoordinateRange visibleXRange = GetVisibleXRange(Axes.DataRect), 
-            visibleYRange = GetVisibleYRange(Axes.DataRect);
+        CoordinateRange visibleXRange = GetVisibleXRange(Axes.DataRect), visibleYRange = GetVisibleYRange(Axes.DataRect);
 
-        int DirectionX = visibleXRange.Max < visibleXRange.Min ? -1 : 1, 
-            DirectionY = visibleYRange.Max < visibleYRange.Min ? -1 : 1;
+        int DirectionX = visibleXRange.Max < visibleXRange.Min ? -1 : 1, DirectionY = visibleYRange.Max < visibleYRange.Min ? -1 : 1;
 
         int FirstVisible = Data.GetIndex(DirectionX * visibleXRange.Min, true),
             LastVisible = Data.GetIndex(DirectionX * visibleXRange.Max + Data.Period, true);
