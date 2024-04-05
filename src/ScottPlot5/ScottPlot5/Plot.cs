@@ -158,7 +158,7 @@ public class Plot : IDisposable
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
+    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         if (ScaleFactor != 1)
         {
@@ -166,8 +166,8 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
-        double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
+        double radiusX = (xAxis ?? Axes.Bottom).GetCoordinateDistance(radius, dataRect);
+        double radiusY = (yAxis ?? Axes.Left).GetCoordinateDistance(radius, dataRect);
         return coordinates.ToRect(radiusX, radiusY);
     }
 
