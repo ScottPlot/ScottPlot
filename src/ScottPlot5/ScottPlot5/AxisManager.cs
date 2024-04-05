@@ -376,6 +376,32 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Return the 2D axis limits of data for all plottables using the default axes
+    /// </summary>
+    public AxisLimits GetDataLimits()
+    {
+        return GetDataLimits(Plot.Axes.Bottom, Plot.Axes.Left);
+    }
+
+    /// <summary>
+    /// Return the 2D axis limits of data for all plottables using the given axes
+    /// </summary>
+    public AxisLimits GetDataLimits(IXAxis xAxis, IYAxis yAxis)
+    {
+        ExpandingAxisLimits expandingLimits = new();
+
+        foreach (IPlottable plottable in Plot.PlottableList)
+        {
+            if (plottable.Axes.XAxis != xAxis || plottable.Axes.YAxis != yAxis)
+                continue;
+
+            expandingLimits.Expand(plottable.GetAxisLimits());
+        }
+
+        return expandingLimits.AxisLimits;
+    }
+
+    /// <summary>
     /// Adds the default X and Y axes to all plottables with unset axes
     /// </summary>
     internal void ReplaceNullAxesWithDefaults()
@@ -393,9 +419,11 @@ public class AxisManager
     /// <summary>
     /// Automatically scale all axes to fit the data in all plottables
     /// </summary>
-    public void AutoScale()
+    public void AutoScale(bool? invertX = false, bool? invertY = false)
     {
         ReplaceNullAxesWithDefaults();
+        AutoScaler.InvertedX = invertX ?? AutoScaler.InvertedX;
+        AutoScaler.InvertedY = invertY ?? AutoScaler.InvertedY;
         AutoScaler.AutoScaleAll(Plot.PlottableList);
     }
 

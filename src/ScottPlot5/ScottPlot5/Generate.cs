@@ -50,14 +50,12 @@ public static class Generate
         return ys;
     }
 
-    public static double[] NoisySin(Random rand, int count = 51, double noiseLevel = 1)
+    [Obsolete("use Generate.Sin() then Generate.AddNoise()")]
+    public static double[] NoisySin(int count = 51, double magnitude = 1)
     {
-        double[] data = Sin(count);
-        for (int i = 0; i < data.Length; i++)
-        {
-            data[i] += rand.NextDouble() * noiseLevel;
-        }
-        return data;
+        double[] sin = Sin(count);
+        AddNoiseInPlace(sin, magnitude);
+        return sin;
     }
 
     /// <summary>
@@ -361,10 +359,7 @@ public static class Generate
     /// </summary>
     public static double[] AddNoise(double[] input, double magnitude = 1)
     {
-        double[] output = new double[input.Length];
-        Array.Copy(input, 0, output, 0, input.Length);
-        AddNoiseInPlace(output, magnitude);
-        return output;
+        return RandomData.AddNoise(input, magnitude);
     }
 
     /// <summary>
@@ -372,10 +367,7 @@ public static class Generate
     /// </summary>
     public static void AddNoiseInPlace(double[] values, double magnitude = 1)
     {
-        for (int i = 0; i < values.Length; i++)
-        {
-            values[i] = values[i] + RandomData.RandomNumber(-magnitude / 2, magnitude / 2);
-        }
+        RandomData.AddNoiseInPlace(values, magnitude);
     }
 
     #endregion

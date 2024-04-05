@@ -13,6 +13,8 @@
 * DataLogger: Added support for `NaN` values to display gaps in the line (#3577) @drolevar
 * Finance: OHLC plots now have a `Sequential` mode (like candlestick plots) for displaying data without gaps (#3590) @oktrue
 * Plot: Added optional arguments to `GetCoordinateRect()` to support non-standard axes (#3591) @oktrue
+* Axes: Added optional arguments to `Plot.Axes.AutoScale()` to add support for nonstandard axes (#3592)
+* Axis Rules: Improved `Plot.Axes.SquareUnits()` to support inverted axes (#3592) @VisMotrix
 * WinForms: Improve `FormsPlot` disposal so the control displays properly when re-launched (#3593, #3589) @bwedding @Kruno313
 
 ## ScottPlot 5.0.23
