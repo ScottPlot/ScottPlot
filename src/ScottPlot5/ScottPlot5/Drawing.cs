@@ -146,7 +146,7 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         LineStyle ls = new()
         {
@@ -159,9 +159,9 @@ public static class Drawing
         DrawLines(canvas, paint, pixels, ls);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, LineStyle lineStyle)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count < 2)
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
             return;
 
         lineStyle.ApplyToPaint(paint);

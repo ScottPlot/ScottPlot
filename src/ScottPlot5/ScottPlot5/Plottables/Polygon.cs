@@ -94,15 +94,16 @@ public class Polygon : IPlottable
         var coordinates = close
             ? Coordinates.Concat(new[] { Coordinates.First() })
             : Coordinates;
-        Pixel[] pixels = coordinates.Select(Axes.GetPixel).ToArray();
+        IEnumerable<Pixel> pixels = coordinates.Select(Axes.GetPixel);
 
         // TODO: stop using skia primitives directly
-        SKPoint[] skPoints = pixels.Select(x => x.ToSKPoint()).ToArray();
+        IEnumerable<SKPoint> skPoints = pixels.Select(x => x.ToSKPoint());
         using SKPath path = new();
-        path.MoveTo(skPoints[0]);
+        SKPoint firstPoint = skPoints.First();
+        path.MoveTo(firstPoint);
         float xMax, xMin, yMax, yMin;
-        xMax = xMin = skPoints[0].X;
-        yMax = yMin = skPoints[0].Y;
+        xMax = xMin = firstPoint.X;
+        yMax = yMin = firstPoint.Y;
         foreach (SKPoint p in skPoints.Skip(1))
         {
             xMax = Math.Max(xMax, p.X);
