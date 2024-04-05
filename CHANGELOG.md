@@ -15,6 +15,7 @@
 * Plot: Added optional arguments to `GetCoordinateRect()` to support non-standard axes (#3591) @oktrue
 * Axes: Added optional arguments to `Plot.Axes.AutoScale()` to add support for nonstandard axes (#3592)
 * Axis Rules: Improved `Plot.Axes.SquareUnits()` to support inverted axes (#3592) @VisMotrix
+* WinForms: Improve `FormsPlot` disposal so the control displays properly when re-launched (#3593, #3589) @bwedding @Kruno313
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
