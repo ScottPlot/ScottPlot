@@ -109,7 +109,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// <summary>
     /// Return the vertical range covered by data between the given indices (inclusive)
     /// </summary>
-    public CoordinateRange GetRangeY(int index1, int index2)
+    private CoordinateRange GetRangeY(int index1, int index2)
     {
         double min = Ys[index1];
         double max = Ys[index1];
@@ -129,7 +129,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// <summary>
     /// Get the index associated with the given X position
     /// </summary>
-    public int GetIndex(double x)
+    private int GetIndex(double x)
     {
         IndexRange range = new(MinimumIndex, MaximumIndex);
         return GetIndex(x, range);
@@ -138,7 +138,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// <summary>
     /// Get the index associated with the given X position limited to the given range
     /// </summary>
-    public int GetIndex(double x, IndexRange indexRange)
+    private int GetIndex(double x, IndexRange indexRange)
     {
         var (_, index) = SearchIndex(x, indexRange);
         return index;
@@ -150,7 +150,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// If the column contains one point, return that one pixel.
     /// If the column contains multiple points, return 4 pixels: enter, min, max, and exit
     /// </summary>
-    public IEnumerable<Pixel> GetColumnPixelsX(int pixelColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
+    private IEnumerable<Pixel> GetColumnPixelsX(int pixelColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
     {
         float xPixel = pixelColumnIndex + rp.DataRect.Left;
         double unitsPerPixelX = axes.XAxis.Width / rp.DataRect.Width;
@@ -183,7 +183,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// If the column contains one point, return that one pixel.
     /// If the column contains multiple points, return 4 pixels: enter, min, max, and exit
     /// </summary>
-    public IEnumerable<Pixel> GetColumnPixelsY(int rowColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
+    private IEnumerable<Pixel> GetColumnPixelsY(int rowColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
     {
         float yPixel = rp.DataRect.Bottom - rowColumnIndex;
         double unitsPerPixelY = axes.YAxis.Height / rp.DataRect.Height;

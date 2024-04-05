@@ -133,6 +133,11 @@ public static class Generate
         return values;
     }
 
+    public static double[] NaN(int count)
+    {
+        return Repeating(count, double.NaN);
+    }
+
     #endregion
 
     #region numerical 2D

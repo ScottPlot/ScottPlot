@@ -146,7 +146,7 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         LineStyle ls = new()
         {
@@ -159,20 +159,32 @@ public static class Drawing
         DrawLines(canvas, paint, pixels, ls);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count() < 2)
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count < 2)
             return;
 
         lineStyle.ApplyToPaint(paint);
 
         using SKPath path = new();
 
-        path.MoveTo(pixels.First().ToSKPoint());
+        bool move = true;
 
-        foreach (var pixel in pixels.Skip(1))
+        foreach (var pixel in pixels)
         {
-            path.LineTo(pixel.ToSKPoint());
+            if (float.IsNaN(pixel.X) || float.IsNaN(pixel.Y))
+            {
+                move = true;
+            }
+            else if (move)
+            {
+                path.MoveTo(pixel.ToSKPoint());
+                move = false;
+            }
+            else
+            {
+                path.LineTo(pixel.ToSKPoint());
+            }
         }
 
         canvas.DrawPath(path, paint);

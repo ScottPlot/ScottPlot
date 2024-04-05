@@ -18,6 +18,7 @@ public class RenderManager(Plot plot)
     /// These events are invoked before any render action.
     /// Users can add blocking code to this event to ensure processes
     /// that modify plottables are complete before rendering begins.
+    /// Alternatively, lock the <see cref="Plot.Sync"/> object.
     /// </summary>
     public EventHandler PreRenderLock { get; set; } = delegate { };
 

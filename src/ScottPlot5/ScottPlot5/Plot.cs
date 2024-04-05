@@ -35,6 +35,13 @@ public class Plot : IDisposable
 
     public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
 
+    /// <summary>
+    /// This object is locked by the Render() methods.
+    /// Logic that manipulates the plot (UI inputs or editing data)
+    /// can lock this object to prevent rendering artifacts.
+    /// </summary>
+    public object Sync { get; } = new();
+
     public Plot()
     {
         Axes = new(this);
@@ -108,7 +115,7 @@ public class Plot : IDisposable
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
+    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         float leftPx = (x - radius);
         float rightPx = (x + radius);
@@ -124,11 +131,10 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = Axes.Bottom.GetCoordinate(leftPx, dataRect);
-        double right = Axes.Bottom.GetCoordinate(rightPx, dataRect);
-        double top = Axes.Left.GetCoordinate(topPx, dataRect);
-        double bottom = Axes.Left.GetCoordinate(bottomPx, dataRect);
-
+        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
         return new CoordinateRect(left, right, bottom, top);
     }
 
@@ -139,9 +145,9 @@ public class Plot : IDisposable
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
+    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        return GetCoordinateRect(pixel.X, pixel.Y, radius);
+        return GetCoordinateRect(pixel.X, pixel.Y, radius, xAxis, yAxis);
     }
 
     /// <summary>
@@ -152,7 +158,7 @@ public class Plot : IDisposable
     /// <param name="radius">Radius in pixels</param>
     /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
+    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         if (ScaleFactor != 1)
         {
@@ -160,8 +166,8 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
-        double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
+        double radiusX = (xAxis ?? Axes.Bottom).GetCoordinateDistance(radius, dataRect);
+        double radiusY = (yAxis ?? Axes.Left).GetCoordinateDistance(radius, dataRect);
         return coordinates.ToRect(radiusX, radiusY);
     }
 
@@ -173,7 +179,7 @@ public class Plot : IDisposable
     public IAxis? GetAxis(Pixel pixel)
     {
         IPanel? panel = GetPanel(pixel, axesOnly: true);
-        return panel is null ? null : (IAxis)panel;
+        return panel is IAxis axis ? axis : null;
     }
 
     /// <summary>
@@ -187,8 +193,8 @@ public class Plot : IDisposable
 
         // Reverse here so the "highest" axis is returned in the case some overlap.
         var panels = axesOnly
-            ? Axes.GetPanels().Reverse()
-            : Axes.GetPanels().Reverse().OfType<IAxis>();
+            ? Axes.GetPanels().Reverse().OfType<IAxis>()
+            : Axes.GetPanels().Reverse();
 
         foreach (IPanel panel in panels)
         {
@@ -218,7 +224,7 @@ public class Plot : IDisposable
     {
         // TODO: obsolete this
         PixelRect rect = new(0, width, height, 0);
-        RenderManager.Render(canvas, rect);
+        Render(canvas, rect);
     }
 
     /// <summary>
@@ -226,7 +232,10 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, PixelRect rect)
     {
-        RenderManager.Render(canvas, rect);
+        lock (Sync)
+        {
+            RenderManager.Render(canvas, rect);
+        }
     }
 
     public Image GetImage(int width, int height)
