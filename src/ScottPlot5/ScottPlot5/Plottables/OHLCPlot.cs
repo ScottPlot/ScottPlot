@@ -9,7 +9,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
     private readonly IOHLCSource Data = data;
 
     /// <summary>
-    /// X position of candles is sourced from the OHLC's DateTime by default.
+    /// X position of each symbol is sourced from the OHLC's DateTime by default.
     /// If this option is enabled, X position will be an ascending integers starting at 0 with no gaps.
     /// </summary>
     public bool Sequential { get; set; } = false;
@@ -35,14 +35,16 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
 
     public AxisLimits GetAxisLimits()
     {
-        AxisLimits limits = Data.GetLimits(); // TODO: Data.GetSequentialLimits()
-
         if (Sequential)
         {
-            limits = new AxisLimits(0, Data.GetOHLCs().Count, limits.Bottom, limits.Top);
+            CoordinateRange yLimits = Data.GetLimitsY();
+            CoordinateRange xLimits = new(0, Data.GetOHLCs().Count - 1);
+            return new AxisLimits(xLimits, yLimits);
         }
-
-        return limits;
+        else
+        {
+            return Data.GetLimits();
+        }
     }
 
     public void Render(RenderPack rp)
