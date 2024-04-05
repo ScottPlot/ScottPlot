@@ -11,6 +11,7 @@
 * Label: Prevent rendering borders when line width is zero (#3572, #3538) @bwedding
 * Scatter: Added support for `NaN` values to display gaps in the line (#3577, #3276) @drolevar @Hub3r
 * DataLogger: Added support for `NaN` values to display gaps in the line (#3577) @drolevar
+* Finance: OHLC plots now have a `Sequential` mode (like candlestick plots) for displaying data without gaps (#3590) @oktrue
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
