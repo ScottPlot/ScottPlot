@@ -122,6 +122,29 @@ public class RandomDataGenerator
     #endregion
 
     /// <summary>
+    /// Mutate the given array by adding noise (± magnitude) and return it
+    /// </summary>
+    public void AddNoiseInPlace(double[] values, double magnitude)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
+            double noise = (2 * RandomNumber() - .5) * magnitude;
+            values[i] = values[i] + noise;
+        }
+    }
+
+    /// <summary>
+    /// Return a copy of the given data with random noise added (± magnitude)
+    /// </summary>
+    public double[] AddNoise(double[] input, double magnitude)
+    {
+        double[] output = new double[input.Length];
+        Array.Copy(input, output, input.Length);
+        AddNoiseInPlace(output, magnitude);
+        return output;
+    }
+
+    /// <summary>
     /// Uniformly distributed random numbers between 0 and 1
     /// (multiplied by <paramref name="mult"/> then added to <paramref name="offset"/>).
     /// </summary>
