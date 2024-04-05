@@ -1,6 +1,0 @@
-﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\AssemblyInfo.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\AvaPlot.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\AvaPlotExtensions.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\AvaPlotMenu.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Avalonia\nuget-readme.md
-C:\Users\there\source\ScottPlot\dev\icon\v5\scottplot-icon-rounded-border-128.png

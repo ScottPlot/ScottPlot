@@ -1,3 +1,0 @@
-﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Eto\MainWindow.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Eto\MainWindow.eto.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.Eto\Program.cs

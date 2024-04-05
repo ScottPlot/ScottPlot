@@ -1,19 +1,0 @@
-‚
-`C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WPF\MainWindow.xaml.cs
- 
- 
- 	
-    " ( 
- ! )! )÷
-]C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WPF\AssemblyInfo.cs
-  	  % ]% T% M . `. ]		. b«
-YC:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WPF\App.xaml.cs
- 
- 
- 
- 
- 
- 
- 
-		 	  &  
-    *

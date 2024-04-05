@@ -1,6 +1,0 @@
-﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\App.xaml
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\App.xaml.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\MainPage.xaml.cs
-C:\Users\there\.nuget\packages\microsoft.windowsappsdk\1.5.240311000\include\MddBootstrapAutoInitializer.cs
-C:\Users\there\.nuget\packages\microsoft.windowsappsdk\1.5.240311000\include\WindowsAppSDK-VersionInfo.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\MainPage.xaml

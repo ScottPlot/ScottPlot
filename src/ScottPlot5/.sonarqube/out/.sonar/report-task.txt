@@ -1,6 +1,0 @@
-projectKey=Scottplot
-serverUrl=http://localhost:9000
-serverVersion=10.4.1.88267
-dashboardUrl=http://localhost:9000/dashboard?id=Scottplot
-ceTaskId=2016ebc6-0312-4ecd-a030-3ea7c7a70009
-ceTaskUrl=http://localhost:9000/api/ce/task?id=2016ebc6-0312-4ecd-a030-3ea7c7a70009

@@ -1,5 +1,0 @@
-﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\EtoPlot.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\EtoPlotExtensions.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\EtoPlotMenu.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.Eto\nuget-readme.md
-C:\Users\there\source\ScottPlot\dev\icon\v5\scottplot-icon-rounded-border-128.png

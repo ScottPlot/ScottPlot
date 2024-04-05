@@ -1,6 +1,0 @@
-﻿C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\WinUIPlot.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\WinUIPlotExtensions.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\WinUIPlotMenu.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\obj\Debug\net7.0-maccatalyst\uno.reload.cookie.g.cs
-C:\Users\there\source\ScottPlot\src\ScottPlot5\ScottPlot5 Controls\ScottPlot.WinUI\nuget-readme.md
-C:\Users\there\source\ScottPlot\dev\icon\v5\scottplot-icon-rounded-border-128.png
