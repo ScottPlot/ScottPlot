@@ -10,13 +10,13 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("\nType 's' to run slow but careful tests.");
-        Console.WriteLine("Press ENTER to proceed with quick and dirty tests.");
-        bool slow = Console.ReadKey().Key == ConsoleKey.S;
-        string configType = slow ? "slow but careful" : "quick and dirty";
+        Console.WriteLine("\nType 'f' to run a fast test configuration.");
+        Console.WriteLine("Press ENTER to use the slower default configuration.");
+        bool fast = Console.ReadKey().Key == ConsoleKey.F;
+        string configType = fast ? "fast" : "default";
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine($"Proceeding with {configType} configuration...\n");
-        IConfig config = slow ? Configurations.SlowAndCareful : Configurations.QuickAndDirty;
+        Console.WriteLine($"\nProceeding with {configType} configuration...\n");
+        IConfig config = fast ? Configurations.Fast : Configurations.Default;
 
         Type[] benchmarks = Assembly
             .GetExecutingAssembly()
