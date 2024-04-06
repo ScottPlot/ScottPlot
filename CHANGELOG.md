@@ -19,6 +19,7 @@
 * Signal: Added support for inverted horizontal axes (#3594) @Excustic
 * Axes: New helper methods `Plot.Axes.InvertX()`, `Plot.Axes.RectifyX()`, and similar for Y (#3594)
 * Rendering: Improved performance for plot types with many lines (#3601) @drolevar
+* Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
