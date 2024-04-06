@@ -12,7 +12,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 {
     public abstract GRContext GRContext { get; }
 
-    public Plot Plot { get; internal set; }
+    public Plot Plot { get; internal set; } = new();
 
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
@@ -24,7 +24,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
         Menu = new FormsPlotMenu(this);
-        Plot = Reset();
 
         // TODO: replace this with an annotation instead of title
         bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
@@ -43,21 +42,19 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         }
     }
 
-    public Plot Reset()
+    public void Reset()
     {
-        Plot newPlot = new();
-        newPlot.FigureBackground.Color = this.BackColor.ToColor();
-        newPlot.DataBackground.Color = Colors.White;
-
-        return Reset(newPlot);
+        Plot plot = new();
+        plot.FigureBackground.Color = this.BackColor.ToColor();
+        plot.DataBackground.Color = Colors.White;
+        Reset(plot);
     }
 
-    public Plot Reset(Plot newPlot)
+    public void Reset(Plot plot)
     {
         Plot oldPlot = Plot;
-        Plot = newPlot;
+        Plot = plot;
         oldPlot?.Dispose();
-        return newPlot;
     }
 
     public void ShowContextMenu(Pixel position)
