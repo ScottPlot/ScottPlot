@@ -19,9 +19,9 @@ public class FunctionPlot : IPlottable
     {
         Source = source;
     }
+    private double MinX => Math.Max(Source.RangeX.Min.FiniteCoallesce(Axes.XAxis.Min), Axes.XAxis.Min);
+    private double MaxX => Math.Min(Source.RangeX.Max.FiniteCoallesce(Axes.XAxis.Max), Axes.XAxis.Max);
 
-    private double MinX => Math.Min(Source.RangeX.Min.FiniteCoallesce(Axes.XAxis.Min), Axes.XAxis.Min);
-    private double MaxX => Math.Max(Source.RangeX.Max.FiniteCoallesce(Axes.XAxis.Max), Axes.XAxis.Max);
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem

@@ -238,6 +238,14 @@ public class Plot : IDisposable
         }
     }
 
+    /// <summary>
+    /// Render onto an existing canvas of a surface over the local clip bounds
+    /// </summary>
+    public void Render(SKSurface surface)
+    {
+        RenderManager.Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
+    }
+
     public Image GetImage(int width, int height)
     {
         if (width < 1)
