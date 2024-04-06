@@ -11,7 +11,7 @@ namespace ScottPlot.Eto;
 
 public class EtoPlot : Drawable, IPlotControl
 {
-    public Plot Plot { get; } = new();
+    public Plot Plot { get; internal set; } = new();
 
     public GRContext? GRContext => null;
 
@@ -35,6 +35,19 @@ public class EtoPlot : Drawable, IPlotControl
         this.KeyUp += OnKeyUp;
         this.MouseDoubleClick += OnDoubleClick;
         this.SizeChanged += OnSizeChanged;
+    }
+
+    public void Reset()
+    {
+        Plot plot = new();
+        Reset(plot);
+    }
+
+    public void Reset(Plot plot)
+    {
+        Plot oldPlot = Plot;
+        Plot = plot;
+        oldPlot?.Dispose();
     }
 
     public void Refresh()

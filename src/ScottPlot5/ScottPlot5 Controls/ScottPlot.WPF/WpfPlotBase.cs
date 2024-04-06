@@ -14,7 +14,7 @@ namespace ScottPlot.WPF
         public abstract GRContext GRContext { get; }
         public abstract void Refresh();
 
-        public Plot Plot { get; internal set; }
+        public Plot Plot { get; internal set; } = new();
         public IPlotInteraction Interaction { get; set; }
         public float DisplayScale { get; set; }
         public IPlotMenu Menu { get; set; }
@@ -31,7 +31,6 @@ namespace ScottPlot.WPF
             DisplayScale = DetectDisplayScale();
             Interaction = new Interaction(this);
             Menu = new WpfPlotMenu(this);
-            Plot = Reset();
             Focusable = true;
         }
 
@@ -47,17 +46,16 @@ namespace ScottPlot.WPF
             Interaction.KeyUp(e.Key());
         }
 
-        public Plot Reset()
+        public void Reset()
         {
-            return Reset(new Plot());
+            Reset(new Plot());
         }
 
-        public Plot Reset(Plot newPlot)
+        public void Reset(Plot newPlot)
         {
             Plot oldPlot = Plot;
             Plot = newPlot;
             oldPlot?.Dispose();
-            return newPlot;
         }
 
         public void ShowContextMenu(Pixel position)

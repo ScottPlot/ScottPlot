@@ -11,7 +11,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 {
     private readonly SKXamlCanvas _canvas = CreateRenderTarget();
 
-    public Plot Plot { get; } = new();
+    public Plot Plot { get; internal set; } = new();
 
     public SkiaSharp.GRContext? GRContext => null;
 
@@ -51,6 +51,16 @@ public partial class WinUIPlot : UserControl, IPlotControl
             HorizontalAlignment = HorizontalAlignment.Stretch,
             Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent)
         };
+    }
+
+    public void Reset()
+    {
+        Reset(new Plot());
+    }
+
+    public void Reset(Plot plot)
+    {
+        Plot = plot;
     }
 
     public void Refresh()
