@@ -85,7 +85,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
 
     public void Render(RenderPack rp)
     {
-        Pixel[] points = Data.Coordinates.Select(Axes.GetPixel).ToArray();
+        IEnumerable<Pixel> points = Data.Coordinates.Select(Axes.GetPixel);
 
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, points, LineStyle);
