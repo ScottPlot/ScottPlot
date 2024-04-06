@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>ScottPlotBench.Benchmarks.ScatterRendering-20240406-165413</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3296/23H2/2023Update/SunValley3)
+Intel Core i7-10700 CPU 2.90GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 8.0.200
+  [Host]     : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX2
+  Job-JVRUTG : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=3  IterationTime=200.0000 ms  LaunchCount=1  
+WarmupCount=1  
+</code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>Points</th><th>Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>ScatterLines</td><td>100</td><td>1.886 ms</td><td>0.2302 ms</td><td>0.0126 ms</td>
+</tr><tr><td>ScatterLines</td><td>1000</td><td>11.313 ms</td><td>5.9995 ms</td><td>0.3289 ms</td>
+</tr><tr><td>ScatterLines</td><td>10000</td><td>95.635 ms</td><td>7.5858 ms</td><td>0.4158 ms</td>
+</tr><tr><td>ScatterLines</td><td>100000</td><td>933.816 ms</td><td>83.1581 ms</td><td>4.5582 ms</td>
+</tr></tbody></table>
+</body>
+</html>

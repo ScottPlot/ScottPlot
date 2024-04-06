@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Blazor.WebAssembly"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.ConsoleFramework", "ScottPlot5 Sandbox\Sandbox.ConsoleFramework\Sandbox.ConsoleFramework.csproj", "{2B8FEF6F-F79F-4008-B01F-8AB1C4487591}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Benchmarks", "ScottPlot5 Benchmarks\ScottPlot Benchmarks.csproj", "{57FEA5F7-EC45-4664-AF34-E8F840C97E45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,10 @@ Global
 		{2B8FEF6F-F79F-4008-B01F-8AB1C4487591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B8FEF6F-F79F-4008-B01F-8AB1C4487591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B8FEF6F-F79F-4008-B01F-8AB1C4487591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57FEA5F7-EC45-4664-AF34-E8F840C97E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57FEA5F7-EC45-4664-AF34-E8F840C97E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57FEA5F7-EC45-4664-AF34-E8F840C97E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57FEA5F7-EC45-4664-AF34-E8F840C97E45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>ScottPlotBench.Benchmarks.Example-20240406-163438</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3296/23H2/2023Update/SunValley3)
+Intel Core i7-10700 CPU 2.90GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 8.0.200
+  [Host]     : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX2
+  Job-PJVUAN : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=3  IterationTime=200.0000 ms  LaunchCount=1  
+WarmupCount=1  
+</code></pre>
+
+<table>
+<thead><tr><th>Method    </th><th>Count</th><th>Mean   </th><th>Error   </th><th>StdDev </th>
+</tr>
+</thead><tbody><tr><td>AddString</td><td>10</td><td>73.04 ns</td><td>22.887 ns</td><td>1.254 ns</td>
+</tr><tr><td>AddStringBuilder</td><td>10</td><td>62.15 ns</td><td>8.707 ns</td><td>0.477 ns</td>
+</tr><tr><td>AddString</td><td>100</td><td>2,772.67 ns</td><td>334.658 ns</td><td>18.344 ns</td>
+</tr><tr><td>AddStringBuilder</td><td>100</td><td>290.31 ns</td><td>58.136 ns</td><td>3.187 ns</td>
+</tr><tr><td>AddString</td><td>1000</td><td>262,216.84 ns</td><td>296,586.780 ns</td><td>16,256.922 ns</td>
+</tr><tr><td>AddStringBuilder</td><td>1000</td><td>2,092.89 ns</td><td>167.536 ns</td><td>9.183 ns</td>
+</tr></tbody></table>
+</body>
+</html>
