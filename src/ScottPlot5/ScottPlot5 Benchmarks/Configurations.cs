@@ -6,15 +6,15 @@ namespace ScottPlotBench;
 
 public static class Configurations
 {
-    public static IConfig QuickAndDirty =>
+    public static IConfig Fast =>
 
         DefaultConfig.Instance.AddJob(Job.Default
                 .WithLaunchCount(1)
                 .WithIterationTime(Perfolizer.Horology.TimeInterval.Millisecond * 200)
                 .WithWarmupCount(1)
-                .WithIterationCount(3))
+                .WithIterationCount(1))
             .AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(true)));
 
-    public static IConfig SlowAndCareful => DefaultConfig.Instance
+    public static IConfig Default => DefaultConfig.Instance
         .AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(true)));
 }

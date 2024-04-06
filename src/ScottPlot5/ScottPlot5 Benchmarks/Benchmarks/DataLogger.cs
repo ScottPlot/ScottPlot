@@ -2,7 +2,7 @@
 using SkiaSharp;
 
 namespace ScottPlotBench.Benchmarks;
-public class ScatterRendering
+public class DataLogger
 {
     [Params(100, 1_000, 10_000, 100_000)]
     public int Points { get; set; }
@@ -18,14 +18,14 @@ public class ScatterRendering
         Surface = ScottPlot.Drawing.CreateSurface(400, 600);
 
         ScottPlot.RandomDataGenerator gen = new(0);
-        double[] xs = gen.RandomSample(Points);
         double[] ys = gen.RandomSample(Points);
 
-        Plot.Add.ScatterLine(xs, ys);
+        var dl = Plot.Add.DataLogger();
+        dl.Add(ys);
     }
 
     [Benchmark]
-    public void ScatterLines()
+    public void DataLoggerRender()
     {
         Plot.Render(Surface);
     }
