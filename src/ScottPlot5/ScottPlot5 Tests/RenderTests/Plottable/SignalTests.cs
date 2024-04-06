@@ -91,7 +91,7 @@ internal class SignalTests
     {
         ScottPlot.Plot plt = new();
         plt.Add.Signal(Generate.Sin(100_000));
-        plt.Axes.SetLimitsX(-75, 25); // inverted X
+        plt.Axes.SetLimitsX(150_000, -50_000); // inverted X
         plt.SaveTestImage();
     }
 }
