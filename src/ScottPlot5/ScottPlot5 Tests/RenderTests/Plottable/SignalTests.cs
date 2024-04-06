@@ -76,4 +76,22 @@ internal class SignalTests
         plt.Add.Signal(values);
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_SignalLowDensity_InvertedX()
+    {
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(Generate.Sin());
+        plt.Axes.SetLimitsX(75, -25); // inverted X
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_SignalHighDensity_InvertedX()
+    {
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(Generate.Sin(100_000));
+        plt.Axes.SetLimitsX(-75, 25); // inverted X
+        plt.SaveTestImage();
+    }
 }
