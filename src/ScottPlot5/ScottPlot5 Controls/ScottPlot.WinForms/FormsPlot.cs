@@ -31,7 +31,8 @@ public class FormsPlot : FormsPlotBase
 
         Controls.Add(SKElement);
 
-        HandleDestroyed += (s, e) => {
+        HandleDestroyed += (s, e) =>
+        {
             SKElement.Dispose();
             Plot.Dispose();
         };
