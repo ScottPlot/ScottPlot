@@ -92,7 +92,7 @@ public class Interaction : IPlotInteraction
     {
         bool lockY = Inputs.ShouldLockY(keys);
         bool lockX = Inputs.ShouldLockX(keys);
-        LockedAxes locks = new(lockX, LockY);
+        LockedAxes locks = new(lockX, lockY);
 
         MouseDrag drag = new(start, from, to);
 
@@ -146,10 +146,10 @@ public class Interaction : IPlotInteraction
         // this covers the case where an extremely tiny zoom rectangle was made
         if ((isDragging == false) && (button == Inputs.ClickAutoAxisButton))
         {
-            Actions.AutoScale(PlotControl);
+            Actions.AutoScale(PlotControl, position);
         }
 
-        if (button == Inputs.DragZoomRectangleButton)
+        if (IsZoomingRectangle && button == Inputs.DragZoomRectangleButton)
         {
             Actions.ZoomRectangleClear(PlotControl);
             IsZoomingRectangle = false;
@@ -170,6 +170,8 @@ public class Interaction : IPlotInteraction
 
     public virtual void MouseWheelVertical(Pixel pixel, float delta)
     {
+        if (IsZoomingRectangle) return;
+
         MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
 
         if (Inputs.ZoomInWheelDirection.HasValue && Inputs.ZoomInWheelDirection == direction)

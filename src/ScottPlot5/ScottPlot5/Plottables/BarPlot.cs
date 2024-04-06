@@ -11,6 +11,11 @@ public class BarPlot : IPlottable
 
     public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
 
+    public Label ValueLabelStyle { get; set; } = new()
+    {
+        Alignment = Alignment.LowerCenter,
+    };
+
     /// <summary>
     /// Apply a fill color to all bars
     /// </summary>
@@ -84,11 +89,12 @@ public class BarPlot : IPlottable
 
     public void Render(RenderPack rp)
     {
-        using var paint = new SKPaint();
+        using SKPaint paint = new();
 
         foreach (Bar bar in Bars)
         {
-            bar.Render(rp, Axes, paint);
+            ValueLabelStyle.Text = bar.Label;
+            bar.Render(rp, Axes, paint, ValueLabelStyle);
         }
     }
 }

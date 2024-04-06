@@ -94,7 +94,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
             // if ticks were returned, use them
             if (ticks is not null)
             {
-                Ticks = ticks.Where(x => range.Contains(x.Position)).ToArray();
+                Ticks = ticks.ToArray();
                 return;
             }
 
@@ -121,19 +121,20 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         DateTime rangeMin = range.Min.ToDateTime();
         DateTime rangeMax = range.Max.ToDateTime();
 
-        // range.Min could be anything, but when calculating start and stop it must be "snapped" to the best tick
-        rangeMin = GetLargerTimeUnit(unit).Snap(rangeMin);
-        rangeMax = unit.Snap(rangeMax);
+        // range.Min could be anything, but when calculating start it must be "snapped" to the best tick
+        DateTime start = GetLargerTimeUnit(unit).Snap(rangeMin);
 
-        DateTime start = unit.Next(rangeMin, -increment);
-        DateTime end = unit.Next(rangeMax, increment);
+        start = unit.Next(start, -increment);
         string dtFormat = unit.GetDateTimeFormatString();
 
         List<Tick> ticks = new();
 
         const int maxTickCount = 1000;
-        for (DateTime dt = start; dt <= end; dt = unit.Next(dt, increment))
+        for (DateTime dt = start; dt <= rangeMax; dt = unit.Next(dt, increment))
         {
+            if (dt < rangeMin)
+                continue;
+
             string tickLabel = dt.ToString(dtFormat);
             PixelSize tickLabelSize = Drawing.MeasureString(tickLabel, paint);
 

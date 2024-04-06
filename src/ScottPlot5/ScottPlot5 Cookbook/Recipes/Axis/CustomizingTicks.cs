@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using SkiaSharp;
+using System.ComponentModel;
 
 namespace ScottPlotCookbook.Recipes.Axis;
 
@@ -114,6 +115,48 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class RotatedTicksLongLabels : RecipeBase
+    {
+        public override string Name => "Rotated Tick with Long Labels";
+        public override string Description => "The axis size can be increased to " +
+            "accommodate rotated or long tick labels.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create a bar plot
+            double[] values = { 5, 10, 7, 13, 25, 60 };
+            myPlot.Add.Bars(values);
+            myPlot.Axes.Margins(bottom: 0);
+
+            // create a tick for each bar
+            Tick[] ticks =
+            {
+                new(0, "First Long Title"),
+                new(1, "Second Long Title"),
+                new(2, "Third Long Title"),
+                new(3, "Fourth Long Title"),
+                new(4, "Fifth Long Title"),
+                new(5, "Sixth Long Title")
+            };
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
+            myPlot.Axes.Bottom.TickLabelStyle.Rotation = 45;
+            myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+
+            // determine the width of the largest tick label
+            float largestLabelWidth = 0;
+            foreach (Tick tick in ticks)
+            {
+                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label);
+                largestLabelWidth = Math.Max(largestLabelWidth, size.Width);
+            }
+
+            // ensure axis panels do not get smaller than the largest label
+            myPlot.Axes.Bottom.MinimumSize = largestLabelWidth;
+            myPlot.Axes.Right.MinimumSize = largestLabelWidth;
+        }
+    }
+
     public class DisableGridLines : RecipeBase
     {
         public override string Name => "Disable Grid Lines";
@@ -125,8 +168,79 @@ public class CustomizingTicks : ICategory
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
 
-            ScottPlot.Grids.DefaultGrid grid = myPlot.GetDefaultGrid();
-            grid.MajorLineStyle.Width = 1; // TODO: demonstrate how to disable just vertical or horizontal grid lines
+            myPlot.Grid.XAxisStyle.IsVisible = true;
+            myPlot.Grid.YAxisStyle.IsVisible = false;
+        }
+    }
+
+    public class MinimumTickSpacing : RecipeBase
+    {
+        public override string Name => "Minimum Tick Spacing";
+        public override string Description =>
+            "Space between ticks can be increased by setting a value to indicate " +
+            "the minimum distance between tick labels (in pixels).";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.MinimumTickSpacing = 50;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.MinimumTickSpacing = 25;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
+    public class TickDensity : RecipeBase
+    {
+        public override string Name => "Tick Density";
+        public override string Description =>
+            "Tick density can be adjusted as a fraction of the default value. " +
+            "Unlike MinimumTickSpacing, this strategy is aware of the size of " +
+            "tick labels and adjusts accordingly.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.TickDensity = 0.2;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.TickDensity = 0.2;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
+        }
+    }
+
+    public class TickCount : RecipeBase
+    {
+        public override string Name => "Tick Count";
+        public override string Description =>
+            "A target number of ticks can be provided and the automatic " +
+            "tick generator will attempt to place that number of ticks. " +
+            "This strategy allows tick density to decrease as the image size increases.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenX = new();
+            tickGenX.TargetTickCount = 3;
+            myPlot.Axes.Bottom.TickGenerator = tickGenX;
+
+            ScottPlot.TickGenerators.NumericAutomatic tickGenY = new();
+            tickGenY.TargetTickCount = 3;
+            myPlot.Axes.Left.TickGenerator = tickGenY;
         }
     }
 
@@ -199,10 +313,9 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Left.TickGenerator = tickGen;
 
             // show grid lines for minor ticks
-            var grid = myPlot.GetDefaultGrid();
-            grid.MajorLineStyle.Color = Colors.Black.WithOpacity(.15);
-            grid.MinorLineStyle.Color = Colors.Black.WithOpacity(.05);
-            grid.MinorLineStyle.Width = 1;
+            myPlot.Grid.MajorLineColor = Colors.Black.WithOpacity(.15);
+            myPlot.Grid.MinorLineColor = Colors.Black.WithOpacity(.05);
+            myPlot.Grid.MinorLineWidth = 1;
         }
     }
 }

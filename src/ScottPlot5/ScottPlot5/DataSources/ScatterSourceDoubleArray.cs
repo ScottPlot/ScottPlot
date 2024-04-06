@@ -27,18 +27,12 @@ public class ScatterSourceDoubleArray : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        if (!Xs.Any())
-            return CoordinateRange.NotSet;
-
-        return new CoordinateRange(Xs.Min(), Xs.Max());
+        return CoordinateRange.MinMaxNan(Xs);
     }
 
     public CoordinateRange GetLimitsY()
     {
-        if (!Ys.Any())
-            return CoordinateRange.NotSet;
-
-        return new CoordinateRange(Ys.Min(), Ys.Max());
+        return CoordinateRange.MinMaxNan(Ys);
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)

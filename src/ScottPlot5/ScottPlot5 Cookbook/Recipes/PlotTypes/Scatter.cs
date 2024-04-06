@@ -78,6 +78,42 @@ public class Scatter : ICategory
         }
     }
 
+    public class ScatterLine : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Lines Only";
+        public override string Description => "The `ScatterLine()` method can be used " +
+            "to create a scatter plot with a line only (marker size is set to 0).";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] sin = Generate.Sin(51);
+            double[] cos = Generate.Cos(51);
+
+            myPlot.Add.ScatterLine(xs, sin);
+            myPlot.Add.ScatterLine(xs, cos);
+        }
+    }
+
+    public class ScatterPoints : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Points Only";
+        public override string Description => "The `ScatterPoints()` method can be used " +
+            "to create a scatter plot with markers only (line width is set to 0).";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] sin = Generate.Sin(51);
+            double[] cos = Generate.Cos(51);
+
+            myPlot.Add.ScatterPoints(xs, sin);
+            myPlot.Add.ScatterPoints(xs, cos);
+        }
+    }
+
     public class ScatterStyling : RecipeBase
     {
         public override string Name => "Scatter Plot Styling";
@@ -203,6 +239,35 @@ public class Scatter : ICategory
             sp3.Label = "StepVertical";
 
             myPlot.ShowLegend();
+        }
+    }
+
+    public class ScatterWithGaps : RecipeBase
+    {
+        public override string Name => "Scatter with Gaps";
+        public override string Description => "NaN values in a scatter plot's data " +
+            "will appear as gaps in the line.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            // long stretch of empty data
+            for (int i = 10; i < 20; i++)
+                ys[i] = double.NaN;
+
+            // single missing data point
+            ys[30] = double.NaN;
+
+            // single floating data point
+            for (int i = 35; i < 40; i++)
+                ys[i] = double.NaN;
+            for (int i = 40; i < 45; i++)
+                ys[i] = double.NaN;
+
+            myPlot.Add.Scatter(xs, ys);
         }
     }
 }

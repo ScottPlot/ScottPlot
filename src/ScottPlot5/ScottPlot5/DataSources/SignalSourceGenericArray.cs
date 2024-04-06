@@ -16,6 +16,19 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource
         return NumericConversion.GenericToDoubleArray(Ys);
     }
 
+    public IEnumerable<double> GetYs(int i1, int i2)
+    {
+        for (int i = i1; i <= i2; i++)
+        {
+            yield return NumericConversion.GenericToDouble(ref Ys[i]);
+        }
+    }
+
+    public double GetY(int index)
+    {
+        return NumericConversion.GenericToDouble(ref Ys[index]);
+    }
+
     public override SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
         double min = double.PositiveInfinity;

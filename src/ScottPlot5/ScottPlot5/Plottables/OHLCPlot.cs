@@ -9,6 +9,12 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
     private readonly IOHLCSource Data = data;
 
     /// <summary>
+    /// X position of each symbol is sourced from the OHLC's DateTime by default.
+    /// If this option is enabled, X position will be an ascending integers starting at 0 with no gaps.
+    /// </summary>
+    public bool Sequential { get; set; } = false;
+
+    /// <summary>
     /// Fractional width of the OHLC symbol relative to its time span
     /// </summary>
     public double SymbolWidth = .8;
@@ -27,7 +33,19 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-    public AxisLimits GetAxisLimits() => Data.GetLimits();
+    public AxisLimits GetAxisLimits()
+    {
+        if (Sequential)
+        {
+            CoordinateRange yLimits = Data.GetLimitsY();
+            CoordinateRange xLimits = new(0, Data.GetOHLCs().Count - 1);
+            return new AxisLimits(xLimits, yLimits);
+        }
+        else
+        {
+            return Data.GetLimits();
+        }
+    }
 
     public void Render(RenderPack rp)
     {
@@ -35,20 +53,33 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         using SKPath risingPath = new();
         using SKPath fallingPath = new();
 
-        foreach (OHLC ohlc in Data.GetOHLCs())
+        IList<OHLC> ohlcs = Data.GetOHLCs();
+        for (int i = 0; i < ohlcs.Count; i++)
         {
+            OHLC ohlc = ohlcs[i];
             bool isRising = ohlc.Close >= ohlc.Open;
             SKPath path = isRising ? risingPath : fallingPath;
 
-            float center = Axes.GetPixelX(ohlc.DateTime.ToNumber());
             float top = Axes.GetPixelY(ohlc.High);
             float bottom = Axes.GetPixelY(ohlc.Low);
 
-            TimeSpan halfWidth = new((long)(ohlc.TimeSpan.Ticks * SymbolWidth / 2));
-            DateTime leftTime = ohlc.DateTime - halfWidth;
-            DateTime rightTime = ohlc.DateTime + halfWidth;
-            float left = Axes.GetPixelX(leftTime.ToNumber());
-            float right = Axes.GetPixelX(rightTime.ToNumber());
+            float center, left, right;
+
+            if (Sequential == false)
+            {
+                center = Axes.GetPixelX(ohlc.DateTime.ToNumber());
+                TimeSpan halfWidth = new((long)(ohlc.TimeSpan.Ticks * SymbolWidth / 2));
+                DateTime leftTime = ohlc.DateTime - halfWidth;
+                DateTime rightTime = ohlc.DateTime + halfWidth;
+                left = Axes.GetPixelX(leftTime.ToNumber());
+                right = Axes.GetPixelX(rightTime.ToNumber());
+            }
+            else
+            {
+                center = Axes.GetPixelX(i);
+                left = Axes.GetPixelX(i - (float)SymbolWidth / 2);
+                right = Axes.GetPixelX(i + (float)SymbolWidth / 2);
+            }
 
             float open = Axes.GetPixelY(ohlc.Open);
             float close = Axes.GetPixelY(ohlc.Close);

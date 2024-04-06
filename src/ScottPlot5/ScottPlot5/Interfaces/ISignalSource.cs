@@ -48,15 +48,23 @@ public interface ISignalSource
     double GetX(int index);
 
     /// <summary>
+    /// Returns the Y position for a given index.
+    /// </summary>
+    double GetY(int index);
+
+    /// <summary>
     /// Return an object for working with all Y values.
     /// </summary>
-    IReadOnlyList<double> GetYs();
-    // NOTE: GetYs() is only called in low density mode to plot a few ploints
-    // TODO: Add min/max X arguments so large datasets are not copied
+    IReadOnlyList<double> GetYs(); // TODO: should this be IEnumerable?
 
-    public CoordinateRange GetLimitsX(); // TODO: struct
+    /// <summary>
+    /// Y values between a range of indexes (inclusive).
+    /// </summary>
+    IEnumerable<double> GetYs(int index1, int index2);
 
-    public CoordinateRange GetLimitsY(); // TODO: struct
+    public CoordinateRange GetLimitsX();
+
+    public CoordinateRange GetLimitsY();
 
     AxisLimits GetLimits();
 }

@@ -10,8 +10,8 @@ public class Styling : ICategory
     {
         public override string Name => "Style Helper Functions";
         public override string Description => "Plots contain many objects which can be customized individually " +
-            "by assigining to their public properties, but helper methods exist in the Plot's Style object " +
-            "that make it easier to customzie many items at once using a simpler API.";
+            "by assigning to their public properties, but helper methods exist in the Plot's Style object " +
+            "that make it easier to customize many items at once using a simpler API.";
 
         [Test]
         public override void Execute()
@@ -24,10 +24,13 @@ public class Styling : ICategory
             myPlot.Axes.Left.Label.Text = "Vertical Axis";
             myPlot.Axes.Title.Label.Text = "Plot Title";
 
-            // the Style object contains helper methods to easily style many items at once
-            myPlot.Style.Background(figure: Color.FromHex("#07263b"), data: Color.FromHex("#0b3049"));
-            myPlot.Style.ColorAxes(Color.FromHex("#a0acb5"));
-            myPlot.Style.ColorGrids(Color.FromHex("#0e3d54"));
+            // some items must be styled directly
+            myPlot.Grid.MajorLineColor = Color.FromHex("#0e3d54");
+            myPlot.FigureBackground.Color = Color.FromHex("#07263b");
+            myPlot.DataBackground.Color = Color.FromHex("#0b3049");
+
+            // the Style object contains helper methods to style many items at once
+            myPlot.Axes.Color(Color.FromHex("#a0acb5"));
         }
     }
 
@@ -63,7 +66,10 @@ public class Styling : ICategory
             myPlot.Axes.Bottom.MinorTickStyle.Length = 5;
             myPlot.Axes.Bottom.MinorTickStyle.Width = 0.5f;
             myPlot.Axes.Bottom.MinorTickStyle.Color = Colors.Green;
-            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.LightBlue;
+            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.Blue;
+            myPlot.Axes.Bottom.FrameLineStyle.Width = 3;
+
+            myPlot.Axes.Right.FrameLineStyle.Width = 0;
         }
     }
 
@@ -119,12 +125,16 @@ public class Styling : ICategory
         public override void Execute()
         {
             MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+            ScottPlot.Palettes.Category20 palette = new();
 
             for (int i = 0; i < markerShapes.Length; i++)
             {
                 var mp = myPlot.Add.Marker(x: i, y: 0);
                 mp.MarkerStyle.Shape = markerShapes[i];
                 mp.MarkerStyle.Size = 10;
+                mp.MarkerStyle.Outline.Width = 1.5f;
+                mp.MarkerStyle.Outline.Color = palette.GetColor(i);
+                mp.MarkerStyle.Fill.Color = palette.GetColor(i).WithAlpha(.5);
 
                 var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
                 txt.Label.Rotation = -90;
@@ -212,15 +222,13 @@ public class Styling : ICategory
             myPlot.ShowLegend();
 
             // change figure colors
-            myPlot.Style.ColorAxes(Color.FromHex("#d7d7d7"));
-            myPlot.Style.ColorGrids(Color.FromHex("#404040"));
-            myPlot.Style.Background(
-                figure: Color.FromHex("#181818"),
-                data: Color.FromHex("#1f1f1f"));
-            myPlot.Style.ColorLegend(
-                background: Color.FromHex("#404040"),
-                foreground: Color.FromHex("#d7d7d7"),
-                border: Color.FromHex("#d7d7d7"));
+            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
+            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
+            myPlot.FigureBackground.Color = Color.FromHex("#181818");
+            myPlot.DataBackground.Color = Color.FromHex("#1f1f1f");
+            myPlot.Legend.BackgroundFill.Color = Color.FromHex("#404040");
+            myPlot.Legend.Font.Color = Color.FromHex("#d7d7d7");
+            myPlot.Legend.OutlineStyle.Color = Color.FromHex("#d7d7d7");
         }
     }
 }

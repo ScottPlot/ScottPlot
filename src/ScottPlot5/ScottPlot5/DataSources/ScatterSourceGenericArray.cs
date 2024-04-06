@@ -30,22 +30,14 @@ public class ScatterSourceGenericArray<T1, T2> : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        if (Xs.Length == 0)
-            return CoordinateRange.NotSet;
-
         double[] values = NumericConversion.GenericToDoubleArray(Xs);
-
-        return new CoordinateRange(values.Min(), values.Max());
+        return CoordinateRange.MinMaxNan(values);
     }
 
     public CoordinateRange GetLimitsY()
     {
-        if (Ys.Length == 0)
-            return CoordinateRange.NotSet;
-
         double[] values = NumericConversion.GenericToDoubleArray(Ys);
-
-        return new CoordinateRange(values.Min(), values.Max());
+        return CoordinateRange.MinMaxNan(values);
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)

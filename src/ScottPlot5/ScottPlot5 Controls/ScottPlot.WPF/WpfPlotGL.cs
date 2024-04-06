@@ -47,6 +47,12 @@ public class WpfPlotGL : WpfPlotBase
 
     public override void Refresh()
     {
+        if (!CheckAccess())
+        {
+            Dispatcher.BeginInvoke(Refresh);
+            return;
+        }
+
         SKElement?.InvalidateVisual();
     }
 

@@ -1,4 +1,5 @@
-﻿namespace ScottPlot.Rendering;
+﻿
+namespace ScottPlot.Rendering;
 
 public class RenderManager(Plot plot)
 {
@@ -17,6 +18,7 @@ public class RenderManager(Plot plot)
     /// These events are invoked before any render action.
     /// Users can add blocking code to this event to ensure processes
     /// that modify plottables are complete before rendering begins.
+    /// Alternatively, lock the <see cref="Plot.Sync"/> object.
     /// </summary>
     public EventHandler PreRenderLock { get; set; } = delegate { };
 
@@ -37,7 +39,8 @@ public class RenderManager(Plot plot)
     public EventHandler<RenderDetails> SizeChanged { get; set; } = delegate { };
 
     /// <summary>
-    /// This event a render where the axis limits (in coordinate units) changed from the previous render
+    /// This event is invoked during a render where the axis limits (in coordinate units) changed from the previous render
+    /// This event occurs after render actions are performed.
     /// </summary>
     public EventHandler<RenderDetails> AxisLimitsChanged { get; set; } = delegate { };
 
@@ -45,12 +48,6 @@ public class RenderManager(Plot plot)
     /// Indicates whether this plot is in the process of executing a render
     /// </summary>
     public bool IsRendering { get; private set; } = false;
-
-    /// <summary>
-    /// Disable this in multiplot environments
-    /// </summary>
-    public bool ClearCanvasBeforeRendering { get; set; } = true;
-
 
     /// <summary>
     /// If false, any calls to Render() return immediately
@@ -70,6 +67,7 @@ public class RenderManager(Plot plot)
     {
         new RenderActions.PreRenderLock(),
         new RenderActions.ClearCanvas(),
+        new RenderActions.RenderFigureBackground(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
         new RenderActions.ExecutePlottableAxisManagers(),
@@ -78,7 +76,7 @@ public class RenderManager(Plot plot)
         new RenderActions.ApplyAxisRulesAfterLayout(),
         new RenderActions.RegenerateTicks(),
         new RenderActions.RenderStartingEvent(),
-        new RenderActions.RenderBackground(),
+        new RenderActions.RenderDataBackground(),
         new RenderActions.RenderGridsBelowPlottables(),
         new RenderActions.RenderPlottables(),
         new RenderActions.RenderGridsAbovePlottables(),
@@ -96,8 +94,9 @@ public class RenderManager(Plot plot)
             return;
 
         IsRendering = true;
-        canvas.Scale(Plot.ScaleFactor);
+        canvas.Scale(Plot.ScaleFactorF);
 
+        // TODO: make this an object
         List<(string, TimeSpan)> actionTimes = new();
 
         RenderPack rp = new(Plot, rect, canvas);
@@ -105,19 +104,17 @@ public class RenderManager(Plot plot)
         Stopwatch sw = new();
         foreach (IRenderAction action in RenderActions)
         {
-            if ((action is RenderActions.ClearCanvas) && (!ClearCanvasBeforeRendering))
-            {
-                continue;
-            }
-
             sw.Restart();
-            rp.Canvas.Save();
+            rp.CanvasState.Save();
             action.Render(rp);
-            rp.Canvas.Restore();
+            rp.CanvasState.RestoreAll();
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
-        LastRender = new(rp, actionTimes.ToArray(), LastRender);
+        RenderDetails thisRenderDetails = new(rp, actionTimes.ToArray(), LastRender);
+        LastRender = thisRenderDetails;
+        RenderCount += 1;
+        IsRendering = false;
 
         if (EnableEvents)
         {
@@ -133,11 +130,6 @@ public class RenderManager(Plot plot)
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
         }
-
         // TODO: event for when layout changes
-
-        RenderCount += 1;
-
-        IsRendering = false;
     }
 }

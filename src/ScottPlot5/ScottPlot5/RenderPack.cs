@@ -1,8 +1,14 @@
 ﻿namespace ScottPlot;
 
+/// <summary>
+/// This object pairs a Plot with pixel/canvas information
+/// and is passed throughout the render system to provide
+/// screen and canvas information to methods performing rendering.
+/// </summary>
 public class RenderPack
 {
     public SKCanvas Canvas { get; }
+    public CanvasState CanvasState { get; }
     public PixelRect FigureRect { get; }
     public PixelRect DataRect { get; private set; }
     public Layout Layout { get; private set; }
@@ -17,6 +23,7 @@ public class RenderPack
     public RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas)
     {
         Canvas = canvas;
+        CanvasState = new(canvas);
         FigureRect = figureRect;
         Plot = plot;
         Stopwatch = Stopwatch.StartNew();
@@ -28,10 +35,10 @@ public class RenderPack
             throw new InvalidOperationException("DataRect must only be calculated once per render");
 
         PixelRect scaledRect = new(
-            left: FigureRect.Left / Plot.ScaleFactor,
-            right: FigureRect.Right / Plot.ScaleFactor,
-            bottom: FigureRect.Bottom / Plot.ScaleFactor,
-            top: FigureRect.Top / Plot.ScaleFactor);
+            left: FigureRect.Left / Plot.ScaleFactorF,
+            right: FigureRect.Right / Plot.ScaleFactorF,
+            bottom: FigureRect.Bottom / Plot.ScaleFactorF,
+            top: FigureRect.Top / Plot.ScaleFactorF);
 
         Layout = Plot.Layout.LayoutEngine.GetLayout(scaledRect, Plot.Axes.GetPanels());
         DataRect = Layout.DataRect;
@@ -42,13 +49,15 @@ public class RenderPack
         return $"RenderPack FigureRect={FigureRect} DataRect={DataRect}";
     }
 
+    [Obsolete("Call CanvasState.Clip() instead", true)]
     public void ClipToDataArea()
     {
-        Canvas.ClipRect(DataRect.ToSKRect());
+        CanvasState.Clip(DataRect);
     }
 
+    [Obsolete("Call CanvasState.DisableClipping() instead", true)]
     public void DisableClipping()
     {
-        Canvas.Restore();
+        CanvasState.DisableClipping();
     }
 }

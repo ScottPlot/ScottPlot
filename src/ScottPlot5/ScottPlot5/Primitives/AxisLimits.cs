@@ -82,6 +82,13 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         return $"AxisLimits: X=[{Rect.Left}, {Rect.Right}], Y=[{Rect.Bottom}, {Rect.Top}]";
     }
 
+    public string ToString(int digits)
+    {
+        return $"AxisLimits: " +
+            $"X=[{Math.Round(Rect.Left, digits)}, {Math.Round(Rect.Right, digits)}], " +
+            $"Y=[{Math.Round(Rect.Bottom, digits)}, {Math.Round(Rect.Top, digits)}]";
+    }
+
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
     public static AxisLimits VerticalOnly(double yMin, double yMax) => new(double.NaN, double.NaN, yMin, yMax);

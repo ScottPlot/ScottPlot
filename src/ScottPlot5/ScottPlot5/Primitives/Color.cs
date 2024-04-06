@@ -1,5 +1,20 @@
 ﻿namespace ScottPlot;
 
+internal static class ColorByteExtensions
+{
+    static public byte Lighten(this byte color, double fraction)
+    {
+        var fColor = color + (255 - color) * fraction;
+        return (byte)Math.Min(Math.Max(fColor, 0), 255);
+    }
+
+    static public byte Darken(this byte color, double fraction)
+    {
+        var fColor = color * fraction;
+        return (byte)Math.Min(Math.Max(fColor, 0), 255);
+    }
+}
+
 public readonly struct Color
 {
     public readonly byte Red;
@@ -22,6 +37,11 @@ public readonly struct Color
                 (uint)Green << 8 |
                 (uint)Blue << 0;
         }
+    }
+
+    public override string ToString()
+    {
+        return $"Color R={R}, G={G}, B={B}, A={A}";
     }
 
     public Color(byte red, byte green, byte blue, byte alpha = 255)
@@ -146,53 +166,44 @@ public readonly struct Color
 
     public (float h, float s, float l) ToHSL()
     {
-        // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
+        // Converter adapted from http://en.wikipedia.org/wiki/HSL_color_space
+        float r = Red / 255f;
+        float g = Green / 255f;
+        float b = Blue / 255f;
 
-        float v = Math.Max(Red, Green);
-        v = Math.Max(v, Blue);
-
-        float m = Math.Min(Red, Green);
-        m = Math.Min(m, Blue);
+        float max = Math.Max(Math.Max(r, g), b);
+        float min = Math.Min(Math.Min(r, g), b);
 
         float h, s, l;
-        l = (m + v) / 2.0f;
+        l = (min + max) / 2.0f;
         if (l <= 0.0)
         {
             return (0, 0, 0);
         }
 
-        float vm = v - m;
-        s = vm;
+        float delta = max - min;
+        s = delta;
         if (s <= 0.0)
         {
             return (0, 0, l);
         }
 
-        s /= l <= 0.5f ? v + m : 2.0f - v - m;
+        s = (l > 0.5f) ? delta / (2.0f - delta) : delta / (max + min);
 
-        float r2 = (v - Red) / vm;
-        float g2 = (v - Green) / vm;
-        float b2 = (v - Blue) / vm;
+        if (r > g && r > b)
+            h = (g - b) / delta + (g < b ? 6.0f : 0.0f);
 
-        if (Red == v)
-        {
-            h = Green == m ? 5.0f + b2 : 1.0f - g2;
-        }
-        else if (Green == v)
-        {
-            h = Blue == m ? 1.0f + r2 : 3.0f - b2;
-        }
+        else if (g > b)
+            h = (b - r) / delta + 2.0f;
+
         else
-        {
-            h = Red == m ? 3.0f + g2 : 5.0f - r2;
-        }
+            h = (r - g) / delta + 4.0f;
 
         h /= 6.0f;
-
         return (h, s, l);
     }
 
-    public static Color FromHSL(float hue, float saturation, float luminosity)
+    public static Color FromHSL(float hue, float saturation, float luminosity, float alpha = 1)
     {
         // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
 
@@ -226,24 +237,101 @@ public readonly struct Color
                 clr[i] = temp1;
         }
 
-        return new Color(clr[0], clr[1], clr[2]);
+        return new Color(clr[0], clr[1], clr[2], alpha);
     }
 
     public Color WithLightness(float lightness = .5f)
     {
-        (float h, float s, float l) = ToHSL();
-        return FromHSL(h, s, lightness);
+        (float h, float s, float _) = ToHSL();
+        return FromHSL(h, s, Math.Min(Math.Max(lightness, 0f), 1f));
     }
 
-    public Color Lighten(float fraction = .5f)
+    /// <summary>
+    /// Amount to lighten the color (from 0-1).
+    /// Larger numbers produce lighter results.
+    /// </summary>
+    public Color Lighten(double fraction = .5f)
     {
-        (float h, float s, float l) = ToHSL();
-        return FromHSL(h, s, l + (1 - l) * fraction);
+        if (fraction < 0)
+            return Darken(-fraction);
+        fraction = Math.Min(1f, fraction);
+        return new Color(R.Lighten(fraction), G.Lighten(fraction), B.Lighten(fraction), Alpha);
     }
 
-    public Color Darken(float fraction = .5f)
+    /// <summary>
+    /// Amount to darken the color (from 0-1).
+    /// Larger numbers produce darker results.
+    /// </summary>
+    public Color Darken(double fraction = .5f)
     {
-        (float h, float s, float l) = ToHSL();
-        return FromHSL(h, s, l * fraction);
+        if (fraction < 0)
+            return Lighten(-fraction);
+        fraction = Math.Max(0f, 1f - fraction);
+        return new Color(R.Darken(fraction), G.Darken(fraction), B.Darken(fraction), Alpha);
+    }
+
+    /// <summary>
+    /// Return this color mixed with another color.
+    /// </summary>
+    /// <param name="otherColor">Color to mix with this color</param>
+    /// <param name="fraction">Fraction of <paramref name="otherColor"/> to use</param>
+    /// <returns></returns>
+    public Color MixedWith(Color otherColor, double fraction)
+    {
+        return InterpolateRgb(otherColor, fraction);
+    }
+
+    public Color InterpolateRgb(Color c1, double factor)
+    {
+        return InterpolateRgb(this, c1, factor);
+    }
+
+    public Color[] InterpolateArrayRgb(Color c1, int steps)
+    {
+        return InterpolateRgbArray(this, c1, steps);
+    }
+
+    static byte InterpolateRgb(byte b1, byte b2, double factor)
+    {
+        if (b1 < b2)
+            return Math.Min(Math.Max((byte)(b1 + (b2 - b1) * factor), (byte)0), (byte)255);
+        else
+            return Math.Min(Math.Max((byte)(b2 + (b1 - b2) * (1 - factor)), (byte)0), (byte)255);
+    }
+
+    static public Color InterpolateRgb(Color c1, Color c2, double factor)
+    {
+        return new Color(
+            InterpolateRgb(c1.R, c2.R, factor),
+            InterpolateRgb(c1.G, c2.G, factor),
+            InterpolateRgb(c1.B, c2.B, factor),
+            InterpolateRgb(c1.A, c2.A, factor)
+            );
+    }
+
+    static public Color[] InterpolateRgbArray(Color c1, Color c2, int steps)
+    {
+        var stepFactor = 1.0 / (steps - 1);
+        var array = new Color[steps];
+        for (var i = 0; i < steps; ++i)
+        {
+            array[i] = InterpolateRgb(c1, c2, stepFactor * i);
+        }
+        return array;
+    }
+
+    public uint PremultipliedARGB
+    {
+        get
+        {
+            byte premultipliedRed = (byte)((Red * Alpha) / 255);
+            byte premultipliedGreen = (byte)((Green * Alpha) / 255);
+            byte premultipliedBlue = (byte)((Blue * Alpha) / 255);
+            return
+                ((uint)Alpha << 24) |
+                ((uint)premultipliedRed << 16) |
+                ((uint)premultipliedGreen << 8) |
+                ((uint)premultipliedBlue << 0);
+        }
     }
 }

@@ -39,10 +39,18 @@ public class Internationalization : ICategory
         [Test]
         public override void Execute()
         {
+            var sig1 = myPlot.Add.Signal(Generate.Sin());
+            var sig2 = myPlot.Add.Signal(Generate.Cos());
+
+            sig1.Label = "测试"; // Chinese
+            sig2.Label = "테스트"; // Korean
+            myPlot.ShowLegend();
+
             myPlot.Title("测试"); // Chinese
             myPlot.YLabel("試験"); // Japanese
             myPlot.XLabel("테스트"); // Korean
-            myPlot.Style.SetBestFonts();
+
+            myPlot.Font.Automatic(); // set font for each item based on its content
         }
     }
 }

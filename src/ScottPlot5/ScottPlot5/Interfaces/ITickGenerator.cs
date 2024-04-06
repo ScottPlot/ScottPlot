@@ -3,18 +3,19 @@
 public interface ITickGenerator
 {
     /// <summary>
-    /// Ticks to display the next time the axis is rendered
+    /// Ticks to display the next time the axis is rendered.
+    /// This array and its contents should not be modified directly.
+    /// Call <see cref="Regenerate(CoordinateRange, Edge, PixelLength, SKPaint)"/> to update this array.
     /// </summary>
-    Tick[] Ticks { get; set; }
+    Tick[] Ticks { get; }
 
     /// <summary>
-    /// Do not automatically generate more ticks than this
+    /// Do not generate more than this number of ticks
     /// </summary>
     int MaxTickCount { get; set; }
 
     /// <summary>
-    /// Logic for generating ticks automatically.
-    /// Generated ticks are stored in <see cref="Ticks"/>.
+    /// Generate ticks based on the current settings and store the result in <see cref="Ticks"/>
     /// </summary>
     void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint);
 }

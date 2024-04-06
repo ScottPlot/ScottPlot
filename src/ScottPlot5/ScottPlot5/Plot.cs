@@ -1,8 +1,11 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Control;
+using ScottPlot.Grids;
 using ScottPlot.Legends;
+using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ScottPlot;
 
@@ -13,24 +16,38 @@ public class Plot : IDisposable
     public RenderManager RenderManager { get; }
     public RenderDetails LastRender => RenderManager.LastRender;
     public LayoutManager Layout { get; private set; }
-    public Color FigureBackground { get; set; } = Colors.White;
-    public Color DataBackground { get; set; } = Colors.White;
+
+    public BackgroundStyle FigureBackground = new() { Color = Colors.White };
+    public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
+
     public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
-    public float ScaleFactor { get; set; } = 1.0f;
+    public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
+    internal float ScaleFactorF = 1.0f;
 
     public AxisManager Axes { get; }
 
     public PlotStyler Style { get; }
+    public FontStyler Font { get; }
 
     public Legend Legend { get; set; }
 
+    public DefaultGrid Grid => Axes.DefaultGrid;
+
     public IPlottable Benchmark { get; set; } = new Plottables.Benchmark();
+
+    /// <summary>
+    /// This object is locked by the Render() methods.
+    /// Logic that manipulates the plot (UI inputs or editing data)
+    /// can lock this object to prevent rendering artifacts.
+    /// </summary>
+    public object Sync { get; } = new();
 
     public Plot()
     {
         Axes = new(this);
         Add = new(this);
         Style = new(this);
+        Font = new(this);
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
@@ -38,81 +55,12 @@ public class Plot : IDisposable
 
     public void Dispose()
     {
+        DataBackground?.Dispose();
+        FigureBackground?.Dispose();
         PlottableList.Clear();
-        Axes.Clear();
     }
 
-    #region Mouse Interaction
-
-    /// <summary>
-    /// Apply a click-drag pan operation to the plot
-    /// </summary>
-    public void MousePan(MultiAxisLimitManager originalLimits, Pixel mouseDown, Pixel mouseNow)
-    {
-        float pixelDeltaX = -(mouseNow.X - mouseDown.X);
-        float pixelDeltaY = mouseNow.Y - mouseDown.Y;
-
-        float scaledDeltaX = pixelDeltaX / ScaleFactor;
-        float scaledDeltaY = pixelDeltaY / ScaleFactor;
-
-        // restore mousedown limits
-        originalLimits.Apply(this);
-
-        // pan in the direction opposite of the mouse movement
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, RenderManager.LastRender.DataRect.Width));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, RenderManager.LastRender.DataRect.Height));
-    }
-
-    /// <summary>
-    /// Apply a click-drag zoom operation to the plot
-    /// </summary>
-    public void MouseZoom(MultiAxisLimitManager originalLimits, Pixel mouseDown, Pixel mouseNow)
-    {
-        float pixelDeltaX = mouseNow.X - mouseDown.X;
-        float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);
-
-        // restore mousedown limits
-        originalLimits.Apply(this);
-
-        // apply zoom for each axis
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, RenderManager.LastRender.DataRect.Width));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, RenderManager.LastRender.DataRect.Height));
-    }
-
-    /// <summary>
-    /// Zoom into the coordinate corresponding to the given pixel.
-    /// Fractional values >1 zoom in and <1 zoom out.
-    /// </summary>
-    public void MouseZoom(double fracX, double fracY, Pixel pixel)
-    {
-        Coordinates mouseCoordinate = GetCoordinates(pixel);
-
-        MultiAxisLimitManager originalLimits = new(this);
-
-        // restore mousedown limits
-        originalLimits.Apply(this);
-
-        // apply zoom for each axis
-        Pixel scaledPixel = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
-        Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, RenderManager.LastRender.DataRect)));
-        Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, RenderManager.LastRender.DataRect)));
-    }
-
-    /// <summary>
-    /// Update the shape of the zoom rectangle
-    /// </summary>
-    /// <param name="mouseDown">Location of the mouse at the start of the drag</param>
-    /// <param name="mouseNow">Location of the mouse now (after dragging)</param>
-    /// <param name="vSpan">If true, shade the full region between two X positions</param>
-    /// <param name="hSpan">If true, shade the full region between two Y positions</param>
-    public void MouseZoomRectangle(Pixel mouseDown, Pixel mouseNow, bool vSpan, bool hSpan)
-    {
-        Pixel scaledMouseDown = new(mouseDown.X / ScaleFactor, mouseDown.Y / ScaleFactor);
-        Pixel scaledMouseNow = new(mouseNow.X / ScaleFactor, mouseNow.Y / ScaleFactor);
-        ZoomRectangle.Update(scaledMouseDown, scaledMouseNow);
-        ZoomRectangle.VerticalSpan = vSpan;
-        ZoomRectangle.HorizontalSpan = hSpan;
-    }
+    #region Pixel/Coordinate Conversion
 
     /// <summary>
     /// Return the location on the screen (pixel) for a location on the plot (coordinates) on the default axes.
@@ -131,8 +79,8 @@ public class Plot : IDisposable
 
         if (ScaleFactor != 1)
         {
-            xPixel *= ScaleFactor;
-            yPixel *= ScaleFactor;
+            xPixel *= ScaleFactorF;
+            yPixel *= ScaleFactorF;
         }
 
         return new Pixel(xPixel, yPixel);
@@ -160,54 +108,114 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
+    /// <param name="x">Center point pixel's x</param>
+    /// <param name="y">Center point pixel's y</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10)
+    public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
+        float leftPx = (x - radius);
+        float rightPx = (x + radius);
+        float topPx = (y - radius);
+        float bottomPx = (y + radius);
+
+        if (ScaleFactor != 1)
+        {
+            leftPx /= ScaleFactorF;
+            rightPx /= ScaleFactorF;
+            topPx /= ScaleFactorF;
+            bottomPx /= ScaleFactorF;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = Axes.Bottom.GetCoordinate(x - radius, dataRect);
-        double right = Axes.Bottom.GetCoordinate(x + radius, dataRect);
-        double top = Axes.Left.GetCoordinate(y - radius, dataRect);
-        double bottom = Axes.Left.GetCoordinate(y + radius, dataRect);
+        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
         return new CoordinateRect(left, right, bottom, top);
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a pixel.  Uses measurements
+    /// from the most recent render.
+    /// <param name="pixel">Center point pixel</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10)
+    public CoordinateRect GetCoordinateRect(Pixel pixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        return GetCoordinateRect(pixel.X, pixel.Y, radius);
+        return GetCoordinateRect(pixel.X, pixel.Y, radius, xAxis, yAxis);
     }
 
     /// <summary>
-    /// Return a coordinate rectangle centered at a pixel
+    /// Return a coordinate rectangle centered at a coordinate pair with the
+    /// radius specified in pixels.  Uses measurements from the most recent
+    /// render.
+    /// <param name="coordinates">Center point in coordinate units</param>
+    /// <param name="radius">Radius in pixels</param>
+    /// <returns>The coordinate rectangle</returns>
     /// </summary>
-    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10)
+    public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
+        if (ScaleFactor != 1)
+        {
+            radius /= ScaleFactorF;
+        }
+
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double radiusX = Axes.Bottom.GetCoordinateDistance(radius, dataRect);
-        double radiusY = Axes.Left.GetCoordinateDistance(radius, dataRect);
+        double radiusX = (xAxis ?? Axes.Bottom).GetCoordinateDistance(radius, dataRect);
+        double radiusY = (yAxis ?? Axes.Left).GetCoordinateDistance(radius, dataRect);
         return coordinates.ToRect(radiusX, radiusY);
+    }
+
+    /// <summary>
+    /// Get the axis under a given pixel
+    /// </summary>
+    /// <param name="pixel">Point</param>
+    /// <returns>The axis at <paramref name="pixel" /> (or null)</returns>
+    public IAxis? GetAxis(Pixel pixel)
+    {
+        IPanel? panel = GetPanel(pixel, axesOnly: true);
+        return panel is IAxis axis ? axis : null;
+    }
+
+    /// <summary>
+    /// Get the panel under a given pixel
+    /// </summary>
+    /// <param name="pixel">Point</param>
+    /// <returns>The panel at <paramref name="pixel" /> (or null)</returns>
+    public IPanel? GetPanel(Pixel pixel, bool axesOnly)
+    {
+        PixelRect dataRect = RenderManager.LastRender.Layout.DataRect;
+
+        // Reverse here so the "highest" axis is returned in the case some overlap.
+        var panels = axesOnly
+            ? Axes.GetPanels().Reverse().OfType<IAxis>()
+            : Axes.GetPanels().Reverse();
+
+        foreach (IPanel panel in panels)
+        {
+            float axisPanelSize = RenderManager.LastRender.Layout.PanelSizes[panel];
+            float axisPanelOffset = RenderManager.LastRender.Layout.PanelOffsets[panel];
+            PixelRect axisRect = panel.GetPanelRect(dataRect, axisPanelSize, axisPanelOffset);
+            if (axisRect.Contains(pixel))
+            {
+                return panel;
+            }
+        }
+
+        return null;
     }
 
     #endregion
 
     #region Rendering and Image Creation
 
-    /// <summary>
-    /// Force the plot to render once by calling <see cref="GetImage(int, int)"/> but don't return what was rendered.
-    /// </summary>
-    public void Render(int width = 400, int height = 300)
-    {
-        if (width < 1)
-            throw new ArgumentException($"{nameof(width)} must be greater than 0");
-
-        if (height < 1)
-            throw new ArgumentException($"{nameof(height)} must be greater than 0");
-
-        GetImage(width, height);
-    }
+    [Obsolete("Call GetImage() to create a new image, or Render() to render onto an existing canvas.", true)]
+    public void Render(int width = 400, int height = 300) { }
 
     /// <summary>
     /// Render onto an existing canvas
@@ -216,7 +224,7 @@ public class Plot : IDisposable
     {
         // TODO: obsolete this
         PixelRect rect = new(0, width, height, 0);
-        RenderManager.Render(canvas, rect);
+        Render(canvas, rect);
     }
 
     /// <summary>
@@ -224,7 +232,10 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, PixelRect rect)
     {
-        RenderManager.Render(canvas, rect);
+        lock (Sync)
+        {
+            RenderManager.Render(canvas, rect);
+        }
     }
 
     public Image GetImage(int width, int height)
@@ -241,7 +252,7 @@ public class Plot : IDisposable
             throw new NullReferenceException($"invalid SKImageInfo");
 
         Render(surface.Canvas, width, height);
-        return new(surface.Snapshot());
+        return new Image(surface);
     }
 
     /// <summary>
@@ -312,12 +323,12 @@ public class Plot : IDisposable
     /// <summary>
     /// Returns the content of the legend as a raster image
     /// </summary>
-    public Image GetLegendImage() => Legend.GetImage(this);
+    public Image GetLegendImage() => Legend.GetImage();
 
     /// <summary>
     /// Returns the content of the legend as SVG (vector) image
     /// </summary>
-    public string GetLegendSvgXml() => Legend.GetSvgXml(this);
+    public string GetLegendSvgXml() => Legend.GetSvgXml();
 
     #endregion
 
@@ -348,6 +359,22 @@ public class Plot : IDisposable
         {
             PlottableList.Remove(plottable);
         }
+    }
+
+    /// <summary>
+    /// Remove the given Panel from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IPanel panel)
+    {
+        Axes.Remove(panel);
+    }
+
+    /// <summary>
+    /// Remove the given Axis from the <see cref="Axes"/>.
+    /// </summary>
+    public void Remove(IAxis axis)
+    {
+        Axes.Remove(axis);
     }
 
     /// <summary>
@@ -389,7 +416,7 @@ public class Plot : IDisposable
     /// </summary>
     public void HideGrid()
     {
-        Axes.Grids.ForEach(x => x.IsVisible = false);
+        Axes.AllGrids.ForEach(x => x.IsVisible = false);
     }
 
     /// <summary>
@@ -397,13 +424,22 @@ public class Plot : IDisposable
     /// </summary>
     public void ShowGrid()
     {
-        Axes.Grids.ForEach(x => x.IsVisible = true);
+        Axes.AllGrids.ForEach(x => x.IsVisible = true);
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void ShowLegend(Alignment location = Alignment.LowerRight)
+    public void ShowLegend()
+    {
+        Legend.IsVisible = true;
+    }
+
+    /// <summary>
+    /// Helper method for setting visibility of the <see cref="Legend"/>
+    /// and setting <see cref="Legend.Location"/> to the provided one.
+    /// </summary>
+    public void ShowLegend(Alignment location)
     {
         Legend.IsVisible = true;
         Legend.Location = location;
@@ -466,18 +502,8 @@ public class Plot : IDisposable
             Axes.Left.Label.FontSize = size.Value;
     }
 
-    /// <summary>
-    /// Return the first default grid in use.
-    /// Throws an exception if no default grids exist.
-    /// </summary>
-    public Grids.DefaultGrid GetDefaultGrid()
-    {
-        IEnumerable<Grids.DefaultGrid> defaultGrids = Axes.Grids.OfType<Grids.DefaultGrid>();
-        if (defaultGrids.Any())
-            return defaultGrids.First();
-        else
-            throw new InvalidOperationException("The plot has no default grids");
-    }
+    [Obsolete("This method is deprecated. Access Plot.Grid instead.", true)]
+    public static DefaultGrid GetDefaultGrid() => null!;
 
     #endregion
 

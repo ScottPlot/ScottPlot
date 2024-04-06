@@ -28,6 +28,9 @@ public class Markers(IScatterSource data) : IPlottable
 
     public void Render(RenderPack rp)
     {
+        if (this.MarkerStyle == MarkerStyle.None)
+            return;
+
         // TODO: can this be more effecient by moving this logic into the DataSource to avoid copying?
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 

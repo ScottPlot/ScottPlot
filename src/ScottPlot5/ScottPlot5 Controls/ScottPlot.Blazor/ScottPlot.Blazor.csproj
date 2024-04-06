@@ -10,7 +10,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Blazor</PackageId>
-        <Version>5.0.21</Version>
+        <Version>5.0.23</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -20,16 +20,19 @@
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ScottPlot/ScottPlot.git</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <DebugType>portable</DebugType>
         <IncludeSymbols>true</IncludeSymbols>
         <IncludeSource>true</IncludeSource>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
         <!--- SourceLink configuration -->
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
-        <!-- ignore warnings about OpenTK.GLControl restored using .NET Framework 4.6.1 -->
-        <NoWarn>NU1701</NoWarn>
+        <NoWarn>NU1701, CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
+        
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->

@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using ScottPlot.Extensions;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -30,6 +32,12 @@ public static class Drawing
         return new PixelSize(width, height);
     }
 
+    public static (string text, PixelLength width) MeasureWidestString(string[] strings)
+    {
+        using SKPaint paint = new();
+        return MeasureWidestString(strings, paint);
+    }
+
     public static (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaint paint)
     {
         float maxWidth = 0;
@@ -48,7 +56,7 @@ public static class Drawing
         return (maxText, maxWidth);
     }
 
-    public static (string text, PixelLength width) MeasureHighestString(string[] strings, SKPaint paint)
+    public static (string text, float height) MeasureHighestString(string[] strings, SKPaint paint)
     {
         float maxHeight = 0;
         string maxText = string.Empty;
@@ -138,7 +146,7 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         LineStyle ls = new()
         {
@@ -151,38 +159,53 @@ public static class Drawing
         DrawLines(canvas, paint, pixels, ls);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count() < 2)
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count < 2)
             return;
 
         lineStyle.ApplyToPaint(paint);
 
         using SKPath path = new();
 
-        path.MoveTo(pixels.First().ToSKPoint());
+        bool move = true;
 
-        foreach (var pixel in pixels.Skip(1))
+        foreach (var pixel in pixels)
         {
-            path.LineTo(pixel.ToSKPoint());
+            if (float.IsNaN(pixel.X) || float.IsNaN(pixel.Y))
+            {
+                move = true;
+            }
+            else if (move)
+            {
+                path.MoveTo(pixel.ToSKPoint());
+                move = false;
+            }
+            else
+            {
+                path.LineTo(pixel.ToSKPoint());
+            }
         }
 
         canvas.DrawPath(path, paint);
     }
 
-    public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
     {
         fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void Fillectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
     {
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void Fillectangle(SKCanvas canvas, PixelRect rect, Color color)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
+        if (color == Colors.Transparent)
+            return;
+
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
@@ -206,6 +229,9 @@ public static class Drawing
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
     {
+        if (color == Colors.Transparent || lineWidth == 0)
+            return;
+
         using SKPaint paint = new()
         {
             Color = color.ToSKColor(),
@@ -250,23 +276,38 @@ public static class Drawing
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
+    public static void DrawOval(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect)
+    {
+        if (lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+            return;
+
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawOval(rect.ToSKRect(), paint);
+    }
+
+    public static void FillOval(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect)
+    {
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawOval(rect.ToSKRect(), paint);
+    }
+
     public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
     {
         if (!style.IsVisible)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-
+        renderer.LineWidth = style.Outline.Width;
         renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        if (!style.IsVisible)
+        if (!style.CanBeRendered)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-
+        renderer.LineWidth = style.Outline.Width;
         foreach (Pixel pixel in pixels)
         {
             renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
@@ -302,7 +343,7 @@ public static class Drawing
         // See https://learn.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/effects/color-filters
         // for an explanation of this matrix
         // 
-        // Essentially, this matrix maps all gray colours to a line from `background.Value` to `foreground`.
+        // Essentially, this matrix maps all gray colors to a line from `background.Value` to `foreground`.
         // Black and white are at the extremes on this line, 
         // so they get mapped to `background.Value` and `foreground` respectively
         var mat = new float[] {
@@ -329,8 +370,11 @@ public static class Drawing
 
     public static void SavePng(SKSurface surface, string filename)
     {
-        using SKImage skimg = surface.Snapshot();
-        Image img = new(skimg);
-        img.SavePng(filename);
+        new Image(surface).SavePng(filename);
+    }
+
+    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, SKPaint paint, bool antiAlias = true)
+    {
+        image.Render(canvas, target, paint, antiAlias);
     }
 }

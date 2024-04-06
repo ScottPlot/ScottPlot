@@ -14,26 +14,25 @@ public abstract class XAxisBase : AxisBase, IAxis
         if (!IsVisible)
             return 0;
 
-        float largestTickSize = MeasureTicks();
-        float largestTickLabelSize = Label.Measure().Height;
-        float spaceBetweenTicksAndAxisLabel = 15;
-        return largestTickSize + largestTickLabelSize + spaceBetweenTicksAndAxisLabel;
-    }
-
-    private float MeasureTicks()
-    {
         using SKPaint paint = new();
+
+        float tickHeight = MajorTickStyle.Length;
+
         TickLabelStyle.ApplyToPaint(paint);
+        float lineHeight = paint.FontSpacing;
+        int numberOfLines = TickGenerator.Ticks.Select(x => x.Label).Select(x => x.Split('\n').Length).FirstOrDefault();
+        float tickLabelHeight = lineHeight * numberOfLines;
 
-        float largestTickHeight = 0;
-
-        foreach (Tick tick in TickGenerator.Ticks)
+        float axisLabelHeight = 0;
+        if (Label.IsVisible && !string.IsNullOrWhiteSpace(Label.Text))
         {
-            PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
-            largestTickHeight = Math.Max(largestTickHeight, tickLabelSize.Height + 10);
+            Label.ApplyToPaint(paint);
+            axisLabelHeight = paint.FontSpacing;
         }
 
-        return largestTickHeight;
+        float spaceBetweenTicksAndAxisLabel = 10;
+
+        return tickHeight + tickLabelHeight + spaceBetweenTicksAndAxisLabel + axisLabelHeight;
     }
 
     public float GetPixel(double position, PixelRect dataArea)

@@ -41,7 +41,7 @@ public class Rectangle : IPlottable
 
         PixelRect rect = Axes.GetPixelRect(CoordinateRect);
         FillStyle.ApplyToPaint(paint, rect);
-        Drawing.Fillectangle(rp.Canvas, rect, paint);
+        Drawing.FillRectangle(rp.Canvas, rect, paint);
 
         LineStyle.ApplyToPaint(paint);
         Drawing.DrawRectangle(rp.Canvas, rect, paint);

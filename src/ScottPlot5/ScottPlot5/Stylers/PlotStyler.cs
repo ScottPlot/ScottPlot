@@ -1,135 +1,29 @@
-﻿using ScottPlot.AxisPanels;
-using ScottPlot.Grids;
-using ScottPlot.Legends;
-using System.ComponentModel;
-
-namespace ScottPlot.Stylers;
+﻿namespace ScottPlot.Stylers;
 
 /// <summary>
-/// A collection of high-level methods that make it easy to style many components of a plot at once
+/// Helper methods for applying common styling options to plots
 /// </summary>
-public class PlotStyler
+public class PlotStyler(Plot plot)
 {
-    private readonly Plot Plot;
+    private readonly Plot Plot = plot;
 
-    public PlotStyler(Plot plot)
-    {
-        Plot = plot;
-    }
+    [Obsolete("This method is deprecated. Assign Plot.FigureBackground.Color instead.", true)]
+    public void Background(Color figure, Color data) { }
 
-    /// <summary>
-    /// Apply background colors to the figure and data areas
-    /// </summary>
-    public void Background(Color figure, Color data)
-    {
-        Plot.FigureBackground = figure;
-        Plot.DataBackground = data;
-    }
+    [Obsolete("This method is deprecated. Call Plot.Axes.Color() instead.", true)]
+    public void ColorAxes(Color color) { }
 
-    /// <summary>
-    /// Apply a single color to all components of each axis (label, tick labels, tick marks, and frame)
-    /// </summary>
-    public void ColorAxes(Color color)
-    {
-        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
-        {
-            axis.Color(color);
-        }
+    [Obsolete("Reference Plot.Legend properties directly.", true)]
+    public void ColorLegend(Color background, Color foreground, Color border) { }
 
-        Plot.Axes.Title.Label.ForeColor = color;
-    }
+    [Obsolete("This method is deprecated. Call Plot.Axes.Frame() methods instead.", true)]
+    public void AxisFrame(float left, float right, float bottom, float top) { }
 
-    /// <summary>
-    /// Apply a color to all currently visible grids
-    /// </summary>
-    public void ColorGrids(Color majorColor)
-    {
-        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
-        {
-            grid.MajorLineStyle.Color = majorColor;
-        }
-    }
+    [Obsolete("This method is deprecated. Call Plot.Font.Set() instead.", true)]
+    public void SetFont(string fontName) { }
 
-    /// <summary>
-    /// Apply a color to all currently visible grids
-    /// </summary>
-    public void ColorGrids(Color majorColor, Color minorColor)
-    {
-        foreach (DefaultGrid grid in Plot.Axes.Grids.OfType<DefaultGrid>())
-        {
-            grid.MajorLineStyle.Color = majorColor;
-            grid.MinorLineStyle.Color = minorColor;
-        }
-    }
-
-    public void ColorLegend(Color background, Color foreground, Color border)
-    {
-        Plot.Legend.BackgroundFill.Color = background;
-        Plot.Legend.Font.Color = foreground;
-        Plot.Legend.OutlineStyle.Color = border;
-    }
-
-    /// <summary>
-    /// Set frame thickness for each side of the plot
-    /// </summary>
-    public void AxisFrame(float left, float right, float bottom, float top)
-    {
-        Plot.Axes.Left.FrameLineStyle.Width = left;
-        Plot.Axes.Right.FrameLineStyle.Width = right;
-        Plot.Axes.Bottom.FrameLineStyle.Width = bottom;
-        Plot.Axes.Top.FrameLineStyle.Width = top;
-    }
-
-    /// <summary>
-    /// Apply the given font name to all existing plot objects.
-    /// Also sets the default font name so this font will be used for plot objects added in the future.
-    /// </summary>
-    public void SetFont(string fontName)
-    {
-        fontName = Fonts.Exists(fontName) ? fontName : Fonts.Default;
-
-        // set default font so future added objects will use it
-        Fonts.Default = fontName;
-
-        // title
-        Plot.Axes.Title.Label.FontName = fontName;
-
-        // axis labels and ticks
-        foreach (IAxis axis in Plot.Axes.GetAxes())
-        {
-            axis.Label.FontName = fontName;
-            axis.TickLabelStyle.FontName = fontName;
-        }
-
-        // TODO: also modify tick labels
-        // TODO: also modify plotted text
-    }
-
-    [Obsolete("use SetBestFonts()", true)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public bool SetFontFromText(string text)
-    {
-        throw new InvalidOperationException();
-    }
-
-    /// <summary>
-    /// Detects the best font to apply to every label in the plot based on the characters the they contain.
-    /// If the best font for a label cannot be detected, the font last defined by <see cref="SetFont(string)"/> will be used.
-    /// </summary>
-    public void SetBestFonts()
-    {
-        // title
-        Plot.Axes.Title.Label.SetBestFont();
-
-        // axis labels and ticks
-        foreach (IAxis axis in Plot.Axes.GetAxes())
-        {
-            axis.Label.SetBestFont();
-        }
-
-        // TODO: also modify tick labels
-        // TODO: also modify plotted text
-    }
+    [Obsolete("This method is deprecated. Call Plot.Font.Automatic() instead.", true)]
+    public void SetBestFonts() { }
 
     /// <summary>
     /// Reset colors and palette do a dark mode style
@@ -138,14 +32,14 @@ public class PlotStyler
     {
         Plot.Add.Palette = new Palettes.Penumbra();
 
-        ColorAxes(Color.FromHex("#d7d7d7"));
-        ColorGrids(Color.FromHex("#404040"));
-        Background(
-            figure: Color.FromHex("#181818"),
-            data: Color.FromHex("#1f1f1f"));
-        ColorLegend(
-            background: Color.FromHex("#404040"),
-            foreground: Color.FromHex("#d7d7d7"),
-            border: Color.FromHex("#d7d7d7"));
+        Plot.Axes.Color(Color.FromHex("#d7d7d7"));
+
+        Plot.Grid.MajorLineColor = Color.FromHex("#404040");
+        Plot.FigureBackground.Color = Color.FromHex("#181818");
+        Plot.DataBackground.Color = Color.FromHex("#1f1f1f");
+
+        Plot.Legend.BackgroundFill.Color = Color.FromHex("#404040");
+        Plot.Legend.Font.Color = Color.FromHex("#d7d7d7");
+        Plot.Legend.OutlineStyle.Color = Color.FromHex("#d7d7d7");
     }
 }

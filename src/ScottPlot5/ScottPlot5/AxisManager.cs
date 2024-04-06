@@ -1,4 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
+using ScottPlot.Grids;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -68,14 +70,27 @@ public class AxisManager
     public IYAxis Right => YAxes.First(x => x.Edge == Edge.Right);
 
     /// <summary>
-    /// All grids
+    /// The standard grid that is added when a Plot is created.
+    /// Users can achieve custom grid functionality by disabling the visibility
+    /// of this grid and adding their own classes to the List of <see cref="CustomGrids"/>.
     /// </summary>
-    public List<IGrid> Grids { get; } = new();
+    public DefaultGrid DefaultGrid { get; set; }
+
+    /// <summary>
+    /// List of custom grids.
+    /// If in use, it is likely the default grid visibility should be disabled.
+    /// </summary>
+    public List<IGrid> CustomGrids { get; } = [];
+
+    /// <summary>
+    /// Return the <see cref="DefaultGrid"/> and all <see cref="CustomGrids"/>
+    /// </summary>
+    public List<IGrid> AllGrids => [.. (new IGrid[] { DefaultGrid }), .. CustomGrids];
 
     /// <summary>
     /// Rules that are applied before each render
     /// </summary>
-    public List<IAxisRule> Rules { get; } = new();
+    public List<IAxisRule> Rules { get; } = [];
 
     /// <summary>
     /// Contains state and logic for axes
@@ -90,23 +105,60 @@ public class AxisManager
         XAxes.Add(xAxisPrimary);
         YAxes.Add(yAxisPrimary);
 
-        // add labeless secondary axes to get right side ticks and padding
+        // add a secondary axes with no label to get right side ticks and padding
         IXAxis xAxisSecondary = new TopAxis();
         IYAxis yAxisSecondary = new RightAxis();
         XAxes.Add(xAxisSecondary);
         YAxes.Add(yAxisSecondary);
 
-        // add a default grid using the primary axes
-        IGrid grid = new Grids.DefaultGrid(xAxisPrimary, yAxisPrimary);
-        Grids.Add(grid);
+        // setup the default grid with the primary axes
+        DefaultGrid = new DefaultGrid(xAxisPrimary, yAxisPrimary);
     }
 
-    public void Clear()
+    /// <summary>
+    /// Apply a single color to the label, tick labels, tick marks, and frame of all axes
+    /// </summary>
+    public void Color(Color color)
     {
-        Grids.Clear();
-        Panels.Clear();
-        YAxes.Clear();
-        XAxes.Clear();
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.Color(color);
+        }
+
+        Plot.Axes.Title.Label.ForeColor = color;
+    }
+
+    /// <summary>
+    /// Set visibility of the frame on every axis
+    /// </summary>
+    public void Frame(bool enable)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.IsVisible = enable;
+        }
+    }
+
+    /// <summary>
+    /// Set thickness of the frame on every axis
+    /// </summary>
+    public void FrameWidth(float width)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.Width = width;
+        }
+    }
+
+    /// <summary>
+    /// Set color of the frame on every axis
+    /// </summary>
+    public void FrameColor(Color color)
+    {
+        foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
+        {
+            axis.FrameLineStyle.Color = color;
+        }
     }
 
     /// <summary>
@@ -133,22 +185,12 @@ public class AxisManager
         YAxes.RemoveAll(ax => ax == axis);
     }
 
-    [Obsolete("This method is deprecated. Use DateTimeTicksBottom().")]
-    public void DateTimeTicks(Edge edge)
+    /// <summary>
+    /// Remove the given Panel
+    /// </summary>
+    public void Remove(IPanel panel)
     {
-        Remove(edge);
-
-        IXAxis dateAxis = edge switch
-        {
-            Edge.Left => throw new NotImplementedException(), // TODO: support vertical DateTime axes
-            Edge.Right => throw new NotImplementedException(),
-            Edge.Bottom => new DateTimeXAxis(),
-            Edge.Top => throw new NotImplementedException(),
-            _ => throw new NotImplementedException(),
-        };
-
-        Plot.Axes.XAxes.Add(dateAxis);
-        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
+        Panels.Remove(panel);
     }
 
     /// <summary>
@@ -156,10 +198,16 @@ public class AxisManager
     /// </summary>
     public DateTimeXAxis DateTimeTicksBottom()
     {
+        // remove all bottom axes
         Plot.Axes.Remove(Edge.Bottom);
+
+        // create a new bottom axis and add it
         DateTimeXAxis dateAxis = new();
         Plot.Axes.XAxes.Add(dateAxis);
-        Plot.Axes.Grids.ForEach(x => x.Replace(dateAxis));
+
+        // setup the grid to use the new bottom axis
+        Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+
         return dateAxis;
     }
 
@@ -208,12 +256,15 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
+        if (xAxis.Range.HasBeenSet) AutoScaler.InvertedX = left > right ? true : false;
     }
 
     public void SetLimitsY(double bottom, double top, IYAxis yAxis)
     {
         yAxis.Min = bottom;
         yAxis.Max = top;
+
+        if (yAxis.Range.HasBeenSet) AutoScaler.InvertedY = bottom > top ? true : false;
     }
 
     public void SetLimitsX(double left, double right)
@@ -325,6 +376,32 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Return the 2D axis limits of data for all plottables using the default axes
+    /// </summary>
+    public AxisLimits GetDataLimits()
+    {
+        return GetDataLimits(Plot.Axes.Bottom, Plot.Axes.Left);
+    }
+
+    /// <summary>
+    /// Return the 2D axis limits of data for all plottables using the given axes
+    /// </summary>
+    public AxisLimits GetDataLimits(IXAxis xAxis, IYAxis yAxis)
+    {
+        ExpandingAxisLimits expandingLimits = new();
+
+        foreach (IPlottable plottable in Plot.PlottableList)
+        {
+            if (plottable.Axes.XAxis != xAxis || plottable.Axes.YAxis != yAxis)
+                continue;
+
+            expandingLimits.Expand(plottable.GetAxisLimits());
+        }
+
+        return expandingLimits.AxisLimits;
+    }
+
+    /// <summary>
     /// Adds the default X and Y axes to all plottables with unset axes
     /// </summary>
     internal void ReplaceNullAxesWithDefaults()
@@ -342,9 +419,11 @@ public class AxisManager
     /// <summary>
     /// Automatically scale all axes to fit the data in all plottables
     /// </summary>
-    public void AutoScale()
+    public void AutoScale(bool? invertX = false, bool? invertY = false)
     {
         ReplaceNullAxesWithDefaults();
+        AutoScaler.InvertedX = invertX ?? AutoScaler.InvertedX;
+        AutoScaler.InvertedY = invertY ?? AutoScaler.InvertedY;
         AutoScaler.AutoScaleAll(Plot.PlottableList);
     }
 
@@ -541,5 +620,14 @@ public class AxisManager
     {
         AutoScaler = new AutoScalers.FractionalAutoScaler(left, right, bottom, top);
         AutoScale();
+    }
+    /// <summary>
+    /// Force pixels to have a 1:1 scale ratio.
+    /// This allows circles to always appear as circles and not stretched ellipses.
+    /// </summary>
+    public void SquareUnits()
+    {
+        AxisRules.SquareZoomOut rule = new(Bottom, Left);
+        Rules.Add(rule);
     }
 }

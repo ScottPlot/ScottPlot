@@ -37,4 +37,10 @@ public interface ISignalXYSource
     /// May return one extra point on each side of the plot outside the data area.
     /// </summary>
     Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes);
+
+    /// <summary>
+    /// Return the point nearest a specific location given the X/Y pixel scaling information from a previous render.
+    /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
+    /// </summary>
+    DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
 }
