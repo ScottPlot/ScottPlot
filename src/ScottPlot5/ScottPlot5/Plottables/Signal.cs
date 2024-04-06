@@ -67,17 +67,10 @@ public class Signal : IPlottable
         // TODO: put GetRange in axis translator
         double xViewLeft = Axes.GetCoordinateX(dataRect.Left);
         double xViewRight = Axes.GetCoordinateX(dataRect.Right);
-        return new CoordinateRange(xViewLeft, xViewRight);
+        return (xViewLeft <= xViewRight)
+            ? new CoordinateRange(xViewLeft, xViewRight)
+            : new CoordinateRange(xViewRight, xViewLeft);
     }
-
-    private CoordinateRange GetVisibleYRange(PixelRect dataRect)
-    {
-        // TODO: put GetRange in axis translator
-        double yViewBottom = Axes.GetCoordinateX(dataRect.Bottom);
-        double yViewTop = Axes.GetCoordinateX(dataRect.Top);
-        return new CoordinateRange(yViewBottom, yViewTop);
-    }
-
 
     private double PointsPerPixel()
     {
@@ -102,19 +95,17 @@ public class Signal : IPlottable
     /// </summary>
     private void RenderLowDensity(RenderPack rp)
     {
-        CoordinateRange visibleXRange = GetVisibleXRange(Axes.DataRect), visibleYRange = GetVisibleYRange(Axes.DataRect);
+        CoordinateRange visibleXRange = GetVisibleXRange(Axes.DataRect);
 
-        int DirectionX = visibleXRange.Max < visibleXRange.Min ? -1 : 1, DirectionY = visibleYRange.Max < visibleYRange.Min ? -1 : 1;
-
-        int FirstVisible = Data.GetIndex(DirectionX * visibleXRange.Min, true),
-            LastVisible = Data.GetIndex(DirectionX * visibleXRange.Max + Data.Period, true);
+        int i1 = Data.GetIndex(visibleXRange.Min, true);
+        int i2 = Data.GetIndex(visibleXRange.Max + Data.Period, true);
 
         List<Pixel> points = [];
 
-        for (int i = FirstVisible; i <= LastVisible; i++)
+        for (int i = i1; i <= i2; i++)
         {
-            float x = Axes.GetPixelX(DirectionX * Data.GetX(i));
-            float y = Axes.GetPixelY(DirectionY * Data.GetY(i) + Data.YOffset);
+            float x = Axes.GetPixelX(Data.GetX(i));
+            float y = Axes.GetPixelY(Data.GetY(i) + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }
