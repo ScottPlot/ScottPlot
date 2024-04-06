@@ -21,7 +21,7 @@ public class ScatterRendering
         double[] xs = gen.RandomSample(Points);
         double[] ys = gen.RandomSample(Points);
 
-        Plot.Add.Scatter(xs, ys);
+        Plot.Add.ScatterLine(xs, ys);
     }
 
     [Benchmark]
