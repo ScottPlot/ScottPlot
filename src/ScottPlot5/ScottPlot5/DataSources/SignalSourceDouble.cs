@@ -48,7 +48,7 @@ public class SignalSourceDouble : SignalSourceBase, ISignalSource
         float xPixel = axes.DataRect.Left + xPixelIndex;
         double xRangeMin = axes.GetCoordinateX(xPixel);
         float xUnitsPerPixel = (float)(axes.XAxis.Width / axes.DataRect.Width);
-        double xRangeMax = xRangeMin + xUnitsPerPixel;
+        double xRangeMax = xRangeMin + Math.Abs(xUnitsPerPixel);
 
         if (RangeContainsSignal(xRangeMin, xRangeMax) == false)
             return PixelColumn.WithoutData(xPixel);
