@@ -26,8 +26,9 @@ public partial class SignalPerformance : Form, IDemoWindow
         Application.DoEvents();
 
         int pointCount = 1_000_000;
-        double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
         double[] xs = ScottPlot.Generate.Consecutive(pointCount);
+        double[] ys = ScottPlot.Generate.Sin(pointCount);
+        Generate.AddNoiseInPlace(ys);
 
         if (rbSignal.Checked)
         {
