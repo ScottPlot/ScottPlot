@@ -25,6 +25,7 @@
 * Layout: Added logic to reduce the size of axes which are visible but not used by any plottable (#3608)
 * Colorbar: Improved positioning and support for adding multiple colorbars to plots (#3294, #3560, #3586) @NateEbling @mawbydp @hnMel
 * Colorbar: Added a `Label` which users can customize to display an optional title (#3611) @mawbydp
+* SignalXY: Added support for markers and marker styling (#3602, #3609) @Giviruk
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
