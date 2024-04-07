@@ -8,6 +8,9 @@ public class ScatterSourceGenericList<T1, T2> : IScatterSource
     private readonly List<T1> Xs;
     private readonly List<T2> Ys;
 
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+
     public ScatterSourceGenericList(List<T1> xs, List<T2> ys)
     {
         if (xs.Count != ys.Count)

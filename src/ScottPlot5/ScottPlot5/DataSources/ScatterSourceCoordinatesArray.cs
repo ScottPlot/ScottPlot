@@ -7,6 +7,9 @@ public class ScatterSourceCoordinatesArray : IScatterSource
 {
     private readonly Coordinates[] Coordinates;
 
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+
     public ScatterSourceCoordinatesArray(Coordinates[] coordinates)
     {
         Coordinates = coordinates;

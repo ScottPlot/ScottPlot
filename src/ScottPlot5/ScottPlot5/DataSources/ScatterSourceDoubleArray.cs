@@ -13,6 +13,8 @@ public class ScatterSourceDoubleArray : IScatterSource
         Xs = xs;
         Ys = ys;
     }
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {

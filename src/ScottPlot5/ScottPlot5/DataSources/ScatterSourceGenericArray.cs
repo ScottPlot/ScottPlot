@@ -8,6 +8,9 @@ public class ScatterSourceGenericArray<T1, T2> : IScatterSource
     private readonly T1[] Xs;
     private readonly T2[] Ys;
 
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+
     public ScatterSourceGenericArray(T1[] xs, T2[] ys)
     {
         if (xs.Length != ys.Length)

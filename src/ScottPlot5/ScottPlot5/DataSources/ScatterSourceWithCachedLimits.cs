@@ -4,6 +4,9 @@ public class CacheScatterLimitsDecorator : IScatterSource
 {
     private readonly IScatterSource _source;
 
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+
     private AxisLimits? _axisLimits = null;
     private CoordinateRange _limitsX = CoordinateRange.NotSet;
     private CoordinateRange _limitsY = CoordinateRange.NotSet;

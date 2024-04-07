@@ -7,6 +7,9 @@ public class ScatterSourceCoordinatesList : IScatterSource
 {
     private readonly List<Coordinates> Coordinates;
 
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+
     public ScatterSourceCoordinatesList(List<Coordinates> coordinates)
     {
         Coordinates = coordinates;
