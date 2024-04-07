@@ -190,6 +190,53 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
+    /// <summary>
+    /// This strategy divides each line in half and draws quadratic Bezier curves
+    /// through the midpoint. The result is smooth lines which never "overshoot" the points.
+    /// </summary>
+    public static void DrawSmoothLines1(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    {
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
+            return;
+
+        lineStyle.ApplyToPaint(paint);
+
+        using SKPath path = new();
+
+        bool moveToNextPoint = true;
+        foreach (var pixel in pixels)
+        {
+            if (float.IsNaN(pixel.X) || float.IsNaN(pixel.Y))
+            {
+                moveToNextPoint = true;
+            }
+
+            SKPoint thisPoint = pixel.ToSKPoint();
+
+            if (moveToNextPoint)
+            {
+                path.MoveTo(thisPoint);
+                moveToNextPoint = false;
+            }
+            else
+            {
+                SKPoint lastPoint = path.LastPoint;
+
+                float halfX = (lastPoint.X + thisPoint.X) / 2;
+                float halfY = (lastPoint.Y + thisPoint.Y) / 2;
+                SKPoint halfPoint = new(halfX, halfY);
+
+                SKPoint controlPoint1 = new(halfPoint.X, lastPoint.Y);
+                SKPoint controlPoint2 = new(halfPoint.X, thisPoint.Y);
+
+                path.QuadTo(controlPoint1, halfPoint);
+                path.QuadTo(controlPoint2, thisPoint);
+            }
+        }
+
+        canvas.DrawPath(path, paint);
+    }
+
     public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
     {
         fillStyle.ApplyToPaint(paint, rect);

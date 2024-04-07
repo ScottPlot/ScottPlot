@@ -21,15 +21,9 @@ public class Scatter(IScatterSource data) : IPlottable
     public ConnectStyle ConnectStyle = ConnectStyle.Straight;
 
     /// <summary>
-    /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
-    /// <see cref="SmoothTension"/> adjusts the smoothnes of the lines.
+    /// If enabled, points will be connected by smooth lines instead of straight lines.
     /// </summary>
     public bool Smooth = false;
-
-    /// <summary>
-    /// Tension to use for smoothing when <see cref="Smooth"/> is enabled
-    /// </summary>
-    public double SmoothTension = 0.5;
 
     public Color Color
     {
@@ -63,7 +57,16 @@ public class Scatter(IScatterSource data) : IPlottable
         };
 
         using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
+
+        if (Smooth)
+        {
+            Drawing.DrawSmoothLines1(rp.Canvas, paint, linePixels, LineStyle);
+        }
+        else
+        {
+            Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
+        }
+
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
     }
 
