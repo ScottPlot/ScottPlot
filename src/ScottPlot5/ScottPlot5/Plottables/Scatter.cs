@@ -21,15 +21,22 @@ public class Scatter(IScatterSource data) : IPlottable
     public ConnectStyle ConnectStyle = ConnectStyle.Straight;
 
     /// <summary>
-    /// If enabled, points will be connected by smooth lines instead of straight diagnal lines.
-    /// <see cref="SmoothTension"/> adjusts the smoothnes of the lines.
+    /// Controls whether points are connected by smooth or straight lines
     /// </summary>
-    public bool Smooth = false;
+    public bool Smooth
+    {
+        set
+        {
+            PathStrategy = value
+                ? new PathStrategies.QuadHalfPoint()
+                : new PathStrategies.Straight();
+        }
+    }
 
     /// <summary>
-    /// Tension to use for smoothing when <see cref="Smooth"/> is enabled
+    /// Strategy to use for generating the path used to connect points
     /// </summary>
-    public double SmoothTension = 0.5;
+    public IPathStrategy PathStrategy { get; set; } = new PathStrategies.Straight();
 
     public Color Color
     {
@@ -48,7 +55,7 @@ public class Scatter(IScatterSource data) : IPlottable
 
     public void Render(RenderPack rp)
     {
-        // TODO: can this be more effecient by moving this logic into the DataSource to avoid copying?
+        // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
         if (!markerPixels.Any())
@@ -63,12 +70,14 @@ public class Scatter(IScatterSource data) : IPlottable
         };
 
         using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
+        using SKPath path = PathStrategy.GetPath(linePixels);
+
+        Drawing.DrawLines(rp.Canvas, paint, path, LineStyle);
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
     }
 
     /// <summary>
-    /// Convert scatter plot points (connected by diagnal lines) to step plot points (connected by right angles)
+    /// Convert scatter plot points (connected by diagonal lines) to step plot points (connected by right angles)
     /// by inserting an extra point between each of the original data points to result in L-shaped steps.
     /// </summary>
     /// <param name="points">Array of corner positions</param>

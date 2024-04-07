@@ -270,4 +270,25 @@ public class Scatter : ICategory
             myPlot.Add.Scatter(xs, ys);
         }
     }
+
+    public class ScatterSmooth : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Smooth Lines";
+        public override string Description => "Scatter plots draw straight lines " +
+            "between points by default, but setting the Smooth property allows the " +
+            "scatter plot to connect points with smooth lines.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(10);
+            double[] ys = Generate.RandomSample(10, 5, 15);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.Smooth = true;
+            sp.Label = "Smooth";
+            sp.LineWidth = 2;
+            sp.MarkerSize = 7;
+        }
+    }
 }

@@ -159,6 +159,8 @@ public static class Drawing
         DrawLines(canvas, paint, pixels, ls);
     }
 
+    private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();
+
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
         if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
@@ -166,27 +168,16 @@ public static class Drawing
 
         lineStyle.ApplyToPaint(paint);
 
-        using SKPath path = new();
+        using SKPath path = StraightLineStrategy.GetPath(pixels);
+        canvas.DrawPath(path, paint);
+    }
 
-        bool move = true;
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    {
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false)
+            return;
 
-        foreach (var pixel in pixels)
-        {
-            if (float.IsNaN(pixel.X) || float.IsNaN(pixel.Y))
-            {
-                move = true;
-            }
-            else if (move)
-            {
-                path.MoveTo(pixel.ToSKPoint());
-                move = false;
-            }
-            else
-            {
-                path.LineTo(pixel.ToSKPoint());
-            }
-        }
-
+        lineStyle.ApplyToPaint(paint);
         canvas.DrawPath(path, paint);
     }
 
