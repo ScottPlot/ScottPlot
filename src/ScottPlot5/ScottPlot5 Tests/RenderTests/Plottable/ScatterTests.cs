@@ -152,4 +152,44 @@ internal class ScatterTests
 
         plt.Should().SavePngWithoutThrowing();
     }
+
+    [Test]
+    public void Test_Scatter_MinRenderIndex()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MinRenderIndex = 20;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MaxRenderIndex()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MinAndMaxRenderIndex()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MinRenderIndex = 20;
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
 }
