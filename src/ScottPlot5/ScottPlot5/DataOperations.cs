@@ -65,4 +65,15 @@ public static class DataOperations
 
         return output;
     }
+
+    public static void Multiply2D(double[,] values, double mult)
+    {
+        for (int i = 0; i < values.GetLength(0); i++)
+        {
+            for (int j = 0; j < values.GetLength(1); j++)
+            {
+                values[i, j] *= mult;
+            }
+        }
+    }
 }
