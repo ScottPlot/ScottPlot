@@ -22,6 +22,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
 
     public bool IsDraggable { get; set; } = false;
 
+    public bool ExcludeFromLegend { get; set; } = false;
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -42,6 +44,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
             {
                 Label = Label.Text,
                 Line = LineStyle,
+                IsVisible = !ExcludeFromLegend,
             });
         }
     }
