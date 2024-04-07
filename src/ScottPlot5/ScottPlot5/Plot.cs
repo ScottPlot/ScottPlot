@@ -5,7 +5,6 @@ using ScottPlot.Legends;
 using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ScottPlot;
 

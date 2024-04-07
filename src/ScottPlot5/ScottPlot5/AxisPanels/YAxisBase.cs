@@ -25,6 +25,9 @@ public abstract class YAxisBase : AxisBase, IAxis
         if (!IsVisible)
             return 0;
 
+        if (!Range.HasBeenSet)
+            return SizeWhenNoData;
+
         float largestTickSize = MeasureTicks();
         float largestTickLabelSize = Label.Measure().Height;
         float spaceBetweenTicksAndAxisLabel = 15;
