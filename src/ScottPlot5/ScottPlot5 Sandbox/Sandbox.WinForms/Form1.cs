@@ -6,26 +6,16 @@ namespace Sandbox.WinForms;
 public partial class Form1 : Form
 {
     LabelPlot? labelBeingDragged = null;
-    Coordinates delta = new ();
     public Form1()
     {
         InitializeComponent();
 
-        var ohlcs = Generate.RandomOHLCs(12_000);
-        formsPlot1.Plot.Add.Candlestick(ohlcs);
-
-        var label = formsPlot1.Plot.Add.LabelPlot("Test", 55_000, 300, 55_000, 320);
+        formsPlot1.Plot.Axes.SetLimits(-1, 10, -1, 1);
+        var label = formsPlot1.Plot.Add.LabelPlot("Une belle étiquette\nAvec sa description\nEt d'autres informations", 3, 0, 2, 0);
 
         label.Label.BorderColor = Colors.Blue;
         label.Label.BackColor = Colors.Blue.WithAlpha(.5);
         label.Label.Padding = 5;
-
-        label.MarkerStyle = new()
-        {
-            IsVisible = true,
-            Shape = MarkerShape.FilledTriangleDown,
-            Size = 10
-        };
 
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
         formsPlot1.MouseUp += FormsPlot1_MouseUp;
@@ -34,17 +24,9 @@ public partial class Form1 : Form
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
-        CoordinateRect rect = formsPlot1.Plot.GetCoordinateRect(e.X, e.Y);
-
-        if (labelBeingDragged is null)
-        {
-            //Cursor = Cursors.Cross;
-        }
-        else
-        {
-            labelBeingDragged.Location = new Coordinates(rect.Center.X - delta.X, rect.Center.Y - delta.Y);
-            formsPlot1.Refresh();
-        }
+        if (labelBeingDragged is null) return;
+        labelBeingDragged.Move(e.X, e.Y);
+        formsPlot1.Refresh();
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
@@ -60,18 +42,16 @@ public partial class Form1 : Form
         if (labelUnderMouse is not null)
         {
             labelBeingDragged = labelUnderMouse;
+            labelBeingDragged.StartMove(e.X, e.Y);
             formsPlot1.Interaction.Disable();
         }
     }
 
     private LabelPlot? GetLabelUnderMouse(float x, float y)
     {
-        foreach (LabelPlot label in formsPlot1.Plot.GetPlottables<LabelPlot>().Reverse())
+        foreach (LabelPlot label in formsPlot1.Plot.GetPlottables<LabelPlot>())
         {
-            if (label.IsUnderMouse(x, y))
-            {
-                return label;
-            }
+            if (label.IsUnderMouse(x, y)) return label;
         }
 
         return null;
