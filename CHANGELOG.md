@@ -21,7 +21,7 @@
 * Rendering: Improved performance for plot types with many lines (#3601) @drolevar
 * Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman
 * Controls: All controls now include `Reset()` overloads for resetting or replacing the `Plot` (#3604, #3353) @aniketkumar7 @jon-rizzo
-* Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
+* Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3606, #3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
