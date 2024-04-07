@@ -413,6 +413,9 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits()
     {
+        if (!Bottom.Range.HasBeenSet || !Left.Range.HasBeenSet)
+            AutoScale();
+
         return new AxisLimits(
             Bottom.Min,
             Bottom.Max,
