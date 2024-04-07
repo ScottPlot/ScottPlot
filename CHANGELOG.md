@@ -22,6 +22,8 @@
 * Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman
 * Controls: All controls now include `Reset()` overloads for resetting or replacing the `Plot` (#3604, #3353) @aniketkumar7 @jon-rizzo
 * Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3606, #3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
+* Layout: Added logic to reduce the size of axes which are visible but not used by any plottable (#3608)
+* Colorbar: Improved positioning and support for adding multiple colorbars to plots (#3294, #3560, #3586) @NateEbling @mawbydp @hnMel
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
