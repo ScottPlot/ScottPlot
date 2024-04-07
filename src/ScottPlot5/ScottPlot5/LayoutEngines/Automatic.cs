@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.LayoutEngines;
+﻿using ScottPlot.AxisPanels;
+
+namespace ScottPlot.LayoutEngines;
 
 /// <summary>
 /// Generate the layout by measuring all panels and adding
@@ -6,6 +8,8 @@
 /// </summary>
 public class Automatic : LayoutEngineBase, ILayoutEngine
 {
+    public float SizeForAxisPanelsWithoutData = 10;
+
     public Layout GetLayout(PixelRect figureRect, Plot plot)
     {
         /* PROBLEM: There is a chicken-or-egg situation
