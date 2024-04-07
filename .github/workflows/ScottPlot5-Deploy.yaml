@@ -104,10 +104,10 @@ jobs:
           retention-days: 1
           overwrite: true
 
-      # - name: 🛠️ Setup NuGet
-      #   uses: nuget/setup-nuget@v1
-      #   with:
-      #     nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v2
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
-      # - name: 🚀 Deploy Packages
-      #   run: nuget push "${{ env.ARTIFACT_FOLDER }}/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      - name: 🚀 Deploy Packages
+        run: nuget push "${{ env.ARTIFACT_FOLDER }}/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
