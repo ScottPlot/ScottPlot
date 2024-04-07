@@ -6,7 +6,7 @@
 /// </summary>
 public class Automatic : LayoutEngineBase, ILayoutEngine
 {
-    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
+    public Layout GetLayout(PixelRect figureRect, Plot plot)
     {
         /* PROBLEM: There is a chicken-or-egg situation
          * where the ideal layout depends on the ticks,
@@ -18,6 +18,8 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
          * according to the layout determined by this function.
          * 
          */
+
+        IEnumerable<IPanel> panels = plot.Axes.GetPanels();
 
         // NOTE: the actual ticks will be regenerated later, after the layout is determined
         panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width));

@@ -3,17 +3,14 @@
 /// <summary>
 /// Generate layouts where the data area has a fixed padding from the edge of the figure
 /// </summary>
-public class FixedPadding : LayoutEngineBase, ILayoutEngine
+public class FixedPadding(PixelPadding padding) : LayoutEngineBase, ILayoutEngine
 {
-    private PixelPadding Padding { get; }
+    private PixelPadding Padding { get; } = padding;
 
-    public FixedPadding(PixelPadding padding)
+    public Layout GetLayout(PixelRect figureRect, Plot plot)
     {
-        Padding = padding;
-    }
+        IEnumerable<IPanel> panels = plot.Axes.GetPanels();
 
-    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
-    {
         // must recalculate ticks before measuring panels
 
         // NOTE: the actual ticks will be regenerated later, after the layout is determined
