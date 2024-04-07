@@ -25,15 +25,15 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5"
         run: |
-          dotnet restore "$PROJECT_FOLDER"
-          dotnet build "$PROJECT_FOLDER" --configuration Release
-          dotnet pack "$PROJECT_FOLDER" --configuration Release -o "$ARTIFACT_FOLDER"
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
 
       - name: 🚀 Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: "ScottPlot"
-          path: $ARTIFACT_FOLDER
+          path: ${{ env.ARTIFACT_FOLDER }}
           if-no-files-found: error
           retention-days: 1
           overwrite: true
