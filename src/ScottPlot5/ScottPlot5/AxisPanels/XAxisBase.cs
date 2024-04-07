@@ -14,6 +14,9 @@ public abstract class XAxisBase : AxisBase, IAxis
         if (!IsVisible)
             return 0;
 
+        if (!Range.HasBeenSet)
+            return SizeWhenNoData;
+
         using SKPaint paint = new();
 
         float tickHeight = MajorTickStyle.Length;

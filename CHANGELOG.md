@@ -22,6 +22,9 @@
 * Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman
 * Controls: All controls now include `Reset()` overloads for resetting or replacing the `Plot` (#3604, #3353) @aniketkumar7 @jon-rizzo
 * Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3606, #3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
+* Layout: Added logic to reduce the size of axes which are visible but not used by any plottable (#3608)
+* Colorbar: Improved positioning and support for adding multiple colorbars to plots (#3294, #3560, #3586) @NateEbling @mawbydp @hnMel
+* Colorbar: Added a `Label` which users can customize to display an optional title (#3611) @mawbydp
 * SignalXY: Added support for markers and marker styling (#3602, #3609) @Giviruk
 
 ## ScottPlot 5.0.23

@@ -3,17 +3,13 @@
 /// <summary>
 /// Generate layouts that match layouts of another control
 /// </summary>
-public class MatchedDataRect : LayoutEngineBase, ILayoutEngine
+public class MatchedDataRect(Plot referencePlot) : LayoutEngineBase, ILayoutEngine
 {
-    private Plot ReferencePlot { get; }
+    private Plot ReferencePlot { get; } = referencePlot;
 
-    public MatchedDataRect(Plot referencePlot)
+    public Layout GetLayout(PixelRect figureRect, Plot plot)
     {
-        ReferencePlot = referencePlot;
-    }
-
-    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels)
-    {
+        IEnumerable<IPanel> panels = plot.Axes.GetPanels();
         Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
