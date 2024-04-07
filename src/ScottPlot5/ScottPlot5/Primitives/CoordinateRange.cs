@@ -82,4 +82,14 @@ public readonly record struct CoordinateRange(double Min, double Max)
 
         return new CoordinateRange(min, max);
     }
+
+    /// <summary>
+    /// Return the range of values spanned by the given collection (ignoring NaN)
+    /// within the given index limits (inclusive)
+    /// </summary>
+    public static CoordinateRange MinMaxNan(IEnumerable<double> values, int minIndex, int maxIndex)
+    {
+        int maxCount = maxIndex - minIndex + 1;
+        return MinMaxNan(values.Skip(minIndex).Take(maxCount));
+    }
 }
