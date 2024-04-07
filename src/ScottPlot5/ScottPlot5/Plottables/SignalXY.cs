@@ -9,10 +9,12 @@ public class SignalXY : IPlottable
     public int YAxisIndex { get; set; } = 0;
     public IAxes Axes { get; set; } = new Axes();
     public LineStyle LineStyle { get; set; } = new();
+    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public string Label = string.Empty;
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
+    
 
     public SignalXY(ISignalXYSource dataSource)
     {
@@ -26,8 +28,9 @@ public class SignalXY : IPlottable
     public void Render(RenderPack rp)
     {
         Pixel[] pixels = Data.GetPixelsToDraw(rp, Axes);
-
+        
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
     }
 }
