@@ -22,7 +22,7 @@
 * Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman
 * Controls: All controls now include `Reset()` overloads for resetting or replacing the `Plot` (#3604, #3353) @aniketkumar7 @jon-rizzo
 * Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3606, #3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
-* SignalXY: Added support for markers and marker styling (#3602, 3609) @Giviruk
+* SignalXY: Added support for markers and marker styling (#3602, #3609) @Giviruk
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
