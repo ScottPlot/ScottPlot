@@ -213,6 +213,9 @@ public class AxisManager
         // setup the grid to use the new bottom axis
         Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
 
+        // autoscale the new axis to fit data already on the plot
+        AutoScale();
+
         return dateAxis;
     }
 
@@ -413,14 +416,8 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits()
     {
-        if (!Bottom.Range.HasBeenSet || !Left.Range.HasBeenSet)
-            AutoScale();
-
-        return new AxisLimits(
-            Bottom.Min,
-            Bottom.Max,
-            Left.Min,
-            Left.Max);
+        // TODO: autoscale limits used by all plottables
+        return GetLimits(Bottom, Left);
     }
 
     /// <summary>
@@ -428,6 +425,9 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits(IXAxis xAxis, IYAxis yAxis)
     {
+        if (!xAxis.Range.HasBeenSet || !yAxis.Range.HasBeenSet)
+            AutoScale();
+
         return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
     }
 
