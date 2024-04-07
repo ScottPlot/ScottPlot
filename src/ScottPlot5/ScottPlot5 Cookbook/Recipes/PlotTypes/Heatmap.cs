@@ -84,6 +84,27 @@ public class Heatmap : ICategory
         }
     }
 
+    public class ColorbarTitle : RecipeBase
+    {
+        public override string Name => "Colorbar Title";
+        public override string Description => "A colorbar displays a colormap " +
+            "on an edge of the plot, and it has an optional label which can " +
+            "be customized to display a title.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Colormap = new ScottPlot.Colormaps.Turbo();
+
+            var cb = myPlot.Add.ColorBar(hm);
+            cb.Label = "Intensity";
+            cb.LabelStyle.FontSize = 24;
+        }
+    }
+
     public class HeatmapFlip : RecipeBase
     {
         public override string Name => "Flipped Heatmap";

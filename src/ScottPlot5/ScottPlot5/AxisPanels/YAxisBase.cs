@@ -83,7 +83,10 @@ public abstract class YAxisBase : AxisBase, IAxis
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         float textDistanceFromEdge = 10;
-        float labelX = Edge == Edge.Left ? panelRect.Left + textDistanceFromEdge : panelRect.Right - textDistanceFromEdge;
+        float labelX = Edge == Edge.Left 
+            ? panelRect.Left + textDistanceFromEdge 
+            : panelRect.Right - textDistanceFromEdge;
+
         Pixel labelPoint = new(labelX, rp.DataRect.VerticalCenter);
 
         if (ShowDebugInformation)
