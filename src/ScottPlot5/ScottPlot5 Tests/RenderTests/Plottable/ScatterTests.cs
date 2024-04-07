@@ -126,4 +126,30 @@ internal class ScatterTests
         plt.Add.Scatter(xs, ys);
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Scatter_InvertedX()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        plt.Add.Scatter(xs, ys);
+
+        plt.Axes.InvertX();
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_InvertedY()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        plt.Add.Scatter(xs, ys);
+
+        plt.Axes.InvertY();
+
+        plt.Should().SavePngWithoutThrowing();
+    }
 }
