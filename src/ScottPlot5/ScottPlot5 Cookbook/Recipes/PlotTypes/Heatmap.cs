@@ -58,7 +58,6 @@ public class Heatmap : ICategory
             var hm1 = myPlot.Add.Heatmap(data);
             hm1.Colormap = new ScottPlot.Colormaps.Turbo();
 
-            // TODO: this isn't working quite right yet...
             myPlot.Add.ColorBar(hm1);
         }
     }

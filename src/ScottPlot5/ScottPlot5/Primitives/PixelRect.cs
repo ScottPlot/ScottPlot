@@ -115,6 +115,20 @@ public readonly struct PixelRect : IEquatable<PixelRect>
         return Contract(-delta);
     }
 
+    public PixelRect ExpandX(float x)
+    {
+        float left = Math.Min(Left, x);
+        float right = Math.Max(Right, x);
+        return new PixelRect(left, right, Bottom, Top);
+    }
+
+    public PixelRect ExpandY(float y)
+    {
+        float top = Math.Min(Top, y);
+        float bottom = Math.Max(Bottom, y);
+        return new PixelRect(Left, Right, bottom, top);
+    }
+
     // TODO: use operator logic?
     public PixelRect WithDelta(float x, float y)
     {
