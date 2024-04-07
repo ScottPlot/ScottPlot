@@ -9,6 +9,11 @@ public static class SkiaSharpExtensions
         return new PixelSize(rect.Width, rect.Height);
     }
 
+    public static Pixel ToPixel(this SKPoint point)
+    {
+        return new Pixel(point.X, point.Y);
+    }
+
     public static SKTextAlign ToSKTextAlign(this Alignment alignment)
     {
         return alignment switch
@@ -99,5 +104,22 @@ public static class SkiaSharpExtensions
         paint.Color = fontStyle.Color.ToSKColor();
         paint.IsAntialias = fontStyle.AntiAlias;
         paint.FakeBoldText = fontStyle.Bold;
+    }
+
+    /// <summary>
+    /// Create a 1 by 256 bitmap displaying all values of a heatmap
+    /// </summary>
+    public static SKBitmap GetBitmap(this IColormap colormap, bool vertical)
+    {
+        uint[] argbs = Enumerable.Range(0, 256)
+           .Select(i => colormap.GetColor((vertical ? 255 - i : i) / 255f).ARGB)
+           .ToArray();
+
+        int bmpWidth = vertical ? 1 : 256;
+        int bmpHeight = !vertical ? 1 : 256;
+
+        SKBitmap bmp = Drawing.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
+
+        return bmp;
     }
 }

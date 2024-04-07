@@ -234,11 +234,14 @@ public static class Drawing
         DrawRectangle(canvas, rect, paint);
     }
 
-    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel point, Color color, float lineWidth = 1)
+    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)
     {
+        point ??= Pixel.NaN;
+        color ??= Colors.Magenta;
+
         using SKPaint paint = new()
         {
-            Color = color.ToSKColor(),
+            Color = color.Value.ToSKColor(),
             IsStroke = true,
             StrokeWidth = lineWidth,
             IsAntialias = true,
@@ -248,7 +251,7 @@ public static class Drawing
         canvas.DrawLine(rect.BottomLeft.ToSKPoint(), rect.TopRight.ToSKPoint(), paint);
         canvas.DrawLine(rect.TopLeft.ToSKPoint(), rect.BottomRight.ToSKPoint(), paint);
 
-        canvas.DrawCircle(point.ToSKPoint(), 5, paint);
+        canvas.DrawCircle(point.Value.ToSKPoint(), 5, paint);
 
         paint.IsStroke = false;
         paint.Color = paint.Color.WithAlpha(20);

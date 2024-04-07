@@ -1,39 +1,78 @@
-﻿namespace ScottPlot.Panels;
+﻿using System.Data;
 
-public class ColorBar : IPanel
+namespace ScottPlot.Panels;
+
+/// <summary>
+/// An axis panel which displays a colormap and range of values
+/// </summary>
+public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
 {
     public bool IsVisible { get; set; } = true;
 
-    public IHasColorAxis Source { get; set; }
+    public IHasColorAxis Source { get; set; } = source;
 
-    public Edge Edge { get; set; }
+    public Edge Edge { get; set; } = edge;
     public float Width { get; set; } = 50;
     public float Margin { get; set; } = 15;
     public bool ShowDebugInformation { get; set; } = false;
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
-    public ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
-    {
-        Source = source;
-        Edge = edge;
-    }
-
-    // Unfortunately the size of the axis depends on the size of the plotting window, so we just have to guess here. 2000 should be larger than most
-    public float Measure() => IsVisible ? Margin + GetAxis(2000).Measure() + Width : 0;
-
-    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    public float Measure()
     {
         if (!IsVisible)
-            return PixelRect.Zero;
+            return 0;
 
+        float bitmapAndMarginSize = Width + Margin;
+
+        // use an example DataRect to estimate the size required by the ticks
+        PixelRect guessedDataArea = new(0, 600, 400, 0);
+        IAxis guessAxis = GetAxisWithGeneratedTicks(guessedDataArea);
+        float guessedAxisSize = guessAxis.Measure();
+
+        return bitmapAndMarginSize + guessedAxisSize;
+    }
+
+    /// <summary>
+    /// Return a rectangle encapsulating the colormap
+    /// bitmap plus the axis and ticks.
+    /// </summary>
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    {
+        // TODO: use size and offset
+        // TODO: include the axis and ticks
+        return GetColormapBitmapRect(dataRect);
+    }
+
+    /// <summary>
+    /// Return the rectangle to the side of the data area
+    /// where the colormap bitmap will be drawn.
+    /// </summary>
+    private PixelRect GetColormapBitmapRect(PixelRect dataRect)
+    {
         return Edge switch
         {
-            Edge.Left => new SKRect(dataRect.Left - Width, dataRect.Top, dataRect.Left, dataRect.Top + dataRect.Height).ToPixelRect(),
-            Edge.Right => new SKRect(dataRect.Right, dataRect.Top, dataRect.Right + Width, dataRect.Top + dataRect.Height).ToPixelRect(),
-            Edge.Bottom => new SKRect(dataRect.Left, dataRect.Bottom, dataRect.Left + dataRect.Width, dataRect.Bottom + Width).ToPixelRect(),
-            Edge.Top => new SKRect(dataRect.Left, dataRect.Top - Width, dataRect.Left + dataRect.Width, dataRect.Top).ToPixelRect(),
-            _ => throw new NotImplementedException()
+            Edge.Left => new(
+                left: dataRect.Left - Width - Margin,
+                right: dataRect.Left - Margin,
+                bottom: dataRect.Bottom,
+                top: dataRect.Top),
+            Edge.Right => new(
+                left: dataRect.Right + Margin,
+                right: dataRect.Right + Width + Margin,
+                bottom: dataRect.Bottom,
+                top: dataRect.Top),
+            Edge.Bottom => new(
+                left: dataRect.Left,
+                right: dataRect.Right,
+                bottom: dataRect.Bottom + Width + Margin,
+                top: dataRect.Bottom + Margin),
+            Edge.Top => new(
+                left: dataRect.Left,
+                right: dataRect.Right,
+                bottom: dataRect.Top - Margin,
+                top: dataRect.Top - Width - Margin),
+            _ => throw new NotImplementedException($"{Edge}")
         };
     }
 
@@ -42,45 +81,25 @@ public class ColorBar : IPanel
         if (!IsVisible)
             return;
 
-        using var _ = new SKAutoCanvasRestore(rp.Canvas);
+        // TODO: use the size and offset to generate the rect
+        RenderColorbarBitmap(rp, size, offset);
+        RenderColorbarAxis(rp, size, offset + Margin);
+    }
 
-        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+    private void RenderColorbarBitmap(RenderPack rp, float size, float offset)
+    {
+        PixelRect colormapRect = GetPanelRect(rp.DataRect, size, offset);
+        using SKBitmap bmp = Source.Colormap.GetBitmap(Edge.IsVertical());
+        rp.Canvas.DrawBitmap(bmp, colormapRect.ToSKRect());
+    }
 
-        SKPoint marginTranslation = GetTranslation(Margin);
-        SKPoint axisTranslation = GetTranslation(Width);
-
-        using var bmp = GetBitmap();
-
-        rp.Canvas.Translate(marginTranslation);
-        rp.Canvas.DrawBitmap(bmp, panelRect.ToSKRect());
-
-        var colorbarLength = Edge.IsVertical() ? rp.DataRect.Height : rp.DataRect.Width;
-        var axis = GetAxis(colorbarLength);
-
-        rp.Canvas.Translate(axisTranslation);
+    private void RenderColorbarAxis(RenderPack rp, float size, float offset)
+    {
+        IAxis axis = GetAxisWithGeneratedTicks(rp.DataRect);
         axis.Render(rp, size, offset);
     }
 
-    private SKPoint GetTranslation(float magnitude) => Edge switch
-    {
-        Edge.Left => new(-magnitude, 0),
-        Edge.Right => new(magnitude, 0),
-        Edge.Bottom => new(0, magnitude),
-        Edge.Top => new(0, -magnitude),
-        _ => throw new ArgumentOutOfRangeException(nameof(Edge))
-    };
-
-    private SKBitmap GetBitmap()
-    {
-        uint[] argbs = Enumerable.Range(0, 256).Select(i => Source.Colormap.GetColor((Edge.IsVertical() ? 255 - i : i) / 255f).ARGB).ToArray();
-
-        int bmpWidth = Edge.IsVertical() ? 1 : 256;
-        int bmpHeight = !Edge.IsVertical() ? 1 : 256;
-
-        return Drawing.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
-    }
-
-    private IAxis GetAxis(float length)
+    private IAxis GetAxisWithGeneratedTicks(PixelRect dataRect)
     {
         IAxis axis = Edge switch
         {
@@ -88,16 +107,18 @@ public class ColorBar : IPanel
             Edge.Right => new AxisPanels.RightAxis(),
             Edge.Bottom => new AxisPanels.BottomAxis(),
             Edge.Top => new AxisPanels.TopAxis(),
-            _ => throw new ArgumentOutOfRangeException(nameof(Edge))
+            _ => throw new NotImplementedException(nameof(Edge))
         };
 
-        axis.Label.Text = "";
-
-        var range = Source.GetRange();
+        Range range = Source.GetRange();
         axis.Min = range.Min;
         axis.Max = range.Max;
 
-        axis.RegenerateTicks(length);
+        float edgeLength = Edge.IsVertical()
+            ? dataRect.Height
+            : dataRect.Width;
+
+        axis.RegenerateTicks(edgeLength);
 
         return axis;
     }
