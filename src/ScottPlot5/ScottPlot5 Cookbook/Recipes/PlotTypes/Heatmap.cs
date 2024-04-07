@@ -62,6 +62,28 @@ public class Heatmap : ICategory
         }
     }
 
+    public class HeatmapMultipleColorbar : RecipeBase
+    {
+        public override string Name => "Multiple Colorbars";
+        public override string Description => "Multiple colorbars may be added to plots.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Extent = new(0, 1, 0, 1);
+            hm1.Colormap = new ScottPlot.Colormaps.Turbo();
+            myPlot.Add.ColorBar(hm1);
+
+            var hm2 = myPlot.Add.Heatmap(data);
+            hm2.Extent = new(1.5, 2.5, 0, 1);
+            hm2.Colormap = new ScottPlot.Colormaps.Viridis();
+            myPlot.Add.ColorBar(hm2);
+        }
+    }
+
     public class HeatmapFlip : RecipeBase
     {
         public override string Name => "Flipped Heatmap";
