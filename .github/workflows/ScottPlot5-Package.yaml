@@ -1,0 +1,39 @@
+name: ScottPlot 5 Package
+
+on:
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  TEST_PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Tests/"
+  ARTIFACT_FOLDER: "artifacts"
+
+jobs:
+  deploy:
+    name: 🚀 Publish ScottPlot5 Packages
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 📦 Package ScottPlot
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5"
+        run: |
+          dotnet restore "$PROJECT_FOLDER"
+          dotnet build "$PROJECT_FOLDER" --configuration Release
+          dotnet pack "$PROJECT_FOLDER" --configuration Release -o "$ARTIFACT_FOLDER"
+
+      - name: 🚀 Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "ScottPlot"
+          path: $ARTIFACT_FOLDER
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true
