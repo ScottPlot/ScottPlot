@@ -42,9 +42,8 @@ public abstract class AxisLine : IPlottable, IRenderLast
         {
             return LegendItem.Single(new LegendItem()
             {
-                Label = Label.Text,
+                Label = ExcludeFromLegend ? string.Empty : Label.Text,
                 Line = LineStyle,
-                IsVisible = !ExcludeFromLegend,
             });
         }
     }
