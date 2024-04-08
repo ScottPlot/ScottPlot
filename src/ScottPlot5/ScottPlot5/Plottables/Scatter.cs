@@ -16,6 +16,7 @@ public class Scatter(IScatterSource data) : IPlottable
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
 
     /// <summary>
     /// The style of lines to use when connecting points.
@@ -30,7 +31,7 @@ public class Scatter(IScatterSource data) : IPlottable
         set
         {
             PathStrategy = value
-                ? new PathStrategies.QuadHalfPoint()
+                ? new PathStrategies.CubicSpline()
                 : new PathStrategies.Straight();
         }
     }
