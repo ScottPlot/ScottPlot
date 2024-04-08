@@ -8,11 +8,14 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        double[,] data = SampleData.MonaLisa();
+        Func<double, double> func = new((x) => Math.Sin(x) * Math.Sin(x / 2));
 
-        var hm1 = formsPlot1.Plot.Add.Heatmap(data);
-        hm1.Colormap = new ScottPlot.Colormaps.Turbo();
+        ScottPlot.DataSources.FunctionSource fs = new(x => x)
+        {
+            RangeX = new CoordinateRange(0, Math.PI * 2),
+            Function = func,
+        };
 
-        formsPlot1.Plot.Add.ColorBar(hm1);
+        var f = formsPlot1.Plot.Add.Function(fs);
     }
 }

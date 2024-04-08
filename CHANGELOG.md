@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.26
 _Not yet on NuGet..._
+* Function: Improve autoscaling behavior and respect use-defined horizontal range (#3618) @Matthew-Chidlow
 
 ## ScottPlot 5.0.25
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
