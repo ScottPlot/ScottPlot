@@ -11,7 +11,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinUI</PackageId>
-        <Version>5.0.23</Version>
+        <Version>5.0.25</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -24,6 +24,7 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <DebugType>portable</DebugType>
         <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <IncludeSource>true</IncludeSource>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>Uno0001, NU5118, CS8002, NU1701, CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>

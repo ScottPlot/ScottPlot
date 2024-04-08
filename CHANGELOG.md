@@ -1,4 +1,16 @@
+## ScottPlot 5.0.26
+_Not yet on NuGet..._
+* Function: Improved autoscaling behavior and respect for user-defined horizontal ranges (#3618) @Matthew-Chidlow  
+* Function: Exposed `MinX` and `MaxX` to allow users to restrict display to a horizontal range (#3595, #3603) @Matthew-Chidlow @Dibyanshuaman
+
+## ScottPlot 5.0.25
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
+* NuGet: Use snupkg format to include debug symbols (#3496)
+* Scatter: Fixed indexing error affecting `GetNearest()` (#3616) @Matthew-Chidlow @SongPing
+* Generate: Exposed a static `RandomWalker` instance for easily generating random walk datasets
+
 ## ScottPlot 5.0.24
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-07_
 * Ticks: Modified `NumericFixedInterval` to add support for inverted axes (#3567) @Alexander-png
 * Bar plot: Improved support for labels on horizontally oriented bar plots (#3546, #3520) @aespitia @yui1227
 * Axis: Added new axis rules for edge locking, center locking, and tick snapping (#3547) @BrianAtZetica
@@ -26,6 +38,7 @@
 * Colorbar: Improved positioning and support for adding multiple colorbars to plots (#3294, #3560, #3586) @NateEbling @mawbydp @hnMel
 * Colorbar: Added a `Label` which users can customize to display an optional title (#3611) @mawbydp
 * SignalXY: Added support for markers and marker styling (#3602, #3609) @Giviruk
+* Scatter: Added support for `MinRenderIndex` and `MaxRenderIndex` to limit display to a portion of the data (#3614, #3308) @wellsw
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_

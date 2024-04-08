@@ -3,21 +3,21 @@
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
 /// </summary>
-public class ScatterSourceDoubleArray : IScatterSource
+public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 {
-    private readonly double[] Xs;
-    private readonly double[] Ys;
+    private readonly double[] Xs = xs;
+    private readonly double[] Ys = ys;
 
-    public ScatterSourceDoubleArray(double[] xs, double[] ys)
-    {
-        Xs = xs;
-        Ys = ys;
-    }
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+    private int RenderIndexCount => Math.Min(Ys.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        // TODO: try to avoid calling this
-        return Xs.Zip(Ys, (x, y) => new Coordinates(x, y)).ToArray();
+        return Enumerable
+            .Range(MinRenderIndex, RenderIndexCount)
+            .Select(i => new Coordinates(Xs[i], Ys[i]))
+            .ToList();
     }
 
     public AxisLimits GetLimits()
@@ -27,12 +27,12 @@ public class ScatterSourceDoubleArray : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        return CoordinateRange.MinMaxNan(Xs);
+        return CoordinateRange.MinMaxNan(Xs.Skip(MinRenderIndex).Take(RenderIndexCount));
     }
 
     public CoordinateRange GetLimitsY()
     {
-        return CoordinateRange.MinMaxNan(Ys);
+        return CoordinateRange.MinMaxNan(Ys.Skip(MinRenderIndex).Take(RenderIndexCount));
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
@@ -44,8 +44,9 @@ public class ScatterSourceDoubleArray : IScatterSource
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i = 0; i < Xs.Length; i++)
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
+            int i = MinRenderIndex + i2;
             double dX = (Xs[i] - mouseLocation.X) * renderInfo.PxPerUnitX;
             double dY = (Ys[i] - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;

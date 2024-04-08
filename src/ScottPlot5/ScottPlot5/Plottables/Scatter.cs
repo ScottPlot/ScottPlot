@@ -10,6 +10,8 @@ public class Scatter(IScatterSource data) : IPlottable
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
 
     public IScatterSource Data { get; } = data;
+    public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
+    public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
 
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }

@@ -13,7 +13,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>
-        <Version>5.0.23</Version>
+        <Version>5.0.25</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -26,6 +26,7 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <DebugType>portable</DebugType>
         <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <IncludeSource>true</IncludeSource>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
 

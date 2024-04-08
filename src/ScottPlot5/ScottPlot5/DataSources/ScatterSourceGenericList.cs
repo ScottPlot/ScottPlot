@@ -3,24 +3,28 @@
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
 /// </summary>
-public class ScatterSourceGenericList<T1, T2> : IScatterSource
+public class ScatterSourceGenericList<T1, T2>(List<T1> xs, List<T2> ys) : IScatterSource
 {
-    private readonly List<T1> Xs;
-    private readonly List<T2> Ys;
+    private readonly List<T1> Xs = xs;
+    private readonly List<T2> Ys = ys;
 
-    public ScatterSourceGenericList(List<T1> xs, List<T2> ys)
-    {
-        if (xs.Count != ys.Count)
-            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal length");
-
-        Xs = xs;
-        Ys = ys;
-    }
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+    private int RenderIndexCount => Math.Min(Ys.Count - 1, MaxRenderIndex) - MinRenderIndex + 1;
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        // TODO: try to avoid calling this
-        return Xs.Zip(Ys, (x, y) => NumericConversion.GenericToCoordinates(ref x, ref y)).ToArray();
+        List<Coordinates> points = new(RenderIndexCount);
+
+        for (int i = 0; i < RenderIndexCount; i++)
+        {
+            T1 x = Xs[MinRenderIndex + i];
+            T2 y = Ys[MinRenderIndex + i];
+            Coordinates c = NumericConversion.GenericToCoordinates(ref x, ref y);
+            points.Add(c);
+        }
+
+        return points;
     }
 
     public AxisLimits GetLimits()
@@ -30,13 +34,13 @@ public class ScatterSourceGenericList<T1, T2> : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        double[] values = NumericConversion.GenericToDoubleArray(Xs);
+        double[] values = NumericConversion.GenericToDoubleArray(Xs.Skip(MinRenderIndex).Take(RenderIndexCount));
         return CoordinateRange.MinMaxNan(values);
     }
 
     public CoordinateRange GetLimitsY()
     {
-        double[] values = NumericConversion.GenericToDoubleArray(Ys);
+        double[] values = NumericConversion.GenericToDoubleArray(Ys.Skip(MinRenderIndex).Take(RenderIndexCount));
         return CoordinateRange.MinMaxNan(values);
     }
 
@@ -49,8 +53,9 @@ public class ScatterSourceGenericList<T1, T2> : IScatterSource
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i = 0; i < Xs.Count; i++)
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
+            int i = MinRenderIndex + i2;
             T1 xValue = Xs[i];
             T2 yValue = Ys[i];
             double xValueDouble = NumericConversion.GenericToDouble(ref xValue);

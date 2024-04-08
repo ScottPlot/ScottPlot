@@ -3,25 +3,26 @@
 /// <summary>
 /// This data source manages X/Y points as a collection of coordinates
 /// </summary>
-public class ScatterSourceCoordinatesArray : IScatterSource
+public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatterSource
 {
-    private readonly Coordinates[] Coordinates;
+    private readonly Coordinates[] Coordinates = coordinates;
 
-    public ScatterSourceCoordinatesArray(Coordinates[] coordinates)
-    {
-        Coordinates = coordinates;
-    }
+    public int MinRenderIndex { get; set; } = 0;
+    public int MaxRenderIndex { get; set; } = int.MaxValue;
+    private int RenderIndexCount => Math.Min(Coordinates.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        // TODO: try to avoid calling this
-        return Coordinates;
+        return Coordinates
+            .Skip(MinRenderIndex)
+            .Take(RenderIndexCount)
+            .ToList();
     }
 
     public AxisLimits GetLimits()
     {
         ExpandingAxisLimits limits = new();
-        limits.Expand(Coordinates);
+        limits.Expand(Coordinates.Skip(MinRenderIndex).Take(RenderIndexCount));
         return limits.AxisLimits;
     }
 
@@ -44,8 +45,9 @@ public class ScatterSourceCoordinatesArray : IScatterSource
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i = 0; i < Coordinates.Length; i++)
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
+            int i = MinRenderIndex + i2;
             double dX = (Coordinates[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
             double dY = (Coordinates[i].Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
