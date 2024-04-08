@@ -23,6 +23,7 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <DebugType>portable</DebugType>
         <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <IncludeSource>true</IncludeSource>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
