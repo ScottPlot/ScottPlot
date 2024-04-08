@@ -232,26 +232,6 @@ public static class Generate
         return RandomData.RandomWalk(count, mult, offset);
     }
 
-    public class RandomWalker(int seed = 0)
-    {
-        readonly RandomDataGenerator Gen = new(seed);
-        double LastValue = 0;
-
-        public double GetNext()
-        {
-            double value = Gen.RandomWalk(1, offset: LastValue)[0];
-            LastValue = value;
-            return value;
-        }
-
-        public double[] GetNext(int count)
-        {
-            double[] values = Gen.RandomWalk(count, offset: LastValue);
-            LastValue = values[values.Length - 1];
-            return values;
-        }
-    }
-
     [Obsolete("use RandomSample()")]
     public static double[] Random(int count, double min = 0, double max = 1)
     {
@@ -618,6 +598,12 @@ public static class Generate
         int i = RandomInteger(linePatterns.Length);
         return linePatterns[i];
     }
+
+    #endregion
+
+    #region Data Generators
+
+    public readonly static DataGenerators.RandomWalker RandomWalker = new();
 
     #endregion
 }

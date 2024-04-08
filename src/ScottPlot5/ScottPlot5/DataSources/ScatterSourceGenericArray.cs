@@ -53,7 +53,7 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i2 = 0; i2 <= RenderIndexCount; i2++)
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
             int i = MinRenderIndex + i2;
             T1 xValue = Xs[i];

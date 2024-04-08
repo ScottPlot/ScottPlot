@@ -1,4 +1,5 @@
-﻿using ScottPlot.DataSources;
+﻿using FluentAssertions;
+using ScottPlot.DataSources;
 
 namespace ScottPlotTests.UnitTests;
 
@@ -196,5 +197,113 @@ internal class ScatterDataTests
         limits.Right.Should().Be(25);
         limits.Bottom.Should().BeApproximately(0, .1);
         limits.Top.Should().BeApproximately(1, .1);
+    }
+
+    [Test]
+    public void Test_Scatter_GetNearest_CoordinatesArray()
+    {
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        Coordinates[] cs = Enumerable
+            .Range(0, xs.Length)
+            .Select(x => new Coordinates(xs[x], ys[x]))
+            .ToArray();
+
+        ScottPlot.Plot plot = new();
+        var spDoubleArray = plot.Add.Scatter(cs);
+
+        // force a render so we can get dimension info
+        plot.GetImage(600, 400);
+        var renderInfo = plot.RenderManager.LastRender;
+
+        Coordinates location = new(25, 0.8);
+        DataPoint nearest = spDoubleArray.Data.GetNearest(location, renderInfo, maxDistance: 100);
+        nearest.Index.Should().Be(20);
+        nearest.X.Should().Be(20);
+        nearest.Y.Should().BeApproximately(0.58778, .001);
+    }
+
+    [Test]
+    public void Test_Scatter_GetNearest_CoordinatesList()
+    {
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        List<Coordinates> cs = Enumerable
+            .Range(0, xs.Length)
+            .Select(x => new Coordinates(xs[x], ys[x]))
+            .ToList();
+
+        ScottPlot.Plot plot = new();
+        var spDoubleArray = plot.Add.Scatter(cs);
+
+        // force a render so we can get dimension info
+        plot.GetImage(600, 400);
+        var renderInfo = plot.RenderManager.LastRender;
+
+        Coordinates location = new(25, 0.8);
+        DataPoint nearest = spDoubleArray.Data.GetNearest(location, renderInfo, maxDistance: 100);
+        nearest.Index.Should().Be(20);
+        nearest.X.Should().Be(20);
+        nearest.Y.Should().BeApproximately(0.58778, .001);
+    }
+
+    [Test]
+    public void Test_Scatter_GetNearest_DoubleArray()
+    {
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+
+        ScottPlot.Plot plot = new();
+        var spDoubleArray = plot.Add.Scatter(xs, ys);
+
+        // force a render so we can get dimension info
+        plot.GetImage(600, 400);
+        var renderInfo = plot.RenderManager.LastRender;
+
+        Coordinates location = new(25, 0.8);
+        DataPoint nearest = spDoubleArray.Data.GetNearest(location, renderInfo, maxDistance: 100);
+        nearest.Index.Should().Be(20);
+        nearest.X.Should().Be(20);
+        nearest.Y.Should().BeApproximately(0.58778, .001);
+    }
+
+    [Test]
+    public void Test_Scatter_GetNearest_GenericArray()
+    {
+        float[] xs = Generate.Consecutive(51).Select(x => (float)x).ToArray();
+        float[] ys = Generate.Sin(51).Select(x => (float)x).ToArray();
+
+        ScottPlot.Plot plot = new();
+        var spDoubleArray = plot.Add.Scatter(xs, ys);
+
+        // force a render so we can get dimension info
+        plot.GetImage(600, 400);
+        var renderInfo = plot.RenderManager.LastRender;
+
+        Coordinates location = new(25, 0.8);
+        DataPoint nearest = spDoubleArray.Data.GetNearest(location, renderInfo, maxDistance: 100);
+        nearest.Index.Should().Be(20);
+        nearest.X.Should().Be(20);
+        nearest.Y.Should().BeApproximately(0.58778, .001);
+    }
+
+    [Test]
+    public void Test_Scatter_GetNearest_GenericList()
+    {
+        List<float> xs = Generate.Consecutive(51).Select(x => (float)x).ToList();
+        List<float> ys = Generate.Sin(51).Select(x => (float)x).ToList();
+
+        ScottPlot.Plot plot = new();
+        var spDoubleArray = plot.Add.Scatter(xs, ys);
+
+        // force a render so we can get dimension info
+        plot.GetImage(600, 400);
+        var renderInfo = plot.RenderManager.LastRender;
+
+        Coordinates location = new(25, 0.8);
+        DataPoint nearest = spDoubleArray.Data.GetNearest(location, renderInfo, maxDistance: 100);
+        nearest.Index.Should().Be(20);
+        nearest.X.Should().Be(20);
+        nearest.Y.Should().BeApproximately(0.58778, .001);
     }
 }

@@ -54,7 +54,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         Data.Add(coordinates);
     }
 
-    public void Add(IReadOnlyList<double> ys)
+    public void Add(IEnumerable<double> ys)
     {
         foreach (double y in ys)
         {
@@ -62,7 +62,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         }
     }
 
-    public void Add(IReadOnlyList<Coordinates> coordinates)
+    public void Add(IEnumerable<Coordinates> coordinates)
     {
         foreach (Coordinates c in coordinates)
         {

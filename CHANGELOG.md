@@ -1,5 +1,11 @@
-## ScottPlot 5.0.25
+## ScottPlot 5.0.26
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.25
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
+* NuGet: Use snupkg format to include debug symbols (#3496)
+* Scatter: Fixed indexing error affecting `GetNearest()` (#3616) @Matthew-Chidlow @SongPing
+* Generate: Exposed a static `RandomWalker` instance for easily generating random walk datasets
 
 ## ScottPlot 5.0.24
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-07_
