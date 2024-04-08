@@ -1,5 +1,8 @@
 ## ScottPlot 5.0.26
 _Not yet on NuGet..._
+* Function: Improved autoscaling behavior and respect for user-defined horizontal ranges (#3618) @Matthew-Chidlow  
+* Function: Exposed `MinX` and `MaxX` to allow users to restrict display to a horizontal range (#3595, #3603) @Matthew-Chidlow @Dibyanshuaman
+* Axis Lines: Added `ExcludeFromLegend` so text can be added to axis line labels without appearing in the legend (#3612) @MCF
 
 ## ScottPlot 5.0.25
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
