@@ -29,4 +29,22 @@ public class Function : ICategory
             myPlot.Axes.SetLimits(-10, 10, -1.5, 1.5);
         }
     }
+
+    public class FunctionLimitX : RecipeBase
+    {
+        public override string Name => "Function Limit X";
+        public override string Description => "A function can be limited to a range of X values.";
+
+        [Test]
+        public override void Execute()
+        {
+            var func = new Func<double, double>((x) => Math.Sin(x) * Math.Sin(x / 2));
+
+            var f = myPlot.Add.Function(func);
+            f.MinX = -3;
+            f.MaxX = 3;
+
+            myPlot.Axes.SetLimits(-5, 5, -.2, 1.0);
+        }
+    }
 }

@@ -44,7 +44,7 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i2 = 0; i2 <= RenderIndexCount; i2++)
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
             int i = MinRenderIndex + i2;
             double dX = (Xs[i] - mouseLocation.X) * renderInfo.PxPerUnitX;

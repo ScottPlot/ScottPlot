@@ -45,7 +45,7 @@ public class ScatterSourceCoordinatesList(List<Coordinates> coordinates) : IScat
         double closestX = double.PositiveInfinity;
         double closestY = double.PositiveInfinity;
 
-        for (int i2 = 0; i2 <= RenderIndexCount; i2++)
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
             int i = MinRenderIndex + i2;
             double dX = (Coordinates[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
