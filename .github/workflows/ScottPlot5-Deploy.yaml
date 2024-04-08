@@ -110,4 +110,4 @@ jobs:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
       - name: 🚀 Deploy Packages
-        run: nuget push "${{ env.ARTIFACT_FOLDER }}/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+        run: nuget push "${{ env.ARTIFACT_FOLDER }}\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
