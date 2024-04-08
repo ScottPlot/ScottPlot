@@ -8,6 +8,8 @@ using System.Linq;
 /// </summary>
 public class CubicSpline : IPathStrategy
 {
+    public double Tension = 6;
+
     public SKPath GetPath(IEnumerable<Pixel> pixels)
     {
         SKPath path = new();
@@ -41,8 +43,8 @@ public class CubicSpline : IPathStrategy
                 Pixel p1 = array[i - 1];
                 Pixel p2 = array[i];
                 Pixel p3 = array[i + 1];
-                Pixel c1 = p1 + (p2 - p0) / 6.0f;
-                Pixel c2 = p2 - (p3 - p1) / 6.0f;
+                Pixel c1 = p1 + (p2 - p0) / (float)Tension;
+                Pixel c2 = p2 - (p3 - p1) / (float)Tension;
 
                 path.CubicTo(c1.ToSKPoint(), c2.ToSKPoint(), p2.ToSKPoint());
             }
