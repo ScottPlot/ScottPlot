@@ -9,7 +9,6 @@ public partial class DataStreamer : Form, IDemoWindow
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
     readonly ScottPlot.Plottables.DataStreamer Streamer;
-    readonly ScottPlot.Generate.RandomWalker Walker = new();
 
     public DataStreamer()
     {
@@ -23,7 +22,7 @@ public partial class DataStreamer : Form, IDemoWindow
         // setup a timer to add data to the streamer periodically
         AddNewDataTimer.Tick += (s, e) =>
         {
-            double[] newValues = Walker.GetNext(10);
+            var newValues = ScottPlot.Generate.RandomWalker.Next(10);
             Streamer.AddRange(newValues);
         };
 
