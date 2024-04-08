@@ -10,8 +10,33 @@ public class FunctionPlot(IFunctionSource source) : IPlottable
     private CoordinateRange MaxObservedRangeY { get; set; } = CoordinateRange.NotSet;
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);
 
-    private double MinX => Math.Max(Source.RangeX.Min.FiniteCoallesce(Axes.XAxis.Min), Axes.XAxis.Min);
-    private double MaxX => Math.Min(Source.RangeX.Max.FiniteCoallesce(Axes.XAxis.Max), Axes.XAxis.Max);
+    public double MinX
+    {
+        get
+        {
+            return double.IsInfinity(Source.RangeX.Min)
+                ? Axes.XAxis.Min
+                : Source.RangeX.Min;
+        }
+        set
+        {
+            Source.RangeX = new CoordinateRange(value, Source.RangeX.Max);
+        }
+    }
+
+    public double MaxX
+    {
+        get
+        {
+            return double.IsInfinity(Source.RangeX.Max)
+                ? Axes.XAxis.Max
+                : Source.RangeX.Max;
+        }
+        set
+        {
+            Source.RangeX = new CoordinateRange(Source.RangeX.Min, value);
+        }
+    }
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem

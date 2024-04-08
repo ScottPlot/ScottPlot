@@ -10,12 +10,8 @@ public partial class Form1 : Form
 
         Func<double, double> func = new((x) => Math.Sin(x) * Math.Sin(x / 2));
 
-        ScottPlot.DataSources.FunctionSource fs = new(x => x)
-        {
-            RangeX = new CoordinateRange(0, Math.PI * 2),
-            Function = func,
-        };
-
-        var f = formsPlot1.Plot.Add.Function(fs);
+        var f = formsPlot1.Plot.Add.Function(func);
+        f.MinX = -3;
+        f.MaxX = 3;
     }
 }
