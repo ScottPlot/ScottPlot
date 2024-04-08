@@ -292,6 +292,27 @@ public class Scatter : ICategory
         }
     }
 
+    public class ScatterSpline : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Cubic Spline Interpolation";
+        public override string Description => "Scatter plots draw straight lines " +
+            "between points by default, but setting the PathStrategy property to CubicSpline " +
+            "allows the scatter plot to connect points with smooth lines.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = { -2, -3, -5, -3, 0, 3, 5, 3, 2, -2 };
+            double[] ys = { 0, -1, 0, 4, 4, 4, 0, -1, 0, 0 };
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.PathStrategy = new ScottPlot.PathStrategies.CubicSpline();
+            sp.Label = "Spline";
+            sp.LineWidth = 2;
+            sp.MarkerSize = 7;
+        }
+    }
+
     public class ScatterLimitIndex : RecipeBase
     {
         public override string Name => "Limiting Display with Render Indexes";
