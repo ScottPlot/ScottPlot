@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * WPF: Added `GetPlotPixelPosition()` for getting mouse position relative to the figure (#3622) @KroMignon
 * Scatter: Upgraded the default smooth behavior to use cubic spline interpolation (#3623, #3606, #3274, #3566) @drolevar
 * Vector Field: Added a new plot type to display a collection of rooted vectors (#3625, #3626) @bclehmann
+* AxisLine: Improve appearance in of the key displayed in the legend (#3627, #3613) @MCF
 
 ## ScottPlot 5.0.25
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
