@@ -44,6 +44,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
             {
                 Label = ExcludeFromLegend ? string.Empty : Label.Text,
                 Line = LineStyle,
+                Marker = MarkerStyle.None,
             });
         }
     }
