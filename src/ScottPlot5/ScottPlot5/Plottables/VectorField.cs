@@ -13,14 +13,14 @@ public class VectorField(IVectorFieldSource source) : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
-    public LineStyle LineStyle { get; set; } = new(); // TODO: Maybe this should be a field within an ArrowStyle?
+    public ArrowStyle ArrowStyle { get; set; } = new(); // TODO: Maybe this should be a field within an ArrowStyle?
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
             Label = Label,
             Marker = MarkerStyle.None, // TODO: Should there be an arrow-style marker?
-            Line = LineStyle,
+            Line = ArrowStyle.LineStyle,
         });
 
     IVectorFieldSource Source { get; set; } = source;
@@ -29,7 +29,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable
 
     public void Render(RenderPack rp)
     {
-        const float maxLength = 25;
+        float maxLength = 25;
 
         // TODO: Filter out those that are off-screen? This is subtle, an arrow may be fully off-screen except for its arrowhead, if the blades are long enough.
         var vectors = Source.GetRootedVectors().Select(v => new RootedPixelVector(Axes.GetPixel(v.Tail), v.Vector)).ToArray();
@@ -57,6 +57,6 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         }
 
         using SKPaint paint = new();
-        Drawing.DrawArrows(rp.Canvas, paint, vectors, LineStyle);
+        Drawing.DrawArrows(rp.Canvas, paint, vectors, ArrowStyle);
     }
 }

@@ -309,23 +309,31 @@ public static class Drawing
         }
     }
 
-    public static void DrawArrows(SKCanvas canvas, SKPaint paint, IEnumerable<RootedPixelVector> vectors, LineStyle style)
+    public static void DrawArrows(SKCanvas canvas, SKPaint paint, IEnumerable<RootedPixelVector> vectors, ArrowStyle style)
     {
         // TODO: This is inflexible
         
         float arrowSpread = 30.ToRadians();
         
-        if (!style.CanBeRendered)
+        if (!style.LineStyle.CanBeRendered)
             return;
 
-        style.ApplyToPaint(paint);
+        style.LineStyle.ApplyToPaint(paint);
         using SKPath path = new();
 
         foreach (RootedPixelVector vector in vectors)
         {
             float bladeLength = 0.25f * vector.Distance;
 
-            path.MoveTo(vector.Tail.ToSKPoint());
+            SKPoint start = style.Anchor switch
+            {
+                ArrowAnchor.Center => new(vector.Tail.X - 0.5f * vector.Vector.X, vector.Tail.Y - 0.5f * vector.Vector.Y),
+                ArrowAnchor.Tip => vector.Tail.ToSKPoint(),
+                ArrowAnchor.Tail => new(vector.Tail.X - vector.Vector.X, vector.Tail.Y - vector.Vector.Y),
+                _ => throw new ArgumentOutOfRangeException(nameof(style.Anchor), "Unexpected arrow anchor value"),
+            };
+
+            path.MoveTo(start);
             path.RLineTo(vector.Vector.X, vector.Vector.Y);
             var head = path.LastPoint;
 
