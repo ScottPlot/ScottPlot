@@ -112,7 +112,7 @@ public static class Common
         paint.Style = SKPaintStyle.StrokeAndFill;
 
         using SKPath path = PathStrategies.Arrows.GetPath([
-                new RootedPixelVector(new(x,y + height / 2), new(symbolWidth,0))
+                new RootedPixelVector(new(x, y + height / 2), new(symbolWidth, 0))
             ], new ArrowStyle()
             {
                 Anchor = ArrowAnchor.Tail,
