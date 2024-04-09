@@ -2,7 +2,7 @@
 
 public static class Arrows // TODO: use an interface to let users inject custom logic
 {
-    public static SKPath GetPath(IEnumerable<RootedPixelVector> vectors, ArrowStyle style)
+    public static SKPath GetPath(IEnumerable<RootedPixelVector> vectors, ArrowStyle style, float maxBladeWidth = float.PositiveInfinity)
     {
         const float bladeLengthFactor = 0.35f; // How long the arrowhead is as a proportion of arrow length
         const float bladeWidthFactor = 0.2f; // How wide the arrowhead is as a proportion of arrow length
@@ -27,8 +27,8 @@ public static class Arrows // TODO: use an interface to let users inject custom 
             var junction = head + new SKPoint(-bladeLengthFactor * vector.Vector.X, -bladeLengthFactor * vector.Vector.Y);
 
             var perp = new SKPoint(-vector.Vector.Y, vector.Vector.X);
-            var bladeTip1 = junction + new SKPoint(bladeWidthFactor * perp.X, bladeWidthFactor * perp.Y);
-            var bladeTip2 = junction - new SKPoint(bladeWidthFactor * perp.X, bladeWidthFactor * perp.Y);
+            var bladeTip1 = junction + new SKPoint(Math.Min(bladeWidthFactor * perp.X, maxBladeWidth), Math.Min(bladeWidthFactor * perp.Y, maxBladeWidth));
+            var bladeTip2 = junction - new SKPoint(Math.Min(bladeWidthFactor * perp.X, maxBladeWidth), Math.Min(bladeWidthFactor * perp.Y, maxBladeWidth));
 
             var arrowHeadBegin = junction + new SKPoint(cutInFactor * vector.Vector.X, cutInFactor * vector.Vector.Y);
 

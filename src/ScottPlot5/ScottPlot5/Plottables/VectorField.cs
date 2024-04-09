@@ -13,8 +13,9 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         new LegendItem
         {
             Label = Label,
-            Marker = MarkerStyle.None, // TODO: Should there be an arrow-style marker?
+            Marker = MarkerStyle.None,
             Line = ArrowStyle.LineStyle,
+            HasArrow = true
         });
 
     IVectorFieldSource Source { get; set; } = source;
