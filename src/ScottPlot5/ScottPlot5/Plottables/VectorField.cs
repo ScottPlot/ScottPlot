@@ -13,7 +13,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
-    public ArrowStyle ArrowStyle { get; set; } = new(); // TODO: Maybe this should be a field within an ArrowStyle?
+    public ArrowStyle ArrowStyle { get; set; } = new();
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
@@ -46,6 +46,10 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         }
 
         var range = new Range(Math.Sqrt(minMagnitudeSquared), Math.Sqrt(maxMagnitudeSquared));
+        if (range.Min == range.Max)
+        {
+            range = new Range(0, range.Max);
+        }
 
         for (int i = 0; i < vectors.Length; i++)
         {
