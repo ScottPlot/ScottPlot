@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 
 namespace ScottPlotTests.CodeTests;
 
@@ -44,5 +45,15 @@ internal class ForbiddenCodeTests
             $"Call RenderPack.CanvasState Save() and Restore() instead." +
             $"{offences} offences:\n" +
             $"{errorMessages}");
+    }
+
+    [Test]
+    public void Test_PrimitivesNamespace_IsNeverUsed()
+    {
+        Assembly.GetAssembly(typeof(Plot))!
+            .GetTypes()
+            .Where(x => x.Namespace is not null && x.Namespace.Contains("ScottPlot.Primitives"))
+            .ToList()
+            .ForEach(t => Assert.Fail($"{t.Name} should be in the namespace ScottPlot (not ScottPlot.Primitives)"));
     }
 }
