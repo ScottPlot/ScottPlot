@@ -781,6 +781,14 @@ public class PlottableAdder(Plot plot)
         return txt;
     }
 
+    public VectorField VectorField(IList<RootedCoordinateVector> vectors)
+    {
+        VectorFieldDataSourceCoordinatesList vs = new(vectors);
+        VectorField field = new(vs);
+        Plot.PlottableList.Add(field);
+        return field;
+    }
+
     public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
         VerticalLine line = new();

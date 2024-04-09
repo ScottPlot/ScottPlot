@@ -15,29 +15,32 @@ public class VectorField : ICategory
         [Test]
         public override void Execute()
         {
-            List<RootedCoordinateVector> vectors = new();
-
             // generate a grid of positions
             double[] xs = Generate.Consecutive(10);
             double[] ys = Generate.Consecutive(10);
 
-            // add a vector rooted at each position on the grid
+            // create a collection of vectors
+            List<RootedCoordinateVector> vectors = new();
             for (int i = 0; i < xs.Length; i++)
             {
                 for (int j = 0; j < ys.Length; j++)
                 {
+                    // point on the grid
+                    Coordinates pt = new(xs[i], ys[j]);
+
+                    // direction & magnitude
                     float dX = (float)ys[j];
                     float dY = -9.81f / 0.5f * (float)Math.Sin(xs[i]);
                     System.Numerics.Vector2 v = new(dX, dY);
-                    Coordinates pt = new(xs[i], ys[j]);
+
+                    // add to the collection
                     RootedCoordinateVector vector = new(pt, v);
                     vectors.Add(vector);
                 }
             }
 
-            ScottPlot.DataSources.VectorFieldDataSourceCoordinatesList vs = new(vectors);
-            ScottPlot.Plottables.VectorField field = new(vs);
-            myPlot.PlottableList.Add(field);
+            // plot the collection of rooted vectors as a vector field
+            myPlot.Add.VectorField(vectors);
         }
     }
 }
