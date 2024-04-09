@@ -282,9 +282,8 @@ public class Scatter : ICategory
         [Test]
         public override void Execute()
         {
-            RandomDataGenerator data = new(0);
             double[] xs = Generate.Consecutive(10);
-            double[] ys = data.RandomSample(10, 5, 15);
+            double[] ys = Generate.RandomSample(10, 5, 15);
 
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.Smooth = true;
@@ -305,9 +304,8 @@ public class Scatter : ICategory
         [Test]
         public override void Execute()
         {
-            RandomDataGenerator data = new(0);
-            double[] xs = data.RandomWalk(10);
-            double[] ys = data.RandomWalk(10);
+            double[] xs = Generate.RandomWalk(10);
+            double[] ys = Generate.RandomWalk(10);
 
             var mk = myPlot.Add.Markers(xs, ys);
             mk.MarkerShape = MarkerShape.OpenCircle;
@@ -339,9 +337,8 @@ public class Scatter : ICategory
         [Test]
         public override void Execute()
         {
-            RandomDataGenerator data = new(0);
             double[] xs = Generate.Consecutive(10);
-            double[] ys = data.RandomSample(10, 5, 15);
+            double[] ys = Generate.RandomSample(10, 5, 15);
 
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.PathStrategy = new ScottPlot.PathStrategies.QuadHalfPoint();
