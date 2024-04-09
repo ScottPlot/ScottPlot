@@ -51,6 +51,10 @@ public class AxisLines : ICategory
             var axLine4 = myPlot.Add.HorizontalLine(-.75);
             axLine4.Text = "Line 4";
             axLine4.LabelOppositeAxis = true;
+
+            // extra padding on the right and top ensures labels have room
+            myPlot.Axes.Right.MinimumSize = 30;
+            myPlot.Axes.Top.MinimumSize = 30;
         }
     }
 
