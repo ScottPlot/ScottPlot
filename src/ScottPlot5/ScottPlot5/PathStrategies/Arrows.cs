@@ -15,8 +15,8 @@ public static class Arrows // TODO: use an interface to let users inject custom 
             SKPoint start = style.Anchor switch
             {
                 ArrowAnchor.Center => new(vector.Point.X - 0.5f * vector.Vector.X, vector.Point.Y - 0.5f * vector.Vector.Y),
-                ArrowAnchor.Tip => vector.Point.ToSKPoint(),
-                ArrowAnchor.Tail => new(vector.Point.X - vector.Vector.X, vector.Point.Y - vector.Vector.Y),
+                ArrowAnchor.Tail => vector.Point.ToSKPoint(),
+                ArrowAnchor.Tip => new(vector.Point.X - vector.Vector.X, vector.Point.Y - vector.Vector.Y),
                 _ => throw new ArgumentOutOfRangeException(nameof(style), "Unexpected arrow anchor value"),
             };
 
