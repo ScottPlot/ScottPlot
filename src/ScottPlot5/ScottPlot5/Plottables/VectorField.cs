@@ -9,6 +9,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
     public ArrowStyle ArrowStyle { get; set; } = new();
+    public IColormap? Colormap { get; set; } = null;
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
@@ -61,12 +62,29 @@ public class VectorField(IVectorFieldSource source) : IPlottable
             vectors[i].Vector = new((float)(Math.Cos(direction) * newMagnitude), (float)(Math.Sin(direction) * newMagnitude));
         }
 
-
         using SKPaint paint = new();
         ArrowStyle.LineStyle.ApplyToPaint(paint);
         paint.Style = SKPaintStyle.StrokeAndFill;
 
-        using SKPath path = PathStrategies.Arrows.GetPath(vectors, ArrowStyle);
-        rp.Canvas.DrawPath(path, paint);
+        if (Colormap is not null)
+        {
+            var coloredVectors = vectors.ToLookup(v => Colormap.GetColor(v.Magnitude, range));
+
+            foreach (var group in coloredVectors)
+            {
+                paint.Color = group.Key.ToSKColor();
+                RenderVectors(paint, rp.Canvas, group, ArrowStyle);
+            }
+        }
+        else
+        {
+            RenderVectors(paint, rp.Canvas, vectors, ArrowStyle);
+        }
+    }
+
+    private static void RenderVectors(SKPaint paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
+    {
+        using SKPath path = PathStrategies.Arrows.GetPath(vectors, arrowStyle);
+        canvas.DrawPath(path, paint);
     }
 }
