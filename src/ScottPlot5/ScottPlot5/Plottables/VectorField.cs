@@ -23,6 +23,9 @@ public class VectorField(IVectorFieldSource source) : IPlottable
 
     public void Render(RenderPack rp)
     {
+        if (!ArrowStyle.LineStyle.CanBeRendered)
+            return;
+
         float maxLength = 25;
 
         // TODO: Filter out those that are off-screen? This is subtle, an arrow may be fully off-screen except for its arrowhead, if the blades are long enough.
@@ -54,7 +57,12 @@ public class VectorField(IVectorFieldSource source) : IPlottable
             vectors[i].Vector = new((float)(Math.Cos(direction) * newMagnitude), (float)(Math.Sin(direction) * newMagnitude));
         }
 
+
         using SKPaint paint = new();
-        Drawing.DrawArrows(rp.Canvas, paint, vectors, ArrowStyle);
+        ArrowStyle.LineStyle.ApplyToPaint(paint);
+        paint.Style = SKPaintStyle.StrokeAndFill;
+
+        using SKPath path = PathStrategies.Arrows.GetPath(vectors, ArrowStyle);
+        rp.Canvas.DrawPath(path, paint);
     }
 }

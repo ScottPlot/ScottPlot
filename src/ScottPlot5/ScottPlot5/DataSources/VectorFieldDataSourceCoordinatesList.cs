@@ -10,7 +10,6 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
     public int MaxRenderIndex { get; set; } = int.MaxValue;
     private int RenderIndexCount => Math.Min(RootedVectors.Count - 1, MaxRenderIndex) - MinRenderIndex + 1;
 
-
     public IReadOnlyList<RootedCoordinateVector> GetRootedVectors()
     {
         return RootedVectors
@@ -36,7 +35,6 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
         return GetLimits().Rect.YRange;
     }
 
-    // TODO: This matches to the closest tail, this might not be desirable depending if the arrows are anchored to their tail or their midpoint
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
         double maxDistanceSquared = maxDistance * maxDistance;
