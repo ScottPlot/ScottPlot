@@ -311,39 +311,40 @@ public static class Drawing
 
     public static void DrawArrows(SKCanvas canvas, SKPaint paint, IEnumerable<RootedPixelVector> vectors, ArrowStyle style)
     {
-        // TODO: This is inflexible
-        
-        float arrowSpread = 30.ToRadians();
+        const float bladeLengthFactor = 0.35f; // How long the arrowhead is as a proportion of arrow length
+        const float bladeWidthFactor = 0.2f; // How wide the arrowhead is as a proportion of arrow length
+        const float cutInFactor = 0.15f; // How much the base of the arrowhead is cut away as a proportion of arrow length (0 for perfect triangle)
         
         if (!style.LineStyle.CanBeRendered)
             return;
 
         style.LineStyle.ApplyToPaint(paint);
+        paint.Style = SKPaintStyle.StrokeAndFill;
         using SKPath path = new();
 
         foreach (RootedPixelVector vector in vectors)
         {
-            float bladeLength = 0.25f * vector.Distance;
-
             SKPoint start = style.Anchor switch
             {
                 ArrowAnchor.Center => new(vector.Tail.X - 0.5f * vector.Vector.X, vector.Tail.Y - 0.5f * vector.Vector.Y),
                 ArrowAnchor.Tip => vector.Tail.ToSKPoint(),
                 ArrowAnchor.Tail => new(vector.Tail.X - vector.Vector.X, vector.Tail.Y - vector.Vector.Y),
-                _ => throw new ArgumentOutOfRangeException(nameof(style.Anchor), "Unexpected arrow anchor value"),
+                _ => throw new ArgumentOutOfRangeException(nameof(style), "Unexpected arrow anchor value"),
             };
 
             path.MoveTo(start);
             path.RLineTo(vector.Vector.X, vector.Vector.Y);
             var head = path.LastPoint;
 
-            var bladeDirection1 = -vector.Direction - arrowSpread;
-            var bladeDirection2 = -vector.Direction + arrowSpread;
-
-            path.RLineTo((float)(bladeLength * Math.Cos(bladeDirection1)), (float)(bladeLength * Math.Sin(bladeDirection1)));
+            var junction = head + new SKPoint(-bladeLengthFactor * vector.Vector.X, -bladeLengthFactor * vector.Vector.Y);
             
-            path.MoveTo(head);
-            path.RLineTo((float)(bladeLength * Math.Cos(bladeDirection2)), (float)(bladeLength * Math.Sin(bladeDirection2)));
+            var perp = new SKPoint(-vector.Vector.Y, vector.Vector.X);
+            var bladeTip1 = junction + new SKPoint(bladeWidthFactor * perp.X, bladeWidthFactor * perp.Y);
+            var bladeTip2 = junction - new SKPoint(bladeWidthFactor * perp.X, bladeWidthFactor * perp.Y);
+
+            var arrowHeadBegin = junction + new SKPoint(cutInFactor * vector.Vector.X, cutInFactor * vector.Vector.Y);
+
+            path.AddPoly([head, bladeTip1, arrowHeadBegin,  bladeTip2]);
         }
 
         canvas.DrawPath(path, paint);
