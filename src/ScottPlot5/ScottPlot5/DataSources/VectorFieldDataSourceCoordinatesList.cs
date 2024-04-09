@@ -1,10 +1,4 @@
 ﻿using ScottPlot.Interfaces;
-using ScottPlot.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.DataSources;
 
@@ -28,7 +22,7 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
     public AxisLimits GetLimits()
     {
         ExpandingAxisLimits limits = new();
-        limits.Expand(RootedVectors.Select(v => v.Tail).Skip(MinRenderIndex).Take(RenderIndexCount));
+        limits.Expand(RootedVectors.Select(v => v.Point).Skip(MinRenderIndex).Take(RenderIndexCount));
         return limits.AxisLimits;
     }
 
@@ -55,15 +49,15 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
         for (int i2 = 0; i2 < RenderIndexCount; i2++)
         {
             int i = MinRenderIndex + i2;
-            double dX = (RootedVectors[i].Tail.X - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (RootedVectors[i].Tail.Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
+            double dX = (RootedVectors[i].Point.X - mouseLocation.X) * renderInfo.PxPerUnitX;
+            double dY = (RootedVectors[i].Point.Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
 
             if (distanceSquared <= closestDistanceSquared)
             {
                 closestDistanceSquared = distanceSquared;
-                closestX = RootedVectors[i].Tail.X;
-                closestY = RootedVectors[i].Tail.Y;
+                closestX = RootedVectors[i].Point.X;
+                closestY = RootedVectors[i].Point.Y;
                 closestIndex = i;
             }
         }

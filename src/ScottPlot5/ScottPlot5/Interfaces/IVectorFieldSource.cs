@@ -1,6 +1,4 @@
-﻿using ScottPlot.Primitives;
-
-namespace ScottPlot.Interfaces;
+﻿namespace ScottPlot.Interfaces;
 
 public interface IVectorFieldSource
 {

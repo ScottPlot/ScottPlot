@@ -1,13 +1,27 @@
 ﻿using System.Numerics;
 
-namespace ScottPlot.Primitives;
+namespace ScottPlot;
 
-public struct RootedPixelVector(Pixel tail, Vector2 vector)
+/// <summary>
+/// Represents a vector at a point in pixel space
+/// </summary>
+public struct RootedPixelVector(Pixel point, Vector2 vector)
 {
-    public Pixel Tail { get; set; } = tail;
+    public Pixel Point { get; set; } = point;
     public Vector2 Vector { get; set; } = vector;
 
-    public readonly float Direction => (float)Math.Atan2(Vector.Y, Vector.X); // Note that this is properly defined for x,y = 0, unlike Math.Atan(y / x)
-    public readonly float DistanceSquared => Vector.LengthSquared();
-    public readonly float Distance => Vector.Length();
+    /// <summary>
+    /// Angle of the vector in radians
+    /// </summary>
+    public readonly float Angle => (float)Math.Atan2(Vector.Y, Vector.X);
+
+    /// <summary>
+    /// Length of the vector squared in pixel units
+    /// </summary>
+    public readonly float MagnitudeSquared => Vector.LengthSquared();
+
+    /// <summary>
+    /// Length of the vector in pixel units
+    /// </summary>
+    public readonly float Magnitude => Vector.Length();
 }

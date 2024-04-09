@@ -1,10 +1,4 @@
 ﻿using ScottPlot.Interfaces;
-using ScottPlot.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Plottables;
 
@@ -32,7 +26,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         float maxLength = 25;
 
         // TODO: Filter out those that are off-screen? This is subtle, an arrow may be fully off-screen except for its arrowhead, if the blades are long enough.
-        var vectors = Source.GetRootedVectors().Select(v => new RootedPixelVector(Axes.GetPixel(v.Tail), v.Vector)).ToArray();
+        var vectors = Source.GetRootedVectors().Select(v => new RootedPixelVector(Axes.GetPixel(v.Point), v.Vector)).ToArray();
         if (vectors.Length == 0)
             return;
 
@@ -40,7 +34,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         var maxMagnitudeSquared = double.NegativeInfinity;
         foreach (var v in vectors)
         {
-            var magSquared = v.DistanceSquared;
+            var magSquared = v.MagnitudeSquared;
             minMagnitudeSquared = Math.Min(minMagnitudeSquared, magSquared);
             maxMagnitudeSquared = Math.Max(maxMagnitudeSquared, magSquared);
         }
@@ -53,9 +47,9 @@ public class VectorField(IVectorFieldSource source) : IPlottable
 
         for (int i = 0; i < vectors.Length; i++)
         {
-            var oldMagnitude = vectors[i].Distance;
+            var oldMagnitude = vectors[i].Magnitude;
             var newMagnitude = range.Normalize(oldMagnitude) * maxLength;
-            var direction = vectors[i].Direction;
+            var direction = vectors[i].Angle;
 
             vectors[i].Vector = new((float)(Math.Cos(direction) * newMagnitude), (float)(Math.Sin(direction) * newMagnitude));
         }
