@@ -51,6 +51,10 @@ public class AxisLines : ICategory
             var axLine4 = myPlot.Add.HorizontalLine(-.75);
             axLine4.Text = "Line 4";
             axLine4.LabelOppositeAxis = true;
+
+            // extra padding on the right and top ensures labels have room
+            myPlot.Axes.Right.MinimumSize = 30;
+            myPlot.Axes.Top.MinimumSize = 30;
         }
     }
 
@@ -82,6 +86,38 @@ public class AxisLines : ICategory
             hl2.Label.BackColor = Colors.Blue;
             hl2.Label.ForeColor = Colors.Yellow;
             hl2.LinePattern = LinePattern.DenselyDashed;
+        }
+    }
+
+    public class AxisLineInLegend : RecipeBase
+    {
+        public override string Name => "Axis Line In Legend";
+        public override string Description => "Axis lines will be added to the legend if their " +
+            "Text property is set unless their ExcludeFromLegend property is true.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            var axLine1 = myPlot.Add.VerticalLine(24);
+            axLine1.Text = "Line 1";
+
+            var axLine2 = myPlot.Add.HorizontalLine(0.75);
+
+            var axLine3 = myPlot.Add.VerticalLine(37);
+            axLine3.Text = "Line 3";
+            axLine3.ExcludeFromLegend = true;
+
+            var axLine4 = myPlot.Add.HorizontalLine(0.25);
+            axLine4.Text = "Line 4";
+
+            var axLine5 = myPlot.Add.HorizontalLine(-.75);
+            axLine5.Text = "Line 5";
+            axLine5.ExcludeFromLegend = true;
+
+            myPlot.ShowLegend();
         }
     }
 }

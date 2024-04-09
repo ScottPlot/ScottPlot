@@ -8,11 +8,10 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        double[,] data = SampleData.MonaLisa();
+        Func<double, double> func = new((x) => Math.Sin(x) * Math.Sin(x / 2));
 
-        var hm1 = formsPlot1.Plot.Add.Heatmap(data);
-        hm1.Colormap = new ScottPlot.Colormaps.Turbo();
-
-        formsPlot1.Plot.Add.ColorBar(hm1);
+        var f = formsPlot1.Plot.Add.Function(func);
+        f.MinX = -3;
+        f.MaxX = 3;
     }
 }

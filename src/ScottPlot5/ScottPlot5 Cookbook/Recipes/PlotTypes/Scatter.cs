@@ -276,7 +276,8 @@ public class Scatter : ICategory
         public override string Name => "Scatter Plot with Smooth Lines";
         public override string Description => "Scatter plots draw straight lines " +
             "between points by default, but setting the Smooth property allows the " +
-            "scatter plot to connect points with smooth lines.";
+            "scatter plot to connect points with smooth lines. Lines are smoothed " +
+            "using cubic spline interpolation.";
 
         [Test]
         public override void Execute()
@@ -288,7 +289,62 @@ public class Scatter : ICategory
             sp.Smooth = true;
             sp.Label = "Smooth";
             sp.LineWidth = 2;
-            sp.MarkerSize = 7;
+            sp.MarkerSize = 10;
+        }
+    }
+
+    public class ScatterSmoothTension : RecipeBase
+    {
+        public override string Name => "Smooth Line Tension";
+        public override string Description => "Tension of smooth lines can be " +
+            "adjusted for the CubicSpline path strategy. " +
+            "Low tensions lead to 'overshoot' and high tensions produce curves" +
+            "which appear more like straight lines.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.RandomWalk(10);
+            double[] ys = Generate.RandomWalk(10);
+
+            var mk = myPlot.Add.Markers(xs, ys);
+            mk.MarkerShape = MarkerShape.OpenCircle;
+            mk.Color = Colors.Black;
+
+            double[] tensions = { 2, 3, 6, 20 };
+
+            foreach (double tension in tensions)
+            {
+                ScottPlot.PathStrategies.CubicSpline cubic = new() { Tension = tension };
+
+                var sp = myPlot.Add.ScatterLine(xs, ys);
+                sp.PathStrategy = cubic;
+                sp.Label = $"Tension {tension}";
+                sp.LineWidth = 2;
+            }
+
+            myPlot.ShowLegend(Alignment.UpperLeft);
+        }
+    }
+
+    public class ScatterQuad : RecipeBase
+    {
+        public override string Name => "Smooth Scatter without Overshoot";
+        public override string Description => "The quadratic half point path strategy " +
+            "allows scatter plots to be displayed with smooth lines connecting points, but " +
+            "lines are eased in and out of points so they never 'overshoot' the values vertically.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(10);
+            double[] ys = Generate.RandomSample(10, 5, 15);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.PathStrategy = new ScottPlot.PathStrategies.QuadHalfPoint();
+            sp.Label = "Smooth";
+            sp.LineWidth = 2;
+            sp.MarkerSize = 10;
         }
     }
 

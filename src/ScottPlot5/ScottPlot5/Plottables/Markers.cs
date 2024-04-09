@@ -11,6 +11,7 @@ public class Markers(IScatterSource data) : IPlottable
     public IScatterSource Data { get; } = data;
 
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
 
     public Color Color
     {
