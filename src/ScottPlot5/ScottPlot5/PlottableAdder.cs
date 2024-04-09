@@ -781,10 +781,11 @@ public class PlottableAdder(Plot plot)
         return txt;
     }
 
-    public VectorField VectorField(IList<RootedCoordinateVector> vectors)
+    public VectorField VectorField(IList<RootedCoordinateVector> vectors, Color? color = null)
     {
         VectorFieldDataSourceCoordinatesList vs = new(vectors);
         VectorField field = new(vs);
+        field.ArrowStyle = new() { LineStyle = new() { Color = color ?? GetNextColor() } };
         Plot.PlottableList.Add(field);
         return field;
     }
