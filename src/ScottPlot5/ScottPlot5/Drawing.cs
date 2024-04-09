@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Extensions;
+using ScottPlot.Primitives;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -306,6 +307,38 @@ public static class Drawing
         {
             renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
         }
+    }
+
+    public static void DrawArrows(SKCanvas canvas, SKPaint paint, IEnumerable<RootedPixelVector> vectors, LineStyle style)
+    {
+        // TODO: This is inflexible
+        
+        float arrowSpread = 30.ToRadians();
+        
+        if (!style.CanBeRendered)
+            return;
+
+        style.ApplyToPaint(paint);
+        using SKPath path = new();
+
+        foreach (RootedPixelVector vector in vectors)
+        {
+            float bladeLength = 0.25f * vector.Distance;
+
+            path.MoveTo(vector.Tail.ToSKPoint());
+            path.RLineTo(vector.Vector.X, vector.Vector.Y);
+            var head = path.LastPoint;
+
+            var bladeDirection1 = -vector.Direction - arrowSpread;
+            var bladeDirection2 = -vector.Direction + arrowSpread;
+
+            path.RLineTo((float)(bladeLength * Math.Cos(bladeDirection1)), (float)(bladeLength * Math.Sin(bladeDirection1)));
+            
+            path.MoveTo(head);
+            path.RLineTo((float)(bladeLength * Math.Cos(bladeDirection2)), (float)(bladeLength * Math.Sin(bladeDirection2)));
+        }
+
+        canvas.DrawPath(path, paint);
     }
 
     public static SKBitmap BitmapFromArgbs(uint[] argbs, int width, int height)
