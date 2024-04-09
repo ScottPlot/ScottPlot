@@ -311,9 +311,9 @@ public class Scatter : ICategory
             mk.MarkerShape = MarkerShape.OpenCircle;
             mk.Color = Colors.Black;
 
-            double[] tensions = { 2, 3, 6, 20 };
+            float[] tensions = { 0.3f, 0.5f, 1.0f, 3.0f };
 
-            foreach (double tension in tensions)
+            foreach (float tension in tensions)
             {
                 ScottPlot.PathStrategies.CubicSpline cubic = new() { Tension = tension };
 
