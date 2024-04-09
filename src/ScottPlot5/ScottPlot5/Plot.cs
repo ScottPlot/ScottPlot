@@ -2,7 +2,6 @@
 using ScottPlot.Control;
 using ScottPlot.Grids;
 using ScottPlot.Legends;
-using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
 
