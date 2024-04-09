@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Interfaces;
+using System.Numerics;
 
 namespace ScottPlot.Plottables;
 
@@ -53,7 +54,9 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         {
             var oldMagnitude = vectors[i].Magnitude;
             var newMagnitude = range.Normalize(oldMagnitude) * maxLength;
-            var direction = vectors[i].Angle;
+
+            var inPixelCoordinates = Axes.GetPixel(new(vectors[i].Vector.X, vectors[i].Vector.Y));
+            var direction = Math.Atan2(inPixelCoordinates.Y, inPixelCoordinates.X);
 
             vectors[i].Vector = new((float)(Math.Cos(direction) * newMagnitude), (float)(Math.Sin(direction) * newMagnitude));
         }
