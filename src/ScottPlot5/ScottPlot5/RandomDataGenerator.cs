@@ -15,17 +15,22 @@ public class RandomDataGenerator
     /// <summary>
     /// To select right random number generator
     /// </summary>
-    private readonly Random Rand;
+    private Random Rand;
 
     /// <summary>
     /// Create a random number generator.
-    /// The seed is random by deafult, but could be fixed to the defined value
+    /// The seed is random by default, but could be fixed to the defined value
     /// </summary>
     public RandomDataGenerator(int? seed = null)
     {
         Rand = seed.HasValue
             ? new Random(seed.Value)
             : GlobalRandomThread.Value!;
+    }
+
+    public void Seed(int seed)
+    {
+        Rand = new(seed);
     }
 
     public static RandomDataGenerator Generate { get; private set; } = new(0);
