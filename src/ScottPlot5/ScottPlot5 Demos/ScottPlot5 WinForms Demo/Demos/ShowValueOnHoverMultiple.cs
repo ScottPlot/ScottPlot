@@ -92,7 +92,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
                 MyCrosshair.IsVisible = true;
                 MyCrosshair.Position = point.Coordinates;
-                MyCrosshair.LineStyle.Color = scatter.MarkerStyle.Fill.Color;
+                MyCrosshair.LineColor = scatter.MarkerStyle.Fill.Color;
 
                 MyHighlightMarker.IsVisible = true;
                 MyHighlightMarker.Location = point.Coordinates;
