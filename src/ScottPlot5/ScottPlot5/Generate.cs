@@ -219,26 +219,22 @@ public static class Generate
         return intensities;
     }
 
-    public static RootedCoordinateVector[] SampleVectors(int columns = 10, int rows = 10)
+    public static RootedCoordinateVector[] SampleVectors(int columns = 10, int rows = 10, double oscillations = 1)
     {
         double[] xs = Consecutive(columns);
         double[] ys = Consecutive(rows);
 
-        // create a collection of vectors
         List<RootedCoordinateVector> vectors = new();
         for (int i = 0; i < xs.Length; i++)
         {
             for (int j = 0; j < ys.Length; j++)
             {
-                // point on the grid
+                double x = (double)i / xs.Length * Math.PI * oscillations;
+                double y = (double)j / xs.Length * Math.PI * oscillations;
+                double dX = Math.Sin(x) + Math.Sin(y);
+                double dY = Math.Sin(x) - Math.Sin(y);
+                System.Numerics.Vector2 v = new((float)dX, (float)dY);
                 Coordinates pt = new(xs[i], ys[j]);
-
-                // direction & magnitude
-                float dX = (float)ys[j];
-                float dY = -9.81f / 0.5f * (float)Math.Sin(xs[i]);
-                System.Numerics.Vector2 v = new(dX, dY);
-
-                // add to the collection
                 RootedCoordinateVector vector = new(pt, v);
                 vectors.Add(vector);
             }
