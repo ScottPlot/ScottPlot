@@ -60,13 +60,17 @@ public class VectorField(IVectorFieldSource source) : IPlottable
             vectors[i].Vector = new((float)(Math.Cos(direction) * newMagnitude), (float)(Math.Sin(direction) * newMagnitude));
         }
 
+        double minPixelMag = Math.Sqrt(vectors.Select(x => x.MagnitudeSquared).Min());
+        double maxPixelMag = Math.Sqrt(vectors.Select(x => x.MagnitudeSquared).Max());
+        Range pixelMagRange = new(minPixelMag, maxPixelMag);
+
         using SKPaint paint = new();
         ArrowStyle.LineStyle.ApplyToPaint(paint);
         paint.Style = SKPaintStyle.StrokeAndFill;
 
         if (Colormap is not null)
         {
-            var coloredVectors = vectors.ToLookup(v => Colormap.GetColor(v.Magnitude, range));
+            var coloredVectors = vectors.ToLookup(v => Colormap.GetColor(v.Magnitude, pixelMagRange));
 
             foreach (var group in coloredVectors)
             {
