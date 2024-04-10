@@ -4,6 +4,8 @@
 // Obtained from dotnet runtime repository on 2024-04-10
 // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Index.cs
 
+#if !NETSTANDARD2_1_OR_GREATER && !NET6_0_OR_GREATER
+
 using System.Runtime.CompilerServices;
 
 namespace System;
@@ -162,3 +164,5 @@ readonly struct Index : IEquatable<Index>
 #endif
     }
 }
+
+#endif
