@@ -785,7 +785,8 @@ public class PlottableAdder(Plot plot)
     {
         VectorFieldDataSourceCoordinatesList vs = new(vectors);
         VectorField field = new(vs);
-        field.ArrowStyle = new() { LineStyle = new() { Color = color ?? GetNextColor() } };
+        field.ArrowStyle.LineStyle.Color = color ?? GetNextColor();
+        field.ArrowStyle.LineStyle.Width = 2;
         Plot.PlottableList.Add(field);
         return field;
     }
