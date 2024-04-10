@@ -37,6 +37,30 @@ public class Scatter(IScatterSource data) : IPlottable
     }
 
     /// <summary>
+    /// Setting this value enables <see cref="Smooth"/> and sets the curve tension.
+    /// Low tensions tend to "overshoot" data points.
+    /// High tensions begin to approach connecting points with straight lines.
+    /// </summary>
+    public double SmoothTension
+    {
+        get
+        {
+            if (PathStrategy is PathStrategies.CubicSpline cs)
+            {
+                return cs.Tension;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        set
+        {
+            PathStrategy = new PathStrategies.CubicSpline() { Tension = value };
+        }
+    }
+
+    /// <summary>
     /// Strategy to use for generating the path used to connect points
     /// </summary>
     public IPathStrategy PathStrategy { get; set; } = new PathStrategies.Straight();

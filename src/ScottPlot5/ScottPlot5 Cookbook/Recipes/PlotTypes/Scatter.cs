@@ -297,7 +297,7 @@ public class Scatter : ICategory
     {
         public override string Name => "Smooth Line Tension";
         public override string Description => "Tension of smooth lines can be " +
-            "adjusted for the CubicSpline path strategy. " +
+            "adjusted for some smoothing strategies. " +
             "Low tensions lead to 'overshoot' and high tensions produce curves" +
             "which appear more like straight lines.";
 
@@ -311,14 +311,13 @@ public class Scatter : ICategory
             mk.MarkerShape = MarkerShape.OpenCircle;
             mk.Color = Colors.Black;
 
-            double[] tensions = { 2, 3, 6, 20 };
+            double[] tensions = { 0.3, 0.5, 1.0, 3.0 };
 
             foreach (double tension in tensions)
             {
-                ScottPlot.PathStrategies.CubicSpline cubic = new() { Tension = tension };
-
                 var sp = myPlot.Add.ScatterLine(xs, ys);
-                sp.PathStrategy = cubic;
+                sp.Smooth = true;
+                sp.SmoothTension = tension;
                 sp.Label = $"Tension {tension}";
                 sp.LineWidth = 2;
             }
