@@ -23,7 +23,19 @@ public static class Common
         SKPoint textPoint = new(x, y + paint.TextSize);
         float ownHeight = sizedItem.Size.OwnSize.Height;
 
-        if (item.HasSymbol)
+        if (item.HasArrow)
+        {
+            RenderArrow(
+                canvas: canvas,
+                item: item,
+                x: x,
+                y: y + itemPadding.Bottom,
+                height: ownHeight - itemPadding.Vertical,
+                symbolWidth: symbolWidth);
+
+            textPoint.X += symbolWidth + symbolPadRight;
+        }
+        else if (item.HasSymbol)
         {
             RenderSymbol(
                 canvas: canvas,
@@ -87,17 +99,40 @@ public static class Common
         }
     }
 
+    public static void RenderArrow(
+        SKCanvas canvas,
+        LegendItem item,
+        float x,
+        float y,
+        float height,
+        float symbolWidth)
+    {
+        using SKPaint paint = new();
+        item.Line.ApplyToPaint(paint);
+        paint.Style = SKPaintStyle.StrokeAndFill;
+
+        using SKPath path = PathStrategies.Arrows.GetPath([
+                new RootedPixelVector(new(x, y + height / 2), new(symbolWidth, 0))
+            ], new ArrowStyle()
+            {
+                Anchor = ArrowAnchor.Tail,
+                LineStyle = item.Line
+            }, maxBladeWidth: height / 2);
+
+        canvas.DrawPath(path, paint);
+    }
+
     /// <summary>
     /// Return the size of the given item including all its children
     /// </summary>
     public static LegendItemSize Measure(
-        LegendItem item,
-        SKPaint paint,
-        SizedLegendItem[] children,
-        float symbolWidth,
-        float symbolPadRight,
-        PixelPadding Padding,
-        PixelPadding ItemPadding)
+    LegendItem item,
+    SKPaint paint,
+    SizedLegendItem[] children,
+    float symbolWidth,
+    float symbolPadRight,
+    PixelPadding Padding,
+    PixelPadding ItemPadding)
     {
         PixelSize labelRect = !string.IsNullOrWhiteSpace(item.Label)
             ? Drawing.MeasureString(item.Label ?? string.Empty, paint)

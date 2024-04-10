@@ -2,7 +2,7 @@
 
 public static class Arrows // TODO: use an interface to let users inject custom logic
 {
-    public static SKPath GetPath(IEnumerable<RootedPixelVector> vectors, ArrowStyle style)
+    public static SKPath GetPath(IEnumerable<RootedPixelVector> vectors, ArrowStyle style, float maxBladeWidth = float.PositiveInfinity)
     {
         const float bladeLengthFactor = 0.35f; // How long the arrowhead is as a proportion of arrow length
         const float bladeWidthFactor = 0.2f; // How wide the arrowhead is as a proportion of arrow length
@@ -15,8 +15,8 @@ public static class Arrows // TODO: use an interface to let users inject custom 
             SKPoint start = style.Anchor switch
             {
                 ArrowAnchor.Center => new(vector.Point.X - 0.5f * vector.Vector.X, vector.Point.Y - 0.5f * vector.Vector.Y),
-                ArrowAnchor.Tip => vector.Point.ToSKPoint(),
-                ArrowAnchor.Tail => new(vector.Point.X - vector.Vector.X, vector.Point.Y - vector.Vector.Y),
+                ArrowAnchor.Tail => vector.Point.ToSKPoint(),
+                ArrowAnchor.Tip => new(vector.Point.X - vector.Vector.X, vector.Point.Y - vector.Vector.Y),
                 _ => throw new ArgumentOutOfRangeException(nameof(style), "Unexpected arrow anchor value"),
             };
 
@@ -27,8 +27,8 @@ public static class Arrows // TODO: use an interface to let users inject custom 
             var junction = head + new SKPoint(-bladeLengthFactor * vector.Vector.X, -bladeLengthFactor * vector.Vector.Y);
 
             var perp = new SKPoint(-vector.Vector.Y, vector.Vector.X);
-            var bladeTip1 = junction + new SKPoint(bladeWidthFactor * perp.X, bladeWidthFactor * perp.Y);
-            var bladeTip2 = junction - new SKPoint(bladeWidthFactor * perp.X, bladeWidthFactor * perp.Y);
+            var bladeTip1 = junction + new SKPoint(Math.Min(bladeWidthFactor * perp.X, maxBladeWidth), Math.Min(bladeWidthFactor * perp.Y, maxBladeWidth));
+            var bladeTip2 = junction - new SKPoint(Math.Min(bladeWidthFactor * perp.X, maxBladeWidth), Math.Min(bladeWidthFactor * perp.Y, maxBladeWidth));
 
             var arrowHeadBegin = junction + new SKPoint(cutInFactor * vector.Vector.X, cutInFactor * vector.Vector.Y);
 

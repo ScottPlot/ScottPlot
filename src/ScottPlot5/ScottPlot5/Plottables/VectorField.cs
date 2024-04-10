@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Interfaces;
+using System.Numerics;
 
 namespace ScottPlot.Plottables;
 
@@ -8,13 +9,15 @@ public class VectorField(IVectorFieldSource source) : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
     public ArrowStyle ArrowStyle { get; set; } = new();
+    public IColormap? Colormap { get; set; } = null;
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
             Label = Label,
-            Marker = MarkerStyle.None, // TODO: Should there be an arrow-style marker?
+            Marker = MarkerStyle.None,
             Line = ArrowStyle.LineStyle,
+            HasArrow = true
         });
 
     IVectorFieldSource Source { get; set; } = source;
@@ -52,17 +55,38 @@ public class VectorField(IVectorFieldSource source) : IPlottable
         {
             var oldMagnitude = vectors[i].Magnitude;
             var newMagnitude = range.Normalize(oldMagnitude) * maxLength;
-            var direction = vectors[i].Angle;
 
+            var direction = vectors[i].Angle;
             vectors[i].Vector = new((float)(Math.Cos(direction) * newMagnitude), (float)(Math.Sin(direction) * newMagnitude));
         }
 
+        double minPixelMag = Math.Sqrt(vectors.Select(x => x.MagnitudeSquared).Min());
+        double maxPixelMag = Math.Sqrt(vectors.Select(x => x.MagnitudeSquared).Max());
+        Range pixelMagRange = new(minPixelMag, maxPixelMag);
 
         using SKPaint paint = new();
         ArrowStyle.LineStyle.ApplyToPaint(paint);
         paint.Style = SKPaintStyle.StrokeAndFill;
 
-        using SKPath path = PathStrategies.Arrows.GetPath(vectors, ArrowStyle);
-        rp.Canvas.DrawPath(path, paint);
+        if (Colormap is not null)
+        {
+            var coloredVectors = vectors.ToLookup(v => Colormap.GetColor(v.Magnitude, pixelMagRange));
+
+            foreach (var group in coloredVectors)
+            {
+                paint.Color = group.Key.ToSKColor();
+                RenderVectors(paint, rp.Canvas, group, ArrowStyle);
+            }
+        }
+        else
+        {
+            RenderVectors(paint, rp.Canvas, vectors, ArrowStyle);
+        }
+    }
+
+    private static void RenderVectors(SKPaint paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
+    {
+        using SKPath path = PathStrategies.Arrows.GetPath(vectors, arrowStyle);
+        canvas.DrawPath(path, paint);
     }
 }

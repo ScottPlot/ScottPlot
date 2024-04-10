@@ -25,6 +25,11 @@ public readonly struct Range // TODO: evaluate if this can be replaced with more
         Max = max;
     }
 
+    public override string ToString()
+    {
+        return $"Range: [{Min}, {Max}]";
+    }
+
     /// <summary>
     /// Returns the given value as a fraction of the difference between Min and Max. This is a min-max feature scaling.
     /// </summary>

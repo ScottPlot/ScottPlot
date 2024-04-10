@@ -219,6 +219,30 @@ public static class Generate
         return intensities;
     }
 
+    public static RootedCoordinateVector[] SampleVectors(int columns = 10, int rows = 10, double oscillations = 1)
+    {
+        double[] xs = Consecutive(columns);
+        double[] ys = Consecutive(rows);
+
+        List<RootedCoordinateVector> vectors = new();
+        for (int i = 0; i < xs.Length; i++)
+        {
+            for (int j = 0; j < ys.Length; j++)
+            {
+                double x = (double)i / xs.Length * Math.PI * oscillations;
+                double y = (double)j / xs.Length * Math.PI * oscillations;
+                double dX = Math.Sin(x) + Math.Sin(y);
+                double dY = Math.Sin(x) - Math.Sin(y);
+                System.Numerics.Vector2 v = new((float)dX, (float)dY);
+                Coordinates pt = new(xs[i], ys[j]);
+                RootedCoordinateVector vector = new(pt, v);
+                vectors.Add(vector);
+            }
+        }
+
+        return vectors.ToArray();
+    }
+
     #endregion
 
     #region numerical random

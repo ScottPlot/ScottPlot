@@ -10,7 +10,8 @@ public class VectorField : ICategory
     public class VectorFieldQuickstart : RecipeBase
     {
         public override string Name => "Vector Field Quickstart";
-        public override string Description => "Vectors.";
+        public override string Description => "Vectors (representing a magnitude and direction) " +
+            "can be placed at specific points in coordinate space to display as a vector field.";
 
         [Test]
         public override void Execute()
@@ -41,6 +42,21 @@ public class VectorField : ICategory
 
             // plot the collection of rooted vectors as a vector field
             myPlot.Add.VectorField(vectors);
+        }
+    }
+
+    public class VectorFieldColormap : RecipeBase
+    {
+        public override string Name => "Vector Field Colormap";
+        public override string Description => "Vector field arrows can be " +
+            "colored according to their magnitude.";
+
+        [Test]
+        public override void Execute()
+        {
+            RootedCoordinateVector[] vectors = Generate.SampleVectors();
+            var vf = myPlot.Add.VectorField(vectors);
+            vf.Colormap = new ScottPlot.Colormaps.Turbo();
         }
     }
 }
