@@ -11,7 +11,7 @@ _Not yet on NuGet..._
 ## ScottPlot 5.0.25
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
 * NuGet: Use snupkg format to include debug symbols (#3496)
-* Scatter: Fixed indexing error affecting `GetNearest()` (#3616) @Matthew-Chidlow @SongPing
+* Scatter: Fixed indexing error affecting `GetNearest()` (#3616, #3461) @Matthew-Chidlow @SongPing @sunshuaize @mikeKuester
 * Generate: Exposed a static `RandomWalker` instance for easily generating random walk datasets
 
 ## ScottPlot 5.0.24
@@ -692,7 +692,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-11_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 * Palette: Palettes now implement `IEnumerable` and colors can be retrieved using `foreach` (#2028)
 * Render: Improved thread safety of the render lock system (#2030) @anprevost
-* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878)Michael99
+* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878) @Michael99
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
