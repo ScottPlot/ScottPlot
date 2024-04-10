@@ -26,6 +26,8 @@ public partial class MouseTracker : Form, IDemoWindow
             string msg = e.Button == MouseButtons.Left ? "dragging" : "hovering";
             Text = $"X={mouseCoordinates.X:N3}, Y={mouseCoordinates.Y:N3} ({msg})";
             CH.Position = mouseCoordinates;
+            CH.TextX = $"{mouseCoordinates.X:N3}";
+            CH.TextY = $"{mouseCoordinates.Y:N3}";
             formsPlot1.Refresh();
         };
 

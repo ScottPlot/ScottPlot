@@ -164,6 +164,7 @@ public class PlottableAdder(Plot plot)
             Position = new(x, y)
         };
         ch.LineStyle.Color = GetNextColor();
+        ch.FontColor = ch.LineStyle.Color;
         Plot.PlottableList.Add(ch);
         return ch;
     }
