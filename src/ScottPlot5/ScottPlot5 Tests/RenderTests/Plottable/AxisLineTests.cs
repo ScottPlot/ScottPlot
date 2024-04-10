@@ -44,7 +44,7 @@ internal class AxisLineTests
         var hl = plot.Add.HorizontalLine(0.5);
         hl.Text = "HLine";
         hl.FontSize = 10;
-        hl.FontColor = Colors.Yellow;
+        hl.TextColor = Colors.Yellow;
 
         var vl = plot.Add.VerticalLine(0.5);
         vl.Text = "VLine";
