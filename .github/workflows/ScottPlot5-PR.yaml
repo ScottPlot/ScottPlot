@@ -36,10 +36,10 @@ jobs:
           dotnet restore "${{ env.SLN_SP5_DEMO }}"
       - name: 🛠️ Build
         run: |
-          dotnet build "${{ env.SLN_SP5_PROJ }}"
-          dotnet build "${{ env.SLN_SP5_TEST }}"
-          dotnet build "${{ env.SLN_SP5_COOK }}"
-          dotnet build "${{ env.SLN_SP5_DEMO }}"
+          dotnet build "${{ env.SLN_SP5_PROJ }}" /p:TreatWarningsAsErrors="true"
+          dotnet build "${{ env.SLN_SP5_TEST }}" /p:TreatWarningsAsErrors="true"
+          dotnet build "${{ env.SLN_SP5_COOK }}" /p:TreatWarningsAsErrors="true"
+          dotnet build "${{ env.SLN_SP5_DEMO }}" /p:TreatWarningsAsErrors="true"
       - name: 🧪 Run Tests
         run: |
           dotnet test "${{ env.SLN_SP5_TEST }}" --verbosity minimal
