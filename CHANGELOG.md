@@ -5,7 +5,7 @@ _Not yet on NuGet..._
 * Axis Lines: Added `ExcludeFromLegend` so text can be added to axis line labels without appearing in the legend (#3612) @MCF
 * WPF: Added `GetPlotPixelPosition()` for getting mouse position relative to the figure (#3622) @KroMignon
 * Scatter: Upgraded the default smooth behavior to use cubic spline interpolation (#3623, #3606, #3274, #3566) @drolevar
-* Vector Field: Added a new plot type to display a collection of rooted vectors (#3625, #3626) @bclehmann
+* Vector Field: Added a new plot type to display a collection of rooted vectors (#3625, #3626, #3632) @bclehmann
 * AxisLine: Improve appearance in of the key displayed in the legend (#3627, #3613) @MCF
 
 ## ScottPlot 5.0.25
