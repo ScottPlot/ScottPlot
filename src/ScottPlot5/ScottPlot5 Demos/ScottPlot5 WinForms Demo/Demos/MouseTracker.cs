@@ -1,5 +1,4 @@
 ﻿using ScottPlot;
-using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;
 
@@ -17,17 +16,19 @@ public partial class MouseTracker : Form, IDemoWindow
         InitializeComponent();
 
         CH = formsPlot1.Plot.Add.Crosshair(0, 0);
+        CH.TextColor = Colors.White;
+        CH.TextBackgroundColor = CH.HorizontalLine.Color;
+
         formsPlot1.Refresh();
 
         formsPlot1.MouseMove += (s, e) =>
         {
             Pixel mousePixel = new(e.X, e.Y);
             Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(mousePixel);
-            string msg = e.Button == MouseButtons.Left ? "dragging" : "hovering";
-            Text = $"X={mouseCoordinates.X:N3}, Y={mouseCoordinates.Y:N3} ({msg})";
+            this.Text = $"X={mouseCoordinates.X:N3}, Y={mouseCoordinates.Y:N3}";
             CH.Position = mouseCoordinates;
-            CH.TextX = $"{mouseCoordinates.X:N3}";
-            CH.TextY = $"{mouseCoordinates.Y:N3}";
+            CH.VerticalLine.Text = $"{mouseCoordinates.X:N3}";
+            CH.HorizontalLine.Text = $"{mouseCoordinates.Y:N3}";
             formsPlot1.Refresh();
         };
 
