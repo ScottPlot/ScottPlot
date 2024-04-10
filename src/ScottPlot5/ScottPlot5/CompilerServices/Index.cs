@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
+//
+// Obtained from dotnet runtime repository on 2024-04-10
+// https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Index.cs
 
 using System.Runtime.CompilerServices;
 
-#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
-[assembly: TypeForwardedTo(typeof(System.Index))]
-#else
 namespace System;
 
 /// <summary>Represent a type can be used to index a collection either from the start or the end.</summary>
@@ -17,7 +16,8 @@ namespace System;
 /// int lastElement = someArray[^1]; // lastElement = 5
 /// </code>
 /// </remarks>
-internal readonly struct Index : IEquatable<Index>
+internal
+readonly struct Index : IEquatable<Index>
 {
     private readonly int _value;
 
@@ -27,14 +27,12 @@ internal readonly struct Index : IEquatable<Index>
     /// <remarks>
     /// If the Index constructed from the end, index value 1 means pointing at the last element and index value 0 means pointing at beyond last element.
     /// </remarks>
-#if !NET35
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
     public Index(int value, bool fromEnd = false)
     {
         if (value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "value must be non-negative");
+            ThrowValueArgumentOutOfRange_NeedNonNegNumException();
         }
 
         if (fromEnd)
@@ -57,14 +55,12 @@ internal readonly struct Index : IEquatable<Index>
 
     /// <summary>Create an Index from the start at the position indicated by the value.</summary>
     /// <param name="value">The index value from the start.</param>
-#if !NET35
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
     public static Index FromStart(int value)
     {
         if (value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "value must be non-negative");
+            ThrowValueArgumentOutOfRange_NeedNonNegNumException();
         }
 
         return new Index(value);
@@ -72,14 +68,12 @@ internal readonly struct Index : IEquatable<Index>
 
     /// <summary>Create an Index from the end at the position indicated by the value.</summary>
     /// <param name="value">The index value from the end.</param>
-#if !NET35
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
     public static Index FromEnd(int value)
     {
         if (value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "value must be non-negative");
+            ThrowValueArgumentOutOfRange_NeedNonNegNumException();
         }
 
         return new Index(~value);
@@ -108,9 +102,7 @@ internal readonly struct Index : IEquatable<Index>
     /// It is expected Index will be used with collections which always have non negative length/count. If the returned offset is negative and
     /// then used to index a collection will get out of range exception which will be same affect as the validation.
     /// </remarks>
-#if !NET35
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
     public int GetOffset(int length)
     {
         int offset = _value;
@@ -143,9 +135,30 @@ internal readonly struct Index : IEquatable<Index>
     public override string ToString()
     {
         if (IsFromEnd)
-            return "^" + ((uint)Value).ToString();
+            return ToStringFromEnd();
 
         return ((uint)Value).ToString();
     }
-}
+
+    private static void ThrowValueArgumentOutOfRange_NeedNonNegNumException()
+    {
+#if SYSTEM_PRIVATE_CORELIB
+        throw new ArgumentOutOfRangeException("value", SR.ArgumentOutOfRange_NeedNonNegNum);
+#else
+        throw new ArgumentOutOfRangeException("value", "value must be non-negative");
 #endif
+    }
+
+    private string ToStringFromEnd()
+    {
+#if (!NETSTANDARD2_0 && !NETFRAMEWORK)
+        Span<char> span = stackalloc char[11]; // 1 for ^ and 10 for longest possible uint value
+        bool formatted = ((uint)Value).TryFormat(span.Slice(1), out int charsWritten);
+        Debug.Assert(formatted);
+        span[0] = '^';
+        return new string(span.Slice(0, charsWritten + 1));
+#else
+        return '^' + Value.ToString();
+#endif
+    }
+}
