@@ -8,7 +8,7 @@ using System.Linq;
 /// </summary>
 public class CubicSpline : IPathStrategy
 {
-    public float Tension { get; set; } = 1.0f;
+    public double Tension { get; set; } = 1.0f;
 
     /// <summary>
     /// Organize into segments of connected points padded with empty points at the front and back
@@ -73,8 +73,8 @@ public class CubicSpline : IPathStrategy
                 Pixel p1 = segment[i - 1];
                 Pixel p2 = segment[i];
                 Pixel p3 = segment[i + 1];
-                Pixel c1 = p1 + (p2 - p0) / (6.0f * Tension);
-                Pixel c2 = p2 - (p3 - p1) / (6.0f * Tension);
+                Pixel c1 = p1 + (p2 - p0) / (6.0f * (float)Tension);
+                Pixel c2 = p2 - (p3 - p1) / (6.0f * (float)Tension);
 
                 path.CubicTo(c1.ToSKPoint(), c2.ToSKPoint(), p2.ToSKPoint());
             }

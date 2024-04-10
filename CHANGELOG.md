@@ -4,7 +4,7 @@ _Not yet on NuGet..._
 * Function: Exposed `MinX` and `MaxX` to allow users to restrict display to a horizontal range (#3595, #3603) @Matthew-Chidlow @Dibyanshuaman
 * Axis Lines: Added `ExcludeFromLegend` so text can be added to axis line labels without appearing in the legend (#3612) @MCF
 * WPF: Added `GetPlotPixelPosition()` for getting mouse position relative to the figure (#3622) @KroMignon
-* Scatter: Upgraded the default smooth behavior to use cubic spline interpolation (#3623, #3606, #3274, #3566) @drolevar
+* Scatter: Upgraded the default smooth behavior to use cubic spline interpolation and exposed `SmoothTension` (#3623, #3606, #3274, #3566, #3629) @drolevar
 * Vector Field: Added a new plot type to display a collection of rooted vectors (#3625, #3626) @bclehmann
 * AxisLine: Improve appearance in of the key displayed in the legend (#3627, #3613) @MCF
 
@@ -692,7 +692,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-11_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 * Palette: Palettes now implement `IEnumerable` and colors can be retrieved using `foreach` (#2028)
 * Render: Improved thread safety of the render lock system (#2030) @anprevost
-* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878)Michael99
+* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878) @Michael99
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
