@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
-      GH_TOKEN:
+      token:
         required: true
 
 env:
@@ -20,7 +20,7 @@ jobs:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.token }}
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
         with:

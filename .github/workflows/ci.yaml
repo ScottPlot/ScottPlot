@@ -28,7 +28,7 @@ jobs:
   autoformat:
     uses: ./.github/workflows/task-autoformat-and-commit.yaml
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ secrets.GITHUB_TOKEN }}
 
   # full builds take a really long time
   sp5-full:
