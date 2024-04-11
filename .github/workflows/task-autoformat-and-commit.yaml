@@ -5,6 +5,9 @@ name: Autoformat and Commit
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
 
 env:
   DOTNET_VERSION: "8.0.x"
