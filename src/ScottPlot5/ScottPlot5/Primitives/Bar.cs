@@ -5,29 +5,30 @@
 /// </summary>
 public class Bar
 {
-    public double Position;
+    public double Position { get; set; }
     public double Value;
-    public double ValueBase = 0;
-    public double Error = 0;
+    public double ValueBase { get; set; } = 0;
+    public double Error { get; set; } = 0;
 
-    public Color FillColor = Colors.Gray;
-    public Color BorderColor = Colors.Black;
-    public Color ErrorColor = Colors.Black;
+    public Color FillColor { get; set; } = Colors.Gray;
+    public Color BorderColor { get; set; } = Colors.Black;
+    public Color ErrorColor { get; set; } = Colors.Black;
 
-    public double Size = 0.8; // coordinate units
-    public double ErrorSize = 0.2; // coordinate units
-    public float BorderLineWidth = 1;
-    public float ErrorLineWidth = 0;
+    public double Size { get; set; } = 0.8; // coordinate units
+    public double ErrorSize { get; set; } = 0.2; // coordinate units
+    public float BorderLineWidth { get; set; } = 1;
+    public float ErrorLineWidth { get; set; } = 0;
 
     // TODO: something like ErrorInDirectionOfValue?
     // Maybe ErrorPosition should be an enum containing: None, Upward, Downward, Both, or Extend
-    public bool ErrorPositive = true;
-    public bool ErrorNegative = true;
+    public bool ErrorPositive { get; set; } = true;
+    public bool ErrorNegative { get; set; } = true;
 
-    public string Label = string.Empty;
-    public float LabelOffset = 5;
+    public string Label { get; set; } = string.Empty;
+    public bool CenterLabel { get; set; } = false;
+    public float LabelOffset { get; set; } = 5;
 
-    public Orientation Orientation = Orientation.Vertical;
+    public Orientation Orientation { get; set; } = Orientation.Vertical;
 
     internal CoordinateRect Rect
     {
@@ -87,7 +88,7 @@ public class Bar
         }
     }
 
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint, Label label)
+    public void Render(RenderPack rp, IAxes axes, SKPaint paint, Label labelStyle)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
         Drawing.FillRectangle(rp.Canvas, rect, FillColor);
@@ -103,24 +104,29 @@ public class Bar
             }
         }
 
-        float offset = Value >= ValueBase ? -LabelOffset : LabelOffset;
-
         if (Orientation == Orientation.Vertical)
         {
-            Pixel labelPixel = new(rect.HorizontalCenter, rect.Top - LabelOffset);
-            label.Render(rp.Canvas, labelPixel);
+            float xPx = rect.HorizontalCenter;
+            float yPx = CenterLabel ? rect.VerticalCenter : rect.Top;
+            labelStyle.Alignment = CenterLabel ? Alignment.MiddleCenter : Alignment.LowerCenter;
+            Pixel labelPixel = new(xPx, yPx - LabelOffset);
+            labelStyle.Render(rp.Canvas, labelPixel);
         }
         else
         {
             if (Value < 0)
             {
-                Pixel labelPixel = new(rect.LeftCenter.X - (LabelOffset + label.Measure().Width), rect.LeftCenter.Y);
-                label.Render(rp.Canvas, labelPixel);
+                float xPx = rect.LeftCenter.X - (LabelOffset + labelStyle.Measure().Width);
+                float yPx = rect.LeftCenter.Y;
+                Pixel labelPixel = new(xPx, yPx);
+                labelStyle.Render(rp.Canvas, labelPixel);
             }
             else
             {
-                Pixel labelPixel = new(rect.RightCenter.X + (LabelOffset + label.Measure().Width), rect.RightCenter.Y);
-                label.Render(rp.Canvas, labelPixel);
+                float xPx = rect.RightCenter.X + (LabelOffset + labelStyle.Measure().Width);
+                float yPx = rect.RightCenter.Y;
+                Pixel labelPixel = new(xPx, yPx);
+                labelStyle.Render(rp.Canvas, labelPixel);
             }
         }
 
