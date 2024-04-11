@@ -16,41 +16,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # these fail fast on code errors
+  # PR workflows fail fast on code compile errors
   sp4-pr:
     uses: ./.github/workflows/ScottPlot4-PR.yaml
-    permissions:
-      security-events: write
   sp5-pr:
     uses: ./.github/workflows/ScottPlot5-PR.yaml
-    permissions:
-      security-events: write
+  autoformat:
+    uses: ./.github/workflows/task-autoformat-and-commit.yaml
 
-  # these take a long time to run and may commit back to main
+  # full builds take a really long time
   sp5-full:
     needs: [sp5-pr]
     uses: ./.github/workflows/ScottPlot5-Full.yaml
-    permissions:
-      security-events: write
 
   # the rest are misc tasks that may as well be run after merge to main
   security:
     name: Additional Security Scan
     needs: [sp4-pr, sp5-full]
-    uses: ./.github/workflows/security.yaml
+    uses: ./.github/workflows/task-security-scan.yaml
     permissions:
       security-events: write
 
   changelog:
-    name: Analyze Code Metrics
+    name: Publish Changelog
     needs: [sp4-pr, sp5-full]
-    uses: ./.github/workflows/tasks/publish-changelog.yaml
-    permissions:
-      security-events: write
+    uses: ./.github/workflows/task-publish-changelog.yaml
 
   code-metrics:
-    name: Analyze Code Metrics
+    name: Publish Code Metrics
     needs: [sp4-pr, sp5-full]
-    uses: ./.github/workflows/tasks/code-metrics.yaml
-    permissions:
-      security-events: write
+    uses: ./.github/workflows/task-code-metrics.yaml
