@@ -9,6 +9,7 @@ on:
       - src/**
 
 env:
+  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
   SLN_SP5_PROJ: "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
   SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
   SLN_SP5_COOK: "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
@@ -60,10 +61,10 @@ jobs:
       run: dotnet workload restore "${{ env.SLN_SP5_FULL }}"
     - name: 🚚 Solution Restore
       if: matrix.build-mode == 'manual'
-      run: dotnet restore --project "${{ env.SLN_SP5_FULL }}"
+      run: dotnet restore "${{ env.SLN_SP5_FULL }}"
     - name: 🛠️ Full Build
       if: matrix.build-mode == 'manual'
-      run: dotnet build --project "${{ env.SLN_SP5_FULL }}" --configuration Release
+      run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
