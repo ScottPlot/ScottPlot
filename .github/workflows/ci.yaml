@@ -50,10 +50,16 @@ jobs:
   code-analysis:
     needs: [sp4-pr, sp5-full]
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     name: Update Code Metrics Webpage
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
+      - name: ⚙️ Setup CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: csharp
       - name: ✨ Setup .NET
         uses: actions/setup-dotnet@v3
       - name: 🧪 Run Code Analysis
