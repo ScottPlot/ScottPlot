@@ -349,21 +349,21 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
-    public LabelPlot LabelPlot(string text, double x1, double y1, double x2, double y2)
+    public LabelPlot LabelPlot(string text, double xLabel, double yLabel, double xLine, double yLine)
     {
-        Coordinates start = new(x1, y1);
-        Coordinates end = new(x2, y2);
-        return LabelPlot(text, start, end);
+        Coordinates labelCoordinates = new(xLabel, yLabel);
+        Coordinates lineCoordinates = new(xLine, yLine);
+        return LabelPlot(text, labelCoordinates, lineCoordinates);
     }
 
-    public LabelPlot LabelPlot(string text, Coordinates position, Coordinates linkPointPosition)
+    public LabelPlot LabelPlot(string labelText, Coordinates labelCoordinates, Coordinates lineCoordinates)
     {
-        Plottables.LabelPlot labelPlot = new()
+        LabelPlot labelPlot = new()
         {
-            Location = position,
-            LinkLocation = linkPointPosition,
+            LabelCoordinates = labelCoordinates,
+            LineCoordinates = lineCoordinates,
         };
-        labelPlot.Label.Text = text;
+        labelPlot.Label.Text = labelText;
 
         Plot.PlottableList.Add(labelPlot);
 
@@ -372,7 +372,7 @@ public class PlottableAdder(Plot plot)
 
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
     {
-        Plottables.Marker mp = new()
+        Marker mp = new()
         {
             MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
             Location = new Coordinates(x, y),

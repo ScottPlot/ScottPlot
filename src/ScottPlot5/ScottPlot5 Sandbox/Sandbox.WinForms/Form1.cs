@@ -11,11 +11,17 @@ public partial class Form1 : Form
         InitializeComponent();
 
         formsPlot1.Plot.Axes.SetLimits(-1, 10, -1, 1);
-        var label = formsPlot1.Plot.Add.LabelPlot("Une belle étiquette\nAvec sa description\nEt d'autres informations", 3, 0, 2, 0);
+        var label = formsPlot1.Plot.Add.LabelPlot("Une belle étiquette\nAvec sa description\nEt d'autres informations", 3, 0, 3, 0);
 
         label.Label.BorderColor = Colors.Blue;
         label.Label.BackColor = Colors.Blue.WithAlpha(.5);
         label.Label.Padding = 5;
+
+        label.LineStyle = new LineStyle()
+        {
+            Color = label.Label.BorderColor,
+            Width = label.Label.BorderWidth,
+        };
 
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
         formsPlot1.MouseUp += FormsPlot1_MouseUp;

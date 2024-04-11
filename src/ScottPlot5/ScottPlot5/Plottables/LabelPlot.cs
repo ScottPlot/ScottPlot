@@ -4,10 +4,19 @@ public class LabelPlot : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public Coordinates Location { get; set; }
-    public Pixel PixelLocation => Axes.GetPixel(Location);
-    public Coordinates LinkLocation { get; set; }
-    public Pixel PixelLinkLocation => Axes.GetPixel(LinkLocation);
+    public Coordinates LabelCoordinates { get; set; }
+    public Pixel LabelPixelLocation
+    {
+        get
+        {
+            Pixel pixelLocation = Axes.GetPixel(LabelCoordinates);
+
+            return new Pixel(pixelLocation.X + Label.Padding, pixelLocation.Y + Label.Padding);
+        }
+    }
+
+    public Coordinates LineCoordinates { get; set; }
+    public Pixel LinePixelLocation => Axes.GetPixel(LineCoordinates);
 
     public readonly Label Label = new();
     public LineStyle LineStyle { get; set; } = new();
@@ -16,16 +25,16 @@ public class LabelPlot : IPlottable
     /// <summary>
     /// Delta X between mouse position and label location
     /// </summary>
-    private float deltaX;
+    private float deltaX = 0;
 
     /// <summary>
     /// Delta Y between mouse position and label location
     /// </summary>
-    private float deltaY;
+    private float deltaY = 0;
 
     public AxisLimits GetAxisLimits()
     {
-        return new AxisLimits(Location);
+        return new AxisLimits(LabelCoordinates);
     }
 
     public bool IsUnderMouse(float x, float y)
@@ -43,21 +52,21 @@ public class LabelPlot : IPlottable
         PixelSize labelSize = Label.Measure();
 
         Pixel[] attachPoints = [
-            new(PixelLocation.X - Label.Padding, PixelLocation.Y + labelSize.Height / 2), // west
-            new(PixelLocation.X + labelSize.Width + Label.Padding, PixelLocation.Y + labelSize.Height / 2), //east
-            new(PixelLocation.X + labelSize.Width / 2, PixelLocation.Y - Label.Padding), //north
-            new(PixelLocation.X + labelSize.Width / 2, PixelLocation.Y + labelSize.Height + Label.Padding), // south
-            new(PixelLocation.X - Label.Padding, PixelLocation.Y - Label.Padding), // northWest
-            new(PixelLocation.X + labelSize.Width + Label.Padding, PixelLocation.Y - Label.Padding), // northEast
-            new(PixelLocation.X - Label.Padding, PixelLocation.Y + labelSize.Height + Label.Padding), // southWest
-            new(PixelLocation.X + labelSize.Width + Label.Padding, PixelLocation.Y + labelSize.Height + Label.Padding) // southEast
+            new(LabelPixelLocation.X - Label.Padding, LabelPixelLocation.Y + labelSize.Height / 2), // west
+            new(LabelPixelLocation.X + labelSize.Width + Label.Padding, LabelPixelLocation.Y + labelSize.Height / 2), //east
+            new(LabelPixelLocation.X + labelSize.Width / 2, LabelPixelLocation.Y - Label.Padding), //north
+            new(LabelPixelLocation.X + labelSize.Width / 2, LabelPixelLocation.Y + labelSize.Height + Label.Padding), // south
+            new(LabelPixelLocation.X - Label.Padding, LabelPixelLocation.Y - Label.Padding), // northWest
+            new(LabelPixelLocation.X + labelSize.Width + Label.Padding, LabelPixelLocation.Y - Label.Padding), // northEast
+            new(LabelPixelLocation.X - Label.Padding, LabelPixelLocation.Y + labelSize.Height + Label.Padding), // southWest
+            new(LabelPixelLocation.X + labelSize.Width + Label.Padding, LabelPixelLocation.Y + labelSize.Height + Label.Padding) // southEast
         ];
 
         Pixel closestAttachPoint = attachPoints[0];
-        float distanceMin = GetDistance(PixelLinkLocation, attachPoints[0]);
+        float distanceMin = GetDistance(LinePixelLocation, attachPoints[0]);
         for (int i = 1; i < attachPoints.Length; i++)
         {
-            float distance = GetDistance(PixelLinkLocation, attachPoints[i]);
+            float distance = GetDistance(LinePixelLocation, attachPoints[i]);
             if (distance < distanceMin)
             {
                 closestAttachPoint = attachPoints[i];
@@ -100,8 +109,8 @@ public class LabelPlot : IPlottable
     /// <param name="y">The vertical coordinate of the mouse position.</param>
     public void StartMove(float x, float y)
     {
-        deltaX = x - PixelLocation.X;
-        deltaY = y - PixelLocation.Y;
+        deltaX = x - LabelPixelLocation.X;
+        deltaY = y - LabelPixelLocation.Y;
     }
 
     /// <summary>
@@ -111,15 +120,15 @@ public class LabelPlot : IPlottable
     /// <param name="y">The new vertical coordinate for the label.</param>
     public void Move(float x, float y)
     {
-        Location = Axes.GetCoordinates(new Pixel(x - deltaX, y - deltaY));
+        LabelCoordinates = Axes.GetCoordinates(new Pixel(x - deltaX, y - deltaY));
     }
 
     public void Render(RenderPack rp)
     {
-        Label.Render(rp.Canvas, PixelLocation);
+        Label.Render(rp.Canvas, LabelPixelLocation);
 
         using SKPaint paint = new();
-        CoordinateLine line = new(CalculateClosestAttachPoint(), LinkLocation);
+        CoordinateLine line = new(CalculateClosestAttachPoint(), LineCoordinates);
         PixelLine pxLine = Axes.GetPixelLine(line);
         Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
     }
