@@ -8,6 +8,13 @@ on:
     paths:
       - src/**
 
+env:
+  SLN_SP5_PROJ: "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
+  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
+  SLN_SP5_COOK: "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
+  SLN_SP5_DEMO: "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
+  DOTNET_VERSION: "8.0.x"
+  
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
