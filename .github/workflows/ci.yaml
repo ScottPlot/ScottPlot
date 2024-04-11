@@ -37,11 +37,19 @@ jobs:
     permissions:
       security-events: write
 
+  # --- misc jobs below this point ---
+  security:
+    name: Additional Security Scan
+    needs: [sp4-pr, sp5-full]
+    uses: ./.github/workflows/security.yaml
+    permissions:
+      security-events: write
+
   #TODO make this its own action and call it
   changelog:
+    name: Update Changelog Webpage
     needs: [sp4-pr, sp5-full]
     runs-on: ubuntu-latest
-    name: Update Changelog Webpage
     steps:
       - name: 🚀 Trigger Remote Workflow
         run: |
@@ -54,9 +62,9 @@ jobs:
 
   #TODO make this its own action and call it
   code-analysis:
+    name: Update Code Metrics Webpage
     needs: [sp4-pr, sp5-full]
     runs-on: ubuntu-latest
-    name: Update Code Metrics Webpage
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
