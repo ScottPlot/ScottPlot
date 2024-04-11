@@ -18,52 +18,37 @@ env:
   
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: Code Security Scan
     runs-on: ${{ (matrix.language == 'csharp' && 'windows-latest') || 'ubuntu-latest' }}
     permissions:
       security-events: write
       packages: read
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: csharp
-          build-mode: 'manual'
-        - language: javascript-typescript
-        - language: python
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
+        languages: csharp, python, javascript-typescript
+        build-mode: manual
     - name: 🐢 Setup MSBuild
-      if: matrix.build-mode == 'manual'
       uses: microsoft/setup-msbuild@v2
     - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
-      if: matrix.build-mode == 'manual'
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: ✨ Setup Java 17
-      if: matrix.build-mode == 'manual'
       uses: actions/setup-java@v4
       with:
         distribution: "microsoft"
         java-version: "17"
     - name: 🚚 Install Workloads
-      if: matrix.build-mode == 'manual'
       run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
     - name: 🚚 Workload Restore
-      if: matrix.build-mode == 'manual'
       run: dotnet workload restore "${{ env.SLN_SP5_FULL }}"
     - name: 🚚 Solution Restore
-      if: matrix.build-mode == 'manual'
       run: dotnet restore "${{ env.SLN_SP5_FULL }}"
     - name: 🛠️ Full Build
-      if: matrix.build-mode == 'manual'
       run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
