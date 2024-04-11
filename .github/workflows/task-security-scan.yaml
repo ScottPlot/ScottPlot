@@ -8,8 +8,8 @@ on:
   workflow_call:
 
 jobs:
-  analyze:
-    name: CodeQL
+  security-scan:
+    name: Non-Compiled Code Analysis
     runs-on: ubuntu-latest
     permissions:
       security-events: write
