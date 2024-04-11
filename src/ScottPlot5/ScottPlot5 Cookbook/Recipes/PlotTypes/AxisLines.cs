@@ -72,15 +72,18 @@ public class AxisLines : ICategory
 
             var axLine1 = myPlot.Add.VerticalLine(42);
             axLine1.Text = "Line 1";
-            axLine1.Label.Rotation = -90;
-            axLine1.UseAutoAlignment = false;   // Disable automatic alignment
-            axLine1.Label.Alignment = Alignment.MiddleRight;
+            axLine1.TextRotation = -90;
+            axLine1.TextAlignment = Alignment.MiddleRight;
 
             var axLine2 = myPlot.Add.HorizontalLine(0.75);
             axLine2.Text = "Line 2";
-            axLine2.Label.Rotation = 0;
-            axLine2.UseAutoAlignment = false;   // Disable automatic alignment
-            axLine2.Label.Alignment = Alignment.MiddleRight;
+            axLine2.TextRotation = 0;
+            axLine2.TextAlignment = Alignment.MiddleRight;
+
+            var axLine3 = myPlot.Add.VerticalLine(20);
+            axLine3.Text = "Line 3";
+            axLine3.TextRotation = -45;
+            axLine3.TextAlignment = Alignment.UpperRight;
 
             // extra padding on the bottom and left for the rotated labels
             myPlot.Axes.Bottom.MinimumSize = 60;
@@ -112,9 +115,9 @@ public class AxisLines : ICategory
             hl2.LineColor = Colors.Navy;
             hl2.LineWidth = 5;
             hl2.Text = "Hello";
-            hl2.Label.FontSize = 24;
-            hl2.Label.BackColor = Colors.Blue;
-            hl2.Label.ForeColor = Colors.Yellow;
+            hl2.TextSize = 24;
+            hl2.TextBackgroundColor = Colors.Blue;
+            hl2.TextColor = Colors.Yellow;
             hl2.LinePattern = LinePattern.DenselyDashed;
         }
     }

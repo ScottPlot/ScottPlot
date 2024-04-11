@@ -13,12 +13,12 @@ public class HorizontalLine : AxisLine
 
     public HorizontalLine()
     {
-        Label.Rotation = -90;
-        Label.Alignment = Alignment.LowerCenter;
-        Label.FontSize = 14;
-        Label.Bold = true;
-        Label.ForeColor = Colors.White;
-        Label.Padding = 5;
+        LabelStyle.Rotation = -90;
+        LabelStyle.Alignment = Alignment.LowerCenter;
+        LabelStyle.FontSize = 14;
+        LabelStyle.Bold = true;
+        LabelStyle.ForeColor = Colors.White;
+        LabelStyle.Padding = 5;
     }
 
     public override bool IsUnderMouse(CoordinateRect rect) => IsDraggable && rect.ContainsY(Y);
@@ -50,7 +50,7 @@ public class HorizontalLine : AxisLine
 
     public override void RenderLast(RenderPack rp)
     {
-        if (Label.IsVisible == false || string.IsNullOrEmpty(Label.Text))
+        if (LabelStyle.IsVisible == false || string.IsNullOrEmpty(LabelStyle.Text))
             return;
 
         // determine location
@@ -61,20 +61,19 @@ public class HorizontalLine : AxisLine
             return;
 
         float x = LabelOppositeAxis
-            ? rp.DataRect.Right + Label.Padding
-            : rp.DataRect.Left - Label.Padding;
+            ? rp.DataRect.Right + LabelStyle.Padding
+            : rp.DataRect.Left - LabelStyle.Padding;
 
-        if (UseAutoAlignment)
-        {
-            Label.Alignment = LabelOppositeAxis
-                ? Alignment.UpperCenter
-                : Alignment.LowerCenter;
-        }
+        Alignment defaultAlignment = LabelOppositeAxis
+            ? Alignment.UpperCenter
+            : Alignment.LowerCenter;
+
+        LabelStyle.Alignment = TextAlignment ?? defaultAlignment;
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
 
         using SKPaint paint = new();
-        Label.Render(rp.Canvas, x, y, paint);
+        LabelStyle.Render(rp.Canvas, x, y, paint);
     }
 }

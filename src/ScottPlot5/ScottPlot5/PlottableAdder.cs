@@ -303,12 +303,16 @@ public class PlottableAdder(Plot plot)
 
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
-        HorizontalLine line = new();
-        line.LineStyle.Width = width;
-        line.LineStyle.Color = color ?? GetNextColor();
-        line.Label.BackColor = line.LineStyle.Color;
-        line.LineStyle.Pattern = pattern;
-        line.Y = y;
+        Color color2 = color ?? GetNextColor();
+        HorizontalLine line = new()
+        {
+            LineWidth = width,
+            LineColor = color2,
+            TextBackgroundColor = color2,
+            TextColor = Colors.White,
+            LinePattern = pattern,
+            Y = y
+        };
         Plot.PlottableList.Add(line);
         return line;
     }
@@ -795,12 +799,15 @@ public class PlottableAdder(Plot plot)
 
     public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
-        VerticalLine line = new();
-        line.LineStyle.Width = width;
-        line.LineStyle.Color = color ?? GetNextColor();
-        line.Label.BackColor = line.LineStyle.Color;
-        line.LineStyle.Pattern = pattern;
-        line.X = x;
+        Color color2 = color ?? GetNextColor();
+        VerticalLine line = new()
+        {
+            LineWidth = width,
+            LineColor = color2,
+            TextBackgroundColor = color2,
+            LinePattern = pattern,
+            X = x
+        };
         Plot.PlottableList.Add(line);
         return line;
     }
