@@ -62,3 +62,12 @@ jobs:
         run: |
           dotnet format --verify-no-changes ${{ env.SLN_SP4_FULL }}
           echo "::warning::Run 'dotnet format ScottPlot4.sln' to fix code format errors"
+      - name: ⚙️ Setup CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          build-mode: manual
+      - name: 🕵️ Security Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:csharp"
