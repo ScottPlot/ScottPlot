@@ -26,7 +26,7 @@ public class AxisLines : ICategory
     {
         public override string Name => "Axis Line Label";
         public override string Description => "Axis lines have labels that can be used " +
-            "to display arbitrary on the axes they are attached to.";
+            "to display arbitrary text on the axes they are attached to.";
 
         [Test]
         public override void Execute()
@@ -58,6 +58,39 @@ public class AxisLines : ICategory
         }
     }
 
+    public class AxisLineLabelPositioning : RecipeBase
+    {
+        public override string Name => "Axis Line Label Positioning";
+        public override string Description => "Axis line labels can have " +
+            "custom positioning, including rotation and alignment.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            var axLine1 = myPlot.Add.VerticalLine(42);
+            axLine1.Text = "Line 1";
+            axLine1.TextRotation = -90;
+            axLine1.TextAlignment = Alignment.MiddleRight;
+
+            var axLine2 = myPlot.Add.HorizontalLine(0.75);
+            axLine2.Text = "Line 2";
+            axLine2.TextRotation = 0;
+            axLine2.TextAlignment = Alignment.MiddleRight;
+
+            var axLine3 = myPlot.Add.VerticalLine(20);
+            axLine3.Text = "Line 3";
+            axLine3.TextRotation = -45;
+            axLine3.TextAlignment = Alignment.UpperRight;
+
+            // extra padding on the bottom and left for the rotated labels
+            myPlot.Axes.Bottom.MinimumSize = 60;
+            myPlot.Axes.Left.MinimumSize = 60;
+        }
+    }
+
     public class AxisLineStyle : RecipeBase
     {
         public override string Name => "Axis Line Style";
@@ -82,9 +115,9 @@ public class AxisLines : ICategory
             hl2.LineColor = Colors.Navy;
             hl2.LineWidth = 5;
             hl2.Text = "Hello";
-            hl2.Label.FontSize = 24;
-            hl2.Label.BackColor = Colors.Blue;
-            hl2.Label.ForeColor = Colors.Yellow;
+            hl2.TextSize = 24;
+            hl2.TextBackgroundColor = Colors.Blue;
+            hl2.TextColor = Colors.Yellow;
             hl2.LinePattern = LinePattern.DenselyDashed;
         }
     }
