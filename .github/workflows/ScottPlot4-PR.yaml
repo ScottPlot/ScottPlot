@@ -19,6 +19,10 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
+      - name: ⚙️ Setup CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: csharp
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v3
         with:
