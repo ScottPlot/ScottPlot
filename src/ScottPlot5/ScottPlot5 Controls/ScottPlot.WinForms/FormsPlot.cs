@@ -19,28 +19,25 @@ public class FormsPlot : FormsPlotBase
 
     public FormsPlot()
     {
-        CreateSKElement();
-  
+        SKElement = new() { Dock = DockStyle.Fill };
+        BindSKElement();
+        Controls.Add( SKElement );
+
         HandleCreated += (s, e) =>
         {
             if ( SKElement != null && !SKElement.IsDisposed)
             {
                 DisposeSKElement();
             }
-            CreateSKElement();
+            SKElement = new() { Dock = DockStyle.Fill };
+            BindSKElement();
+            Controls.Add( SKElement );
         };
 
         HandleDestroyed += (s, e) =>
         {
             DisposeSKElement();
         };
-    }
-
-    private void CreateSKElement()
-    {
-        SKElement = new() { Dock = DockStyle.Fill };
-        BindSKElement();
-        Controls.Add(SKElement);
     }
 
     private void DisposeSKElement()
