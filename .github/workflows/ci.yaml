@@ -18,14 +18,17 @@ concurrency:
 jobs:
   # PR workflows fail fast on code compile errors
   sp4-pr:
+    name: "SP4"
     uses: ./.github/workflows/ScottPlot4-PR.yaml
     permissions:
       security-events: write
   sp5-pr:
+    name: "SP5"
     uses: ./.github/workflows/ScottPlot5-PR.yaml
     permissions:
       security-events: write
   autoformat:
+    name: "Task"
     uses: ./.github/workflows/task-autoformat-and-commit.yaml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,18 +40,18 @@ jobs:
 
   # the rest are misc tasks that may as well be run after merge to main
   security:
-    name: Additional Security Scan
+    name: "Task"
     needs: [sp4-pr, sp5-full]
     uses: ./.github/workflows/task-security-scan.yaml
     permissions:
       security-events: write
 
   changelog:
-    name: Publish Changelog
+    name: "Task"
     needs: [sp4-pr, sp5-full]
     uses: ./.github/workflows/task-publish-changelog.yaml
 
   code-metrics:
-    name: Publish Code Metrics
+    name: "Task"
     needs: [sp4-pr, sp5-full]
     uses: ./.github/workflows/task-code-metrics.yaml
