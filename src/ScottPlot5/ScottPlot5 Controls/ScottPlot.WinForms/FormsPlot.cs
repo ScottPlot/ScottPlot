@@ -13,14 +13,46 @@ namespace ScottPlot.WinForms;
 #endif
 public class FormsPlot : FormsPlotBase
 {
-    readonly SKControl SKElement;
+    private SKControl SKElement;
 
     public override GRContext GRContext => null!;
 
     public FormsPlot()
     {
+        CreateSKElement();
+  
+        HandleCreated += (s, e) =>
+        {
+            if ( SKElement != null && !SKElement.IsDisposed)
+            {
+                DisposeSKElement();
+            }
+            CreateSKElement();
+        };
+
+        HandleDestroyed += (s, e) =>
+        {
+            DisposeSKElement();
+        };
+    }
+
+    private void CreateSKElement()
+    {
         SKElement = new() { Dock = DockStyle.Fill };
-        SKElement.PaintSurface += SKElement_PaintSurface; ;
+        BindSKElement();
+        Controls.Add(SKElement);
+    }
+
+    private void DisposeSKElement()
+    {
+        UnbindSKElement();
+        Controls.Remove(SKElement);
+        SKElement.Dispose();
+    }
+
+    private void BindSKElement()
+    {
+        SKElement.PaintSurface += SKElement_PaintSurface;
         SKElement.MouseDown += SKElement_MouseDown;
         SKElement.MouseUp += SKElement_MouseUp;
         SKElement.MouseMove += SKElement_MouseMove;
@@ -28,14 +60,18 @@ public class FormsPlot : FormsPlotBase
         SKElement.MouseWheel += SKElement_MouseWheel;
         SKElement.KeyDown += SKElement_KeyDown;
         SKElement.KeyUp += SKElement_KeyUp;
+    }
 
-        Controls.Add(SKElement);
-
-        HandleDestroyed += (s, e) =>
-        {
-            SKElement.Dispose();
-            Plot.Dispose();
-        };
+    private void UnbindSKElement()
+    {
+        SKElement.PaintSurface -= SKElement_PaintSurface; ;
+        SKElement.MouseDown -= SKElement_MouseDown;
+        SKElement.MouseUp -= SKElement_MouseUp;
+        SKElement.MouseMove -= SKElement_MouseMove;
+        SKElement.DoubleClick -= SKElement_DoubleClick;
+        SKElement.MouseWheel -= SKElement_MouseWheel;
+        SKElement.KeyDown -= SKElement_KeyDown;
+        SKElement.KeyUp -= SKElement_KeyUp;
     }
 
     private void SKElement_PaintSurface(object? sender, SKPaintSurfaceEventArgs e)
