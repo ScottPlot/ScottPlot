@@ -19,6 +19,8 @@ public partial class DataLogger : Form, IDemoWindow
         // disable mouse interaction by default
         formsPlot1.Interaction.Disable();
 
+        Logger.Axes.YAxis = chkRightAxe.Checked ? formsPlot1.Plot.Axes.Right : formsPlot1.Plot.Axes.Left;
+
         // setup a timer to add data to the streamer periodically
         AddNewDataTimer.Tick += (s, e) =>
         {
@@ -54,5 +56,13 @@ public partial class DataLogger : Form, IDemoWindow
                 formsPlot1.Interaction.Enable();
             }
         };
+    }
+
+    private void chkRightAxe_CheckedChanged(object sender, EventArgs e)
+    {
+        lock (formsPlot1.Plot.Sync)
+        {
+            Logger.Axes.YAxis = chkRightAxe.Checked ? formsPlot1.Plot.Axes.Right : formsPlot1.Plot.Axes.Left;
+        }
     }
 }
