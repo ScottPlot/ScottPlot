@@ -38,6 +38,8 @@ jobs:
     needs: [test-linux]
     name: Full Build
     runs-on: windows-latest
+    permissions:
+      security-events: write
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
