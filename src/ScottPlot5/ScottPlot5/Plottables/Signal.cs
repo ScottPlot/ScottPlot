@@ -67,7 +67,9 @@ public class Signal : IPlottable
         // TODO: put GetRange in axis translator
         double xViewLeft = Axes.GetCoordinateX(dataRect.Left);
         double xViewRight = Axes.GetCoordinateX(dataRect.Right);
-        return new CoordinateRange(xViewLeft, xViewRight);
+        return (xViewLeft <= xViewRight)
+            ? new CoordinateRange(xViewLeft, xViewRight)
+            : new CoordinateRange(xViewRight, xViewLeft);
     }
 
     private double PointsPerPixel()

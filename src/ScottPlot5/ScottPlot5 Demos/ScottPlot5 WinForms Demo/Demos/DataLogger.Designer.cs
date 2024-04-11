@@ -30,9 +30,10 @@ partial class DataLogger
     {
         btnJump = new Button();
         btnFull = new Button();
-        cbManageLimits = new CheckBox();
+        chkManageLimits = new CheckBox();
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
         btnSlide = new Button();
+        chkRightAxis = new CheckBox();
         SuspendLayout();
         // 
         // btnJump
@@ -55,15 +56,15 @@ partial class DataLogger
         // 
         // cbManageLimits
         // 
-        cbManageLimits.AutoSize = true;
-        cbManageLimits.Checked = true;
-        cbManageLimits.CheckState = CheckState.Checked;
-        cbManageLimits.Location = new Point(306, 21);
-        cbManageLimits.Name = "cbManageLimits";
-        cbManageLimits.Size = new Size(129, 19);
-        cbManageLimits.TabIndex = 7;
-        cbManageLimits.Text = "Manage Axis Limits";
-        cbManageLimits.UseVisualStyleBackColor = true;
+        chkManageLimits.AutoSize = true;
+        chkManageLimits.Checked = true;
+        chkManageLimits.CheckState = CheckState.Checked;
+        chkManageLimits.Location = new Point(306, 21);
+        chkManageLimits.Name = "cbManageLimits";
+        chkManageLimits.Size = new Size(129, 19);
+        chkManageLimits.TabIndex = 7;
+        chkManageLimits.Text = "Manage Axis Limits";
+        chkManageLimits.UseVisualStyleBackColor = true;
         // 
         // formsPlot1
         // 
@@ -83,15 +84,26 @@ partial class DataLogger
         btnSlide.Text = "Slide";
         btnSlide.UseVisualStyleBackColor = true;
         // 
+        // chkRightAxis
+        // 
+        chkRightAxis.AutoSize = true;
+        chkRightAxis.Location = new Point(454, 21);
+        chkRightAxis.Name = "chkRightAxis";
+        chkRightAxis.Size = new Size(79, 19);
+        chkRightAxis.TabIndex = 11;
+        chkRightAxis.Text = "Right Axis";
+        chkRightAxis.UseVisualStyleBackColor = true;
+        // 
         // DataLogger
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(709, 409);
+        Controls.Add(chkRightAxis);
         Controls.Add(btnSlide);
         Controls.Add(btnJump);
         Controls.Add(btnFull);
-        Controls.Add(cbManageLimits);
+        Controls.Add(chkManageLimits);
         Controls.Add(formsPlot1);
         Name = "DataLogger";
         Text = "DataLogger";
@@ -103,7 +115,8 @@ partial class DataLogger
 
     private Button btnJump;
     private Button btnFull;
-    private CheckBox cbManageLimits;
+    private CheckBox chkManageLimits;
     private ScottPlot.WinForms.FormsPlot formsPlot1;
     private Button btnSlide;
+    private CheckBox chkRightAxis;
 }

@@ -23,6 +23,7 @@ public class LegendItem
         get => _IsVisible && !string.IsNullOrEmpty(Label);
         set => _IsVisible = value;
     }
+    public bool HasArrow { get; set; } = false;
 
     internal FontStyle? CustomFontStyle { get; set; } = null;
 

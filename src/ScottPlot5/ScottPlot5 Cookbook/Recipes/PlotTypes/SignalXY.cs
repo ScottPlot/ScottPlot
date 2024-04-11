@@ -179,4 +179,21 @@ public class SignalXY : ICategory
             myPlot.Axes.SetLimitsY(5000, 0);
         }
     }
+
+    public class SignalXYMarkers : RecipeBase
+    {
+        public override string Name => "SignalXY with Markers";
+        public override string Description => "Users can enable a marker to be displayed" +
+            "at each data point. However, this can reduce performance for extremely large datasets.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sig = myPlot.Add.SignalXY(xs, ys);
+            sig.MarkerStyle.Shape = MarkerShape.FilledCircle;
+        }
+    }
 }

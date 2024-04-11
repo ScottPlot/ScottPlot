@@ -1,6 +1,4 @@
-﻿using ScottPlot.Extensions;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -146,7 +144,7 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
     {
         LineStyle ls = new()
         {
@@ -159,34 +157,25 @@ public static class Drawing
         DrawLines(canvas, paint, pixels, ls);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, ICollection<Pixel> pixels, LineStyle lineStyle)
+    private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();
+
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Count < 2)
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
             return;
 
         lineStyle.ApplyToPaint(paint);
 
-        using SKPath path = new();
+        using SKPath path = StraightLineStrategy.GetPath(pixels);
+        canvas.DrawPath(path, paint);
+    }
 
-        bool move = true;
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    {
+        if (lineStyle.Width == 0 || lineStyle.IsVisible == false)
+            return;
 
-        foreach (var pixel in pixels)
-        {
-            if (float.IsNaN(pixel.X) || float.IsNaN(pixel.Y))
-            {
-                move = true;
-            }
-            else if (move)
-            {
-                path.MoveTo(pixel.ToSKPoint());
-                move = false;
-            }
-            else
-            {
-                path.LineTo(pixel.ToSKPoint());
-            }
-        }
-
+        lineStyle.ApplyToPaint(paint);
         canvas.DrawPath(path, paint);
     }
 
@@ -243,11 +232,14 @@ public static class Drawing
         DrawRectangle(canvas, rect, paint);
     }
 
-    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel point, Color color, float lineWidth = 1)
+    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)
     {
+        point ??= Pixel.NaN;
+        color ??= Colors.Magenta;
+
         using SKPaint paint = new()
         {
-            Color = color.ToSKColor(),
+            Color = color.Value.ToSKColor(),
             IsStroke = true,
             StrokeWidth = lineWidth,
             IsAntialias = true,
@@ -257,7 +249,7 @@ public static class Drawing
         canvas.DrawLine(rect.BottomLeft.ToSKPoint(), rect.TopRight.ToSKPoint(), paint);
         canvas.DrawLine(rect.TopLeft.ToSKPoint(), rect.BottomRight.ToSKPoint(), paint);
 
-        canvas.DrawCircle(point.ToSKPoint(), 5, paint);
+        canvas.DrawCircle(point.Value.ToSKPoint(), 5, paint);
 
         paint.IsStroke = false;
         paint.Color = paint.Color.WithAlpha(20);

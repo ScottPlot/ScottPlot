@@ -29,10 +29,6 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
 
-        Debug.WriteLine("");
-        Debug.WriteLine(dataLimits);
-        Debug.WriteLine(newLimits);
-
         plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
 
         if (force)
@@ -54,7 +50,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         Data.Add(coordinates);
     }
 
-    public void Add(IReadOnlyList<double> ys)
+    public void Add(IEnumerable<double> ys)
     {
         foreach (double y in ys)
         {
@@ -62,7 +58,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         }
     }
 
-    public void Add(IReadOnlyList<Coordinates> coordinates)
+    public void Add(IEnumerable<Coordinates> coordinates)
     {
         foreach (Coordinates c in coordinates)
         {
@@ -85,7 +81,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits
 
     public void Render(RenderPack rp)
     {
-        Pixel[] points = Data.Coordinates.Select(Axes.GetPixel).ToArray();
+        IEnumerable<Pixel> points = Data.Coordinates.Select(Axes.GetPixel);
 
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, points, LineStyle);

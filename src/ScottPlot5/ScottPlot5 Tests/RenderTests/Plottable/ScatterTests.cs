@@ -126,4 +126,122 @@ internal class ScatterTests
         plt.Add.Scatter(xs, ys);
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Scatter_InvertedX()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        plt.Add.Scatter(xs, ys);
+
+        plt.Axes.InvertX();
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_InvertedY()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        plt.Add.Scatter(xs, ys);
+
+        plt.Axes.InvertY();
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MinRenderIndex()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MinRenderIndex = 20;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MaxRenderIndex()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MinAndMaxRenderIndex_CoordinatesList()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        List<Coordinates> cs = Enumerable
+            .Range(0, xs.Length)
+            .Select(i => new Coordinates(xs[i], ys[i]))
+            .ToList();
+
+        var sp = plt.Add.Scatter(cs);
+
+        sp.Data.MinRenderIndex = 20;
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MinAndMaxRenderIndex_CoordinatesArray()
+    {
+        ScottPlot.Plot plt = new();
+        double[] xs = Generate.Consecutive(51);
+        double[] ys = Generate.Sin(51);
+        Coordinates[] cs = Enumerable
+            .Range(0, xs.Length)
+            .Select(i => new Coordinates(xs[i], ys[i]))
+            .ToArray();
+
+        var sp = plt.Add.Scatter(cs);
+
+        sp.Data.MinRenderIndex = 20;
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MinAndMaxRenderIndex_GenericArray()
+    {
+        ScottPlot.Plot plt = new();
+        int[] xs = Generate.Consecutive(51).Select(x => (int)x).ToArray();
+        float[] ys = Generate.Sin(51).Select(x => (float)x).ToArray();
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MinRenderIndex = 20;
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Scatter_MinAndMaxRenderIndex_GenericList()
+    {
+        ScottPlot.Plot plt = new();
+        List<int> xs = Generate.Consecutive(51).Select(x => (int)x).ToList();
+        List<float> ys = Generate.Sin(51).Select(x => (float)x).ToList();
+        var sp = plt.Add.Scatter(xs, ys);
+
+        sp.Data.MinRenderIndex = 20;
+        sp.Data.MaxRenderIndex = 30;
+
+        plt.Should().SavePngWithoutThrowing();
+    }
 }

@@ -2,10 +2,8 @@
 using ScottPlot.Control;
 using ScottPlot.Grids;
 using ScottPlot.Legends;
-using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ScottPlot;
 
@@ -236,6 +234,14 @@ public class Plot : IDisposable
         {
             RenderManager.Render(canvas, rect);
         }
+    }
+
+    /// <summary>
+    /// Render onto an existing canvas of a surface over the local clip bounds
+    /// </summary>
+    public void Render(SKSurface surface)
+    {
+        RenderManager.Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
     }
 
     public Image GetImage(int width, int height)

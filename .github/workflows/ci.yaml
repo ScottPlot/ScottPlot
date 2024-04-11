@@ -53,9 +53,9 @@ jobs:
     name: Update Code Metrics Webpage
     steps:
       - name: 🛒 Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: ✨ Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
       - name: 🧪 Run Code Analysis
         run: dotnet run dotnet run --project dev/CodeAnalysis
       - name: 🔐 Create Key File

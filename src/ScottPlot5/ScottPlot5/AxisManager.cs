@@ -70,6 +70,11 @@ public class AxisManager
     public IYAxis Right => YAxes.First(x => x.Edge == Edge.Right);
 
     /// <summary>
+    /// Indicates whether the axis limits have been set (manually or by autoscale)
+    /// </summary>
+    public bool LimitsHaveBeenSet => Bottom.Range.HasBeenSet && Left.Range.HasBeenSet;
+
+    /// <summary>
     /// The standard grid that is added when a Plot is created.
     /// Users can achieve custom grid functionality by disabling the visibility
     /// of this grid and adding their own classes to the List of <see cref="CustomGrids"/>.
@@ -207,6 +212,9 @@ public class AxisManager
 
         // setup the grid to use the new bottom axis
         Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+
+        // autoscale the new axis to fit data already on the plot
+        AutoScale();
 
         return dateAxis;
     }
@@ -348,15 +356,68 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Adjust the horizontal axis so values descend from left to right
+    /// </summary>
+    public void InvertX()
+    {
+        if (!LimitsHaveBeenSet)
+            AutoScale();
+
+        AxisLimits limits = GetLimits();
+        double xMin = Math.Min(limits.Left, limits.Right);
+        double xMax = Math.Max(limits.Left, limits.Right);
+        SetLimitsX(xMax, xMin);
+    }
+
+    /// <summary>
+    /// Adjust the horizontal axis so values ascend from left to right
+    /// </summary>
+    public void RectifyX()
+    {
+        if (!LimitsHaveBeenSet)
+            AutoScale();
+
+        AxisLimits limits = GetLimits();
+        double xMin = Math.Min(limits.Left, limits.Right);
+        double xMax = Math.Max(limits.Left, limits.Right);
+        SetLimitsX(xMin, xMax);
+    }
+
+    /// <summary>
+    /// Adjust the vertical axis so values descend from bottom to top
+    /// </summary>
+    public void InvertY()
+    {
+        if (!LimitsHaveBeenSet)
+            AutoScale();
+
+        AxisLimits limits = GetLimits();
+        double yMin = Math.Min(limits.Bottom, limits.Top);
+        double yMax = Math.Max(limits.Bottom, limits.Top);
+        SetLimitsY(yMax, yMin);
+    }
+
+    /// <summary>
+    /// Adjust the vertical axis so values ascend from bottom to top
+    /// </summary>
+    public void RectifyY()
+    {
+        if (!LimitsHaveBeenSet)
+            AutoScale();
+
+        AxisLimits limits = GetLimits();
+        double yMin = Math.Min(limits.Bottom, limits.Top);
+        double yMax = Math.Max(limits.Bottom, limits.Top);
+        SetLimitsY(yMin, yMax);
+    }
+
+    /// <summary>
     /// Return the 2D axis limits for the default axes
     /// </summary>
     public AxisLimits GetLimits()
     {
-        return new AxisLimits(
-            Bottom.Min,
-            Bottom.Max,
-            Left.Min,
-            Left.Max);
+        // TODO: autoscale limits used by all plottables
+        return GetLimits(Bottom, Left);
     }
 
     /// <summary>
@@ -364,6 +425,9 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits(IXAxis xAxis, IYAxis yAxis)
     {
+        if (!xAxis.Range.HasBeenSet || !yAxis.Range.HasBeenSet)
+            AutoScale();
+
         return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
     }
 

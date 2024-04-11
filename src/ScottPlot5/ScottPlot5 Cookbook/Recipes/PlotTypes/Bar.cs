@@ -289,4 +289,63 @@ public class Bar : ICategory
             myPlot.Axes.Margins(left: 0);
         }
     }
+
+    public class StackedBars : RecipeBase
+    {
+        public override string Name => "Stacked Bar Chart";
+        public override string Description => "Bars can be stacked to present data in groups.";
+
+        [Test]
+        public override void Execute()
+        {
+            string[] categoryNames = { "Phones", "Computers", "Tablets" };
+            Color[] categoryColors = { Colors.C0, Colors.C1, Colors.C2 };
+
+            for (int x = 0; x < 4; x++)
+            {
+                double[] values = Generate.RandomSample(categoryNames.Length, 1000, 5000);
+
+                double nextBarBase = 0;
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    ScottPlot.Bar bar = new()
+                    {
+                        Value = nextBarBase + values[i],
+                        FillColor = categoryColors[i],
+                        ValueBase = nextBarBase,
+                        Position = x,
+                    };
+
+                    myPlot.Add.Bar(bar);
+
+                    nextBarBase += values[i];
+                }
+            }
+
+            // use custom tick labels on the bottom
+            ScottPlot.TickGenerators.NumericManual tickGen = new();
+            for (int x = 0; x < 4; x++)
+            {
+                tickGen.AddMajor(x, $"Q{x + 1}");
+            }
+            myPlot.Axes.Bottom.TickGenerator = tickGen;
+
+            // display groups in the legend
+            for (int i = 0; i < 3; i++)
+            {
+                LegendItem item = new()
+                {
+                    Label = categoryNames[i],
+                    FillColor = categoryColors[i]
+                };
+                myPlot.Legend.ManualItems.Add(item);
+            }
+            myPlot.Legend.Orientation = Orientation.Horizontal;
+            myPlot.ShowLegend(Alignment.UpperRight);
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Axes.Margins(bottom: 0, top: .3);
+        }
+    }
 }

@@ -19,15 +19,19 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: ⚙️ Setup CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
       - name: 🐢 Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v2
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✨ Setup Java 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: "microsoft"
           java-version: "17"

@@ -45,16 +45,20 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         return 1.0f;
     }
 
-    public virtual void Refresh() { }
-
-    public Plot Reset()
+    public void Reset()
     {
-        Plot newPlot = new();
-        Plot oldPlot = Plot;
-        Plot = newPlot;
-        oldPlot?.Dispose();
-        return newPlot;
+        Plot plot = new();
+        Reset(plot);
     }
+
+    public void Reset(Plot plot)
+    {
+        Plot oldPlot = Plot;
+        Plot = plot;
+        oldPlot?.Dispose();
+    }
+
+    public virtual void Refresh() { }
 
     public void ShowContextMenu(Pixel position)
     {

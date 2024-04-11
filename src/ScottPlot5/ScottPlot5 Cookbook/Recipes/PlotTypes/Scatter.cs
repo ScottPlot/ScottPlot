@@ -270,4 +270,100 @@ public class Scatter : ICategory
             myPlot.Add.Scatter(xs, ys);
         }
     }
+
+    public class ScatterSmooth : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Smooth Lines";
+        public override string Description => "Scatter plots draw straight lines " +
+            "between points by default, but setting the Smooth property allows the " +
+            "scatter plot to connect points with smooth lines. Lines are smoothed " +
+            "using cubic spline interpolation.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(10);
+            double[] ys = Generate.RandomSample(10, 5, 15);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.Smooth = true;
+            sp.Label = "Smooth";
+            sp.LineWidth = 2;
+            sp.MarkerSize = 10;
+        }
+    }
+
+    public class ScatterSmoothTension : RecipeBase
+    {
+        public override string Name => "Smooth Line Tension";
+        public override string Description => "Tension of smooth lines can be " +
+            "adjusted for some smoothing strategies. " +
+            "Low tensions lead to 'overshoot' and high tensions produce curves" +
+            "which appear more like straight lines.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.RandomWalk(10);
+            double[] ys = Generate.RandomWalk(10);
+
+            var mk = myPlot.Add.Markers(xs, ys);
+            mk.MarkerShape = MarkerShape.OpenCircle;
+            mk.Color = Colors.Black;
+
+            double[] tensions = { 0.3, 0.5, 1.0, 3.0 };
+
+            foreach (double tension in tensions)
+            {
+                var sp = myPlot.Add.ScatterLine(xs, ys);
+                sp.Smooth = true;
+                sp.SmoothTension = tension;
+                sp.Label = $"Tension {tension}";
+                sp.LineWidth = 2;
+            }
+
+            myPlot.ShowLegend(Alignment.UpperLeft);
+        }
+    }
+
+    public class ScatterQuad : RecipeBase
+    {
+        public override string Name => "Smooth Scatter without Overshoot";
+        public override string Description => "The quadratic half point path strategy " +
+            "allows scatter plots to be displayed with smooth lines connecting points, but " +
+            "lines are eased in and out of points so they never 'overshoot' the values vertically.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(10);
+            double[] ys = Generate.RandomSample(10, 5, 15);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.PathStrategy = new ScottPlot.PathStrategies.QuadHalfPoint();
+            sp.Label = "Smooth";
+            sp.LineWidth = 2;
+            sp.MarkerSize = 10;
+        }
+    }
+
+    public class ScatterLimitIndex : RecipeBase
+    {
+        public override string Name => "Limiting Display with Render Indexes";
+        public override string Description => "Although a scatter plot may contain " +
+            "a very large amount of data, much of it may be unpopulated. The user can " +
+            "define min and max render indexes, and only values within that range will " +
+            "be displayed when the scatter plot is rendered.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.MinRenderIndex = 10;
+            sp.MaxRenderIndex = 40;
+        }
+    }
 }

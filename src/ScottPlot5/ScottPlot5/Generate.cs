@@ -219,6 +219,30 @@ public static class Generate
         return intensities;
     }
 
+    public static RootedCoordinateVector[] SampleVectors(int columns = 10, int rows = 10, double oscillations = 1)
+    {
+        double[] xs = Consecutive(columns);
+        double[] ys = Consecutive(rows);
+
+        List<RootedCoordinateVector> vectors = new();
+        for (int i = 0; i < xs.Length; i++)
+        {
+            for (int j = 0; j < ys.Length; j++)
+            {
+                double x = (double)i / xs.Length * Math.PI * oscillations;
+                double y = (double)j / xs.Length * Math.PI * oscillations;
+                double dX = Math.Sin(x) + Math.Sin(y);
+                double dY = Math.Sin(x) - Math.Sin(y);
+                System.Numerics.Vector2 v = new((float)dX, (float)dY);
+                Coordinates pt = new(xs[i], ys[j]);
+                RootedCoordinateVector vector = new(pt, v);
+                vectors.Add(vector);
+            }
+        }
+
+        return vectors.ToArray();
+    }
+
     #endregion
 
     #region numerical random
@@ -230,26 +254,6 @@ public static class Generate
     public static double[] RandomWalk(int count, double mult = 1, double offset = 0)
     {
         return RandomData.RandomWalk(count, mult, offset);
-    }
-
-    public class RandomWalker(int seed = 0)
-    {
-        readonly RandomDataGenerator Gen = new(seed);
-        double LastValue = 0;
-
-        public double GetNext()
-        {
-            double value = Gen.RandomWalk(1, offset: LastValue)[0];
-            LastValue = value;
-            return value;
-        }
-
-        public double[] GetNext(int count)
-        {
-            double[] values = Gen.RandomWalk(count, offset: LastValue);
-            LastValue = values[values.Length - 1];
-            return values;
-        }
     }
 
     [Obsolete("use RandomSample()")]
@@ -618,6 +622,12 @@ public static class Generate
         int i = RandomInteger(linePatterns.Length);
         return linePatterns[i];
     }
+
+    #endregion
+
+    #region Data Generators
+
+    public readonly static DataGenerators.RandomWalker RandomWalker = new();
 
     #endregion
 }

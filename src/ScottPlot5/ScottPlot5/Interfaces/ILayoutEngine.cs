@@ -7,5 +7,5 @@
 /// </summary>
 public interface ILayoutEngine
 {
-    public Layout GetLayout(PixelRect figureRect, IEnumerable<IPanel> panels);
+    public Layout GetLayout(PixelRect figureRect, Plot plot);
 }

@@ -12,6 +12,7 @@ public class WpfPlotGL : WpfPlotBase
 
     private SkiaSharp.Views.WPF.SKGLElement? SKElement;
 
+    protected override FrameworkElement PlotFrameworkElement => SKElement!;
     public override GRContext GRContext => SKElement?.GRContext ?? GRContext.CreateGl();
 
     static WpfPlotGL()

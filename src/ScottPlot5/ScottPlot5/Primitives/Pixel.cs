@@ -97,4 +97,14 @@ public struct Pixel : IEquatable<Pixel>
     {
         return new Pixel(a.X - b.X, a.Y - b.Y);
     }
+
+    public static Pixel operator *(Pixel a, float b)
+    {
+        return new Pixel(a.X * b, a.Y * b);
+    }
+
+    public static Pixel operator /(Pixel a, float b)
+    {
+        return new Pixel(a.X / b, a.Y / b);
+    }
 }

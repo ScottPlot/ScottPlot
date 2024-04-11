@@ -88,7 +88,7 @@ public class FractionalAutoScaler : IAutoScaler
 
     public AxisLimits GetAxisLimits(Plot plot, IXAxis xAxis, IYAxis yAxis)
     {
-        AxisLimits dataLimits = plot.Axes.GetDataLimits();
+        AxisLimits dataLimits = plot.Axes.GetDataLimits(xAxis, yAxis);
         ExpandingAxisLimits limits = new(dataLimits);
 
         if (!limits.IsRealX)

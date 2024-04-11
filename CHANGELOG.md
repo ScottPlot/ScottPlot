@@ -1,4 +1,26 @@
+## ScottPlot 5.0.26
+_Not yet on NuGet..._
+* Function: Improved autoscaling behavior and respect for user-defined horizontal ranges (#3618) @Matthew-Chidlow  
+* Function: Exposed `MinX` and `MaxX` to allow users to restrict display to a horizontal range (#3595, #3603) @Matthew-Chidlow @Dibyanshuaman
+* Axis Lines: Added `ExcludeFromLegend` so text can be added to axis line labels without appearing in the legend (#3612) @MCF
+* WPF: Added `GetPlotPixelPosition()` for getting mouse position relative to the figure (#3622) @KroMignon
+* Scatter: Upgraded the default smooth behavior to use cubic spline interpolation and exposed `SmoothTension` (#3623, #3606, #3274, #3566, #3629) @drolevar
+* Vector Field: Added a new plot type to display a collection of rooted vectors (#3625, #3626, #3632, #3630, #3631) @bclehmann
+* AxisLine: Improve appearance in of the key displayed in the legend (#3627, #3613) @MCF
+* Crosshair: Expose `VerticalLine` and `HorizontalLine` for to allow axis-specific customization (#3638) @Fruchtzwerg94 @heartacker
+* AxisLine: Added properties for faster styling including an optional `TextAlignment` setting (#3640, #3624) @MCF
+* Axes: Improved autoscaling support behavior for plots where nonstandard axes are in use (#3641, #3637) @KroMignon @jpgarza93
+* WinUI: Added automatic display scaling detection and correction (#3642) @PZidlik
+* Bar: Added a `CenterLabel` flag to cause value labels to be displayed centered within a bar (#3391) @tibormarchynzoom
+
+## ScottPlot 5.0.25
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
+* NuGet: Use snupkg format to include debug symbols (#3496)
+* Scatter: Fixed indexing error affecting `GetNearest()` (#3616, #3461) @Matthew-Chidlow @SongPing @sunshuaize @mikeKuester
+* Generate: Exposed a static `RandomWalker` instance for easily generating random walk datasets
+
 ## ScottPlot 5.0.24
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-07_
 * Ticks: Modified `NumericFixedInterval` to add support for inverted axes (#3567) @Alexander-png
 * Bar plot: Improved support for labels on horizontally oriented bar plots (#3546, #3520) @aespitia @yui1227
 * Axis: Added new axis rules for edge locking, center locking, and tick snapping (#3547) @BrianAtZetica
@@ -16,6 +38,17 @@
 * Axes: Added optional arguments to `Plot.Axes.AutoScale()` to add support for nonstandard axes (#3592)
 * Axis Rules: Improved `Plot.Axes.SquareUnits()` to support inverted axes (#3592) @VisMotrix
 * WinForms: Improve `FormsPlot` disposal so the control displays properly when re-launched (#3593, #3589) @bwedding @Kruno313
+* Signal: Added support for inverted horizontal axes (#3594) @Excustic
+* Axes: New helper methods `Plot.Axes.InvertX()`, `Plot.Axes.RectifyX()`, and similar for Y (#3594)
+* Rendering: Improved performance for plot types with many lines (#3601) @drolevar
+* Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman @Matthew-Chidlow
+* Controls: All controls now include `Reset()` overloads for resetting or replacing the `Plot` (#3604, #3353) @aniketkumar7 @jon-rizzo
+* Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3606, #3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
+* Layout: Added logic to reduce the size of axes which are visible but not used by any plottable (#3608)
+* Colorbar: Improved positioning and support for adding multiple colorbars to plots (#3294, #3560, #3586) @NateEbling @mawbydp @hnMel
+* Colorbar: Added a `Label` which users can customize to display an optional title (#3611) @mawbydp
+* SignalXY: Added support for markers and marker styling (#3602, #3609) @Giviruk
+* Scatter: Added support for `MinRenderIndex` and `MaxRenderIndex` to limit display to a portion of the data (#3614, #3308) @wellsw
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
@@ -664,7 +697,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-11_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 * Palette: Palettes now implement `IEnumerable` and colors can be retrieved using `foreach` (#2028)
 * Render: Improved thread safety of the render lock system (#2030) @anprevost
-* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878)Michael99
+* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878) @Michael99
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
