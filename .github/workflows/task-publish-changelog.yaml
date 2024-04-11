@@ -9,7 +9,6 @@ on:
 jobs:
   publish-changelog:
     name: 🚀 Trigger remote job
-    needs: [sp4-pr, sp5-full]
     runs-on: ubuntu-latest
     steps:
       - name: 🚀 Trigger Remote Workflow
