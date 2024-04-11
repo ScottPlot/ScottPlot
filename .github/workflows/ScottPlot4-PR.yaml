@@ -69,6 +69,8 @@ jobs:
         with:
           languages: csharp
           build-mode: manual
+      - name: ⚙️ Build CodeQL Database
+        run: codeql database create csharp-database --language=csharp --command='dotnet build ${{ env.SLN_SP4_FULL }} --configuration Release'
       - name: 🕵️ Security Analysis
         uses: github/codeql-action/analyze@v3
         with:
