@@ -20,11 +20,10 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
 
-    public float DisplayScale { get; set; }
+    public float DisplayScale { get; set; } = 1;
 
     public WinUIPlot()
     {
-        DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
         Menu = new WinUIPlotMenu(this);
 
@@ -39,8 +38,19 @@ public partial class WinUIPlot : UserControl, IPlotControl
         _canvas.DoubleTapped += OnDoubleTapped;
         _canvas.KeyDown += OnKeyDown;
         _canvas.KeyUp += OnKeyUp;
+        Loaded += WinUIPlot_Loaded;
 
         this.Content = _canvas;
+    }
+
+    private void WinUIPlot_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (XamlRoot is null)
+            return;
+
+        XamlRoot.Changed += (s, e) => DetectDisplayScale();
+        Plot.ScaleFactor = XamlRoot.RasterizationScale;
+        DisplayScale = (float)XamlRoot.RasterizationScale;
     }
 
     private static SKXamlCanvas CreateRenderTarget()
@@ -130,8 +140,12 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public float DetectDisplayScale()
     {
-        // TODO: improve support for DPI scale detection
-        // https://github.com/ScottPlot/ScottPlot/issues/2760
-        return 1.0f;
+        if (XamlRoot is not null)
+        {
+            Plot.ScaleFactor = XamlRoot.RasterizationScale;
+            DisplayScale = (float)XamlRoot.RasterizationScale;
+        }
+
+        return DisplayScale;
     }
 }
