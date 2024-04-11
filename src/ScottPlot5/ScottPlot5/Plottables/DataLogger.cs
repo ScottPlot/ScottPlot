@@ -29,10 +29,6 @@ public class DataLogger : IPlottable, IManagesAxisLimits
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
 
-        Debug.WriteLine("");
-        Debug.WriteLine(dataLimits);
-        Debug.WriteLine(newLimits);
-
         plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
 
         if (force)

@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * AxisLine: Improve appearance in of the key displayed in the legend (#3627, #3613) @MCF
 * Crosshair: Expose `VerticalLine` and `HorizontalLine` for to allow axis-specific customization (#3638) @Fruchtzwerg94 @heartacker
 * AxisLine: Added properties for faster styling including an optional `TextAlignment` setting (#3640, #3624) @MCF
+* Axes: Improved autoscaling support behavior for plots where nonstandard axes are in use (#3641, #3637) @KroMignon @jpgarza93
 
 ## ScottPlot 5.0.25
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
