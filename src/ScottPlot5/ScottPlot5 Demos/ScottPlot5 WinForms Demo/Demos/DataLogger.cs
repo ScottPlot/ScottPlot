@@ -19,8 +19,6 @@ public partial class DataLogger : Form, IDemoWindow
         // disable mouse interaction by default
         formsPlot1.Interaction.Disable();
 
-        Logger.Axes.YAxis = chkRightAxe.Checked ? formsPlot1.Plot.Axes.Right : formsPlot1.Plot.Axes.Left;
-
         // setup a timer to add data to the streamer periodically
         AddNewDataTimer.Tick += (s, e) =>
         {
@@ -42,9 +40,11 @@ public partial class DataLogger : Form, IDemoWindow
         btnFull.Click += (s, e) => Logger.ViewFull();
         btnJump.Click += (s, e) => Logger.ViewJump();
         btnSlide.Click += (s, e) => Logger.ViewSlide();
-        cbManageLimits.CheckedChanged += (s, e) =>
+
+        // control automatic axis limit modification behavior
+        chkManageLimits.CheckedChanged += (s, e) =>
         {
-            if (cbManageLimits.Checked)
+            if (chkManageLimits.Checked)
             {
                 Logger.ManageAxisLimits = true;
                 formsPlot1.Interaction.Disable();
@@ -56,13 +56,21 @@ public partial class DataLogger : Form, IDemoWindow
                 formsPlot1.Interaction.Enable();
             }
         };
-    }
 
-    private void chkRightAxe_CheckedChanged(object sender, EventArgs e)
-    {
-        lock (formsPlot1.Plot.Sync)
+        // switch between using primary and secondary Y axes
+        chkRightAxis.CheckedChanged += (s, e) =>
         {
-            Logger.Axes.YAxis = chkRightAxe.Checked ? formsPlot1.Plot.Axes.Right : formsPlot1.Plot.Axes.Left;
-        }
+            lock (formsPlot1.Plot.Sync)
+            {
+                // reset old axis limits so ticks are not displayed on unused axes 
+                formsPlot1.Plot.Axes.Left.Range.Reset();
+                formsPlot1.Plot.Axes.Right.Range.Reset();
+
+                // tell the datalogger which axis to use and modify moving forward
+                Logger.Axes.YAxis = chkRightAxis.Checked
+                    ? formsPlot1.Plot.Axes.Right
+                    : formsPlot1.Plot.Axes.Left;
+            }
+        };
     }
 }
