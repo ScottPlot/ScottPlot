@@ -1,71 +1,31 @@
+# This workflow evaluates security for code in this repository
+# that lives outside the ScottPlot source folder.
+# ScottPlot binaries are evaluated in workflows that build and test them.
 name: "Security Analysis"
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - src/**
+  workflow_call:
 
-env:
-  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
-  SLN_SP5_PROJ: "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
-  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
-  SLN_SP5_COOK: "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
-  SLN_SP5_DEMO: "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
-  DOTNET_VERSION: "8.0.x"
-  
 jobs:
   analyze:
-    name: Analyze ${{ matrix.language }}
-    runs-on: ${{ (matrix.language == 'csharp' && 'windows-latest') || 'ubuntu-latest' }}
+    name: CodeQL
+    runs-on: ubuntu-latest
     permissions:
       security-events: write
       packages: read
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: csharp
-          build-mode: 'manual'
-        - language: javascript-typescript
-        - language: python
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
-    - name: 🐢 Setup MSBuild
-      if: matrix.build-mode == 'manual'
-      uses: microsoft/setup-msbuild@v2
-    - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
-      if: matrix.build-mode == 'manual'
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: ✨ Setup Java 17
-      if: matrix.build-mode == 'manual'
-      uses: actions/setup-java@v4
-      with:
-        distribution: "microsoft"
-        java-version: "17"
-    - name: 🚚 Install Workloads
-      if: matrix.build-mode == 'manual'
-      run: dotnet workload install maui-android maui-ios maccatalyst wasm-tools
-    - name: 🚚 Workload Restore
-      if: matrix.build-mode == 'manual'
-      run: dotnet workload restore "${{ env.SLN_SP5_FULL }}"
-    - name: 🚚 Solution Restore
-      if: matrix.build-mode == 'manual'
-      run: dotnet restore "${{ env.SLN_SP5_FULL }}"
-    - name: 🛠️ Full Build
-      if: matrix.build-mode == 'manual'
-      run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+      - name: ⚙️ Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python, javascript-typescript
+      - name: 🕵️ Analyze Python Code
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:python"
+      - name: 🕵️ Analyze JavaScript Code
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
