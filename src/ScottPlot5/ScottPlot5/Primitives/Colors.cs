@@ -158,6 +158,18 @@ public struct Colors
     public static Color Yellow => new(255, 255, 0);
     public static Color YellowGreen => new(154, 205, 50);
 
+    // Shortcuts to Category10 colors
+    public static Color C0 => Color.FromHex("#1f77b4");
+    public static Color C1 => Color.FromHex("#ff7f0e");
+    public static Color C2 => Color.FromHex("#2ca02c");
+    public static Color C3 => Color.FromHex("#d62728");
+    public static Color C4 => Color.FromHex("#9467bd");
+    public static Color C5 => Color.FromHex("#8c564b");
+    public static Color C6 => Color.FromHex("#e377c2");
+    public static Color C7 => Color.FromHex("#7f7f7f");
+    public static Color C8 => Color.FromHex("#bcbd22");
+    public static Color C9 => Color.FromHex("#17becf");
+
     /// <summary>
     /// Default Windows Colors
     /// </summary>

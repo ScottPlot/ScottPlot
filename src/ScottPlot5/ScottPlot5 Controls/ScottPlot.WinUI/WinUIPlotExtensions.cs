@@ -9,7 +9,10 @@ internal static class WinUIPlotExtensions
 {
     internal static Pixel Pixel(this PointerRoutedEventArgs e, WinUIPlot plot)
     {
-        return e.GetCurrentPoint(plot).Position.ToPixel();
+        Point position = e.GetCurrentPoint(plot).Position;
+        position.X *= plot.DisplayScale;
+        position.Y *= plot.DisplayScale;
+        return position.ToPixel();
     }
 
     internal static Pixel ToPixel(this Point p)
