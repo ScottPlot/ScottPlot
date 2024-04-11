@@ -19,8 +19,12 @@ jobs:
   # PR workflows fail fast on code compile errors
   sp4-pr:
     uses: ./.github/workflows/ScottPlot4-PR.yaml
+    permissions:
+      security-events: write
   sp5-pr:
     uses: ./.github/workflows/ScottPlot5-PR.yaml
+    permissions:
+      security-events: write
   autoformat:
     uses: ./.github/workflows/task-autoformat-and-commit.yaml
 
