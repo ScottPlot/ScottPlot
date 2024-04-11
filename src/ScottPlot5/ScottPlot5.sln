@@ -51,8 +51,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.ConsoleFramework", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Benchmarks", "ScottPlot5 Benchmarks\ScottPlot Benchmarks.csproj", "{57FEA5F7-EC45-4664-AF34-E8F840C97E45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfFramework", "ScottPlot5 Sandbox\WpfFramework\WpfFramework.csproj", "{B7BD12EC-5F0D-4E06-8579-7D6B3103E7F1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WPFFramework", "ScottPlot5 Sandbox\Sandbox.WPFFramework\Sandbox.WPFFramework.csproj", "{0A738D46-7654-4C7D-99BF-C420602965F7}"
 EndProject
 Global
