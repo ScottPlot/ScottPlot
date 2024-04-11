@@ -10,6 +10,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
     public float FontSize { get => Label.FontSize; set => Label.FontSize = value; }
     public bool FontBold { get => Label.Bold; set => Label.Bold = value; }
     public string FontName { get => Label.FontName; set => Label.FontName = value; }
+    public bool UseAutoAlignment { get; set; } = true;
 
     [Obsolete("Use TextColor", true)]
     public Color FontColor => TextColor;

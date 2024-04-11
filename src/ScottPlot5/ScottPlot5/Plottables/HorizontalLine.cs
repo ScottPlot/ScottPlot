@@ -64,9 +64,12 @@ public class HorizontalLine : AxisLine
             ? rp.DataRect.Right + Label.Padding
             : rp.DataRect.Left - Label.Padding;
 
-        Label.Alignment = LabelOppositeAxis
-            ? Alignment.UpperCenter
-            : Alignment.LowerCenter;
+        if (UseAutoAlignment)
+        {
+            Label.Alignment = LabelOppositeAxis
+                ? Alignment.UpperCenter
+                : Alignment.LowerCenter;
+        }
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();

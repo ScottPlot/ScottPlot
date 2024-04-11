@@ -63,9 +63,12 @@ public class VerticalLine : AxisLine
             ? rp.DataRect.Top - Label.Padding
             : rp.DataRect.Bottom + Label.Padding;
 
-        Label.Alignment = LabelOppositeAxis
-            ? Alignment.LowerCenter
-            : Alignment.UpperCenter;
+        if (UseAutoAlignment)
+        {
+            Label.Alignment = LabelOppositeAxis
+                ? Alignment.LowerCenter
+                : Alignment.UpperCenter;
+        }
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
