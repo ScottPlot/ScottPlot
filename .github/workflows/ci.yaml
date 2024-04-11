@@ -16,41 +16,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # PR workflows fail fast on code compile errors
+  autoformat: # if it finds something wrong it will commit the fix and restart this workflow
+    name: "Task"
+    uses: ./.github/workflows/task-autoformat-and-commit.yaml
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
   sp4-pr:
     name: "SP4"
     uses: ./.github/workflows/ScottPlot4-PR.yaml
     permissions:
       security-events: write
-  sp5-pr:
+  sp5-pr: # partial build can fails quickly if there are basic compile or test failures
     name: "SP5"
     uses: ./.github/workflows/ScottPlot5-PR.yaml
     permissions:
       security-events: write
-  autoformat:
-    name: "Task"
-    uses: ./.github/workflows/task-autoformat-and-commit.yaml
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
-
-  # full builds take a really long time
-  sp5-full:
-    needs: [sp5-pr]
+  sp5-full: # this is very slow so run it in parallel with the partial build
+    name: "SP5"
     uses: ./.github/workflows/ScottPlot5-Full.yaml
 
-  # the rest are misc tasks that may as well be run after merge to main
+  # the rest of the jobs run only if the full build succeeds
   security:
     name: "Task"
     needs: [sp4-pr, sp5-full]
     uses: ./.github/workflows/task-security-scan.yaml
     permissions:
       security-events: write
-
   changelog:
     name: "Task"
     needs: [sp4-pr, sp5-full]
     uses: ./.github/workflows/task-publish-changelog.yaml
-
   code-metrics:
     name: "Task"
     needs: [sp4-pr, sp5-full]
