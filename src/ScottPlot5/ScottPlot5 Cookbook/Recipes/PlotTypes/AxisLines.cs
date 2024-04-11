@@ -26,7 +26,7 @@ public class AxisLines : ICategory
     {
         public override string Name => "Axis Line Label";
         public override string Description => "Axis lines have labels that can be used " +
-            "to display arbitrary on the axes they are attached to.";
+            "to display arbitrary text on the axes they are attached to.";
 
         [Test]
         public override void Execute()
@@ -55,6 +55,36 @@ public class AxisLines : ICategory
             // extra padding on the right and top ensures labels have room
             myPlot.Axes.Right.MinimumSize = 30;
             myPlot.Axes.Top.MinimumSize = 30;
+        }
+    }
+
+    public class AxisLineLabelPositioning : RecipeBase
+    {
+        public override string Name => "Axis Line Label Positioning";
+        public override string Description => "Axis line labels can have " +
+            "custom positioning, including rotation and alignment.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            var axLine1 = myPlot.Add.VerticalLine(42);
+            axLine1.Text = "Line 1";
+            axLine1.Label.Rotation = -90;
+            axLine1.UseAutoAlignment = false;   // Disable automatic alignment
+            axLine1.Label.Alignment = Alignment.MiddleRight;
+
+            var axLine2 = myPlot.Add.HorizontalLine(0.75);
+            axLine2.Text = "Line 2";
+            axLine2.Label.Rotation = 0;
+            axLine2.UseAutoAlignment = false;   // Disable automatic alignment
+            axLine2.Label.Alignment = Alignment.MiddleRight;
+
+            // extra padding on the bottom and left for the rotated labels
+            myPlot.Axes.Bottom.MinimumSize = 60;
+            myPlot.Axes.Left.MinimumSize = 60;
         }
     }
 
