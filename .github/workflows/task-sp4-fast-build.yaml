@@ -35,4 +35,5 @@ jobs:
         run: dotnet build "${{ env.SLN_SP4_TEST }}" --configuration Release
       - name: 🧪 Test
         run: dotnet test "${{ env.SLN_SP4_TEST }}" --configuration Release --verbosity minimal
-      - uses: github/codeql-action/analyze@v3
+      - name: 🕵️ Security Scan
+        uses: github/codeql-action/analyze@v3

@@ -1,0 +1,40 @@
+name: SP5 Fast Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  SLN_SP5_PROJ: "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
+  SLN_SP5_TEST: "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
+  SLN_SP5_COOK: "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
+  SLN_SP5_DEMO: "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  sp5-fast:
+    name: Fast Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 🚚 Restore
+        run: |
+          dotnet restore "${{ env.SLN_SP5_PROJ }}"
+          dotnet restore "${{ env.SLN_SP5_TEST }}"
+          dotnet restore "${{ env.SLN_SP5_COOK }}"
+          dotnet restore "${{ env.SLN_SP5_DEMO }}"
+      - name: 🛠️ Build
+        run: |
+          dotnet build "${{ env.SLN_SP5_PROJ }}" /p:TreatWarningsAsErrors="true"
+          dotnet build "${{ env.SLN_SP5_TEST }}" /p:TreatWarningsAsErrors="true"
+          dotnet build "${{ env.SLN_SP5_COOK }}" /p:TreatWarningsAsErrors="true"
+          dotnet build "${{ env.SLN_SP5_DEMO }}" /p:TreatWarningsAsErrors="true"
+      - name: 🧪 Run Tests
+        run: |
+          dotnet test "${{ env.SLN_SP5_TEST }}" --verbosity minimal
+          dotnet test "${{ env.SLN_SP5_COOK }}" --verbosity minimal
