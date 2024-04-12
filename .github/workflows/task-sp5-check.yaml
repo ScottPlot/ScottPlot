@@ -1,4 +1,4 @@
-name: SP5 Fast Build
+name: SP5 Check
 
 on:
   workflow_dispatch:
@@ -12,8 +12,8 @@ env:
   DOTNET_VERSION: "8.0.x"
 
 jobs:
-  sp5-fast:
-    name: Quick Build
+  sp5-check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout

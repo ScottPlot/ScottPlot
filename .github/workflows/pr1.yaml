@@ -1,0 +1,27 @@
+# This workflow is for quick analysis of PRs.
+# It finishes quickly and should gate merging of protected branches.
+
+name: PR1
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  sp4-check:
+    with:
+      filters: |
+        src:
+          - 'src/ScottPlot4/**'
+    uses: ./.github/workflows/task-sp4-check.yaml
+    permissions:
+      security-events: write
+
+  sp5-check:
+    with:
+      filters: |
+        src:
+          - 'src/ScottPlot5/**'
+    uses: ./.github/workflows/task-sp5-check.yaml
+    permissions:
+      security-events: write
