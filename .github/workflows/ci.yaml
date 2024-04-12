@@ -27,12 +27,12 @@ jobs:
     uses: ./.github/workflows/task-sp4-full-build.yaml
   sp5-fast:
     name: "SP5"
-    uses: ./.github/workflows/ScottPlot5-PR.yaml
+    uses: ./.github/workflows/task-sp5-fast-build.yaml
     permissions:
       security-events: write
   sp5-full:
     name: "SP5"
-    uses: ./.github/workflows/ScottPlot5-Full.yaml
+    uses: ./.github/workflows/task-sp5-full-build.yaml
 
   # Run the autoformatter in parallel too.
   # If it makes a change it will commit it and restart this workflow.
