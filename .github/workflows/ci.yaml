@@ -28,11 +28,11 @@ jobs:
   sp5-fast:
     name: "SP5"
     uses: ./.github/workflows/task-sp5-fast-build.yaml
-    permissions:
-      security-events: write
   sp5-full:
     name: "SP5"
     uses: ./.github/workflows/task-sp5-full-build.yaml
+    permissions:
+      security-events: write
 
   # Run the autoformatter in parallel too.
   # If it makes a change it will commit it and restart this workflow.
