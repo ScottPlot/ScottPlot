@@ -18,6 +18,11 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
+      - name: ⚙️ Setup CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          build-mode: manual
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
@@ -34,3 +39,5 @@ jobs:
         run: dotnet restore ${{ env.SLN_SP4_FULL }}
       - name: 🛠️ Build
         run: dotnet build ${{ env.SLN_SP4_FULL }} --configuration Release
+      - name: 🕵️ Security Scan
+        uses: github/codeql-action/analyze@v3
