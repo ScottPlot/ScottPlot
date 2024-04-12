@@ -12,7 +12,7 @@ env:
 
 jobs:
   sp4-autoformat:
-    name: Run
+    name: Fix
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
