@@ -41,7 +41,7 @@ public readonly struct Color
 
     public override string ToString()
     {
-        return $"Color R={R}, G={G}, B={B}, A={A}";
+        return $"Color {ToHex()} (R={R}, G={G}, B={B}, A={A})";
     }
 
     public Color(byte red, byte green, byte blue, byte alpha = 255)
@@ -142,6 +142,13 @@ public readonly struct Color
     public static Color[] FromHex(string[] hex)
     {
         return hex.Select(x => FromHex(x)).ToArray();
+    }
+
+    public string ToHex()
+    {
+        return Alpha == 255
+            ? $"#{R:X2}{G:X2}{B:X2}"
+            : $"#{R:X2}{G:X2}{B:X2}{A:X2}";
     }
 
     public static Color FromSKColor(SKColor skcolor)
