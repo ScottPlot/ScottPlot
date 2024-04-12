@@ -58,3 +58,5 @@ jobs:
     name: "Publish"
     needs: [sp4-fast, sp4-full, sp5-fast, sp5-full]
     uses: ./.github/workflows/task-code-metrics.yaml
+    secrets:
+      private-ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
