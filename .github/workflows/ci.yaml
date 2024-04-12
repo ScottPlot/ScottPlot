@@ -20,11 +20,11 @@ jobs:
   sp4-fast:
     name: "SP4"
     uses: ./.github/workflows/task-sp4-fast-build.yaml
-    permissions:
-      security-events: write
   sp4-full:
     name: "SP4"
     uses: ./.github/workflows/task-sp4-full-build.yaml
+    permissions:
+      security-events: write
   sp5-fast:
     name: "SP5"
     uses: ./.github/workflows/task-sp5-fast-build.yaml
