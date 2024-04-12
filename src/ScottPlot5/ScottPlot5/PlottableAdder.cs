@@ -326,6 +326,26 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(span);
         return span;
     }
+    public LabelPlot LabelPlot(string text, double xLabel, double yLabel, double xLine, double yLine)
+    {
+        Coordinates labelCoordinates = new(xLabel, yLabel);
+        Coordinates lineCoordinates = new(xLine, yLine);
+        return LabelPlot(text, labelCoordinates, lineCoordinates);
+    }
+
+    public LabelPlot LabelPlot(string labelText, Coordinates labelCoordinates, Coordinates lineCoordinates)
+    {
+        LabelPlot labelPlot = new()
+        {
+            LabelCoordinates = labelCoordinates,
+            LineCoordinates = lineCoordinates,
+        };
+        labelPlot.Label.Text = labelText;
+
+        Plot.PlottableList.Add(labelPlot);
+
+        return labelPlot;
+    }
 
     public LinePlot Line(Coordinates start, Coordinates end)
     {
@@ -355,26 +375,6 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
-    public LabelPlot LabelPlot(string text, double xLabel, double yLabel, double xLine, double yLine)
-    {
-        Coordinates labelCoordinates = new(xLabel, yLabel);
-        Coordinates lineCoordinates = new(xLine, yLine);
-        return LabelPlot(text, labelCoordinates, lineCoordinates);
-    }
-
-    public LabelPlot LabelPlot(string labelText, Coordinates labelCoordinates, Coordinates lineCoordinates)
-    {
-        LabelPlot labelPlot = new()
-        {
-            LabelCoordinates = labelCoordinates,
-            LineCoordinates = lineCoordinates,
-        };
-        labelPlot.Label.Text = labelText;
-
-        Plot.PlottableList.Add(labelPlot);
-
-        return labelPlot;
-    }
 
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
     {
