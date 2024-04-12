@@ -9,20 +9,20 @@ on:
 
 jobs:
   sp4-full-build:
+    uses: ./.github/workflows/task-sp4-full-build.yaml
     with:
       filters: |
         src:
           - 'src/ScottPlot4/**'
-    uses: ./.github/workflows/task-sp4-full-build.yaml
     permissions:
       security-events: write
 
   sp5-full-build:
+    uses: ./.github/workflows/task-sp5-full-build.yaml
     with:
       filters: |
         src:
           - 'src/ScottPlot5/**'
-    uses: ./.github/workflows/task-sp5-full-build.yaml
     permissions:
       security-events: write
 

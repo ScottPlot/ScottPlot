@@ -9,19 +9,19 @@ on:
 
 jobs:
   sp4-check:
+    uses: ./.github/workflows/task-sp4-check.yaml
     with:
       filters: |
         src:
           - 'src/ScottPlot4/**'
-    uses: ./.github/workflows/task-sp4-check.yaml
     permissions:
       security-events: write
 
   sp5-check:
+    uses: ./.github/workflows/task-sp5-check.yaml
     with:
       filters: |
         src:
           - 'src/ScottPlot5/**'
-    uses: ./.github/workflows/task-sp5-check.yaml
     permissions:
       security-events: write
