@@ -8,7 +8,7 @@ on:
 
 jobs:
   publish-changelog:
-    name: Changelog Webpage
+    name: Changelog
     runs-on: ubuntu-latest
     steps:
       - name: 🚀 Trigger Remote Workflow

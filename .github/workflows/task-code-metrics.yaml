@@ -8,7 +8,7 @@ on:
 
 jobs:
   code-metrics:
-    name: Source Metrics Webpage
+    name: Code Metrics
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout

@@ -13,7 +13,7 @@ env:
 
 jobs:
   sp5-fast:
-    name: Fast Build
+    name: Quick Build
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout

@@ -14,7 +14,7 @@ env:
 
 jobs:
   sp4-autoformat:
-    name: Check and Fix
+    name: Run
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout

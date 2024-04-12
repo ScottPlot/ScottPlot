@@ -13,7 +13,7 @@ env:
 
 jobs:
   sp4-fast-build:
-    name: Fast Build
+    name: Quick Build
     runs-on: ubuntu-latest
     permissions:
       security-events: write
