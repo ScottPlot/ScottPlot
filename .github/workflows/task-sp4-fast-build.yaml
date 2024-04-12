@@ -1,0 +1,30 @@
+# ScottPlot 4 fast build runs tests and performs security scan on linux
+
+name: SP4 Fast Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  SLN_SP4_TEST: "src/ScottPlot4/ScottPlot.Tests/ScottPlot.Tests.csproj"
+  SLN_SP4_FULL: "src/ScottPlot4/ScottPlot4.sln"
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  sp4-fast-build:
+    name: Quick Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: 🚚 Restore
+        run: dotnet restore "${{ env.SLN_SP4_TEST }}"
+      - name: 🛠️ Build
+        run: dotnet build "${{ env.SLN_SP4_TEST }}" --configuration Release
+      - name: 🧪 Test
+        run: dotnet test "${{ env.SLN_SP4_TEST }}" --configuration Release --verbosity minimal

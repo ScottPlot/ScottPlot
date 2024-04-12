@@ -1,8 +1,3 @@
-# This workflow performs a full build of ScottPlot 5.
-# It's really slow because it requires many workloads.
-# It also fixes any project code formatting issues.
-# It is not meant to run on PRs.
-
 name: SP5 Full Build
 
 on:
@@ -14,7 +9,7 @@ env:
   DOTNET_VERSION: "8.0.x"
 
 jobs:
-  full-build:
+  sp5-full:
     name: Full Build
     runs-on: windows-latest
     steps:
@@ -24,6 +19,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: csharp
+          build-mode: manual
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
@@ -45,3 +41,5 @@ jobs:
         run: dotnet build "${{ env.SLN_SP5_FULL }}" --configuration Release
       - name: 🧪 Run Tests
         run: dotnet test "${{ env.SLN_SP5_FULL }}" --configuration Release
+      - name: 🕵️ Security Scan
+        uses: github/codeql-action/analyze@v3
