@@ -15,8 +15,6 @@ jobs:
   sp4-fast-build:
     name: Quick Build
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
