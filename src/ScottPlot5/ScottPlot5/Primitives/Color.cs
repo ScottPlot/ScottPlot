@@ -334,4 +334,12 @@ public readonly struct Color
                 ((uint)premultipliedBlue << 0);
         }
     }
+
+    public static Color RandomHue()
+    {
+        float hue = (float)Generate.RandomNumber();
+        float saturation = 1;
+        float luminosity = 0.5f;
+        return Color.FromHSL(hue, saturation, luminosity);
+    }
 }

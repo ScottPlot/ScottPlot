@@ -180,4 +180,9 @@ public struct Colors
     /// https://xkcd.com/color/rgb/
     /// </summary>
     public class Xkcd : NamedColors.XkcdColors { }
+
+    public static IEnumerable<Color> RandomHue(int count)
+    {
+        return Enumerable.Range(0, count).Select(x => Color.RandomHue());
+    }
 }
