@@ -38,7 +38,7 @@ jobs:
   # If it makes a change it will commit it and restart this workflow.
   autoformat:
     name: "Autoformat"
-    uses: ./.github/workflows/task-autoformat-and-commit.yaml
+    uses: ./.github/workflows/task-autoformat-fix.yaml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 

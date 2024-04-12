@@ -1,6 +1,4 @@
-# run the autoformatter and commit changes back to the main branch
-
-name: Autoformat and Commit
+name: Autoformat Fix
 
 on:
   workflow_dispatch:
