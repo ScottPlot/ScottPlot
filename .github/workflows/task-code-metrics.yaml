@@ -8,7 +8,7 @@ on:
 
 jobs:
   code-metrics:
-    name: Analyze and Publish
+    name: Source Metrics Webpage
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout

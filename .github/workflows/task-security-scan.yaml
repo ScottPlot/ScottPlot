@@ -9,7 +9,7 @@ on:
 
 jobs:
   security-scan:
-    name: 🕵️ Security Analysis
+    name: Code Scan
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -20,5 +20,5 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: python, javascript-typescript
-      - name: 🕵️ Code Inspection
+      - name: 🕵️ Analyze
         uses: github/codeql-action/analyze@v3

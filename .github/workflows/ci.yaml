@@ -37,23 +37,23 @@ jobs:
   # Run the autoformatter in parallel too.
   # If it makes a change it will commit it and restart this workflow.
   autoformat:
-    name: "Task"
+    name: "Autoformat"
     uses: ./.github/workflows/task-autoformat-and-commit.yaml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
   # Proceed only if all builds succeed.
   security:
-    name: "Task"
+    name: "Security"
     needs: [sp4-fast, sp4-full, sp5-fast, sp5-full]
     uses: ./.github/workflows/task-security-scan.yaml
     permissions:
       security-events: write
   publish-changelog:
-    name: "Task"
+    name: "Publish"
     needs: [security]
     uses: ./.github/workflows/task-publish-changelog.yaml
   publish-metrics:
-    name: "Task"
+    name: "Publish"
     needs: [security]
     uses: ./.github/workflows/task-code-metrics.yaml
