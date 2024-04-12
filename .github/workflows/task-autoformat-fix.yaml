@@ -1,0 +1,40 @@
+name: Autoformat Fix
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      token:
+        required: true
+
+env:
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  sp4-autoformat:
+    name: Fix
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.token }}
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: ✒️ Autoformat ScottPlot4
+        run: dotnet format "src/ScottPlot4/ScottPlot4.sln"
+      - name: ✒️ Autoformat ScottPlot5
+        run: dotnet format "src/ScottPlot5/ScottPlot5.sln"
+      - name: 🧐 Inspect Changes
+        id: verify_diff
+        run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      - name: ✅ Commit Changes
+        if: steps.verify_diff.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git pull
+          git commit -am "CI: autoformat"
+          git push

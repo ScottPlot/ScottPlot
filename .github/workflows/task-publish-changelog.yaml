@@ -1,0 +1,21 @@
+# This workflow tests all code after any change to the main branch
+
+name: Update Changelog Webpage
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  publish-changelog:
+    name: Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 Trigger Remote Workflow
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
+            -d "{\"ref\":\"main\"}" \
+            https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
