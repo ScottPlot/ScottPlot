@@ -42,18 +42,19 @@ jobs:
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
-  # Proceed only if all builds succeed.
+  # This security analysis evaluates non-compiled code
   security:
     name: "Security"
-    needs: [sp4-fast, sp4-full, sp5-fast, sp5-full]
     uses: ./.github/workflows/task-security-scan.yaml
     permissions:
       security-events: write
+
+  # Publish updates to the website only if all builds succeed.
   publish-changelog:
     name: "Publish"
-    needs: [security]
+    needs: [sp4-fast, sp4-full, sp5-fast, sp5-full]
     uses: ./.github/workflows/task-publish-changelog.yaml
   publish-metrics:
     name: "Publish"
-    needs: [security]
+    needs: [sp4-fast, sp4-full, sp5-fast, sp5-full]
     uses: ./.github/workflows/task-code-metrics.yaml
