@@ -9,7 +9,7 @@ on:
 
 jobs:
   security-scan:
-    name: Non-Compiled Code Analysis
+    name: 🕵️ Security Analysis
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -20,11 +20,5 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: python, javascript-typescript
-      - name: 🕵️ Analyze Python Code
+      - name: 🕵️ Code Inspection
         uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:python"
-      - name: 🕵️ Analyze JavaScript Code
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:javascript-typescript"

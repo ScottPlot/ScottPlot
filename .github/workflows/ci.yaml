@@ -16,21 +16,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Run these jobs in parallel. Any one that errors will stop the rest.
-  autoformat:
-    name: "Task"
-    uses: ./.github/workflows/task-autoformat-and-commit.yaml
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
-  sp4-fast-build:
+  # Run these jobs in parallel. Any errors will stop the rest.
+  sp4-fast:
     name: "SP4"
     uses: ./.github/workflows/task-sp4-fast-build.yaml
     permissions:
       security-events: write
-  sp4-full-build:
+  sp4-full:
     name: "SP4"
     uses: ./.github/workflows/task-sp4-full-build.yaml
-  sp5-pr:
+  sp5-fast:
     name: "SP5"
     uses: ./.github/workflows/ScottPlot5-PR.yaml
     permissions:
@@ -39,18 +34,26 @@ jobs:
     name: "SP5"
     uses: ./.github/workflows/ScottPlot5-Full.yaml
 
-  # the rest of the jobs run only if the full build succeeds
+  # Run the autoformatter in parallel too.
+  # If it makes a change it will commit it and restart this workflow.
+  autoformat:
+    name: "Task"
+    uses: ./.github/workflows/task-autoformat-and-commit.yaml
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Proceed only if all builds succeed.
   security:
     name: "Task"
-    needs: [sp4-pr, sp5-full]
+    needs: [sp4-fast, sp4-full, sp5-fast, sp5-full]
     uses: ./.github/workflows/task-security-scan.yaml
     permissions:
       security-events: write
-  changelog:
+  publish-changelog:
     name: "Task"
-    needs: [sp4-pr, sp5-full]
+    needs: [security]
     uses: ./.github/workflows/task-publish-changelog.yaml
-  code-metrics:
+  publish-metrics:
     name: "Task"
-    needs: [sp4-pr, sp5-full]
+    needs: [security]
     uses: ./.github/workflows/task-code-metrics.yaml
