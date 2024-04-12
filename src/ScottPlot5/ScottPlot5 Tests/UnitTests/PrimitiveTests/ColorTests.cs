@@ -139,7 +139,7 @@ internal class ColorTests
     }
 
     [Test]
-    public void Test_Color_RandomHue()
+    public void Test_Colors_RandomHue()
     {
         var colors = Colors.RandomHue(10);
 
@@ -157,5 +157,12 @@ internal class ColorTests
 
         var alphas = colors.Select(x => (int)x.A).ToArray();
         alphas.Average().Should().Be(255);
+    }
+
+    [Test]
+    public void Test_Colors_Rainbow()
+    {
+        Color[] colors = Colors.RandomHue(10);
+        colors.Select(x => x.ToHex()).Should().OnlyHaveUniqueItems();
     }
 }

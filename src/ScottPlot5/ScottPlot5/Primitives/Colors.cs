@@ -181,8 +181,37 @@ public struct Colors
     /// </summary>
     public class Xkcd : NamedColors.XkcdColors { }
 
-    public static IEnumerable<Color> RandomHue(int count)
+    /// <summary>
+    /// Return a collection of colors with random hues.
+    /// Because hues are random, near-matches may be present.
+    /// </summary>
+    public static Color[] RandomHue(int count)
     {
-        return Enumerable.Range(0, count).Select(x => Color.RandomHue());
+        Color[] colors = new Color[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            colors[i] = Color.RandomHue();
+        }
+
+        return colors;
+    }
+
+    /// <summary>
+    /// Return a collection of colors with maximum saturation and evenly-spaced hues
+    /// </summary>
+    public static IEnumerable<Color> Rainbow(int count)
+    {
+        Color[] colors = new Color[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            float hue = (float)i / count;
+            float saturation = 1;
+            float luminosity = 0.5f;
+            colors[i] = Color.FromHSL(hue, saturation, luminosity);
+        }
+
+        return colors;
     }
 }
