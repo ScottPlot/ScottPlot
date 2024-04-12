@@ -567,6 +567,8 @@ public static class Generate
         };
     }
 
+    public static Color RandomHue() => Color.RandomHue();
+
     public static Color RandomColor()
     {
         byte r = RandomData.RandomByte();
