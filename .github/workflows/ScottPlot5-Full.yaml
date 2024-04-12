@@ -20,10 +20,6 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
-      - name: ⚙️ Setup CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: csharp
       - name: 🐢 Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}

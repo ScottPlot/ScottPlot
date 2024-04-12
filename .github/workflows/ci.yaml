@@ -16,22 +16,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  autoformat: # if it finds something wrong it will commit the fix and restart this workflow
+  # Run these jobs in parallel. Any one that errors will stop the rest.
+  autoformat:
     name: "Task"
     uses: ./.github/workflows/task-autoformat-and-commit.yaml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
-  sp4-pr:
+  sp4-fast-build:
     name: "SP4"
-    uses: ./.github/workflows/ScottPlot4-PR.yaml
+    uses: ./.github/workflows/task-sp4-fast-build.yaml
     permissions:
       security-events: write
-  sp5-pr: # partial build can fails quickly if there are basic compile or test failures
+  sp4-full-build:
+    name: "SP4"
+    uses: ./.github/workflows/task-sp4-full-build.yaml
+  sp5-pr:
     name: "SP5"
     uses: ./.github/workflows/ScottPlot5-PR.yaml
     permissions:
       security-events: write
-  sp5-full: # this is very slow so run it in parallel with the partial build
+  sp5-full:
     name: "SP5"
     uses: ./.github/workflows/ScottPlot5-Full.yaml
 
