@@ -1,6 +1,6 @@
 # Security Policy
 
-**ScottPlot minimizes security risk** by making all source code available, using only official Microsoft-backed NuGet dependencies, carefully reviewing all code contributions, building and publishing packages in the cloud with GitHub Actions, and using deterministic builds and SourceLink for all packages deployed to NuGet.
+**ScottPlot minimizes security risk** by making all source code available, using only official Microsoft-backed NuGet dependencies, carefully reviewing all code contributions, building and publishing packages in the cloud with GitHub Actions, and using deterministic builds and SourceLink for all packages deployed to NuGet. Source code files and binaries built from them are scanned for vulnerabilities using the CodeQL analysis engine ([see report](https://github.com/ScottPlot/ScottPlot/security/code-scanning/tools/CodeQL/status)).
 
 **Supported Versions:** Security updates are applied to all major versions of ScottPlot present in this repository.
 
