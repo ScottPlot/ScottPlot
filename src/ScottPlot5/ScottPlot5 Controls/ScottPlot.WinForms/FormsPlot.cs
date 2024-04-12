@@ -1,6 +1,8 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.Extensions;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -13,39 +15,64 @@ namespace ScottPlot.WinForms;
 #endif
 public class FormsPlot : FormsPlotBase
 {
-    readonly SKControl SKElement;
+    private SKControl? SKControl;
 
     public override GRContext GRContext => null!;
 
     public FormsPlot()
     {
-        SKElement = new() { Dock = DockStyle.Fill };
-        SKElement.PaintSurface += SKElement_PaintSurface; ;
-        SKElement.MouseDown += SKElement_MouseDown;
-        SKElement.MouseUp += SKElement_MouseUp;
-        SKElement.MouseMove += SKElement_MouseMove;
-        SKElement.DoubleClick += SKElement_DoubleClick;
-        SKElement.MouseWheel += SKElement_MouseWheel;
-        SKElement.KeyDown += SKElement_KeyDown;
-        SKElement.KeyUp += SKElement_KeyUp;
+        HandleCreated += (s, e) => SetupSKControl();
+        HandleDestroyed += (s, e) => TeardownSKControl();
+        SetupSKControl();
+        Plot.FigureBackground.Color = SystemColors.Control.ToColor();
+    }
 
-        Controls.Add(SKElement);
+    private void SetupSKControl()
+    {
+        TeardownSKControl();
 
-        HandleDestroyed += (s, e) =>
-        {
-            SKElement.Dispose();
-            Plot.Dispose();
-        };
+        SKControl = new() { Dock = DockStyle.Fill };
+
+        SKControl.PaintSurface += SKElement_PaintSurface;
+        SKControl.MouseDown += SKElement_MouseDown;
+        SKControl.MouseUp += SKElement_MouseUp;
+        SKControl.MouseMove += SKElement_MouseMove;
+        SKControl.DoubleClick += SKElement_DoubleClick;
+        SKControl.MouseWheel += SKElement_MouseWheel;
+        SKControl.KeyDown += SKElement_KeyDown;
+        SKControl.KeyUp += SKElement_KeyUp;
+
+        Controls.Add(SKControl);
+    }
+
+    private void TeardownSKControl()
+    {
+        if (SKControl is null)
+            return;
+
+        SKControl.PaintSurface -= SKElement_PaintSurface; ;
+        SKControl.MouseDown -= SKElement_MouseDown;
+        SKControl.MouseUp -= SKElement_MouseUp;
+        SKControl.MouseMove -= SKElement_MouseMove;
+        SKControl.DoubleClick -= SKElement_DoubleClick;
+        SKControl.MouseWheel -= SKElement_MouseWheel;
+        SKControl.KeyDown -= SKElement_KeyDown;
+        SKControl.KeyUp -= SKElement_KeyUp;
+
+        Controls.Remove(SKControl);
+
+        if (!SKControl.IsDisposed)
+            SKControl.Dispose();
     }
 
     private void SKElement_PaintSurface(object? sender, SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
+        Plot.Render(e.Surface);
     }
 
     public override void Refresh()
     {
-        SKElement.Invalidate();
+        SKControl?.Invalidate();
         base.Refresh();
     }
 }
