@@ -6,7 +6,7 @@ public class Annotation : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public Label Label { get; set; } = new();
+    public Label Label { get; set; } = new() { ShadowColor = Colors.Black.WithAlpha(.2) };
     public string Text { get => Label.Text; set => Label.Text = value; }
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float OffsetX { get; set; } = 10;
