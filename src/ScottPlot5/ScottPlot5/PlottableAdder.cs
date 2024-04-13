@@ -30,7 +30,7 @@ public class PlottableAdder(Plot plot)
         };
 
         an.Label.Text = text;
-        an.Label.BackColor = Colors.Yellow.WithAlpha(.75);
+        an.Label.BackgroundColor = Colors.Yellow.WithAlpha(.75);
         an.Label.BorderColor = Colors.Black;
         an.Label.Padding = 5;
 
@@ -780,7 +780,7 @@ public class PlottableAdder(Plot plot)
     {
         Text txt = new();
         txt.Label.Text = text;
-        txt.Label.BackColor = Colors.Transparent;
+        txt.Label.BackgroundColor = Colors.Transparent;
         txt.Label.BorderColor = Colors.Transparent;
         txt.Location = new(x, y);
         Plot.PlottableList.Add(txt);

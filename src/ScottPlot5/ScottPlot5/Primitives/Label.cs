@@ -14,7 +14,8 @@ public class Label
 
     public Color ForeColor { get; set; } = Colors.Black;
 
-    public Color BackColor { get; set; };
+    [Obsolete("use BackgroundColor", true)]
+    public Color BackColor { get; set; }
     public Color BackgroundColor { get; set; } = Colors.Transparent;
 
     public Color BorderColor { get; set; } = Colors.Transparent;
