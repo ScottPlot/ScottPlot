@@ -38,7 +38,7 @@ public class Annotation : ICategory
             var anno = myPlot.Add.Annotation("Customized\nAnnotation");
             anno.Label.FontSize = 32;
             anno.Label.FontName = Fonts.Serif;
-            anno.Label.BackColor = Colors.RebeccaPurple.WithAlpha(.3);
+            anno.Label.BackgroundColor = Colors.RebeccaPurple.WithAlpha(.3);
             anno.Label.ForeColor = Colors.RebeccaPurple;
             anno.Label.BorderColor = Colors.Green;
             anno.Label.BorderWidth = 3;

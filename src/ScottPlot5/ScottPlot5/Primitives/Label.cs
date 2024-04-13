@@ -14,11 +14,17 @@ public class Label
 
     public Color ForeColor { get; set; } = Colors.Black;
 
-    public Color BackColor { get; set; } = Colors.Transparent;
+    [Obsolete("use BackgroundColor", true)]
+    public Color BackColor { get; set; }
+    public Color BackgroundColor { get; set; } = Colors.Transparent;
 
     public Color BorderColor { get; set; } = Colors.Transparent;
 
     public float BorderWidth { get; set; } = 1;
+
+    public Color ShadowColor = Colors.Transparent;
+
+    public PixelOffset ShadowOffset = new(3, 3);
 
     // TODO: use a class for cached typeface management
 
@@ -98,10 +104,17 @@ public class Label
         paint.IsAntialias = AntiAlias;
     }
 
+    private void ApplyShadowPaint(SKPaint paint)
+    {
+        paint.IsStroke = false;
+        paint.Color = ShadowColor.ToSKColor();
+        paint.IsAntialias = AntiAlias;
+    }
+
     private void ApplyBackgroundPaint(SKPaint paint)
     {
         paint.IsStroke = false;
-        paint.Color = BackColor.ToSKColor();
+        paint.Color = BackgroundColor.ToSKColor();
         paint.IsAntialias = AntiAlias;
     }
 
@@ -245,14 +258,25 @@ public class Label
         PixelRect textRect = new(0, size.Width, size.Height, 0);
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
+        PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
 
         canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
         canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding
         canvas.RotateDegrees(Rotation);
-        ApplyBackgroundPaint(paint);
-        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
-        ApplyTextPaint(paint);
 
+        if (ShadowColor != Colors.Transparent)
+        {
+            ApplyShadowPaint(paint);
+            canvas.DrawRect(shadowRect.ToSKRect(), paint);
+        }
+
+        if (BackgroundColor != Colors.Transparent)
+        {
+            ApplyBackgroundPaint(paint);
+            canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        }
+
+        ApplyTextPaint(paint);
         if (Text.Contains('\n'))
         {
             // TODO: multiline support could be significantly improved

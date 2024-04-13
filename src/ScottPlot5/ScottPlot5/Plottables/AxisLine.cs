@@ -16,7 +16,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
     [Obsolete("Use TextColor", true)]
     public Color FontColor => TextColor;
     public Color TextColor { get => LabelStyle.ForeColor; set => LabelStyle.ForeColor = value; }
-    public Color TextBackgroundColor { get => LabelStyle.BackColor; set => LabelStyle.BackColor = value; }
+    public Color TextBackgroundColor { get => LabelStyle.BackgroundColor; set => LabelStyle.BackgroundColor = value; }
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
     public float TextRotation { get => LabelStyle.Rotation; set => LabelStyle.Rotation = value; }
     public float TextSize { get => LabelStyle.FontSize; set => LabelStyle.FontSize = value; }
@@ -39,7 +39,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
         set
         {
             LineStyle.Color = value;
-            LabelStyle.BackColor = value;
+            LabelStyle.BackgroundColor = value;
         }
     }
 
