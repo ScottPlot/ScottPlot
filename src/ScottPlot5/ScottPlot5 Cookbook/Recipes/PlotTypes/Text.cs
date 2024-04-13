@@ -33,7 +33,7 @@ public class Text : ICategory
             text.Label.Bold = true;
             text.Label.Rotation = -45;
             text.Label.ForeColor = Colors.Yellow;
-            text.Label.BackColor = Colors.Navy.WithAlpha(.5);
+            text.Label.BackgroundColor = Colors.Navy.WithAlpha(.5);
             text.Label.BorderColor = Colors.Magenta;
             text.Label.BorderWidth = 3;
             text.Label.Padding = 10;
@@ -92,7 +92,7 @@ public class Text : ICategory
                 txt.BorderWidth = 1;
                 txt.Padding = 2;
                 txt.Bold = true;
-                txt.BackColor = marker.Color.WithAlpha(.5);
+                txt.BackgroundColor = marker.Color.WithAlpha(.5);
 
                 // offset the text label by the given number of pixels
                 txt.OffsetX = i;

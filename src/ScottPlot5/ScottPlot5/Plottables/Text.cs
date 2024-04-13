@@ -13,7 +13,9 @@ public class Text : IPlottable
 
     public Color Color { get => Label.ForeColor; set => Label.ForeColor = value; }
     public Color FontColor { get => Label.ForeColor; set => Label.ForeColor = value; }
-    public Color BackColor { get => Label.BackColor; set => Label.BackColor = value; }
+    public Color BackgroundColor { get => Label.BackgroundColor; set => Label.BackgroundColor = value; }
+    [Obsolete("use BackgroundColor", true)]
+    public Color BackColor { get; set; }
     public Color BorderColor { get => Label.BorderColor; set => Label.BorderColor = value; }
     public float BorderWidth { get => Label.BorderWidth; set => Label.BorderWidth = value; }
     public float Padding { get => Label.Padding; set => Label.Padding = value; }
