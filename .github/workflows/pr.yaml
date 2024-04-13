@@ -24,8 +24,8 @@ jobs:
           find . -type f -name "changed*.txt" -empty -delete
       - name: Set workflow variables
         run: |
-          echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo "true" || echo "false" ))" >> $GITHUB_ENV
-          echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo "true" || echo "false" ))" >> $GITHUB_ENV
+          echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo true || echo false )" >> $GITHUB_ENV
+          echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo true || echo false )" >> $GITHUB_ENV
       - name: ScottPlot4 Changed ${{ env.MOD_SP4 }}
         if: ${{ env.MOD_SP4 }}
         run: echo sp4 changed
