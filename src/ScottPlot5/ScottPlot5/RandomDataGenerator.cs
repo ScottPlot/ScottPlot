@@ -97,6 +97,14 @@ public class RandomDataGenerator
     }
 
     /// <summary>
+    /// Return a random byte between the given values (inclusive)
+    /// </summary>
+    public byte RandomByte(byte min, byte max)
+    {
+        return (byte)Rand.Next(min, max + 1);
+    }
+
+    /// <summary>
     /// Return a random integer between zero (inclusive) and <paramref name="max"/> (exclusive)
     /// </summary>
     public int RandomInteger(int max)

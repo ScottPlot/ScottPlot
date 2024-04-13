@@ -1,0 +1,57 @@
+# This workflow is used for quickly evaluating whether PRs are ready to merge.
+# It checks for basic compile errors and ensures tests pass.
+
+name: PR1
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  evaluate:
+    name: Evaluate Changes
+    runs-on: ubuntu-latest
+    outputs:
+      MOD_SP4: ${{ steps.set-vars.outputs.MOD_SP4 }}
+      MOD_SP5: ${{ steps.set-vars.outputs.MOD_SP5 }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: "0" # all branches
+      - name: Evaluate changed files in PR
+        run: |
+          git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only
+          git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only > changed.txt
+      - name: Identify affected versions
+        run: |
+          sed -n '/src\/ScottPlot4/p' changed.txt
+          sed -n '/src\/ScottPlot4/p' changed.txt > changed4.txt
+          sed -n '/src\/ScottPlot5/p' changed.txt
+          sed -n '/src\/ScottPlot5/p' changed.txt > changed5.txt
+          find . -type f -name "changed*.txt" -empty -delete
+      - name: Set workflow variables
+        id: set-vars
+        run: |
+          echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo true || echo false )" >> $GITHUB_OUTPUT
+          echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo true || echo false )" >> $GITHUB_OUTPUT
+      - name: ScottPlot4 Changed (${{ steps.set-vars.outputs.MOD_SP4 }})
+        if: ${{ steps.set-vars.outputs.MOD_SP4 == 'true' }}
+        run: echo sp4 changed
+      - name: ScottPlot5 Changed (${{ steps.set-vars.outputs.MOD_SP5 }})
+        if: ${{ steps.set-vars.outputs.MOD_SP5 == 'true' }}
+        run: echo sp5 changed
+
+  sp4-check:
+    needs: evaluate
+    if: needs.evaluate.outputs.MOD_SP4 == 'true' || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/task-sp4-check.yaml
+    permissions:
+      security-events: write
+
+  sp5-check:
+    needs: evaluate
+    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/task-sp5-check.yaml
+    permissions:
+      security-events: write

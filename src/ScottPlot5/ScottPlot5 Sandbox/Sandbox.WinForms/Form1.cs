@@ -8,10 +8,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        Func<double, double> func = new((x) => Math.Sin(x) * Math.Sin(x / 2));
-
-        var f = formsPlot1.Plot.Add.Function(func);
-        // f.MinX = -3;
-        // f.MaxX = 3;
+        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        formsPlot1.Plot.Add.Signal(Generate.Cos());
     }
 }

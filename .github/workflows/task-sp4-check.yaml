@@ -1,6 +1,4 @@
-# ScottPlot 4 fast build runs tests and performs security scan on linux
-
-name: SP4 Fast Build
+name: SP4 Check
 
 on:
   workflow_dispatch:
@@ -12,8 +10,8 @@ env:
   DOTNET_VERSION: "8.0.x"
 
 jobs:
-  sp4-fast-build:
-    name: Quick Build
+  sp4-check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout

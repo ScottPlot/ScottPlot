@@ -137,4 +137,32 @@ internal class ColorTests
         ScottPlot.NamedColors.XkcdColors.Darkblue.ToStringRGB().Should().Be("#030764");
         ScottPlot.NamedColors.XkcdColors.BabyPoopGreen.ToStringRGB().Should().Be("#8F9805");
     }
+
+    [Test]
+    public void Test_Colors_RandomHue()
+    {
+        var colors = Colors.RandomHue(10);
+
+        var reds = colors.Select(x => (int)x.R).ToArray();
+        reds.Average().Should().BeGreaterThan(0);
+        reds.Average().Should().BeLessThan(255);
+
+        var greens = colors.Select(x => (int)x.G).ToArray();
+        greens.Average().Should().BeGreaterThan(0);
+        greens.Average().Should().BeLessThan(255);
+
+        var blues = colors.Select(x => (int)x.B).ToArray();
+        blues.Average().Should().BeGreaterThan(0);
+        blues.Average().Should().BeLessThan(255);
+
+        var alphas = colors.Select(x => (int)x.A).ToArray();
+        alphas.Average().Should().Be(255);
+    }
+
+    [Test]
+    public void Test_Colors_Rainbow()
+    {
+        Color[] colors = Colors.RandomHue(10);
+        colors.Select(x => x.ToHex()).Should().OnlyHaveUniqueItems();
+    }
 }
