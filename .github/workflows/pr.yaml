@@ -28,47 +28,47 @@ jobs:
         run: |
           echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo true || echo false )" >> $GITHUB_ENV
           echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo true || echo false )" >> $GITHUB_ENV
-      - name: ScottPlot4 Changed ${{ env.MOD_SP4 == 'true' }}
+      - name: ScottPlot4 Changed ${{ env.MOD_SP4 }}
         if: ${{ env.MOD_SP4 == 'true' }}
         run: echo sp4 changed
-      - name: ScottPlot5 Changed ${{ env.MOD_SP5 == 'true' }}
+      - name: ScottPlot5 Changed ${{ env.MOD_SP5 }}
         if: ${{ env.MOD_SP5 == 'true' }}
         run: echo sp5 changed
     outputs:
-      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 == 'true' }}
-      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 == 'true' }}
+      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }}
+      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }}
 
   sp4-check:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP4 == 'true' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp4-check.yaml
     permissions:
       security-events: write
 
   sp5-check:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp5-check.yaml
     permissions:
       security-events: write
 
   sp4-full:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP4 == 'true' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp4-full-build.yaml
     permissions:
       security-events: write
 
   sp5-full:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp5-full-build.yaml
     permissions:
       security-events: write
 
   autoformat-check:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-autoformat-check.yaml
     permissions:
       security-events: write
