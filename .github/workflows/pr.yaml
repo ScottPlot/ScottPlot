@@ -15,14 +15,15 @@ jobs:
           fetch-depth: "0" # all branches
       - name: Evaluate git history
         run: |
-          echo "MOD_SP4=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
-          echo "MOD_SP5=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only | grep src/ScottPlot5/)" >> $GITHUB_ENV
-          echo $MOD_SP4
-          echo $MOD_SP5
-      - name: ScottPlot4 Changed
+          git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only > changed.txt
+          grep src/ScottPlot4/ changed.txt > changed4.txt
+          grep src/ScottPlot5/ changed.txt > changed5.txt
+          echo "MOD_SP4=$(cat changed4.txt)" >> $GITHUB_ENV
+          echo "MOD_SP5=$(cat changed5.txt)" >> $GITHUB_ENV
+      - name: ScottPlot4 Changed ${{ env.MOD_SP4 }}
         if: ${{ env.MOD_SP4 != '' }}
         run: echo sp4 changed
-      - name: ScottPlot5 Changed
+      - name: ScottPlot5 Changed ${{ env.MOD_SP5 }}
         if: ${{ env.MOD_SP5 != '' }}
         run: echo sp5 changed
     outputs:
