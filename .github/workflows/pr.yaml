@@ -19,22 +19,24 @@ jobs:
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only > changed.txt
       - name: Identify affected versions
         run: |
+          sed -n '/src\/ScottPlot4/p' changed.txt
           sed -n '/src\/ScottPlot4/p' changed.txt > changed4.txt
+          sed -n '/src\/ScottPlot5/p' changed.txt
           sed -n '/src\/ScottPlot5/p' changed.txt > changed5.txt
           find . -type f -name "changed*.txt" -empty -delete
       - name: Set workflow variables
         run: |
           echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo true || echo false )" >> $GITHUB_ENV
           echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo true || echo false )" >> $GITHUB_ENV
-      - name: ScottPlot4 Changed ${{ env.MOD_SP4 }}
-        if: ${{ env.MOD_SP4 }}
+      - name: ScottPlot4 Changed ${{ env.MOD_SP4 == 'true' }}
+        if: ${{ env.MOD_SP4 == 'true' }}
         run: echo sp4 changed
-      - name: ScottPlot5 Changed ${{ env.MOD_SP4 }}
-        if: ${{ env.MOD_SP5 }}
+      - name: ScottPlot5 Changed ${{ env.MOD_SP5 == 'true' }}
+        if: ${{ env.MOD_SP5 == 'true' }}
         run: echo sp5 changed
     outputs:
-      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }}
-      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }}
+      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 == 'true' }}
+      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 == 'true' }}
 
   sp4-check:
     needs: evaluate
