@@ -8,20 +8,30 @@ on:
   pull_request:
 
 jobs:
-  sp4-check:
-    uses: ./.github/workflows/task-sp4-check.yaml
-    with:
-      filters: |
-        src:
-          - 'src/ScottPlot4/**'
-    permissions:
-      security-events: write
+  evaluate-modified-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: "0" # all branches
+      - name: Evaluate git history
+        run: |
+          MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)
+          MOD_SP5=$(git diff main --name-only | grep src/ScottPlot5/)
+      - name: ScottPlot4 Modified
+        if: ${{ env.MOD_SP4 != '' }}
+        run: echo sp4
+      - name: ScottPlot5 Modified
+        if: ${{ env.MOD_SP5 != '' }}
+        run: echo sp5
 
-  sp5-check:
-    uses: ./.github/workflows/task-sp5-check.yaml
-    with:
-      filters: |
-        src:
-          - 'src/ScottPlot5/**'
-    permissions:
-      security-events: write
+  # sp4-check:
+  #   uses: ./.github/workflows/task-sp4-check.yaml
+  #   permissions:
+  #     security-events: write
+
+  # sp5-check:
+  #   uses: ./.github/workflows/task-sp5-check.yaml
+  #   permissions:
+  #     security-events: write
