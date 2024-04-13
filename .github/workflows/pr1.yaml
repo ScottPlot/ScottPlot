@@ -17,8 +17,8 @@ jobs:
           fetch-depth: "0" # all branches
       - name: Evaluate git history
         run: |
-          MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)
-          MOD_SP5=$(git diff main --name-only | grep src/ScottPlot5/)
+          echo "MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
+          echo "MOD_SP5=$(git diff main --name-only | grep src/ScottPlot5/)" >> $GITHUB_ENV
       - name: ScottPlot4 Modified
         if: ${{ env.MOD_SP4 != '' }}
         run: echo sp4
