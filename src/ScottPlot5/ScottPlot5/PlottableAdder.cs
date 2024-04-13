@@ -143,10 +143,10 @@ public class PlottableAdder(Plot plot)
     {
         Callout callout = new()
         {
-            TextLocation = textLocation,
-            LineCoordinates = tipLocation,
+            TextCoordinates = textLocation,
+            TipCoordinates = tipLocation,
         };
-        callout.Label.Text = text;
+        callout.LabelStyle.Text = text;
 
         Plot.PlottableList.Add(callout);
 

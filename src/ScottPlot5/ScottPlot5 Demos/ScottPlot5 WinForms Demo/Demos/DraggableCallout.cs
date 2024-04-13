@@ -33,15 +33,9 @@ public partial class DraggableCallout : Form, IDemoWindow
             tipX: 0.2185,
             tipY: 0.8925);
 
-        callout.Label.BorderColor = Colors.Blue;
-        callout.Label.BackgroundColor = Colors.Blue.WithAlpha(.5);
-        callout.Label.Padding = 5;
-
-        callout.LineStyle = new LineStyle()
-        {
-            Color = callout.Label.BorderColor,
-            Width = callout.Label.BorderWidth,
-        };
+        callout.LabelStyle.BorderColor = Colors.Blue;
+        callout.LabelStyle.BackgroundColor = Colors.Blue.WithAlpha(.5);
+        callout.LabelStyle.Padding = 5;
 
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
         formsPlot1.MouseUp += FormsPlot1_MouseUp;
@@ -84,7 +78,7 @@ public partial class DraggableCallout : Form, IDemoWindow
     {
         return formsPlot1.Plot
             .GetPlottables<Callout>()
-            .Where(p => p.IsUnderMouse(x, y))
+            .Where(p => p.LastRenderRect.Contains(x, y))
             .FirstOrDefault();
     }
 }
