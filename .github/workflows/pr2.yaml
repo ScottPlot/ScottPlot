@@ -26,16 +26,21 @@ jobs:
       - name: ScottPlot5 Changed
         if: ${{ env.MOD_SP5 != '' }}
         run: echo sp5 changed
+    outputs:
+      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }} != ''
+      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }} != ''
 
   sp4-full-build:
+    needs: evaluate
+    if: steps.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp4-full-build.yaml
-    if: steps.evaluate.outputs.MOD_SP4 != '' || github.event_name == 'workflow_dispatch'
     permissions:
       security-events: write
 
   sp5-full-build:
+    needs: evaluate
+    if: steps.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp5-full-build.yaml
-    if: steps.evaluate.outputs.MOD_SP5 != '' || github.event_name == 'workflow_dispatch'
     permissions:
       security-events: write
 
