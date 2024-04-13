@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>net462;net472;net48;net8.0</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
