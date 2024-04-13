@@ -8,7 +8,8 @@ on:
   pull_request:
 
 jobs:
-  evaluate-modified-files:
+  evaluate-changes:
+    name: Evaluate Changes
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,19 +20,21 @@ jobs:
         run: |
           echo "MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
           echo "MOD_SP5=$(git diff main --name-only | grep src/ScottPlot5/)" >> $GITHUB_ENV
-      - name: ScottPlot4 Modified
+      - name: ScottPlot4 Changed
         if: ${{ env.MOD_SP4 != '' }}
-        run: echo sp4
-      - name: ScottPlot5 Modified
+        run: echo sp4 changed
+      - name: ScottPlot5 Changed
         if: ${{ env.MOD_SP5 != '' }}
-        run: echo sp5
+        run: echo sp5 changed
 
-  # sp4-check:
-  #   uses: ./.github/workflows/task-sp4-check.yaml
-  #   permissions:
-  #     security-events: write
+  sp4-check:
+    uses: ./.github/workflows/task-sp4-check.yaml
+    if: ${{ env.MOD_SP4 != '' || github.event_name == 'workflow_dispatch' }}
+    permissions:
+      security-events: write
 
-  # sp5-check:
-  #   uses: ./.github/workflows/task-sp5-check.yaml
-  #   permissions:
-  #     security-events: write
+  sp5-check:
+    uses: ./.github/workflows/task-sp5-check.yaml
+    if: ${{ env.MOD_SP5 != '' || github.event_name == 'workflow_dispatch' }}
+    permissions:
+      security-events: write
