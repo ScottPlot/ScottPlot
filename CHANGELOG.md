@@ -14,6 +14,10 @@ _Not yet on NuGet..._
 * Bar: Added a `CenterLabel` flag to cause value labels to be displayed centered within a bar (#3391) @tibormarchynzoom
 * FormsPlot: Allow plots to persist through `Show()` and `Close()` events (#3643, #3589) @CodeBehemoth @bwedding @Kruno313
 
+## ScottPlot 4.1.74
+* Security: Use System.Drawing.Common version 4.7.2 to address [CVE-2021-26701](https://github.com/advisories/GHSA-ghhp-997w-qr28)
+* Package: Target supported versions of .NET Framework (4.6.2, 4.7.2, and 4.8) and .NET (6.0 and 8.0)
+
 ## ScottPlot 5.0.25
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
 * NuGet: Use snupkg format to include debug symbols (#3496)
