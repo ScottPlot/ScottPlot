@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - src/**
+      - .github/workflows/ci.yaml
 
 # cancel running versions of this workflow when this one starts
 concurrency:
@@ -34,6 +35,8 @@ jobs:
   full:
     name: "Full Build"
     uses: ./.github/workflows/task-full.yaml
+    permissions:
+      security-events: write
 
   publish-changelog:
     name: "Publish"
