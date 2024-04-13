@@ -110,6 +110,15 @@ public readonly struct PixelRect : IEquatable<PixelRect>
         return new PixelRect(left, right, bottom, top);
     }
 
+    public PixelRect Expand(PixelRect other)
+    {
+        float left = Math.Min(Left, other.Left);
+        float right = Math.Max(Right, other.Right);
+        float bottom = Math.Max(Bottom, other.Bottom);
+        float top = Math.Min(Top, other.Top);
+        return new PixelRect(left, right, bottom, top);
+    }
+
     public PixelRect Expand(float delta)
     {
         return Contract(-delta);
