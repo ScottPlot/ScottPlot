@@ -13,7 +13,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: "0" # all branches
-      - name: Evaluate git history
+      - name: Test commands
+        run: |
+          git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only
+      - name: Evaluate changed files
         run: |
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only > changed.txt
           grep src/ScottPlot4/ changed.txt > changed4.txt
