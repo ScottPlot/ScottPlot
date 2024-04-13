@@ -13,11 +13,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: "0" # all branches
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Evaluate git history
         run: |
-          echo "MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
-          echo "MOD_SP5=$(git diff main --name-only | grep src/ScottPlot5/)" >> $GITHUB_ENV
+          echo "MOD_SP4=$(git diff main ${{ github.event.pull_request.head.sha }} --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
+          echo "MOD_SP5=$(git diff main ${{ github.event.pull_request.head.sha }} --name-only | grep src/ScottPlot5/)" >> $GITHUB_ENV
           echo $MOD_SP4
           echo $MOD_SP5
       - name: ScottPlot4 Changed
