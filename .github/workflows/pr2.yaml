@@ -29,13 +29,13 @@ jobs:
 
   sp4-full-build:
     uses: ./.github/workflows/task-sp4-full-build.yaml
-    if: ${{ env.MOD_SP4 != '' || github.event_name == 'workflow_dispatch' }}
+    if: steps.evaluate.outputs.MOD_SP4 != '' || github.event_name == 'workflow_dispatch'
     permissions:
       security-events: write
 
   sp5-full-build:
     uses: ./.github/workflows/task-sp5-full-build.yaml
-    if: ${{ env.MOD_SP5 != '' || github.event_name == 'workflow_dispatch' }}
+    if: steps.evaluate.outputs.MOD_SP5 != '' || github.event_name == 'workflow_dispatch'
     permissions:
       security-events: write
 
