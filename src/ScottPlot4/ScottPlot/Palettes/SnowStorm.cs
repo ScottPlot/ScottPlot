@@ -5,13 +5,16 @@
 
 namespace ScottPlot.Palettes;
 
-public class SnowStorm : HexPaletteBase, IPalette
+public class SnowStorm : IPalette
 {
-    public override string Name => "Snow Storm";
+    public string Name { get; } = "Snow Storm";
 
-    public override string Description => "From the Nord collection of palettes: https://github.com/arcticicestudio/nord";
+    public string Description { get; } = "From the " +
+        "Nord collection of palettes: https://github.com/arcticicestudio/nord";
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#D8DEE9", "#E5E9F0", "#ECEFF4"
     };

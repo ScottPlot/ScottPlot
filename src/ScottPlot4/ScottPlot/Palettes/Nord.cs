@@ -6,13 +6,16 @@
 
 namespace ScottPlot.Palettes;
 
-public class Nord : HexPaletteBase, IPalette
+public class Nord : IPalette
 {
-    public override string Name => GetType().Name;
+    public string Name { get; } = "Nord";
 
-    public override string Description => "From the Nord ConEmu color scheme: https://github.com/arcticicestudio/nord-conemu";
+    public string Description => "From the Nord " +
+        "ConEmu color scheme: https://github.com/arcticicestudio/nord-conemu";
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#bf616a", "#a3be8c", "#ebcb8b", "#81a1c1", "#b48ead", "#88c0d0", "#e5e9f0"
     };

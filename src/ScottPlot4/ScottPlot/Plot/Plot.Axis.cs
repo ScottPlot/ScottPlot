@@ -41,12 +41,17 @@ namespace ScottPlot
         /// </summary>
         public Renderable.Axis YAxis2 => settings.YAxis2;
 
+        public Renderable.Axis BottomAxis => XAxis;
+        public Renderable.Axis TopAxis => XAxis2;
+        public Renderable.Axis LeftAxis => YAxis;
+        public Renderable.Axis RightAxis => YAxis2;
+
         #endregion
 
         #region shortcuts: axis label, tick, and grid
 
         /// <summary>
-        /// Set the label for the vertical axis to the right of the plot (XAxis)
+        /// Set the label for the horizontal axis below the plot (XAxis)
         /// </summary>
         /// <param name="label">new text</param>
         public void XLabel(string label) => XAxis.Label(label);
@@ -171,18 +176,18 @@ namespace ScottPlot
         /// <summary>
         /// Get the axis limits for the given plot and apply them to this plot
         /// </summary>
-        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            var sourceLimits = sourcePlot.GetAxisLimits();
+            AxisLimits sourceLimits = sourcePlot.GetAxisLimits(xAxisIndex, yAxisIndex);
 
             if (horizontal)
             {
-                SetAxisLimitsX(sourceLimits.XMin, sourceLimits.XMax);
+                SetAxisLimitsX(sourceLimits.XMin, sourceLimits.XMax, xAxisIndex);
             }
 
             if (vertical)
             {
-                SetAxisLimitsY(sourceLimits.YMin, sourceLimits.YMax);
+                SetAxisLimitsY(sourceLimits.YMin, sourceLimits.YMax, yAxisIndex);
             }
         }
 
@@ -473,9 +478,16 @@ namespace ScottPlot
             double? yMin = null, double? yMax = null,
             int xAxisIndex = 0, int yAxisIndex = 0)
         {
+            if (xMin >= xMax)
+                throw new InvalidOperationException($"{nameof(xMax)} must be greater than {nameof(xMin)}");
+
+            if (yMin >= yMax)
+                throw new InvalidOperationException($"{nameof(yMax)} must be greater than {nameof(yMin)}");
+
             bool notAllAxesDefined = xMin is null || xMax is null || yMin is null || yMax is null;
             if (notAllAxesDefined)
                 settings.AxisAutoUnsetAxes();
+
             settings.AxisSet(xMin, xMax, yMin, yMax, xAxisIndex, yAxisIndex);
         }
 
@@ -484,14 +496,18 @@ namespace ScottPlot
         /// </summary>
         /// <param name="xMin">lower limit of the horizontal axis</param>
         /// <param name="xMax">upper limit of the horizontal axis</param>
-        public void SetAxisLimitsX(double xMin, double xMax) => SetAxisLimits(xMin, xMax, null, null);
+        /// <param name="xAxisIndex">index of the axis the horizontal limits apply to</param>
+        public void SetAxisLimitsX(double xMin, double xMax, int xAxisIndex = 0) =>
+            SetAxisLimits(xMin, xMax, null, null, xAxisIndex: xAxisIndex);
 
         /// <summary>
         /// Set limits for the primary Y axis
         /// </summary>
         /// <param name="yMin">lower limit of the vertical axis</param>
         /// <param name="yMax">upper limit of the vertical axis</param>
-        public void SetAxisLimitsY(double yMin, double yMax) => SetAxisLimits(null, null, yMin, yMax);
+        /// <param name="yAxisIndex">index of the axis the vertical limits apply to</param>
+        public void SetAxisLimitsY(double yMin, double yMax, int yAxisIndex = 0) =>
+            SetAxisLimits(null, null, yMin, yMax, yAxisIndex: yAxisIndex);
 
         /// <summary>
         /// Set limits for a pair of axes
@@ -505,7 +521,7 @@ namespace ScottPlot
         /// <summary>
         /// Set maximum outer limits beyond which the plot cannot be zoomed-out or panned.
         /// </summary>
-        [Obsolete("use SetOuterViewLimits() or SetInnerViewLimits()", true)]
+        [Obsolete("use XAxis.SetBoundary()")]
         public void SetViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity) =>
@@ -514,6 +530,7 @@ namespace ScottPlot
         /// <summary>
         /// Set maximum outer limits beyond which the plot cannot be zoomed-out or panned.
         /// </summary>
+        [Obsolete("use XAxis.SetBoundary()")]
         public void SetOuterViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
@@ -526,9 +543,10 @@ namespace ScottPlot
         /// <summary>
         /// Set minimum innter limits which will always be visible on the plot.
         /// </summary>
+        [Obsolete("use XAxis.SetInnerBoundary()")]
         public void SetInnerViewLimits(
-            double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
-            double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity,
+            double xMin = double.PositiveInfinity, double xMax = double.NegativeInfinity,
+            double yMin = double.PositiveInfinity, double yMax = double.NegativeInfinity,
             int xAxisIndex = 0, int yAxisIndex = 0)
         {
             settings.GetXAxis(xAxisIndex).Dims.SetBoundsInner(xMin, xMax);
@@ -685,8 +703,11 @@ namespace ScottPlot
             var xAxis = settings.GetXAxis(xAxisIndex);
             var yAxis = settings.GetYAxis(yAxisIndex);
 
-            if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
-                settings.AxisAutoAll();
+            if (xAxis.Dims.HasBeenSet == false)
+                settings.AxisAutoX(xAxis.AxisIndex);
+
+            if (yAxis.Dims.HasBeenSet == false)
+                settings.AxisAutoY(yAxis.AxisIndex);
 
             xAxis.Dims.Zoom(xFrac, zoomToX ?? xAxis.Dims.Center);
             yAxis.Dims.Zoom(yFrac, zoomToY ?? yAxis.Dims.Center);
@@ -697,13 +718,30 @@ namespace ScottPlot
         /// </summary>
         /// <param name="dx">horizontal distance to pan (in coordinate units)</param>
         /// <param name="dy">vertical distance to pan (in coordinate units)</param>
-        public void AxisPan(double dx = 0, double dy = 0)
+        /// <param name="xAxisIndex">index of the axis to act on</param>
+        /// <param name="yAxisIndex">index of the axis to act on</param>
+        public void AxisPan(double dx = 0, double dy = 0, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            if (!settings.AllAxesHaveBeenSet)
-                settings.AxisAutoAll();
+            settings.AxisAutoUnsetAxes();
 
-            settings.XAxis.Dims.Pan(dx);
-            settings.YAxis.Dims.Pan(dy);
+            settings.GetXAxis(xAxisIndex).Dims.Pan(dx);
+            settings.GetYAxis(yAxisIndex).Dims.Pan(dy);
+        }
+
+        /// <summary>
+        /// Pan the primary X and Y axes to center the view on the given coordinate
+        /// </summary>
+        /// <param name="x">new horizontal center (coordinate units)</param>
+        /// <param name="y">new vertical center (in coordinate units)</param>
+        /// <param name="xAxisIndex">index of the axis to act on</param>
+        /// <param name="yAxisIndex">index of the axis to act on</param>
+        public void AxisPanCenter(double x = 0, double y = 0, int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            settings.AxisAutoUnsetAxes();
+
+            double dx = x - settings.GetXAxis(xAxisIndex).Dims.Center;
+            double dy = y - settings.GetYAxis(yAxisIndex).Dims.Center;
+            AxisPan(dx, dy, xAxisIndex, yAxisIndex);
         }
 
         #endregion

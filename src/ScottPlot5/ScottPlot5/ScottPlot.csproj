@@ -1,38 +1,60 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;netstandard2.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net462;netstandard2.0;net6.0;net8.0</TargetFrameworks>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
-        <Version>5.0.0-beta</Version>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <LangVersion>12</LangVersion>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../Key.snk</AssemblyOriginatorKeyFile>
+
+        <!-- NuGet info -->
+        <PackageId>ScottPlot</PackageId>
+        <Version>5.0.25</Version>
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
+        <description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for displaying plots interactively are available as separate NuGet packages.</description>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot.git</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <DebugType>portable</DebugType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSource>true</IncludeSource>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>NU1701, CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
+        
+        <!--- SourceLink configuration -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
     </PropertyGroup>
 
+    <!-- Include additional files for the NuGet package -->
     <ItemGroup>
-        <PackageReference Include="SkiaSharp" Version="2.88.0" />
+        <None Include="../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
+        <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
+    <!-- NuGet package dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="SkiaSharp" Version="2.*" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.*" />
     </ItemGroup>
 
-    <!-- Include a few specific source files from ScottPlot4 in ScottPlot5 to prevent duplication of logic/tests -->
-    <ItemGroup>
-
-        <!-- Use ScottPlot4's numeric conversion class to provide platform-specific optimizations for generic math operations -->
-        <Compile Include="..\..\ScottPlot4\ScottPlot\NumericConversion.cs" />
-
-        <!-- Bring all ScottPlot4 palettes into ScottPlot5 -->
-        <Compile Include="..\..\ScottPlot4\ScottPlot\Palettes\*.cs">
-            <Link>Palettes-ScottPlot4/%(Filename)%(Extension)</Link>
-        </Compile>
-
-        <!-- Exclude palette classes that contain ScottPlot4-specific code -->
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\Custom.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\PaletteBase.cs" />
-        <Compile Remove="..\..\ScottPlot4\ScottPlot\Palettes\HexPaletteBase.cs" />
-
+    <!-- .NET Framework 4.6.1 requires packages to support C# 7 features -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
 
 </Project>

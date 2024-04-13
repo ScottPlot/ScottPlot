@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net462</TargetFramework>
+        <UseWindowsForms>true</UseWindowsForms>
+        <LangVersion>11</LangVersion>
+        <NoWarn>MSB3277</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
+      <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net462</TargetFramework>
+        <NoWarn>MSB3277</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+    </ItemGroup>
+
+</Project>

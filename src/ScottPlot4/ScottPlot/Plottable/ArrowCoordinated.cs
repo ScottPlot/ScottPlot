@@ -15,12 +15,12 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Location of the arrow base in coordinate space
         /// </summary>
-        public readonly Coordinate Base = new(0, 0);
+        public Coordinate Base = new(0, 0);
 
         /// <summary>
         /// Location of the arrow base in coordinate space
         /// </summary>
-        public readonly Coordinate Tip = new(0, 0);
+        public Coordinate Tip = new(0, 0);
 
         /// <summary>
         /// Color of the arrow and arrowhead
@@ -81,7 +81,7 @@ namespace ScottPlot.Plottable
         public ArrowCoordinated(Coordinate arrowBase, Coordinate arrowTip)
         {
             Base.X = arrowBase.X;
-            Base.Y = arrowTip.Y;
+            Base.Y = arrowBase.Y;
             Tip.X = arrowTip.X;
             Tip.Y = arrowTip.Y;
         }
@@ -105,7 +105,14 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            return LegendItem.SingleItem(this, Label);
+            LegendItem item = new(this)
+            {
+                label = Label,
+                lineWidth = LineWidth,
+                color = Color,
+            };
+
+            return LegendItem.Single(item);
         }
 
         public void ValidateData(bool deep = false)

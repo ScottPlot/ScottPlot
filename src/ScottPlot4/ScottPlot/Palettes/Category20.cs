@@ -49,13 +49,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace ScottPlot.Palettes;
 
-public class Category20 : HexPaletteBase, IPalette
+public class Category20 : IPalette
 {
-    public override string Name => "Category 20";
+    public string Name { get; } = "Category 20";
 
-    public override string Description => "A set of 10 unque colors used in many data visualization libraries such as Matplotlib, Vega, and Tableau";
+    public string Description { get; } = "A set of 20 unque colors used in " +
+        "many data visualization libraries such as Matplotlib, Vega, and Tableau";
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c",
         "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",

@@ -1,75 +1,75 @@
 ﻿/* Minimal case signal plot for testing only
- * 
  * !! Avoid temptation to use generics or generic math at this early stage of development
- * 
  */
-
-using ScottPlot.Axis;
-using ScottPlot.Style;
-using SkiaSharp;
-using System.Data;
 
 namespace ScottPlot.Plottables;
 
 public class Signal : IPlottable
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
+    public IAxes Axes { get; set; } = new Axes();
 
-    public readonly DataSource.ISignalSource Data;
+    public readonly ISignalSource Data;
 
-    public Marker Marker { get; set; } = new();
-    public float LineWidth { get; set; } = 1;
     public string? Label { get; set; }
 
-    public Signal(DataSource.ISignalSource data)
+    public readonly MarkerStyle Marker;
+
+    public readonly LineStyle LineStyle;
+
+    /// <summary>
+    /// Maximum size of the marker (in pixels) to display
+    /// at each data point when the plot is zoomed far in.
+    /// </summary>
+    public float MaximumMarkerSize { get; set; } = 4;
+
+    public float LineWidth
+    {
+        get => LineStyle.Width;
+        set => LineStyle.Width = value;
+    }
+
+    public Color Color
+    {
+        get => LineStyle.Color;
+        set
+        {
+            LineStyle.Color = value;
+            Marker.Fill.Color = value;
+            Marker.Outline.Color = value;
+        }
+    }
+
+    public Signal(ISignalSource data)
     {
         Data = data;
+
+        Marker = new(MarkerShape.FilledCircle, 5)
+        {
+            Outline = LineStyle.None
+        };
+
+        LineStyle = new();
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
-    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One(
+
+    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
             Label = Label,
             Marker = Marker,
-            Line = new(Marker.Color, LineWidth)
+            Line = LineStyle,
         });
-
-    /// <summary>
-    /// Return Y data limits for each pixel column in the data area
-    /// </summary>
-    private PixelRangeY[] GetVerticalBars()
-    {
-        PixelRangeY[] verticalBars = new PixelRangeY[(int)Axes.DataRect.Width];
-
-        double xUnitsPerPixel = Axes.XAxis.Width / Axes.DataRect.Width;
-
-        // for each vertical column of pixels in the data area
-        for (int i = 0; i < verticalBars.Length; i++)
-        {
-            // determine how wide this column of pixels is in coordinate units
-            float xPixel = i + Axes.DataRect.Left;
-            double colX1 = Axes.GetCoordinateX(xPixel);
-            double colX2 = colX1 + xUnitsPerPixel;
-            CoordinateRange xRange = new(colX1, colX2);
-
-            // determine how much vertical space the data of this pixel column occupies
-            CoordinateRange yRange = Data.GetYRange(xRange);
-            float yMin = Axes.GetPixelY(yRange.Min);
-            float yMax = Axes.GetPixelY(yRange.Max);
-            verticalBars[i] = new PixelRangeY(yMin, yMax);
-        }
-
-        return verticalBars;
-    }
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {
         // TODO: put GetRange in axis translator
         double xViewLeft = Axes.GetCoordinateX(dataRect.Left);
         double xViewRight = Axes.GetCoordinateX(dataRect.Right);
-        return new CoordinateRange(xViewLeft, xViewRight);
+        return (xViewLeft <= xViewRight)
+            ? new CoordinateRange(xViewLeft, xViewRight)
+            : new CoordinateRange(xViewRight, xViewLeft);
     }
 
     private double PointsPerPixel()
@@ -77,15 +77,15 @@ public class Signal : IPlottable
         return GetVisibleXRange(Axes.DataRect).Span / Axes.DataRect.Width / Data.Period;
     }
 
-    public void Render(SKSurface surface)
+    public void Render(RenderPack rp)
     {
         if (PointsPerPixel() < 1)
         {
-            RenderLowDensity(surface);
+            RenderLowDensity(rp);
         }
         else
         {
-            RenderHighDensity(surface);
+            RenderHighDensity(rp);
         }
     }
 
@@ -93,19 +93,18 @@ public class Signal : IPlottable
     /// Renders each point connected by a single line, like a scatter plot.
     /// Call this when zoomed in enough that no pixel could contain two points.
     /// </summary>
-    private void RenderLowDensity(SKSurface surface)
+    private void RenderLowDensity(RenderPack rp)
     {
         CoordinateRange visibleXRange = GetVisibleXRange(Axes.DataRect);
         int i1 = Data.GetIndex(visibleXRange.Min, true);
         int i2 = Data.GetIndex(visibleXRange.Max + Data.Period, true);
 
-        IReadOnlyList<double> Ys = Data.GetYs();
+        List<Pixel> points = [];
 
-        List<Pixel> points = new();
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Ys[i]);
+            float y = Axes.GetPixelY(Data.GetY(i) + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }
@@ -115,26 +114,19 @@ public class Signal : IPlottable
         foreach (Pixel point in points)
             path.LineTo(point.ToSKPoint());
 
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = Marker.Color.ToSKColor(),
-            StrokeWidth = LineWidth,
-        };
+        using SKPaint paint = new();
+        LineStyle.ApplyToPaint(paint);
 
-        surface.Canvas.DrawPath(path, paint);
+        rp.Canvas.DrawPath(path, paint);
 
         double pointsPerPx = PointsPerPixel();
 
         if (pointsPerPx < 1)
         {
             paint.IsStroke = false;
-            float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), 4);
-            Marker modifiedMarker = Marker;
-            modifiedMarker.Size = radius;
-
-            Drawing.DrawMarkers(surface, modifiedMarker, points);
+            float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
+            Marker.Size = radius * MaximumMarkerSize * .2f;
+            Drawing.DrawMarkers(rp.Canvas, paint, points, Marker);
         }
     }
 
@@ -142,21 +134,29 @@ public class Signal : IPlottable
     /// Renders the plot by filling-in pixel columns according the extremes of Y data ranges.
     /// Call this when zoomed out enough that one X pixel column may contain two or more points.
     /// </summary>
-    private void RenderHighDensity(SKSurface surface)
+    private void RenderHighDensity(RenderPack rp)
     {
-        using SKPaint paint = new()
-        {
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = Marker.Color.ToSKColor(),
-            StrokeWidth = LineWidth,
-        };
+        using SKPaint paint = new();
+        LineStyle.ApplyToPaint(paint);
 
-        PixelRangeY[] verticalBars = GetVerticalBars();
-        for (int i = 0; i < verticalBars.Length; i++)
+        IEnumerable<PixelColumn> cols = Enumerable.Range(0, (int)Axes.DataRect.Width)
+            .Select(x => Data.GetPixelColumn(Axes, x))
+            .Where(x => x.HasData);
+
+        if (!cols.Any())
+            return;
+
+        using SKPath path = new();
+        path.MoveTo(cols.First().X, cols.First().Enter);
+
+        foreach (PixelColumn col in cols)
         {
-            float x = Axes.DataRect.Left + i;
-            surface.Canvas.DrawLine(x, verticalBars[i].Bottom, x, verticalBars[i].Top, paint);
+            path.LineTo(col.X, col.Enter);
+            path.MoveTo(col.X, col.Bottom);
+            path.LineTo(col.X, col.Top);
+            path.MoveTo(col.X, col.Exit);
         }
+
+        rp.Canvas.DrawPath(path, paint);
     }
 }

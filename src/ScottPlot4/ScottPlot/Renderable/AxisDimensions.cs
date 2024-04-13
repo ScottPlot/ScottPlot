@@ -69,6 +69,16 @@ namespace ScottPlot.Renderable
         public double SpanBound => OuterBoundaryMax - OuterBoundaryMin;
 
         /// <summary>
+        /// Limit zooming so the span is never smaller than this value
+        /// </summary>
+        public double? SpanMinimum = null;
+
+        /// <summary>
+        /// Limit zooming so the span is never greater than this value
+        /// </summary>
+        public double? SpanMaximum = null;
+
+        /// <summary>
         /// False until axes are intentionally set.
         /// Unset axes default to NaN min/max limits.
         /// </summary>
@@ -147,6 +157,8 @@ namespace ScottPlot.Renderable
             Min = double.NaN;
             Max = double.NaN;
             HasBeenSet = false;
+            SetBoundsOuter();
+            SetBoundsInner();
         }
 
         /// <summary>
@@ -180,7 +192,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set boundaries beyond which this axis cannot be panned or zoomed
         /// </summary>
-        public void SetBoundsInner(double lower = double.NegativeInfinity, double upper = double.PositiveInfinity)
+        public void SetBoundsInner(double lower = double.PositiveInfinity, double upper = double.NegativeInfinity)
         {
             InnerBoundaryMin = lower;
             InnerBoundaryMax = upper;
@@ -191,6 +203,12 @@ namespace ScottPlot.Renderable
         /// </summary>
         private void ApplyBounds()
         {
+            if (SpanMinimum.HasValue)
+                ApplyZoomInLimit(SpanMinimum.Value);
+
+            if (SpanMaximum.HasValue)
+                ApplyZoomOutLimit(SpanMaximum.Value);
+
             if (Span > SpanBound)
             {
                 Min = OuterBoundaryMin;
@@ -217,6 +235,38 @@ namespace ScottPlot.Renderable
 
             if (Max < InnerBoundaryMax)
                 Max = InnerBoundaryMax;
+        }
+
+        /// <summary>
+        /// If the zoom is further in than the allowed span,
+        /// zoom out but keep the center position
+        /// </summary>
+        private void ApplyZoomInLimit(double minimumSpan)
+        {
+            if (Span < minimumSpan)
+            {
+                double halfSpan = minimumSpan / 2;
+                double min = Center - halfSpan;
+                double max = Center + halfSpan;
+                Min = min;
+                Max = max;
+            }
+        }
+
+        /// <summary>
+        /// If the zoom is further in than the allowed span,
+        /// zoom out but keep the center position
+        /// </summary>
+        private void ApplyZoomOutLimit(double maximumSpan)
+        {
+            if (Span > maximumSpan)
+            {
+                double halfSpan = maximumSpan / 2;
+                double min = Center - halfSpan;
+                double max = Center + halfSpan;
+                Min = min;
+                Max = max;
+            }
         }
 
         /// <summary>
@@ -253,7 +303,10 @@ namespace ScottPlot.Renderable
         {
             if (LockedLimits)
                 return;
-
+            if (IsInverted)
+            {
+                pixels = -pixels;
+            }
             Pan(pixels * UnitsPerPx);
         }
 

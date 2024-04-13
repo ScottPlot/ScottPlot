@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
+using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
@@ -26,15 +28,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_flip";
         public string Title => "Flipped Heatmap";
         public string Description =>
-            "Sometimes it's more intuitive to draw heatmaps from the bottom-left corner.";
+            "Heatmaps can be flipped vertically and/or horizontally.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[,] data2D = { { 1, 2, 3 },
-                                 { 4, 5, 6 } };
+            double[,] data = ScottPlot.DataGen.SampleImageData();
 
-            var hm = plt.AddHeatmap(data2D);
-            hm.FlipVertically = true;
+            var hm1 = plt.AddHeatmap(data, lockScales: false);
+            hm1.XMin = 0;
+
+            var hm2 = plt.AddHeatmap(data, lockScales: false);
+            hm2.XMin = 100;
+            hm2.FlipHorizontally = true;
+
+            var hm3 = plt.AddHeatmap(data, lockScales: false);
+            hm3.XMin = 200;
+            hm3.FlipVertically = true;
+
+            var hm4 = plt.AddHeatmap(data, lockScales: false);
+            hm4.XMin = 300;
+            hm4.FlipVertically = true;
+            hm4.FlipHorizontally = true;
         }
     }
 
@@ -111,6 +125,65 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class FramelessHeatmap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_frameless";
+        public string Title => "Frameless Heatmap";
+        public string Description =>
+            "Disable the frame and set margins to zero to create a heatmap plot that fills the entire image.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            plt.AddHeatmap(imageData, lockScales: false);
+            plt.Frameless();
+            plt.Margins(0, 0);
+        }
+    }
+
+    public class HeatmapOpacity : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_opacity";
+        public string Title => "Heatmap Opacity";
+        public string Description => "Heatmaps have an Opacity property " +
+            "that can be set anywhere from 0 (transparent) to 1 (opaque).";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var hm = plt.AddHeatmap(imageData);
+            hm.Opacity = 0.5;
+        }
+    }
+
+    public class SingleColorHeatmap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_single_color";
+        public string Title => "Single Color Heatmap";
+        public string Description =>
+            "A single-color heatmap can be created where cell transparency is defined by a 2D array containing values 0 to 1.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double?[,] data = DataGen.SampleImageDataNullable();
+
+            var hm1 = plt.AddHeatmap(Color.Red, data, lockScales: false);
+            hm1.OffsetX = 0;
+            hm1.OffsetY = 0;
+
+            var hm2 = plt.AddHeatmap(Color.Green, data, lockScales: false);
+            hm2.OffsetX = 30;
+            hm2.OffsetY = 20;
+
+            var hm3 = plt.AddHeatmap(Color.Blue, data, lockScales: false);
+            hm3.OffsetX = 60;
+            hm3.OffsetY = 40;
+        }
+    }
+
     public class Heatmap2dWaveform : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();
@@ -174,6 +247,38 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var cb = plt.AddColorbar(hm);
 
             plt.Style(Style.Black);
+        }
+    }
+
+    public class HeatmapPaletteColormap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_palette";
+        public string Title => "Palette Colormap";
+        public string Description =>
+            "Heatmap data can be presented using a colormap defined by a fixed set of colors.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            // create a colormap from a defined set of colors
+            Color[] colors = { Color.Indigo, Color.Blue, Color.Green, Color.Yellow, Color.Orange, Color.Red, };
+
+            // display the colormap on the plot as a colorbar
+            ScottPlot.Drawing.Colormap cmap = new(colors);
+            var cbar = plt.AddColorbar(cmap);
+            cbar.MaxValue = 255;
+
+            // use custom tick positions
+            double[] tickPositions = Enumerable.Range(0, colors.Length + 1)
+                .Select(x => (double)x / colors.Length)
+                .ToArray();
+            string[] tickLabels = tickPositions.Select(x => $"{x * 255:N2}").ToArray();
+            cbar.SetTicks(tickPositions, tickLabels);
+
+            // add a heatmap using the custom colormap
+            plt.AddHeatmap(data, cmap);
         }
     }
 
@@ -318,6 +423,39 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapSemiTransparent : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_semitransparent";
+        public string Title => "Heatmap with Semitransparent Squares";
+        public string Description =>
+            "The intensities of heatmaps are mapped to color, " +
+            "but an optional 2D array of alpha values may be provided " +
+            "to separately control transparency of squares.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double?[,] values = {
+                { 1, 7, 4, 5 },
+                { 9, 3, 2, 4 },
+                { 1, 4, 5, 8 },
+                { 7, 2, 4, 2 }
+            };
+
+            double?[,] opacities = {
+                { 1, 1, 1, 1 },
+                { 1, 0, 1, 0 },
+                { 1, .75, .5, 0 },
+                { 1, .8, .6, .4 }
+            };
+
+            var hm = plt.AddHeatmap(values);
+            hm.Update(values, opacity: opacities);
+
+            plt.AddColorbar(hm);
+        }
+    }
+
     public class HeatmapPlacement : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Heatmap();
@@ -335,6 +473,47 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hm.XMax = 100;
             hm.YMin = -10;
             hm.YMax = 10;
+        }
+    }
+
+    public class HeatmapRotation : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_rotation";
+        public string Title => "Heatmap Rotation";
+        public string Description =>
+            "A Heatmap can be rotated clockwise around around a user-specified center of rotation. " +
+            "Locking axis scales to enforce square pixels is recommended. " +
+            "Rotation occurs after any flipping operations.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+
+            for (int i = 0; i < 5; i++)
+            {
+                var hm = plt.AddHeatmap(imageData, lockScales: true);
+                hm.XMin = 0;
+                hm.XMax = 1;
+                hm.YMin = 0;
+                hm.YMax = 1;
+                hm.Rotation = i * 10;
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                var hm = plt.AddHeatmap(imageData, lockScales: true);
+                hm.XMin = 2;
+                hm.XMax = 3;
+                hm.YMin = 0;
+                hm.YMax = 1;
+
+                hm.CenterOfRotation = Alignment.MiddleCenter;
+
+                hm.Rotation = i * 10;
+            }
+
+            plt.SetAxisLimits(-1, 4, -1, 2);
         }
     }
 
@@ -360,6 +539,67 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 new Coordinate(15, 90),
                 new Coordinate(5, 50),
             };
+        }
+    }
+
+    public class BinnedHeatmap : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_binned";
+        public string Title => "Binned Histogram";
+        public string Description =>
+            "Binned histograms are 2D heatmaps that use a colormap to display cell counts. " +
+            "Charts like this are commonly used in scientific and medical applications.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create a binned histogram
+            var hist2d = plt.AddBinnedHistogram(100, 100);
+
+            // data is a collection of X/Y points
+            Coordinate[] flowData = DataGen.FlowCytometry();
+
+            // add X/Y points to the histogram
+            hist2d.AddRange(flowData);
+        }
+    }
+
+    public class HeatmapParallel : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_parallel";
+        public string Title => "Parallel Processing";
+        public string Description =>
+            "Heatmaps have opt-in parallel processing which may improve performance when calling Update() for large datasets.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data = Generate.Sin2D(width: 1_000, height: 1_000);
+            var hm = plt.AddHeatmap(data, lockScales: false);
+
+            // opt into parallel processing
+            hm.UseParallel = true;
+        }
+    }
+
+    public class HeatmapInverted : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Heatmap();
+        public string ID => "heatmap_inverted";
+        public string Title => "Inverted Heatmap";
+        public string Description =>
+            "An inverted heatmap can be created by reversing the colors in the colormap.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            var hm1 = plt.AddHeatmap(data, lockScales: false);
+            hm1.Update(data, ScottPlot.Drawing.Colormap.Turbo);
+
+            var hm2 = plt.AddHeatmap(data, lockScales: false);
+            hm2.XMin = 75;
+            hm2.Update(data, ScottPlot.Drawing.Colormap.Turbo.Reversed());
         }
     }
 }

@@ -4,13 +4,15 @@
 
 namespace ScottPlot.Palettes;
 
-public class Building : HexPaletteBase, IPalette
+public class Building : IPalette
 {
-    public override string Name => GetType().Name;
+    public string Name { get; } = "Building";
 
-    public override string Description => string.Empty;
+    public string Description { get; } = string.Empty;
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#FF6F00","#FF8F00","#FFA000","#FFB300","#FFC107"
     };

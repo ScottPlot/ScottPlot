@@ -10,17 +10,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "finance_quickstart";
         public string Title => "Candlestick Chart";
         public string Description =>
-            "ScottPlot can draw some financial indicators on plots in X/Y space, but users looking to " +
-            "develop robust financial charts should probably look at other libraries designed specifically " +
-            "for financial charting. The biggest limitations are (1) lack of mouse interaction and (2) the " +
-            "horizontal axis is strictly numeric Cartesian space and is not ideal for plotting dates. " +
-            "That said, some financial charting is possible with ScottPlot, and this cookbook demonstrates " +
-            "common use cases.";
+            "Price movement over time periods are represented using OHLC objects. " +
+            "A single OHLC holds open, high, low, and close pricing. " +
+            "Users can create their own OHLC arrays, or use the sample data generator " +
+            "to practice working with financial data.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // OHLCs are open, high, low, and closing prices for a time range.
-            OHLC[] prices = DataGen.RandomStockPrices(null, 60);
+            // Each candle is represented by a single OHLC object.
+            OHLC price = new(
+                open: 100,
+                high: 120,
+                low: 80,
+                close: 105,
+                timeStart: new DateTime(1985, 09, 24),
+                timeSpan: TimeSpan.FromDays(1));
+
+            // Users could be build their own array of OHLCs, or lean on 
+            // the sample data generator to simulate price data over time.
+            OHLC[] prices = DataGen.RandomStockPrices(new Random(0), 60);
+
+            // Add a financial chart to the plot using an array of OHLC objects
             plt.AddCandlesticks(prices);
         }
     }

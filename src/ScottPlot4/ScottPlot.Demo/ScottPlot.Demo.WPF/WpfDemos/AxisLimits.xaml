@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Axis Limits" Height="450" Width="800">
     <Grid>
-        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+        <ScottPlot:WpfPlot x:Name="wpfPlot1"/>
     </Grid>
 </Window>

@@ -1,61 +1,129 @@
-﻿/* Minimal case scatter plot for testing only
- * 
- * !! Avoid temptation to use generics or generic math at this early stage of development
- * 
- */
+﻿namespace ScottPlot.Plottables;
 
-using ScottPlot.Axis;
-using ScottPlot.Style;
-using SkiaSharp;
-
-namespace ScottPlot.Plottables;
-
-public class Scatter : IPlottable
+public class Scatter(IScatterSource data) : IPlottable
 {
-    public string? Label { get; set; }
+    public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = Axis.Axes.Default;
-    public Marker Marker { get; set; } = new();
-    public readonly DataSource.IScatterSource Data;
-    public float LineWidth { get; set; } = 1;
+    public IAxes Axes { get; set; } = new Axes();
+    public LineStyle LineStyle { get; set; } = new();
 
+    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
 
-    public AxisLimits GetAxisLimits() => Data.GetLimits();
-    public IEnumerable<LegendItem> LegendItems => EnumerableHelpers.One<LegendItem>(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = Marker,
-            Line = new(Marker.Color, LineWidth),
-        });
+    public IScatterSource Data { get; } = data;
+    public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
+    public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
 
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
 
-    public Scatter(DataSource.IScatterSource data)
+    /// <summary>
+    /// The style of lines to use when connecting points.
+    /// </summary>
+    public ConnectStyle ConnectStyle = ConnectStyle.Straight;
+
+    /// <summary>
+    /// Controls whether points are connected by smooth or straight lines
+    /// </summary>
+    public bool Smooth
     {
-        Data = data;
+        set
+        {
+            PathStrategy = value
+                ? new PathStrategies.CubicSpline()
+                : new PathStrategies.Straight();
+        }
     }
 
-    public void Render(SKSurface surface)
+    /// <summary>
+    /// Setting this value enables <see cref="Smooth"/> and sets the curve tension.
+    /// Low tensions tend to "overshoot" data points.
+    /// High tensions begin to approach connecting points with straight lines.
+    /// </summary>
+    public double SmoothTension
     {
-        IEnumerable<Pixel> pixels = Data.GetScatterPoints().Select(x => Axes.GetPixel(x));
-
-        using SKPaint paint = new()
+        get
         {
-            IsAntialias = true,
-            Style = SKPaintStyle.Stroke,
-            Color = Marker.Color.ToSKColor(),
-            StrokeWidth = LineWidth,
+            if (PathStrategy is PathStrategies.CubicSpline cs)
+            {
+                return cs.Tension;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        set
+        {
+            PathStrategy = new PathStrategies.CubicSpline() { Tension = value };
+        }
+    }
+
+    /// <summary>
+    /// Strategy to use for generating the path used to connect points
+    /// </summary>
+    public IPathStrategy PathStrategy { get; set; } = new PathStrategies.Straight();
+
+    public Color Color
+    {
+        get => LineStyle.Color;
+        set
+        {
+            LineStyle.Color = value;
+            MarkerStyle.Fill.Color = value;
+            MarkerStyle.Outline.Color = value;
+        }
+    }
+
+    public AxisLimits GetAxisLimits() => Data.GetLimits();
+
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle, LineStyle);
+
+    public void Render(RenderPack rp)
+    {
+        // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
+        Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
+
+        if (!markerPixels.Any())
+            return;
+
+        Pixel[] linePixels = ConnectStyle switch
+        {
+            ConnectStyle.Straight => markerPixels,
+            ConnectStyle.StepHorizontal => GetStepDisplayPixels(markerPixels, true),
+            ConnectStyle.StepVertical => GetStepDisplayPixels(markerPixels, false),
+            _ => throw new NotImplementedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
         };
 
-        // draw lines
-        using SKPath path = new();
-        path.MoveTo(pixels.First().X, pixels.First().Y);
-        foreach (Pixel pixel in pixels)
-        {
-            path.LineTo(pixel.X, pixel.Y);
-        }
-        surface.Canvas.DrawPath(path, paint);
+        using SKPaint paint = new();
+        using SKPath path = PathStrategy.GetPath(linePixels);
 
-        Drawing.DrawMarkers(surface, Marker, pixels);
+        Drawing.DrawLines(rp.Canvas, paint, path, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
+    }
+
+    /// <summary>
+    /// Convert scatter plot points (connected by diagonal lines) to step plot points (connected by right angles)
+    /// by inserting an extra point between each of the original data points to result in L-shaped steps.
+    /// </summary>
+    /// <param name="points">Array of corner positions</param>
+    /// <param name="right">Indicates that a line will extend to the right before rising or falling.</param>
+    public static Pixel[] GetStepDisplayPixels(Pixel[] pixels, bool right)
+    {
+        Pixel[] pixelsStep = new Pixel[pixels.Count() * 2 - 1];
+
+        int offsetX = right ? 1 : 0;
+        int offsetY = right ? 0 : 1;
+
+        for (int i = 0; i < pixels.Count() - 1; i++)
+        {
+            pixelsStep[i * 2] = pixels[i];
+            pixelsStep[i * 2 + 1] = new Pixel(pixels[i + offsetX].X, pixels[i + offsetY].Y);
+        }
+
+        pixelsStep[pixelsStep.Length - 1] = pixels[pixels.Length - 1];
+
+        return pixelsStep;
     }
 }

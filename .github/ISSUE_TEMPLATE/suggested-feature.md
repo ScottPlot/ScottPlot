@@ -1,21 +1,15 @@
 ---
-name: Idea / Feature Request
-about: Let us know how ScottPlot can be improved
+name: Suggestion
+about: Have an idea for improving ScottPlot? Create a GitHib issue to share your thoughts!
 title: ''
-labels: 'Feature'
+labels: ''
 assignees: ''
 ---
 
-## Feature Suggestion
-
-**Feature description:** Describe your idea here
-
-**Code example:** If applicable, use this space to demonstrate how you wish the new feature could be used in code.
+**Suggestion:** (Describe your idea here)
 
 ```cs
-// a code sample may improve communication
-var plt = new ScottPlot.Plot();
-var myMeme = ScottPlot.Memes.ICanHaz("Grafixs");
-plt.Add(myMeme);
-plt.SaveFig("myMeme.png");
+ScottPlot.Plot myPlot = new();
+/* a code sample may improve communication */
+myPlot.SavePng("bug.png");
 ```

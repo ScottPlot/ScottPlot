@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using ScottPlot.Drawing;
+using ScottPlot.MarkerShapes;
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottable
@@ -43,8 +44,24 @@ namespace ScottPlot.Plottable
         public LineStyle DistributionCurveLineStyle { get; set; } = LineStyle.Solid;
         public Color DistributionCurveColor { get; set; } = Color.Black;
         public Color ScatterOutlineColor { get; set; } = Color.Black;
+        public Color BoxBorderColor { get; set; } = Color.Black;
+        public Color ErrorStDevBarColor { get; set; } = Color.Black;
+
+        /// <summary>
+        /// If true, marker and box transparency (alpha) is set to defaults (marker alpha = 128, box alpha depending on <see cref="DataFormat"/>.
+        /// If false, alpha values from the series argb color will be used instead.
+        /// </summary>
+        public bool AutomaticOpacity { get; set; } = true;
+
+        /// <summary>
+        /// Sets the ratio of marker to box opacity when <see cref="AutomaticOpacity"/> is false. Default is 1.0 which sets the box and marker to have equal opacity. 
+        /// With a value of 0.5 markers will be half as opaque as boxes. A value of 0 will make markers completely transparent.
+        /// </summary>
+        public double MarkerOpacityRatio { get; set; } = 1.0;
+
         public DisplayItems DataFormat { get; set; } = DisplayItems.BoxAndScatter;
         public BoxStyle DataBoxStyle { get; set; } = BoxStyle.BoxMedianQuartileOutlier;
+        public HorizontalAlignment ErrorBarAlignment { get; set; } = HorizontalAlignment.Right;
 
         public PopulationPlot(PopulationMultiSeries groupedSeries)
         {
@@ -93,7 +110,12 @@ namespace ScottPlot.Plottable
         }
 
         public LegendItem[] GetLegendItems() => MultiSeries.multiSeries
-                .Select(x => new LegendItem(this) { label = x.seriesLabel, color = x.color, lineWidth = 10 })
+                .Select(x => new LegendItem(this)
+                {
+                    label = x.seriesLabel,
+                    color = x.color,
+                    lineWidth = 10
+                })
                 .ToArray();
 
         public AxisLimits GetAxisLimits()
@@ -105,11 +127,18 @@ namespace ScottPlot.Plottable
             {
                 foreach (var population in series.populations)
                 {
+                    if (population.count == 0)
+                        continue;
                     minValue = Math.Min(minValue, population.min);
                     minValue = Math.Min(minValue, population.minus3stDev);
                     maxValue = Math.Max(maxValue, population.max);
                     maxValue = Math.Max(maxValue, population.plus3stDev);
                 }
+            }
+
+            if (minValue == double.PositiveInfinity)
+            {
+                return AxisLimits.NoLimits;
             }
 
             double positionMin = 0;
@@ -134,11 +163,16 @@ namespace ScottPlot.Plottable
                 {
                     var series = MultiSeries.multiSeries[seriesIndex];
                     var population = series.populations[groupIndex];
+
+                    if (population.count == 0)
+                        continue;
+
                     var groupLeft = groupIndex - groupWidth / 2;
                     var popLeft = groupLeft + popWidth * seriesIndex;
 
                     Position scatterPos, boxPos;
                     byte boxAlpha = 0;
+                    byte markerAlpha = 128;
                     switch (DataFormat)
                     {
                         case DisplayItems.BoxAndScatter:
@@ -169,7 +203,14 @@ namespace ScottPlot.Plottable
                             throw new NotImplementedException();
                     }
 
-                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, 128, scatterPos);
+                    // Override default opacity values with alpha from series argb
+                    if (!AutomaticOpacity)
+                    {
+                        markerAlpha = (byte)Math.Min(series.color.A * MarkerOpacityRatio, byte.MaxValue);
+                        boxAlpha = series.color.A;
+                    }
+
+                    Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, ScatterOutlineColor, markerAlpha, scatterPos);
 
                     if (DistributionCurve)
                         Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, DistributionCurveColor, scatterPos, DistributionCurveLineStyle);
@@ -177,16 +218,16 @@ namespace ScottPlot.Plottable
                     switch (DataBoxStyle)
                     {
                         case BoxStyle.BarMeanStdErr:
-                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: true);
+                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, BoxBorderColor, boxPos, ErrorStDevBarColor, useStdErr: true);
                             break;
                         case BoxStyle.BarMeanStDev:
-                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: false);
+                            Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, BoxBorderColor, boxPos, ErrorStDevBarColor, useStdErr: false);
                             break;
                         case BoxStyle.BoxMeanStdevStderr:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.StdevStderrMean);
+                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, BoxBorderColor, boxPos, ErrorStDevBarColor, BoxFormat.StdevStderrMean, ErrorBarAlignment);
                             break;
                         case BoxStyle.BoxMedianQuartileOutlier:
-                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, BoxFormat.OutlierQuartileMedian);
+                            Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, BoxBorderColor, boxPos, ErrorStDevBarColor, BoxFormat.OutlierQuartileMedian, ErrorBarAlignment);
                             break;
                         case BoxStyle.MeanAndStderr:
                             MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxAlpha, boxPos, useStdErr: true);
@@ -245,7 +286,8 @@ namespace ScottPlot.Plottable
             popLeft += popWidth * edgePaddingFrac;
             popWidth -= (popWidth * edgePaddingFrac) * 2;
 
-            double[] ys = DataGen.Range(pop.minus3stDev, pop.plus3stDev, dims.UnitsPerPxY);
+            // draw the distribution curve for the visible part of the plot, to avoid performance issues
+            double[] ys = DataGen.Range(Math.Max(pop.minus3stDev, dims.YMin), Math.Min(pop.plus3stDev, dims.YMax), dims.UnitsPerPxY);
             if (ys.Length == 0)
                 return;
             double[] ysFrac = pop.GetDistribution(ys, normalize: false);
@@ -261,7 +303,8 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(color, 1, lineStyle, true))
             {
-                gfx.DrawLines(pen, points);
+                if (points.Length > 1)
+                    gfx.DrawLines(pen, points);
             }
         }
 
@@ -309,7 +352,7 @@ namespace ScottPlot.Plottable
         }
 
         private static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
-            double popLeft, double popWidth, Color color, byte alpha, Position position, bool useStdErr = false)
+            double popLeft, double popWidth, Color fillColor, byte alpha, Color edgeColor, Position position, Color lineColor, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -350,22 +393,22 @@ namespace ScottPlot.Plottable
             RectangleF rect = new RectangleF((float)leftPx, (float)yPxTop, (float)(rightPx - leftPx), (float)(yPxBase - yPxTop));
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(Color.Black))
-            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, color)))
+            using (Pen boxPen = GDI.Pen(edgeColor))
+            using (Pen linePen = GDI.Pen(lineColor))
+            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, fillColor)))
             {
                 gfx.FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
-                gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
-                gfx.DrawLine(pen, (float)xPx, (float)errorMinPx, (float)xPx, (float)errorMaxPx);
-                gfx.DrawLine(pen, (float)capPx1, (float)errorMinPx, (float)capPx2, (float)errorMinPx);
-                gfx.DrawLine(pen, (float)capPx1, (float)errorMaxPx, (float)capPx2, (float)errorMaxPx);
+                gfx.DrawRectangle(boxPen, rect.X, rect.Y, rect.Width, rect.Height);
+                gfx.DrawLine(linePen, (float)xPx, (float)errorMinPx, (float)xPx, (float)errorMaxPx);
+                gfx.DrawLine(linePen, (float)capPx1, (float)errorMinPx, (float)capPx2, (float)errorMinPx);
+                gfx.DrawLine(linePen, (float)capPx1, (float)errorMaxPx, (float)capPx2, (float)errorMaxPx);
             }
         }
 
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
-        public enum HorizontalAlignment { Left, Center, Right }
 
         private static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
-            double popLeft, double popWidth, Color color, byte alpha, Position position, BoxFormat boxFormat,
+            double popLeft, double popWidth, Color fillColor, byte alpha, Color edgeColor, Position position, Color lineColor, BoxFormat boxFormat,
             HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {
             // adjust edges to accomodate special positions
@@ -438,21 +481,22 @@ namespace ScottPlot.Plottable
             }
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(Color.Black))
-            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, color)))
+            using (Pen boxPen = GDI.Pen(edgeColor))
+            using (Pen linePen = GDI.Pen(lineColor))
+            using (Brush brush = GDI.Brush(Color.FromArgb(alpha, fillColor)))
             {
                 // draw the box
                 gfx.FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
-                gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+                gfx.DrawRectangle(boxPen, rect.X, rect.Y, rect.Width, rect.Height);
 
                 // draw the line in the center
-                gfx.DrawLine(pen, rect.X, (float)yPx, rect.X + rect.Width, (float)yPx);
+                gfx.DrawLine(boxPen, rect.X, (float)yPx, rect.X + rect.Width, (float)yPx);
 
                 // draw errorbars and caps
-                gfx.DrawLine(pen, (float)errorPxX, (float)errorMinPx, (float)errorPxX, rect.Y + rect.Height);
-                gfx.DrawLine(pen, (float)errorPxX, (float)errorMaxPx, (float)errorPxX, rect.Y);
-                gfx.DrawLine(pen, (float)capPx1, (float)errorMinPx, (float)capPx2, (float)errorMinPx);
-                gfx.DrawLine(pen, (float)capPx1, (float)errorMaxPx, (float)capPx2, (float)errorMaxPx);
+                gfx.DrawLine(linePen, (float)errorPxX, (float)errorMinPx, (float)errorPxX, rect.Y + rect.Height);
+                gfx.DrawLine(linePen, (float)errorPxX, (float)errorMaxPx, (float)errorPxX, rect.Y);
+                gfx.DrawLine(linePen, (float)capPx1, (float)errorMinPx, (float)capPx2, (float)errorMinPx);
+                gfx.DrawLine(linePen, (float)capPx1, (float)errorMaxPx, (float)capPx2, (float)errorMaxPx);
             }
         }
     }

@@ -1,12 +1,13 @@
 ﻿using System;
-using Avalonia;
+
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace ScottPlot.Avalonia
 {
-    public class AvaPlotViewer : Window
+    public partial class AvaPlotViewer : Window
     {
+        public AvaPlot AvaPlot => avaPlot1;
+
         [Obsolete("The zero parameter constructor is not to be called")]
         public AvaPlotViewer()
         {
@@ -22,13 +23,8 @@ namespace ScottPlot.Avalonia
             Title = windowTitle;
 
             plot.Resize(windowWidth, windowHeight);
-            this.Find<AvaPlot>("avaPlot1").Reset(plot);
-            this.Find<AvaPlot>("avaPlot1").Refresh();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.avaPlot1.Reset(plot);
+            this.avaPlot1.Refresh();
         }
 
         public void SetWindowOwner(WindowBase owner)

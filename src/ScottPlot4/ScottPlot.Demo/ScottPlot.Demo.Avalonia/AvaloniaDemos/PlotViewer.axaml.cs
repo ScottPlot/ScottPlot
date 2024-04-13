@@ -1,32 +1,23 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
-using System;
+
 using static ScottPlot.Demo.Avalonia.MessageBox;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
-    public class PlotViewer : Window
+    public partial class PlotViewer : Window
     {
-        Random rand = new Random();
+        private readonly Random rand = new Random();
         public PlotViewer()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private async void LaunchRandomWalk(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(this.Find<TextBox>("WalkPointsTextbox").Text, out int pointCount))
+            if (!int.TryParse(this.WalkPointsTextbox.Text, out int pointCount))
             {
                 await MessageBox.Show(this, "invalid number of points", "ERROR", MessageBoxButtons.Ok);
                 return;
@@ -40,13 +31,13 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Walk Data");
             plotViewer.SetWindowOwner(this); // so it closes if this window closes
-            plotViewer.Find<AvaPlot>("avaPlot1").Configuration.Quality = Control.QualityMode.High; // customize as desired
+            plotViewer.AvaPlot.Configuration.Quality = Control.QualityMode.High; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
 
         private void LaunchRandomSin(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(this.Find<TextBox>("SinCountTextbox").Text, out int sinCount))
+            if (!int.TryParse(this.SinCountTextbox.Text, out int sinCount))
             {
                 MessageBox.Show(this, "invalid number of sine waves", "ERROR", MessageBoxButtons.Ok);
                 return;
@@ -62,7 +53,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Sine Wave Data");
             plotViewer.SetWindowOwner(this); // so it closes if this window closes
-            plotViewer.Find<AvaPlot>("avaPlot1").Configuration.Quality = Control.QualityMode.High; // customize as desired
+            plotViewer.AvaPlot.Configuration.Quality = Control.QualityMode.High; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
     }

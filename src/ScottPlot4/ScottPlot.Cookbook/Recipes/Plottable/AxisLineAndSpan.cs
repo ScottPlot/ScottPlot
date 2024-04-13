@@ -197,6 +197,41 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class AxisLineWithPositionLabels2 : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisLine_positionLabels2";
+        public string Title => "Position Labels on Additional Axes";
+        public string Description =>
+            "Position labels can be added to multi-axis plots. " +
+            "The axis line must be told which axis to render the label on.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            var hlineA = plt.AddHorizontalLine(3);
+            hlineA.YAxisIndex = 1;
+            hlineA.PositionLabel = true;
+            hlineA.PositionLabelOppositeAxis = true;
+            hlineA.PositionLabelBackground = hlineA.Color;
+
+            var hlineB = plt.AddHorizontalLine(7);
+            hlineB.YAxisIndex = 2;
+            hlineB.PositionLabel = true;
+            hlineB.PositionLabelOppositeAxis = true;
+            hlineB.PositionLabelBackground = hlineB.Color;
+
+            // tell the line which axis to draw the label on
+            var yAxis2 = plt.XAxis2;
+            var yAxis3 = plt.AddAxis(ScottPlot.Renderable.Edge.Right);
+            hlineA.PositionLabelAxis = yAxis2;
+            hlineB.PositionLabelAxis = yAxis3;
+
+            plt.YAxis2.Ticks(true);
+            plt.SetAxisLimits(yMin: -10, yMax: 10, yAxisIndex: 1);
+            plt.SetAxisLimits(yMin: -10, yMax: 10, yAxisIndex: 2);
+        }
+    }
+
     public class AxisSpan : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
@@ -251,6 +286,51 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             hSpan.DragEnabled = true;
             hSpan.DragFixedSize = true;
             hSpan.Label = "Standard hSpan";
+            plt.Legend(true);
+        }
+    }
+
+    public class AxisSpanDraggableEvents : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.AxisLineAndSpan();
+        public string ID => "axisSpan_draggable_events";
+        public string Title => "Draggable Axis Span Events";
+        public string Description =>
+            "Axis spans can be dragged using the mouse. " +
+            "Span events can be useful for binding span edge values to UI elements.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            var minText = plt.AddTooltip("min: default", 0, 1);
+            var maxText = plt.AddTooltip("max: default", 50, 1);
+
+            var edge1Tooltip = plt.AddTooltip("Edge1: 0", 0, 0.6);
+            var edge2Tooltip = plt.AddTooltip("Edge2: 50", 50, 0.2);
+
+            // dragging can be enabled and optionally limited to a range
+            var hSpan = plt.AddHorizontalSpan(0, 50);
+            hSpan.DragEnabled = true;
+            hSpan.DragLimitMin = 0;
+            hSpan.DragLimitMax = 50;
+            hSpan.Label = "Draggable vSpan";
+
+            hSpan.MinDragged += (s, e) => minText.Label = $"Min: {e}";
+            hSpan.MaxDragged += (s, e) => maxText.Label = $"Max: {e}";
+            hSpan.Edge1Dragged += (s, e) =>
+            {
+                edge1Tooltip.X = e;
+                edge1Tooltip.Label = $"Edge1: {e}";
+            };
+            hSpan.Edge2Dragged += (s, e) =>
+            {
+                edge2Tooltip.X = e;
+                edge2Tooltip.Label = $"Edge2: {e}";
+            };
+
             plt.Legend(true);
         }
     }

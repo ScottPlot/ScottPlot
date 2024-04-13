@@ -16,7 +16,9 @@ namespace ScottPlotTests.Axis
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
             plt.AddSignal(ScottPlot.DataGen.Cos(51));
 
-            plt.SetOuterViewLimits(xMin: -123, xMax: 123, yMin: -13, yMax: 13);
+            plt.XAxis.SetBoundary(-123, 123);
+            plt.YAxis.SetBoundary(-13, 13);
+
             TestTools.SaveFig(plt, "1");
             for (int i = 0; i < 10; i++)
                 plt.AxisZoom(.5, .5);
@@ -37,7 +39,8 @@ namespace ScottPlotTests.Axis
             plt.AddSignal(ScottPlot.DataGen.Sin(51));
             plt.AddSignal(ScottPlot.DataGen.Cos(51));
 
-            plt.SetInnerViewLimits(xMin: 10, xMax: 20, yMin: .1, yMax: .2);
+            plt.XAxis.SetInnerBoundary(10, 20);
+            plt.XAxis.SetInnerBoundary(.1, .2);
             plt.AxisAuto();
 
             TestTools.SaveFig(plt, "1");

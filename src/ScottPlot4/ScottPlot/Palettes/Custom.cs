@@ -1,19 +1,23 @@
 ﻿namespace ScottPlot.Palettes;
 
-/// <summary>
-/// Create a custom ScottPlot4 Palette from a collection of colors
-/// </summary>
-public class Custom : PaletteBase
+internal class Custom : IPalette
 {
-    public Custom(string[] hexColors, string name = "", string description = "")
+    public System.Drawing.Color[] Colors { get; }
+
+    public string Name { get; }
+
+    public string Description { get; }
+
+    public Custom(System.Drawing.Color[] colors, string name, string description)
     {
-        if (hexColors is null)
-            throw new System.ArgumentNullException("must provide at least one color");
+        Colors = colors;
+        Name = name;
+        Description = description;
+    }
 
-        if (hexColors.Length == 0)
-            throw new System.ArgumentException("must provide at least one color");
-
-        Colors = FromHexColors(hexColors);
+    public Custom(string[] hex, string name, string description)
+    {
+        Colors = hex.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
         Name = name;
         Description = description;
     }

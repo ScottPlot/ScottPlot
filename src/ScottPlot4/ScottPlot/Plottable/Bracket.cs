@@ -161,7 +161,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public void ValidateData(bool deep = false) { }
     }

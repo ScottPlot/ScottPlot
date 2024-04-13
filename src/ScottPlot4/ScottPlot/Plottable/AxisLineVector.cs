@@ -133,9 +133,17 @@ namespace ScottPlot.Plottable
                 return AxisLimits.NoLimits;
 
             if (IsHorizontal)
-                return AxisLimits.VerticalLimitsOnly(Positions.Min(), Positions.Max());
+            {
+                double xMin = double.IsNegativeInfinity(Min) ? double.NaN : Min;
+                double xMax = double.IsPositiveInfinity(Max) ? double.NaN : Max;
+                return new AxisLimits(xMin, xMax, Positions.Min(), Positions.Max());
+            }
             else
-                return AxisLimits.HorizontalLimitsOnly(Positions.Min(), Positions.Max());
+            {
+                double yMin = double.IsNegativeInfinity(Min) ? double.NaN : Min;
+                double yMax = double.IsPositiveInfinity(Max) ? double.NaN : Max;
+                return new AxisLimits(Positions.Min(), Positions.Max(), yMin, yMax);
+            }
         }
 
         public void ValidateData(bool deep = false)

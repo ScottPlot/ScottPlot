@@ -15,6 +15,7 @@ using ScottPlot.Drawing;
 using ScottPlot.Ticks;
 using System;
 using System.Drawing;
+using System.Reflection.Emit;
 
 namespace ScottPlot.Renderable
 {
@@ -27,37 +28,65 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Axis dimensions and methods for pixel/unit conversions
         /// </summary>
-        public readonly AxisDimensions Dims = new AxisDimensions();
+        public readonly AxisDimensions Dims = new();
 
         /// <summary>
         /// Plottables with this axis index will use pixel/unit conversions from this axis
         /// </summary>
-        public int AxisIndex = 0;
+        public int AxisIndex { get; } = 0;
 
         public bool IsVisible { get; set; } = true;
+
+        private bool _isReverse = false;
+        public bool IsReverse
+        {
+            get => _isReverse;
+            set
+            {
+                _isReverse = value;
+                Dims.IsInverted = value ^ _Edge.IsVertical();
+            }
+        }
 
         private Edge _Edge;
         public Edge Edge
         {
             get => _Edge;
-            set
+            private set
             {
                 _Edge = value;
                 AxisLine.Edge = value;
                 AxisLabel.Edge = value;
                 AxisTicks.Edge = value;
-                bool isVertical = (value == Edge.Left || value == Edge.Right);
-                AxisTicks.TickCollection.Orientation = isVertical ? AxisOrientation.Vertical : AxisOrientation.Horizontal;
-                Dims.IsInverted = isVertical;
+                AxisTicks.TickCollection.IsVertical = value.IsVertical();
+                Dims.IsInverted = _isReverse ^ value.IsVertical();
             }
         }
-        public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
-        public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
 
-        // private renderable components
-        private readonly AxisLabel AxisLabel = new AxisLabel();
-        private readonly AxisTicks AxisTicks = new AxisTicks();
-        private readonly AxisLine AxisLine = new AxisLine();
+        public bool IsHorizontal => Edge.IsHorizontal();
+
+        public bool IsVertical => Edge.IsVertical();
+
+        /// <summary>
+        /// Customization options for the text label displayed on an axis
+        /// </summary>
+        public readonly AxisLabel AxisLabel = new();
+
+        /// <summary>
+        /// Customization options for axis tick marks
+        /// </summary>
+        public readonly AxisTicks AxisTicks = new();
+
+        /// <summary>
+        /// Customization options for the line between an axis and the data area
+        /// </summary>
+        public readonly AxisLine AxisLine = new();
+
+        public Axis(int index, Edge edge)
+        {
+            AxisIndex = index;
+            Edge = edge;
+        }
 
         /// <summary>
         /// Return configuration objects to allow deep customization of axis settings.
@@ -100,6 +129,38 @@ namespace ScottPlot.Renderable
         /// Size this axis to an exact number of pixels
         /// </summary>
         public void SetSizeLimit(float px) => SetSizeLimit(px, px, 0);
+
+        /// <summary>
+        /// Limit the zoom so the span of this axis is never smaller than the given value
+        /// </summary>
+        public void SetZoomInLimit(double? minimumSpan = null)
+        {
+            Dims.SpanMinimum = minimumSpan.Value;
+        }
+
+        /// <summary>
+        /// Limit the zoom so the span of this axis is never greater than the given value
+        /// </summary>
+        public void SetZoomOutLimit(double? maximumSpan = null)
+        {
+            Dims.SpanMaximum = maximumSpan.Value;
+        }
+
+        /// <summary>
+        /// Disallow panning or zooming beyond the given limits
+        /// </summary>
+        public void SetBoundary(double min = double.NegativeInfinity, double max = double.PositiveInfinity)
+        {
+            Dims.SetBoundsOuter(min, max);
+        }
+
+        /// <summary>
+        /// Disallow panning outside or zooming in beyond the given limits
+        /// </summary>
+        public void SetInnerBoundary(double min = double.PositiveInfinity, double max = double.NegativeInfinity)
+        {
+            Dims.SetBoundsInner(min, max);
+        }
 
         // private styling variables
         private float PixelSize; // how large this axis is
@@ -215,8 +276,8 @@ namespace ScottPlot.Renderable
             AxisTicks.TickCollection.ManualTickFormatter = tickFormatter;
 
             // delete existing custom tick format strings
-            AxisTicks.TickCollection.numericFormatString = null;
-            AxisTicks.TickCollection.dateTimeFormatString = null;
+            AxisTicks.TickCollection.NumericFormatString = null;
+            AxisTicks.TickCollection.DateTimeFormatString = null;
             AxisTicks.TickCollection.LabelFormat = ScottPlot.Ticks.TickLabelFormat.Numeric;
         }
 
@@ -230,12 +291,12 @@ namespace ScottPlot.Renderable
 
             if (dateTimeFormat)
             {
-                AxisTicks.TickCollection.dateTimeFormatString = format;
+                AxisTicks.TickCollection.DateTimeFormatString = format;
                 DateTimeFormat(true);
             }
             else
             {
-                AxisTicks.TickCollection.numericFormatString = format;
+                AxisTicks.TickCollection.NumericFormatString = format;
                 DateTimeFormat(false);
             }
         }
@@ -260,9 +321,9 @@ namespace ScottPlot.Renderable
             int? radix = null,
             string prefix = null)
         {
-            AxisTicks.TickCollection.useMultiplierNotation = multiplier ?? AxisTicks.TickCollection.useMultiplierNotation;
-            AxisTicks.TickCollection.useOffsetNotation = offset ?? AxisTicks.TickCollection.useOffsetNotation;
-            AxisTicks.TickCollection.useExponentialNotation = exponential ?? AxisTicks.TickCollection.useExponentialNotation;
+            AxisTicks.TickCollection.UseMultiplierNotation = multiplier ?? AxisTicks.TickCollection.UseMultiplierNotation;
+            AxisTicks.TickCollection.UseOffsetNotation = offset ?? AxisTicks.TickCollection.UseOffsetNotation;
+            AxisTicks.TickCollection.UseExponentialNotation = exponential ?? AxisTicks.TickCollection.UseExponentialNotation;
             AxisTicks.TickCollection.LabelUsingInvertedSign = invertSign ?? AxisTicks.TickCollection.LabelUsingInvertedSign;
             AxisTicks.TickCollection.radix = radix ?? AxisTicks.TickCollection.radix;
             AxisTicks.TickCollection.prefix = prefix ?? AxisTicks.TickCollection.prefix;
@@ -274,8 +335,8 @@ namespace ScottPlot.Renderable
         public void ManualTickSpacing(double manualSpacing)
         {
             // TODO: cutt X and Y out of this
-            AxisTicks.TickCollection.manualSpacingX = manualSpacing;
-            AxisTicks.TickCollection.manualSpacingY = manualSpacing;
+            AxisTicks.TickCollection.ManualSpacingX = manualSpacing;
+            AxisTicks.TickCollection.ManualSpacingY = manualSpacing;
         }
 
         /// <summary>
@@ -284,7 +345,7 @@ namespace ScottPlot.Renderable
         public void ManualTickSpacing(double manualSpacing, DateTimeUnit manualSpacingDateTimeUnit)
         {
             ManualTickSpacing(manualSpacing);
-            AxisTicks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
+            AxisTicks.TickCollection.ManualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
         }
 
         /// <summary>
@@ -295,8 +356,7 @@ namespace ScottPlot.Renderable
             if (positions.Length != labels.Length)
                 throw new ArgumentException($"{nameof(positions)} must have the same length as {nameof(labels)}");
 
-            AxisTicks.TickCollection.manualTickPositions = positions;
-            AxisTicks.TickCollection.manualTickLabels = labels;
+            AxisTicks.TickCollection.UseManualTicks(positions, labels);
         }
 
         /// <summary>
@@ -304,10 +364,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void AutomaticTickPositions()
         {
-            AxisTicks.TickCollection.manualTickPositions = null;
-            AxisTicks.TickCollection.manualTickLabels = null;
-            AxisTicks.TickCollection.additionalTickPositions = null;
-            AxisTicks.TickCollection.additionalTickLabels = null;
+            AxisTicks.TickCollection.UseAutomaticTicks();
         }
 
         /// <summary>
@@ -325,10 +382,8 @@ namespace ScottPlot.Renderable
             if (additionalTickLabels.Length != additionalTickLabels.Length)
                 throw new ArgumentException("tick positions and labels must be equal length");
 
-            AxisTicks.TickCollection.manualTickPositions = null;
-            AxisTicks.TickCollection.manualTickLabels = null;
-            AxisTicks.TickCollection.additionalTickPositions = additionalTickPositions;
-            AxisTicks.TickCollection.additionalTickLabels = additionalTickLabels;
+            AxisTicks.TickCollection.UseAutomaticTicks();
+            AxisTicks.TickCollection.AddAdditionalTicks(additionalTickPositions, additionalTickLabels);
         }
 
         /// <summary>
@@ -463,13 +518,13 @@ namespace ScottPlot.Renderable
         {
             if (enable)
             {
-                AxisTicks.TickCollection.MinorTickDistribution = MinorTickDistribution.log;
+                AxisTicks.TickCollection.MinorTickGenerator = new ScottPlot.Ticks.MinorTickGenerators.LogDistributed(minorTickCount);
                 AxisTicks.TickCollection.IntegerPositionsOnly = roundMajorTicks;
                 AxisTicks.TickCollection.LogScaleMinorTickCount = minorTickCount;
             }
             else
             {
-                AxisTicks.TickCollection.MinorTickDistribution = MinorTickDistribution.even;
+                AxisTicks.TickCollection.MinorTickGenerator = new ScottPlot.Ticks.MinorTickGenerators.EvenlySpaced();
                 AxisTicks.TickCollection.IntegerPositionsOnly = false;
             }
         }
@@ -523,10 +578,9 @@ namespace ScottPlot.Renderable
             AxisTicks.MinorGridColor = color ?? AxisTicks.MinorGridColor;
             AxisTicks.MinorGridWidth = lineWidth ?? AxisTicks.MinorGridWidth;
             AxisTicks.MinorGridStyle = lineStyle ?? AxisTicks.MinorGridStyle;
+
             if (logScale.HasValue)
-                AxisTicks.TickCollection.MinorTickDistribution = logScale.Value
-                    ? MinorTickDistribution.log
-                    : MinorTickDistribution.even;
+                MinorLogScale(logScale.Value);
         }
 
         /// <summary>
@@ -610,12 +664,11 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Configure how tick label measurement is performed when calculating ideal tick density.
+        /// Disble automatic tick generation and use the provided ticks
         /// </summary>
-        /// <param name="manual"></param>
-        public void TickMeasurement(bool manual)
+        public void SetTicks(Tick[] ticks)
         {
-            AxisTicks.TickCollection.MeasureStringManually = manual;
+            AxisTicks.TickCollection.SetTicks(ticks);
         }
     }
 }

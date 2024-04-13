@@ -9,18 +9,38 @@ namespace ScottPlot.Cookbook.Recipes
     {
         public ICategory Category => new Categories.Style();
         public string ID => "style_Default";
-        public string Title => "Default Style";
-        public string Description => "Customize many plot features using style presets";
+        public string Title => "Default Plot Style";
+        public string Description => "This example demonstrates the default plot style.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+            plt.Title("Default Style");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+        }
+    }
+
+    public class StyleBackground : IRecipe
+    {
+        public ICategory Category => new Categories.Style();
+        public string ID => "style_background";
+        public string Title => "Background Color";
+        public string Description =>
+            "Plots have two background colors that can be individually customized. " +
+            "The figure background is the background of the whole image. " +
+            "The data background is the background of the rectangle that contains the data. " +
+            "Both background types support transparency, although PNG file export is required.";
 
         public void ExecuteRecipe(Plot plt)
         {
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            plt.Style(Style.Default);
-            plt.Title("Style.Default");
-            plt.XLabel("Horizontal Axis");
-            plt.YLabel("Vertical Axis");
+            plt.Style(
+                figureBackground: Color.LightSkyBlue,
+                dataBackground: Color.Salmon);
         }
     }
 
@@ -200,6 +220,27 @@ namespace ScottPlot.Cookbook.Recipes
                 tick: Color.White,
                 dataBackground: Color.FromArgb(50, Color.White),
                 figureBackgroundImage: monaLisaBmp);
+        }
+    }
+
+    class CustomLineStyle : IRecipe
+    {
+        public ICategory Category => new Categories.Style();
+        public string ID => "misc_custom_line_style";
+        public string Title => "Custom Line Style";
+        public string Description =>
+            "A customizable line style exists which allows users to define any pattern.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // All default line style patterns can be customized.
+            // Numbers are the length of lines and spaces.
+            ScottPlot.LineStylePatterns.Custom = new float[] { 1, 1, 2, 1, 3, 1, 4, 1 };
+
+            // Use line style patterns anywhere
+            double[] xs = ScottPlot.DataGen.Consecutive(51);
+            double[] ys = ScottPlot.DataGen.Sin(51);
+            plt.AddScatter(xs, ys, markerSize: 0, lineStyle: LineStyle.Custom, lineWidth: 5);
         }
     }
 }

@@ -40,6 +40,48 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class BubbleSize : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Bubble();
+        public string ID => "bubble_size";
+        public string Title => "Bubble Size";
+        public string Description =>
+            "The size of bubbles are defined in pixel units by default. " +
+            "However, it is possible to define the size of bubbles using the same " +
+            "units the coordinate system and axes use. " +
+            "If using axis units, users may want to enable " +
+            "the axis scale lock feature to enforce bubble circularity.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(31);
+            double[] ys = DataGen.Sin(31, mult: 5);
+            var colormap = Drawing.Colormap.Viridis;
+
+            var myBubblePlot = plt.AddBubblePlot();
+            for (int i = 0; i < xs.Length; i++)
+            {
+                double fraction = (double)i / xs.Length;
+                myBubblePlot.Add(
+                    x: xs[i],
+                    y: ys[i],
+                    radius: .5 + i * .05f,
+                    fillColor: colormap.GetColor(fraction, alpha: .8),
+                    edgeColor: System.Drawing.Color.Black,
+                    edgeWidth: 2
+                );
+            }
+
+            // indicate radius is coordinate units
+            myBubblePlot.RadiusIsPixels = false;
+
+            // Enable the axis scale lock to force bubbles to be circular:
+            //plt.AxisScaleLock(true, EqualScaleMode.PreserveLargest);
+
+            plt.Title("Advanced Bubble Plot");
+        }
+    }
+
     public class BubbleWithText : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Bubble();

@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -245,6 +247,48 @@ namespace ScottPlotTests.PlotTypes
             sig.Smooth = true;
 
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Signal_Empty()
+        {
+            double[] values = Array.Empty<double>();
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddSignal(values);
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Signal_FillDisable()
+        {
+            // https://github.com/ScottPlot/ScottPlot/issues/2436
+
+            ScottPlot.Plot plt = new(400, 300);
+            var sig = plt.AddSignal(ScottPlot.DataGen.Sin(51));
+            sig.FillAboveAndBelow(Color.Red, Color.Blue);
+            sig.FillDisable();
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Signal_Update()
+        {
+            // https://github.com/ScottPlot/ScottPlot/issues/2578
+            // https://github.com/ScottPlot/ScottPlot/issues/2592
+
+            double[] ys1 = ScottPlot.Generate.Sin();
+            double[] ys2 = ScottPlot.Generate.Cos();
+
+            ScottPlot.Plot plt = new(400, 300);
+
+            var sig = plt.AddSignal(ys1);
+            sig.Ys.Should().BeEquivalentTo(ys1);
+
+            sig.Update(ys2);
+            sig.Ys.Should().BeEquivalentTo(ys2);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using ScottPlot.Cookbook.Recipes.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,9 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_Histogram_MatchesKnownValues1()
         {
-            double[] values = SampleData.NORM_1000_12_34;
-            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 25, density: false, min: -25, max: 100);
-            var (densities, _) = ScottPlot.Statistics.Common.Histogram(values, binCount: 25, density: true, min: -25, max: 100);
-
             // Values generated with Python and Numpy (see hist.py)
+
+            double[] values = SampleData.NORM_1000_12_34;
 
             double[] expectedEdges = {
                 -25.0, -20.0, -15.0, -10.0, -5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0,
@@ -33,20 +33,18 @@ namespace ScottPlotTests.Statistics
                 0.0168, 0.0088, 0.005, 0.0024, 0.0006, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
             };
 
-            Assert.AreEqual(expectedEdges, binEdges);
-            Assert.AreEqual(expectedCounts, counts);
-
-            for (int i = 0; i < expectedDensities.Length; i++)
-                Assert.AreEqual(expectedDensities[i], densities[i], 1e-10);
+            // test the static methods
+            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 25, density: false, min: -25, max: 100);
+            var (densities, _) = ScottPlot.Statistics.Common.Histogram(values, binCount: 25, density: true, min: -25, max: 100);
+            binEdges.Should().HaveCount(expectedEdges.Length);
+            counts.Should().HaveCount(expectedCounts.Length);
+            densities.Should().HaveCount(expectedDensities.Length);
+            densities.Should().Equal(expectedDensities);
         }
 
         [Test]
         public void Test_Histogram_MatchesKnownValues2()
         {
-            double[] values = SampleData.NORM_1000_12_34;
-            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: false, min: 10, max: 45);
-            var (densities, _) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: true, min: 10, max: 45);
-
             // Values generated with Python and Numpy (see hist.py)
 
             double[] expectedEdges = {
@@ -83,14 +81,21 @@ namespace ScottPlotTests.Statistics
                 0.036775106082036775, 0.02545968882602546, 0.039603960396039604, 0.014144271570014145
             };
 
-            Assert.AreEqual(expectedEdges, binEdges);
-            Assert.AreEqual(expectedCounts, counts);
-
-            for (int i = 0; i < expectedDensities.Length; i++)
-                Assert.AreEqual(expectedDensities[i], densities[i], 1e-10);
+            // test the static methods
+            double[] values = SampleData.NORM_1000_12_34;
+            var (counts, binEdges) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: false, min: 10, max: 45);
+            var (densities, _) = ScottPlot.Statistics.Common.Histogram(values, binCount: 80, density: true, min: 10, max: 45);
+            binEdges.Should().HaveCount(expectedEdges.Length);
+            counts.Should().HaveCount(expectedCounts.Length);
+            densities.Should().HaveCount(expectedDensities.Length);
+            for (int i = 0; i < densities.Length; i++)
+            {
+                densities[i].Should().BeApproximately(expectedDensities[i], precision: 1e-10);
+            }
         }
 
         [Test]
+        [Obsolete]
         public void Test_Histogram_jwsuh()
         {
             // https://github.com/ScottPlot/ScottPlot/issues/1348
@@ -100,6 +105,45 @@ namespace ScottPlotTests.Statistics
 
             Console.WriteLine("Counts:" + String.Join(", ", counts.Select(x => x.ToString())));
             Console.WriteLine("Edges:" + String.Join(", ", binEdges.Select(x => x.ToString())));
+        }
+
+        [Test]
+        [Obsolete]
+        public void Test_Common_Histogram_AllSameData()
+        {
+            // This test reproduces issue described by @Xerxes004 #2463
+            // https://github.com/ScottPlot/ScottPlot/issues/2463
+            double[] data = ScottPlot.DataGen.Zeros(10);
+            var stats = new ScottPlot.Statistics.BasicStats(data);
+
+            var (hist, binEdges) = ScottPlot.Statistics.Common.Histogram(data, min: stats.Min, max: stats.Max, binSize: 1);
+
+            hist.Length.Should().Be(1);
+            hist.Should().BeEquivalentTo(new double[] { 10 });
+            binEdges.Length.Should().Be(2);
+        }
+
+        [Test]
+        public void Test_Statistics_Histogram_AllSameData()
+        {
+            // This test reproduces issue described by @Xerxes004 #2463
+            // https://github.com/ScottPlot/ScottPlot/issues/2463
+            double[] data = ScottPlot.DataGen.Zeros(10);
+
+            var hist1 = new ScottPlot.Statistics.Histogram(min: -1, max: 1, binCount: 1, addOutliersToEdgeBins: false, addFinalBin: false);
+            hist1.AddRange(data);
+
+            hist1.Min.Should().Be(-1);
+            hist1.Max.Should().Be(1);
+
+            hist1.Bins.Length.Should().Be(1);
+            hist1.Bins.Should().BeEquivalentTo(new double[] { -1 });
+
+            hist1.Counts.Length.Should().Be(1);
+            hist1.Counts.Should().BeEquivalentTo(new double[] { 10 });
+
+            hist1.BinCenters.Length.Should().Be(1);
+            hist1.BinCenters.Should().BeEquivalentTo(new double[] { 0 });
         }
     }
 }

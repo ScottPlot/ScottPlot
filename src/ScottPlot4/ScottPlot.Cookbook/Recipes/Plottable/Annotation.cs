@@ -21,15 +21,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddScatter(xs, DataGen.Cos(xs));
 
             // default placement is upper left
-            plt.AddAnnotation("Top Left", 10, 10);
+            plt.AddAnnotation("Top Left", Alignment.UpperLeft);
 
             // negative coordinates can be used to place text along different edges
-            plt.AddAnnotation("Lower Left", 10, -10);
-            plt.AddAnnotation("Top Right", -10, 10);
-            plt.AddAnnotation("Lower Right", -10, -10);
+            plt.AddAnnotation("Lower Left", Alignment.LowerLeft);
+            plt.AddAnnotation("Top Right", Alignment.UpperRight);
+            plt.AddAnnotation("Lower Right", Alignment.LowerRight);
 
             // Additional customizations are available
-            var fancy = plt.AddAnnotation("Fancy Annotation", 10, 40);
+            var fancy = plt.AddAnnotation("Fancy Annotation", Alignment.UpperLeft);
+            fancy.MarginX = 20;
+            fancy.MarginY = 40;
             fancy.Font.Size = 24;
             fancy.Font.Name = "Impact";
             fancy.Font.Color = Color.Red;

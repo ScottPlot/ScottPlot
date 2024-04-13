@@ -1,11 +1,13 @@
 ﻿using ScottPlot.Drawing;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Plottable
 {
@@ -38,7 +40,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Pre-rendered heatmap image
         /// </summary>
-        protected Bitmap BmpHeatmap;
+        protected Bitmap BmpHeatmap { get; private set; }
 
         /// <summary>
         /// Horizontal location of the lower-left cell
@@ -56,7 +58,7 @@ namespace ScottPlot.Plottable
         public double CellWidth { get; set; } = 1;
 
         /// <summary>
-        /// Width of each cell composing the heatmap
+        /// Height of each cell composing the heatmap
         /// </summary>
         public double CellHeight { get; set; } = 1;
 
@@ -154,6 +156,11 @@ namespace ScottPlot.Plottable
         public bool ColormapMaxIsClipped { get; private set; } = false;
 
         /// <summary>
+        /// Enable multi-threaded parallel processing which may improve performance for large datasets.
+        /// </summary>
+        public bool UseParallel { get; set; } = false;
+
+        /// <summary>
         /// If true, heatmap squares will be smoothed using high quality bicubic interpolation.
         /// If false, heatmap squares will look like sharp rectangles (nearest neighbor interpolation).
         /// </summary>
@@ -169,13 +176,35 @@ namespace ScottPlot.Plottable
         public InterpolationMode Interpolation { get; set; } = InterpolationMode.NearestNeighbor;
 
         /// <summary>
-        /// If true the Heatmap will be drawn from the bottom left corner of the plot. Otherwise it will be drawn from the top left corner. Defaults to false.
+        /// By default the first row of the 2D array represents the top of the heatmap.
+        /// If this is true, the first row of the 2D array represents the bottom of the heatmap.
         /// </summary>
         public bool FlipVertically { get; set; } = false;
 
+        /// <summary>
+        /// By default the first column of the 2D array represents the left side of the heatmap.
+        /// If this is true, the first column of the 2D array represents the right side of the heatmap.
+        /// </summary>
+        public bool FlipHorizontally { get; set; } = false;
+
+        /// <summary>        
+        /// Amount of rotation (degrees) clockwise around the point described by <see cref="CenterOfRotation"/>
+        /// </summary>
+        public double Rotation { get; set; }
+
+        /// <summary>
+        /// Indicates which corner will be the axis of Rotation.
+        /// </summary>
+        public Alignment CenterOfRotation { get; set; }
+
         public Coordinate[] ClippingPoints { get; set; } = Array.Empty<Coordinate>();
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
+
+        /// <summary>
+        /// Heatmap transparency from 0 (transparent) to 1 (opaque).
+        /// </summary>
+        public double Opacity = 1;
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
@@ -186,12 +215,17 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// If defined, this array must have the same dimensions as the heatmap array. Null values are not shown.</param>
+        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double?[,] opacity = null)
         {
+            DataWidth = intensities.GetLength(1);
+            DataHeight = intensities.GetLength(0);
+
             // limit edge size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/2119
             int maxEdgeLength = 1 << 15;
-            if (intensities.GetLength(1) > maxEdgeLength || intensities.GetLength(0) > maxEdgeLength)
+            if (DataWidth > maxEdgeLength || DataHeight > maxEdgeLength)
             {
                 throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
                     $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
@@ -200,20 +234,20 @@ namespace ScottPlot.Plottable
             // limit total size due to System.Drawing rendering artifacts
             // https://github.com/ScottPlot/ScottPlot/issues/772
             int maxTotalValues = 10_000_000;
-            if (intensities.GetLength(1) * intensities.GetLength(0) > maxTotalValues)
+            if (DataWidth * DataHeight > maxTotalValues)
             {
                 throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
                     $"with more than {maxTotalValues:N0} values");
             }
 
-            DataWidth = intensities.GetLength(1);
-            DataHeight = intensities.GetLength(0);
-
             Colormap = colormap ?? Colormap;
             ScaleMin = min;
             ScaleMax = max;
 
-            double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
+            double?[] intensitiesFlattened = Flatten(intensities, UseParallel);
+
+            double?[] opacityFlattened = opacity is null ? null : Flatten(opacity, UseParallel);
+
             Min = double.PositiveInfinity;
             Max = double.NegativeInfinity;
 
@@ -232,9 +266,6 @@ namespace ScottPlot.Plottable
             ColormapMinIsClipped = ScaleMin.HasValue && ScaleMin > Min;
             ColormapMaxIsClipped = ScaleMax.HasValue && ScaleMax < Max;
 
-            double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
-            double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
-
             double minimumIntensity = ScaleMin ?? Min;
             double maximumIntensity = ScaleMax ?? Max;
 
@@ -247,23 +278,21 @@ namespace ScottPlot.Plottable
             double?[] NormalizedIntensities = Normalize(intensitiesFlattened, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
 
             int[] flatARGB;
-            if (TransparencyThreshold.HasValue)
+            if (opacity != null)
+            {
+                flatARGB = Colormap.GetRGBAs(NormalizedIntensities, opacityFlattened, Colormap);
+            }
+            else if (TransparencyThreshold.HasValue)
+            {
                 flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity);
+            }
             else
+            {
                 flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, double.NegativeInfinity);
+            }
 
-            double?[] pixelValues = Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray();
-            double?[] normalizedValues = Normalize(pixelValues, minimumIntensity, maximumIntensity, ScaleMin, ScaleMax);
-            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
-
-            BmpHeatmap?.Dispose();
-            BmpHeatmap = new Bitmap(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
-            Rectangle rect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
-            BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
-            Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
-            BmpHeatmap.UnlockBits(bmpData);
+            UpdateBitmap(flatARGB);
         }
-
 
         /// <summary>
         /// This method analyzes the intensities and colormap to create a bitmap
@@ -274,13 +303,106 @@ namespace ScottPlot.Plottable
         /// <param name="colormap">update the Colormap to use this colormap</param>
         /// <param name="min">minimum intensity (according to the colormap)</param>
         /// <param name="max">maximum intensity (according to the colormap)</param>
-        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
+        /// <param name="opacity">If defined, this mask indicates the opacity of each cell in the heatmap from 0 (transparent) to 1 (opaque).
+        /// If defined, this array must have the same dimensions as the heatmap array.</param>
+        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null, double[,] opacity = null)
         {
-            double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
-            for (int i = 0; i < intensities.GetLength(0); i++)
-                for (int j = 0; j < intensities.GetLength(1); j++)
-                    tmp[i, j] = intensities[i, j];
-            Update(tmp, colormap, min, max);
+            double?[,] finalIntensity = new double?[intensities.GetLength(0), intensities.GetLength(1)];
+            double?[,] finalOpacity = opacity is null ? null : new double?[opacity.GetLength(0), opacity.GetLength(1)];
+
+            Copy2D(intensities, finalIntensity, UseParallel);
+
+            if (opacity is not null)
+            {
+                Copy2D(opacity, finalOpacity, UseParallel);
+            }
+
+            Update(finalIntensity, colormap, min, max, finalOpacity);
+        }
+
+        /// <summary>
+        /// Update the heatmap where every cell is given the same color, but with various opacities.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        public void Update(Color color, double?[,] opacity)
+        {
+            // limit edge size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/2119
+            int maxEdgeLength = 1 << 15;
+            if (opacity.GetLength(1) > maxEdgeLength || opacity.GetLength(0) > maxEdgeLength)
+            {
+                throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
+                    $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
+            }
+
+            // limit total size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/772
+            int maxTotalValues = 10_000_000;
+            if (opacity.GetLength(1) * opacity.GetLength(0) > maxTotalValues)
+            {
+                throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
+                    $"with more than {maxTotalValues:N0} values");
+            }
+
+            DataWidth = opacity.GetLength(1);
+            DataHeight = opacity.GetLength(0);
+
+            double?[] opacityFlattened = Flatten(opacity, UseParallel);
+
+            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
+            UpdateBitmap(flatARGB);
+        }
+
+        /// <summary>
+        /// Update the heatmap where every cell is given the same color, but with various opacities.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        public void Update(Color color, double[,] opacity)
+        {
+            // limit edge size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/2119
+            int maxEdgeLength = 1 << 15;
+            if (opacity.GetLength(1) > maxEdgeLength || opacity.GetLength(0) > maxEdgeLength)
+            {
+                throw new ArgumentException("Due to limitations in rendering large bitmaps, " +
+                    $"heatmaps cannot have more than {maxEdgeLength:N0} rows or columns");
+            }
+
+            // limit total size due to System.Drawing rendering artifacts
+            // https://github.com/ScottPlot/ScottPlot/issues/772
+            int maxTotalValues = 10_000_000;
+            if (opacity.GetLength(1) * opacity.GetLength(0) > maxTotalValues)
+            {
+                throw new ArgumentException($"Heatmaps may be unreliable for 2D arrays " +
+                    $"with more than {maxTotalValues:N0} values");
+            }
+
+            DataWidth = opacity.GetLength(1);
+            DataHeight = opacity.GetLength(0);
+
+            double[] opacityFlattened = Flatten(opacity, UseParallel);
+
+            int[] flatARGB = Colormap.GetRGBAs(opacityFlattened, color);
+            UpdateBitmap(flatARGB);
+        }
+
+        /// <summary>
+        /// This should be the only method which creates or modifies <see cref="BmpHeatmap"/>
+        /// </summary>
+        /// <param name="flatARGB"></param>
+        private void UpdateBitmap(int[] flatARGB)
+        {
+            Bitmap bmp = new(DataWidth, DataHeight, PixelFormat.Format32bppArgb);
+            Rectangle rect = new(0, 0, DataWidth, DataHeight);
+            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+            Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
+            bmp.UnlockBits(bmpData);
+
+            Bitmap originalBmp = BmpHeatmap;
+            BmpHeatmap = bmp;
+            originalBmp?.Dispose();
         }
 
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
@@ -350,11 +472,42 @@ namespace ScottPlot.Plottable
             return (xIndex, yIndex);
         }
 
+        /// <summary>
+        /// Returns a copy of the heatmap image as a <see cref="Bitmap"/>.
+        /// Dimensions of the image will be equal to those of the source data used to create it.
+        /// </summary>
+        public Bitmap GetBitmap()
+        {
+            Rectangle fullSizeRect = new(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
+            Bitmap bmp = BmpHeatmap.Clone(fullSizeRect, BmpHeatmap.PixelFormat);
+            return bmp;
+        }
+
         public void ValidateData(bool deepValidation = false)
         {
             if (BmpHeatmap is null)
                 throw new InvalidOperationException("Update() was not called prior to rendering");
+            if (double.IsNaN(Rotation) || double.IsInfinity(Rotation))
+                throw new InvalidOperationException("rotation must be a real value");
         }
+
+        private PointF ImageLocationOffset(float width, float height)
+        {
+            return CenterOfRotation switch
+            {
+                Alignment.LowerCenter => new PointF(-width / 2, -height),
+                Alignment.LowerLeft => new PointF(0, -height),
+                Alignment.LowerRight => new PointF(-width, -height),
+                Alignment.MiddleLeft => new PointF(0, -height / 2),
+                Alignment.MiddleRight => new PointF(-width, -height / 2),
+                Alignment.UpperCenter => new PointF(-width / 2, 0),
+                Alignment.UpperLeft => new PointF(0, 0),
+                Alignment.UpperRight => new PointF(-width, 0),
+                Alignment.MiddleCenter => new PointF(-width / 2, -height / 2),
+                _ => throw new InvalidEnumArgumentException(),
+            };
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
@@ -378,12 +531,28 @@ namespace ScottPlot.Plottable
 
             gfx.TranslateTransform(fromX, fromY);
 
-            if (FlipVertically)
+            gfx.ScaleTransform(
+                sx: FlipHorizontally ? -1 : 1,
+                sy: FlipVertically ? -1 : 1);
+
+            Rectangle destRect = new(
+                x: FlipHorizontally ? -width : 0,
+                y: FlipVertically ? -height : 0,
+                width: width,
+                height: height);
+
+            if (Rotation != 0)
             {
-                gfx.ScaleTransform(1, -1);
+                // Translate to center of image (relative to its position), rotate, translate back
+                var offsetPoint = ImageLocationOffset(width, height);
+                gfx.TranslateTransform(-offsetPoint.X, -offsetPoint.Y);
+                gfx.RotateTransform((float)Rotation);
+                gfx.TranslateTransform(offsetPoint.X, offsetPoint.Y);
             }
 
-            Rectangle destRect = FlipVertically ? new(0, -height, width, height) : new(0, 0, width, height);
+            ColorMatrix cm = new() { Matrix33 = (float)Opacity };
+            ImageAttributes att = new();
+            attr.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
             gfx.DrawImage(
                     image: BmpHeatmap,
@@ -397,5 +566,71 @@ namespace ScottPlot.Plottable
         }
 
         public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";
+
+        /// <summary>
+        /// Return values of a 2D array flattened as a 1D array.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static T[] Flatten<T>(T[,] values, bool parallel)
+        {
+            int width = values.GetLength(1);
+            int height = values.GetLength(0);
+
+            T[] flat = new T[height * width];
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        flat[i * width + j] = values[i, j];
+                    }
+                }
+            }
+
+            return flat;
+        }
+
+        /// <summary>
+        /// Copy values from <paramref name="source"/> into <paramref name="destination"/>.
+        /// Multi-threaded parallel processing may improve performance for large datasets.
+        /// </summary>
+        private static void Copy2D(double[,] source, double?[,] destination, bool parallel)
+        {
+            int height = source.GetLength(0);
+            int width = source.GetLength(1);
+
+            if (parallel)
+            {
+                Parallel.For(0, height, i =>
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        destination[i, j] = source[i, j];
+                    }
+                });
+            }
+            else
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        destination[i, j] = source[i, j];
+                    }
+                }
+            }
+        }
     }
 }

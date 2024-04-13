@@ -5,11 +5,10 @@ using System.Runtime.CompilerServices;
 
 namespace ScottPlot
 {
-    /* See discussion in https://github.com/ScottPlot/ScottPlot/pull/1927 */
-
     /// <summary>
     /// This class contains type-specific methods to convert between generic values and doubles
     /// optimized for performance using platform-specific features.
+    /// See discussion in https://github.com/ScottPlot/ScottPlot/pull/1927
     /// </summary>
     public static class NumericConversion
     {
@@ -101,7 +100,16 @@ namespace ScottPlot
             }
         }
 
-        // TODO: rename DoubleToGeneric
+        public static T[] DoubleToGeneric<T>(this double[] input)
+        {
+            T[] result = new T[input.Length];
+            for (int i = 0; i < input.Length; i++)
+            {
+                DoubleToGeneric<T>(input[i], out result[i]);
+            }
+            return result;
+        }
+
         public static T[] ToGenericArray<T>(this double[] input)
         {
             T[] result = new T[input.Length];
@@ -113,6 +121,7 @@ namespace ScottPlot
         }
 
         public static byte AddBytes(byte a, byte b) => (byte)(a + b);
+        public static byte Multiply(byte a, byte b) => (byte)(a * b);
         public static byte SubtractBytes(byte a, byte b) => (byte)(a - b);
         public static bool LessThanOrEqualBytes(byte a, byte b) => a <= b;
 
@@ -128,6 +137,21 @@ namespace ScottPlot
             };
 
             return Expression.Lambda<Func<T, T, T>>(body, paramA, paramB).Compile();
+        }
+
+        public static Func<T, T, T> CreateMultFunction<T>()
+        {
+            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
+            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
+
+            BinaryExpression body = Type.GetTypeCode(typeof(T)) switch
+            {
+                TypeCode.Byte => Expression.Multiply(paramA, paramB, typeof(NumericConversion).GetMethod(nameof(NumericConversion.Multiply))),
+                _ => Expression.Multiply(paramA, paramB),
+            };
+
+            return Expression.Lambda<Func<T, T, T>>(body, paramA, paramB).Compile();
+
         }
 
         public static Func<T, T, T> CreateSubtractFunction<T>()

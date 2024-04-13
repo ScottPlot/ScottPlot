@@ -5,13 +5,15 @@
 
 namespace ScottPlot.Palettes;
 
-public class Redness : HexPaletteBase, IPalette
+public class Redness : IPalette
 {
-    public override string Name => GetType().Name;
+    public string Name { get; } = "Redness";
 
-    public override string Description => string.Empty;
+    public string Description { get; } = string.Empty;
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#FF0000", "#FF4F00", "#FFA900", "#900303", "#FF8181"
     };

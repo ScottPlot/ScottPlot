@@ -60,7 +60,7 @@ namespace ScottPlot.Plottable
             return $"PlottableVectorField{label} with {RootedVectors.Count} vectors";
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public void ValidateData(bool deep = false) { }
 

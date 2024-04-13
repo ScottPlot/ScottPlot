@@ -17,5 +17,7 @@ namespace ScottPlot.Control
         public bool AltDown { get; set; } = false;
         public bool WheelScrolledUp { get; set; } = false;
         public bool WheelScrolledDown { get; set; } = false;
+
+        public static InputState Empty => new();
     }
 }

@@ -12,15 +12,18 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class FinanceDemo : Form
     {
-        readonly ScottPlot.Plottable.FinancePlot CandlePlot;
+        readonly ScottPlot.Plottable.FinancePlot CandlePlot = new() { Candle = true };
         readonly ScottPlot.Plottable.BarPlot BarPlot;
-        readonly Random Rand = new Random(0);
+        readonly Random Rand = new(0);
+
+        readonly List<double> Volumes = new();
 
         public FinanceDemo()
         {
             InitializeComponent();
 
-            CandlePlot = new Plottable.FinancePlot() { Candle = true };
+            for (int i = 0; i < 10; i++)
+                AddNewDataPoint(false);
 
             formsPlot1.Plot.Add(CandlePlot);
             formsPlot1.Plot.YLabel("Price");
@@ -37,38 +40,38 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot2.Plot.YLabel("Volume");
             formsPlot2.Plot.XAxis.DateTimeFormat(true);
             formsPlot2.Plot.XAxis2.SetSizeLimit(max: 0);
-        }
 
-        private void FinanceDemo_Load(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 10; i++)
-                AddNewDataPoint(false);
-
-            AddNewDataPoint(true);
+            formsPlot1.Refresh();
+            formsPlot2.Refresh();
         }
 
         private void AddNewDataPoint(bool refresh = true)
         {
-            double lastClose = CandlePlot.OHLCs.Any() ? CandlePlot.OHLCs.Last().Close : 100;
+            double lastClose = CandlePlot.OHLCs.Any()
+                ? CandlePlot.OHLCs.Last().Close
+                : 100;
             double open = lastClose + (Rand.NextDouble() - .5) * 10;
             double close = open + (Rand.NextDouble() - .4) * 10;
             double low = Math.Min(open, close) - Rand.NextDouble() * 5;
             double high = Math.Max(open, close) + Rand.NextDouble() * 5;
-            double volume = Rand.NextDouble() * 500 + 100;
-
             TimeSpan span = TimeSpan.FromSeconds(1);
-            DateTime date = CandlePlot.OHLCs.Any() ? CandlePlot.OHLCs.Last().DateTime + span : DateTime.Today + TimeSpan.FromHours(9.5);
-
-            OHLC ohlc = new OHLC(open, high, low, close, date, span, volume);
+            DateTime date = CandlePlot.OHLCs.Any()
+                ? CandlePlot.OHLCs.Last().DateTime + span
+                : DateTime.Today + TimeSpan.FromHours(9.5);
+            OHLC ohlc = new(open, high, low, close, date, span);
             CandlePlot.Add(ohlc);
+
+            double volume = Rand.NextDouble() * 500 + 100;
+            Volumes.Add(volume);
 
             if (refresh)
             {
                 formsPlot1.Plot.AxisAuto();
 
-                BarPlot.Replace(
-                    positions: CandlePlot.OHLCs.Select(x => x.DateTime.ToOADate()).ToArray(),
-                    values: CandlePlot.OHLCs.Select(x => x.Volume).ToArray());
+                double[] dates = CandlePlot.OHLCs.Select(x => x.DateTime.ToOADate()).ToArray();
+                double[] volumes = Volumes.ToArray();
+
+                BarPlot.Replace(dates, volumes);
 
                 BarPlot.BarWidth = .9 * span.TotalSeconds / TimeSpan.FromDays(1).TotalSeconds;
 

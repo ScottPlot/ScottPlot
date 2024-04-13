@@ -195,6 +195,24 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
+    class TicksWidth : IRecipe
+    {
+        public ICategory Category => new Categories.Axis();
+        public string ID => "ticks_width";
+        public string Title => "X Ticks Width";
+        public string Description => "This example show how to change the width of the X axe ticks";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            //Plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+
+            //Change the width of the ticks
+            plt.XAxis.AxisTicks.MajorLineWidth = 5;
+            plt.XAxis.AxisTicks.MinorLineWidth = 2;
+        }
+    }
+
     class TicksDateTime : IRecipe
     {
         public ICategory Category => new Categories.Axis();
@@ -221,6 +239,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.XAxis.DateTimeFormat(true);
         }
     }
+
     class TicksDateTimeSignal : IRecipe
     {
         public ICategory Category => new Categories.Axis();
@@ -245,6 +264,44 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
             // Set start date
             signalPlot.OffsetX = new DateTime(1985, 10, 1).ToOADate();
+        }
+    }
+
+    class AxisBoundary : IRecipe
+    {
+        public ICategory Category => new Categories.Axis();
+        public string ID => "Axis_boundary";
+        public string Title => "Axis Boundary";
+        public string Description =>
+            "Axes can be given boundaries which prevent the user " +
+            "from panning outside a given range.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.YAxis.SetBoundary(-2, 2);
+            plt.XAxis.SetBoundary(-10, 60);
+        }
+    }
+
+    class AxisZoomLimit : IRecipe
+    {
+        public ICategory Category => new Categories.Axis();
+        public string ID => "Axis_zoomLimit";
+        public string Title => "Axis Zoom Limit";
+        public string Description =>
+            "Axes can be given a zoom limit which allows the user to " +
+            "pan everywhere but never zoom in beyond a given span";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.YAxis.SetZoomInLimit(2);
+            plt.XAxis.SetZoomInLimit(50);
         }
     }
 }

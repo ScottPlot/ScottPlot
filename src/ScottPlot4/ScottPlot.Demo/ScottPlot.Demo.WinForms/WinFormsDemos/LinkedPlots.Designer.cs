@@ -85,6 +85,7 @@
             this.cbLinked.TabIndex = 1;
             this.cbLinked.Text = "link axes together";
             this.cbLinked.UseVisualStyleBackColor = true;
+            this.cbLinked.CheckedChanged += new System.EventHandler(this.cbLinked_CheckedChanged);
             // 
             // LinkedPlots
             // 

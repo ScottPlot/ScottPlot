@@ -1,27 +1,14 @@
-﻿var plt = new ScottPlot.Plot(600, 400);
-plt.Palette = ScottPlot.Palette.ColorblindFriendly;
+﻿using ScottPlot.WinForms; // required for the FormsPlot launcher
 
-// generate random data
-System.Random rand = new(12345);
-var xs = ScottPlot.DataGen.RandomWalk(rand, 20);
-var ys = ScottPlot.DataGen.RandomWalk(rand, 20);
-plt.AddScatter(xs, ys, lineStyle: ScottPlot.LineStyle.Dash, markerSize: 10, label: "original");
+ScottPlot.Plot plt = new();
+plt.AddSignal(ScottPlot.Generate.Sin());
+plt.AddSignal(ScottPlot.Generate.Cos());
 
-// interpolate the same data in different ways
-(double[] bzX, double[] bzY) = ScottPlot.Statistics.Interpolation.Bezier.InterpolateXY(xs, ys, .005);
-(double[] crX, double[] crY) = ScottPlot.Statistics.Interpolation.CatmullRom.InterpolateXY(xs, ys, 15);
-(double[] chX, double[] chY) = ScottPlot.Statistics.Interpolation.Chaikin.InterpolateXY(xs, ys, 4);
-(double[] cbX, double[] cbY) = ScottPlot.Statistics.Interpolation.Cubic.InterpolateXY(xs, ys, 200);
+// save the plot using a temporary filename and launch it with the system default file handler
+plt.Launch.ImageFile();
 
-// display the different curves as line plots
-plt.AddScatterLines(bzX, bzY, lineWidth: 2, label: $"Bezier");
-plt.AddScatterLines(crX, crY, lineWidth: 2, label: $"Catmull-Rom");
-plt.AddScatterLines(chX, chY, lineWidth: 2, label: $"Chaikin");
-plt.AddScatterLines(cbX, cbY, lineWidth: 2, label: $"Cubic");
+// open the plot in a mouse-interactive window using Windows Forms
+plt.Launch.FormsPlot();
 
-// style the plot
-plt.Legend();
-plt.Frameless();
-plt.Grid(false);
-plt.XAxis2.Label("Spline Interpolation", size: 28, bold: true);
-System.Console.WriteLine(plt.SaveFig("demo.png"));
+// open the plot in a web browser (displayed as a static image)
+plt.Launch.ImageHTML();

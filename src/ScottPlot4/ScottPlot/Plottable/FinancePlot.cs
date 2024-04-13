@@ -11,12 +11,12 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class FinancePlot : IPlottable
     {
-        public readonly List<OHLC> OHLCs = new();
+        public readonly List<IOHLC> OHLCs = new();
 
         /// <summary>
         /// Returns the last element of OHLCs so users can modify FinancePlots in real time.
         /// </summary>
-        public OHLC Last() => OHLCs.Last();
+        public IOHLC Last() => OHLCs.Last();
 
         /// <summary>
         /// Display prices as filled candlesticks (otherwise display as OHLC lines)
@@ -59,9 +59,9 @@ namespace ScottPlot.Plottable
         /// Create a finance plot from existing OHLC data.
         /// </summary>
         /// <param name="ohlcs"></param>
-        public FinancePlot(OHLC[] ohlcs) => AddRange(ohlcs);
+        public FinancePlot(IOHLC[] ohlcs) => AddRange(ohlcs);
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         /// <summary>
         /// Add a single candle representing a defined time span
@@ -75,21 +75,15 @@ namespace ScottPlot.Plottable
         public void Add(double open, double high, double low, double close, DateTime timeStart, TimeSpan timeSpan) =>
             Add(new OHLC(open, high, low, close, timeStart, timeSpan));
 
-        /// <summary>
-        /// Add a single candle to the end of the list assuming each candle is spaced 1 horizontal unit apart
-        /// </summary>
-        /// <param name="open"></param>
-        /// <param name="high"></param>
-        /// <param name="low"></param>
-        /// <param name="close"></param>
+        [Obsolete("This overload has been deprecated", true)]
         public void Add(double open, double high, double low, double close) =>
-            Add(new OHLC(open, high, low, close, OHLCs.Count));
+            Add(new OHLC(open, high, low, close, new DateTime(0) + TimeSpan.FromDays(OHLCs.Count), TimeSpan.FromDays(1)));
 
         /// <summary>
         /// Add a single OHLC to the plot
         /// </summary>
         /// <param name="ohlc"></param>
-        public void Add(OHLC ohlc)
+        public void Add(IOHLC ohlc)
         {
             if (ohlc is null)
                 throw new ArgumentNullException();
@@ -100,12 +94,12 @@ namespace ScottPlot.Plottable
         /// Add multiple OHLCs to the plot
         /// </summary>
         /// <param name="ohlcs"></param>
-        public void AddRange(OHLC[] ohlcs)
+        public void AddRange(IOHLC[] ohlcs)
         {
             if (ohlcs is null)
                 throw new ArgumentNullException();
 
-            foreach (var ohlc in ohlcs)
+            foreach (IOHLC ohlc in ohlcs)
                 if (ohlc is null)
                     throw new ArgumentNullException("no OHLCs may be null");
 
@@ -161,8 +155,6 @@ namespace ScottPlot.Plottable
             {
                 if (OHLCs[i] is null)
                     throw new InvalidOperationException($"ohlcs[{i}] cannot be null");
-                if (!OHLCs[i].IsValid)
-                    throw new InvalidOperationException($"ohlcs[{i}] does not contain valid data");
             }
         }
 
@@ -176,12 +168,17 @@ namespace ScottPlot.Plottable
             for (int i = 0; i < OHLCs.Count; i++)
             {
                 var ohlc = OHLCs[i];
+
+                var ohlcSpan = Sequential ? 1 : ohlc.TimeSpan.TotalDays;
+                var ohlcTime = Sequential ? i : ohlc.DateTime.ToOADate();
+
+                bool withinFieldOfView = (dims.XMin <= ohlcTime + ohlcSpan) && (ohlcTime - ohlcSpan <= dims.XMax);
+                if (withinFieldOfView == false) continue;
+
                 bool closedHigher = ohlc.Close >= ohlc.Open;
                 double highestOpenClose = Math.Max(ohlc.Open, ohlc.Close);
                 double lowestOpenClose = Math.Min(ohlc.Open, ohlc.Close);
 
-                var ohlcTime = Sequential ? i : ohlc.DateTime.ToOADate();
-                var ohlcSpan = Sequential ? 1 : ohlc.TimeSpan.TotalDays;
                 float pixelX = dims.GetPixelX(ohlcTime);
 
                 float boxWidth = (float)(ohlcSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
@@ -238,11 +235,16 @@ namespace ScottPlot.Plottable
             using Pen pen = new Pen(Color.Magenta);
             for (int i = 0; i < OHLCs.Count; i++)
             {
-                var ohlc = OHLCs[i];
-                bool closedHigher = ohlc.Close >= ohlc.Open;
+                IOHLC ohlc = OHLCs[i];
 
                 var ohlcTime = (Sequential) ? i : ohlc.DateTime.ToOADate();
                 var ohlcSpan = Sequential ? 1 : ohlc.TimeSpan.TotalDays;
+
+                bool withinFieldOfView = (dims.XMin <= ohlcTime + ohlcSpan) && (ohlcTime - ohlcSpan <= dims.XMax);
+                if (withinFieldOfView == false) continue;
+
+                bool closedHigher = ohlc.Close >= ohlc.Open;
+
                 float pixelX = dims.GetPixelX(ohlcTime);
 
                 float boxWidth = (float)(ohlcSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
@@ -277,7 +279,7 @@ namespace ScottPlot.Plottable
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            var sortedOHLCs = GetSortedOHLCs();
+            List<IOHLC> sortedOHLCs = GetSortedOHLCs();
             double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
             double[] ys = Statistics.Finance.SMA(sortedOHLCs.ToArray(), N);
             return (xs, ys);
@@ -289,19 +291,20 @@ namespace ScottPlot.Plottable
         /// The returned xs and ys arrays will be the length of the OHLC data minus N (points).
         /// </summary>
         /// <param name="N">each returned value represents the average of N points</param>
+        /// <param name="sdCoeff">standard deviation coefficient</param>
         /// <returns>times, averages, and both Bollinger bands for the OHLC closing prices</returns>
-        public (double[] xs, double[] sma, double[] lower, double[] upper) GetBollingerBands(int N)
+        public (double[] xs, double[] sma, double[] lower, double[] upper) GetBollingerBands(int N, double sdCoeff = 2)
         {
             if (N >= OHLCs.Count)
                 throw new ArgumentException("can not analyze more points than are available in the OHLCs");
 
-            var sortedOHLCs = GetSortedOHLCs();
+            List<IOHLC> sortedOHLCs = GetSortedOHLCs();
             double[] xs = sortedOHLCs.Skip(N).Select(x => x.DateTime.ToOADate()).ToArray();
-            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(sortedOHLCs.ToArray(), N);
+            (var sma, var lower, var upper) = Statistics.Finance.Bollinger(sortedOHLCs.ToArray(), N, sdCoeff);
             return (xs, sma, lower, upper);
         }
 
-        private List<OHLC> GetSortedOHLCs()
+        private List<IOHLC> GetSortedOHLCs()
         {
             if (OHLCsAreSorted())
             {

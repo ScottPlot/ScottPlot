@@ -78,7 +78,7 @@ namespace ScottPlot.Statistics
         /// </summary>
         /// <param name="ohlcs">price data to analyze</param>
         /// <param name="N">each returned price represents the average of N prices</param>
-        public static double[] SMA(OHLC[] ohlcs, int N)
+        public static double[] SMA(IOHLC[] ohlcs, int N)
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
@@ -116,7 +116,7 @@ namespace ScottPlot.Statistics
         /// <param name="ohlcs">price data to use for analysis</param>
         /// <param name="N">each returned price represents the average of N prices</param>
         /// <param name="sdCoeff">number of standard deviations from the mean to use for the Bollinger bands</param>
-        public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int N, double sdCoeff = 2)
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(IOHLC[] ohlcs, int N, double sdCoeff = 2)
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)

@@ -1,92 +1,78 @@
-﻿using ScottPlot.Control;
+﻿using ScottPlot.Extensions;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using System;
+using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
-public class FormsPlot : UserControl, IPlotControl
+[ToolboxItem(true)]
+#if NETFRAMEWORK
+[DesignTimeVisible(false)]
+#else
+[DesignTimeVisible(true)]
+#endif
+public class FormsPlot : FormsPlotBase
 {
-    readonly SKGLControl SKElement;
+    private SKControl? SKControl;
 
-    public Plot Plot { get; } = new();
-
-    public Interaction Interaction { get; private set; }
+    public override GRContext GRContext => null!;
 
     public FormsPlot()
     {
-        Interaction = new(this);
-
-        SKElement = new() { Dock = DockStyle.Fill, VSync = true };
-        SKElement.PaintSurface += SKControl_PaintSurface;
-        SKElement.MouseDown += SKElement_MouseDown;
-        SKElement.MouseUp += SKElement_MouseUp;
-        SKElement.MouseMove += SKElement_MouseMove;
-        SKElement.DoubleClick += SKElement_DoubleClick;
-        SKElement.MouseWheel += SKElement_MouseWheel;
-        SKElement.KeyDown += SKElement_KeyDown;
-        SKElement.KeyUp += SKElement_KeyUp;
-
-        Controls.Add(SKElement);
-
-        HandleDestroyed += (s, e) => SKElement.Dispose();
+        HandleCreated += (s, e) => SetupSKControl();
+        HandleDestroyed += (s, e) => TeardownSKControl();
+        SetupSKControl();
+        Plot.FigureBackground.Color = SystemColors.Control.ToColor();
     }
 
-    public void Replace(Interaction interaction)
+    private void SetupSKControl()
     {
-        Interaction = interaction;
+        TeardownSKControl();
+
+        SKControl = new() { Dock = DockStyle.Fill };
+
+        SKControl.PaintSurface += SKElement_PaintSurface;
+        SKControl.MouseDown += SKElement_MouseDown;
+        SKControl.MouseUp += SKElement_MouseUp;
+        SKControl.MouseMove += SKElement_MouseMove;
+        SKControl.DoubleClick += SKElement_DoubleClick;
+        SKControl.MouseWheel += SKElement_MouseWheel;
+        SKControl.KeyDown += SKElement_KeyDown;
+        SKControl.KeyUp += SKElement_KeyUp;
+
+        Controls.Add(SKControl);
     }
 
-    public override void Refresh()
+    private void TeardownSKControl()
     {
-        SKElement.Invalidate();
-        base.Refresh();
+        if (SKControl is null)
+            return;
+
+        SKControl.PaintSurface -= SKElement_PaintSurface; ;
+        SKControl.MouseDown -= SKElement_MouseDown;
+        SKControl.MouseUp -= SKElement_MouseUp;
+        SKControl.MouseMove -= SKElement_MouseMove;
+        SKControl.DoubleClick -= SKElement_DoubleClick;
+        SKControl.MouseWheel -= SKElement_MouseWheel;
+        SKControl.KeyDown -= SKElement_KeyDown;
+        SKControl.KeyUp -= SKElement_KeyUp;
+
+        Controls.Remove(SKControl);
+
+        if (!SKControl.IsDisposed)
+            SKControl.Dispose();
     }
 
-    private void SKControl_PaintSurface(object? sender, SKPaintGLSurfaceEventArgs e)
+    private void SKElement_PaintSurface(object? sender, SKPaintSurfaceEventArgs e)
     {
         Plot.Render(e.Surface);
     }
 
-    private void SKElement_MouseDown(object? sender, MouseEventArgs e)
+    public override void Refresh()
     {
-        Interaction.MouseDown(e.Pixel(), e.Button());
-        base.OnMouseDown(e);
-    }
-
-    private void SKElement_MouseUp(object? sender, MouseEventArgs e)
-    {
-        Interaction.MouseUp(e.Pixel(), e.Button());
-        base.OnMouseUp(e);
-    }
-
-    private void SKElement_MouseMove(object? sender, MouseEventArgs e)
-    {
-        Interaction.OnMouseMove(e.Pixel());
-        base.OnMouseMove(e);
-    }
-
-    private void SKElement_DoubleClick(object? sender, EventArgs e)
-    {
-        Interaction.DoubleClick();
-        base.OnDoubleClick(e);
-    }
-
-    private void SKElement_MouseWheel(object? sender, MouseEventArgs e)
-    {
-        Interaction.MouseWheelVertical(e.Pixel(), e.Delta);
-        base.OnMouseWheel(e);
-    }
-
-    private void SKElement_KeyDown(object? sender, KeyEventArgs e)
-    {
-        Interaction.KeyDown(e.Key());
-        base.OnKeyDown(e);
-    }
-
-    private void SKElement_KeyUp(object? sender, KeyEventArgs e)
-    {
-        Interaction.KeyUp(e.Key());
-        base.OnKeyUp(e);
+        SKControl?.Invalidate();
+        base.Refresh();
     }
 }

@@ -12,6 +12,8 @@ namespace ScottPlot
     {
         #region primary render system
 
+        public PlotDimensions LastRenderDimensions { get; private set; } = new();
+
         /// <summary>
         /// Render the plot onto an existing bitmap
         /// </summary>
@@ -43,6 +45,8 @@ namespace ScottPlot
                     RenderPlottables(bmp, lowQuality, scale);
                     RenderAfterPlottables(bmp, lowQuality, primaryDims);
                 }
+
+                LastRenderDimensions = primaryDims;
 
                 return bmp;
             }
@@ -228,7 +232,13 @@ namespace ScottPlot
         /// <summary>
         /// Render the plot and return an HTML img element containing a Base64-encoded PNG
         /// </summary>
-        public string GetImageHTML(bool lowQuality = false, double scale = 1.0)
+        [Obsolete("use GetImageHtml() not GetImageHTML()", error: true)]
+        public string GetImageHTML(bool lowQuality = false, double scale = 1.0) => GetImageHtml(lowQuality, scale);
+
+        /// <summary>
+        /// Render the plot and return an HTML img element containing a Base64-encoded PNG
+        /// </summary>
+        public string GetImageHtml(bool lowQuality = false, double scale = 1.0)
         {
             string b64 = GetImageBase64(lowQuality, scale);
             return $"<img src=\"data:image/png;base64,{b64}\"></img>";

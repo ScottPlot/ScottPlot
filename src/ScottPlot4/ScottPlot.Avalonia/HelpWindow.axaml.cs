@@ -1,18 +1,17 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using Avalonia;
+
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 namespace ScottPlot.Avalonia
 {
-    public class HelpWindow : Window
+    public partial class HelpWindow : Window
     {
         public HelpWindow()
         {
             this.InitializeComponent();
-            this.Find<TextBlock>("VersionLabel").Text = Plot.Version;
+            this.VersionLabel.Text = Plot.Version;
 
             StringBuilder msg = new StringBuilder();
             msg.AppendLine("Left-click-drag: pan");
@@ -25,12 +24,7 @@ namespace ScottPlot.Avalonia
             msg.AppendLine("");
             msg.AppendLine("Hold CTRL to lock vertical axis");
             msg.AppendLine("Hold ALT to lock horizontal axis");
-            this.Find<TextBlock>("InfoTextBlock").Text = msg.ToString();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.InfoTextBlock.Text = msg.ToString();
         }
 
         private void LaunchScottPlotWebsite(object sender, RoutedEventArgs e)

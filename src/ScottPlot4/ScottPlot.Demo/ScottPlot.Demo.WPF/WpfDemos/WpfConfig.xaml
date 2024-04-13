@@ -25,6 +25,6 @@
                 <CheckBox Content="Double-click Benchmark" Margin="5" IsChecked="True" Checked="DoubleClickBenchmarkEnable" Unchecked="DoubleClickBenchmarkDisable"/>
             </StackPanel>
         </StackPanel>
-        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+        <ScottPlot:WpfPlot x:Name="wpfPlot1"/>
     </DockPanel>
 </Window>

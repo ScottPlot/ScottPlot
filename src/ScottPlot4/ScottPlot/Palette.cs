@@ -1,8 +1,5 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace ScottPlot;
 
@@ -33,9 +30,17 @@ public static class Palette
     /// <summary>
     /// Create a new color palette from an array of HTML colors
     /// </summary>
-    public static IPalette FromHtmlColors(string[] htmlColors)
+    public static IPalette FromHtmlColors(string[] htmlColors, string name = "", string description = "")
     {
-        return new Palettes.Custom(htmlColors);
+        return new Palettes.Custom(htmlColors, name, description);
+    }
+
+    /// <summary>
+    /// Create a new color palette from an array of colors
+    /// </summary>
+    public static IPalette FromColors(Color[] colors, string name = "", string description = "")
+    {
+        return new Palettes.Custom(colors, name, description);
     }
 
     /// <summary>

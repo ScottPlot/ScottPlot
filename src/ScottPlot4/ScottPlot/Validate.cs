@@ -185,5 +185,10 @@ namespace ScottPlot
             if (string.IsNullOrWhiteSpace(value))
                 throw new InvalidOperationException($"{label} must contain text");
         }
+
+        /// <summary>
+        /// Placeholder for functions which need to call a validation function
+        /// </summary>
+        public static void Pass() { }
     }
 }

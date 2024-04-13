@@ -5,13 +5,16 @@
 
 namespace ScottPlot.Palettes;
 
-public class Normal : HexPaletteBase, IPalette
+public class Normal : IPalette
 {
-    public override string Name => "XgfsNormal6";
+    public string Name { get; } = "Xgfs Normal 6";
 
-    public override string Description => "A color palette adapted from Tsitsulin's 6-color normal xgfs palette: http://tsitsul.in/blog/coloropt";
+    public string Description { get; } = "A color palette adapted from " +
+        "Tsitsulin's 6-color normal xgfs palette: http://tsitsul.in/blog/coloropt";
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#4053d3", "#ddb310", "#b51d14",
         "#00beff", "#fb49b0", "#00b25d", "#cacaca",

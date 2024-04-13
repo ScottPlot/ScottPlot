@@ -62,7 +62,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(this)
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = Fill ? FillColor : LineColor,
@@ -71,7 +71,7 @@ namespace ScottPlot.Plottable
                 hatchColor = HatchColor,
                 hatchStyle = HatchStyle
             };
-            return new LegendItem[] { singleLegendItem };
+            return LegendItem.Single(singleItem);
         }
 
         public void ValidateData(bool deep = false)

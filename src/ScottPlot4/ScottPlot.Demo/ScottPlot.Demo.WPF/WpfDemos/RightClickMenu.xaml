@@ -8,5 +8,5 @@
         Title="Custom Right-Click Menu" Height="450" Width="800"
         WindowStartupLocation="CenterOwner"
         >
-    <ScottPlot:WpfPlot Name="wpfPlot1" />
+    <ScottPlot:WpfPlot x:Name="wpfPlot1" />
 </Window>

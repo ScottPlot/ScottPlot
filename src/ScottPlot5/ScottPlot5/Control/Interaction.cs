@@ -1,6 +1,4 @@
-﻿using ScottPlot.Axis;
-
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Control;
 
 /// <summary>
 /// This class contains logic to perform plot manipulations in response to UI actions.
@@ -8,9 +6,9 @@ namespace ScottPlot.Control;
 /// To customize behavior of actions, replace properties of <see cref="Actions"/> with custom delegates.
 /// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
-public class Interaction
+public class Interaction : IPlotInteraction
 {
-    private readonly IPlotControl Control;
+    public IPlotControl PlotControl { get; private set; }
 
     /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
@@ -19,20 +17,52 @@ public class Interaction
     public InputBindings Inputs = InputBindings.Standard();
 
     /// <summary>
+    /// Stores the <see cref="Actions"/> that were preseent when <see cref="Disable"/> was called.
+    /// </summary>
+    private PlotActions ActionsWhenDisabled = PlotActions.Standard();
+
+    /// <summary>
     /// Delegates in this object can be overwritten with custom functions that manipulate the plot.
     /// (e.g., changing the sensitivity of click-drag-zooming)
     /// </summary>
     public PlotActions Actions = PlotActions.Standard();
 
-    private readonly KeyboardState Keyboard = new();
-    private readonly MouseState Mouse = new();
-    private bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
-    private bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
-    private bool IsZoomingRectangle = false;
+    protected readonly KeyboardState Keyboard = new();
+    protected readonly MouseState Mouse = new();
+
+    public bool IsDraggingMouse(Pixel pos) => Mouse.PressedButtons.Any() && Mouse.IsDragging(pos);
+    protected bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
+    protected bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
+    protected bool IsZoomingRectangle = false;
 
     public Interaction(IPlotControl control)
     {
-        Control = control;
+        PlotControl = control;
+    }
+
+    /// <summary>
+    /// Disable all mouse interactivity
+    /// </summary>
+    public void Disable()
+    {
+        ActionsWhenDisabled = Actions;
+        Actions = PlotActions.NonInteractive();
+    }
+
+    /// <summary>
+    /// Enable mouse interactivity using the default mouse actions
+    /// </summary>
+    public void Enable()
+    {
+        Actions = ActionsWhenDisabled;
+    }
+
+    /// <summary>
+    /// Enable mouse interactivity using custom mouse actions
+    /// </summary>
+    public void Enable(PlotActions customActions)
+    {
+        Actions = customActions;
     }
 
     /// <summary>
@@ -40,14 +70,14 @@ public class Interaction
     /// </summary>
     public Coordinates GetMouseCoordinates(IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        return Control.Plot.GetCoordinate(Mouse.LastPosition, xAxis, yAxis);
+        return PlotControl.Plot.GetCoordinates(Mouse.LastPosition, xAxis, yAxis);
     }
 
     public virtual void OnMouseMove(Pixel newPosition)
     {
         Mouse.LastPosition = newPosition;
 
-        if (Mouse.PressedButtons.Any() && Mouse.IsDragging(newPosition))
+        if (IsDraggingMouse(newPosition))
         {
             MouseDrag(
                 from: Mouse.MouseDownPosition,
@@ -58,27 +88,27 @@ public class Interaction
         }
     }
 
-    protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimits start)
+    protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimitManager start)
     {
         bool lockY = Inputs.ShouldLockY(keys);
         bool lockX = Inputs.ShouldLockX(keys);
-        LockedAxes locks = new(lockX, LockY);
+        LockedAxes locks = new(lockX, lockY);
 
         MouseDrag drag = new(start, from, to);
 
         if (Inputs.ShouldZoomRectangle(button, keys))
         {
-            Actions.DragZoomRectangle(Control, drag, locks);
+            Actions.DragZoomRectangle(PlotControl, drag, locks);
             IsZoomingRectangle = true;
         }
         else if (button == Inputs.DragPanButton)
         {
-            Actions.DragPan(Control, drag, locks);
+            Actions.DragPan(PlotControl, drag, locks);
         }
         else if (button == Inputs.DragZoomButton)
         {
 
-            Actions.DragZoom(Control, drag, locks);
+            Actions.DragZoom(PlotControl, drag, locks);
         }
     }
 
@@ -94,12 +124,11 @@ public class Interaction
 
     public virtual void MouseDown(Pixel position, MouseButton button)
     {
-        Mouse.Down(position, button, Control.Plot.GetMultiAxisLimits());
+        Mouse.Down(position, button, new MultiAxisLimitManager(PlotControl));
     }
 
     public virtual void MouseUp(Pixel position, MouseButton button)
     {
-
         bool isDragging = Mouse.IsDragging(position);
 
         bool droppedZoomRectangle =
@@ -109,20 +138,26 @@ public class Interaction
 
         if (droppedZoomRectangle)
         {
-            Actions.ZoomRectangleApply(Control);
+            Actions.ZoomRectangleApply(PlotControl);
+            Actions.ZoomRectangleClear(PlotControl);
             IsZoomingRectangle = false;
         }
 
         // this covers the case where an extremely tiny zoom rectangle was made
         if ((isDragging == false) && (button == Inputs.ClickAutoAxisButton))
         {
-            Actions.AutoScale(Control);
+            Actions.AutoScale(PlotControl, position);
         }
 
-        if (button == Inputs.DragZoomRectangleButton)
+        if (IsZoomingRectangle && button == Inputs.DragZoomRectangleButton)
         {
-            Actions.ZoomRectangleClear(Control);
+            Actions.ZoomRectangleClear(PlotControl);
             IsZoomingRectangle = false;
+        }
+
+        if (!isDragging && (button == Inputs.ClickContextMenuButton))
+        {
+            Actions.ShowContextMenu(PlotControl, position);
         }
 
         Mouse.Up(button);
@@ -130,36 +165,38 @@ public class Interaction
 
     public virtual void DoubleClick()
     {
-        Actions.ToggleBenchmark(Control);
+        Actions.ToggleBenchmark(PlotControl);
     }
 
     public virtual void MouseWheelVertical(Pixel pixel, float delta)
     {
+        if (IsZoomingRectangle) return;
+
         MouseWheelDirection direction = delta > 0 ? MouseWheelDirection.Up : MouseWheelDirection.Down;
 
         if (Inputs.ZoomInWheelDirection.HasValue && Inputs.ZoomInWheelDirection == direction)
         {
-            Actions.ZoomIn(Control, pixel, new LockedAxes(LockX, LockY));
+            Actions.ZoomIn(PlotControl, pixel, new LockedAxes(LockX, LockY));
         }
         else if (Inputs.ZoomOutWheelDirection.HasValue && Inputs.ZoomOutWheelDirection == direction)
         {
-            Actions.ZoomOut(Control, pixel, new LockedAxes(LockX, LockY));
+            Actions.ZoomOut(PlotControl, pixel, new LockedAxes(LockX, LockY));
         }
         else if (Inputs.PanUpWheelDirection.HasValue && Inputs.PanUpWheelDirection == direction)
         {
-            Actions.PanUp(Control);
+            Actions.PanUp(PlotControl);
         }
         else if (Inputs.PanDownWheelDirection.HasValue && Inputs.PanDownWheelDirection == direction)
         {
-            Actions.PanDown(Control);
+            Actions.PanDown(PlotControl);
         }
         else if (Inputs.PanRightWheelDirection.HasValue && Inputs.PanRightWheelDirection == direction)
         {
-            Actions.PanRight(Control);
+            Actions.PanRight(PlotControl);
         }
         else if (Inputs.PanLeftWheelDirection.HasValue && Inputs.PanLeftWheelDirection == direction)
         {
-            Actions.PanLeft(Control);
+            Actions.PanLeft(PlotControl);
         }
         else
         {

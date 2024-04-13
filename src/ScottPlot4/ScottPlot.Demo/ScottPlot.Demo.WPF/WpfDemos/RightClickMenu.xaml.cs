@@ -55,12 +55,14 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             double[] data = DataGen.Sin(51, phase: rand.NextDouble() * 1000);
             wpfPlot1.Plot.AddSignal(data);
             wpfPlot1.Plot.AxisAuto();
+            wpfPlot1.Refresh();
         }
 
         private void ClearPlot(object sender, RoutedEventArgs e)
         {
             wpfPlot1.Plot.Clear();
             wpfPlot1.Plot.AxisAuto();
+            wpfPlot1.Refresh();
         }
     }
 }

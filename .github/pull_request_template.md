@@ -1,10 +1,11 @@
-**Purpose:**
-* Use this space to describe what this pull request accomplishes
-* If this PR references an issue be sure to link to it
-* Consider including a picture if it would help clarify what this pull request does
-* New contributors please review CONTRIBUTING.md in the root folder
+Use this space to describe what this pull request accomplishes. 
+
+Refer to open issues by their number to help link them with this pull request.
+
+Consider including screenshots or code samples if it would help communicate the purpose of this pull request.
 
 ```cs
-// You can insert code examples like this
-var newThing = new SpecialObject();
+ScottPlot.Plot myPlot = new();
+/* a code sample may improve communication */
+myPlot.SavePng("bug.png");
 ```

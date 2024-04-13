@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+        <WindowsPackageType>None</WindowsPackageType>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
+        <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+        <nowarn>Uno0001, CS0436</nowarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
+    </ItemGroup>
+
+</Project>

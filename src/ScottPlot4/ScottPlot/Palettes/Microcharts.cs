@@ -6,13 +6,17 @@
 
 namespace ScottPlot.Palettes;
 
-public class Microcharts : HexPaletteBase, IPalette
+public class Microcharts : IPalette
 {
-    public override string Name => GetType().Name;
+    public string Name { get; } = "Microcharts";
 
-    public override string Description => "Soft color palette sourced from the Microcharts project: https://github.com/microcharts-dotnet/Microcharts";
 
-    internal override string[] HexColors => new string[]
+    public string Description { get; } = "Soft color palette sourced from " +
+        "the Microcharts project: https://github.com/microcharts-dotnet/Microcharts";
+
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#266489", "#68B9C0", "#90D585", "#F3C151", "#F37F64",
         "#424856", "#8F97A4", "#DAC096", "#76846E", "#DABFAF",

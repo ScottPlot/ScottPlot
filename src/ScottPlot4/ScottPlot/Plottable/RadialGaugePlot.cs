@@ -225,7 +225,7 @@ namespace ScottPlot.Plottable
         public LegendItem[] GetLegendItems()
         {
             if (Labels is null)
-                return Array.Empty<LegendItem>();
+                return LegendItem.None;
 
             List<LegendItem> legendItems = new();
             for (int i = 0; i < Labels.Length; i++)
@@ -245,7 +245,7 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
-            double radius = GaugeCount / 4;
+            double radius = 1 + 0.5d / GaugeCount - SpaceFraction / GaugeCount / 4;
             return new AxisLimits(-radius, radius, -radius, radius);
         }
 
@@ -264,6 +264,7 @@ namespace ScottPlot.Plottable
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
 
             float pxPerUnit = (float)Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+
             float gaugeWidthPx = pxPerUnit / (GaugeCount * ((float)SpaceFraction + 1));
             float radiusPixels = gaugeWidthPx * ((float)SpaceFraction + 1);
 

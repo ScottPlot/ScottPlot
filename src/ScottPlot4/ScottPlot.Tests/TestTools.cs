@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Linq;
 
@@ -199,6 +200,17 @@ namespace ScottPlotTests
                 .ToArray();
 
             return string.Join(", ", labels);
+        }
+
+        public static string ArrayToString(double[] values)
+        {
+            return string.Join(", ", values.Select(x => x.ToString()));
+        }
+
+        public static void WriteLine(double[] values, string title = null)
+        {
+            string prefix = string.IsNullOrWhiteSpace(title) ? "" : $"{title}: ";
+            Console.WriteLine(prefix + ArrayToString(values));
         }
     }
 }

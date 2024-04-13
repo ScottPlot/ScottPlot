@@ -17,8 +17,8 @@
             <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <WpfPlot Name="mainPlot" Grid.Column="0" Grid.Row="0" />
-        <WpfPlot Name="rightPlot" Grid.Column="1" Grid.Row="0" />
-        <WpfPlot Name="lowerPlot" Grid.Column="0" Grid.Row="1" />
+        <WpfPlot x:Name="mainPlot" Grid.Column="0" Grid.Row="0" />
+        <WpfPlot x:Name="rightPlot" Grid.Column="1" Grid.Row="0" />
+        <WpfPlot x:Name="lowerPlot" Grid.Column="0" Grid.Row="1" />
     </Grid>
 </Window>

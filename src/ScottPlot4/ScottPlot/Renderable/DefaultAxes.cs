@@ -2,19 +2,16 @@
 {
     public class DefaultBottomAxis : Axis
     {
-        public DefaultBottomAxis()
+        public DefaultBottomAxis() : base(0, Edge.Bottom)
         {
-            Edge = Edge.Bottom;
             Grid(true);
         }
     }
 
     public class DefaultTopAxis : Axis
     {
-        public DefaultTopAxis()
+        public DefaultTopAxis() : base(1, Edge.Top)
         {
-            Edge = Edge.Top;
-            AxisIndex = 1;
             Grid(false);
             Ticks(false);
         }
@@ -22,19 +19,16 @@
 
     public class DefaultLeftAxis : Axis
     {
-        public DefaultLeftAxis()
+        public DefaultLeftAxis() : base(0, Edge.Left)
         {
-            Edge = Edge.Left;
             Grid(true);
         }
     }
 
     public class DefaultRightAxis : Axis
     {
-        public DefaultRightAxis()
+        public DefaultRightAxis() : base(1, Edge.Right)
         {
-            Edge = Edge.Right;
-            AxisIndex = 1;
             Grid(false);
             Ticks(false);
         }
@@ -42,10 +36,8 @@
 
     public class AdditionalRightAxis : Axis
     {
-        public AdditionalRightAxis(int yAxisIndex, string title)
+        public AdditionalRightAxis(int yAxisIndex, string title) : base(yAxisIndex, Edge.Right)
         {
-            Edge = Edge.Right;
-            AxisIndex = yAxisIndex;
             Grid(false);
             Ticks(true);
             Label(title);
@@ -54,10 +46,8 @@
 
     public class AdditionalLeftAxis : Axis
     {
-        public AdditionalLeftAxis(int yAxisIndex, string title)
+        public AdditionalLeftAxis(int yAxisIndex, string title) : base(yAxisIndex, Edge.Left)
         {
-            Edge = Edge.Left;
-            AxisIndex = yAxisIndex;
             Grid(false);
             Ticks(true);
             Label(title);
@@ -66,10 +56,8 @@
 
     public class AdditionalTopAxis : Axis
     {
-        public AdditionalTopAxis(int xAxisIndex, string title)
+        public AdditionalTopAxis(int xAxisIndex, string title) : base(xAxisIndex, Edge.Top)
         {
-            Edge = Edge.Top;
-            AxisIndex = xAxisIndex;
             Grid(false);
             Ticks(true);
             Label(title);
@@ -78,10 +66,8 @@
 
     public class AdditionalBottomAxis : Axis
     {
-        public AdditionalBottomAxis(int xAxisIndex, string title)
+        public AdditionalBottomAxis(int xAxisIndex, string title) : base(xAxisIndex, Edge.Bottom)
         {
-            Edge = Edge.Bottom;
-            AxisIndex = xAxisIndex;
             Grid(false);
             Ticks(true);
             Label(title);

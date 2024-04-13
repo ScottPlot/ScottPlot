@@ -12,7 +12,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "signalxy_quickstart";
         public string Title => "SignalXY Quickstart";
         public string Description =>
-            "SignalXY is a speed-optimized plot for displaying vaues (Ys) with unevenly-spaced positions (Xs) " +
+            "SignalXY is a speed-optimized plot for displaying values (Ys) with unevenly-spaced positions (Xs) " +
             "that are in ascending order. If your data is evenly-spaced, Signal and SignalConst is faster.";
 
         public void ExecuteRecipe(Plot plt)
@@ -38,6 +38,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var sig = plt.AddSignalXY(xs, ys);
             sig.OffsetX = 10_000;
             sig.OffsetY = 100;
+        }
+    }
+
+    public class SignalScale : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.SignalXY();
+        public string ID => "signalxy_scale";
+        public string Title => "SignalXY Scale";
+        public string Description =>
+            "SignalXY plots can have a Y scale that multiply all data by a defined amount. " +
+            "ScaleY is applied before OffsetX and OffsetY.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // display 100,000 values between -1 and +1
+            double[] values = DataGen.Sin(100_000, oscillations: 10);
+            double[] xs = ScottPlot.Generate.Consecutive(values.Length);
+            var sigxy = plt.AddSignalXY(xs, values);
+
+            // scale Y by 500 so values span -500 to +500
+            sigxy.ScaleY = 500;
         }
     }
 

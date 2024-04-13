@@ -23,9 +23,9 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public string Label { get; set; } = null;
 
-        public readonly HLine HorizontalLine = new();
+        public HLine HorizontalLine = new();
 
-        public readonly VLine VerticalLine = new();
+        public VLine VerticalLine = new();
 
         /// <summary>
         /// X position (axis units) of the vertical line
@@ -118,7 +118,7 @@ namespace ScottPlot.Plottable
                 lineWidth = LineWidth,
                 markerShape = MarkerShape.none
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
 
         public void ValidateData(bool deep = false) { }

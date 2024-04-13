@@ -76,9 +76,34 @@ namespace ScottPlot.Statistics
             Array.Copy(values, 0, sortedValues, 0, count);
             Array.Sort(sortedValues);
 
+            if (!sortedValues.Any())
+            {
+                min = double.NaN;
+                max = double.NaN;
+                median = double.NaN;
+                Q1 = double.NaN;
+                Q3 = double.NaN;
+                IQR = double.NaN;
+                lowOutliers = Array.Empty<double>();
+                highOutliers = Array.Empty<double>();
+                minNonOutlier = double.NaN;
+                maxNonOutlier = double.NaN;
+                sum = double.NaN;
+                mean = double.NaN;
+                stDev = double.NaN;
+                plus2stDev = double.NaN;
+                minus2stDev = double.NaN;
+                plus3stDev = double.NaN;
+                minus3stDev = double.NaN;
+                stdErr = double.NaN;
+                return;
+            }
+
             min = sortedValues.First();
             max = sortedValues.Last();
-            median = sortedValues[count / 2];
+
+            // median is average of the two values in the middle if value count is even
+            median = count % 2 == 0 ? ((sortedValues[(count / 2) - 1] + sortedValues[count / 2]) / 2d) : sortedValues[count / 2];
 
             Q1 = sortedValues[QSize];
             Q3 = sortedValues[sortedValues.Length - QSize - 1];

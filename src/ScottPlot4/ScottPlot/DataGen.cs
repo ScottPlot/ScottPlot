@@ -470,7 +470,7 @@ namespace ScottPlot
         {
             OHLC[] ohlcs = RandomStockPrices(rand, pointCount, mult, startingPrice);
 
-            DateTime dt = new DateTime(1985, 9, 24, 9, 30, 0);
+            DateTime dt = new(1985, 9, 24, 9, 30, 0);
 
             for (int i = 0; i < ohlcs.Length; i++)
             {
@@ -502,8 +502,11 @@ namespace ScottPlot
             double[] basePrices = RandomWalk(rand, pointCount, mult, startingPrice);
 
             OHLC[] ohlcs = new OHLC[pointCount];
+            DateTime start = new(1985, 09, 24);
+            TimeSpan spacing = TimeSpan.FromDays(1);
             for (int i = 0; i < ohlcs.Length; i++)
             {
+                DateTime ohlcDate = start.AddDays(i);
                 double basePrice = basePrices[i];
                 double open = rand.NextDouble() * 10 + 50;
                 double close = rand.NextDouble() * 10 + 50;
@@ -515,7 +518,7 @@ namespace ScottPlot
                 high += basePrice;
                 low += basePrice;
 
-                ohlcs[i] = new OHLC(open, high, low, close, i);
+                ohlcs[i] = new OHLC(open, high, low, close, ohlcDate, spacing);
             }
 
             return ohlcs;
@@ -539,11 +542,6 @@ namespace ScottPlot
             OHLC[] prices = sequential
                 ? RandomStockPrices(rand, pointCount, mult, startingPrice)
                 : RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
-
-            if (rand is null)
-                rand = new Random(0);
-            foreach (OHLC price in prices)
-                price.Volume = rand.NextDouble() * 900 + 100;
 
             return prices;
         }
@@ -690,9 +688,36 @@ namespace ScottPlot
         public static Bitmap SampleImage() => BitmapFrom2dArray(SampleImageData(), Colormap.Viridis);
 
         /// <summary>
-        /// Returns a sample 2D array of grayscale values.
+        /// Returns a sample 2D array of grayscale values as a nullable array with values scaled from 0 to 1.
         /// </summary>
-        /// <returns>2D array of grayscale values.</returns>
+        public static double?[,] SampleImageDataNullable()
+        {
+            double[,] original = SampleImageData();
+
+            double maxValue = original[0, 0];
+            for (int i = 0; i < original.GetLength(0); i++)
+            {
+                for (int j = 0; j < original.GetLength(1); j++)
+                {
+                    maxValue = Math.Max(maxValue, original[i, j]);
+                }
+            }
+
+            double?[,] nullable = new double?[original.GetLength(0), original.GetLength(1)];
+            for (int i = 0; i < original.GetLength(0); i++)
+            {
+                for (int j = 0; j < original.GetLength(1); j++)
+                {
+                    nullable[i, j] = 1 - original[i, j] / maxValue;
+                }
+            }
+
+            return nullable;
+        }
+
+        /// <summary>
+        /// Returns an image of the Mona Lisa as a 2D array (65 x 100) of grayscale values (0-255)
+        /// </summary>
         public static double[,] SampleImageData()
         {
             double[,] imageData = {
@@ -1165,6 +1190,32 @@ namespace ScottPlot
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// Generate clusters of random coordinates designed to appear like flow cytometry data
+        /// </summary>
+        public static Coordinate[] FlowCytometry(int seed = 0)
+        {
+            Random rand = new(seed);
+
+            List<Coordinate> points = new();
+
+            for (int i = 0; i < 10_000; i++)
+            {
+                double x1 = RandomNormalValue(rand, 60, 10);
+                double y1 = RandomNormalValue(rand, 60, 10);
+                points.Add(new(x1, y1));
+            }
+
+            for (int i = 0; i < 10_000; i++)
+            {
+                double x2 = RandomNormalValue(rand, 20, 3);
+                double y2 = RandomNormalValue(rand, 30, 10);
+                points.Add(new(x2, y2));
+            }
+
+            return points.ToArray();
         }
     }
 }

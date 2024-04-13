@@ -28,6 +28,7 @@ namespace ScottPlot
             RefreshLegendImage();
             ResizeWindowToFitLegendImage();
         }
+
         public void RefreshLegendImage()
         {
             FormsPlot.Refresh();
@@ -35,7 +36,10 @@ namespace ScottPlot
 
             System.Drawing.Image originalImage = PictureBoxLegend.Image;
 
+            var originalLegendOrientation = Legend.Orientation;
+            Legend.Orientation = Orientation.Vertical;
             PictureBoxLegend.Image = Legend.GetBitmap(false);
+            Legend.Orientation = originalLegendOrientation;
 
             if (originalImage is not null)
                 originalImage.Dispose();
@@ -97,6 +101,9 @@ namespace ScottPlot
 
         private void GetLegendItemUnderMouse(System.Drawing.Point e)
         {
+            if (!Legend.HasItems)
+                return;
+
             // mouse hit logic must go here because Legend doesn't know about image stretching or display scaling
             double legendItemHeight = (double)PictureBoxLegend.Image.Height / Legend.Count;
             int clickedindex = (int)Math.Floor(e.Y / legendItemHeight);

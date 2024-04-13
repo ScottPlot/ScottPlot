@@ -1,15 +1,53 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net462;net6.0</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFrameworks>net462;net6.0;net8.0</TargetFrameworks>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <LangVersion>11</LangVersion>
+
+        <!-- NuGet info -->
+        <PackageId>ScottPlot.Eto</PackageId>
+        <Version>5.0.25</Version>
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
+        <description>User controls for displaying interactive plots in Eto applications</description>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ScottPlot/ScottPlot.git</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <DebugType>portable</DebugType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSource>true</IncludeSource>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+        <!--- SourceLink configuration -->
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
+        <NoWarn>CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
+        
     </PropertyGroup>
 
+    <!-- Include additional files for the NuGet package -->
     <ItemGroup>
-        <PackageReference Include="Eto.Forms" Version="2.7.*" />
+        <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true"
+            PackagePath="icon.png" />
+        <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
+    </ItemGroup>
+
+    <!-- Package dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Eto.Forms" Version="2.*" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:local="clr-namespace:ScottPlot" xmlns:ScottPlotAva="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             xmlns:local="clr-namespace:ScottPlot" xmlns:ScottPlotAva="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ScottPlot.Demo.Avalonia.CookbookControl"
 	>
@@ -13,6 +13,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
@@ -30,7 +31,9 @@
 			</DockPanel>
 		</Border>
 
-		<Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
+		<TextBlock Name="BenchmarkLabel" Grid.Row="2" Margin="5,0,0,0" Text="Benchmark"/>
+
+		<Border Grid.Column="0" Grid.Row="3" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
 			<DockPanel>
 				<TextBlock x:Name="SourceCodeLabel" DockPanel.Dock="Top" Foreground="White" >file path</TextBlock>
 				<TextBox x:Name="SourceTextBox"

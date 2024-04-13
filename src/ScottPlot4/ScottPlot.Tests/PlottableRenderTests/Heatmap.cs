@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using ScottPlot;
+using FluentAssertions;
 
 namespace ScottPlotTests.PlottableRenderTests
 {
@@ -91,6 +93,57 @@ namespace ScottPlotTests.PlottableRenderTests
             cbar.SetTicks(tickPositions, tickLabels, 0, 200);
 
             plt.Margins(0, 0);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Heatmap_GetBitmap()
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            ScottPlot.Plot plt = new(500, 400);
+            var hm = plt.AddHeatmap(data);
+
+            System.Drawing.Bitmap bmp = hm.GetBitmap();
+            bmp.Should().NotBeNull();
+            bmp.Width.Should().Be(65);
+            bmp.Height.Should().Be(100);
+
+            TestTools.SaveFig(bmp);
+        }
+
+        [Test]
+        public void Test_Heatmap_PaletteColormap()
+        {
+            double[,] data = DataGen.SampleImageData();
+
+            ScottPlot.Plot plt = new(500, 400);
+
+            // create a colormap from a defined set of colors
+            System.Drawing.Color[] colors = {
+                System.Drawing.Color.Indigo,
+                System.Drawing.Color.Blue,
+                System.Drawing.Color.Green,
+                System.Drawing.Color.Yellow,
+                System.Drawing.Color.Orange,
+                System.Drawing.Color.Red,
+            };
+
+            // display the colormap on the plot as a colorbar
+            ScottPlot.Drawing.Colormap cmap = new(colors);
+            var cbar = plt.AddColorbar(cmap);
+            cbar.MaxValue = 255;
+
+            // use custom tick positions
+            double[] tickPositions = Enumerable.Range(0, colors.Length + 1)
+                .Select(x => (double)x / colors.Length)
+                .ToArray();
+            string[] tickLabels = tickPositions.Select(x => $"{x * 255:N2}").ToArray();
+            cbar.SetTicks(tickPositions, tickLabels);
+
+            // add a heatmap using the custom colormap
+            plt.AddHeatmap(data, cmap);
+
             TestTools.SaveFig(plt);
         }
     }

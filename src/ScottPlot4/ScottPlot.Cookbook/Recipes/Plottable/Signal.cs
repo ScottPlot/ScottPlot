@@ -70,6 +70,26 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class SignalScaleY : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Signal();
+        public string ID => "signal_scale";
+        public string Title => "Signal Scale";
+        public string Description =>
+            "Signal plots can have a Y scale that multiply all data by a defined amount. " +
+            "ScaleY is applied before OffsetX and OffsetY.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // display 100,000 values between -1 and +1
+            double[] values = DataGen.Sin(100_000, oscillations: 10);
+            var sig = plt.AddSignal(values);
+
+            // scale Y by 500 so values span -500 to +500
+            sig.ScaleY = 500;
+        }
+    }
+
     public class SignalScatterComparison : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Signal();
@@ -349,6 +369,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sp.Smooth = true;
 
             plt.Legend();
+        }
+    }
+
+    public class SignalMarkerColor : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Signal();
+        public string ID => "signal_marker_color";
+        public string Title => "Signal Marker Color";
+        public string Description => "The markers that display when signal plots are zoomed in " +
+            "may have a different color than the lines connecting them";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = DataGen.Sin(51);
+            var sig = plt.AddSignal(values);
+
+            sig.LineColor = Color.LightBlue;
+            sig.LineWidth = 3;
+            sig.MarkerColor = Color.Blue;
         }
     }
 }

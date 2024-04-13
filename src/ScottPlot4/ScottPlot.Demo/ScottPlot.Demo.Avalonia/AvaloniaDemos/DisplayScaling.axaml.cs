@@ -1,16 +1,12 @@
-﻿using Avalonia;
+﻿using System;
+
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using ScottPlot.Avalonia;
-using System;
-using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class DisplayScalingViewModel
     {
-        private Action _onChange;
+        private readonly Action _onChange;
         public DisplayScalingViewModel(Action onChange)
         {
             _onChange = onChange;
@@ -28,19 +24,13 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         }
     }
 
-    public class DisplayScaling : Window
+    public partial class DisplayScaling : Window
     {
         private readonly DisplayScalingViewModel viewModel;
-
-        private readonly AvaPlot avaPlot1;
 
         public DisplayScaling()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
             avaPlot1.Plot.AddSignal(DataGen.Sin(51));
             avaPlot1.Plot.AddSignal(DataGen.Cos(51));
@@ -48,11 +38,6 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             viewModel = new DisplayScalingViewModel(() => this.CheckChanged());
             this.DataContext = viewModel;
-        }
-
-        public void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
 
         private void CheckChanged()

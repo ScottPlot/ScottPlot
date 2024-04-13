@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,6 +26,25 @@ namespace ScottPlotTests.Misc
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_PanCenter()
+        {
+            ScottPlot.Plot plt = new();
+
+            plt.AddMarker(-1, -1, size: 20);
+            plt.AddMarker(-1, 1, size: 20);
+            plt.AddMarker(1, 1, size: 20);
+            plt.AddMarker(1, -1, size: 20);
+
+            plt.SetAxisLimits(-3, 3, -3, 3);
+
+            TestTools.SaveFig(plt, "before");
+
+            plt.AxisPanCenter(1, 1);
+
+            TestTools.SaveFig(plt, "after");
         }
     }
 }

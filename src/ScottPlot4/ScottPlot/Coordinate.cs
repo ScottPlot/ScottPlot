@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ScottPlot
 {
@@ -48,6 +50,30 @@ namespace ScottPlot
         public Pixel ToPixel(PlotDimensions dims)
         {
             return dims.GetPixel(this);
+        }
+    }
+
+    public static class CoordinateExtensions
+    {
+        public static AxisLimits GetLimits(this IEnumerable<Coordinate> coordinates)
+        {
+            if (!coordinates.Any())
+                return AxisLimits.NoLimits;
+
+            double xMin = coordinates.First().X;
+            double xMax = coordinates.First().X;
+            double yMin = coordinates.First().Y;
+            double yMax = coordinates.First().Y;
+
+            foreach (Coordinate coord in coordinates)
+            {
+                xMin = Math.Min(coord.X, xMin);
+                xMax = Math.Max(coord.X, xMax);
+                yMin = Math.Min(coord.Y, yMin);
+                yMax = Math.Max(coord.Y, yMax);
+            }
+
+            return new AxisLimits(xMin, xMax, yMin, yMax);
         }
     }
 }

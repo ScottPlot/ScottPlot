@@ -38,7 +38,7 @@ namespace ScottPlot
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
-        public IPalette PlottablePalette = Palette.Category10;
+        public IPalette PlottablePalette = new Palettes.Category10();
 
         /// <summary>
         /// List of all axes used in this plot.
@@ -188,7 +188,7 @@ namespace ScottPlot
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
             AxisLimits limits = new(xMin, xMax, yMin, yMax);
 
-            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor);
+            return new PlotDimensions(figureSize, dataSize, dataOffset, limits, scaleFactor, xAxis.IsReverse, yAxis.IsReverse);
         }
 
         /// <summary>
@@ -269,6 +269,23 @@ namespace ScottPlot
                 double delta = deltaPx * axis.Dims.UnitsPerPx;
                 double deltaFrac = delta / (Math.Abs(delta) + axis.Dims.Span);
                 axis.Dims.Zoom(Math.Pow(10, deltaFrac));
+            }
+        }
+
+        /// <summary>
+        /// Zoom all axes by the given pixel distance
+        /// </summary>
+        public void AxesZoomPxTo(float xPx, float yPx, float xPixel, float yPixel)
+        {
+            foreach (Axis axis in Axes)
+            {
+                double deltaPx = axis.IsHorizontal ? xPx : yPx;
+                double delta = deltaPx * axis.Dims.UnitsPerPx;
+                double deltaFrac = delta / (Math.Abs(delta) + axis.Dims.Span);
+                double frac = Math.Pow(10, deltaFrac);
+                float centerPixel = axis.IsHorizontal ? xPixel : yPixel;
+                double center = axis.Dims.GetUnit(centerPixel);
+                axis.Dims.Zoom(frac, center);
             }
         }
 
@@ -503,16 +520,27 @@ namespace ScottPlot
         public void MousePan(float mouseNowX, float mouseNowY)
         {
             RecallAxisLimits();
-            AxesPanPx(MouseDownX - mouseNowX, mouseNowY - MouseDownY);
+            AxesPanPx(MouseDownX - mouseNowX, MouseDownY - mouseNowY);
         }
 
         /// <summary>
         /// Zoom all axes based on the mouse position now vs that last given to MouseDown()
+        /// Relative to the center of the plot
         /// </summary>
-        public void MouseZoom(float mouseNowX, float mouseNowY)
+        public void MouseZoomCenter(float mouseNowX, float mouseNowY)
         {
             RecallAxisLimits();
             AxesZoomPx(mouseNowX - MouseDownX, MouseDownY - mouseNowY);
+        }
+
+        /// <summary>
+        /// Zoom all axes based on the mouse position now vs that last given to MouseDown()
+        /// Relative to the location of the mouse when it was first pressed
+        /// </summary>
+        public void MouseZoomFromMouseDown(float mouseNowX, float mouseNowY)
+        {
+            RecallAxisLimits();
+            AxesZoomPxTo(mouseNowX - MouseDownX, MouseDownY - mouseNowY, MouseDownX, MouseDownY);
         }
 
         public void MouseZoomRect(float mouseNowX, float mouseNowY, bool finalize = false)

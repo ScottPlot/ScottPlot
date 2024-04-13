@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace ScottPlot
 {
@@ -6,7 +8,7 @@ namespace ScottPlot
     /// This object describes the 4 edges of a rectangular view in 2D space.
     /// Values may contain NaN to describe undefined or uninitialized edges.
     /// </summary>
-    public struct AxisLimits : IEquatable<AxisLimits>
+    public readonly struct AxisLimits : IEquatable<AxisLimits>
     {
         public readonly double XMin;
         public readonly double XMax;
@@ -28,6 +30,39 @@ namespace ScottPlot
         public override string ToString()
         {
             return $"AxisLimits: x=[{XMin}, {XMax}] y=[{YMin}, {YMax}]";
+        }
+
+        public static AxisLimits FromRect(CoordinateRect rect)
+        {
+            return new AxisLimits(rect.XMin, rect.XMax, rect.YMin, rect.YMax);
+        }
+
+        public AxisLimits WithX(double xMin, double xMax)
+        {
+            return new AxisLimits(xMin, xMax, YMin, YMax);
+        }
+
+        public AxisLimits WithY(double yMin, double yMax)
+        {
+            return new AxisLimits(XMin, XMax, yMin, yMax);
+        }
+
+        /// <summary>
+        /// Return a new set of axis limits panned by the given distance (in axis / coordinate units).
+        /// </summary>
+        public AxisLimits WithPan(double dX, double dY)
+        {
+            return new AxisLimits(XMin + dX, XMax + dX, YMin + dY, YMax + dY);
+        }
+
+        /// <summary>
+        /// Return a new set of axis limits panned by the given fraction.
+        /// If <paramref name="xFrac"/> is 0.1 then the returned limits will be shifted 10% to the right.
+        /// If <paramref name="yFrac"/> is 0.1 then the returned limits will be shifted 10% upward.
+        /// </summary>
+        public AxisLimits WithPanFraction(double xFrac, double yFrac)
+        {
+            return WithPan(XSpan * xFrac, YSpan * yFrac);
         }
 
         /// <summary>
@@ -58,6 +93,23 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Return the maximum boundary for this set of axis limits and the given coordinates
+        /// </summary>
+        public AxisLimits Expand(double x, double y)
+        {
+            AxisLimits pointLimits = new(x, x, y, y);
+            return Expand(pointLimits);
+        }
+
+        /// <summary>
+        /// Return the maximum boundary for this set of axis limits and the given coordinates
+        /// </summary>
+        public AxisLimits Expand(Coordinate coordinate)
+        {
+            return Expand(coordinate.X, coordinate.Y);
+        }
+
+        /// <summary>
         /// Returns True if the coordinate is contained inside these axis limits
         /// </summary>
         public bool Contains(Coordinate coordinate)
@@ -68,10 +120,36 @@ namespace ScottPlot
                 && coordinate.Y <= YMax;
         }
 
-        public bool Equals(AxisLimits other) =>
-            other.XMin == XMin &&
-            other.XMax == XMax &&
-            other.YMin == YMin &&
-            other.YMax == YMax;
+        public bool Equals(AxisLimits other)
+        {
+            return other.XMin == XMin &&
+                other.XMax == XMax &&
+                other.YMin == YMin &&
+                other.YMax == YMax;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AxisLimits && Equals((AxisLimits)obj);
+        }
+
+        public static bool operator ==(AxisLimits left, AxisLimits right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(AxisLimits left, AxisLimits right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override int GetHashCode()
+        {
+            int A = XMin.GetHashCode();
+            int B = XMin.GetHashCode();
+            int C = XMin.GetHashCode();
+            int D = XMin.GetHashCode();
+            return A ^ B ^ C ^ D;
+        }
     }
 }

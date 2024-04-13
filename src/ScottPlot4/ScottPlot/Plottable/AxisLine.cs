@@ -310,7 +310,7 @@ namespace ScottPlot.Plottable
                 lineWidth = LineWidth,
                 markerShape = MarkerShape.none
             };
-            return new LegendItem[] { singleItem };
+            return LegendItem.Single(singleItem);
         }
     }
 }

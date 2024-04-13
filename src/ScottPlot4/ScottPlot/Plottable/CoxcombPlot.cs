@@ -96,7 +96,7 @@ namespace ScottPlot.Plottable
             int numCategories = Normalized.Length;
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
             double sweepAngle = 360f / numCategories;
-            double maxRadiusPixels = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
+            double maxRadiusPixels = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
             double maxDiameterPixels = maxRadiusPixels * 2;
 
 
@@ -183,7 +183,7 @@ namespace ScottPlot.Plottable
         public LegendItem[] GetLegendItems()
         {
             if (SliceLabels is null)
-                return Array.Empty<LegendItem>();
+                return LegendItem.None;
 
             return Enumerable
                 .Range(0, Values.Length)
@@ -200,7 +200,7 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
-            return new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+            return new AxisLimits(-1.5, 1.5, -1.5, 1.5);
         }
 
         public override string ToString()

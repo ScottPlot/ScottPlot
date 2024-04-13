@@ -1,20 +1,16 @@
-﻿using System;
-using ScottPlot;
-using System.Drawing;
+﻿using ScottPlot;
 using System.Windows.Forms;
 
-namespace WinFormsApp
+namespace WinFormsApp;
+
+public partial class Form1 : Form
 {
-    public partial class Form1 : Form
+    public Form1()
     {
-        public Form1()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            double[,] data = DataGen.Random2D(new Random(0), rows: 10, columns: 1 << 15);
-            formsPlot1.Plot.AddHeatmap(data, lockScales: false);
-
-            formsPlot1.Refresh();
-        }
+        formsPlot1.Plot.AddSignal(DataGen.Sin(51));
+        formsPlot1.Plot.AddSignal(DataGen.Cos(51));
+        formsPlot1.Refresh();
     }
 }

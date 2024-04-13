@@ -4,13 +4,15 @@
 
 namespace ScottPlot.Palettes;
 
-public class OneHalfDark : HexPaletteBase, IPalette
+public class OneHalfDark : IPalette
 {
-    public override string Name => "One Half (Dark)";
+    public string Name { get; } = "One Half (Dark)";
 
-    public override string Description => "A Sublime color scheme by Son A. Pham: https://github.com/sonph/onehalf";
+    public string Description { get; } = "A Sublime color scheme by Son A. Pham: https://github.com/sonph/onehalf";
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#e06c75", "#98c379", "#e5c07b", "#61aff0", "#c678dd", "#56b6c2", "#dcdfe4"
     };

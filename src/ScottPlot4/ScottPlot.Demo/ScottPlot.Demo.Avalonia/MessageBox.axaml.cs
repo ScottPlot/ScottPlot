@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
+
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 /*
 	Courtesy of kekekeks, the Avalonia creator
@@ -10,7 +9,7 @@ using Avalonia.Markup.Xaml;
 
 namespace ScottPlot.Demo.Avalonia
 {
-    class MessageBox : Window
+    public partial class MessageBox : Window
     {
         public enum MessageBoxButtons
         {
@@ -30,7 +29,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public MessageBox()
         {
-            AvaloniaXamlLoader.Load(this);
+            this.InitializeComponent();
         }
 
         public static Task<MessageBoxResult> Show(Window parent, string text, string title, MessageBoxButtons buttons)
@@ -39,8 +38,7 @@ namespace ScottPlot.Demo.Avalonia
             {
                 Title = title
             };
-            msgbox.FindControl<TextBlock>("Text").Text = text;
-            var buttonPanel = msgbox.FindControl<StackPanel>("Buttons");
+            msgbox.Text.Text = text;
 
             var res = MessageBoxResult.Ok;
 
@@ -52,7 +50,7 @@ namespace ScottPlot.Demo.Avalonia
                     res = r;
                     msgbox.Close();
                 };
-                buttonPanel.Children.Add(btn);
+                msgbox.Buttons.Children.Add(btn);
                 if (def)
                     res = r;
             }
@@ -68,7 +66,6 @@ namespace ScottPlot.Demo.Avalonia
             if (buttons == MessageBoxButtons.OkCancel || buttons == MessageBoxButtons.YesNoCancel)
                 AddButton("Cancel", MessageBoxResult.Cancel, true);
 
-
             var tcs = new TaskCompletionSource<MessageBoxResult>();
             msgbox.Closed += delegate { tcs.TrySetResult(res); };
             if (parent != null)
@@ -76,8 +73,5 @@ namespace ScottPlot.Demo.Avalonia
             else msgbox.Show();
             return tcs.Task;
         }
-
-
     }
-
 }

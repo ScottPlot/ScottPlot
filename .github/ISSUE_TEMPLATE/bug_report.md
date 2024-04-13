@@ -1,32 +1,19 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Report a Bug
+about: If you discovered a problem with ScottPlot or its documentation, let us know!
 title: ''
-labels: 'BUG'
+labels: ''
 assignees: ''
 ---
 
-## Before submitting bug reports
-1. Check if your bug is already addressed in the FAQ: https://scottplot.net/faq
-2. Search the issues to see if the bug has already been addressed: https://github.com/ScottPlot/ScottPlot/issues
+**Issue:** (Describe the bug here)
 
-_This header can be deleted before posting_
+**ScottPlot Version:** (What NuGet package are you using?)
 
----------------------------------
-
-## Bug Report
-
-**Issue:** (Bug description goes here)
-
-**Reproducing:** (What do others have to do to reproduce the bug?)
+**Code Sample:** See http://scottplot.net/faq/repro/ for tips about creating reproducible code samples
 
 ```cs
-// a code sample may improve communication
-var examplePlot = new ScottPlot.Plot();
+ScottPlot.Plot myPlot = new();
+/* code to reproduce the bug */
+myPlot.SavePng("bug.png");
 ```
-
-### System Details
-* **ScottPlot Version:** 4.1.123?
-* **Operating System:** (Ubuntu Linux 20.04, Windows 10, MacOS 10.15, etc.)
-* **Application Type:** (console, WinForms, WPF, Avalonia, etc)
-* **.NET Version:** (NET Framework 4.8? .NET 5.0?)

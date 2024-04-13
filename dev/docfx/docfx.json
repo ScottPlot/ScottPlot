@@ -1,75 +1,68 @@
 {
-    "metadata": [
+  "metadata": [
+    {
+      "src": [
         {
-            "src": [
-                {
-                    "files": [
-                        "ScottPlot/ScottPlot.csproj",
-                        "ScottPlot.WinForms/ScottPlot.WinForms.csproj",
-                        "ScottPlot.WPF/ScottPlot.WPF.csproj",
-                        "ScottPlot.Avalonia/ScottPlot.Avalonia.csproj",
-                        "ScottPlot.Eto/ScottPlot.Eto.csproj"
-                    ],
-                    "exclude": [
-                        "**/bin/**",
-                        "**/obj/**"
-                    ],
-                    "src": "../../src/ScottPlot4"
-                }
-            ],
-            "dest": "_api",
-            "disableGitFeatures": true,
-            "disableDefaultFilter": false,
-            "_disableAffix": true
+          "src": "../../src/ScottPlot4",
+          "files": [
+            "ScottPlot/*.csproj",
+            "ScottPlot.WinForms/*.csproj",
+            "ScottPlot.WPF/*.csproj",
+            "ScottPlot.Avalonia/*.csproj",
+            "ScottPlot.Eto/*.csproj",
+          ]
         }
-    ],
-    "build": {
-        "content": [
-            {
-                "files": [
-                    "_api/**.yml",
-                    "api/index.md",
-                    "toc.yml",
-                    "index.md"
-                ]
-            }
-        ],
-        "resource": [
-            {
-                "files": [
-                    "icon.png"
-                ]
-            }
-        ],
-        "overwrite": [
-            {
-                "files": [
-                    "apidoc/**.md"
-                ],
-                "exclude": [
-                    "obj/**",
-                    "_site/**"
-                ]
-            }
-        ],
-        "dest": "_site",
-        "globalMetadata": {
-            "_appTitle": "ScottPlot 4.1.16 API",
-            "repo": "https://github.com/ScottPlot/ScottPlot",
-            "branch": "master",
-            "apiSpecFolder": "dev/docfx",
-            "_appLogoPath": "icon.png",
-            "_appFaviconPath": "icon.png"
-        },
-        "template": [
-            "default",
-            "template-material"
-        ],
-        "postProcessors": [],
-        "markdownEngineName": "markdig",
-        "noLangKeyword": false,
-        "keepFileLink": false,
-        "cleanupCacheHistory": false,
-        "disableGitFeatures": true
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
     }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "dest": "_site",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "templates/sp4"
+    ],
+    "postProcessors": [],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false
+  }
 }

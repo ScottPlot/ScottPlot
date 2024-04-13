@@ -146,6 +146,27 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class BarShowValueCustomFont : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Bar();
+        public string ID => "bar_values_custom_font";
+        public string Title => "Customizing Value Label Font";
+        public string Description => "Font styling for bar value labels can be customized.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = { 27.3, 23.1, 21.2, 16.1, 6.4, 19.2, 18.7, 17.3, 20.3, 13.1 };
+
+            var bar = plt.AddBar(values);
+            bar.ShowValuesAboveBars = true;
+            bar.Font.Color = Color.Green;
+            bar.Font.Size = 18;
+            bar.Font.Bold = true;
+
+            plt.SetAxisLimits(yMin: 0);
+        }
+    }
+
     public class BarShowValueCustom : IRecipe
     {
         public ICategory Category => new Categories.PlotTypes.Bar();
@@ -418,6 +439,43 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // adjust axis limits so there is no padding below the bar graph
             plt.SetAxisLimits(yMin: 0);
             plt.Layout(right: 20); // add room for the far right date tick
+        }
+    }
+
+    public class CustomIndividualBars : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Bar();
+        public string ID => "bar_custom_individual";
+        public string Title => "Custom Individual Bars";
+        public string Description =>
+            "Extreme customization can be achieved by placing each bar manually " +
+            "and adjusting its styling properties individually.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // place bars simulating groups with manually defined colors
+            plt.AddBar(-1, 15, 3, Color.Red);
+            plt.AddBar(0, 17, 4, Color.Orange);
+            plt.AddBar(1, 13, 5, Color.Yellow);
+
+            plt.AddBar(3, 14, 3, Color.Green);
+            plt.AddBar(4, 15, 4, Color.Blue);
+            var lastBar = plt.AddBar(5, 16, 5, Color.Violet);
+
+            // bars can be further customized individually
+            lastBar.HatchStyle = Drawing.HatchStyle.LargeCheckerBoard;
+            lastBar.BorderLineWidth = 3;
+            lastBar.ErrorCapSize = 0.2;
+            lastBar.ErrorLineWidth = 2;
+            lastBar.BarWidth = 0.5;
+
+            // use manaual tick labels to name groups
+            double[] tickPositions = { 0, 4 };
+            string[] tickLabels = { "Group 1", "Group 2" };
+            plt.BottomAxis.ManualTickPositions(tickPositions, tickLabels);
+
+            // adjust axis limits so the view starts at zero
+            plt.SetAxisLimits(yMin: 0);
         }
     }
 }

@@ -1,41 +1,27 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using System.Diagnostics;
+﻿using Avalonia.Controls;
 
 namespace ScottPlot.Demo.Avalonia
 {
-    public class CookbookWindow : Window
+    public partial class CookbookWindow : Window
     {
         public CookbookWindow()
         {
             this.InitializeComponent();
             LoadTreeWithDemos();
-#if DEBUG
-            this.AttachDevTools();
-#endif
 
-            var demoTreeview = this.Find<TreeView>("DemoTreeview");
-            demoTreeview.SelectionChanged += DemoSelected;
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.DemoTreeview.SelectionChanged += DemoSelected;
         }
 
         private void DemoSelected(object sender, SelectionChangedEventArgs e)
         {
-            TreeView DemoTreeview = (TreeView)sender; ;
-            CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
-            var AboutControl1 = this.Find<AboutControl>("AboutControl1");
+            TreeView DemoTreeview = (TreeView)sender;
 
             Cookbook.TreeNode selectedDemoItem = null;
             if (DemoTreeview.SelectedItems.Count > 0)
             {
                 selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItems[0];
             }
-            if (selectedDemoItem != null && selectedDemoItem.ID != null)
+            if (selectedDemoItem?.ID is not null)
             {
                 DemoPlotControl1.IsVisible = true;
                 AboutControl1.IsVisible = false;
@@ -50,12 +36,9 @@ namespace ScottPlot.Demo.Avalonia
 
         private void LoadTreeWithDemos()
         {
-            TreeView DemoTreeview = this.Find<TreeView>("DemoTreeview");
             var demos = Cookbook.Tree.GetRecipes();
-            DemoTreeview.Items = demos;
+            DemoTreeview.ItemsSource = demos;
 
-            CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
-            var AboutControl1 = this.Find<AboutControl>("AboutControl1");
             DemoPlotControl1.IsVisible = true;
             AboutControl1.IsVisible = false;
             DemoPlotControl1.LoadDemo(demos[0].Items[0].ID);

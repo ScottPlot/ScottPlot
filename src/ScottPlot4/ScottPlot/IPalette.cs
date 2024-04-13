@@ -1,49 +1,21 @@
-﻿using System.Collections.Generic;
+﻿namespace ScottPlot;
 
-namespace ScottPlot;
-
-/// <summary>
-/// A palette is a collection of colors
-/// </summary>
-public interface IPalette : IEnumerable<System.Drawing.Color>
+public interface IPalette
 {
     /// <summary>
-    /// Name of this palette
+    /// All colors in this palette
     /// </summary>
-    string Name { get; }
+    public System.Drawing.Color[] Colors { get; }
 
     /// <summary>
-    /// Name of this palette
+    /// Display name
     /// </summary>
-    string Description { get; }
+    public string Name { get; }
 
     /// <summary>
-    /// Colors in this palette
+    /// Additional information such as the source of this palette
     /// </summary>
-    System.Drawing.Color[] Colors { get; }
+    public string Description { get; }
 
-    /// <summary>
-    /// Get the color at the specified index (with rollover)
-    /// </summary>
-    System.Drawing.Color GetColor(int index);
-
-    /// <summary>
-    /// Get the color at the specified index (with rollover) with alpha (0 = transparent, 1 = opaque)
-    /// </summary>
-    System.Drawing.Color GetColor(int index, double alpha = 1);
-
-    /// <summary>
-    /// Get the first several colors
-    /// </summary>
-    System.Drawing.Color[] GetColors(int count, int offset = 0, double alpha = 1);
-
-    /// <summary>
-    /// Get the color at the specified index (with rollover)
-    /// </summary>
-    (byte r, byte g, byte b) GetRGB(int index); // TODO: stop using this and/or add RGBA
-
-    /// <summary>
-    /// Returns the total number of colors in this palette
-    /// </summary>
-    int Count();
+    // NOTE: Implementing platforms should create their own GetColor() extension method
 }

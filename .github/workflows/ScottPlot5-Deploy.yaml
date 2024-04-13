@@ -1,0 +1,113 @@
+name: ScottPlot 5 Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  TEST_PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Tests/"
+  ARTIFACT_FOLDER: "artifacts"
+
+jobs:
+  deploy:
+    name: 🚀 Publish ScottPlot5 Packages
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: ✨ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "microsoft"
+          java-version: "17"
+
+      - name: 🚚 Restore Tests
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet restore
+
+      - name: 🛠️ Build Tests
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet build --configuration Release
+
+      - name: 🧪 Run Tests
+        working-directory: ${{ env.TEST_PROJECT_FOLDER }}
+        run: dotnet test --configuration Release --verbosity minimal
+
+      - name: 📦 Package ScottPlot
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 📦 Package ScottPlot.WinForms
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 📦 Package ScottPlot.WPF
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 📦 Package ScottPlot.Avalonia
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 📦 Package ScottPlot.Eto
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 📦 Package ScottPlot.WinUI
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 📦 Package ScottPlot.Blazor
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Blazor"
+        run: |
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
+      - name: 🚀 Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "ScottPlot"
+          path: ${{ env.ARTIFACT_FOLDER }}
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true
+
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v2
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+
+      - name: 🚀 Deploy Packages
+        run: nuget push "${{ env.ARTIFACT_FOLDER }}\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json

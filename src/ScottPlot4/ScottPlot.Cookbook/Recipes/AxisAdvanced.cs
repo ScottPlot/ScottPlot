@@ -1,4 +1,5 @@
-﻿using ScottPlot.Statistics;
+﻿using ScottPlot.Control.EventProcess.Events;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -126,24 +127,72 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
+    class ManualTicks : IRecipe
+    {
+        public ICategory Category => new Categories.AdvancedAxis();
+        public string ID => "ticks_manual";
+        public string Title => "Manual Ticks";
+        public string Description => "Full customization of ticks can be achieved using the ManualTickCollection helper class.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // use a helper class to build a colelction of major and minor ticks
+            ScottPlot.Ticks.ManualTickCollection tc = new();
+
+            // add major ticks with their labels
+            tc.AddMajor(0, "zero");
+            tc.AddMajor(20, "twenty");
+            tc.AddMajor(50, "fifty");
+
+            // add minor ticks
+            tc.AddMinor(22);
+            tc.AddMinor(25);
+            tc.AddMinor(32);
+            tc.AddMinor(35);
+            tc.AddMinor(42);
+            tc.AddMinor(45);
+
+            // get the tick array and apply it to the axis
+            ScottPlot.Ticks.Tick[] ticks = tc.GetTicks();
+            plt.BottomAxis.SetTicks(ticks);
+        }
+    }
+
+    class ReverseAxisDirection : IRecipe
+    {
+        public ICategory Category => new Categories.AdvancedAxis();
+        public string ID => "reverse_axisDirection";
+        public string Title => "Reverse Axis Direction";
+        public string Description => "Plot data on reversed axis. And all points plotted match the reverse coordinate axis.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
+            plt.Legend();
+
+            plt.XAxis.IsReverse = true;
+            plt.YAxis.IsReverse = true;
+        }
+    }
+
     class TicksDescending : IRecipe
     {
         public ICategory Category => new Categories.AdvancedAxis();
         public string ID => "ticks_descending";
         public string Title => "Descending Ticks";
         public string Description =>
-            "ScottPlot will always display data where X values ascend from left to right. " +
-            "To simulate an inverted axis (where numbers decrease from left to right) plot " +
-            "data in the negative space, then invert the sign of tick labels.";
+            "Axis tick labels can be inverted in sign to give the apperance of a reversed axis.";
 
         public void ExecuteRecipe(Plot plt)
         {
-            // plot the positive data in the negative space
-            double[] values = DataGen.Sin(50);
-            var sig = plt.AddSignal(values);
-            sig.OffsetX = -50;
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
+            plt.Legend();
 
-            // then invert the sign of the axis tick labels
             plt.XAxis.TickLabelNotation(invertSign: true);
             plt.YAxis.TickLabelNotation(invertSign: true);
         }
@@ -548,6 +597,30 @@ namespace ScottPlot.Cookbook.Recipes
 
             plt.XAxis.TickMarkDirection(outward: false);
             plt.YAxis.TickMarkDirection(outward: false);
+        }
+    }
+
+    class AdvancedAxisCustomization : IRecipe
+    {
+        public ICategory Category => new Categories.AdvancedAxis();
+        public string ID => "advanced_axis_customization";
+        public string Title => "Advanced Axis Customization";
+        public string Description =>
+            "Axis labels, tick marks, and axis lines can all be extensively customized " +
+            "by interacting directly with axis configuration objects.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.XAxis.AxisTicks.MajorTickLength = 10;
+            plt.XAxis.AxisTicks.MinorTickLength = 5;
+
+            plt.XAxis.AxisTicks.MajorTickColor = Color.Magenta;
+            plt.XAxis.AxisTicks.MinorTickColor = Color.LightSkyBlue;
+
+            plt.YAxis.AxisLine.Width = 3;
         }
     }
 }

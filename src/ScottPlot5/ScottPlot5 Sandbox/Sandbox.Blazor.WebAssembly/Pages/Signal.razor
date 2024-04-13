@@ -1,0 +1,40 @@
+﻿@page "/signal"
+@inject NavigationManager NavManager
+@using ScottPlot;
+@using ScottPlot.Blazor;
+
+<h1>Signal Plot</h1>
+
+<div class="my-4">
+    <div class="fs-5">Number of data points:</div>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000)">1k</button>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(10_000)">10k</button>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(100_000)">100k</button>
+    <button type="button" class="btn btn-primary" @onclick="()=>SetupPlots(1_000_000)">1M</button>
+</div>
+
+<BlazorPlot @ref="BlazorPlot" Style="width: min(100%, 800px); height: 600px;" />
+
+@code {
+    BlazorPlot BlazorPlot = new();
+    BlazorPlotGL BlazorPlotGL = new();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            SetupPlots(10_000);
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
+    private void SetupPlots(int count)
+    {
+        BlazorPlot.Plot.Clear();
+        BlazorPlot.Plot.Title($"Signal with {count:N0} points");
+        BlazorPlot.Plot.Add.Signal(ScottPlot.Generate.RandomWalk(count));
+        BlazorPlot.Plot.Axes.AutoScale();
+        BlazorPlot.Refresh();
+    }
+}

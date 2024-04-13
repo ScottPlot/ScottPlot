@@ -12,7 +12,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "signalxyconst_quickstart";
         public string Title => "SignalConst with X and Y data";
         public string Description =>
-            "SignalXYConst is a speed-optimized plot for displaying vaues (Ys) with unevenly-spaced positions (Xs) " +
+            "SignalXYConst is a speed-optimized plot for displaying values (Ys) with unevenly-spaced positions (Xs) " +
             "that are in ascending order. If your data is evenly-spaced, Signal and SignalConst is faster.";
 
         public void ExecuteRecipe(Plot plt)

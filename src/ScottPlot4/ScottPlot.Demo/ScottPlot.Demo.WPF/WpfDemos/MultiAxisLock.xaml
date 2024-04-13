@@ -45,6 +45,6 @@
                 />
             
         </WrapPanel>
-        <WpfPlot Name="WpfPlot1"/>
+        <WpfPlot x:Name="WpfPlot1"/>
     </DockPanel>
 </Window>

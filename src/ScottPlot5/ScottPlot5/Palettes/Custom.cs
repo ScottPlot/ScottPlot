@@ -1,10 +1,29 @@
 ﻿namespace ScottPlot.Palettes;
 
-/// <summary>
-/// Create a custom ScottPlot5 Palette from a collection of colors
-/// </summary>
-public class Custom : Palette
+internal class Custom : IPalette
 {
-    public Custom(string[] hexColors, string name = "", string description = "") : base(hexColors, name, description) { }
-    public Custom(Color[] colors, string name = "", string description = "") : base(colors, name, description) { }
+    public Color[] Colors { get; }
+
+    public string Name { get; }
+
+    public string Description { get; }
+
+    public Custom(Color[] colors, string name, string description)
+    {
+        Colors = colors;
+        Name = name;
+        Description = description;
+    }
+
+    public Custom(string[] hex, string name, string description)
+    {
+        Colors = Color.FromHex(hex);
+        Name = name;
+        Description = description;
+    }
+
+    public Color GetColor(int index)
+    {
+        return Colors[index % Colors.Length];
+    }
 }

@@ -21,9 +21,24 @@ namespace ScottPlot.Plottable
         public Color StemColor { get; set; } = Color.Gray;
 
         /// <summary>
+        /// Color for markers placed at <see cref="Ys1"/>
+        /// </summary>
+        public Color Point1Color { get => Color1; set => Color1 = value; }
+
+        /// <summary>
+        /// Color for markers placed at <see cref="Ys2"/>
+        /// </summary>
+        public Color Point2Color { get => Color2; set => Color2 = value; }
+
+        /// <summary>
         /// Size of the markers at the ends of each line
         /// </summary>
         public float DotRadius { get; set; } = 5;
+
+        /// <summary>
+        /// Width of the stem (in pixels)
+        /// </summary>
+        public float LineWidth { get; set; } = 1;
 
         // TODO: don't expose these, instead put them behind an Update() method
         // that lets the user update one or both arrays. This can also perform length checking.
@@ -195,7 +210,7 @@ namespace ScottPlot.Plottable
                 ? rect.Y + rect.Height / 2
                 : rect.X + rect.Width / 2;
 
-            using var stemPen = new Pen(StemColor);
+            using var stemPen = new Pen(StemColor, LineWidth);
             using var dot1Brush = GDI.Brush(Color1);
             using var dot2Brush = GDI.Brush(Color2);
             PointF[] points = new PointF[2];

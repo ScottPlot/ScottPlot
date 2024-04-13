@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>11</LangVersion>
+        <IsPackable>false</IsPackable>
+
+        <!-- This package may not be fully compatible with your project -->
+        <NoWarn>NU1701</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Eto.Forms" Version="2.8.2" />
+        <PackageReference Include="Eto.Platform.WPF" Version="2.8.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Eto\ScottPlot.Eto.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="MainWindow.eto.cs">
+            <DependentUpon>$([System.String]::Copy('%(Filename)').Replace('.eto', ''))%(Extension)</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+</Project>

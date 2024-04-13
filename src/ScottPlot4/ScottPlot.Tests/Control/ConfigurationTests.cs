@@ -4,7 +4,6 @@ using System;
 
 namespace ScottPlotTests.Control
 {
-
     [TestFixture]
     public class ConfigurationTests
     {
@@ -14,7 +13,8 @@ namespace ScottPlotTests.Control
         [TestCase(0.5)]
         public void ScrollWheelZoomIncrement_WithinValidRange_NotThrows(double value)
         {
-            Configuration config = new Configuration();
+            ControlBackEnd backend = new(600, 400);
+            Configuration config = new(backend);
             config.ScrollWheelZoomFraction = value;
         }
 
@@ -25,7 +25,8 @@ namespace ScottPlotTests.Control
         [TestCase(1)]
         public void ScrollWheelZoomIncrement_WithoutValidRange_Throws(double value)
         {
-            Configuration config = new Configuration();
+            ControlBackEnd backend = new(600, 400);
+            Configuration config = new(backend);
             Assert.Throws<ArgumentOutOfRangeException>(() => config.ScrollWheelZoomFraction = value);
         }
 

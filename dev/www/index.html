@@ -5,36 +5,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ScottPlot Developer Website</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/x-icon" href="https://scottplot.github.io/favicon.ico?">
+    <meta name="theme-color" content="#67217A" />
     <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-size: 1.25em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         a {
             text-decoration: none;
+            color: rgba(255, 255, 255, .5);
         }
 
         a:hover {
-            text-decoration: underline;
+            color: white;
+        }
+
+        .logo {
+            width: 300px;
+            max-width: 50%;
         }
     </style>
 </head>
 
-<body>
-    <main class="container my-5">
-        <h1 class="my-4">ScottPlot Developer Website</h1>
-        <div class="fs-5">
-            <ul>
-                <li class="my-4">
-                    <a href='cookbook/5.0'>ScottPlot 5.0 Cookbook</a> - Automatically deployed cookbook that
-                    demonstrates features available in the latest commit to the main branch of ScottPlot's source code
-                    on GitHub. Features may be present that are not yet available in ScottPlot on NuGet.
-                </li>
-                <li class="my-4">
-                    <a href='https://scottplot.net/cookbook/4.1/'>ScottPlot 4.1 Cookbook</a> - Manually deployed
-                    cookbook that demonstrates features available in the latest version of ScottPlot available on NuGet.
-                </li>
-            </ul>
-        </div>
-    </main>
+<body style="background-color: #67217a;">
+    <div>
+        <a href="https://scottplot.net">
+            <img class="logo" src="banner-transparent.svg" />
+        </a>
+    </div>
+    <div>
+        <a href="metrics">Source Code Metrics</a>
+    </div>
 </body>
 
 </html>

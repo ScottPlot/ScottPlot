@@ -12,6 +12,7 @@
  *   
  */
 
+using ScottPlot.Drawing;
 using ScottPlot.Plottable;
 using ScottPlot.Statistics;
 using System;
@@ -26,9 +27,31 @@ namespace ScottPlot
         /// <summary>
         /// Display text in the data area at a pixel location (not a X/Y coordinates)
         /// </summary>
+        [Obsolete("This overload is deprecated.")]
         public Annotation AddAnnotation(string label, double x, double y)
         {
-            var plottable = new Annotation() { Label = label, X = x, Y = y };
+            var plottable = new Annotation() { Label = label };
+
+            // recreate old X/Y behavior using the new alignment property
+            if (x >= 0 && y >= 0)
+                plottable.Alignment = Alignment.UpperLeft;
+            else if (x < 0 && y >= 0)
+                plottable.Alignment = Alignment.UpperRight;
+            else if (x >= 0 && y < 0)
+                plottable.Alignment = Alignment.LowerLeft;
+            else if (x < 0 && y < 0)
+                plottable.Alignment = Alignment.LowerRight;
+
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Display text in the data area at a pixel location (not a X/Y coordinates)
+        /// </summary>
+        public Annotation AddAnnotation(string label, Alignment alignment = Alignment.UpperLeft)
+        {
+            Annotation plottable = new() { Label = label, Alignment = alignment };
             Add(plottable);
             return plottable;
         }
@@ -88,6 +111,10 @@ namespace ScottPlot
         {
             double[] xs = DataGen.Consecutive(ys1.Length);
             var plottable = new ClevelandDotPlot(xs, ys1, ys2);
+            Color color = GetNextColor();
+            plottable.Point1Color = color;
+            plottable.Point2Color = color;
+            plottable.StemColor = color;
             Add(plottable);
             return plottable;
         }
@@ -100,6 +127,45 @@ namespace ScottPlot
             var plottable = new ClevelandDotPlot(positions, ys1, ys2);
             Add(plottable);
             return plottable;
+        }
+
+        /// <summary>
+        /// Add a data logging scatter plot designed for growing collections of X/Y points.
+        /// </summary>
+        public DataLogger AddDataLogger(Color? color = null, float lineWidth = 1, string label = null)
+        {
+            DataLogger dl = new(this)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                Label = label
+            };
+            Add(dl);
+            return dl;
+        }
+
+        /// <summary>
+        /// Add a data streamer to display a fixed number of evenly-spaced Y values
+        /// </summary>
+        public DataStreamer AddDataStreamer(double[] values, Color? color = null, float lineWidth = 1, string label = null)
+        {
+            DataStreamer ds = new(this, values)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                Label = label
+            };
+            Add(ds);
+            return ds;
+        }
+
+        /// <summary>
+        /// Add a data streamer to display a fixed number of evenly-spaced Y values
+        /// </summary>
+        public DataStreamer AddDataStreamer(int length)
+        {
+            double[] values = new double[length];
+            return AddDataStreamer(values);
         }
 
         /// <summary>
@@ -130,17 +196,31 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a single bar to the plot.
+        /// </summary>
+        public BarPlot AddBar(double x, double y, double yError = 0, Color? color = null, double width = 0.8)
+        {
+            double[] xs = { x };
+            double[] ys = { y };
+            double[] yErrs = { yError };
+
+            BarPlot bar = new(xs, ys, yErrs, null)
+            {
+                FillColor = color ?? GetNextColor(),
+                BarWidth = width,
+            };
+
+            Add(bar);
+            return bar;
+        }
+
+        /// <summary>
         /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
         /// </summary>
         public BarPlot AddBar(double[] values, Color? color = null)
         {
             double[] xs = DataGen.Consecutive(values.Length);
-            var plottable = new BarPlot(xs, values, null, null)
-            {
-                FillColor = color ?? GetNextColor()
-            };
-            Add(plottable);
-            return plottable;
+            return AddBar(values, xs, color);
         }
 
         /// <summary>
@@ -251,6 +331,23 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a binned histogram that displays counts of each cell as a heatmap
+        /// </summary>
+        public BinnedHistogram AddBinnedHistogram(int columns, int rows, bool addColorbar = true)
+        {
+            BinnedHistogram hist2d = new(columns, rows);
+            Add(hist2d);
+
+            if (addColorbar)
+            {
+                var cbar = AddColorbar(hist2d.Colormap);
+                hist2d.Colorbar = cbar;
+            }
+
+            return hist2d;
+        }
+
+        /// <summary>
         /// Add an empty bubble plot. Call it's Add() method to add bubbles with custom position and styling.
         /// </summary>
         public BubblePlot AddBubblePlot()
@@ -273,11 +370,19 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a circle to the plot
+        /// </summary>
+        public Ellipse AddCircle(double x, double y, double radius, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        {
+            return AddEllipse(x, y, radius, radius, color, lineWidth, lineStyle);
+        }
+
+        /// <summary>
         /// Add candlesticks to the chart from OHLC (open, high, low, close) data
         /// </summary>
-        public FinancePlot AddCandlesticks(OHLC[] ohlcs)
+        public FinancePlot AddCandlesticks(IOHLC[] ohlcs)
         {
-            FinancePlot plottable = new FinancePlot(ohlcs)
+            FinancePlot plottable = new(ohlcs)
             {
                 Candle = true,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
@@ -338,6 +443,23 @@ namespace ScottPlot
             Crosshair ch = new() { X = x, Y = y };
             Add(ch);
             return ch;
+        }
+
+
+        /// <summary>
+        /// Add an ellipse to the plot
+        /// </summary>
+        public Ellipse AddEllipse(double x, double y, double xRadius, double yRadius, Color? color = null, float lineWidth = 2, LineStyle lineStyle = LineStyle.Solid)
+        {
+            Color c = color ?? GetNextColor();
+            Ellipse plottable = new(x, y, xRadius, yRadius)
+            {
+                BorderColor = c,
+                BorderLineWidth = lineWidth,
+                BorderLineStyle = lineStyle,
+            };
+            Add(plottable);
+            return plottable;
         }
 
         /// <summary>
@@ -470,11 +592,13 @@ namespace ScottPlot
         /// </summary>
         public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
         {
-            FunctionPlot plottable = new FunctionPlot(function)
+            Color color2 = color ?? settings.GetNextColor();
+            FunctionPlot plottable = new(function)
             {
-                Color = color ?? settings.GetNextColor(),
+                Color = color2,
                 LineWidth = lineWidth,
-                LineStyle = lineStyle
+                LineStyle = lineStyle,
+                FillColor = Color.FromArgb(50, color2),
             };
             Add(plottable);
             return plottable;
@@ -486,7 +610,7 @@ namespace ScottPlot
         /// <param name="intensities">2D array of intensities. 
         /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
         /// <param name="colormap"></param>
-        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square.</param>
         /// <returns>
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
@@ -512,7 +636,7 @@ namespace ScottPlot
         /// <param name="intensities">2D array of intensities. 
         /// WARNING: Rendering artifacts may appear for arrays larger than Bitmap can support (~10M total values).</param>
         /// <param name="colormap"></param>
-        /// <param name="lockScales">If true, AxisScaleLock() will be called to ensure heatmap cells will be square.</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square.</param>
         /// <returns>
         /// Returns the heatmap that was added to the plot.
         /// Act on its public fields and methods to customize it or update its data.
@@ -521,6 +645,50 @@ namespace ScottPlot
         {
             var plottable = new Heatmap();
             plottable.Update(intensities, colormap);
+            Add(plottable);
+
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
+                AxisScaleLock(true);
+
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a single-color heatmap where opacity is defined by a 2D array.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square</param>
+        /// <returns></returns>
+        public Heatmap AddHeatmap(Color color, double?[,] opacity, bool? lockScales = true)
+        {
+            var plottable = new Heatmap();
+            plottable.Update(color, opacity);
+            Add(plottable);
+
+            if (lockScales.HasValue && lockScales.Value == true)
+                AxisScaleLock(true);
+
+            if (lockScales is null && plottable.IsDefaultSizeAndLocation)
+                AxisScaleLock(true);
+
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a single-color heatmap where opacity is defined by a 2D array.
+        /// </summary>
+        /// <param name="color">Single color used for all cells</param>
+        /// <param name="opacity">Opacities (ranging 0-1) for all cells</param>
+        /// <param name="lockScales">If true, <see cref="AxisScaleLock"/> will be called to ensure heatmap cells will be square</param>
+        /// <returns></returns>
+        public Heatmap AddHeatmap(Color color, double[,] opacity, bool? lockScales = true)
+        {
+            var plottable = new Heatmap();
+            plottable.Update(color, opacity);
             Add(plottable);
 
             if (lockScales.HasValue && lockScales.Value == true)
@@ -789,9 +957,9 @@ namespace ScottPlot
         /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
-        public FinancePlot AddOHLCs(OHLC[] ohlcs)
+        public FinancePlot AddOHLCs(IOHLC[] ohlcs)
         {
-            FinancePlot plottable = new FinancePlot(ohlcs)
+            FinancePlot plottable = new(ohlcs)
             {
                 Candle = false,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
@@ -920,15 +1088,16 @@ namespace ScottPlot
         /// <param name="independentAxes">if true, axis (category) values are scaled independently</param>
         /// <param name="maxValues">if provided, each category (column) is normalized to these values</param>
         /// <param name="disableFrameAndGrid">also make the plot frameless and disable its grid</param>
+        /// <param name="alphafill">if provided, this value overrides the intermediate transparency (alpha) applied by default to the area fill color</param>
         /// <returns>the radar plot that was just created and added to the plot</returns>
-        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
+        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true, int alphafill = 50)
         {
 
             Color[] colors = Enumerable.Range(0, values.Length)
                                        .Select(i => settings.PlottablePalette.GetColor(i))
                                        .ToArray();
 
-            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+            Color[] fills = colors.Select(x => Color.FromArgb(alphafill, x)).ToArray();
 
             RadarPlot plottable = new(values, colors, fills, independentAxes, maxValues);
             Add(plottable);
@@ -950,7 +1119,7 @@ namespace ScottPlot
         /// <returns>The radial gaugle plot that was just created and added to the plot</returns>
         public ScottPlot.Plottable.RadialGaugePlot AddRadialGauge(double[] values, bool disableFrameAndGrid = true)
         {
-            Color[] colors = Palette.GetColors(values.Length);
+            Color[] colors = Enumerable.Range(0, values.Length).Select(x => Palette.GetColor(x)).ToArray();
             ScottPlot.Plottable.RadialGaugePlot plottable = new(values, colors);
             Add(plottable);
 
@@ -961,6 +1130,14 @@ namespace ScottPlot
             }
 
             return plottable;
+        }
+
+        public RectanglePlot AddRectangle(double xMin, double xMax, double yMin, double yMax)
+        {
+            CoordinateRect rect = new(xMin, xMax, yMin, yMax);
+            RectanglePlot rp = new(rect);
+            Add(rp);
+            return rp;
         }
 
         /// <summary>
@@ -1200,7 +1377,7 @@ namespace ScottPlot
 
                 // TODO: FIX THIS!!!
                 MinRenderIndex = 0,
-                MaxRenderIndex = ys.Length - 1,
+                MaxRenderIndex = Math.Max(0, ys.Length - 1),
             };
             Add(signal);
             return signal;
@@ -1350,7 +1527,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a vertical axis line at a specific Y position
+        /// Add a vertical axis line at a specific X position
         /// </summary>
         public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
         {

@@ -5,13 +5,15 @@
 
 namespace ScottPlot.Palettes;
 
-public class Dark : HexPaletteBase, IPalette
+public class Dark : IPalette
 {
-    public override string Name => GetType().Name;
+    public string Name { get; } = "Dark";
 
-    public override string Description => "A qualitative 8-color palette generated using colorbrewer2.org";
+    public string Description { get; } = "A qualitative 8-color palette generated using colorbrewer2.org";
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
         "#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e",
         "#e6ab02","#a6761d","#666666",

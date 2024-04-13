@@ -56,6 +56,14 @@ namespace ScottPlot.Plottable
         /// </summary>
         public Alignment Alignment { get; set; }
 
+        /// <summary>
+        /// Control whether the image is rendered using anti-aliasing
+        /// </summary>
+        public bool AntiAlias { get; set; } = false;
+
+        /// <summary>
+        /// Color of the border (if <see cref="BorderSize"/> is greater than 0)
+        /// </summary>
         public Color BorderColor { get; set; }
 
         /// <summary>
@@ -76,14 +84,17 @@ namespace ScottPlot.Plottable
             if (Bitmap is null)
                 return AxisLimits.NoLimits;
 
+            float xOffset = (float)(WidthInAxisUnits ?? 0) / 2;
+            float yOffset = (float)(HeightInAxisUnits ?? 0) / 2;
+
             return new AxisLimits(
-                xMin: X,
-                xMax: X + WidthInAxisUnits ?? 0,
-                yMin: Y - HeightInAxisUnits ?? 0,
-                yMax: Y);
+                xMin: X - xOffset,
+                xMax: X + xOffset,
+                yMin: Y - yOffset,
+                yMax: Y + yOffset);
         }
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public override string ToString()
         {
@@ -158,6 +169,10 @@ namespace ScottPlot.Plottable
             using (var framePen = new Pen(BorderColor, BorderSize * 2))
             {
                 GDI.ClipIntersection(gfx, dims, ClippingPoints);
+
+                gfx.InterpolationMode = AntiAlias
+                    ? System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic
+                    : System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
                 gfx.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
                 gfx.TranslateTransform(defaultPoint.X, defaultPoint.Y);

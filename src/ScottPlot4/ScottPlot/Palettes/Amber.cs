@@ -4,14 +4,16 @@
 
 namespace ScottPlot.Palettes;
 
-public class Amber : HexPaletteBase
+public class Amber : IPalette
 {
-    public override string Name => GetType().Name;
+    public string Name { get; } = "Amber";
 
-    public override string Description => string.Empty;
+    public string Description { get; } = string.Empty;
 
-    internal override string[] HexColors => new string[]
+    public System.Drawing.Color[] Colors { get; } = HexColors.Select(System.Drawing.ColorTranslator.FromHtml).ToArray();
+
+    private static readonly string[] HexColors =
     {
-        "#FF6F00","#FF8F00","#FFA000","#FFB300","#FFC107"
+        "#FF6F00", "#FF8F00", "#FFA000", "#FFB300", "#FFC107"
     };
 }

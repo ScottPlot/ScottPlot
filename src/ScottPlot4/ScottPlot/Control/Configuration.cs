@@ -15,7 +15,7 @@ namespace ScottPlot.Control
         public bool Zoom
         {
             get => RightClickDragZoom;
-            set => (RightClickDragZoom, MiddleClickDragZoom, ScrollWheelZoom) = (value, value, value);
+            set => (RightClickDragZoom, MiddleClickDragZoom, ScrollWheelZoom, AltLeftClickDragZoom) = (value, value, value, value);
         }
 
         /// <summary>
@@ -70,9 +70,14 @@ namespace ScottPlot.Control
         public double ScrollWheelZoomHighQualityDelay = 500;
 
         /// <summary>
-        /// Control whether middle-click-drag zooming to a rectangle is enabled
+        /// Control whether middle-click-drag zooming to a rectangle is enabled.
         /// </summary>
         public bool MiddleClickDragZoom = true;
+
+        /// <summary>
+        /// Control whether ALT + left-click-drag rectangle zoom is enabled.
+        /// </summary>
+        public bool AltLeftClickDragZoom = true;
 
         /// <summary>
         /// Control whether middle-click can be used to reset axis limits
@@ -203,5 +208,29 @@ namespace ScottPlot.Control
         /// Default cursor to use (when not hovering or dragging an interactive plottable)
         /// </summary>
         public Cursor DefaultCursor { get; set; } = Cursor.Arrow;
+
+        /// <summary>
+        /// Notify linked plots when axis, size, or layout of this plot changes.
+        /// Temporarially disable this when applying configuration from another linked plot
+        /// to prevent an infinite circular update loop.
+        /// </summary>
+        public bool EmitLinkedControlUpdateSignals = true;
+
+        readonly ControlBackEnd Backend;
+
+        public Configuration(ControlBackEnd backend)
+        {
+            Backend = backend;
+        }
+
+        public void AddLinkedControl(IPlotControl plotControl, bool horizontal = true, bool vertical = true, bool layout = true) => Backend.AddLinkedControl(plotControl, horizontal, vertical, layout);
+
+        public void ClearLinkedControls() => Backend.ClearLinkedControls();
+
+        /// <summary>
+        /// If enabled, right-click-drag zooming will zoom in and out relative to the
+        /// mouse down cursor location instead of the center of the plot.
+        /// </summary>
+        public bool RightClickDragZoomFromMouseDown = false;
     }
 }

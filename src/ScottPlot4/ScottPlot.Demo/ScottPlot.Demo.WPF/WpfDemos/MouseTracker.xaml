@@ -26,17 +26,17 @@
 
             <Label Content="Pixel" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Width="100"/>
             <Label Content="Coordinate" Grid.Row="0" Grid.Column="2" FontWeight="Bold" Width="100"/>
-            <Label Name="MouseTrackLabel" Content="Mouse not yet tracked..." Grid.Row="0" Grid.Column="3" FontWeight="Bold"/>
+            <Label x:Name="MouseTrackLabel" Content="Mouse not yet tracked..." Grid.Row="0" Grid.Column="3" FontWeight="Bold"/>
 
-            <Label Name="XPixelLabel" Content="123.456" Grid.Row="1" Grid.Column="1" FontFamily="consolas" />
-            <Label Name="YPixelLabel" Content="123.456" Grid.Row="2" Grid.Column="1" FontFamily="consolas" />
+            <Label x:Name="XPixelLabel" Content="123.456" Grid.Row="1" Grid.Column="1" FontFamily="consolas" />
+            <Label x:Name="YPixelLabel" Content="123.456" Grid.Row="2" Grid.Column="1" FontFamily="consolas" />
 
-            <Label Name="XCoordinateLabel" Content="123.456" Grid.Row="1" Grid.Column="2" FontFamily="consolas" />
-            <Label Name="YCoordinateLabel" Content="123.456" Grid.Row="2" Grid.Column="2" FontFamily="consolas" />
+            <Label x:Name="XCoordinateLabel" Content="123.456" Grid.Row="1" Grid.Column="2" FontFamily="consolas" />
+            <Label x:Name="YCoordinateLabel" Content="123.456" Grid.Row="2" Grid.Column="2" FontFamily="consolas" />
 
         </Grid>
         <ScottPlot:WpfPlot 
-            Name="wpfPlot1" 
+            x:Name="wpfPlot1" 
             MouseMove="OnMouseMove" 
             MouseEnter="wpfPlot1_MouseEnter"
             MouseLeave="wpfPlot1_MouseLeave"

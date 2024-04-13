@@ -148,5 +148,46 @@ namespace ScottPlotTests.PlotTypes
             sp.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Gap;
             Assert.DoesNotThrow(() => { plt.Render(); });
         }
+
+        [Test]
+        public void Test_ScatterListWithNans_CanGetLimits()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            var scatter = plt.AddScatterList();
+            scatter.Add(1, 4);
+            scatter.Add(2, 5);
+            scatter.Add(3, 6);
+
+            // no NaN values
+            Assert.DoesNotThrow(() => { scatter.GetAxisLimits(); });
+            Assert.AreEqual(1, scatter.GetAxisLimits().XMin);
+            Assert.AreEqual(3, scatter.GetAxisLimits().XMax);
+            Assert.AreEqual(4, scatter.GetAxisLimits().YMin);
+            Assert.AreEqual(6, scatter.GetAxisLimits().YMax);
+
+            // some NaN values
+            scatter.Clear();
+            scatter.Add(1, 4);
+            scatter.Add(double.NaN, double.NaN);
+            scatter.Add(3, 6);
+            Assert.Throws<InvalidOperationException>(() => { scatter.GetAxisLimits(); });
+            scatter.OnNaN = ScottPlot.Plottable.ScatterPlot.NanBehavior.Ignore;
+            Assert.DoesNotThrow(() => { scatter.GetAxisLimits(); });
+            Assert.AreEqual(1, scatter.GetAxisLimits().XMin);
+            Assert.AreEqual(3, scatter.GetAxisLimits().XMax);
+            Assert.AreEqual(4, scatter.GetAxisLimits().YMin);
+            Assert.AreEqual(6, scatter.GetAxisLimits().YMax);
+
+            // all NaN values
+            scatter.Clear();
+            scatter.Add(double.NaN, double.NaN);
+            scatter.Add(double.NaN, double.NaN);
+            scatter.Add(double.NaN, double.NaN);
+            Assert.DoesNotThrow(() => { scatter.GetAxisLimits(); });
+            Assert.AreEqual(double.NaN, scatter.GetAxisLimits().XMin);
+            Assert.AreEqual(double.NaN, scatter.GetAxisLimits().XMax);
+            Assert.AreEqual(double.NaN, scatter.GetAxisLimits().YMin);
+            Assert.AreEqual(double.NaN, scatter.GetAxisLimits().YMax);
+        }
     }
 }

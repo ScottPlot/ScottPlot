@@ -1,4 +1,4 @@
-﻿namespace ScottPlot5_WinForms_Demo.Demos
+﻿namespace WinForms_Demo.Demos
 {
     partial class SignalPerformance
     {
@@ -28,31 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-            this.SuspendLayout();
+            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            rbSignal = new RadioButton();
+            rbScatter = new RadioButton();
+            label1 = new Label();
+            SuspendLayout();
             // 
             // formsPlot1
             // 
-            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.formsPlot1.Location = new System.Drawing.Point(0, 0);
-            this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(800, 450);
-            this.formsPlot1.TabIndex = 0;
+            formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            formsPlot1.DisplayScale = 1.5F;
+            formsPlot1.Location = new Point(17, 117);
+            formsPlot1.Margin = new Padding(4, 5, 4, 5);
+            formsPlot1.Name = "formsPlot1";
+            formsPlot1.Size = new Size(1109, 613);
+            formsPlot1.TabIndex = 0;
+            // 
+            // rbSignal
+            // 
+            rbSignal.AutoSize = true;
+            rbSignal.Checked = true;
+            rbSignal.Location = new Point(17, 20);
+            rbSignal.Margin = new Padding(4, 5, 4, 5);
+            rbSignal.Name = "rbSignal";
+            rbSignal.Size = new Size(121, 29);
+            rbSignal.TabIndex = 1;
+            rbSignal.TabStop = true;
+            rbSignal.Text = "Signal Plot";
+            rbSignal.UseVisualStyleBackColor = true;
+            // 
+            // rbScatter
+            // 
+            rbScatter.AutoSize = true;
+            rbScatter.Location = new Point(141, 20);
+            rbScatter.Margin = new Padding(4, 5, 4, 5);
+            rbScatter.Name = "rbScatter";
+            rbScatter.Size = new Size(127, 29);
+            rbScatter.TabIndex = 2;
+            rbScatter.Text = "Scatter Plot";
+            rbScatter.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Light", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(17, 68);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(70, 32);
+            label1.TabIndex = 4;
+            label1.Text = "label1";
             // 
             // SignalPerformance
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.formsPlot1);
-            this.Name = "SignalPerformance";
-            this.Text = "Signal plot with one million points";
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1143, 750);
+            Controls.Add(label1);
+            Controls.Add(rbScatter);
+            Controls.Add(rbSignal);
+            Controls.Add(formsPlot1);
+            Margin = new Padding(4, 5, 4, 5);
+            Name = "SignalPerformance";
+            Text = "ScottPlot 5 Performance Demo";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private ScottPlot.WinForms.FormsPlot formsPlot1;
+        private RadioButton rbSignal;
+        private RadioButton rbScatter;
+        private Label label1;
     }
 }

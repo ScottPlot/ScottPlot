@@ -1,0 +1,71 @@
+﻿@page "/"
+@using ScottPlot;
+@using ScottPlot.Blazor;
+@using ScottPlotCookbook;
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
+<style>
+    .parent {
+        display: grid;
+        grid-template: 1fr / auto 1fr;
+    }
+
+    nav {
+        grid-column: 1 / 2;
+        background-color: #67217a;
+        color: white;
+    }
+
+    main {
+        grid-column: 2 / 3;
+    }
+</style>
+
+<div class="parent">
+    <nav>
+        @foreach (ICategory category in RecipesByCategory.Keys)
+        {
+            <div class="fs-4 p-2" style="opacity: .5">
+                @category.CategoryName
+            </div>
+
+            @foreach (IRecipe recipe in RecipesByCategory[category])
+            {
+                <div class="menulink">
+                    <a style="font-size: 1em; padding-left: 1em;" @onclick="() => ShowRecipe(recipe)">@recipe.Name</a>
+                </div>
+            }
+        }
+    </nav>
+    <main>
+        @if (Recipe is not null)
+        {
+            <div class="p-3">
+                <div class="fs-3">@Recipe.Name</div>
+                <div>@Recipe.Description</div>
+            </div>
+            <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
+        }
+        <div class="mt-5 text-muted text-center">
+            @ScottPlot.Version.LongString Running on .NET @Environment.Version
+        </div>
+    </main>
+</div>
+
+@code {
+    readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
+
+    BlazorPlot BlazorPlot { get; set; } = new();
+
+    IRecipe? Recipe;
+
+    void ShowRecipe(IRecipe recipe)
+    {
+        Recipe = recipe;
+        BlazorPlot.Reset();
+        recipe.Execute(BlazorPlot.Plot);
+        BlazorPlot.Refresh();
+    }
+}
+

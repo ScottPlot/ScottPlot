@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Control;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ScottPlot
 {
-    public partial class FormsPlot : UserControl
+    public partial class FormsPlot : UserControl, IPlotControl
     {
         /// <summary>
         /// This is the plot displayed by the user control.
@@ -20,12 +21,22 @@ namespace ScottPlot
         /// <summary>
         /// This object can be used to modify advanced behaior and customization of this user control.
         /// </summary>
-        public readonly Control.Configuration Configuration;
+        public Control.Configuration Configuration { get; }
 
         /// <summary>
         /// This event is invoked any time the axis limits are modified.
         /// </summary>
         public event EventHandler AxesChanged;
+
+        /// <summary>
+        /// This event is invoked in multi-control environments to alert other controls that they need to refresh.
+        /// </summary>
+        internal event EventHandler Rendered;
+
+        /// <summary>
+        /// The <see cref="Rendered"/> event will be triggered on every render only if this is true.
+        /// </summary>
+        internal bool EnableRenderedEvent = true;
 
         /// <summary>
         /// This event is invoked any time the plot is right-clicked.
@@ -127,6 +138,11 @@ namespace ScottPlot
 
             Backend.StartProcessingEvents();
         }
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            Backend?.Dispose();
+            base.OnHandleDestroyed(e);
+        }
 
         /// <summary>
         /// Return the mouse position on the plot (in coordinate space) for the latest X and Y coordinates
@@ -141,12 +157,29 @@ namespace ScottPlot
         /// <summary>
         /// Reset this control by replacing the current plot with a new empty plot
         /// </summary>
-        public void Reset() => Backend.Reset(Width, Height);
+        public void Reset()
+        {
+            Backend.Reset(Width, Height);
+            Plot.Style(figureBackground: System.Drawing.Color.Transparent);
+        }
 
         /// <summary>
         /// Reset this control by replacing the current plot with an existing plot
         /// </summary>
-        public void Reset(Plot newPlot) => Backend.Reset(Width, Height, newPlot);
+        public void Reset(Plot newPlot)
+        {
+            Backend.Reset(Width, Height, newPlot);
+            Plot.Style(figureBackground: System.Drawing.Color.Transparent);
+        }
+
+        /// <summary>
+        /// Re-render the plot and update the image displayed by this control.
+        /// </summary>
+        public override void Refresh()
+        {
+            Refresh(false, false);
+            base.Refresh();
+        }
 
         /// <summary>
         /// Re-render the plot and update the image displayed by this control.
@@ -187,8 +220,18 @@ namespace ScottPlot
             RefreshRequest(renderType);
 
         private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
-        private void OnBitmapUpdated(object sender, EventArgs e) { pictureBox1.Refresh(); }
-        private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
+        private void OnBitmapUpdated(object sender, EventArgs e)
+        {
+            pictureBox1.Refresh();
+            if (EnableRenderedEvent)
+                Rendered?.Invoke(this, e);
+        }
+        private void OnBitmapChanged(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Backend.GetLatestBitmap();
+            if (EnableRenderedEvent)
+                Rendered?.Invoke(this, e);
+        }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height, useDelayedRendering: true);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);

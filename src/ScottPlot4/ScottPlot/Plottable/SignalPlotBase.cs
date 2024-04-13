@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Drawing;
+using ScottPlot.Drawing.Colormaps;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,6 @@ namespace ScottPlot.Plottable
     public abstract class SignalPlotBase<T> : IPlottable, IHasLine, IHasMarker, IHighlightable, IHasColor, IHasPointsGenericX<double, T> where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
-        protected bool MaxRenderIndexLowerYSPromise = false;
-        protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
-        protected bool FillColor1MustBeSetPromise = false;
-        protected bool FillColor2MustBeSetPromise = false;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
@@ -39,13 +36,27 @@ namespace ScottPlot.Plottable
 
         public MarkerShape MarkerShape { get; set; } = MarkerShape.filledCircle;
         public double OffsetX { get; set; } = 0;
+        public T ScaleY { get; set; } = default;
         public T OffsetY { get; set; } = default;
+
         public double OffsetYAsDouble
         {
             get
             {
                 var v = OffsetY;
                 return NumericConversion.GenericToDouble(ref v);
+            }
+        }
+
+        public double ScaleYAsDouble
+        {
+            get
+            {
+                double ret = 1.0;
+                var v = ScaleY;
+                if (v.Equals(default(T)) == false)
+                    ret = NumericConversion.GenericToDouble(ref v);
+                return ret;
             }
         }
 
@@ -64,9 +75,9 @@ namespace ScottPlot.Plottable
         }
 
         public string Label { get; set; } = null;
-        public Color Color { get; set; } = Color.Green;
-        public Color LineColor { get => Color; set { Color = value; } }
-        public Color MarkerColor { get => Color; set { Color = value; } }
+        public Color Color { get => LineColor; set { LineColor = value; MarkerColor = value; } }
+        public Color LineColor { get; set; } = Color.Black;
+        public Color MarkerColor { get; set; } = Color.Black;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
         public bool IsHighlighted { get; set; } = false;
@@ -124,9 +135,6 @@ namespace ScottPlot.Plottable
             {
                 if (value == null)
                     throw new Exception("Y data cannot be null");
-
-                MaxRenderIndexLowerYSPromise = MaxRenderIndex > value.Length - 1;
-
                 _Ys = value;
                 Strategy.SourceArray = _Ys;
             }
@@ -166,9 +174,6 @@ namespace ScottPlot.Plottable
             {
                 if (value < 0)
                     throw new ArgumentException("MinRenderIndex must be positive");
-
-                MaxRenderIndexHigherMinRenderIndexPromise = value > MaxRenderIndex;
-
                 _MinRenderIndex = value;
             }
         }
@@ -180,11 +185,6 @@ namespace ScottPlot.Plottable
             {
                 if (value < 0)
                     throw new ArgumentException("MaxRenderIndex must be positive");
-
-                MaxRenderIndexHigherMinRenderIndexPromise = MinRenderIndex > value;
-
-                MaxRenderIndexLowerYSPromise = value > _Ys.Length - 1;
-
                 _maxRenderIndex = value;
             }
         }
@@ -215,10 +215,6 @@ namespace ScottPlot.Plottable
             get => _FillType;
             set
             {
-                FillColor1MustBeSetPromise = (_FillColor1 == null && value != FillType.NoFill);
-
-                FillColor2MustBeSetPromise = (_FillColor2 == null && value == FillType.FillAboveAndBelow);
-
                 _FillType = value;
             }
         }
@@ -229,8 +225,6 @@ namespace ScottPlot.Plottable
             get => _FillColor1;
             set
             {
-                FillColor1MustBeSetPromise = (value == null && FillType != FillType.NoFill);
-
                 _FillColor1 = value;
             }
         }
@@ -241,8 +235,6 @@ namespace ScottPlot.Plottable
             get => _FillColor2;
             set
             {
-                FillColor2MustBeSetPromise = (value == null && FillType == FillType.FillAboveAndBelow);
-
                 _FillColor2 = value;
             }
         }
@@ -252,6 +244,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         private readonly Func<T, T, T> AddYsGenericExpression = NumericConversion.CreateAddFunction<T>();
 
+        private readonly Func<T, T, T> MultiplyYsGenericExpression = NumericConversion.CreateMultFunction<T>();
+
         /// <summary>
         /// Add two Y values (of the generic type used by this signal plot) and return the result as a double
         /// </summary>
@@ -259,6 +253,11 @@ namespace ScottPlot.Plottable
         {
             var v = AddYsGenericExpression(y1, y2);
             return NumericConversion.GenericToDouble(ref v);
+        }
+
+        private T ScaleYs(T y1, T y2)
+        {
+            return MultiplyYsGenericExpression(y1, y2);
         }
 
         /// <summary>
@@ -284,24 +283,43 @@ namespace ScottPlot.Plottable
         /// <param name="lastIndex">last index to replace</param>
         /// <param name="newData">source for new data</param>
         /// <param name="fromData">source data offset</param>
-        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0) =>
+        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0)
+        {
+            if (firstIndex < 0 || firstIndex > Ys.Length)
+                throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            if (lastIndex > Ys.Length)
+                throw new InvalidOperationException($"{nameof(lastIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
             Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
+        }
 
         /// <summary>
         /// Replace all Y values from the given index through the end of the array
         /// </summary>
         /// <param name="firstIndex">first index to begin replacing</param>
         /// <param name="newData">new values</param>
-        public void Update(int firstIndex, T[] newData) => Update(firstIndex, firstIndex + newData.Length, newData);
+        public void Update(int firstIndex, T[] newData)
+        {
+            if (firstIndex < 0 || firstIndex > Ys.Length)
+                throw new InvalidOperationException($"{nameof(firstIndex)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            Update(firstIndex, firstIndex + newData.Length, newData);
+        }
 
         /// <summary>
         /// Replace all Y values with new ones
         /// </summary>
         /// <param name="newData">new Y values</param>
-        public void Update(T[] newData) => Update(0, newData.Length, newData);
+        public void Update(T[] newData)
+        {
+            if (newData.Length > Ys.Length)
+                throw new InvalidOperationException($"{nameof(newData)} cannot exceed the dimensions of the existing {nameof(Ys)} array");
+            Update(0, newData.Length, newData);
+        }
 
         public virtual AxisLimits GetAxisLimits()
         {
+            if (Ys.Length == 0)
+                return AxisLimits.NoLimits;
+
             double xMin = _SamplePeriod * MinRenderIndex;
             double xMax = _SamplePeriod * MaxRenderIndex;
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
@@ -315,8 +333,8 @@ namespace ScottPlot.Plottable
             return new AxisLimits(
                 xMin: xMin + OffsetX,
                 xMax: xMax + OffsetX,
-                yMin: yMin + offsetY,
-                yMax: yMax + offsetY);
+                yMin: (yMin * ScaleYAsDouble) + offsetY,
+                yMax: (yMax * ScaleYAsDouble) + offsetY);
         }
 
         /// <summary>
@@ -327,8 +345,8 @@ namespace ScottPlot.Plottable
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
             double offsetY = OffsetYAsDouble;
-            PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + offsetY));
-            PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + offsetY));
+            PointF point1 = new(dims.GetPixelX(OffsetX), dims.GetPixelY((yMin * ScaleYAsDouble) + offsetY));
+            PointF point2 = new(dims.GetPixelX(OffsetX), dims.GetPixelY((yMax * ScaleYAsDouble) + offsetY));
             gfx.DrawLine(penHD, point1, point2);
         }
 
@@ -336,7 +354,7 @@ namespace ScottPlot.Plottable
         /// Render when the data is zoomed in such that there is more than 1 column per data point.
         /// Rendering is accomplished by drawing a straight line from point to point.
         /// </summary>
-        private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
+        private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Pen penLD)
         {
             int capacity = visibleIndex2 - visibleIndex1 + 2;
             List<PointF> linePoints = new(capacity);
@@ -351,7 +369,10 @@ namespace ScottPlot.Plottable
 
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
             {
-                double yCoordinateWithOffset = AddYs(Ys[i], OffsetY);
+                T scaledCoordiante = Ys[i];
+                if (ScaleY.Equals(default(T)) == false)
+                    scaledCoordiante = ScaleYs(Ys[i], ScaleY);
+                double yCoordinateWithOffset = AddYs(scaledCoordiante, OffsetY);
                 float yPixel = dims.GetPixelY(yCoordinateWithOffset);
                 float xPixel = dims.GetPixelX(_SamplePeriod * i + OffsetX);
                 PointF linePoint = new(xPixel, yPixel);
@@ -406,7 +427,7 @@ namespace ScottPlot.Plottable
                 if (markerPxRadius > .25)
                 {
                     ShowMarkersInLegend = true;
-                    MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, Color, MarkerLineWidth);
+                    MarkerTools.DrawMarkers(gfx, linePoints, MarkerShape, markerPxDiameter, MarkerColor, MarkerLineWidth);
                 }
                 else
                 {
@@ -450,8 +471,8 @@ namespace ScottPlot.Plottable
 
             // get the min and max value for this column                
             Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = dims.GetPixelY(lowestValue + OffsetYAsDouble);
-            float yPxLow = dims.GetPixelY(highestValue + OffsetYAsDouble);
+            float yPxHigh = dims.GetPixelY((lowestValue * ScaleYAsDouble) + OffsetYAsDouble);
+            float yPxLow = dims.GetPixelY((highestValue * ScaleYAsDouble) + OffsetYAsDouble);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
@@ -749,7 +770,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(this)
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = Color,
@@ -758,15 +779,17 @@ namespace ScottPlot.Plottable
                 markerShape = ShowMarkersInLegend ? MarkerShape : MarkerShape.none,
                 markerSize = ShowMarkersInLegend ? MarkerSize : 0
             };
-            return new LegendItem[] { singleLegendItem };
+            return LegendItem.Single(singleItem);
         }
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (Ys.Length == 0)
+                return;
+
             using var gfx = GDI.Graphics(bmp, dims, lowQuality);
-            using var brush = GDI.Brush(Color);
-            using var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true);
-            using var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true);
+            using var penLD = GDI.Pen(LineColor, (float)LineWidth, LineStyle, true);
+            using var penHD = GDI.Pen(LineColor, (float)LineWidth, LineStyle.Solid, true);
 
             double dataSpanUnits = _Ys.Length * _SamplePeriod;
             double columnSpanUnits = dims.XSpan / dims.DataWidth;
@@ -782,6 +805,8 @@ namespace ScottPlot.Plottable
             double firstPointX = dims.GetPixelX(OffsetX);
             double lastPointX = dims.GetPixelX(_SamplePeriod * (_Ys.Length - 1) + OffsetX);
             double dataWidthPx = lastPointX - firstPointX;
+            if (dims.IsReverseX)
+                dataWidthPx = -dataWidthPx;
             double columnsWithData = Math.Min(dataWidthPx, dataWidthPx2);
 
             if (columnsWithData < 1 && Ys.Length > 1)
@@ -797,7 +822,7 @@ namespace ScottPlot.Plottable
             }
             else
             {
-                RenderLowDensity(dims, gfx, visibleIndex1, visibleIndex2, brush, penLD, penHD);
+                RenderLowDensity(dims, gfx, visibleIndex1, visibleIndex2, penLD);
             }
         }
 
@@ -813,6 +838,8 @@ namespace ScottPlot.Plottable
             // check Y values
             if (Ys is null)
                 throw new InvalidOperationException($"{nameof(Ys)} cannot be null");
+            if (Ys.Length == 0)
+                return; // no additional validation required since nothing will be rendered
             if (deep)
                 Validate.AssertAllReal(nameof(Ys), Ys);
 
@@ -821,15 +848,15 @@ namespace ScottPlot.Plottable
                 throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
             if ((MaxRenderIndex > Ys.Length - 1) || MaxRenderIndex < 0)
                 throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
-            if (MaxRenderIndexLowerYSPromise)
+            if (MaxRenderIndex > Ys.Length - 1)
                 throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
-            if (MaxRenderIndexHigherMinRenderIndexPromise)
+            if (MinRenderIndex > MaxRenderIndex)
                 throw new IndexOutOfRangeException("minRenderIndex must be lower maxRenderIndex");
 
             // check misc styling options
-            if (FillColor1MustBeSetPromise)
+            if (_FillColor1 is null && _FillType != FillType.NoFill)
                 throw new InvalidOperationException($"A Color must be assigned to FillColor1 to use fill type '{_FillType}'");
-            if (FillColor2MustBeSetPromise)
+            if (_FillColor1 is null && _FillType == FillType.FillAboveAndBelow)
                 throw new InvalidOperationException($"A Color must be assigned to FillColor2 to use fill type '{_FillType}'");
         }
 
@@ -870,7 +897,7 @@ namespace ScottPlot.Plottable
         /// </summary>
         public void FillDisable()
         {
-            _FillType = FillType.FillBelow;
+            _FillType = FillType.NoFill;
             _GradientFillColor1 = null;
             _GradientFillColor2 = null;
         }

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Show Value Under Cursor" Height="450" Width="800">
     <DockPanel>
-        <Label Name="label1" Content="Hover over a data point to begin..." FontSize="18" DockPanel.Dock="Top"/>
-        <ScottPlot:WpfPlot Name="wpfPlot1" MouseMove="wpfPlot1_MouseMove"/>
+        <Label x:Name="label1" Content="Hover over a data point to begin..." FontSize="18" DockPanel.Dock="Top"/>
+        <ScottPlot:WpfPlot x:Name="wpfPlot1" MouseMove="wpfPlot1_MouseMove"/>
     </DockPanel>
 </Window>

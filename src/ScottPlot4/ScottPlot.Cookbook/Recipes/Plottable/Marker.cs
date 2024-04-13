@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -132,6 +134,37 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
 
             plt.Margins(.2, .2);
+        }
+    }
+
+    public class AddCircle : IRecipe
+    {
+        public ICategory Category => new Categories.PlotTypes.Marker();
+        public string ID => "marker_Circle";
+        public string Title => "Circle Marker";
+        public string Description =>
+            "Circles can be added anywhere on the plot. If a line style is used, a custom pattern should be created.";
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create a custom pattern (defining dash and space lengths)
+            List<float> patternLengths = new();
+            for (int i = 0; i < 20; i++)
+            {
+                patternLengths.Add(1f); // dash
+                patternLengths.Add(.5f); // space
+                patternLengths.Add(.25f); // dot
+                patternLengths.Add(.5f); // space
+            }
+
+            // normalize the lengths so the total pattern length is 1
+            float totalPatternLength = patternLengths.Sum();
+            float[] pattern = patternLengths.Select(x => x / totalPatternLength).ToArray();
+
+            // apply the custom pattern
+            ScottPlot.LineStylePatterns.Custom = pattern;
+
+            // plot a circle using the custom pattern
+            plt.AddCircle(x: 7, y: 13, radius: 5, lineWidth: 3, lineStyle: LineStyle.Custom);
         }
     }
 }

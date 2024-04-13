@@ -14,21 +14,89 @@ namespace ScottPlot.Plottable
     {
         public double[] Values { get; set; }
         public string Label { get; set; }
+
+        /// <summary>
+        /// Labels to display on top of each slice or in the legend.
+        /// </summary>
         public string[] SliceLabels { get; set; }
 
+        /// <summary>
+        /// If populated, this array of strings will be used for the legend.
+        /// </summary>
+        public string[] LegendLabels { get; set; }
+
+        /// <summary>
+        /// Defines how large the pie is relative to the pixel size of the smallest axis
+        /// </summary>
+        public double Size { get; set; } = 0.9;
+
+        /// <summary>
+        /// Distance from the center of the pie to display labels.
+        /// Set this value greater to <see cref="Size"/> to place labels outside the pie.
+        /// </summary>
+        public double SliceLabelPosition { get; set; } = 0.35;
+
+        /// <summary>
+        /// Colors for each slice around the pie
+        /// </summary>
         public Color[] SliceFillColors { get; set; }
+
+        /// <summary>
+        /// Colors to fill the text placed at each slice
+        /// </summary>
         public Color[] SliceLabelColors { get; set; }
-        public Color BackgroundColor { get; set; }
+
+        /// <summary>
+        /// Required by System.Drawing but does not influence output image
+        /// </summary>
+        private Color BackgroundColor { get; set; } = Color.Transparent;
+
+        /// <summary>
+        /// Fill style for each slice
+        /// </summary>
         public HatchOptions[] HatchOptions { get; set; }
 
+        /// <summary>
+        /// If enabled, slices will be offset from the center and have gaps between them
+        /// </summary>
         public bool Explode { get; set; }
+
+        /// <summary>
+        /// Display the value of slices using text aligned to each slice
+        /// </summary>
         public bool ShowValues { get; set; }
+
+        /// <summary>
+        /// Display the percentage of slices using text aligned to each slice
+        /// </summary>
         public bool ShowPercentages { get; set; }
+
+        /// <summary>
+        /// If enabled, <see cref="SliceLabels"/> will be displayed above each slice.
+        /// </summary>
         public bool ShowLabels { get; set; }
 
+        /// <summary>
+        /// Size of the hollow region in the center of a donut plot.
+        /// Set to zero for a traditional pie plot.
+        /// </summary>
         public double DonutSize { get; set; }
+
+        /// <summary>
+        /// If populated, this text will be displayed in the center of the pie.
+        /// This option is useful for donut plots with a hollow center.
+        /// </summary>
         public string DonutLabel { get; set; }
+
+        /// <summary>
+        /// Font to use for the label displayed at the center of donut charts 
+        /// when <see cref="DonutLabel"/> is populated
+        /// </summary>
         public readonly Drawing.Font CenterFont = new();
+
+        /// <summary>
+        /// Font to use for text displayed over each slice.
+        /// </summary>
         public readonly Drawing.Font SliceFont = new();
 
         public float OutlineSize { get; set; } = 0;
@@ -61,13 +129,22 @@ namespace ScottPlot.Plottable
         public LegendItem[] GetLegendItems()
         {
             if (SliceLabels is null)
-                return Array.Empty<LegendItem>();
+                return LegendItem.None;
+
+            string[] labels = SliceLabels;
+
+            if (LegendLabels is not null)
+            {
+                if (LegendLabels.Length != Values.Length)
+                    throw new InvalidOperationException("custom legend labels must have the same number of items as slices");
+                labels = LegendLabels;
+            }
 
             return Enumerable
                 .Range(0, Values.Length)
                 .Select(i => new LegendItem(this)
                 {
-                    label = SliceLabels[i],
+                    label = labels[i],
                     color = SliceFillColors[i],
                     lineWidth = 10,
                     hatchStyle = HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None,
@@ -106,7 +183,7 @@ namespace ScottPlot.Plottable
 
                 double centreX = 0;
                 double centreY = 0;
-                float diameterPixels = .9f * Math.Min(dims.DataWidth, dims.DataHeight);
+                float diameterPixels = (float)Size * Math.Min(dims.DataWidth, dims.DataHeight);
 
                 // record label details and draw them after slices to prevent cover-ups
                 double[] labelXs = new double[Values.Length];
@@ -144,7 +221,7 @@ namespace ScottPlot.Plottable
                     double yOffset = Explode ? 3 * Math.Sin(angle) : 0;
 
                     // record where and what to label the slice
-                    double sliceLabelR = 0.35 * diameterPixels;
+                    double sliceLabelR = SliceLabelPosition * diameterPixels;
                     labelXs[i] = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
                     labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
                     string sliceLabelValue = (ShowValues) ? $"{Values[i]}" : "";
@@ -154,7 +231,17 @@ namespace ScottPlot.Plottable
 
                     using var sliceFillBrush = GDI.Brush(SliceFillColors[i], HatchOptions?[i].Color, HatchOptions?[i].Pattern ?? Drawing.HatchStyle.None);
 
-                    var offsetRectangle = new Rectangle((int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), (int)boundingRectangle.Width, (int)boundingRectangle.Height);
+                    Rectangle offsetRectangle = new(
+                        x: (int)(boundingRectangle.X + xOffset),
+                        y: (int)(boundingRectangle.Y + yOffset),
+                        width: (int)boundingRectangle.Width,
+                        height: (int)boundingRectangle.Height);
+
+                    // System.Drawing cannot render extremely small shapes
+                    // https://github.com/ScottPlot/ScottPlot/issues/2415
+                    if (offsetRectangle.Width < 1 || offsetRectangle.Height < 1)
+                        return;
+
                     if (sweep != 360)
                     {
                         gfx.FillPie(brush: sliceFillBrush,
@@ -216,6 +303,38 @@ namespace ScottPlot.Plottable
                         height: boundingRectangle.Height);
                 }
             }
+        }
+
+        public (double x, double y) GetLabelPosition(int sliceIndex, PlotDimensions dims)
+        {
+            double[] proportions = Values.Select(x => x / Values.Sum()).ToArray();
+            double start = -90;
+
+            float diameterPixels = (float)Size * Math.Min(dims.DataWidth, dims.DataHeight);
+            double centreX = 0;
+            double centreY = 0;
+            RectangleF boundingRectangle = new RectangleF(
+                dims.GetPixelX(centreX) - diameterPixels / 2,
+                dims.GetPixelY(centreY) - diameterPixels / 2,
+                diameterPixels,
+                diameterPixels);
+
+            // determine where the slice is to be drawn
+            double sweep = proportions[sliceIndex] * 360;
+            double sweepOffset = Explode ? -1 : 0;
+            double angle = (Math.PI / 180) * ((sweep + 2 * start) / 2);
+            double xOffset = Explode ? 3 * Math.Cos(angle) : 0;
+            double yOffset = Explode ? 3 * Math.Sin(angle) : 0;
+
+            // record where and what to label the slice
+            double sliceLabelR = SliceLabelPosition * diameterPixels;
+            double labelXs = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
+            double labelYs = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
+            string sliceLabelValue = (ShowValues) ? $"{Values[sliceIndex]}" : "";
+            string sliceLabelPercentage = ShowPercentages ? $"{proportions[sliceIndex] * 100:f1}%" : "";
+            string sliceLabelName = (ShowLabels && SliceLabels != null) ? SliceLabels[sliceIndex] : "";
+
+            return (labelXs, labelYs);
         }
     }
 }

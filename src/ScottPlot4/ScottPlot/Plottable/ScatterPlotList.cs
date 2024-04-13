@@ -118,8 +118,8 @@ namespace ScottPlot.Plottable
             }
             else
             {
-                xs = xs.Where(x => double.IsNaN(x));
-                ys = ys.Where(y => double.IsNaN(y));
+                xs = xs.Where(x => !double.IsNaN(x));
+                ys = ys.Where(y => !double.IsNaN(y));
 
                 if (xs.Any() == false || ys.Any() == false)
                     return AxisLimits.NoLimits;
@@ -131,6 +131,22 @@ namespace ScottPlot.Plottable
 
                 return new AxisLimits(xMin, xMax, yMin, yMax);
             }
+        }
+
+        /// <summary>
+        /// Returns a copy of all the X positions currently in use
+        /// </summary>
+        public T[] GetXs()
+        {
+            return Xs.ToArray();
+        }
+
+        /// <summary>
+        /// Returns a copy of all the Y positions currently in use
+        /// </summary>
+        public T[] GetYs()
+        {
+            return Ys.ToArray();
         }
 
         /// <summary>
@@ -230,7 +246,7 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(this)
+            var singleItem = new LegendItem(this)
             {
                 label = Label,
                 color = Color,
@@ -239,7 +255,7 @@ namespace ScottPlot.Plottable
                 markerShape = MarkerShape,
                 markerSize = MarkerSize
             };
-            return new LegendItem[] { singleLegendItem };
+            return LegendItem.Single(singleItem);
         }
     }
 }

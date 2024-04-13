@@ -41,7 +41,7 @@ namespace ScottPlot.Plottable
 
         public bool HitTestEnabled { get; set; } = true;
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 

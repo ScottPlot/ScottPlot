@@ -208,5 +208,16 @@
             </TextBlock>
         </DockPanel>
 
+        <DockPanel Margin="0px 5px">
+            <Button DockPanel.Dock="Left" Click="LaunchHittableDemo">
+                <TextBlock TextAlignment="Center">
+                                Hittable Demo
+                </TextBlock>
+            </Button>
+            <TextBlock >
+                            Example use of IHittable for mouse interactivity
+            </TextBlock>
+        </DockPanel>
+        
     </StackPanel>
 </UserControl>

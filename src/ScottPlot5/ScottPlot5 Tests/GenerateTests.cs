@@ -1,4 +1,7 @@
-﻿namespace ScottPlotTests.RenderTests.Figure;
+﻿using System.Linq;
+using System;
+
+namespace ScottPlotTests.RenderTests.Figure;
 
 public class Tests
 {
@@ -11,29 +14,9 @@ public class Tests
     }
 
     [Test]
-    public void Test_Generate_ConsecutiveGeneric()
+    public void Test_RandomNormal()
     {
-        double[] values1 = ScottPlot.Generate.Consecutive(10);
-        float[] values2 = ScottPlot.Generate.Consecutive<float>(10);
-
-        for (int i = 0; i < values1.Length; i++)
-        {
-            values1[i].Should().Be(values2[i]);
-        }
-    }
-
-    [Test]
-    public void Test_Generate_SinGeneric()
-    {
-        double[] values1 = ScottPlot.Generate.Sin(10);
-        values1.Should().NotBeNullOrEmpty();
-        values1.Should().HaveCount(10);
-
-        float[] values2 = ScottPlot.Generate.Sin<float>(10);
-
-        for (int i = 0; i < values1.Length; i++)
-        {
-            values1[i].Should().BeApproximately(values2[i], 1e-6);
-        }
+        double[] values = Generate.RandomNormal(10);
+        Console.WriteLine(string.Join(Environment.NewLine, values.Select(x => x.ToString())));
     }
 }

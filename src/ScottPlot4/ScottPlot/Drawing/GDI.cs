@@ -191,16 +191,10 @@ namespace ScottPlot.Drawing
                  */
                 pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
             }
-            else if (lineStyle == LineStyle.Dash)
-                pen.DashPattern = new float[] { 8.0F, 4.0F };
-            else if (lineStyle == LineStyle.DashDot)
-                pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
-            else if (lineStyle == LineStyle.DashDotDot)
-                pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
-            else if (lineStyle == LineStyle.Dot)
-                pen.DashPattern = new float[] { 2.0F, 4.0F };
             else
-                throw new NotImplementedException("line style not supported");
+            {
+                pen.DashPattern = LineStylePatterns.GetDashPattern(lineStyle);
+            }
 
             if (rounded)
             {
@@ -413,6 +407,73 @@ namespace ScottPlot.Drawing
             GraphicsPath path = new();
             path.AddPolygon(points);
             gfx.SetClip(path, CombineMode.Intersect);
+        }
+
+        /// <summary>
+        /// Shade the region abvove or below the curve (to infinity) by drawing a polygon to the edge of the visible plot area.
+        /// </summary>
+        public static void FillToInfinity(PlotDimensions dims, Graphics gfx, float pxLeft, float pxRight, PointF[] points, bool fillAbove, Color color1, Color color2)
+        {
+            if ((int)(pxRight - pxLeft) == 0 || (int)dims.Height == 0)
+                return;
+            float minVal = 0;
+            float maxVal = (dims.DataHeight * (fillAbove ? -1 : 1)) + dims.DataOffsetY;
+
+            PointF first = new(pxLeft, maxVal);
+            PointF last = new(pxRight, maxVal);
+
+            points = new PointF[] { first }
+                            .Concat(points)
+                            .Concat(new PointF[] { last })
+                            .ToArray();
+
+            Rectangle gradientRectangle = new(
+                    x: (int)first.X,
+                    y: (int)minVal - (fillAbove ? 2 : 0),
+                    width: (int)(last.X - first.X),
+                    height: (int)dims.Height);
+
+            using LinearGradientBrush brush = new(gradientRectangle, color1, color2, LinearGradientMode.Vertical);
+            gfx.FillPolygon(brush, points);
+        }
+
+        /// <summary>
+        /// Return the position of a small rectangle placed inside a larger rectangle according to the given alignment and margin.
+        /// </summary>
+        public static RectangleF GetAlignedRectangle(RectangleF outer, SizeF size, Alignment alignment, float paddingX, float paddingY)
+        {
+            float left = outer.Left + paddingX;
+            float right = outer.Right - paddingX;
+            float centerX = (outer.Left + outer.Right) / 2;
+
+            float top = outer.Top + paddingY;
+            float bottom = outer.Bottom - paddingY;
+            float centerY = (outer.Top + outer.Bottom) / 2;
+
+            float width = size.Width;
+            float height = size.Height;
+
+            return alignment switch
+            {
+                Alignment.UpperLeft => new RectangleF(left, top, width, height),
+                Alignment.UpperCenter => new RectangleF(centerX - width / 2, top, width, height),
+                Alignment.UpperRight => new RectangleF(right - width, top, width, height),
+                Alignment.MiddleLeft => new RectangleF(left, centerY - height / 2, width, height),
+                Alignment.MiddleCenter => new RectangleF(centerX - width / 2, centerY - height / 2, width, height),
+                Alignment.MiddleRight => new RectangleF(right - width, centerY - height / 2, width, height),
+                Alignment.LowerLeft => new RectangleF(left, bottom - height, width, height),
+                Alignment.LowerCenter => new RectangleF(centerX - width / 2, bottom - height, width, height),
+                Alignment.LowerRight => new RectangleF(right - width, bottom - height, width, height),
+                _ => throw new NotImplementedException(alignment.ToString()),
+            };
+        }
+
+        /// <summary>
+        /// For some reason this overload is not present in System.Drawing.Common
+        /// </summary>
+        internal static void DrawRectangle(this Graphics gfx, Pen pen, RectangleF rect)
+        {
+            gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
         }
     }
 }

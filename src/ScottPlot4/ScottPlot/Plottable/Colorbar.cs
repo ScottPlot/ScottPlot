@@ -19,11 +19,12 @@ namespace ScottPlot.Plottable
         private Bitmap BmpScale;
 
         public bool IsVisible { get; set; } = true;
+        public bool LabelIsVisible { get; set; } = true;
         public int XAxisIndex { get => 0; set { } }
         public int YAxisIndex { get => 0; set { } }
 
         /// <summary>
-        /// Width of the colorbar rectangle
+        /// Width of the colored rectangle (pixels)
         /// </summary>
         public int Width { get; set; } = 20;
 
@@ -35,7 +36,19 @@ namespace ScottPlot.Plottable
         private readonly List<Tick> ManualTicks = new();
         private bool AutomaticTickEnable { get; set; } = true;
         private int AutomaticTickMinimumSpacing { get; set; } = 40;
-        private Func<double, string> AutomaticTickFormatter { get; set; } = position => $"{position:F2}";
+        public Func<double, string> TickLabelFormatter { get; set; } = position => $"{position:F2}";
+
+        /// <summary>
+        /// Optional text to display rotated outside the colormap
+        /// </summary>
+        public string Label { get; set; } = string.Empty;
+        public readonly Drawing.Font LabelFont = new() { Size = 16 };
+
+        /// <summary>
+        /// Distance (pixels) to offset the axis label from the edge of the colormap.
+        /// This edge is typically large enough to accommodate tick labels.
+        /// </summary>
+        public float LabelMargin { get; set; } = -1;
 
         public float DataAreaPadding { get; set; } = 10;
 
@@ -74,6 +87,11 @@ namespace ScottPlot.Plottable
         public double MaxColor { get => _MaxColor; set { _MaxColor = value; UpdateBitmap(); } }
 
         /// <summary>
+        /// Size (in pizels) of the colorbar, ticks, and label at the time of the last render
+        /// </summary>
+        private float LastRenderWidth = -1;
+
+        /// <summary>
         /// If populated, this object holds the plottable containing the heatmap and value data this colorbar represents
         /// </summary>
         private IHasColormap Plottable;
@@ -91,7 +109,7 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-        public LegendItem[] GetLegendItems() => Array.Empty<LegendItem>();
+        public LegendItem[] GetLegendItems() => LegendItem.None;
 
         public void ValidateData(bool deep = false) { }
 
@@ -114,7 +132,7 @@ namespace ScottPlot.Plottable
 
             AutomaticTickEnable = enable;
             AutomaticTickMinimumSpacing = minimumSpacing ?? AutomaticTickMinimumSpacing;
-            AutomaticTickFormatter = formatter ?? AutomaticTickFormatter;
+            TickLabelFormatter = formatter ?? TickLabelFormatter;
         }
 
         /// <summary>
@@ -217,14 +235,36 @@ namespace ScottPlot.Plottable
         public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
             Colormap.Colorbar(Colormap, width, height, vertical, MinColor, MaxColor);
 
+        /// <summary>
+        /// Adjust the layout of the given plot based on size information from the previous render
+        /// </summary>
+        public void ResizeLayout(Plot plot)
+        {
+            if (LastRenderWidth < 0)
+            {
+                throw new InvalidOperationException("ResizeLayout() must be called after at least one render.");
+            }
+
+            var axis = Edge switch
+            {
+                Renderable.Edge.Left => plot.LeftAxis,
+                Renderable.Edge.Right => plot.RightAxis,
+                _ => throw new NotImplementedException(),
+            };
+
+            axis.SetSizeLimit(min: LastRenderWidth + 5);
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (BmpScale is null)
                 UpdateBitmap();
 
             RectangleF colorbarRect = RenderColorbar(dims, bmp);
+            float ticksPartWidth = RenderTicks(dims, bmp, lowQuality, colorbarRect);
+            float labelHeight = RenderLabel(dims, bmp, lowQuality, colorbarRect, ticksPartWidth);
 
-            RenderTicks(dims, bmp, lowQuality, colorbarRect);
+            LastRenderWidth = labelHeight + ticksPartWidth + colorbarRect.Width;
         }
 
         /// <summary>
@@ -245,7 +285,7 @@ namespace ScottPlot.Plottable
                 double colorbarFraction = tickSpacingFraction * i;
                 double tickPosition = MinValue + colorbarFraction * valueSpan;
 
-                string tickLabel = AutomaticTickFormatter(tickPosition);
+                string tickLabel = TickLabelFormatter(tickPosition);
                 if (MinIsClipped && i == 0)
                     tickLabel = "≤" + tickLabel;
                 if (MaxIsClipped && i == tickCount)
@@ -284,7 +324,15 @@ namespace ScottPlot.Plottable
             return rect;
         }
 
-        private void RenderTicks(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect)
+        /// <summary>
+        /// returns the width of the Ticks+string labels part
+        /// </summary>
+        /// <param name="dims"></param>
+        /// <param name="bmp"></param>
+        /// <param name="lowQuality"></param>
+        /// <param name="colorbarRect"></param>
+        /// <returns></returns>
+        private float RenderTicks(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect)
         {
             float tickLeftPx = colorbarRect.Right;
             float tickRightPx = tickLeftPx + TickMarkLength;
@@ -305,6 +353,35 @@ namespace ScottPlot.Plottable
                 gfx.DrawLine(tickMarkPen, tickLeftPx, y, tickRightPx, y);
                 gfx.DrawString(tick.Label, tickFont, tickLabelBrush, tickLabelPx, y, sf);
             }
+
+            Tick largestTick = ticks.OrderByDescending(x => x.Label.Length).FirstOrDefault();
+            SizeF largestTickRect = gfx.MeasureString(largestTick.Label, tickFont);
+            float mostRightPx = largestTickRect.Width + tickLabelPx;
+
+            return mostRightPx - tickLeftPx;
+        }
+
+        private float RenderLabel(PlotDimensions dims, Bitmap bmp, bool lowQuality, RectangleF colorbarRect, float ticksWidth)
+        {
+            if (string.IsNullOrWhiteSpace(Label) || !LabelIsVisible)
+                return 0;
+
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false);
+            using Brush brush = GDI.Brush(TickLabelFont.Color);
+            using System.Drawing.Font font = GDI.Font(LabelFont);
+            using StringFormat sf = new() { Alignment = StringAlignment.Center };
+
+            if (LabelMargin < 0) LabelMargin = ticksWidth + 2;
+
+            float x = colorbarRect.Right + LabelMargin;
+            float y = (colorbarRect.Top + colorbarRect.Bottom) / 2;
+
+            gfx.TranslateTransform(x, y);
+            gfx.RotateTransform(-90);
+            gfx.DrawString(Label, font, brush, 0, 0, sf);
+            GDI.ResetTransformPreservingScale(gfx, dims);
+
+            return GDI.MeasureString(gfx, Label, LabelFont).Height;
         }
     }
 }

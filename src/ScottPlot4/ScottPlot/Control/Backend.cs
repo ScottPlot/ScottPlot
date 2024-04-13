@@ -54,8 +54,12 @@ namespace ScottPlot.Control
     /// User controls can instantiate this object, pass mouse and resize event information in, and have
     /// renders triggered using events.
     /// </summary>
-    public class ControlBackEnd
+    public class ControlBackEnd : IDisposable
     {
+        /// <summary>
+        /// Track whether Dispose has been called.
+        /// </summary>
+        private bool disposedValue;
         /// <summary>
         /// This event is invoked when an existing Bitmap is redrawn.
         /// e.g., after rendering following a click-drag-pan mouse event.
@@ -111,7 +115,7 @@ namespace ScottPlot.Control
         /// The control configuration object stores advanced customization and behavior settings
         /// for mouse-interactive plots.
         /// </summary>
-        public readonly Configuration Configuration = new();
+        public readonly Configuration Configuration;
 
         /// <summary>
         /// True if the middle mouse button is pressed
@@ -240,6 +244,11 @@ namespace ScottPlot.Control
         public readonly string ControlName;
 
         /// <summary>
+        /// Plots whose axes and layout will be updated when this plot changes
+        /// </summary>
+        readonly List<LinkedPlotControl> LinkedPlotControls = new();
+
+        /// <summary>
         /// Create a back-end for a user control
         /// </summary>
         /// <param name="width">initial bitmap size (pixels)</param>
@@ -247,6 +256,7 @@ namespace ScottPlot.Control
         /// <param name="name">variable name of the user control using this backend</param>
         public ControlBackEnd(float width, float height, string name = "UnamedControl")
         {
+            Configuration = new(this);
             Cursor = Configuration.DefaultCursor;
             EventFactory = new UIEventFactory(Configuration, Settings, Plot);
             EventsProcessor = new EventsProcessor(
@@ -261,7 +271,10 @@ namespace ScottPlot.Control
         /// before it has fully connected its event handlers. To prevent processing events before
         /// the host is control is ready, the processor will be stopped until is called by the host control.
         /// </summary>
-        public void StartProcessingEvents() => EventsProcessor.Enable = true;
+        public void StartProcessingEvents()
+        {
+            EventsProcessor.Enable = true;
+        }
 
         /// <summary>
         /// Reset the back-end by creating an entirely new plot of the given dimensions
@@ -354,7 +367,10 @@ namespace ScottPlot.Control
 
             AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
+            {
                 AxesChanged(null, EventArgs.Empty);
+                UpdateLinkedPlotControls();
+            }
             LimitsOnLastRender = newLimits;
 
             if (BitmapRenderCount == 1)
@@ -492,6 +508,10 @@ namespace ScottPlot.Control
             if (EventsProcessor is null)
                 return;
 
+            // avoid update loops
+            if (Bmp?.Width == (int)width && Bmp?.Height == (int)height)
+                return;
+
             // Disposing a Bitmap the GUI is displaying will cause an exception.
             // Keep track of old bitmaps so they can be disposed of later.
             OldBitmaps.Enqueue(Bmp);
@@ -502,6 +522,9 @@ namespace ScottPlot.Control
                 RenderRequest(RenderType.HighQualityDelayed);
             else
                 Render();
+
+            // axes changed if the size changed
+            AxesChanged.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -538,7 +561,7 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseMove(InputState input)
         {
-            bool isZoomingRectangleWithAltLeft = IsLeftDown && input.AltDown;
+            bool isZoomingRectangleWithAltLeft = IsLeftDown && input.AltDown && Configuration.AltLeftClickDragZoom;
             bool isZoomingRectangleWithMiddle = IsMiddleDown && Configuration.MiddleClickDragZoom;
 
             bool wasZoomingRectangle = IsZoomingRectangle;
@@ -658,7 +681,7 @@ namespace ScottPlot.Control
             var droppedPlottable = PlottableBeingDragged;
 
             IUIEvent mouseEvent;
-            if (IsZoomingRectangle && MouseDownDragged && Configuration.MiddleClickDragZoom)
+            if (IsZoomingRectangle && MouseDownDragged)
                 mouseEvent = EventFactory.CreateApplyZoomRectangleEvent(input.X, input.Y);
             else if (IsMiddleDown && Configuration.MiddleClickAutoAxis && MouseDownDragged == false)
                 mouseEvent = EventFactory.CreateMouseAutoAxis();
@@ -712,6 +735,13 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseWheel(InputState input)
         {
+            if (input.WheelScrolledDown == false && input.WheelScrolledUp == false)
+            {
+                // This occurence may happen for mouse devices which allow horizontal wheel scrolling.
+                // In this case, do nothing.
+                return;
+            }
+
             if (!Settings.AllAxesHaveBeenSet)
                 Plot.SetAxisLimits(Plot.GetAxisLimits());
 
@@ -720,6 +750,79 @@ namespace ScottPlot.Control
                 IUIEvent mouseEvent = EventFactory.CreateMouseScroll(input.X, input.Y, input.WheelScrolledUp);
                 ProcessEvent(mouseEvent);
             }
+        }
+
+        /// <summary>
+        /// Add a plot which will have its axes and layout updated when this plot changes
+        /// </summary>
+        public void AddLinkedControl(IPlotControl otherPlot, bool horizontal = true, bool vertical = true, bool layout = true)
+        {
+            LinkedPlotControl linkedControl = new(otherPlot, horizontal, vertical, layout);
+            LinkedPlotControls.Add(linkedControl);
+            UpdateLinkedPlotControls();
+        }
+
+        public void ClearLinkedControls()
+        {
+            LinkedPlotControls.Clear();
+        }
+
+        private void UpdateLinkedPlotControls()
+        {
+            if (!Configuration.EmitLinkedControlUpdateSignals)
+                return;
+
+            foreach (LinkedPlotControl linkedPlotControl in LinkedPlotControls)
+            {
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = false;
+
+                linkedPlotControl.PlotControl.Plot.MatchAxis(
+                    sourcePlot: this.Plot,
+                    horizontal: linkedPlotControl.LinkHorizontal,
+                    vertical: linkedPlotControl.LinkVertical);
+
+                if (linkedPlotControl.LinkLayout)
+                {
+                    linkedPlotControl.PlotControl.Plot.MatchLayout(
+                        sourcePlot: this.Plot,
+                        horizontal: linkedPlotControl.LinkHorizontal,
+                        vertical: linkedPlotControl.LinkVertical);
+                }
+
+                linkedPlotControl.PlotControl.Refresh();
+
+                linkedPlotControl.PlotControl.Configuration.EmitLinkedControlUpdateSignals = true;
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                while (OldBitmaps.Count > 0)
+                    OldBitmaps.Dequeue()?.Dispose();
+                Bmp?.Dispose();
+                Bmp = null;
+                disposedValue = true;
+            }
+        }
+
+        ~ControlBackEnd()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

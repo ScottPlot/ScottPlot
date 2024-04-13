@@ -1,21 +1,47 @@
-﻿using ScottPlotCookbook.Info;
+﻿using ScottPlotCookbook.Recipes;
 
 namespace ScottPlotCookbook;
 
 public static class Query
 {
-    public static List<ChapterInfo> GetChapters() =>
-        Cookbook.GetChapters()
-        .Select(x => new ChapterInfo(x))
-        .ToList();
+    public static string[] GetChapterNamesInOrder()
+    {
+        return new string[]
+        {
+            "Introduction",
+            "Axis",
+            "Plot Types",
+            "Statistics",
+            "Miscellaneous"
+        };
+    }
 
-    public static List<PageInfo> GetPages() =>
-        GetChapters()
-        .SelectMany(x => x.Pages)
-        .ToList();
+    // TODO: private
+    public static IEnumerable<ICategory> GetCategories()
+    {
+        return AppDomain.CurrentDomain
+            .GetAssemblies()
+            .SelectMany(x => x.GetTypes())
+            .Where(type => type.IsClass && !type.IsAbstract)
+            .Where(type => typeof(ICategory).IsAssignableFrom(type))
+            .Select(type => Activator.CreateInstance(type))
+            .Cast<ICategory>();
+    }
 
-    public static List<RecipeInfo> GetRecipes() =>
-        GetPages()
-        .SelectMany(x => x.Recipes)
-        .ToList();
+    public static Dictionary<ICategory, IEnumerable<IRecipe>> GetRecipesByCategory()
+    {
+        Dictionary<ICategory, IEnumerable<IRecipe>> recipesByCategory = new();
+
+        foreach (ICategory categoryClass in GetCategories())
+        {
+            recipesByCategory[categoryClass] = categoryClass
+                .GetType()
+                .GetNestedTypes()
+                .Where(type => typeof(IRecipe).IsAssignableFrom(type))
+                .Select(type => Activator.CreateInstance(type))
+                .Cast<IRecipe>();
+        }
+
+        return recipesByCategory;
+    }
 }

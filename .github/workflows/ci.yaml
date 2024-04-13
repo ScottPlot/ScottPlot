@@ -1,0 +1,51 @@
+# This workflow tests all code after any change to the main branch
+
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+      - .github/workflows/ci.yaml
+
+# cancel running versions of this workflow when this one starts
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  # Run the autoformatter in parallel too.
+  # If it makes a change it will commit it and restart this workflow.
+  autoformat:
+    name: "Autoformat"
+    uses: ./.github/workflows/task-autoformat-fix.yaml
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  # This security analysis evaluates non-compiled code
+  security:
+    name: "Security"
+    uses: ./.github/workflows/task-security-scan.yaml
+    permissions:
+      security-events: write
+
+  full:
+    name: "Full Build"
+    uses: ./.github/workflows/task-full.yaml
+    permissions:
+      security-events: write
+
+  publish-changelog:
+    name: "Publish"
+    needs: [full]
+    uses: ./.github/workflows/task-publish-changelog.yaml
+
+  publish-metrics:
+    name: "Publish"
+    needs: [full]
+    uses: ./.github/workflows/task-code-metrics.yaml
+    secrets:
+      private-ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}

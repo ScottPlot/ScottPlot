@@ -1,0 +1,5 @@
+{{!Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE file in the project root for full license information.}}
+
+<a class="navbar-brand" href="https://scottplot.net/doc/v4/api/">
+  <img id="logo" src="https://scottplot.net/images/sp4/logo-30px.png" alt="{{_appName}}" width="30" height="30">
+</a>

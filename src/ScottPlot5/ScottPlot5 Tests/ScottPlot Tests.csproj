@@ -4,9 +4,9 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RootNamespace>ScottPlotTests</RootNamespace>
+        <IsPackable>false</IsPackable>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
