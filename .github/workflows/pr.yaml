@@ -1,16 +1,8 @@
-# This workflow is for deep analysis of PRs.
-# It takes a very long time to run so it should not block merging.
-
-name: PR2
+name: PR
 
 on:
   workflow_dispatch:
   pull_request:
-
-# cancel old runs when new commands are made to the same PR
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
 
 jobs:
   evaluate:
@@ -18,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: "0" # all branches
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Evaluate git history
         run: |
           echo "MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
@@ -34,24 +27,40 @@ jobs:
         if: ${{ env.MOD_SP5 != '' }}
         run: echo sp5 changed
     outputs:
-      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }}
-      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }}
+      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 != '' }}
+      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 != '' }}
 
-  sp4-full-build:
+  sp4-check:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP4 != '' || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/task-sp4-check.yaml
+    permissions:
+      security-events: write
+
+  sp5-check:
+    needs: evaluate
+    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/task-sp5-check.yaml
+    permissions:
+      security-events: write
+
+  sp4-full:
+    needs: evaluate
+    if: needs.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp4-full-build.yaml
     permissions:
       security-events: write
 
-  sp5-full-build:
+  sp5-full:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 != '' || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp5-full-build.yaml
     permissions:
       security-events: write
 
   autoformat-check:
+    needs: evaluate
+    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-autoformat-check.yaml
     permissions:
       security-events: write
