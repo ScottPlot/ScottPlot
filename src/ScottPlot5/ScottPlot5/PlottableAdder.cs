@@ -132,6 +132,27 @@ public class PlottableAdder(Plot plot)
         return bp;
     }
 
+    public Callout Callout(string text, double textX, double textY, double tipX, double tipY)
+    {
+        Coordinates labelCoordinates = new(textX, textY);
+        Coordinates lineCoordinates = new(tipX, tipY);
+        return Callout(text, labelCoordinates, lineCoordinates);
+    }
+
+    public Callout Callout(string text, Coordinates textLocation, Coordinates tipLocation)
+    {
+        Callout callout = new()
+        {
+            LabelCoordinates = textLocation,
+            LineCoordinates = tipLocation,
+        };
+        callout.Label.Text = text;
+
+        Plot.PlottableList.Add(callout);
+
+        return callout;
+    }
+
     public CandlestickPlot Candlestick(List<OHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
@@ -325,26 +346,6 @@ public class PlottableAdder(Plot plot)
         span.LineStyle.Color = span.FillStyle.Color.WithAlpha(.5);
         Plot.PlottableList.Add(span);
         return span;
-    }
-    public LabelPlot LabelPlot(string text, double xLabel, double yLabel, double xLine, double yLine)
-    {
-        Coordinates labelCoordinates = new(xLabel, yLabel);
-        Coordinates lineCoordinates = new(xLine, yLine);
-        return LabelPlot(text, labelCoordinates, lineCoordinates);
-    }
-
-    public LabelPlot LabelPlot(string labelText, Coordinates labelCoordinates, Coordinates lineCoordinates)
-    {
-        LabelPlot labelPlot = new()
-        {
-            LabelCoordinates = labelCoordinates,
-            LineCoordinates = lineCoordinates,
-        };
-        labelPlot.Label.Text = labelText;
-
-        Plot.PlottableList.Add(labelPlot);
-
-        return labelPlot;
     }
 
     public LinePlot Line(Coordinates start, Coordinates end)

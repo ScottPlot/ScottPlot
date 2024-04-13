@@ -6,6 +6,8 @@ public class FunctionPlot(IFunctionSource source) : IPlottable
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
     public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
     private IFunctionSource Source { get; set; } = source;
     private CoordinateRange MaxObservedRangeY { get; set; } = CoordinateRange.NotSet;
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);

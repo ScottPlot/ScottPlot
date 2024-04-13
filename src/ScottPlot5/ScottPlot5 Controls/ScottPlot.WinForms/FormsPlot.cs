@@ -25,6 +25,7 @@ public class FormsPlot : FormsPlotBase
         HandleDestroyed += (s, e) => TeardownSKControl();
         SetupSKControl();
         Plot.FigureBackground.Color = SystemColors.Control.ToColor();
+        Plot.DataBackground.Color = Colors.White;
     }
 
     private void SetupSKControl()

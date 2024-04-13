@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class LabelPlot : IPlottable
+public class Callout : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();

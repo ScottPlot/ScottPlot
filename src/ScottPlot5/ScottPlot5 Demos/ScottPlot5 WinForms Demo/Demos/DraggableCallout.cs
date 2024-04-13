@@ -8,28 +8,39 @@ public partial class DraggableCallout : Form, IDemoWindow
     public string Title => "Draggable Callout";
     public string Description => "Demonstrates how to make a Callout mouse-interactive";
 
-    LabelPlot? LabelBeingDragged = null;
+    Callout? CalloutBeingDragged = null;
 
     public DraggableCallout()
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Axes.SetLimits(-1, 10, -1, 1);
-        var label = formsPlot1.Plot.Add.LabelPlot(
-            text: "A beautiful draggable label\nCan be link with an element",
-            xLabel: 3,
-            yLabel: 0,
-            xLine: 3,
-            yLine: 0);
+        var fp = formsPlot1.Plot.Add.Function(SampleData.DunningKrugerCurve);
+        fp.MinX = 0;
+        fp.MaxX = 2;
+        fp.LineWidth = 3;
 
-        label.Label.BorderColor = Colors.Blue;
-        label.Label.BackgroundColor = Colors.Blue.WithAlpha(.5);
-        label.Label.Padding = 5;
+        formsPlot1.Plot.YLabel("Confidence");
+        formsPlot1.Plot.XLabel("Competence");
+        formsPlot1.Plot.Title("Dunning-Kruger Effect", 24);
 
-        label.LineStyle = new LineStyle()
+        formsPlot1.Plot.Axes.SetLimitsX(0, 2);
+        formsPlot1.Plot.Axes.SetLimitsY(0, 1.2);
+
+        var callout = formsPlot1.Plot.Add.Callout(
+            text: "A draggable Callout\npoints to a coordinate",
+            textX: 0.3,
+            textY: 1.1,
+            tipX: 0.2185,
+            tipY: 0.8925);
+
+        callout.Label.BorderColor = Colors.Blue;
+        callout.Label.BackgroundColor = Colors.Blue.WithAlpha(.5);
+        callout.Label.Padding = 5;
+
+        callout.LineStyle = new LineStyle()
         {
-            Color = label.Label.BorderColor,
-            Width = label.Label.BorderWidth,
+            Color = callout.Label.BorderColor,
+            Width = callout.Label.BorderWidth,
         };
 
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
@@ -39,40 +50,40 @@ public partial class DraggableCallout : Form, IDemoWindow
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
-        if (LabelBeingDragged is null)
+        if (CalloutBeingDragged is null)
         {
-            LabelPlot? labelUnderMouse = GetLabelUnderMouse(e.X, e.Y);
-            Cursor = labelUnderMouse is null ? Cursors.Arrow : Cursors.Hand;
+            Callout? calloutUnderMouse = GetCalloutUnderMouse(e.X, e.Y);
+            Cursor = calloutUnderMouse is null ? Cursors.Arrow : Cursors.Hand;
         }
         else
         {
-            LabelBeingDragged.Move(e.X, e.Y);
+            CalloutBeingDragged.Move(e.X, e.Y);
             formsPlot1.Refresh();
         }
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
     {
-        LabelBeingDragged = null;
+        CalloutBeingDragged = null;
         formsPlot1.Interaction.Enable();
         formsPlot1.Refresh();
     }
 
     private void FormsPlot1_MouseDown(object? sender, MouseEventArgs e)
     {
-        LabelPlot? labelUnderMouse = GetLabelUnderMouse(e.X, e.Y);
-        if (labelUnderMouse is null)
+        Callout? calloutUnderMouse = GetCalloutUnderMouse(e.X, e.Y);
+        if (calloutUnderMouse is null)
             return;
 
-        LabelBeingDragged = labelUnderMouse;
-        LabelBeingDragged.StartMove(e.X, e.Y);
+        CalloutBeingDragged = calloutUnderMouse;
+        CalloutBeingDragged.StartMove(e.X, e.Y);
         formsPlot1.Interaction.Disable();
     }
 
-    private LabelPlot? GetLabelUnderMouse(float x, float y)
+    private Callout? GetCalloutUnderMouse(float x, float y)
     {
         return formsPlot1.Plot
-            .GetPlottables<LabelPlot>()
+            .GetPlottables<Callout>()
             .Where(p => p.IsUnderMouse(x, y))
             .FirstOrDefault();
     }
