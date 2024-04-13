@@ -11,6 +11,9 @@ jobs:
   evaluate:
     name: Evaluate Changes
     runs-on: ubuntu-latest
+    outputs:
+      MOD_SP4: ${{ steps.set-vars.outputs.MOD_SP4 }}
+      MOD_SP5: ${{ steps.set-vars.outputs.MOD_SP5 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,6 +31,7 @@ jobs:
           sed -n '/src\/ScottPlot5/p' changed.txt > changed5.txt
           find . -type f -name "changed*.txt" -empty -delete
       - name: Set workflow variables
+        id: set-vars
         run: |
           echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo true || echo false )" >> $GITHUB_ENV
           echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo true || echo false )" >> $GITHUB_ENV
@@ -37,9 +41,6 @@ jobs:
       - name: ScottPlot5 Changed (${{ env.MOD_SP5 }})
         if: ${{ env.MOD_SP5 == 'true' }}
         run: echo sp5 changed
-    outputs:
-      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }}
-      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }}
 
   sp4-check:
     needs: evaluate
