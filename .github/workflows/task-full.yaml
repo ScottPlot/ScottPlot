@@ -1,0 +1,39 @@
+name: Full Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  full:
+    name: Full Build
+    runs-on: windows-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          build-mode: manual
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "microsoft"
+          java-version: "17"
+      - name: Setup
+        run: .github/workflows/scripts/full-setup.bat
+      - name: Build
+        run: .github/workflows/scripts/full-build.bat
+      - name: Test
+        run: .github/workflows/scripts/full-test.bat
+      - name: Security Scan
+        uses: github/codeql-action/analyze@v3

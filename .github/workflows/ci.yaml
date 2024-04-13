@@ -16,24 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Run these jobs in parallel. Any errors will stop the rest.
-  sp4-check:
-    name: "SP4"
-    uses: ./.github/workflows/task-sp4-check.yaml
-  sp4-full:
-    name: "SP4"
-    uses: ./.github/workflows/task-sp4-full-build.yaml
-    permissions:
-      security-events: write
-  sp5-check:
-    name: "SP5"
-    uses: ./.github/workflows/task-sp5-check.yaml
-  sp5-full:
-    name: "SP5"
-    uses: ./.github/workflows/task-sp5-full-build.yaml
-    permissions:
-      security-events: write
-
   # Run the autoformatter in parallel too.
   # If it makes a change it will commit it and restart this workflow.
   autoformat:
@@ -49,14 +31,18 @@ jobs:
     permissions:
       security-events: write
 
-  # Publish updates to the website only if all builds succeed.
+  full:
+    name: "Full Build"
+    uses: ./.github/workflows/task-full.yaml
+
   publish-changelog:
     name: "Publish"
-    needs: [sp4-check, sp4-full, sp5-check, sp5-full]
+    needs: [full]
     uses: ./.github/workflows/task-publish-changelog.yaml
+
   publish-metrics:
     name: "Publish"
-    needs: [sp4-check, sp4-full, sp5-check, sp5-full]
+    needs: [full]
     uses: ./.github/workflows/task-code-metrics.yaml
     secrets:
       private-ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
