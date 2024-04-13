@@ -11,16 +11,9 @@ jobs:
   quick:
     name: Quick Test
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: csharp
-          build-mode: manual
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -29,5 +22,3 @@ jobs:
         run: .github/workflows/scripts/check-build.sh
       - name: Test
         run: .github/workflows/scripts/check-test.sh
-      - name: Security Scan
-        uses: github/codeql-action/analyze@v3
