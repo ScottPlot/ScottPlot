@@ -3,13 +3,15 @@
 public class Callout : IPlottable
 {
     public bool IsVisible { get; set; } = true;
+
     public IAxes Axes { get; set; } = new Axes();
-    public Coordinates LabelCoordinates { get; set; }
+
+    public Coordinates TextLocation { get; set; }
     public Pixel LabelPixelLocation
     {
         get
         {
-            Pixel pixelLocation = Axes.GetPixel(LabelCoordinates);
+            Pixel pixelLocation = Axes.GetPixel(TextLocation);
 
             return new Pixel(pixelLocation.X + Label.Padding, pixelLocation.Y + Label.Padding);
         }
@@ -32,9 +34,12 @@ public class Callout : IPlottable
     /// </summary>
     private float deltaY = 0;
 
+    public readonly Text LabelPlottable = new();
+    public readonly Arrow ArrowPlottable = new();
+
     public AxisLimits GetAxisLimits()
     {
-        return new AxisLimits(LabelCoordinates);
+        return new AxisLimits(TextLocation);
     }
 
     public bool IsUnderMouse(float x, float y)
@@ -120,16 +125,28 @@ public class Callout : IPlottable
     /// <param name="y">The new vertical coordinate for the label.</param>
     public void Move(float x, float y)
     {
-        LabelCoordinates = Axes.GetCoordinates(new Pixel(x - deltaX, y - deltaY));
+        TextLocation = Axes.GetCoordinates(new Pixel(x - deltaX, y - deltaY));
     }
 
     public void Render(RenderPack rp)
     {
+        LabelPlottable.LabelText = Label.Text;
+        LabelPlottable.Axes = Axes;
+        LabelPlottable.Location = TextLocation;
+        LabelPlottable.Render(rp);
+
+        ArrowPlottable.Axes = Axes;
+        ArrowPlottable.Base = CalculateClosestAttachPoint();
+        ArrowPlottable.Tip = LineCoordinates;
+        ArrowPlottable.Render(rp);
+
+        /*
         Label.Render(rp.Canvas, LabelPixelLocation);
 
         using SKPaint paint = new();
         CoordinateLine line = new(CalculateClosestAttachPoint(), LineCoordinates);
         PixelLine pxLine = Axes.GetPixelLine(line);
         Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
+        */
     }
 }

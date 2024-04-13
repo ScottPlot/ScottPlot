@@ -30,6 +30,7 @@ public class Box : ICategory
             myPlot.Axes.SetLimits(0, 10, 70, 110);
         }
     }
+
     public class BoxPlotGroups : RecipeBase
     {
         public override string Name => "Box Plot Groups";
