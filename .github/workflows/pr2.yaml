@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  evaluate-changes:
+  evaluate:
     name: Evaluate Changes
     runs-on: ubuntu-latest
     steps:
@@ -20,6 +20,8 @@ jobs:
         run: |
           echo "MOD_SP4=$(git diff main --name-only | grep src/ScottPlot4/)" >> $GITHUB_ENV
           echo "MOD_SP5=$(git diff main --name-only | grep src/ScottPlot5/)" >> $GITHUB_ENV
+          echo $MOD_SP4
+          echo $MOD_SP5
       - name: ScottPlot4 Changed
         if: ${{ env.MOD_SP4 != '' }}
         run: echo sp4 changed
@@ -27,19 +29,19 @@ jobs:
         if: ${{ env.MOD_SP5 != '' }}
         run: echo sp5 changed
     outputs:
-      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }} != ''
-      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }} != ''
+      MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }}
+      MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }}
 
   sp4-full-build:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP4 != '' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp4-full-build.yaml
     permissions:
       security-events: write
 
   sp5-full-build:
     needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP5 != '' || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp5-full-build.yaml
     permissions:
       security-events: write
