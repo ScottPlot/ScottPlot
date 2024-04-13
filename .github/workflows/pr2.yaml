@@ -32,14 +32,14 @@ jobs:
 
   sp4-full-build:
     needs: evaluate
-    if: steps.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP4 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp4-full-build.yaml
     permissions:
       security-events: write
 
   sp5-full-build:
     needs: evaluate
-    if: steps.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
+    if: needs.evaluate.outputs.MOD_SP5 || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/task-sp5-full-build.yaml
     permissions:
       security-events: write
