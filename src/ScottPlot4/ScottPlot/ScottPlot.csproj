@@ -60,12 +60,13 @@
         </PackageReference>
 
         <!-- 
-            Keep System.Drawing.Common version at 4.6.1 and users can upgrade it if they wish.
+            Keep System.Drawing.Common version at 4.7.2 and users can upgrade it if they wish.
+            This version is patched to address https://github.com/advisories/GHSA-ghhp-997w-qr28
             Upgrading may improve font rendering on Linux and MacOS, but upgrading then downgrading 
             is associated with assembly issues that break .NET Framework projects on Windows.
             https://github.com/ScottPlot/ScottPlot/issues/1004
         -->
-        <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+        <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
         <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
