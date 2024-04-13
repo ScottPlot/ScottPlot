@@ -129,4 +129,21 @@ public static class SampleData
             { 11, 13, 13, 13, 13, 14, 11, 14, 14, 15, 16, 16, 16, 15, 13, 13, 11, 11, 11, 13, 14, 15, 14, 14, 19, 18, 15, 13, 13, 11, 13, 11, 11, 7, 7, 7, 10, 10, 10, 11, 13, 9, 9, 10, 6, 5, 5, 5, 5, 7, 5, 5, 5, 5, 3, 3, 2, 3, 3, 3, 2, 2, 3, 1, 0}
         };
     }
+
+    public static double DunningKrugerCurve(double x)
+    {
+        const double k1 = 152; // confidence velocity in stupidity
+        const double k2 = 0.22; // time of peak stupid
+        const double k3 = 4.2; // confidence velocity in enlightenment
+        const double k4 = 0.6; // delay until enlightenment starts
+        const double k5 = 0.6; // time until enlightenment starts
+        const double k6 = 5; // rate of enlightenment
+
+        static double f1(double x) => Math.Exp(-k1 * Math.Pow(x - k2, 2));
+        static double f2(double x) => 1.0 / (1 + Math.Exp(-k3 * (x - k4)));
+        static double fr(double x) => 1.0 / (1 + Math.Exp(-k6 * (x - k5)));
+        static double dk(double x) => (1 - fr(x)) * f1(x) + fr(x) * f2(x);
+
+        return dk(x);
+    }
 }
