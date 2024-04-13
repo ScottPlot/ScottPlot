@@ -1,8 +1,8 @@
-name: PR
+name: PR Changes
 
 on:
   workflow_dispatch:
-  pull_request:
+  workflow_call:
 
 jobs:
   evaluate:
@@ -37,38 +37,3 @@ jobs:
     outputs:
       MOD_SP4: ${{ steps.evaluate.outputs.MOD_SP4 }}
       MOD_SP5: ${{ steps.evaluate.outputs.MOD_SP5 }}
-
-  sp4-check:
-    needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP4 == 'true' || github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/task-sp4-check.yaml
-    permissions:
-      security-events: write
-
-  sp5-check:
-    needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/task-sp5-check.yaml
-    permissions:
-      security-events: write
-
-  sp4-full:
-    needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP4 == 'true' || github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/task-sp4-full-build.yaml
-    permissions:
-      security-events: write
-
-  sp5-full:
-    needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/task-sp5-full-build.yaml
-    permissions:
-      security-events: write
-
-  autoformat-check:
-    needs: evaluate
-    if: needs.evaluate.outputs.MOD_SP5 == 'true' || github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/task-autoformat-check.yaml
-    permissions:
-      security-events: write
