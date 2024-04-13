@@ -19,8 +19,8 @@ jobs:
           git diff ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --name-only > changed.txt
       - name: Identify affected versions
         run: |
-          grep src/ScottPlot4/ changed.txt > changed4.txt
-          grep src/ScottPlot5/ changed.txt > changed5.txt
+          sed -n '/src\/ScottPlot4/p' changed.txt > changed4.txt
+          sed -n '/src\/ScottPlot5/p' changed.txt > changed5.txt
       - name: Set workflow variables
         run: |
           echo "MOD_SP4=$(cat changed4.txt)" >> $GITHUB_ENV
