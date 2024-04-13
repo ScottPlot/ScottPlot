@@ -24,6 +24,8 @@ public class Label
 
     public CoordinateRect LabelRect { get; set; }
 
+    public PixelRect LastRenderPixelRect { get; private set; }
+
     public Color ShadowColor = Colors.Transparent;
 
     public PixelOffset ShadowOffset = new(3, 3);
@@ -261,6 +263,7 @@ public class Label
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
+        LastRenderPixelRect = backgroundRect.Expand(shadowRect);
 
         var labelCoordinateSize = new CoordinateSize(backgroundRect.Width, backgroundRect.Height);
         var labelCoordinates = new Coordinates(x, y);
