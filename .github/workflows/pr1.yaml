@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  evaluate-changes:
+  evaluate:
     name: Evaluate Changes
     runs-on: ubuntu-latest
     steps:
@@ -29,12 +29,13 @@ jobs:
 
   sp4-check:
     uses: ./.github/workflows/task-sp4-check.yaml
-    if: ${{ env.MOD_SP4 != '' || github.event_name == 'workflow_dispatch' }}
+    if: steps.evaluate.outputs.MOD_SP4 != '' || github.event_name == 'workflow_dispatch'
+    
     permissions:
       security-events: write
 
   sp5-check:
     uses: ./.github/workflows/task-sp5-check.yaml
-    if: ${{ env.MOD_SP5 != '' || github.event_name == 'workflow_dispatch' }}
+    if: steps.evaluate.outputs.MOD_SP5 != '' || github.event_name == 'workflow_dispatch'
     permissions:
       security-events: write
