@@ -252,7 +252,9 @@ public class Label
         var labelCoordinates = new Coordinates(x, y);
         LabelRect = new CoordinateRect(labelCoordinates, labelCoordinateSize);
 
-        canvas.Save();
+        canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
+        canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
+
         canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding
         canvas.RotateDegrees(Rotation);
         ApplyBackgroundPaint(paint);
