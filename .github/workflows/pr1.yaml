@@ -35,11 +35,11 @@ jobs:
         run: |
           echo "MOD_SP4=$( [[ -f changed4.txt ]] && echo true || echo false )" >> $GITHUB_OUTPUT
           echo "MOD_SP5=$( [[ -f changed5.txt ]] && echo true || echo false )" >> $GITHUB_OUTPUT
-      - name: ScottPlot4 Changed (${{ env.MOD_SP4 }})
-        if: ${{ env.MOD_SP4 == 'true' }}
+      - name: ScottPlot4 Changed (${{ steps.set-vars.outputs.MOD_SP4 }})
+        if: ${{ steps.set-vars.outputs.MOD_SP4 == 'true' }}
         run: echo sp4 changed
-      - name: ScottPlot5 Changed (${{ env.MOD_SP5 }})
-        if: ${{ env.MOD_SP5 == 'true' }}
+      - name: ScottPlot5 Changed (${{ steps.set-vars.outputs.MOD_SP5 }})
+        if: ${{ steps.set-vars.outputs.MOD_SP5 == 'true' }}
         run: echo sp5 changed
 
   sp4-check:
