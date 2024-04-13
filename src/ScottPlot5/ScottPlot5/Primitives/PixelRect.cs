@@ -4,7 +4,7 @@ public readonly struct PixelRect : IEquatable<PixelRect>
 {
     public readonly float Left;
     public readonly float Right;
-    public readonly float Bottom; // this value is be larger than Top
+    public readonly float Bottom; // this value should be larger than Top
     public readonly float Top;
 
     public float HorizontalCenter => (Left + Right) / 2;
@@ -214,6 +214,16 @@ public readonly struct PixelRect : IEquatable<PixelRect>
             Alignment.LowerRight => BottomRight,
             _ => Pixel.NaN,
         };
+    }
+
+    public PixelRect WithOffset(PixelOffset offset)
+    {
+        return new PixelRect(
+            left: Left + offset.X,
+            right: Right + offset.X,
+            bottom: Bottom + offset.Y,
+            top: Top + offset.Y
+        );
     }
 }
 
