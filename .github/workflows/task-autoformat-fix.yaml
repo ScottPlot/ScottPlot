@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
         if: github.event_name != 'pull_request'
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
         with:
