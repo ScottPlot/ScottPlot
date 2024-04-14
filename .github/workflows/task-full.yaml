@@ -29,11 +29,24 @@ jobs:
         with:
           distribution: "microsoft"
           java-version: "17"
-      - name: Setup
-        run: .github/workflows/scripts/full-setup.bat
-      - name: Build
-        run: .github/workflows/scripts/full-build.bat
-      - name: Test
-        run: .github/workflows/scripts/full-test.bat
+      - name: Install Workloads
+        run: |
+          dotnet workload install maui-android maui-ios maccatalyst wasm-tools
+          dotnet workload restore "src\ScottPlot5\ScottPlot5.sln"
+          dotnet workload restore "src\ScottPlot5\ScottPlot4.sln"
+      - name: Build ScottPlot5
+        run: |
+          dotnet restore "src\ScottPlot4\ScottPlot5.sln"
+          dotnet build "src\ScottPlot4\ScottPlot5.sln" --configuration Release
+      - name: Build ScottPlot4
+        run: |
+          dotnet restore "src\ScottPlot4\ScottPlot4.sln"
+          dotnet build "src\ScottPlot4\ScottPlot4.sln" --configuration Release
+      - name: Run ScottPlot5 Unit Tests
+        run: dotnet test "src\ScottPlot5\ScottPlot5 Tests\" --configuration Release --no-build --verbosity minimal
+      - name: Run ScottPlot5 Cookbook Tests
+        run: dotnet test "src\ScottPlot5\ScottPlot5 Cookbook\" --configuration Release --no-build --verbosity minimal
+      - name: Run ScottPlot4 Tests
+        run: dotnet test "src\ScottPlot4\ScottPlot.Tests\" --configuration Release --no-build --verbosity minimal
       - name: Security Scan
         uses: github/codeql-action/analyze@v3
