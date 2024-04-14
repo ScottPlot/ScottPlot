@@ -22,8 +22,6 @@ public class Label
 
     public float BorderWidth { get; set; } = 1;
 
-    public CoordinateRect LabelRect { get; set; }
-
     public PixelRect LastRenderPixelRect { get; private set; }
 
     public Color ShadowColor = Colors.Transparent;
@@ -265,13 +263,7 @@ public class Label
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
         LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(x + OffsetX, y + OffsetY);
 
-        var labelCoordinateSize = new CoordinateSize(backgroundRect.Width, backgroundRect.Height);
-        var labelCoordinates = new Coordinates(x, y);
-        LabelRect = new CoordinateRect(labelCoordinates, labelCoordinateSize);
-
-        canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
         canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
-
         canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding
         canvas.RotateDegrees(Rotation);
 
