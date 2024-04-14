@@ -2,8 +2,6 @@ name: Autoformat Fix
 
 on:
   workflow_dispatch:
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
   workflow_call:
     secrets:
       token:
@@ -17,10 +15,16 @@ jobs:
     name: Fix
     runs-on: ubuntu-latest
     steps:
-      - name: 🛒 Checkout
+      - name: 🛒 Checkout PR
         uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
         with:
           token: ${{ secrets.token }}
+      - name: 🛒 Checkout Manual
+        uses: actions/checkout@v4
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
         with:
