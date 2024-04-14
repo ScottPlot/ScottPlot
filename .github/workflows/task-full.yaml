@@ -3,6 +3,8 @@ name: Full Build
 on:
   workflow_dispatch:
   workflow_call:
+  release:
+    types: [published]
 
 env:
   SP5_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
@@ -33,7 +35,7 @@ jobs:
         with:
           distribution: "microsoft"
           java-version: "17"
-      - name: Install ScottPlot5 Workloads
+      - name: Install Workloads
         run: |
           dotnet workload install maui-android maui-ios maccatalyst wasm-tools
           dotnet workload restore "${{ env.SP5_SOLUTION }}"
