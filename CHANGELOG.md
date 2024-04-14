@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Bar: Added a `CenterLabel` flag to cause value labels to be displayed centered within a bar (#3391) @tibormarchynzoom
 * FormsPlot: Allow plots to persist through `Show()` and `Close()` events (#3643, #3589) @CodeBehemoth @bwedding @Kruno313
 * Callout: New plot type that displays text with an arrow that points to a location on the plot (#3650, #3654) @NicolasLairNET
+* Cookbook: Simplified function recipes to use static methods (#3656, #3655) @abdul-muyeed
 
 ## ScottPlot 4.1.74
 * Security: Use System.Drawing.Common version 4.7.2 to address [CVE-2021-26701](https://github.com/advisories/GHSA-ghhp-997w-qr28)
