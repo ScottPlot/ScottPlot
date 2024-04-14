@@ -2,6 +2,8 @@ name: Autoformat Fix
 
 on:
   workflow_dispatch:
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
   workflow_call:
     secrets:
       token:
