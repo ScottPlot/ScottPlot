@@ -22,10 +22,13 @@ internal class Callout : ICategory
             double[] ys = Generate.Sin(15);
             myPlot.Add.Scatter(xs, ys);
 
-            Coordinates arrowLocation = new(7, 0);
-            Coordinates textLocation = new(8, .3);
+            myPlot.Add.Callout("Hello",
+                textLocation: new(7.5, .8),
+                tipLocation: new(xs[6], ys[6]));
 
-            myPlot.Add.Callout("hello", textLocation, arrowLocation);
+            myPlot.Add.Callout("World",
+                textLocation: new(10, 0),
+                tipLocation: new(xs[13], ys[13]));
         }
     }
 }

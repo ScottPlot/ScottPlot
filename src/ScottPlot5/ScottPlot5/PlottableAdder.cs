@@ -141,12 +141,20 @@ public class PlottableAdder(Plot plot)
 
     public Callout Callout(string text, Coordinates textLocation, Coordinates tipLocation)
     {
+        Color color = GetNextColor();
+
         Callout callout = new()
         {
+            Text = text,
             TextCoordinates = textLocation,
             TipCoordinates = tipLocation,
+            ArrowColor = color,
+            TextBackgroundColor = color.Lighten(.5),
+            TextBorderColor = color,
+            TextBorderWidth = 2,
+            TextColor = Colors.Black,
+            FontSize = 14,
         };
-        callout.LabelStyle.Text = text;
 
         Plot.PlottableList.Add(callout);
 

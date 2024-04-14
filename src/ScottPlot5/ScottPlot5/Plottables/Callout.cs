@@ -2,8 +2,52 @@
 
 public class Callout : IPlottable
 {
-    public Text LabelPlottable { get; } = new();
+    public Text LabelPlottable { get; } = new() { Padding = 5 };
     public Arrow ArrowPlottable { get; } = new();
+    public Label LabelStyle => LabelPlottable.Label;
+    public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+
+    public Color ArrowColor
+    {
+        get => ArrowPlottable.Color;
+        set => ArrowPlottable.Color = value;
+    }
+
+    public Color TextColor
+    {
+        get => LabelPlottable.FontColor;
+        set => LabelPlottable.FontColor = value;
+    }
+
+    public bool Bold
+    {
+        get => LabelPlottable.Bold;
+        set => LabelPlottable.Bold = value;
+    }
+
+    public float FontSize
+    {
+        get => LabelPlottable.FontSize;
+        set => LabelPlottable.FontSize = value;
+    }
+
+    public Color TextBorderColor
+    {
+        get => LabelPlottable.BorderColor;
+        set => LabelPlottable.BorderColor = value;
+    }
+
+    public float TextBorderWidth
+    {
+        get => LabelPlottable.BorderWidth;
+        set => LabelPlottable.BorderWidth = value;
+    }
+
+    public Color TextBackgroundColor
+    {
+        get => LabelPlottable.BackgroundColor;
+        set => LabelPlottable.BackgroundColor = value;
+    }
 
     public Coordinates TextCoordinates { get; set; }
     public Pixel TextPixel { get; private set; }
@@ -12,15 +56,9 @@ public class Callout : IPlottable
     public Pixel TipPixel { get; private set; }
     public PixelRect LastRenderRect => LabelPlottable.Label.LastRenderPixelRect;
 
-    public Label LabelStyle => LabelPlottable.Label;
-
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-
-
-    private float MouseDistanceFromLabelX { get; set; } = 0;
-    private float MouseDistanceFromLabelY { get; set; } = 0;
 
     public AxisLimits GetAxisLimits()
     {
@@ -70,6 +108,9 @@ public class Callout : IPlottable
 
     // TODO: move these methods somewhere else...
 
+    private float MouseDistanceFromLabelX { get; set; } = 0;
+    private float MouseDistanceFromLabelY { get; set; } = 0;
+
     /// <summary>
     /// Prepares the label for movement by calculating the difference between the mouse position and the label position.
     /// This allows maintaining the mouse position relative to the label during movement.
@@ -99,10 +140,7 @@ public class Callout : IPlottable
 
     public void Render(RenderPack rp)
     {
-        Pixel pixelLocation = Axes.GetPixel(TextCoordinates);
-        TextPixel = new Pixel(
-            x: pixelLocation.X + LabelStyle.Padding,
-            y: pixelLocation.Y + LabelStyle.Padding);
+        TextPixel = Axes.GetPixel(TextCoordinates);
 
         TipPixel = Axes.GetPixel(TipCoordinates);
 
