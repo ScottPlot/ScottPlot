@@ -3,8 +3,6 @@ name: Full Build
 on:
   workflow_dispatch:
   workflow_call:
-  release:
-    types: [published]
 
 env:
   SP5_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
