@@ -418,6 +418,22 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Move the indicated plottable to the end of the list so it is rendered last
+    /// </summary>
+    /// <param name="plottable"></param>
+    public void MoveToTop(IPlottable plottable)
+    {
+        // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
+        int index = PlottableList.IndexOf(plottable);
+
+        if (index < 0)
+            return;
+
+        PlottableList.RemoveAt(index);
+        PlottableList.Add(plottable);
+    }
+
+    /// <summary>
     /// Disable visibility for all grids
     /// </summary>
     public void HideGrid()

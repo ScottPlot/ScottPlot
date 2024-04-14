@@ -2,6 +2,7 @@
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
+using System.Numerics;
 
 namespace ScottPlot;
 
@@ -129,6 +130,35 @@ public class PlottableAdder(Plot plot)
         bp.FillColor = GetNextColor();
         Plot.PlottableList.Add(bp);
         return bp;
+    }
+
+    public Callout Callout(string text, double textX, double textY, double tipX, double tipY)
+    {
+        Coordinates labelCoordinates = new(textX, textY);
+        Coordinates lineCoordinates = new(tipX, tipY);
+        return Callout(text, labelCoordinates, lineCoordinates);
+    }
+
+    public Callout Callout(string text, Coordinates textLocation, Coordinates tipLocation)
+    {
+        Color color = GetNextColor();
+
+        Callout callout = new()
+        {
+            Text = text,
+            TextCoordinates = textLocation,
+            TipCoordinates = tipLocation,
+            ArrowColor = color,
+            TextBackgroundColor = color.Lighten(.5),
+            TextBorderColor = color,
+            TextBorderWidth = 2,
+            TextColor = Colors.Black,
+            FontSize = 14,
+        };
+
+        Plot.PlottableList.Add(callout);
+
+        return callout;
     }
 
     public CandlestickPlot Candlestick(List<OHLC> ohlcs)
@@ -354,9 +384,10 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
+
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
     {
-        Plottables.Marker mp = new()
+        Marker mp = new()
         {
             MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
             Location = new Coordinates(x, y),
