@@ -3,7 +3,10 @@
 @using ScottPlot.Blazor;
 @using ScottPlotCookbook;
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using System.Text.Json
 @inject IWebAssemblyHostEnvironment HostEnvironment
+@inject HttpClient Http
+@inject IJSRuntime JS
 
 <style>
     body {
@@ -47,13 +50,17 @@
         display: block !important;
         margin-left: 300px;
     }
+
+    .hljs {
+        background-color: transparent;
+    }
 </style>
 
 <nav class="sidebar">
     <div class="sidebar-inner">
 
         <h1>ScottPlot Blazor Demo</h1>
-        
+
         <hr />
 
         @foreach (ICategory category in RecipesByCategory.Keys)
@@ -80,11 +87,23 @@
             <div>@Recipe.Description</div>
         </div>
         <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
+        <div class="m-3">
+            <pre class="bg-light border rounded d-inline-block p-3"><code id="codePre">Loading...</code></pre>
+        </div>
     }
     <div class="text-muted p-4" style="margin-top: 10rem;">
         @ScottPlot.Version.LongString Running on .NET @Environment.Version
     </div>
 </main>
+
+<script>
+    window.UpdateSyntaxHighlighting = (source) => {
+        const el = document.getElementById("codePre");
+        el.innerHTML = String(source);
+        delete el.dataset.highlighted;
+        hljs.highlightAll();
+    }
+</script>
 
 @code {
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
@@ -93,12 +112,29 @@
 
     IRecipe? Recipe;
 
-    void ShowRecipe(IRecipe recipe)
+    async void ShowRecipe(IRecipe recipe)
     {
         Recipe = recipe;
         BlazorPlot.Reset();
         recipe.Execute(BlazorPlot.Plot);
         BlazorPlot.Refresh();
+
+        string json = await Http.GetStringAsync("sample-data/recipes.json");
+        using JsonDocument document = JsonDocument.Parse(json);
+
+        string source = "// source code not found";
+        foreach (JsonElement recipeElement in document.RootElement.GetProperty("recipes").EnumerateArray())
+        {
+            string name = recipeElement.GetProperty("name").GetString() ?? string.Empty;
+            string desc = recipeElement.GetProperty("description").GetString() ?? string.Empty;
+            if (name == Recipe.Name && desc == Recipe.Description)
+            {
+                source = recipeElement.GetProperty("source").GetString() ?? string.Empty;
+                break;
+            }
+        }
+
+        await JS.InvokeAsync<string>("UpdateSyntaxHighlighting", source);
     }
 }
 
