@@ -37,6 +37,7 @@ jobs:
         run: |
           dotnet workload install maui-android maui-ios maccatalyst wasm-tools
           dotnet workload restore "$SP5_SOLUTION"
+          dotnet workload restore "$SP4_SOLUTION"
       - name: Build ScottPlot5
         run: |
           dotnet restore "$SP5_SOLUTION"
