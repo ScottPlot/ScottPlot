@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.token }}
       - name: 🛒 Checkout Manual
         uses: actions/checkout@v4
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
