@@ -107,4 +107,11 @@ public struct Pixel : IEquatable<Pixel>
     {
         return new Pixel(a.X / b, a.Y / b);
     }
+
+    public readonly float DistanceFrom(Pixel px2)
+    {
+        float dx = px2.X - X;
+        float dy = px2.Y - Y;
+        return (float)Math.Sqrt(dx * dx + dy * dy);
+    }
 }

@@ -22,6 +22,8 @@ public class Label
 
     public float BorderWidth { get; set; } = 1;
 
+    public PixelRect LastRenderPixelRect { get; private set; }
+
     public Color ShadowColor = Colors.Transparent;
 
     public PixelOffset ShadowOffset = new(3, 3);
@@ -259,6 +261,7 @@ public class Label
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
+        LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(x + OffsetX, y + OffsetY);
 
         canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
         canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding

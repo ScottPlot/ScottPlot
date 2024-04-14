@@ -61,6 +61,12 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         ExpandY(y);
     }
 
+    public void Expand(IPlottable plottable)
+    {
+        AxisLimits limits = plottable.GetAxisLimits();
+        Expand(limits);
+    }
+
     /// <summary>
     /// Expanded limits to include the given <paramref name="x"/>.
     /// </summary>
