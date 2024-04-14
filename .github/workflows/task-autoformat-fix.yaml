@@ -24,13 +24,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: ✒️ Run Autoformatter
-        run: |
-          dotnet format "src/ScottPlot5/ScottPlot5/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Tests/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Cookbook/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/"
-          dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WPF Demo/"
-          dotnet format "src/ScottPlot5/ScottPlot/"
+        run: bash  .github/workflows/scripts/autoformat.sh
       - name: 🧐 Inspect Changes
         id: verify_diff
         run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT

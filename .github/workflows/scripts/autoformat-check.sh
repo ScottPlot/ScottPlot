@@ -1,1 +1,0 @@
-echo check and warn of formatting errors
