@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Callout : ICategory
+public class Callout : ICategory
 {
     public string Chapter => "Plot Types";
 

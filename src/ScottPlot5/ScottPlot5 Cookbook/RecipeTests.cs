@@ -106,4 +106,19 @@ internal class RecipeTests
                 Assert.Fail($"{recipeType.Name}'s Execute() method is missing the [Test] attribute");
         }
     }
+
+    [Test]
+    public static void Test_Recipes_ArePublic()
+    {
+        var recipeTypes = Assembly.GetAssembly(typeof(IRecipe))!
+            .GetTypes()
+            .Where(x => x.IsAssignableTo(typeof(RecipeBase)))
+            .Where(x => !x.IsAbstract);
+
+        foreach (Type recipeType in recipeTypes)
+        {
+            TypeInfo recipeClassInfo = recipeType.GetTypeInfo();
+            recipeClassInfo.IsVisible.Should().BeTrue($"{recipeClassInfo.Namespace}.{recipeClassInfo.Name} should be public");
+        }
+    }
 }
