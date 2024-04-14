@@ -99,7 +99,7 @@ jobs:
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
 
-      - name: Package ScottPlot.WPF
+      - name: Package ScottPlot.WPF (version 4)
         env:
           PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.WPF"
         run: |
@@ -107,7 +107,7 @@ jobs:
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
 
-      - name: Package ScottPlot.Avalonia
+      - name: Package ScottPlot.Avalonia (version 4)
         env:
           PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.Avalonia"
         run: |
@@ -115,7 +115,7 @@ jobs:
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
 
-      - name: Package ScottPlot.Eto
+      - name: Package ScottPlot.Eto (version 4)
         env:
           PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.Eto"
         run: |
