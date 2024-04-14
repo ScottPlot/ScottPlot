@@ -1,10 +1,7 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
-using WPF_Demo;
 
-namespace WpfDemo;
+namespace WPF_Demo;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
@@ -22,11 +19,15 @@ public partial class MainWindow : Window
         Subtitle.Content = $"ScottPlot.WPF Version {ScottPlot.Version.VersionString}";
 
         DemoItemPanel.Children.Clear();
-        System.Reflection.Assembly.GetAssembly(typeof(MainWindow))!
+        var demoWindows = System.Reflection.Assembly.GetAssembly(typeof(MainWindow))!
             .GetTypes()
             .Where(x => x.IsAssignableTo(typeof(IDemoWindow)))
             .Where(x => !x.IsInterface)
-            .ToList()
-            .ForEach(x => DemoItemPanel.Children.Add(new DemoMenuItem(x)));
+            .ToList();
+
+        void MoveToTop(Type t) { demoWindows.Remove(t); demoWindows.Insert(0, t); }
+        MoveToTop(typeof(DemoWindows.Quickstart));
+
+        demoWindows.ForEach(x => DemoItemPanel.Children.Add(new DemoMenuItem(x)));
     }
 }
