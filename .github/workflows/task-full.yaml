@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   workflow_call:
 
+env:
+  SP5_SOLUTION: src\ScottPlot5\ScottPlot5.sln
+  SP4_SOLUTION: src\ScottPlot4\ScottPlot4.sln
+
 jobs:
   full:
     name: Full Build
@@ -29,24 +33,21 @@ jobs:
         with:
           distribution: "microsoft"
           java-version: "17"
-      - name: Install Workloads
+      - name: Install ScottPlot5 Workloads
         run: |
           dotnet workload install maui-android maui-ios maccatalyst wasm-tools
-          dotnet workload restore "src\ScottPlot5\ScottPlot5.sln"
-          dotnet workload restore "src\ScottPlot5\ScottPlot4.sln"
+          dotnet workload restore "$SP5_SOLUTION"
       - name: Build ScottPlot5
         run: |
-          dotnet restore "src\ScottPlot4\ScottPlot5.sln"
-          dotnet build "src\ScottPlot4\ScottPlot5.sln" --configuration Release
+          dotnet restore "$SP5_SOLUTION"
+          dotnet build "$SP5_SOLUTION" --configuration Release
+      - name: Test ScottPlot5
+        run: dotnet test "$SP5_SOLUTION" --configuration Release --no-build --verbosity minimal
       - name: Build ScottPlot4
         run: |
-          dotnet restore "src\ScottPlot4\ScottPlot4.sln"
-          dotnet build "src\ScottPlot4\ScottPlot4.sln" --configuration Release
-      - name: Run ScottPlot5 Unit Tests
-        run: dotnet test "src\ScottPlot5\ScottPlot5 Tests\" --configuration Release --no-build --verbosity minimal
-      - name: Run ScottPlot5 Cookbook Tests
-        run: dotnet test "src\ScottPlot5\ScottPlot5 Cookbook\" --configuration Release --no-build --verbosity minimal
-      - name: Run ScottPlot4 Tests
-        run: dotnet test "src\ScottPlot4\ScottPlot.Tests\" --configuration Release --no-build --verbosity minimal
+          dotnet restore "$SP4_SOLUTION"
+          dotnet build "$SP4_SOLUTION" --configuration Release
+      - name: Test ScottPlot4
+        run: dotnet test "$SP4_SOLUTION" --configuration Release --no-build --verbosity minimal
       - name: Security Scan
         uses: github/codeql-action/analyze@v3
