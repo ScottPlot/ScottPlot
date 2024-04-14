@@ -58,6 +58,8 @@ public partial class DraggableCallout : Form, IDemoWindow
         {
             Callout? calloutUnderMouse = GetCalloutUnderMouse(e.X, e.Y);
             Cursor = calloutUnderMouse is null ? Cursors.Arrow : Cursors.Hand;
+            if (calloutUnderMouse is not null)
+                formsPlot1.Plot.MoveToTop(calloutUnderMouse);
         }
         else
         {
@@ -82,6 +84,7 @@ public partial class DraggableCallout : Form, IDemoWindow
         CalloutBeingDragged = calloutUnderMouse;
         CalloutBeingDragged.StartMove(e.X, e.Y);
         formsPlot1.Interaction.Disable();
+        FormsPlot1_MouseMove(sender, e);
     }
 
     private Callout? GetCalloutUnderMouse(float x, float y)
