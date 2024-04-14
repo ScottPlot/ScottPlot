@@ -4,26 +4,21 @@ on:
   workflow_dispatch:
   release:
     types: [published]
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/deploy-nuget.yaml
 
 env:
   DOTNET_VERSION: "8.0.x"
   ARTIFACT_FOLDER: "artifacts"
 
 jobs:
-  # full:
-  #   name: "Full Build"
-  #   uses: ./.github/workflows/task-full.yaml
-  #   permissions:
-  #     security-events: write
+  full:
+    name: "Full Build"
+    uses: ./.github/workflows/task-full.yaml
+    permissions:
+      security-events: write
 
   deploy:
     name: NuGet Packages
-    #needs: [full]
+    needs: [full]
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -162,5 +157,5 @@ jobs:
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
-      #- name: Deploy Packages
-      #run: nuget push "${{ env.ARTIFACT_FOLDER }}\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+      - name: Deploy Packages
+        run: nuget push "${{ env.ARTIFACT_FOLDER }}\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
