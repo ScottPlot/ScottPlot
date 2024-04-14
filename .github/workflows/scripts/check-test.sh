@@ -8,6 +8,6 @@ test_project_files=(
 
 for test_project_file in "${project_files[@]}"; do
     echo "Testing: $test_project_file"
-    dotnet restore "$test_project_file"
-    dotnet build "$test_project_file" --configuration Release
+    dotnet restore "$test_project_file" || { echo 'FAILED!' ; exit 1; }
+    dotnet build "$test_project_file" --configuration Release || { echo 'FAILED!' ; exit 1; }
 done
