@@ -104,40 +104,6 @@ public class Callout : IPlottable
         return Axes.GetCoordinates(closestAttachPoint);
     }
 
-    #region interactivity
-
-    // TODO: move these methods somewhere else...
-
-    private float MouseDistanceFromLabelX { get; set; } = 0;
-    private float MouseDistanceFromLabelY { get; set; } = 0;
-
-    /// <summary>
-    /// Prepares the label for movement by calculating the difference between the mouse position and the label position.
-    /// This allows maintaining the mouse position relative to the label during movement.
-    /// </summary>
-    /// <param name="x">The horizontal coordinate of the mouse position.</param>
-    /// <param name="y">The vertical coordinate of the mouse position.</param>
-    public void StartMove(float x, float y)
-    {
-        MouseDistanceFromLabelX = x - TextPixel.X;
-        MouseDistanceFromLabelY = y - TextPixel.Y;
-    }
-
-    /// <summary>
-    /// Updates the position of the label continuously during movement by applying the previously calculated delta values.
-    /// </summary>
-    /// <param name="x">The new horizontal coordinate for the label.</param>
-    /// <param name="y">The new vertical coordinate for the label.</param>
-    public void Move(float x, float y)
-    {
-        double x2 = x - MouseDistanceFromLabelX;
-        double y2 = y - MouseDistanceFromLabelY;
-        Pixel px = new(x2, y2);
-        TextCoordinates = Axes.GetCoordinates(px);
-    }
-
-    #endregion
-
     public void Render(RenderPack rp)
     {
         TextPixel = Axes.GetPixel(TextCoordinates);

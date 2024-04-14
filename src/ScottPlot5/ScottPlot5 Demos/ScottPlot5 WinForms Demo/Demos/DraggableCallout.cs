@@ -9,6 +9,7 @@ public partial class DraggableCallout : Form, IDemoWindow
     public string Description => "Demonstrates how to make a Callout mouse-interactive";
 
     Callout? CalloutBeingDragged = null;
+    PixelOffset MouseDownOffset;
 
     public DraggableCallout()
     {
@@ -63,7 +64,9 @@ public partial class DraggableCallout : Form, IDemoWindow
         }
         else
         {
-            CalloutBeingDragged.Move(e.X, e.Y);
+            Pixel mousePixel = new(e.X + MouseDownOffset.X, e.Y + MouseDownOffset.Y);
+            Coordinates mouseCoordinates = CalloutBeingDragged.Axes.GetCoordinates(mousePixel);
+            CalloutBeingDragged.TextCoordinates = mouseCoordinates;
             formsPlot1.Refresh();
         }
     }
@@ -82,7 +85,11 @@ public partial class DraggableCallout : Form, IDemoWindow
             return;
 
         CalloutBeingDragged = calloutUnderMouse;
-        CalloutBeingDragged.StartMove(e.X, e.Y);
+
+        float dX = calloutUnderMouse!.TextPixel.X - e.X;
+        float dY = calloutUnderMouse!.TextPixel.Y - e.Y;
+        MouseDownOffset = new(dX, dY);
+
         formsPlot1.Interaction.Disable();
         FormsPlot1_MouseMove(sender, e);
     }
