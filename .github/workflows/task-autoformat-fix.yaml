@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
-      token:
+      GH_TOKEN:
         required: true
 
 env:
@@ -15,11 +15,9 @@ jobs:
     name: Fix
     runs-on: ubuntu-latest
     steps:
-      - name: 🛒 Checkout PR
+      - name: 🛒 Checkout
         uses: actions/checkout@v4
         if: github.event_name == 'pull_request'
-        with:
-          token: ${{ secrets.token }}
       - name: 🛒 Checkout Manual
         uses: actions/checkout@v4
         if: github.event_name != 'pull_request'

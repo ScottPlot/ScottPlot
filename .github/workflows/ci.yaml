@@ -23,7 +23,7 @@ jobs:
     name: "Autoformat"
     uses: ./.github/workflows/task-autoformat-fix.yaml
     secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ secrets.GH_TOKEN }}
 
   # This security analysis evaluates non-compiled code
   security:
