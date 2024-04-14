@@ -5,8 +5,8 @@ on:
   workflow_call:
 
 env:
-  SP5_SOLUTION: src\ScottPlot5\ScottPlot5.sln
-  SP4_SOLUTION: src\ScottPlot4\ScottPlot4.sln
+  SP5_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
+  SP4_SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
 
 jobs:
   full:
@@ -36,19 +36,19 @@ jobs:
       - name: Install ScottPlot5 Workloads
         run: |
           dotnet workload install maui-android maui-ios maccatalyst wasm-tools
-          dotnet workload restore "$SP5_SOLUTION"
-          dotnet workload restore "$SP4_SOLUTION"
+          dotnet workload restore "${{ env.SP5_SOLUTION }}"
+          dotnet workload restore "${{ env.SP4_SOLUTION }}"
       - name: Build ScottPlot5
         run: |
-          dotnet restore "$SP5_SOLUTION"
-          dotnet build "$SP5_SOLUTION" --configuration Release
+          dotnet restore "${{ env.SP5_SOLUTION }}"
+          dotnet build "${{ env.SP5_SOLUTION }}" --configuration Release
       - name: Test ScottPlot5
-        run: dotnet test "$SP5_SOLUTION" --configuration Release --no-build --verbosity minimal
+        run: dotnet test "${{ env.SP5_SOLUTION }}" --configuration Release --no-build --verbosity minimal
       - name: Build ScottPlot4
         run: |
-          dotnet restore "$SP4_SOLUTION"
-          dotnet build "$SP4_SOLUTION" --configuration Release
+          dotnet restore "${{ env.SP4_SOLUTION }}"
+          dotnet build "${{ env.SP4_SOLUTION }}" --configuration Release
       - name: Test ScottPlot4
-        run: dotnet test "$SP4_SOLUTION" --configuration Release --no-build --verbosity minimal
+        run: dotnet test "${{ env.SP4_SOLUTION }}" --configuration Release --no-build --verbosity minimal
       - name: Security Scan
         uses: github/codeql-action/analyze@v3
