@@ -19,6 +19,26 @@ public partial class DraggableCallout : Form, IDemoWindow
         fp.MaxX = 2;
         fp.LineWidth = 3;
 
+        formsPlot1.Plot.Add.Callout(
+            text: "Peak of \"Mount Stupid\"",
+            textLocation: new(0.35, 1.05),
+            tipLocation: new(0.2185, fp.GetY(0.2185)));
+
+        formsPlot1.Plot.Add.Callout(
+            text: "Valley of Despair",
+            textLocation: new(0.35, 0.6),
+            tipLocation: new(0.3885, fp.GetY(0.3885)));
+
+        formsPlot1.Plot.Add.Callout(
+            text: "Slope of Enlightenment",
+            textLocation: new(0.9, 0.3),
+            tipLocation: new(0.76935, fp.GetY(0.76935)));
+
+        formsPlot1.Plot.Add.Callout(
+            text: "Plateau of Sustainability",
+            textLocation: new(1.4, 0.8),
+            tipLocation: new(1.701, fp.GetY(1.701)));
+
         formsPlot1.Plot.YLabel("Confidence");
         formsPlot1.Plot.XLabel("Competence");
         formsPlot1.Plot.Title("Dunning-Kruger Effect", 24);
@@ -26,21 +46,11 @@ public partial class DraggableCallout : Form, IDemoWindow
         formsPlot1.Plot.Axes.SetLimitsX(0, 2);
         formsPlot1.Plot.Axes.SetLimitsY(0, 1.2);
 
-        var callout = formsPlot1.Plot.Add.Callout(
-            text: "A draggable Callout\npoints to a coordinate",
-            textX: 0.3,
-            textY: 1.1,
-            tipX: 0.2185,
-            tipY: 0.8925);
-
-        callout.LabelStyle.BorderColor = Colors.Blue;
-        callout.LabelStyle.BackgroundColor = Colors.Blue.WithAlpha(.5);
-        callout.LabelStyle.Padding = 5;
-
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
         formsPlot1.MouseUp += FormsPlot1_MouseUp;
         formsPlot1.MouseMove += FormsPlot1_MouseMove;
     }
+
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
@@ -78,6 +88,7 @@ public partial class DraggableCallout : Form, IDemoWindow
     {
         return formsPlot1.Plot
             .GetPlottables<Callout>()
+            .Reverse()
             .Where(p => p.LastRenderRect.Contains(x, y))
             .FirstOrDefault();
     }

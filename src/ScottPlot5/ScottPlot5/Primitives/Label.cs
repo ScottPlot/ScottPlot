@@ -263,7 +263,7 @@ public class Label
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
         PixelRect backgroundRect = textRect.Expand(Padding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
-        LastRenderPixelRect = backgroundRect.Expand(shadowRect);
+        LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(x + OffsetX, y + OffsetY);
 
         var labelCoordinateSize = new CoordinateSize(backgroundRect.Width, backgroundRect.Height);
         var labelCoordinates = new Coordinates(x, y);

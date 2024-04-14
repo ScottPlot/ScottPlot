@@ -11,6 +11,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable
     private IFunctionSource Source { get; set; } = source;
     private CoordinateRange MaxObservedRangeY { get; set; } = CoordinateRange.NotSet;
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);
+    public double GetY(double x) => Source.Get(x);
 
     public double MinX
     {
