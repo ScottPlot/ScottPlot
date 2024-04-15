@@ -57,13 +57,12 @@
 </style>
 
 <nav class="sidebar">
+
+    <h1>ScottPlot Blazor Demo</h1>
+    <input class="mx-2" @bind-value="SearchTerm" placeholder="Filter..."  @bind-value:event="oninput" />
+    <hr />
+
     <div class="sidebar-inner">
-
-        <h1>ScottPlot Blazor Demo</h1>
-
-        <hr />
-        <input @bind-value="SearchTerm" placeholder="Filter..."  @bind-value:event="oninput" />
-
         @foreach (var recipes in FilteredRecipes)
         {
             <h1>@recipes.Key.CategoryName</h1>
