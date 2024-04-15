@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.AxisPanels;
 
-public abstract class YAxisBase : AxisBase, IAxis
+public abstract class YAxisBase : AxisBase, IYAxis
 {
     public double Height => Range.Span;
 
