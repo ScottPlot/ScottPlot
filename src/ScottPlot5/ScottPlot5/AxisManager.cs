@@ -426,7 +426,7 @@ public class AxisManager
     public AxisLimits GetLimits(IXAxis xAxis, IYAxis yAxis)
     {
         if (!xAxis.Range.HasBeenSet || !yAxis.Range.HasBeenSet)
-            AutoScale();
+            AutoScale(xAxis, yAxis);
 
         return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
     }
@@ -489,6 +489,26 @@ public class AxisManager
         AutoScaler.InvertedX = invertX ?? AutoScaler.InvertedX;
         AutoScaler.InvertedY = invertY ?? AutoScaler.InvertedY;
         AutoScaler.AutoScaleAll(Plot.PlottableList);
+    }
+
+    /// <summary>
+    /// Autoscale the given axes to accommodate the data from all plottables that use them
+    /// </summary>
+    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool horizontal = true, bool vertical = true)
+    {
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = AutoScaler.GetAxisLimits(Plot, xAxis, yAxis);
+
+        if (horizontal)
+        {
+            SetLimitsX(limits.Left, limits.Right, xAxis);
+        }
+
+        if (vertical)
+        {
+            SetLimitsY(limits.Bottom, limits.Top, yAxis);
+        }
     }
 
     /// <summary>
@@ -579,26 +599,6 @@ public class AxisManager
         ReplaceNullAxesWithDefaults();
         AxisLimits limits = AutoScaler.GetAxisLimits(Plot, Bottom, yAxis);
         SetLimitsY(limits.Bottom, limits.Top, yAxis);
-    }
-
-    /// <summary>
-    /// Autoscale the given axes to accommodate the data from all plottables that use them
-    /// </summary>
-    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool horizontal = true, bool vertical = true)
-    {
-        ReplaceNullAxesWithDefaults();
-
-        AxisLimits limits = AutoScaler.GetAxisLimits(Plot, xAxis, yAxis);
-
-        if (horizontal)
-        {
-            SetLimitsX(limits.Left, limits.Right, xAxis);
-        }
-
-        if (vertical)
-        {
-            SetLimitsY(limits.Bottom, limits.Top, yAxis);
-        }
     }
 
     /// <summary>
