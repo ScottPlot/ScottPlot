@@ -43,12 +43,12 @@ internal class AxisLineTests
 
         var hl = plot.Add.HorizontalLine(0.5);
         hl.Text = "HLine";
-        hl.FontSize = 10;
-        hl.TextColor = Colors.Yellow;
+        hl.LabelFontSize = 10;
+        hl.LabelFontColor = Colors.Yellow;
 
         var vl = plot.Add.VerticalLine(0.5);
         vl.Text = "VLine";
-        vl.FontSize = 22;
+        vl.LabelFontSize = 22;
         vl.Color = Colors.Magenta;
         vl.LineWidth = 3;
         vl.LinePattern = LinePattern.Dotted;

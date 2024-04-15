@@ -10,11 +10,11 @@ public class Crosshair : IPlottable, IRenderLast
     public double Y { get => HorizontalLine.Y; set => HorizontalLine.Y = value; }
 
     // These properties set styling for both axis lines at once
-    public float FontSize { set { HorizontalLine.FontSize = value; VerticalLine.FontSize = value; } }
-    public bool FontBold { set { HorizontalLine.FontBold = value; VerticalLine.FontBold = value; } }
-    public string FontName { set { HorizontalLine.FontName = value; VerticalLine.FontName = value; } }
-    public Color TextColor { set { HorizontalLine.TextColor = value; VerticalLine.TextColor = value; } }
-    public Color TextBackgroundColor { set { HorizontalLine.TextBackgroundColor = value; VerticalLine.TextBackgroundColor = value; } }
+    public float FontSize { set { HorizontalLine.LabelFontSize = value; VerticalLine.LabelFontSize = value; } }
+    public bool FontBold { set { HorizontalLine.LabelBold = value; VerticalLine.LabelBold = value; } }
+    public string FontName { set { HorizontalLine.LabelFontName = value; VerticalLine.LabelFontName = value; } }
+    public Color TextColor { set { HorizontalLine.LabelFontColor = value; VerticalLine.LabelFontColor = value; } }
+    public Color TextBackgroundColor { set { HorizontalLine.LabelBackgroundColor = value; VerticalLine.LabelBackgroundColor = value; } }
     public Color LineColor { set { HorizontalLine.LineColor = value; VerticalLine.LineColor = value; } }
     public float LineWidth { set { HorizontalLine.LineWidth = value; VerticalLine.LineWidth = value; } }
     public LinePattern LinePattern { set { HorizontalLine.LinePattern = value; VerticalLine.LinePattern = value; } }

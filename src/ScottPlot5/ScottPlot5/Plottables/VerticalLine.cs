@@ -67,7 +67,7 @@ public class VerticalLine : AxisLine
             ? Alignment.LowerCenter
             : Alignment.UpperCenter;
 
-        LabelStyle.Alignment = TextAlignment ?? defaultAlignment;
+        LabelStyle.Alignment = ManualLabelAlignment ?? defaultAlignment;
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();

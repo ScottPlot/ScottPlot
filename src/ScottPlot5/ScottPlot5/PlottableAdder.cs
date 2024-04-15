@@ -337,8 +337,8 @@ public class PlottableAdder(Plot plot)
         {
             LineWidth = width,
             LineColor = color2,
-            TextBackgroundColor = color2,
-            TextColor = Colors.White,
+            LabelBackgroundColor = color2,
+            LabelFontColor = Colors.White,
             LinePattern = pattern,
             Y = y
         };
@@ -834,7 +834,7 @@ public class PlottableAdder(Plot plot)
         {
             LineWidth = width,
             LineColor = color2,
-            TextBackgroundColor = color2,
+            LabelBackgroundColor = color2,
             LinePattern = pattern,
             X = x
         };

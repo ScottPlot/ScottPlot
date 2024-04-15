@@ -68,7 +68,7 @@ public class HorizontalLine : AxisLine
             ? Alignment.UpperCenter
             : Alignment.LowerCenter;
 
-        LabelStyle.Alignment = TextAlignment ?? defaultAlignment;
+        LabelStyle.Alignment = ManualLabelAlignment ?? defaultAlignment;
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
