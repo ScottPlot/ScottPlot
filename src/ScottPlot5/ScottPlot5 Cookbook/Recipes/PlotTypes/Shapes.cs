@@ -122,17 +122,13 @@ public class Shapes : ICategory
             };
 
             var poly = myPlot.Add.Polygon(points);
-
-            poly.FillStyle = new FillStyle
+            poly.FillColor = Colors.Green;
+            poly.FillHatchColor = Colors.Blue;
+            poly.FillHatch = new Gradient()
             {
-                Color = Colors.Green,
-                HatchColor = Colors.Blue,
-                Hatch = new Gradient()
-                {
-                    GradientType = GradientType.Linear,
-                    AlignmentStart = Alignment.UpperRight,
-                    AlignmentEnd = Alignment.LowerLeft,
-                }
+                GradientType = GradientType.Linear,
+                AlignmentStart = Alignment.UpperRight,
+                AlignmentEnd = Alignment.LowerLeft,
             };
 
             poly.LineStyle.AntiAlias = true;

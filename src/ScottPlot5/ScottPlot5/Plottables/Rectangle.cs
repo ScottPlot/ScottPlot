@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Rectangle : IPlottable, IHasLine
+public class Rectangle : IPlottable, IHasLine, IHasFill
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -11,7 +11,11 @@ public class Rectangle : IPlottable, IHasLine
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public FillStyle FillStyle { get; set; } = new() { Color = Colors.Red };
+    public FillStyle FillStyle { get => FillStyle; }
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+
     public string Label { get; set; } = string.Empty;
     public double X1 { get; set; }
     public double X2 { get; set; }

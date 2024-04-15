@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public abstract class AxisSpan : IPlottable, IHasLine
+public abstract class AxisSpan : IPlottable, IHasLine, IHasFill
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -13,8 +13,10 @@ public abstract class AxisSpan : IPlottable, IHasLine
     public LinePattern LinePattern { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public Color LineColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-
-    public FillStyle FillStyle { get; set; } = new();
+    public FillStyle FillStyle { get => FillStyle; }
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label.Text, FillStyle);
 
