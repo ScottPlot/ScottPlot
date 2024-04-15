@@ -25,11 +25,11 @@ public partial class Form1 : Form
             if (thisRenderLimits == lastRenderLimits)
             {
                 // test this by resizing the window
-                an.Label.Text = "limits unchanged";
+                an.Text = "limits unchanged";
             }
             else
             {
-                an.Label.Text = thisRenderLimits.ToString(2);
+                an.Text = thisRenderLimits.ToString(2);
             }
         };
     }

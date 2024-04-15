@@ -1,13 +1,18 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Annotation : IPlottable
+public class Annotation : StyleProperties.LabelStyleProperties, IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public Label Label { get; set; } = new() { ShadowColor = Colors.Black.WithAlpha(.2) };
-    public string Text { get => Label.Text; set => Label.Text = value; }
+    public override Label LabelStyle { get; } = new() { ShadowColor = Colors.Black.WithAlpha(.2) };
+
+    [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle", true)]
+    public Label Label { get; set; } = null!;
+
+    public string Text { get => LabelText; set => LabelText = value; }
+
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float OffsetX { get; set; } = 10;
     public float OffsetY { get; set; } = 10;
@@ -19,9 +24,9 @@ public class Annotation : IPlottable
         if (!IsVisible)
             return;
 
-        Pixel px = Label.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY);
+        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY);
 
         using SKPaint paint = new();
-        Label.Render(rp.Canvas, px, paint);
+        LabelStyle.Render(rp.Canvas, px, paint);
     }
 }

@@ -28,12 +28,11 @@ public class PlottableAdder(Plot plot)
         Annotation an = new()
         {
             Alignment = alignment,
+            Text = text,
+            LabelBackgroundColor = Colors.Yellow.WithAlpha(.75),
+            LabelBorderColor = Colors.Black,
+            LabelPadding = 5,
         };
-
-        an.Label.Text = text;
-        an.Label.BackgroundColor = Colors.Yellow.WithAlpha(.75);
-        an.Label.BorderColor = Colors.Black;
-        an.Label.Padding = 5;
 
         Plot.PlottableList.Add(an);
 
