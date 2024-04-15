@@ -9,12 +9,14 @@ public partial class DataStreamer : Form, IDemoWindow
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
     readonly ScottPlot.Plottables.DataStreamer Streamer;
+    readonly ScottPlot.Plottables.VerticalLine VLine;
 
     public DataStreamer()
     {
         InitializeComponent();
 
         Streamer = formsPlot1.Plot.Add.DataStreamer(1000);
+        VLine = formsPlot1.Plot.Add.VerticalLine(0, 2, ScottPlot.Colors.Red);
 
         // disable mouse interaction by default
         formsPlot1.Interaction.Disable();
@@ -32,12 +34,14 @@ public partial class DataStreamer : Form, IDemoWindow
             if (Streamer.HasNewData)
             {
                 formsPlot1.Plot.Title($"Processed {Streamer.Data.CountTotal:N0} points");
+                VLine.IsVisible = Streamer.Renderer is ScottPlot.DataViews.Wipe;
+                VLine.Position = Streamer.Data.NextIndex * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
                 formsPlot1.Refresh();
             }
         };
 
         // setup configuration actions
-        btnWipeRight.Click += (s, e) => Streamer.ViewWipeRight();
+        btnWipeRight.Click += (s, e) => Streamer.ViewWipeRight(0.1);
         btnScrollLeft.Click += (s, e) => Streamer.ViewScrollLeft();
         cbManageLimits.CheckedChanged += (s, e) =>
         {
