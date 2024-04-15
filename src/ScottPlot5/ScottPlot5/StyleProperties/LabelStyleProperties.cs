@@ -12,6 +12,7 @@ public abstract class LabelStyleProperties
     public float LabelOffsetY { get => LabelStyle.OffsetY; set => LabelStyle.OffsetY = value; }
     public float LabelRotation { get => LabelStyle.Rotation; set => LabelStyle.Rotation = value; }
     public float LabelPadding { set => LabelStyle.Padding = value; }
+    public PixelPadding LabelPixelPadding { get => LabelStyle.PixelPadding; set => LabelStyle.PixelPadding = value; }
     public PixelRect LabelLastRenderPixelRect => LabelStyle.LastRenderPixelRect;
 
     public string LabelText { get => LabelStyle.Text; set => LabelStyle.Text = value; }
@@ -19,6 +20,7 @@ public abstract class LabelStyleProperties
 
     public string LabelFontName { get => LabelStyle.FontName; set => LabelStyle.FontName = value; }
     public float LabelFontSize { get => LabelStyle.FontSize; set => LabelStyle.FontSize = value; }
+    public float? LabelLineSpacing { get => LabelStyle.LineSpacing; set => LabelStyle.LineSpacing = value; }
     public bool LabelItalic { get => LabelStyle.Italic; set => LabelStyle.Italic = value; }
     public bool LabelBold { get => LabelStyle.Bold; set => LabelStyle.Bold = value; }
 

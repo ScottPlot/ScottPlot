@@ -51,9 +51,9 @@ public partial class CustomMenu : Form, IDemoWindow
         formsPlot1.Menu.Add("Add Text", (formsplot1) =>
         {
             var txt = formsplot1.Plot.Add.Text("Test", Generate.RandomLocation());
-            txt.Size = 10 + Generate.RandomInteger(20);
-            txt.Color = Generate.RandomColor(128);
-            txt.Bold = true;
+            txt.LabelFontSize = 10 + Generate.RandomInteger(20);
+            txt.LabelFontColor = Generate.RandomColor(128);
+            txt.LabelBold = true;
             formsplot1.Plot.Axes.AutoScale();
             formsplot1.Refresh();
         });

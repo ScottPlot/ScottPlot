@@ -808,12 +808,16 @@ public class PlottableAdder(Plot plot)
 
     public Text Text(string text, double x, double y)
     {
-        Text txt = new();
-        txt.Label.Text = text;
-        txt.Label.BackgroundColor = Colors.Transparent;
-        txt.Label.BorderColor = Colors.Transparent;
-        txt.Location = new(x, y);
+        Text txt = new()
+        {
+            LabelText = text,
+            LabelBackgroundColor = Colors.Transparent,
+            LabelBorderColor = Colors.Transparent,
+            Location = new(x, y)
+        };
+
         Plot.PlottableList.Add(txt);
+
         return txt;
     }
 
