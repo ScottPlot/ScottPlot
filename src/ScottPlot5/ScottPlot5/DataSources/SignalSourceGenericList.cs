@@ -54,6 +54,10 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
         float xUnitsPerPixel = (float)(axes.XAxis.Width / axes.DataRect.Width);
         double xRangeMax = xRangeMin + xUnitsPerPixel;
 
+        // add slight overlap to prevent floating point errors from missing points
+        // https://github.com/ScottPlot/ScottPlot/issues/3665
+        xRangeMax += xUnitsPerPixel * .01;
+
         if (RangeContainsSignal(xRangeMin, xRangeMax) == false)
             return PixelColumn.WithoutData(xPixel);
 
