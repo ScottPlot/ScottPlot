@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FillY : IPlottable, IHasLine, IHasFill
+public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
@@ -27,6 +27,11 @@ public class FillY : IPlottable, IHasLine, IHasFill
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; }
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
     /// <summary>
     /// Creates an empty RangePlot plot, call SetDataSource() to set the coordinates.

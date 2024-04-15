@@ -388,7 +388,9 @@ public class PlottableAdder(Plot plot)
     {
         Marker mp = new()
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor(),
             Location = new Coordinates(x, y),
         };
 
@@ -408,7 +410,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -422,7 +426,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -436,7 +442,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -450,7 +458,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -464,7 +474,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);

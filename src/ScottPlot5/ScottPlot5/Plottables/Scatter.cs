@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Scatter(IScatterSource data) : IPlottable, IHasLine
+public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker
 {
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
@@ -11,14 +11,16 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
     public IScatterSource Data { get; } = data;
     public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
     public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
-
-    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
 
     /// <summary>
     /// The style of lines to use when connecting points.

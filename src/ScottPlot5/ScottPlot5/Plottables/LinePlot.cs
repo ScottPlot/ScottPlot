@@ -1,10 +1,17 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class LinePlot : IPlottable, IHasLine
+public class LinePlot : IPlottable, IHasLine, IHasMarker
 {
     public Coordinates Start { get; set; }
     public Coordinates End { get; set; }
-    public MarkerStyle MarkerStyle { get; set; } = new() { Size = 0 };
+
+    public MarkerStyle MarkerStyle { get; } = new() { Size = 0 };
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -23,28 +30,6 @@ public class LinePlot : IPlottable, IHasLine
             LineStyle.Color = value;
             MarkerStyle.Fill.Color = value;
         }
-    }
-
-    public Color MarkerColor
-    {
-        get => MarkerStyle.Fill.Color;
-        set
-        {
-            MarkerStyle.Fill.Color = value;
-            MarkerStyle.Outline.Color = value;
-        }
-    }
-
-    public MarkerShape MarkerShape
-    {
-        get => MarkerStyle.Shape;
-        set => MarkerStyle.Shape = value;
-    }
-
-    public float MarkerSize
-    {
-        get => MarkerStyle.Size;
-        set => MarkerStyle.Size = value;
     }
 
     public AxisLimits GetAxisLimits()

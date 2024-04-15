@@ -131,14 +131,14 @@ public class Shapes : ICategory
                 AlignmentEnd = Alignment.LowerLeft,
             };
 
-            poly.LineStyle.AntiAlias = true;
-            poly.LineStyle.Color = Colors.Black;
-            poly.LineStyle.Pattern = LinePattern.Dashed;
-            poly.LineStyle.Width = 2;
+            poly.LineColor = Colors.Black;
+            poly.LinePattern = LinePattern.Dashed;
+            poly.LineWidth = 2;
 
-            poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);
-            poly.MarkerStyle.Fill.Color = Colors.Gold;
-            poly.MarkerStyle.Outline.Color = Colors.Brown;
+            poly.MarkerShape = MarkerShape.OpenCircle;
+            poly.MarkerSize = 8;
+            poly.MarkerFillColor = Colors.Gold;
+            poly.MarkerLineColor = Colors.Brown;
         }
     }
 }

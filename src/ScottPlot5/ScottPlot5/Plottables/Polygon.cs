@@ -4,7 +4,7 @@
 /// A polygon is a collection of X/Y points that are all connected to form a closed shape.
 /// Polygons can be optionally filled with a color or a gradient.
 /// </summary>
-public class Polygon : IPlottable, IHasLine, IHasFill
+public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
 {
     public static Polygon Empty => new();
 
@@ -27,7 +27,13 @@ public class Polygon : IPlottable, IHasLine, IHasFill
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.None;
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+
 
     public int PointCount { get => Coordinates.Length; }
 

@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Marker : IPlottable
+public class Marker : IPlottable, IHasMarker
 {
     public double X { get; set; }
     public double Y { get; set; }
@@ -12,7 +12,14 @@ public class Marker : IPlottable
 
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
-    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
+
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+
     public float Size { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public float LineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
     public MarkerShape Shape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }

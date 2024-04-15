@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Signal : IPlottable, IHasLine
+public class Signal : IPlottable, IHasLine, IHasMarker
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -9,7 +9,12 @@ public class Signal : IPlottable, IHasLine
 
     public string? Label { get; set; }
 
-    public readonly MarkerStyle Marker;
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
     public LineStyle LineStyle { get; } = new();
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
@@ -28,8 +33,8 @@ public class Signal : IPlottable, IHasLine
         set
         {
             LineColor = value;
-            Marker.Fill.Color = value;
-            Marker.Outline.Color = value;
+            MarkerFillColor = value;
+            MarkerLineColor = value;
         }
     }
 
@@ -37,7 +42,7 @@ public class Signal : IPlottable, IHasLine
     {
         Data = data;
 
-        Marker = new(MarkerShape.FilledCircle, 5)
+        MarkerStyle = new(MarkerShape.FilledCircle, 5)
         {
             Outline = LineStyle.None
         };
@@ -51,7 +56,7 @@ public class Signal : IPlottable, IHasLine
         new LegendItem
         {
             Label = Label,
-            Marker = Marker,
+            Marker = MarkerStyle,
             Line = LineStyle,
         });
 
@@ -118,8 +123,8 @@ public class Signal : IPlottable, IHasLine
         {
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
-            Marker.Size = radius * MaximumMarkerSize * .2f;
-            Drawing.DrawMarkers(rp.Canvas, paint, points, Marker);
+            MarkerSize = radius * MaximumMarkerSize * .2f;
+            Drawing.DrawMarkers(rp.Canvas, paint, points, MarkerStyle);
         }
     }
 

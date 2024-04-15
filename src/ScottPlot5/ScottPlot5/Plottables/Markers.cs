@@ -1,17 +1,19 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Markers(IScatterSource data) : IPlottable
+public class Markers(IScatterSource data) : IPlottable, IHasMarker
 {
     public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.Default;
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
     public IScatterSource Data { get; } = data;
-
-    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
 
     public Color Color
     {
