@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Interfaces;
-using System.Numerics;
 
 namespace ScottPlot.Plottables;
 
@@ -26,7 +25,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable
 
     public void Render(RenderPack rp)
     {
-        if (!ArrowStyle.LineStyle.CanBeRendered)
+        if (!IsVisible)
             return;
 
         float maxLength = 25;
