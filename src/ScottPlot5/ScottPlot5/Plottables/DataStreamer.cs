@@ -76,9 +76,9 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Display the data using a view where new data overlapps old data from left to right.
     /// </summary>
-    public void ViewWipeRight()
+    public void ViewWipeRight(double blankFraction = 0)
     {
-        Renderer = new DataViews.Wipe(this, true);
+        Renderer = new DataViews.Wipe(this, true) { BlankFraction = blankFraction };
     }
 
     /// <summary>

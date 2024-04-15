@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.27
 _Not yet on NuGet..._
 * Signal: Corrected floating point error that caused points to be dropped in rare conditions (#3665) @mjazd
+* DataStreamer: Added an optional argument to `ViewWipeRight()` that sets the fraction of oldest data to hide (#3668) @mloppnow
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_

@@ -41,7 +41,7 @@ public partial class DataStreamer : Form, IDemoWindow
         };
 
         // setup configuration actions
-        btnWipeRight.Click += (s, e) => Streamer.ViewWipeRight();
+        btnWipeRight.Click += (s, e) => Streamer.ViewWipeRight(0.1);
         btnScrollLeft.Click += (s, e) => Streamer.ViewScrollLeft();
         cbManageLimits.CheckedChanged += (s, e) =>
         {
