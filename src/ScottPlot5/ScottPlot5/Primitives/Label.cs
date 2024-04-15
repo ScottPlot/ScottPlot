@@ -15,6 +15,7 @@ public class Label
     public Color ForeColor { get; set; } = Colors.Black;
 
     [Obsolete("use BackgroundColor", true)]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public Color BackColor { get; set; }
     public Color BackgroundColor { get; set; } = Colors.Transparent;
 
@@ -67,7 +68,14 @@ public class Label
 
     public bool Italic = false;
     public bool AntiAlias = true;
-    public float Padding = 0;
+    public float Padding
+    {
+        [Obsolete("Get PixelPadding instead", true)]
+        get => 0;
+        set => PixelPadding = new(value);
+    }
+
+    public PixelPadding PixelPadding { get; set; } = new(0, 0, 0, 0);
 
     public float PointSize = 0;
     public bool PointFilled = false;
@@ -259,7 +267,7 @@ public class Label
         float yOffset = size.Height * Alignment.VerticalFraction();
         PixelRect textRect = new(0, size.Width, size.Height, 0);
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
-        PixelRect backgroundRect = textRect.Expand(Padding);
+        PixelRect backgroundRect = textRect.Expand(PixelPadding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
         LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(x + OffsetX, y + OffsetY);
 

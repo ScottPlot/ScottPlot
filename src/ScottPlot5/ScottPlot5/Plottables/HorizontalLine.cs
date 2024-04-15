@@ -61,8 +61,8 @@ public class HorizontalLine : AxisLine
             return;
 
         float x = LabelOppositeAxis
-            ? rp.DataRect.Right + LabelStyle.Padding
-            : rp.DataRect.Left - LabelStyle.Padding;
+            ? rp.DataRect.Right + LabelStyle.PixelPadding.Right
+            : rp.DataRect.Left - LabelStyle.PixelPadding.Left;
 
         Alignment defaultAlignment = LabelOppositeAxis
             ? Alignment.UpperCenter

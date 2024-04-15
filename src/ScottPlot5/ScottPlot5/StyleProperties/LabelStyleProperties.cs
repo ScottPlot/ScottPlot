@@ -11,7 +11,7 @@ public abstract class LabelStyleProperties
     public float LabelOffsetX { get => LabelStyle.OffsetX; set => LabelStyle.OffsetX = value; }
     public float LabelOffsetY { get => LabelStyle.OffsetY; set => LabelStyle.OffsetY = value; }
     public float LabelRotation { get => LabelStyle.Rotation; set => LabelStyle.Rotation = value; }
-    public float LabelPadding { get => LabelStyle.Padding; set => LabelStyle.Padding = value; }
+    public float LabelPadding { set => LabelStyle.Padding = value; }
     public PixelRect LabelLastRenderPixelRect => LabelStyle.LastRenderPixelRect;
 
     public string LabelText { get => LabelStyle.Text; set => LabelStyle.Text = value; }

@@ -78,14 +78,14 @@ public class Callout : IPlottable
         PixelSize labelSize = LabelStyle.Measure();
 
         Pixel[] attachPoints = [
-            new(TextPixel.X - LabelStyle.Padding, TextPixel.Y + labelSize.Height / 2), // west
-            new(TextPixel.X + labelSize.Width + LabelStyle.Padding, TextPixel.Y + labelSize.Height / 2), //east
-            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y - LabelStyle.Padding), //north
-            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y + labelSize.Height + LabelStyle.Padding), // south
-            new(TextPixel.X - LabelStyle.Padding, TextPixel.Y - LabelStyle.Padding), // northWest
-            new(TextPixel.X + labelSize.Width + LabelStyle.Padding, TextPixel.Y - LabelStyle.Padding), // northEast
-            new(TextPixel.X - LabelStyle.Padding, TextPixel.Y + labelSize.Height + LabelStyle.Padding), // southWest
-            new(TextPixel.X + labelSize.Width + LabelStyle.Padding, TextPixel.Y + labelSize.Height + LabelStyle.Padding) // southEast
+            new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y + labelSize.Height / 2), // west
+            new(TextPixel.X + labelSize.Width + LabelStyle.PixelPadding.Right, TextPixel.Y + labelSize.Height / 2), //east
+            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y - LabelStyle.PixelPadding.Top), //north
+            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y + labelSize.Height + LabelStyle.PixelPadding.Bottom), // south
+            new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y - LabelStyle.PixelPadding.Top), // northWest
+            new(TextPixel.X + labelSize.Width + LabelStyle.PixelPadding.Right, TextPixel.Y - LabelStyle.PixelPadding.Top), // northEast
+            new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y + labelSize.Height + LabelStyle.PixelPadding.Bottom), // southWest
+            new(TextPixel.X + labelSize.Width + LabelStyle.PixelPadding.Right, TextPixel.Y + labelSize.Height + LabelStyle.PixelPadding.Bottom) // southEast
         ];
 
         Pixel closestAttachPoint = attachPoints[0];
