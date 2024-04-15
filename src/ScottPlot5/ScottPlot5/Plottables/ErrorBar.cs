@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables
 {
-    public class ErrorBar : IPlottable
+    public class ErrorBar : IPlottable, IHasLine
     {
         // TODO: use an errorbar source instead of so many lists
 
@@ -14,7 +14,11 @@
         public IReadOnlyList<double>? YErrorPositive { get; set; }
         public IReadOnlyList<double>? YErrorNegative { get; set; }
 
-        public LineStyle LineStyle { get; set; } = new();
+        public LineStyle LineStyle { get; } = new();
+        public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+        public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+        public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
         public float CapSize { get; set; } = 3;
         public Color Color
         {

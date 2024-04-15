@@ -4,7 +4,7 @@
 /// A polygon is a collection of X/Y points that are all connected to form a closed shape.
 /// Polygons can be optionally filled with a color or a gradient.
 /// </summary>
-public class Polygon : IPlottable
+public class Polygon : IPlottable, IHasLine
 {
     public static Polygon Empty => new();
 
@@ -17,7 +17,11 @@ public class Polygon : IPlottable
 
     public bool IsVisible { get; set; } = true;
 
-    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
+    public LineStyle LineStyle { get; } = new() { Width = 0 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.LightGray };
     public MarkerStyle MarkerStyle { get; set; } = MarkerStyle.None;
 

@@ -1,13 +1,19 @@
 ﻿namespace ScottPlot.Plottables;
 
-public abstract class AxisSpan : IPlottable
+public abstract class AxisSpan : IPlottable, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
 
     public readonly Label Label = new();
-    public LineStyle LineStyle { get; set; } = new();
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public LinePattern LinePattern { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Color LineColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+
     public FillStyle FillStyle { get; set; } = new();
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label.Text, FillStyle);

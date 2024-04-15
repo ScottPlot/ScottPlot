@@ -135,13 +135,10 @@ public class Shapes : ICategory
                 }
             };
 
-            poly.LineStyle = new LineStyle
-            {
-                AntiAlias = true,
-                Color = Colors.Black,
-                Pattern = LinePattern.Dashed,
-                Width = 2
-            };
+            poly.LineStyle.AntiAlias = true;
+            poly.LineStyle.Color = Colors.Black;
+            poly.LineStyle.Pattern = LinePattern.Dashed;
+            poly.LineStyle.Width = 2;
 
             poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);
             poly.MarkerStyle.Fill.Color = Colors.Gold;

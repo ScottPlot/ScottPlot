@@ -2,16 +2,18 @@
 
 namespace ScottPlot.Plottables;
 
-public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast
+public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine
 {
     public bool IsVisible { get; set; } = true;
-
     public IAxes Axes { get; set; } = new Axes();
 
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public override Label LabelStyle { get; } = new();
-
     public string Text { get => LabelText; set => LabelText = value; }
-
     public Alignment? ManualLabelAlignment { get; set; } = null;
 
     #region obsolete
@@ -47,11 +49,6 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast
     public Alignment? TextAlignment { get; set; }
 
     #endregion
-
-    public LineStyle LineStyle { get; set; } = new();
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
-    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
-    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public bool LabelOppositeAxis { get; set; } = false;
     public bool IsDraggable { get; set; } = false;

@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class SignalXY(ISignalXYSource dataSource) : IPlottable
+public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine
 {
     public ISignalXYSource Data { get; set; } = dataSource;
 
@@ -8,7 +8,12 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public IAxes Axes { get; set; } = new Axes();
-    public LineStyle LineStyle { get; set; } = new();
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public MarkerStyle MarkerStyle { get; set; } = new() { Shape = MarkerShape.None, Size = 5, };
     public Color Color
     {
@@ -20,7 +25,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable
             MarkerStyle.Outline.Color = value;
         }
     }
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    
     public string Label = string.Empty;
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 

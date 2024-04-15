@@ -2,12 +2,16 @@
 
 namespace ScottPlot.Plottables;
 
-public class SignalConst<T>(T[] ys, double period) : IPlottable
+public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine
     where T : struct, IComparable
 {
     readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
     public readonly MarkerStyle Marker = new();
-    public readonly LineStyle LineStyle = new();
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public string? Label { get; set; }
 

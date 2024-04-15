@@ -1,10 +1,6 @@
-﻿/* Minimal case signal plot for testing only
- * !! Avoid temptation to use generics or generic math at this early stage of development
- */
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class Signal : IPlottable
+public class Signal : IPlottable, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -15,7 +11,10 @@ public class Signal : IPlottable
 
     public readonly MarkerStyle Marker;
 
-    public readonly LineStyle LineStyle;
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     /// <summary>
     /// Maximum size of the marker (in pixels) to display
@@ -23,18 +22,12 @@ public class Signal : IPlottable
     /// </summary>
     public float MaximumMarkerSize { get; set; } = 4;
 
-    public float LineWidth
-    {
-        get => LineStyle.Width;
-        set => LineStyle.Width = value;
-    }
-
     public Color Color
     {
         get => LineStyle.Color;
         set
         {
-            LineStyle.Color = value;
+            LineColor = value;
             Marker.Fill.Color = value;
             Marker.Outline.Color = value;
         }

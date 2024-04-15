@@ -1,15 +1,14 @@
-﻿using ScottPlot.Extensions;
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class Ellipse : IPlottable
+public class Ellipse : IPlottable, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 
-    public LineStyle LineStyle { get; set; } = new() { Color = Colors.Black, Width = 2 };
+    public LineStyle LineStyle { get; } = new();
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.Transparent };

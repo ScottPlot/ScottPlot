@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FillY : IPlottable
+public class FillY : IPlottable, IHasLine
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
@@ -17,7 +17,12 @@ public class FillY : IPlottable
     private Polygon Poly { get; set; } = Polygon.Empty;
 
     public FillStyle FillStyle { get => Poly.FillStyle; }
-    public LineStyle LineStyle { get => Poly.LineStyle; }
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; }
 
     /// <summary>
