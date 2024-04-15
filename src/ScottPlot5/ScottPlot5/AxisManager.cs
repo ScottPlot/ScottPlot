@@ -134,6 +134,19 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Apply a single color to the label, tick labels, tick marks, and frame of the specified axis
+    /// </summary>
+    public void Color(IAxis axis, Color color)
+    {
+        if (axis is AxisBase ab)
+        {
+            ab.Color(color);
+        }
+
+        Plot.Axes.Title.Label.ForeColor = color;
+    }
+
+    /// <summary>
     /// Set visibility of the frame on every axis
     /// </summary>
     public void Frame(bool enable)
