@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.27
 _Not yet on NuGet..._
 * Signal: Corrected floating point error that caused points to be dropped in rare conditions (#3665) @mjazd
+* Label: Refactored plottables to use consistently named properties. Properties such as `plottable.Label.FontColor` are now `plottable.Label.FontColor`, or `plottable.LabelStyle.FontColor`. Referencing obsolete property names yield build errors with messages that indicate names of the new properties to use. (#3658, #3666)
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
