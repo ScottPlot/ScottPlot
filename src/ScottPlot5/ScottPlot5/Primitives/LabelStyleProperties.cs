@@ -1,10 +1,10 @@
-﻿namespace ScottPlot.StyleProperties;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Classes with a <see cref="LabelStyle"/> can inherit this
 /// to include shortcuts to its most commonly used properties.
 /// </summary>
-public abstract class LabelStyleProperties
+public abstract class LabelStyleProperties : IHasLabel
 {
     public abstract Label LabelStyle { get; }
 

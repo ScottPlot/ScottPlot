@@ -1,6 +1,4 @@
-﻿using ScottPlot.StyleProperties;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class Benchmark : LabelStyleProperties, IPlottable
 {

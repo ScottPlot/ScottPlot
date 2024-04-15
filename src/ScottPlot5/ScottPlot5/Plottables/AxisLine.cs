@@ -1,6 +1,4 @@
-﻿using ScottPlot.StyleProperties;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine
 {

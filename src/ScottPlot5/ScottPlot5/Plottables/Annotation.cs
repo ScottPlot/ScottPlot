@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Annotation : StyleProperties.LabelStyleProperties, IPlottable
+public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
