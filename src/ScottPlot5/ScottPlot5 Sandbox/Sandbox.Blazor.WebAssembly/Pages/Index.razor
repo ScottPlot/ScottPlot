@@ -62,12 +62,13 @@
         <h1>ScottPlot Blazor Demo</h1>
 
         <hr />
+        <input @bind-value="SearchTerm" placeholder="Filter..."  @bind-value:event="oninput" />
 
-        @foreach (ICategory category in RecipesByCategory.Keys)
+        @foreach (var recipes in FilteredRecipes)
         {
-            <h1>@category.CategoryName</h1>
+            <h1>@recipes.Key.CategoryName</h1>
 
-            @foreach (IRecipe recipe in RecipesByCategory[category])
+            @foreach (var recipe in recipes.Value)
             {
                 <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
                     <div>
@@ -109,21 +110,25 @@
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
 
     BlazorPlot BlazorPlot { get; set; } = new();
+    string SearchTerm { get; set; } = "";
 
     IRecipe? Recipe;
+    JsonDocument? JsonRecipes = null;
 
-    async void ShowRecipe(IRecipe recipe)
+    protected async Task ShowRecipe(IRecipe recipe)
     {
         Recipe = recipe;
+        if (JsonRecipes is null)
+        {
+            string json = await Http.GetStringAsync("sample-data/recipes.json");
+            JsonRecipes = JsonDocument.Parse(json);
+        }
         BlazorPlot.Reset();
-        recipe.Execute(BlazorPlot.Plot);
+        Recipe.Execute(BlazorPlot.Plot);
         BlazorPlot.Refresh();
 
-        string json = await Http.GetStringAsync("sample-data/recipes.json");
-        using JsonDocument document = JsonDocument.Parse(json);
-
         string source = "// source code not found";
-        foreach (JsonElement recipeElement in document.RootElement.GetProperty("recipes").EnumerateArray())
+        foreach (JsonElement recipeElement in JsonRecipes.RootElement.GetProperty("recipes").EnumerateArray())
         {
             string name = recipeElement.GetProperty("name").GetString() ?? string.Empty;
             string desc = recipeElement.GetProperty("description").GetString() ?? string.Empty;
@@ -135,6 +140,25 @@
         }
 
         await JS.InvokeAsync<string>("UpdateSyntaxHighlighting", source);
+    }
+
+    Dictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
+    {
+        get
+        {
+            var filter = SearchTerm?.Trim();
+            if (string.IsNullOrEmpty(filter))
+                return RecipesByCategory;
+
+            var d = new Dictionary<ICategory, IEnumerable<IRecipe>>();
+            foreach (var x in RecipesByCategory)
+            {
+                var l = x.Value.Where(v => v.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                if (l.Count > 0)
+                    d.Add(x.Key, l);
+            }
+            return d;
+        }
     }
 }
 
