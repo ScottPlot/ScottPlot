@@ -121,6 +121,12 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double unitsPerPixelX = axes.XAxis.Width / rp.DataRect.Width;
         double start = axes.XAxis.Min + unitsPerPixelX * pixelColumnIndex;
         double end = start + unitsPerPixelX;
+
+        // add slight overlap to prevent floating point errors from missing points
+        // https://github.com/ScottPlot/ScottPlot/issues/3665
+        double overlap = unitsPerPixelX * .01;
+        end += overlap;
+
         var (startPosition, startIndex) = SearchIndex(start, rng);
         var (endPosition, endIndex) = SearchIndex(end, rng);
         int pointsInRange = Math.Abs(endPosition - startPosition);

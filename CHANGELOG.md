@@ -1,3 +1,7 @@
+## ScottPlot 5.0.27
+_Not yet on NuGet..._
+* SignalXY: Corrected floating point arithmetic error that caused points to be dropped (#3665) @mjazd
+
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
 * Function: Improved autoscaling behavior and respect for user-defined horizontal ranges (#3618) @Matthew-Chidlow  
