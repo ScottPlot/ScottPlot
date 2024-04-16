@@ -35,17 +35,17 @@ internal class FontTests
             string text = samples[i].Item2;
 
             var txtSample = myPlot.Add.Text(text, 2.5, i);
-            txtSample.Size = 14;
-            txtSample.FontName = Fonts.Detect(text); // this works
-            txtSample.Label.SetBestFont(); // this also works
-            txtSample.Color = Colors.Magenta;
+            txtSample.LabelFontSize = 14;
+            txtSample.LabelFontName = Fonts.Detect(text); // this works
+            txtSample.LabelStyle.SetBestFont(); // this also works
+            txtSample.LabelFontColor = Colors.Magenta;
 
             var txtLanguage = myPlot.Add.Text(language, 0, i);
-            txtLanguage.Size = 14;
+            txtLanguage.LabelFontSize = 14;
 
-            var txtFont = myPlot.Add.Text(txtSample.FontName, 5, i);
-            txtFont.Size = 14;
-            txtFont.Color = Colors.Green;
+            var txtFont = myPlot.Add.Text(txtSample.LabelFontName, 5, i);
+            txtFont.LabelFontSize = 14;
+            txtFont.LabelFontColor = Colors.Green;
         }
 
         myPlot.HideGrid();

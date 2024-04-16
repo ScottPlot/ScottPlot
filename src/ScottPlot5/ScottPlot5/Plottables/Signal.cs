@@ -1,10 +1,6 @@
-﻿/* Minimal case signal plot for testing only
- * !! Avoid temptation to use generics or generic math at this early stage of development
- */
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class Signal : IPlottable
+public class Signal : IPlottable, IHasLine, IHasMarker
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -13,9 +9,17 @@ public class Signal : IPlottable
 
     public string? Label { get; set; }
 
-    public readonly MarkerStyle Marker;
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
-    public readonly LineStyle LineStyle;
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     /// <summary>
     /// Maximum size of the marker (in pixels) to display
@@ -23,20 +27,14 @@ public class Signal : IPlottable
     /// </summary>
     public float MaximumMarkerSize { get; set; } = 4;
 
-    public float LineWidth
-    {
-        get => LineStyle.Width;
-        set => LineStyle.Width = value;
-    }
-
     public Color Color
     {
         get => LineStyle.Color;
         set
         {
-            LineStyle.Color = value;
-            Marker.Fill.Color = value;
-            Marker.Outline.Color = value;
+            LineColor = value;
+            MarkerFillColor = value;
+            MarkerLineColor = value;
         }
     }
 
@@ -44,7 +42,7 @@ public class Signal : IPlottable
     {
         Data = data;
 
-        Marker = new(MarkerShape.FilledCircle, 5)
+        MarkerStyle = new(MarkerShape.FilledCircle, 5)
         {
             Outline = LineStyle.None
         };
@@ -58,7 +56,7 @@ public class Signal : IPlottable
         new LegendItem
         {
             Label = Label,
-            Marker = Marker,
+            Marker = MarkerStyle,
             Line = LineStyle,
         });
 
@@ -125,8 +123,8 @@ public class Signal : IPlottable
         {
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
-            Marker.Size = radius * MaximumMarkerSize * .2f;
-            Drawing.DrawMarkers(rp.Canvas, paint, points, Marker);
+            MarkerSize = radius * MaximumMarkerSize * .2f;
+            Drawing.DrawMarkers(rp.Canvas, paint, points, MarkerStyle);
         }
     }
 

@@ -92,12 +92,10 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false) // TODO: move this check in the LineStyle class
+        if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false)
             return;
 
         lineStyle.ApplyToPaint(paint);
-        if (paint.StrokeWidth == 0)
-            return;
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
@@ -295,11 +293,14 @@ public static class Drawing
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        if (!style.CanBeRendered)
+        bool lineIsVisible = style.Outline.IsVisible && style.Outline.Color.Alpha != 0 && style.Outline.Width > 0;
+        bool fillIsVisible = style.Fill.Color.Alpha != 0;
+        if ((lineIsVisible || fillIsVisible) == false)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
         renderer.LineWidth = style.Outline.Width;
+
         foreach (Pixel pixel in pixels)
         {
             renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);

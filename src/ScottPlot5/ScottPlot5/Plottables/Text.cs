@@ -1,36 +1,60 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Text : IPlottable
+public class Text : LabelStyleProperties, IPlottable
 {
-    public readonly Label Label = new();
+    public override Label LabelStyle { get; } = new();
     public Coordinates Location { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-
     public float OffsetX { get; set; }
     public float OffsetY { get; set; }
 
-    public Color Color { get => Label.ForeColor; set => Label.ForeColor = value; }
-    public Color FontColor { get => Label.ForeColor; set => Label.ForeColor = value; }
-    public Color BackgroundColor { get => Label.BackgroundColor; set => Label.BackgroundColor = value; }
-    [Obsolete("use BackgroundColor", true)]
+    #region obsolete
+
+    [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle", true)]
+    public readonly Label Label = null!;
+
+    [Obsolete("Use LabelFontColor", true)]
+    public Color Color { get => LabelFontColor; set => LabelFontColor = value; }
+
+    [Obsolete("Use LabelFontColor", true)]
+    public Color FontColor { get => LabelBackgroundColor; set => LabelFontColor = value; }
+
+    [Obsolete("Use LabelBackgroundColor", true)]
+    public Color BackgroundColor { get => LabelBackgroundColor; set => LabelBackgroundColor = value; }
+
+    [Obsolete("use LabelBackgroundColor", true)]
     public Color BackColor { get; set; }
-    public Color BorderColor { get => Label.BorderColor; set => Label.BorderColor = value; }
-    public float BorderWidth { get => Label.BorderWidth; set => Label.BorderWidth = value; }
-    public float Padding { get => Label.Padding; set => Label.Padding = value; }
-    public float Size { get => Label.FontSize; set => Label.FontSize = value; }
-    public float FontSize { get => Label.FontSize; set => Label.FontSize = value; }
-    public bool Bold { get => Label.Bold; set => Label.Bold = value; }
-    public float Rotation { get => Label.Rotation; set => Label.Rotation = value; }
-    public string LabelText { get => Label.Text; set => Label.Text = value; }
-    public string FontName { get => Label.FontName; set => Label.FontName = value; }
-    public float? LineSpacing { get => Label.LineSpacing; set => Label.LineSpacing = value; }
 
-    public Text()
-    {
+    [Obsolete("use LabelBackgroundColor", true)]
+    public Color BorderColor { get => LabelBorderColor; set => LabelBorderColor = value; }
 
-    }
+    [Obsolete("use LabelBorderWidth", true)]
+    public float BorderWidth { get => LabelBorderWidth; set => LabelBorderWidth = value; }
+
+    [Obsolete("use LabelPadding or LabelPixelPadding", true)]
+    public float Padding { set => LabelPadding = value; }
+
+    [Obsolete("use LabelFontSize", true)]
+    public float Size { get => LabelFontSize; set => LabelFontSize = value; }
+
+    [Obsolete("use LabelFontSize", true)]
+    public float FontSize { get => LabelFontSize; set => LabelFontSize = value; }
+
+    [Obsolete("use LabelBold", true)]
+    public bool Bold { get => LabelBold; set => LabelBold = value; }
+
+    [Obsolete("use LabelRotation", true)]
+    public float Rotation { get => LabelRotation; set => LabelRotation = value; }
+
+    [Obsolete("use LabelFontName", true)]
+    public string FontName { get => LabelFontName; set => LabelFontName = value; }
+
+    [Obsolete("use LineSpacing", true)]
+    public float? LineSpacing { get => LabelLineSpacing; set => LabelLineSpacing = value; }
+
+    #endregion
 
     public AxisLimits GetAxisLimits()
     {
@@ -42,6 +66,6 @@ public class Text : IPlottable
         Pixel pixelLocation = Axes.GetPixel(Location);
         pixelLocation.X += OffsetX;
         pixelLocation.Y += OffsetY;
-        Label.Render(rp.Canvas, pixelLocation);
+        LabelStyle.Render(rp.Canvas, pixelLocation);
     }
 }

@@ -60,14 +60,14 @@ public class VerticalLine : AxisLine
             return;
 
         float y = LabelOppositeAxis
-            ? rp.DataRect.Top - LabelStyle.Padding
-            : rp.DataRect.Bottom + LabelStyle.Padding;
+            ? rp.DataRect.Top - LabelStyle.PixelPadding.Top
+            : rp.DataRect.Bottom + LabelStyle.PixelPadding.Bottom;
 
         Alignment defaultAlignment = LabelOppositeAxis
             ? Alignment.LowerCenter
             : Alignment.UpperCenter;
 
-        LabelStyle.Alignment = TextAlignment ?? defaultAlignment;
+        LabelStyle.Alignment = ManualLabelAlignment ?? defaultAlignment;
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();

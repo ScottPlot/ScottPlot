@@ -41,8 +41,8 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
         // Create a text label to place near the highlighted value
         MyHighlightText = formsPlot1.Plot.Add.Text("", 0, 0);
-        MyHighlightText.Label.Alignment = Alignment.LowerLeft;
-        MyHighlightText.Bold = true;
+        MyHighlightText.LabelAlignment = Alignment.LowerLeft;
+        MyHighlightText.LabelBold = true;
         MyHighlightText.OffsetX = 7;
         MyHighlightText.OffsetY = -7;
 
@@ -101,7 +101,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
                 MyHighlightText.IsVisible = true;
                 MyHighlightText.Location = point.Coordinates;
                 MyHighlightText.LabelText = $"{point.X:0.##}, {point.Y:0.##}";
-                MyHighlightText.Color = scatter.MarkerStyle.Fill.Color;
+                MyHighlightText.LabelFontColor = scatter.MarkerStyle.Fill.Color;
 
                 formsPlot1.Refresh();
                 base.Text = $"Selected Scatter={scatter.Label}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";

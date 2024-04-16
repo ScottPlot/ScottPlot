@@ -36,12 +36,12 @@ public class Annotation : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             var anno = myPlot.Add.Annotation("Customized\nAnnotation");
-            anno.Label.FontSize = 32;
-            anno.Label.FontName = Fonts.Serif;
-            anno.Label.BackgroundColor = Colors.RebeccaPurple.WithAlpha(.3);
-            anno.Label.ForeColor = Colors.RebeccaPurple;
-            anno.Label.BorderColor = Colors.Green;
-            anno.Label.BorderWidth = 3;
+            anno.LabelFontSize = 32;
+            anno.LabelFontName = Fonts.Serif;
+            anno.LabelBackgroundColor = Colors.RebeccaPurple.WithAlpha(.3);
+            anno.LabelFontColor = Colors.RebeccaPurple;
+            anno.LabelBorderColor = Colors.Green;
+            anno.LabelBorderWidth = 3;
             anno.OffsetY = 40;
             anno.OffsetX = 20;
         }

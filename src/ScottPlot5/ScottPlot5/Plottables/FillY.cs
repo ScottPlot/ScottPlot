@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FillY : IPlottable
+public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
 {
     public string? Label { get; set; }
     public bool IsVisible { get; set; } = true;
@@ -17,8 +17,21 @@ public class FillY : IPlottable
     private Polygon Poly { get; set; } = Polygon.Empty;
 
     public FillStyle FillStyle { get => Poly.FillStyle; }
-    public LineStyle LineStyle { get => Poly.LineStyle; }
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; }
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
     /// <summary>
     /// Creates an empty RangePlot plot, call SetDataSource() to set the coordinates.

@@ -1,11 +1,16 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Callout : IPlottable
+public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
 {
-    public Text LabelPlottable { get; } = new() { Padding = 5 };
+    public Text LabelPlottable { get; } = new() { LabelPadding = 5 };
     public Arrow ArrowPlottable { get; } = new();
-    public Label LabelStyle => LabelPlottable.Label;
+    public override Label LabelStyle => LabelPlottable.LabelStyle;
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+
+    // TODO: use a real Arrow
+    public ArrowStyle ArrowStyle => throw new NotImplementedException();
+    public ArrowAnchor ArrowAnchor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public float ArrowLineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public Color ArrowColor
     {
@@ -15,38 +20,38 @@ public class Callout : IPlottable
 
     public Color TextColor
     {
-        get => LabelPlottable.FontColor;
-        set => LabelPlottable.FontColor = value;
+        get => LabelPlottable.LabelFontColor;
+        set => LabelPlottable.LabelFontColor = value;
     }
 
     public bool Bold
     {
-        get => LabelPlottable.Bold;
-        set => LabelPlottable.Bold = value;
+        get => LabelPlottable.LabelBold;
+        set => LabelPlottable.LabelBold = value;
     }
 
     public float FontSize
     {
-        get => LabelPlottable.FontSize;
-        set => LabelPlottable.FontSize = value;
+        get => LabelPlottable.LabelFontSize;
+        set => LabelPlottable.LabelFontSize = value;
     }
 
     public Color TextBorderColor
     {
-        get => LabelPlottable.BorderColor;
-        set => LabelPlottable.BorderColor = value;
+        get => LabelPlottable.LabelBorderColor;
+        set => LabelPlottable.LabelBorderColor = value;
     }
 
     public float TextBorderWidth
     {
-        get => LabelPlottable.BorderWidth;
-        set => LabelPlottable.BorderWidth = value;
+        get => LabelPlottable.LabelBorderWidth;
+        set => LabelPlottable.LabelBorderWidth = value;
     }
 
     public Color TextBackgroundColor
     {
-        get => LabelPlottable.BackgroundColor;
-        set => LabelPlottable.BackgroundColor = value;
+        get => LabelPlottable.LabelBackgroundColor;
+        set => LabelPlottable.LabelBackgroundColor = value;
     }
 
     public Coordinates TextCoordinates { get; set; }
@@ -54,7 +59,7 @@ public class Callout : IPlottable
 
     public Coordinates TipCoordinates { get; set; }
     public Pixel TipPixel { get; private set; }
-    public PixelRect LastRenderRect => LabelPlottable.Label.LastRenderPixelRect;
+    public PixelRect LastRenderRect => LabelPlottable.LabelStyle.LastRenderPixelRect;
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -78,14 +83,14 @@ public class Callout : IPlottable
         PixelSize labelSize = LabelStyle.Measure();
 
         Pixel[] attachPoints = [
-            new(TextPixel.X - LabelStyle.Padding, TextPixel.Y + labelSize.Height / 2), // west
-            new(TextPixel.X + labelSize.Width + LabelStyle.Padding, TextPixel.Y + labelSize.Height / 2), //east
-            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y - LabelStyle.Padding), //north
-            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y + labelSize.Height + LabelStyle.Padding), // south
-            new(TextPixel.X - LabelStyle.Padding, TextPixel.Y - LabelStyle.Padding), // northWest
-            new(TextPixel.X + labelSize.Width + LabelStyle.Padding, TextPixel.Y - LabelStyle.Padding), // northEast
-            new(TextPixel.X - LabelStyle.Padding, TextPixel.Y + labelSize.Height + LabelStyle.Padding), // southWest
-            new(TextPixel.X + labelSize.Width + LabelStyle.Padding, TextPixel.Y + labelSize.Height + LabelStyle.Padding) // southEast
+            new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y + labelSize.Height / 2), // west
+            new(TextPixel.X + labelSize.Width + LabelStyle.PixelPadding.Right, TextPixel.Y + labelSize.Height / 2), //east
+            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y - LabelStyle.PixelPadding.Top), //north
+            new(TextPixel.X + labelSize.Width / 2, TextPixel.Y + labelSize.Height + LabelStyle.PixelPadding.Bottom), // south
+            new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y - LabelStyle.PixelPadding.Top), // northWest
+            new(TextPixel.X + labelSize.Width + LabelStyle.PixelPadding.Right, TextPixel.Y - LabelStyle.PixelPadding.Top), // northEast
+            new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y + labelSize.Height + LabelStyle.PixelPadding.Bottom), // southWest
+            new(TextPixel.X + labelSize.Width + LabelStyle.PixelPadding.Right, TextPixel.Y + labelSize.Height + LabelStyle.PixelPadding.Bottom) // southEast
         ];
 
         Pixel closestAttachPoint = attachPoints[0];
