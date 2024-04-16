@@ -1,11 +1,16 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Callout : IPlottable
+public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
 {
     public Text LabelPlottable { get; } = new() { LabelPadding = 5 };
     public Arrow ArrowPlottable { get; } = new();
-    public Label LabelStyle => LabelPlottable.LabelStyle;
+    public override Label LabelStyle => LabelPlottable.LabelStyle;
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+
+    // TODO: use a real Arrow
+    public ArrowStyle ArrowStyle => throw new NotImplementedException();
+    public ArrowAnchor ArrowAnchor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public float ArrowLineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public Color ArrowColor
     {

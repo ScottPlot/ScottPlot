@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public struct ArrowStyle
+public class ArrowStyle
 {
     public LineStyle LineStyle { get; set; } = new();
 

@@ -2,12 +2,17 @@
 
 namespace ScottPlot.Plottables;
 
-public class VectorField(IVectorFieldSource source) : IPlottable
+public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public string? Label { get; set; }
+
     public ArrowStyle ArrowStyle { get; set; } = new();
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
+    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+
     public IColormap? Colormap { get; set; } = null;
 
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
