@@ -9,11 +9,12 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill
     public readonly Label Label = new();
 
     public LineStyle LineStyle { get; } = new();
-    public float LineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public LinePattern LinePattern { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Color LineColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-    public FillStyle FillStyle { get => FillStyle; }
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
+    public FillStyle FillStyle { get; } = new();
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
