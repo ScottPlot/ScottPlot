@@ -22,7 +22,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public FillStyle FillStyle { get => FillStyle; }
+    public FillStyle FillStyle { get; } = new();
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
