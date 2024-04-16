@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * DataStreamer: Added an optional argument to `ViewWipeRight()` that sets the fraction of oldest data to hide (#3668) @mloppnow
 * Label: Refactored plottables to use consistently named properties. Properties such as `plottable.Label.FontColor` are now `plottable.Label.FontColor`, or `plottable.LabelStyle.FontColor`. Referencing obsolete property names yield build errors with messages that indicate names of the new properties to use. (#3658, #3666)
 * Plottables: Styling objects `LabelStyle`, `LineStyle`, `MarkerStyle`, etc. are now readonly. Their contents may be set, and most plottables expose shortcuts to their properties. (#3658, #3666)
+* Plot: Added `RenderInMemory()` (alias for `GetImage()`) so users can force a render as part of their startup process (#3674) Boris
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
@@ -902,7 +903,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-01_
 * MarkerPlot: Improved data area clipping (#1423, #1459) @PremekTill, @lucabat, and @AndXaf
 * MarkerPlot: Improved key in legend (#1459, #1454) @PremekTill and @Logicman111
 * Style: Plottables that implement `IStylable` are now styled when `Plot.Style()` is called. Styles are now improved for `ScaleBar` and `Colorbar` plot types. (#1451, #1447) @diluculo
-* Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) Thanks @Syntaxrabbit
+* Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) @Syntaxrabbit
 * SignalXY: Fixed bug affecting filled plots with zero area (#1476, #1477) @chenxuuu
 * Cookbook: Added example showing how to place markers colored according to a colormap displayed in a colorbar (#1461) @obnews
 * Ticks: Added option to invert tick mark direction (#1489, #1475) @wangyexiang
