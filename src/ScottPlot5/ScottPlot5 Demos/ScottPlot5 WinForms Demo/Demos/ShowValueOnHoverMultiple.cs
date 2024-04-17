@@ -80,6 +80,8 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
                         // store the index
                         scatterIndex = i;
                         pointSelected = true;
+                        // update the smallest distance
+                        smallestDistance = distance;
                     }
                 }
             }
