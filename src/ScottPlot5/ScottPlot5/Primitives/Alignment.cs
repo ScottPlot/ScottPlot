@@ -19,6 +19,13 @@ public enum Alignment
 
 public static class AlignmentExtensions
 {
+    public static Alignment[,] AlignmentMatrix =
+    {
+        {Alignment.UpperLeft, Alignment.UpperCenter, Alignment.UpperRight },
+        {Alignment.MiddleLeft, Alignment.MiddleCenter, Alignment.MiddleRight },
+        {Alignment.LowerLeft, Alignment.LowerCenter, Alignment.LowerRight },
+    };
+
     public static float HorizontalFraction(this Alignment alignment)
     {
         return alignment switch

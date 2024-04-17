@@ -106,6 +106,47 @@ internal class LabelTests
     }
 
     [Test]
+    public void Test_MultilineLabel_AlignmentWithRotation()
+    {
+        SKBitmap bmp = new(600, 600);
+        using SKCanvas canvas = new(bmp);
+        canvas.Clear(SKColors.Navy);
+
+        PixelSize size = new(40, 20);
+
+        Alignment[,] alignmentMatrix = AlignmentExtensions.AlignmentMatrix;
+
+        for (int y = 0; y < alignmentMatrix.GetLength(0); y++)
+        {
+            for (int x = 0; x < alignmentMatrix.GetLength(1); x++)
+            {
+                Alignment alignment = alignmentMatrix[y, x];
+
+                Pixel pixel = new(100 + x * 200, 100 + y * 200);
+                Label label = new()
+                {
+                    Text = alignment.ToString()
+                        .Replace("Upper", "Upper\n")
+                        .Replace("Middle", "Upper\n")
+                        .Replace("Lower", "Upper\n"),
+                    Alignment = alignment,
+                    FontSize = 32,
+                    ForeColor = Colors.White.WithOpacity(.5),
+                    BorderColor = Colors.Yellow,
+                    BorderWidth = 1,
+                    PointSize = 5,
+                    PointColor = Colors.White,
+                    Rotation = 30,
+                };
+
+                label.Render(canvas, pixel);
+            }
+        }
+
+        bmp.SaveTestImage();
+    }
+
+    [Test]
     public void Test_String_Measurement()
     {
         SKBitmap bmp = new(500, 500);
