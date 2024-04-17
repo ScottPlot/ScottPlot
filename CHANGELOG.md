@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * Plottables: Styling objects `LabelStyle`, `LineStyle`, `MarkerStyle`, etc. are now readonly. Their contents may be set, and most plottables expose shortcuts to their properties. (#3658, #3666)
 * Plot: Added `RenderInMemory()` (alias for `GetImage()`) so users can force a render as part of their startup process (#3674) Boris
 * Ticks: improve appearance of rotated multiline tick labels (#3673) @aespitia
+* Demo: Add an example window where the legend is displayed outside the plot control (#3672, #3635) @mikeKuester @Graat
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
