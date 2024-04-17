@@ -20,6 +20,9 @@ public class LineStyle
 
     public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
     {
+        if (!IsVisible)
+            return;
+
         Drawing.DrawLine(canvas, paint, line, this);
     }
 }
