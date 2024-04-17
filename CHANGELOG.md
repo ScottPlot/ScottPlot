@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Label: Refactored plottables to use consistently named properties. Properties such as `plottable.Label.FontColor` are now `plottable.Label.FontColor`, or `plottable.LabelStyle.FontColor`. Referencing obsolete property names yield build errors with messages that indicate names of the new properties to use. (#3658, #3666)
 * Plottables: Styling objects `LabelStyle`, `LineStyle`, `MarkerStyle`, etc. are now readonly. Their contents may be set, and most plottables expose shortcuts to their properties. (#3658, #3666)
 * Plot: Added `RenderInMemory()` (alias for `GetImage()`) so users can force a render as part of their startup process (#3674) Boris
+* Ticks: improve appearance of rotated multiline tick labels (#3673) @aespitia
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
