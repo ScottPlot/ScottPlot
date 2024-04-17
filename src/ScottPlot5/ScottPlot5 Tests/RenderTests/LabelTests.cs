@@ -127,16 +127,17 @@ internal class LabelTests
                 {
                     Text = alignment.ToString()
                         .Replace("Upper", "Upper\n")
-                        .Replace("Middle", "Upper\n")
-                        .Replace("Lower", "Upper\n"),
+                        .Replace("Middle", "Middle\n")
+                        .Replace("Lower", "Lower\n"),
                     Alignment = alignment,
                     FontSize = 32,
                     ForeColor = Colors.White.WithOpacity(.5),
+                    BackgroundColor = Colors.White.WithAlpha(.1),
                     BorderColor = Colors.Yellow,
                     BorderWidth = 1,
                     PointSize = 5,
                     PointColor = Colors.White,
-                    Rotation = 30,
+                    Rotation = 45,
                 };
 
                 label.Render(canvas, pixel);

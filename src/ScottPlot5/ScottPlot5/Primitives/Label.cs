@@ -1,4 +1,7 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Plottables;
+using System.Drawing;
+
+namespace ScottPlot;
 
 public class Label
 {
@@ -64,7 +67,11 @@ public class Label
         set { _Bold = value; ClearCachedTypeface(); }
     }
 
-    public float? LineSpacing { get; set; } = 0;
+    /// <summary>
+    /// Manually defined line height in pixels.
+    /// If not defined, the default line spacing will be used (according to the typeface, size, etc.)
+    /// </summary>
+    public float? LineSpacing { get; set; } = null;
 
     public bool Italic = false;
     public bool AntiAlias = true;
@@ -85,7 +92,7 @@ public class Label
     public float OffsetY = 0; // TODO: automatic padding support for arbitrary rotations
 
     /// <summary>
-    /// Use the characters in <see cref="Text"/> to detetermine an installed 
+    /// Use the characters in <see cref="Text"/> to determine an installed 
     /// system font most likely to support this character set.
     /// </summary>
     public void SetBestFont()
@@ -146,19 +153,15 @@ public class Label
     // TODO: obsolete this (require a paint)
     public void Render(SKCanvas canvas, Pixel pixel)
     {
-        Render(canvas, pixel.X, pixel.Y);
+        using SKPaint paint = new();
+        Render(canvas, pixel, paint);
     }
 
     // TODO: obsolete this (require a paint)
     public void Render(SKCanvas canvas, float x, float y)
     {
         using SKPaint paint = new();
-        Render(canvas, x, y, paint);
-    }
-
-    public void Render(SKCanvas canvas, Pixel pixel, SKPaint paint)
-    {
-        Render(canvas, pixel.X, pixel.Y, paint);
+        Render(canvas, new Pixel(x, y), paint);
     }
 
     public PixelSize Measure()
@@ -210,10 +213,9 @@ public class Label
         /// - returned value is the length of the text with leading and trailing white spaces
         /// - rect.Left contains the width of leading white spaces
         /// - rect.width contains the length of the text __without__ leading or trailing white spaces
-        var fullTextWidth = paint.MeasureText(text, ref textBounds);
+        float fullTextWidth = paint.MeasureText(text, ref textBounds);
         return new PixelSize(fullTextWidth, textBounds.Height);
     }
-
 
     /// <summary>
     /// Use the Label's size and <see cref="Alignment"/> to determine where it should be drawn
@@ -259,7 +261,7 @@ public class Label
         return new Pixel(x, y);
     }
 
-    public void Render(SKCanvas canvas, float x, float y, SKPaint paint)
+    public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
     {
         PixelSize size = Measure(paint);
 
@@ -267,13 +269,56 @@ public class Label
         float yOffset = size.Height * Alignment.VerticalFraction();
         PixelRect textRect = new(0, size.Width, size.Height, 0);
         textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
+
+        CanvasState canvasState = new(canvas);
+        canvasState.Save();
+
+        canvas.Translate(px.X + OffsetX, px.Y + OffsetY);
+        canvas.RotateDegrees(Rotation);
+
+        DrawBackground(canvas, px, paint, textRect);
+        DrawText(canvas, px, paint, textRect);
+        DrawBorder(canvas, px, paint, textRect);
+        DrawPoint(canvas, px, paint);
+
+        canvasState.Restore();
+    }
+
+    private void DrawBorder(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    {
+        if (BorderWidth == 0)
+            return;
+
+        PixelRect backgroundRect = textRect.Expand(PixelPadding);
+        ApplyBorderPaint(paint);
+        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+    }
+
+    private void DrawText(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    {
+        ApplyTextPaint(paint);
+        if (Text.Contains('\n'))
+        {
+            string[] lines = Text.Split('\n');
+            float lineHeight = LineSpacing ?? paint.FontSpacing;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                float yPx = textRect.Top + (1 + i) * lineHeight;
+                float xPx = textRect.Left;
+                canvas.DrawText(lines[i], xPx, yPx, paint);
+            }
+        }
+        else
+        {
+            canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
+        }
+    }
+
+    private void DrawBackground(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    {
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
-        LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(x + OffsetX, y + OffsetY);
-
-        canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
-        canvas.Translate(x + OffsetX, y + OffsetY); // compensate for padding
-        canvas.RotateDegrees(Rotation);
 
         if (ShadowColor != Colors.Transparent)
         {
@@ -287,43 +332,17 @@ public class Label
             canvas.DrawRect(backgroundRect.ToSKRect(), paint);
         }
 
-        ApplyTextPaint(paint);
-        if (Text.Contains('\n'))
-        {
-            // TODO: multiline support could be significantly improved
-            string[] lines = Text.Split('\n');
-            float lineHeight = MeasureText(paint, Text).Height;
-            float yPosition = lineHeight;
-            for (int i = 0; i < lines.Length; i++)
-            {
-                canvas.DrawText(lines[i], textRect.Left, yPosition, paint);
-                yPosition += lineHeight + LineSpacing ?? paint.FontSpacing;
-            }
-        }
-        else
-        {
-            canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
-        }
+        // TODO: support rotation
+        // https://github.com/ScottPlot/ScottPlot/issues/3519
+        LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(px.X + OffsetX, px.Y + OffsetY);
+    }
 
-        if (BorderWidth > 0)
-        {
-            ApplyBorderPaint(paint);
-            canvas.DrawRect(backgroundRect.ToSKRect(), paint);
-        }
-        canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
-
-        canvas.Save(); // WARNING: Save() must be paired 1:1 with Restore()
-        canvas.Translate(x, y); // do not compensate for padding
-        canvas.RotateDegrees(Rotation);
-
+    private void DrawPoint(SKCanvas canvas, Pixel px, SKPaint paint)
+    {
         if (PointSize > 0)
         {
             ApplyPointPaint(paint);
             canvas.DrawCircle(0, 0, PointSize, paint);
         }
-
-        canvas.DrawLine(-PointSize, 0, PointSize, 0, paint);
-        canvas.DrawLine(0, -PointSize, 0, PointSize, paint);
-        canvas.Restore(); // WARNING: Save() must be paired 1:1 with Restore()
     }
 }

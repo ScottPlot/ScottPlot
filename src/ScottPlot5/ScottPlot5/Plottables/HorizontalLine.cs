@@ -74,6 +74,6 @@ public class HorizontalLine : AxisLine
         rp.CanvasState.DisableClipping();
 
         using SKPaint paint = new();
-        LabelStyle.Render(rp.Canvas, x, y, paint);
+        LabelStyle.Render(rp.Canvas, new Pixel(x, y), paint);
     }
 }

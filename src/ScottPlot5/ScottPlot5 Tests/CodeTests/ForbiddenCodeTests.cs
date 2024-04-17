@@ -24,12 +24,8 @@ internal class ForbiddenCodeTests
                 string line = lines[i];
 
                 bool offense = false;
-                offense |= line.Contains(".Save();") && !line.Contains("CanvasState.Save();");
-                offense |= line.Contains(".Restore();") && !line.Contains("CanvasState.Restore();");
-
-                if (offense && line.Contains("WARNING", StringComparison.InvariantCultureIgnoreCase))
-                    continue;
-
+                offense |= line.Contains(".Save();") && !line.Contains("CanvasState.Save();", StringComparison.OrdinalIgnoreCase);
+                offense |= line.Contains(".Restore();") && !line.Contains("CanvasState.Restore();", StringComparison.OrdinalIgnoreCase);
                 if (!offense)
                     continue;
 
