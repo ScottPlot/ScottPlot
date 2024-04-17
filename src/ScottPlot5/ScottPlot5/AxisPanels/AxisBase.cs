@@ -117,8 +117,10 @@ public abstract class AxisBase
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
                 continue;
             label.Text = tick.Label;
-            float yEdge2 = axis.Edge == Edge.Bottom ? y + tickLength * 2 : y - tickLength * 2;
-            Pixel labelPixel = new(xPx, yEdge2);
+            float pxDistanceFromTick = 10;
+            float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
+            float yPx = axis.Edge == Edge.Bottom ? y + pxDistanceFromEdge : y - pxDistanceFromEdge;
+            Pixel labelPixel = new(xPx, yPx);
             label.Render(rp.Canvas, labelPixel);
         }
     }
@@ -132,6 +134,7 @@ public abstract class AxisBase
 
         using SKPaint paint = new();
         label.ApplyToPaint(paint);
+        label.Alignment = axis.Edge == Edge.Left ? Alignment.MiddleRight : Alignment.MiddleLeft;
 
         foreach (Tick tick in ticks)
         {
@@ -146,13 +149,13 @@ public abstract class AxisBase
             Drawing.DrawLine(rp.Canvas, paint, pxLine);
 
             // draw label
-            float majorTickLabelPadding = 7;
-            float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
                 continue;
             label.Text = tick.Label;
-            float xEdge2 = axis.Edge == Edge.Left ? x - tickLength * 2 : x + tickLength * 2;
-            Pixel px = new(xEdge2, yPx);
+            float pxDistanceFromTick = 5;
+            float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
+            float xPx = axis.Edge == Edge.Left ? x - pxDistanceFromEdge : x + pxDistanceFromEdge;
+            Pixel px = new(xPx, yPx);
             label.Render(rp.Canvas, px);
         }
     }
