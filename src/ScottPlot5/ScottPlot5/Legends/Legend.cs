@@ -73,8 +73,8 @@ public class Legend(Plot plot)
         LegendPack lp = GetLegendPack(maxWidth, maxHeight);
 
         SKImageInfo info = new(
-            width: (int)Math.Ceiling(lp.LegendRect.Width),
-            height: (int)Math.Ceiling(lp.LegendRect.Height),
+            width: Math.Max(1, (int)Math.Ceiling(lp.LegendRect.Width)),
+            height: Math.Max(1, (int)Math.Ceiling(lp.LegendRect.Height)),
             colorType: SKColorType.Rgba8888,
             alphaType: SKAlphaType.Premul);
 
@@ -213,6 +213,9 @@ public class Legend(Plot plot)
 
     private PixelSize GetLegendSize(SizedLegendItem[] sizedItems, float maxWidth = 0, float maxHeight = 0, bool withOffset = false)
     {
+        if (sizedItems.Length == 0)
+            return PixelSize.Zero;
+
         float legendWidth, legendHeight;
 
         if (Orientation == Orientation.Vertical)
