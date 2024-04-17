@@ -40,7 +40,8 @@ public class Legend : ICategory
             LegendItem item1 = new()
             {
                 LineColor = Colors.Magenta,
-                MarkerColor = Colors.Magenta,
+                MarkerFillColor = Colors.Magenta,
+                MarkerLineColor = Colors.Magenta,
                 LineWidth = 2,
                 Label = "Alpha"
             };
@@ -48,7 +49,8 @@ public class Legend : ICategory
             LegendItem item2 = new()
             {
                 LineColor = Colors.Green,
-                MarkerColor = Colors.Green,
+                MarkerFillColor = Colors.Green,
+                MarkerLineColor = Colors.Green,
                 LineWidth = 4,
                 Label = "Beta"
             };

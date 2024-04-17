@@ -1,13 +1,7 @@
 ﻿namespace ScottPlot.Legends;
 
-public struct LegendItemSize
+public readonly struct LegendItemSize(PixelSize ownSize, PixelSize withChildren)
 {
-    public PixelSize OwnSize { get; }
-    public PixelSize WithChildren { get; }
-
-    public LegendItemSize(PixelSize ownSize, PixelSize withChildren)
-    {
-        OwnSize = ownSize;
-        WithChildren = withChildren;
-    }
+    public PixelSize OwnSize { get; } = ownSize;
+    public PixelSize WithChildren { get; } = withChildren;
 }

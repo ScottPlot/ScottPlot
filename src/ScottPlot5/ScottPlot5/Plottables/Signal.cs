@@ -7,7 +7,7 @@ public class Signal : IPlottable, IHasLine, IHasMarker
 
     public readonly ISignalSource Data;
 
-    public string? Label { get; set; }
+    public string Label { get; set; } = string.Empty;
 
     public MarkerStyle MarkerStyle { get; } = new();
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }

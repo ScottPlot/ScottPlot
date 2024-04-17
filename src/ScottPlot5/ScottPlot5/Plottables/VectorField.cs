@@ -6,7 +6,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public string? Label { get; set; }
+    public string Label { get; set; } = string.Empty;
 
     public ArrowStyle ArrowStyle { get; set; } = new();
     public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
@@ -21,7 +21,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow
             Label = Label,
             Marker = MarkerStyle.None,
             Line = ArrowStyle.LineStyle,
-            HasArrow = true
+            HasArrow = true,
         });
 
     IVectorFieldSource Source { get; set; } = source;

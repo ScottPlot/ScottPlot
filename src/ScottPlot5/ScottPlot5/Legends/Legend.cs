@@ -1,7 +1,4 @@
-﻿using SkiaSharp;
-using System.Net.Security;
-
-namespace ScottPlot.Legends;
+﻿namespace ScottPlot.Legends;
 
 public class Legend(Plot plot)
 {

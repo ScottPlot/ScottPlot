@@ -1,38 +1,54 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Plottables;
 
-public class LegendItem
+namespace ScottPlot;
+
+public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, IHasArrow, IHasLabel
 {
-    public string? Label { get; set; }
-    public LineStyle Line { get; set; } = new();
-    public Color LineColor { get => Line.Color; set => Line.Color = value; }
-    public float LineWidth { get => Line.Width; set => Line.Width = value; }
-    public MarkerStyle Marker { get; set; } = MarkerStyle.Default;
-    public Color MarkerColor
-    {
-        get => Marker.Fill.Color;
-        set { Marker.Fill.Color = value; Marker.Outline.Color = value; }
-    }
-    public FillStyle Fill { get; set; } = new() { Color = Colors.Transparent };
-    public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
-    public IEnumerable<LegendItem> Children { get; set; } = Array.Empty<LegendItem>();
-    public bool HasSymbol => Line.Width > 0 || Marker.IsVisible || Fill.HasValue;
+    public IEnumerable<LegendItem> Children { get; set; } = [];
 
-    private bool _IsVisible = true;
-    public bool IsVisible
-    {
-        get => _IsVisible && !string.IsNullOrEmpty(Label);
-        set => _IsVisible = value;
-    }
-    public bool HasArrow { get; set; } = false;
+    public override Label LabelStyle { get; } = new();// TODO: remove setter
 
-    internal FontStyle? CustomFontStyle { get; set; } = null;
+    public LineStyle LineStyle { get; set; } = new() { Width = 0 };// TODO: remove setter
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public static IEnumerable<LegendItem> None => Array.Empty<LegendItem>();
 
-    public static IEnumerable<LegendItem> Single(LegendItem item)
-    {
-        return new LegendItem[] { item };
-    }
+    public FillStyle FillStyle { get; set; } = new();// TODO: remove setter
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+
+
+    public MarkerStyle MarkerStyle { get; set; } = new(); // TODO: remove setter
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+
+
+    public ArrowStyle ArrowStyle { get; } = new();
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
+    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+
+    #region obsolete these
+    public FontStyle? CustomFontStyle { get; set; } = null;
+    public LineStyle Line { get => LineStyle; set => LineStyle = value; }
+    public MarkerStyle Marker { get => MarkerStyle; set => MarkerStyle = value; }
+    public FillStyle Fill { get => FillStyle; set => FillStyle = value; }
+    public string Label { get => LabelText; set => LabelText = value; }
+    public bool HasArrow { get => ArrowStyle.LineStyle.IsVisible; set => ArrowStyle.LineStyle.IsVisible = value; }
+    public bool IsVisible => !string.IsNullOrEmpty(LabelText);
+    public bool HasSymbol => HasArrow || Marker.IsVisible;
+    #endregion
+
+    #region Static Builders
+
+    public static IEnumerable<LegendItem> None => [];
+
+    public static IEnumerable<LegendItem> Single(LegendItem item) => [item];
 
     public static IEnumerable<LegendItem> Single(string label, MarkerStyle markerStyle)
     {
@@ -107,4 +123,6 @@ public class LegendItem
 
         return Single(item);
     }
+
+    #endregion
 }

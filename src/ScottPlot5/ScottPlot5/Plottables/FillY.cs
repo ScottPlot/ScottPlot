@@ -2,7 +2,7 @@
 
 public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
 {
-    public string? Label { get; set; }
+    public string Label { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 

@@ -1,15 +1,8 @@
 ﻿namespace ScottPlot.Legends;
 
-public struct SizedLegendItem
+public readonly struct SizedLegendItem(LegendItem item, LegendItemSize size, SizedLegendItem[] children)
 {
-    public LegendItem Item { get; }
-    public LegendItemSize Size { get; }
-    public SizedLegendItem[] Children { get; }
-
-    public SizedLegendItem(LegendItem item, LegendItemSize size, SizedLegendItem[] children)
-    {
-        Item = item;
-        Size = size;
-        Children = children;
-    }
+    public LegendItem Item { get; } = item;
+    public LegendItemSize Size { get; } = size;
+    public SizedLegendItem[] Children { get; } = children;
 }
