@@ -18,7 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup CodeQL
-        if: github.event_name != 'pull_request'
         uses: github/codeql-action/init@v3
         with:
           languages: csharp
@@ -52,5 +51,4 @@ jobs:
       - name: Test ScottPlot4
         run: dotnet test "${{ env.SP4_SOLUTION }}" --configuration Release --no-build --verbosity minimal
       - name: Security Scan
-        if: github.event_name != 'pull_request'
         uses: github/codeql-action/analyze@v3
