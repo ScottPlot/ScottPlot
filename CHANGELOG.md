@@ -7,6 +7,7 @@ _Not yet on NuGet..._
 * Plot: Added `RenderInMemory()` (alias for `GetImage()`) so users can force a render as part of their startup process (#3674) Boris
 * Ticks: improve appearance of rotated multiline tick labels (#3673) @aespitia
 * Demo: Add an example window where the legend is displayed outside the plot control (#3672, #3635) @mikeKuester @Graat
+* Demo: Fix mouse tracking logic to improve behavior of the multi-series mouseover demo (#3680, #3684) @jamaa @Graat
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
