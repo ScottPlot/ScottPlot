@@ -59,7 +59,7 @@
 <nav class="sidebar">
 
     <h1>ScottPlot Blazor Demo</h1>
-    <input class="mx-2" @bind-value="SearchTerm" placeholder="Filter..."  @bind-value:event="oninput" />
+    <input class="mx-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
     <hr />
 
     <div class="sidebar-inner">
@@ -88,34 +88,37 @@
         </div>
         <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
         <div class="m-3">
-            <pre class="bg-light border rounded d-inline-block p-3"><code id="codePre">Loading...</code></pre>
+            <div class="bg-light border rounded d-inline-block p-3">
+                @if (string.IsNullOrEmpty(SourceCode))
+                {
+                    <p>Loading...</p>
+                }
+                else
+                {
+                    <CodeSnippet Code="@SourceCode" />
+                }
+            </div>
         </div>
+
     }
     <div class="text-muted p-4" style="margin-top: 10rem;">
         @ScottPlot.Version.LongString Running on .NET @Environment.Version
     </div>
 </main>
 
-<script>
-    window.UpdateSyntaxHighlighting = (source) => {
-        const el = document.getElementById("codePre");
-        el.innerHTML = String(source);
-        delete el.dataset.highlighted;
-        hljs.highlightAll();
-    }
-</script>
-
 @code {
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
 
     BlazorPlot BlazorPlot { get; set; } = new();
     string SearchTerm { get; set; } = "";
+    string SourceCode { get; set; } = "";
 
     IRecipe? Recipe;
     JsonDocument? JsonRecipes = null;
 
     protected async Task ShowRecipe(IRecipe recipe)
     {
+        SourceCode = string.Empty;
         Recipe = recipe;
         if (JsonRecipes is null)
         {
@@ -137,8 +140,7 @@
                 break;
             }
         }
-
-        await JS.InvokeAsync<string>("UpdateSyntaxHighlighting", source);
+        SourceCode = source;
     }
 
     Dictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
