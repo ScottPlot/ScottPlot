@@ -271,6 +271,9 @@ public class Label
 
     public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
     {
+        if (!IsVisible)
+            return;
+
         PixelSize size = Measure(paint);
 
         float xOffset = size.Width * Alignment.HorizontalFraction();

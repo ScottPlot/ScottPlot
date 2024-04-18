@@ -5,14 +5,22 @@ public class ArrowStyle
     public LineStyle LineStyle { get; set; } = new();
 
     public ArrowAnchor Anchor { get; set; } = ArrowAnchor.Center;
+    public bool IsVisible { get; set; } = true;
 
-    public ArrowStyle(LineStyle lineStyle, ArrowAnchor anchor)
+    public void Render(SKCanvas canvas, PixelLine line, SKPaint paint)
     {
-        LineStyle = lineStyle;
-        Anchor = anchor;
-    }
+        if (!IsVisible)
+            return;
 
-    public ArrowStyle()
-    {
+        using SKPath path = new();
+        path.MoveTo(line.Pixel1.ToSKPoint());
+        path.LineTo(line.Pixel2.ToSKPoint());
+
+        // TODO: account for rotation
+        path.MoveTo(line.Pixel2.WithOffset(5, 5).ToSKPoint());
+        path.LineTo(line.Pixel2.ToSKPoint());
+        path.LineTo(line.Pixel2.WithOffset(5, -5).ToSKPoint());
+
+        LineStyle.Render(canvas, path, paint);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -93,7 +94,7 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false)
+        if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false || lineStyle.Color == Colors.Transparent)
             return;
 
         lineStyle.ApplyToPaint(paint);
@@ -154,6 +155,15 @@ public static class Drawing
         };
 
         DrawLines(canvas, paint, pixels, ls);
+    }
+
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    {
+        if (lineStyle.IsVisible == false || lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+            return;
+
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawPath(path, paint);
     }
 
     private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();

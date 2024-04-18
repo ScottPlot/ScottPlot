@@ -2,12 +2,14 @@
 
 public static class Rendering
 {
+    public static bool ShowDebugLines { get; set; } = false;
+
     public static void Render(Legend legend, RenderPack rp)
     {
         if (legend.GetItems().Length == 0)
             return;
 
-        LegendPack lp = LegendPackFactory.LegendOnPlot(legend, rp.DataRect);
+        LegendLayout lp = LegendLayoutFactory.LegendOnPlot(legend, rp.DataRect);
         RenderLegend(legend, rp.Canvas, lp);
     }
 
@@ -16,7 +18,7 @@ public static class Rendering
         if (svgStream is null)
             throw new NullReferenceException($"invalid Stream");
 
-        LegendPack lp = LegendPackFactory.StandaloneLegend(legend, maxWidth, maxHeight);
+        LegendLayout lp = LegendLayoutFactory.StandaloneLegend(legend, maxWidth, maxHeight);
 
         SKRect rect = new(0, 0, lp.LegendRect.Width, lp.LegendRect.Height);
         using SKCanvas canvas = SKSvgCanvas.Create(rect, svgStream);
@@ -25,7 +27,7 @@ public static class Rendering
 
     public static Image GetImage(Legend legend, int maxWidth = 0, int maxHeight = 0)
     {
-        LegendPack lp = LegendPackFactory.StandaloneLegend(legend, maxWidth, maxHeight);
+        LegendLayout lp = LegendLayoutFactory.StandaloneLegend(legend, maxWidth, maxHeight);
 
         SKImageInfo info = new(
             width: Math.Max(1, (int)Math.Ceiling(lp.LegendRect.Width)),
@@ -43,7 +45,7 @@ public static class Rendering
 
     public static string GetSvgXml(Legend legend)
     {
-        LegendPack lp = LegendPackFactory.StandaloneLegend(legend, 0, 0);
+        LegendLayout lp = LegendLayoutFactory.StandaloneLegend(legend, 0, 0);
 
         int width = (int)Math.Ceiling(lp.LegendRect.Width);
         int height = (int)Math.Ceiling(lp.LegendRect.Height);
@@ -55,7 +57,7 @@ public static class Rendering
         return svg.GetXml();
     }
 
-    private static void RenderLegend(Legend legend, SKCanvas canvas, LegendPack lp)
+    private static void RenderLegend(Legend legend, SKCanvas canvas, LegendLayout lp)
     {
         using SKPaint paint = new();
 
@@ -69,14 +71,24 @@ public static class Rendering
         for (int i = 0; i < lp.LegendItems.Length; i++)
         {
             LegendItem item = lp.LegendItems[i];
-            PixelRect rect = lp.LegendItemRects[i];
-            RenderLegendItem(item, rect, canvas, paint);
-        }
-    }
+            PixelRect labelRect = lp.LabelRects[i];
+            PixelRect symbolRect = lp.SymbolRects[i];
+            PixelRect symbolFillRect = symbolRect.Contract(0, symbolRect.Height * .2f);
+            PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
+            PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-    private static void RenderLegendItem(LegendItem item, PixelRect rect, SKCanvas canvas, SKPaint paint)
-    {
-        Drawing.DrawRectangle(canvas, rect, Colors.Black.WithAlpha(.2), 1);
-        item.LabelStyle.Render(canvas, rect.LeftCenter, paint);
+            if (ShowDebugLines)
+            {
+                Drawing.DrawRectangle(canvas, symbolRect, Colors.Black.WithAlpha(.2), 1);
+                Drawing.DrawRectangle(canvas, labelRect, Colors.Black.WithAlpha(.2), 1);
+            }
+
+            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            item.LineStyle.Render(canvas, symbolLine, paint);
+            item.FillStyle.Render(canvas, symbolFillRect, paint);
+            item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+            item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
+            item.ArrowStyle.Render(canvas, symbolLine, paint);
+        }
     }
 }

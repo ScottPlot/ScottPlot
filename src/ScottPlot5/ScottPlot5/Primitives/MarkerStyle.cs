@@ -15,16 +15,18 @@ public class MarkerStyle
     /// </summary>
     public float Size { get; set; }
 
-    public FillStyle Fill { get; set; } = new() { Color = Colors.Gray };
+    public FillStyle Fill { get; set; } = new();
 
-    public LineStyle Outline { get; set; } = new() { Width = 1 };
+    public LineStyle Outline { get; set; } = new();
 
-    public MarkerStyle() : this(MarkerShape.FilledCircle, 5, Colors.Gray)
+    public MarkerStyle()
     {
+
     }
 
     public MarkerStyle(MarkerShape shape, float size) : this(shape, size, Colors.Gray)
     {
+
     }
 
     public MarkerStyle(MarkerShape shape, float size, Color color)
@@ -47,4 +49,12 @@ public class MarkerStyle
     public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
 
     public static MarkerStyle None => new(MarkerShape.None, 0);
+
+    public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
+    {
+        if (!IsVisible)
+            return;
+
+        Drawing.DrawMarker(canvas, paint, px, this);
+    }
 }

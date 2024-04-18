@@ -40,7 +40,7 @@ public abstract class AxisBase
 
     public bool ShowDebugInformation { get; set; } = false;
 
-    public LineStyle FrameLineStyle { get; } = new();
+    public LineStyle FrameLineStyle { get; } = new() { Width = 1 };
 
     public TickMarkStyle MajorTickStyle { get; set; } = new()
     {

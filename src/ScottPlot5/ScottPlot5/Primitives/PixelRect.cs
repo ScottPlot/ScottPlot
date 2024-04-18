@@ -20,7 +20,13 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     public Pixel RightCenter => new(Right, VerticalCenter);
     public Pixel BottomCenter => new(HorizontalCenter, Bottom);
     public Pixel TopCenter => new(HorizontalCenter, Top);
+    public Pixel Center => new(HorizontalCenter, VerticalCenter);
     public PixelSize Size => new(Width, Height);
+
+    public PixelLine BottomLine => new(BottomLeft, BottomRight);
+    public PixelLine TopLine => new(TopLeft, TopRight);
+    public PixelLine LeftLine => new(TopLeft, BottomLeft);
+    public PixelLine RightLine => new(TopRight, BottomRight);
 
     public static PixelRect Zero => new(0, 0, 0, 0);
     public static PixelRect NaN => new(Pixel.NaN, PixelSize.NaN);
@@ -101,10 +107,15 @@ public readonly struct PixelRect : IEquatable<PixelRect>
 
     public PixelRect Contract(float delta)
     {
-        float left = Math.Min(Left + delta, HorizontalCenter);
-        float right = Math.Max(Right - delta, HorizontalCenter);
-        float bottom = Math.Max(Bottom - delta, VerticalCenter);
-        float top = Math.Min(Top + delta, VerticalCenter);
+        return Contract(delta, delta);
+    }
+
+    public PixelRect Contract(float x, float y)
+    {
+        float left = Math.Min(Left + x, HorizontalCenter);
+        float right = Math.Max(Right - x, HorizontalCenter);
+        float bottom = Math.Max(Bottom - y, VerticalCenter);
+        float top = Math.Min(Top + y, VerticalCenter);
         return new PixelRect(left, right, bottom, top);
     }
 

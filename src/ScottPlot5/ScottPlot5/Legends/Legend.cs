@@ -21,13 +21,21 @@ public class Legend(Plot plot)
     public PixelPadding Padding { get; set; } = new(5);
 
     /// <summary>
+    /// Padding between a symbol and label within a legend item
+    /// </summary>
+    public float SymbolPadding { get; set; } = 5;
+
+    /// <summary>
+    /// Width of the symbol in a legend item
+    /// </summary>
+    public float SymbolWidth { get; set; } = 20;
+
+    /// <summary>
     /// Vertical spacing separating legend items
     /// </summary>
-    public PixelLength VerticalSpacing { get; set; } = new(3);
+    public float VerticalSpacing { get; set; } = 3;
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
-
-    public float SymbolWidth { get; } = 20;
 
     public float SymbolLabelSeparation { get; } = 5;
 

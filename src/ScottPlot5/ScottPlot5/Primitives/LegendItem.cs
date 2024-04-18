@@ -9,11 +9,15 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-
     public FillStyle FillStyle { get; set; } = new();// TODO: remove setter
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+
+    public LineStyle OutlineStyle { get; set; } = new() { Width = 0 };// TODO: remove setter
+    public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
+    public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
+    public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
 
 
     public MarkerStyle MarkerStyle { get; set; } = new(); // TODO: remove setter
@@ -22,7 +26,6 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
     public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
     public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
-
 
     public ArrowStyle ArrowStyle { get; } = new();
     public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }

@@ -101,7 +101,9 @@ internal class LegendTests
             {
                 LabelText = $"Item #{i + 1}",
                 LabelFontColor = Colors.Category10[i],
-                //LabelFontSize = 26,
+                LabelFontSize = 16,
+                LineColor = Colors.Category10[i],
+                LineWidth = 3,
             };
             plt.Legend.ManualItems.Add(item);
         }
@@ -109,6 +111,80 @@ internal class LegendTests
         plt.ShowLegend();
 
         plt.SaveTestImage(300, 200);
+    }
+
+
+    [Test]
+    public void Test_Legend_Symbols()
+    {
+        ScottPlot.Plot plt = new();
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Default",
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Line",
+            LineWidth = 2,
+            LineColor = Colors.Blue,
+            LinePattern = LinePattern.Dotted,
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Fill",
+            FillColor = Colors.Green.WithAlpha(.5),
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Outline",
+            OutlineColor = Colors.Blue,
+            OutlineWidth = 2,
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Fill+Outline",
+            FillColor = Colors.Green.WithAlpha(.5),
+            OutlineColor = Colors.Blue,
+            OutlineWidth = 2,
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Marker",
+            MarkerShape = MarkerShape.FilledDiamond,
+            MarkerFillColor = Colors.Green.WithAlpha(.5),
+            MarkerLineColor = Colors.Blue,
+            MarkerLineWidth = 2,
+            MarkerSize = 15,
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Marker+Line",
+            MarkerShape = MarkerShape.FilledCircle,
+            MarkerFillColor = Colors.Green.WithAlpha(.5),
+            MarkerSize = 10,
+            LineWidth = 2,
+            LineColor = Colors.Blue,
+        });
+
+        plt.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = $"Arrow",
+            ArrowLineWidth = 2,
+            ArrowColor = Colors.Blue,
+        });
+
+        plt.Legend.ManualItems.ForEach(x => x.LabelFontSize = 18);
+
+        plt.ShowLegend();
+
+        plt.SaveTestImage();
     }
 
     [Test]
