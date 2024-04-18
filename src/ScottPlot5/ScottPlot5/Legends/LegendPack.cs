@@ -2,8 +2,7 @@
 
 public readonly struct LegendPack
 {
-    public ItemSizeAndChildren[] SizedItems { get; init; }
-    public PixelRect LegendRect { get; init; }
-    public PixelRect LegendShadowRect { get; init; }
-    public Pixel Offset { get; init; }
+    required public LegendItem[] LegendItems { get; init; }
+    required public PixelRect[] LegendItemRects { get; init; }
+    required public PixelRect LegendRect { get; init; }
 }

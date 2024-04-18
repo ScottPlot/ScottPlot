@@ -170,6 +170,14 @@ public class Label
         return Measure(paint);
     }
 
+    public PixelSize MeasureLine()
+    {
+        using SKPaint paint = new();
+        float width = Measure(paint).Width;
+        float height = paint.FontSpacing;
+        return new PixelSize(width, height);
+    }
+
     public PixelSize Measure(string text)
     {
         using SKPaint paint = new();

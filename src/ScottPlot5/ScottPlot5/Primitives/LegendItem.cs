@@ -1,12 +1,8 @@
-﻿using ScottPlot.Plottables;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, IHasArrow, IHasLabel
 {
-    public IEnumerable<LegendItem> Children { get; set; } = [];
-
-    public override Label LabelStyle { get; } = new();// TODO: remove setter
+    public override Label LabelStyle { get; } = new() { Alignment = Alignment.MiddleLeft }; // TODO: remove setter
 
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };// TODO: remove setter
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
@@ -32,6 +28,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
     public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+
+    public PixelSize Measure()
+    {
+        return LabelStyle.MeasureLine();
+    }
 
     #region obsolete these
     public FontStyle? CustomFontStyle { get; set; } = null;

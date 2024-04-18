@@ -4,13 +4,33 @@ public class Legend(Plot plot)
 {
     public Plot Plot { get; } = plot;
     public bool IsVisible { get; set; } = false;
-    public Alignment Location { get; set; } = Alignment.LowerRight;
+
+    /// <summary>
+    /// Position of the legend relative to the data area
+    /// </summary>
+    public Alignment Location { get; set; } = Alignment.LowerRight; // TODO: name Alignment
+
+    /// <summary>
+    /// Distance from the edge of the data area to the edge of the legend
+    /// </summary>
     public PixelPadding Margin { get; set; } = new(8);
-    public PixelPadding Padding { get; set; } = new(3);
-    public PixelPadding ItemPadding { get; set; } = new(3);
+
+    /// <summary>
+    /// Distance between the legend frame and the items within it
+    /// </summary>
+    public PixelPadding Padding { get; set; } = new(5);
+
+    /// <summary>
+    /// Vertical spacing separating legend items
+    /// </summary>
+    public PixelLength VerticalSpacing { get; set; } = new(3);
+
     public Orientation Orientation { get; set; } = Orientation.Vertical;
+
     public float SymbolWidth { get; } = 20;
+
     public float SymbolLabelSeparation { get; } = 5;
+
     public List<LegendItem> ManualItems { get; set; } = [];
 
     /// <summary>
@@ -31,15 +51,18 @@ public class Legend(Plot plot)
     public LineStyle OutlineStyle { get; set; } = new();
     public FillStyle BackgroundFill { get; set; } = new() { Color = Colors.White };
     public FillStyle ShadowFill { get; set; } = new() { Color = Colors.Black.WithOpacity(.2) };
-    public float ShadowOffset { get; set; } = 3;
+    public PixelOffset ShadowOffset { get; set; } = new(3, 3);
     public Alignment ShadowAlignment { get; set; } = Alignment.LowerRight;
 
     public void Show() => IsVisible = true;
     public void Hide() => IsVisible = false;
 
-    // Logic for the following methods got OUT OF CONTROL
-    // so they have been refactored into distinct static classes
-    public LegendItem[] GetItems() => GetItemLogic.GetItems(this);
+    public LegendItem[] GetItems() => Plot.PlottableList
+            .Where(item => item.IsVisible)
+            .SelectMany(x => x.LegendItems)
+            .Concat(ManualItems)
+            .ToArray();
+
     public void Render(RenderPack rp) => Rendering.Render(this, rp);
     public string GetSvgXml() => Rendering.GetSvgXml(this);
     public Image GetImage(int maxWidth = 0, int maxHeight = 0) => Rendering.GetImage(this, maxWidth, maxHeight);

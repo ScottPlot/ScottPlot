@@ -123,7 +123,6 @@ public class Legend : ICategory
 
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.Orientation = Orientation.Horizontal;
-            myPlot.Legend.AllowMultiline = true;
         }
     }
 }

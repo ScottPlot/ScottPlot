@@ -91,7 +91,28 @@ internal class LegendTests
     }
 
     [Test]
-    public void Test_Label_MultiLine()
+    public void Test_Legend_Basic()
+    {
+        ScottPlot.Plot plt = new();
+
+        for (int i = 0; i < 5; i++)
+        {
+            LegendItem item = new()
+            {
+                LabelText = $"Item #{i + 1}",
+                LabelFontColor = Colors.Category10[i],
+                //LabelFontSize = 26,
+            };
+            plt.Legend.ManualItems.Add(item);
+        }
+
+        plt.ShowLegend();
+
+        plt.SaveTestImage(300, 200);
+    }
+
+    [Test]
+    public void Test_Legend_MultiLine()
     {
         ScottPlot.Plot plt = new();
 

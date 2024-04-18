@@ -2,44 +2,49 @@
 
 public static class LegendPackFactory
 {
-    public static LegendPack StandaloneLegend(Legend legend, int maxWidth, int maxHeight)
+    public static LegendPack LegendOnPlot(Legend legend, PixelRect dataRect)
     {
-        using SKPaint paint = new();
-        LegendItem[] items = GetItemLogic.GetItems(legend);
-        ItemSizeAndChildren[] sizedItems = LegendSizing.GetSizedLegendItems(legend, items, paint);
-        PixelSize legendSize = LegendSizing.GetSizeOfEntireLegend(legend, sizedItems, maxWidth: maxWidth, maxHeight: maxHeight, withOffset: true);
-        PixelRect legendRect = new(0, legendSize.Width, legendSize.Height, 0);
-        Pixel offset = Pixel.Zero;
-        return new LegendPack()
+        LegendItem[] items = legend.GetItems();
+
+        PixelSize[] itemSizes = items.Select(x => x.Measure()).ToArray();
+        float maxWidth = itemSizes.Select(x => x.Width).Max();
+        float totalHeight = itemSizes.Select(x => x.Height).Sum();
+        totalHeight += legend.VerticalSpacing.Length * (items.Length - 1);
+
+        PixelSize legendSize = new PixelSize(maxWidth, totalHeight).Expanded(legend.Padding);
+        PixelRect legendRect = legendSize.AlignedInside(dataRect, legend.Location, legend.Margin);
+
+        Console.WriteLine(dataRect);
+        Console.WriteLine(legendRect);
+
+        PixelRect[] itemRects = new PixelRect[items.Length];
+        float nextItemY = legendRect.Top + legend.Padding.Top;
+        for (int i = 0; i < items.Length; i++)
         {
-            SizedItems = sizedItems,
+            float left = legendRect.Left + legend.Padding.Left;
+            float right = legendRect.Right - +legend.Padding.Right;
+            float top = nextItemY;
+            float bottom = nextItemY + itemSizes[i].Height;
+            itemRects[i] = new(left, right, top, bottom);
+            nextItemY += itemSizes[i].Height + legend.VerticalSpacing.Length;
+        }
+
+        return new LegendPack
+        {
+            LegendItems = items,
+            LegendItemRects = itemRects,
             LegendRect = legendRect,
-            LegendShadowRect = legendRect,
-            Offset = offset,
         };
     }
 
-    public static LegendPack LegendOnPlot(Legend legend, PixelRect dataRect)
+    // TODO: support this later
+    public static LegendPack StandaloneLegend(Legend legend, int maxWidth, int maxHeight)
     {
-        LegendItem[] items = GetItemLogic.GetItems(legend);
-
-        using SKPaint paint = new();
-        ItemSizeAndChildren[] sizedItems = LegendSizing.GetSizedLegendItems(legend, items, paint);
-
-        PixelSize legendSize = LegendSizing.GetSizeOfEntireLegend(legend, sizedItems,
-            maxWidth: dataRect.Width - legend.ShadowOffset * 2 - legend.Margin.Horizontal,
-            maxHeight: dataRect.Height - legend.ShadowOffset * 2 - legend.Margin.Vertical,
-            withOffset: false);
-
-        PixelRect legendRect = legendSize.AlignedInside(dataRect, legend.Location, legend.Margin);
-        PixelRect legendShadowRect = legendRect.WithDelta(legend.ShadowOffset, legend.ShadowOffset, legend.Location);
-        Pixel offset = new(legendRect.Left + legend.Padding.Left, legendRect.Top + legend.Padding.Top);
-        return new LegendPack()
+        return new LegendPack
         {
-            SizedItems = sizedItems,
-            LegendRect = legendRect,
-            LegendShadowRect = legendShadowRect,
-            Offset = offset,
+            LegendItems = [],
+            LegendItemRects = [],
+            LegendRect = PixelRect.NaN,
         };
     }
 }
