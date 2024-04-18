@@ -1,10 +1,9 @@
-﻿@page "/"
+﻿@page "/{selectRecipe?}"
+
 @using ScottPlot;
 @using ScottPlot.Blazor;
 @using ScottPlotCookbook;
-@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using System.Text.Json
-@inject IWebAssemblyHostEnvironment HostEnvironment
 @inject HttpClient Http
 @inject IJSRuntime JS
 
@@ -107,6 +106,9 @@
 </main>
 
 @code {
+    [Parameter]
+    public string SelectRecipe { get; set; }
+
     readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
 
     BlazorPlot BlazorPlot { get; set; } = new();
@@ -115,6 +117,24 @@
 
     IRecipe? Recipe;
     JsonDocument? JsonRecipes = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrEmpty(SelectRecipe))
+        {
+            foreach (var category in RecipesByCategory)
+            {
+                foreach(var recipe in category.Value)
+                {
+                    if (string.Compare(recipe.Name, SelectRecipe, true) == 0 || string.Compare(string.Join(string.Empty, recipe.Name.Split()), SelectRecipe, true) == 0)
+                    {
+                        await ShowRecipe(recipe);
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     protected async Task ShowRecipe(IRecipe recipe)
     {
