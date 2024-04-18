@@ -70,4 +70,23 @@ internal class LegendTests
         string svgXml = plt.GetLegendSvgXml();
         svgXml.SaveTestString(".svg");
     }
+
+    [Test]
+    public void Test_Legend_EmptyWithoutEnabling()
+    {
+        Plot plt = new();
+        plt.GetImage(300, 200);
+        plt.GetLegendImage();
+        plt.GetLegendSvgXml();
+    }
+
+    [Test]
+    public void Test_Legend_EmptyWithEnabling()
+    {
+        Plot plt = new();
+        plt.ShowLegend();
+        plt.GetImage(300, 200);
+        plt.GetLegendImage();
+        plt.GetLegendSvgXml();
+    }
 }
