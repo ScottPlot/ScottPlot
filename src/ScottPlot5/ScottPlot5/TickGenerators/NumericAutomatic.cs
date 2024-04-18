@@ -38,14 +38,14 @@ public class NumericAutomatic : ITickGenerator
         return label == "-0" ? "0" : label;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
     {
-        Ticks = GenerateTicks(range, edge, size, new PixelLength(12), paint)
+        Ticks = GenerateTicks(range, edge, size, new PixelLength(12), paint, labelStyle)
             .Where(x => range.Contains(x.Position))
             .ToArray();
     }
 
-    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, int depth = 0)
+    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, Label labelStyle, int depth = 0)
     {
         if (depth > 3)
             Debug.WriteLine($"Warning: Tick recursion depth = {depth}");
@@ -64,12 +64,12 @@ public class NumericAutomatic : ITickGenerator
         // determine if the actual tick labels are larger than predicted,
         // suggesting density is too high and overlapping may occur.
         (string largestText, PixelLength actualMaxLength) = edge.IsVertical()
-            ? Drawing.MeasureHighestString(majorTickLabels, paint)
-            : Drawing.MeasureWidestString(majorTickLabels, paint);
+            ? labelStyle.MeasureHighestString(majorTickLabels, paint)
+            : labelStyle.MeasureWidestString(majorTickLabels, paint);
 
         // recursively recalculate tick density if necessary
         return actualMaxLength.Length > maxLabelLength.Length
-            ? GenerateTicks(range, edge, axisLength, actualMaxLength, paint, depth + 1)
+            ? GenerateTicks(range, edge, axisLength, actualMaxLength, paint, labelStyle, depth + 1)
             : GenerateFinalTicks(majorTickPositions, majorTickLabels, range);
     }
 

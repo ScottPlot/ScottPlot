@@ -16,7 +16,7 @@ public readonly struct PixelLine
     public double SlopeDegrees => SlopeRadians * 180 / Math.PI;
     public float YIntercept => Y1 - Slope * X1;
     public float Length => (float)Math.Sqrt(XSpan * XSpan + YSpan * YSpan);
-    public float DeltaX => X2 - X1; 
+    public float DeltaX => X2 - X1;
     public float DeltaY => Y2 - Y1;
 
     public Pixel Pixel1 => new(X1, Y1);

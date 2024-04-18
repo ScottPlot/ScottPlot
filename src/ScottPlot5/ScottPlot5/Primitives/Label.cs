@@ -213,7 +213,7 @@ public class Label
         return new PixelSize(width, height);
     }
 
-    private PixelSize MeasureText(SKPaint paint, string text)
+    public PixelSize MeasureText(SKPaint paint, string text)
     {
         ApplyTextPaint(paint);
         SKRect textBounds = new();
@@ -355,5 +355,41 @@ public class Label
             ApplyPointPaint(paint);
             canvas.DrawCircle(0, 0, PointSize, paint);
         }
+    }
+
+    public (string text, float height) MeasureHighestString(string[] strings, SKPaint paint)
+    {
+        float maxHeight = 0;
+        string maxText = string.Empty;
+
+        for (int i = 0; i < strings.Length; i++)
+        {
+            PixelSize size = MeasureText(paint, strings[i]);
+            if (size.Height > maxHeight)
+            {
+                maxHeight = size.Height;
+                maxText = strings[i];
+            }
+        }
+
+        return (maxText, maxHeight);
+    }
+
+    public (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaint paint)
+    {
+        float maxWidth = 0;
+        string maxText = string.Empty;
+
+        for (int i = 0; i < strings.Length; i++)
+        {
+            PixelSize size = MeasureText(paint, strings[i]);
+            if (size.Width > maxWidth)
+            {
+                maxWidth = size.Width;
+                maxText = strings[i];
+            }
+        }
+
+        return (maxText, maxWidth);
     }
 }
