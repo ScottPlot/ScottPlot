@@ -28,12 +28,11 @@ public class PlottableAdder(Plot plot)
         Annotation an = new()
         {
             Alignment = alignment,
+            Text = text,
+            LabelBackgroundColor = Colors.Yellow.WithAlpha(.75),
+            LabelBorderColor = Colors.Black,
+            LabelPadding = 5,
         };
-
-        an.Label.Text = text;
-        an.Label.BackgroundColor = Colors.Yellow.WithAlpha(.75);
-        an.Label.BorderColor = Colors.Black;
-        an.Label.Padding = 5;
 
         Plot.PlottableList.Add(an);
 
@@ -338,8 +337,8 @@ public class PlottableAdder(Plot plot)
         {
             LineWidth = width,
             LineColor = color2,
-            TextBackgroundColor = color2,
-            TextColor = Colors.White,
+            LabelBackgroundColor = color2,
+            LabelFontColor = Colors.White,
             LinePattern = pattern,
             Y = y
         };
@@ -389,7 +388,9 @@ public class PlottableAdder(Plot plot)
     {
         Marker mp = new()
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor(),
             Location = new Coordinates(x, y),
         };
 
@@ -409,7 +410,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -423,7 +426,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -437,7 +442,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -451,7 +458,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -465,7 +474,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -809,12 +820,16 @@ public class PlottableAdder(Plot plot)
 
     public Text Text(string text, double x, double y)
     {
-        Text txt = new();
-        txt.Label.Text = text;
-        txt.Label.BackgroundColor = Colors.Transparent;
-        txt.Label.BorderColor = Colors.Transparent;
-        txt.Location = new(x, y);
+        Text txt = new()
+        {
+            LabelText = text,
+            LabelBackgroundColor = Colors.Transparent,
+            LabelBorderColor = Colors.Transparent,
+            Location = new(x, y)
+        };
+
         Plot.PlottableList.Add(txt);
+
         return txt;
     }
 
@@ -835,7 +850,7 @@ public class PlottableAdder(Plot plot)
         {
             LineWidth = width,
             LineColor = color2,
-            TextBackgroundColor = color2,
+            LabelBackgroundColor = color2,
             LinePattern = pattern,
             X = x
         };

@@ -1,15 +1,19 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Pie(IList<PieSlice> slices) : IPlottable
+public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
 {
     public IList<PieSlice> Slices { get; set; } = slices;
-    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public bool IsVisible { get; set; } = true;
     public double ExplodeFraction { get; set; } = 0;
     public double SliceLabelDistance { get; set; } = 1.2;
     public bool ShowSliceLabels { get; set; } = false;
     public double Padding { get; set; } = 0.2;
     public double DonutFraction { get; set; } = 0;
+
+    public LineStyle LineStyle { get; } = new() { Width = 0 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public IAxes Axes { get; set; } = new Axes();
 

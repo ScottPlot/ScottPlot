@@ -1,9 +1,6 @@
-﻿using ScottPlot.DataSources;
-using System.Runtime.CompilerServices;
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class IsoLines : IPlottable
+public class IsoLines : IPlottable, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -23,6 +20,9 @@ public class IsoLines : IPlottable
         Color = Colors.Black.WithAlpha(.2),
         Pattern = LinePattern.DenselyDashed,
     };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public static string DefaultTickFormatter(double yIntercept)
     {

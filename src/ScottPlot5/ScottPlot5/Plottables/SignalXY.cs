@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class SignalXY(ISignalXYSource dataSource) : IPlottable
+public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker
 {
     public ISignalXYSource Data { get; set; } = dataSource;
 
@@ -8,8 +8,19 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public IAxes Axes { get; set; } = new Axes();
-    public LineStyle LineStyle { get; set; } = new();
-    public MarkerStyle MarkerStyle { get; set; } = new() { Shape = MarkerShape.None, Size = 5, };
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -20,7 +31,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable
             MarkerStyle.Outline.Color = value;
         }
     }
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+
     public string Label = string.Empty;
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 

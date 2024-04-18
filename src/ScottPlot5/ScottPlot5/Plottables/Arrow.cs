@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Arrow : IPlottable
+public class Arrow : IPlottable, IHasArrow
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -55,6 +55,12 @@ public class Arrow : IPlottable
     /// Back the arrow away from its tip along its axis by this many pixels
     /// </summary>
     public float Offset { get; set; } = 0;
+
+    // TODO: actually use the arrow style
+    public ArrowStyle ArrowStyle => throw new NotImplementedException();
+    public ArrowAnchor ArrowAnchor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Color ArrowColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public float ArrowLineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public AxisLimits GetAxisLimits() => new(
         Math.Min(Base.X, Tip.X),

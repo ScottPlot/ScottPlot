@@ -3,8 +3,19 @@
 public class GridStyle
 {
     public bool IsVisible { get; set; } = true;
-    public LineStyle MajorLineStyle { get; set; } = LineStyle.DefaultMajorStyle;
-    public LineStyle MinorLineStyle { get; set; } = LineStyle.DefaultMinorStyle;
+
+    public LineStyle MajorLineStyle { get; set; } = new()
+    {
+        Width = 1,
+        Color = Colors.Black.WithOpacity(.1)
+    };
+
+    public LineStyle MinorLineStyle { get; set; } = new()
+    {
+        Width = 0,
+        Color = Colors.Black.WithOpacity(.05)
+    };
+
     public int MaximumNumberOfGridLines { get; set; } = 1_000;
     public bool IsBeneathPlottables { get; set; } = true;
 

@@ -137,8 +137,8 @@ public class Styling : ICategory
                 mp.MarkerStyle.Fill.Color = palette.GetColor(i).WithAlpha(.5);
 
                 var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
-                txt.Label.Rotation = -90;
-                txt.Label.Alignment = Alignment.MiddleLeft;
+                txt.LabelRotation = -90;
+                txt.LabelAlignment = Alignment.MiddleLeft;
             }
 
             myPlot.Title("Marker Names");
@@ -167,10 +167,10 @@ public class Styling : ICategory
                 line.Color = Colors.Black;
 
                 var txt = myPlot.Add.Text(pattern.ToString(), 1.1, -i);
-                txt.Size = 18;
-                txt.Bold = true;
-                txt.Color = Colors.Black;
-                txt.Label.Alignment = Alignment.MiddleLeft;
+                txt.LabelFontSize = 18;
+                txt.LabelBold = true;
+                txt.LabelFontColor = Colors.Black;
+                txt.LabelAlignment = Alignment.MiddleLeft;
             }
 
             myPlot.Axes.Margins(right: 1);

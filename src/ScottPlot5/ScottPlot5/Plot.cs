@@ -212,15 +212,21 @@ public class Plot : IDisposable
 
     #region Rendering and Image Creation
 
-    [Obsolete("Call GetImage() to create a new image, or Render() to render onto an existing canvas.", true)]
+    [Obsolete("Call GetImage() to create a new image, " +
+        "RenderInMemory() to force a render for layout purposes, " +
+        "or Render() to render onto an existing SkiaSharp surface or canvas.", true)]
     public void Render(int width = 400, int height = 300) { }
+
+    /// <summary>
+    /// Create a new image of the given dimensions, render the plot onto it, and return it.
+    /// </summary>
+    public void RenderInMemory(int width = 400, int height = 300) => GetImage(width, height);
 
     /// <summary>
     /// Render onto an existing canvas
     /// </summary>
     public void Render(SKCanvas canvas, int width, int height)
     {
-        // TODO: obsolete this
         PixelRect rect = new(0, width, height, 0);
         Render(canvas, rect);
     }

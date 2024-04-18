@@ -4,6 +4,8 @@
  * 
  */
 
+using ScottPlot.Palettes;
+
 namespace ScottPlot;
 
 public struct Colors
@@ -169,6 +171,10 @@ public struct Colors
     public static Color C7 => Color.FromHex("#7f7f7f");
     public static Color C8 => Color.FromHex("#bcbd22");
     public static Color C9 => Color.FromHex("#17becf");
+
+    readonly static public Color[] Category10 = new Category10().Colors;
+    readonly static public Color[] Category20 = new Category20().Colors;
+    readonly static public Color[] ColorblindFriendly = new ColorblindFriendly().Colors;
 
     /// <summary>
     /// Default Windows Colors

@@ -4,7 +4,7 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataLogger : IPlottable, IManagesAxisLimits
+public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
@@ -15,13 +15,17 @@ public class DataLogger : IPlottable, IManagesAxisLimits
     public IAxisLimitManager AxisManager { get; set; } = new Full();
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
-    public LineStyle LineStyle = new();
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     /// <summary>
     /// Returns true if data has been added since the last render
     /// </summary>
     public bool HasNewData => Data.CountTotal != Data.CountOnLastRender;
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public void UpdateAxisLimits(Plot plot, bool force = false)
     {

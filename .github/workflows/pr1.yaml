@@ -20,5 +20,9 @@ jobs:
           dotnet-version: 8.0.x
       - name: Build
         run: bash .github/workflows/scripts/check-build.sh
-      - name: Test
-        run: bash .github/workflows/scripts/check-test.sh
+      - name: ScottPlot5 Unit Tests
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj" --configuration Release --no-build --verbosity minimal
+      - name: ScottPlot5 Cookbook
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj" --configuration Release --no-build --verbosity minimal
+      - name: ScottPlot5 Tests
+        run: dotnet test "src/ScottPlot4/ScottPlot/ScottPlot.csproj" --configuration Release --no-build --verbosity minimal

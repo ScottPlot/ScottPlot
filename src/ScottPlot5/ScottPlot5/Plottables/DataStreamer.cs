@@ -3,13 +3,17 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable, IManagesAxisLimits
+public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public readonly LineStyle LineStyle = new();
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public DataStreamerSource Data { get; set; }
@@ -76,9 +80,9 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Display the data using a view where new data overlapps old data from left to right.
     /// </summary>
-    public void ViewWipeRight()
+    public void ViewWipeRight(double blankFraction = 0)
     {
-        Renderer = new DataViews.Wipe(this, true);
+        Renderer = new DataViews.Wipe(this, true) { BlankFraction = blankFraction };
     }
 
     /// <summary>

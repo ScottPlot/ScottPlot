@@ -45,7 +45,7 @@ public class LinePlot : ICategory
                 line.LinePattern = Generate.RandomLinePattern();
 
                 // customize markers
-                line.MarkerColor = line.LineStyle.Color;
+                line.MarkerLineColor = line.LineStyle.Color;
                 line.MarkerShape = Generate.RandomMarkerShape();
                 line.MarkerSize = Generate.RandomInteger(5, 15);
             }

@@ -38,9 +38,8 @@ public partial class SignalPerformance : Form, IDemoWindow
         }
         else if (rbScatter.Checked)
         {
-            var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
+            var sp = formsPlot1.Plot.Add.ScatterLine(xs, ys);
             formsPlot1.Plot.Axes.Title.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
-            sp.MarkerStyle = MarkerStyle.None;
             label1.Text = "Traditional Scatter plots are not performant for large datasets";
         }
 

@@ -101,8 +101,6 @@ public abstract class AxisBase
         using SKPaint paint = new();
         label.ApplyToPaint(paint);
 
-        paint.TextAlign = SKTextAlign.Center;
-
         foreach (Tick tick in ticks)
         {
             // draw tick
@@ -116,17 +114,14 @@ public abstract class AxisBase
             Drawing.DrawLine(rp.Canvas, paint, pxLine);
 
             // draw label
-            if (!string.IsNullOrWhiteSpace(tick.Label) && label.IsVisible)
-            {
-                float fontSpacing = axis.Edge == Edge.Bottom ? paint.TextSize : -4;
-                foreach (string line in tick.Label.Split('\n'))
-                {
-                    label.Text = line;
-                    Pixel px = new(xPx, yEdge + fontSpacing);
-                    label.Render(rp.Canvas, px);
-                    fontSpacing += paint.TextSize;
-                }
-            }
+            if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
+                continue;
+            label.Text = tick.Label;
+            float pxDistanceFromTick = 10;
+            float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
+            float yPx = axis.Edge == Edge.Bottom ? y + pxDistanceFromEdge : y - pxDistanceFromEdge;
+            Pixel labelPixel = new(xPx, yPx);
+            label.Render(rp.Canvas, labelPixel);
         }
     }
 
@@ -147,27 +142,21 @@ public abstract class AxisBase
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
+            float yPx = axis.GetPixel(tick.Position, panelRect);
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
-            float y = axis.GetPixel(tick.Position, panelRect);
             float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
-            PixelLine pxLine = new(x, y, xEdge, y);
+            PixelLine pxLine = new(x, yPx, xEdge, yPx);
             Drawing.DrawLine(rp.Canvas, paint, pxLine);
 
             // draw label
-            float majorTickLabelPadding = 7;
-            float labelPos = axis.Edge == Edge.Left ? x - majorTickLabelPadding : x + majorTickLabelPadding;
-            if (!string.IsNullOrWhiteSpace(tick.Label) && label.IsVisible)
-            {
-                string[] lines = tick.Label.Split('\n');
-                double fontSpacing = -paint.TextSize * (lines.Length - 1) / 2;
-                foreach (string line in lines)
-                {
-                    label.Text = line;
-                    Pixel px = new(labelPos, y + fontSpacing);
-                    label.Render(rp.Canvas, px);
-                    fontSpacing += paint.TextSize;
-                }
-            }
+            if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
+                continue;
+            label.Text = tick.Label;
+            float pxDistanceFromTick = 5;
+            float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
+            float xPx = axis.Edge == Edge.Left ? x - pxDistanceFromEdge : x + pxDistanceFromEdge;
+            Pixel px = new(xPx, yPx);
+            label.Render(rp.Canvas, px);
         }
     }
 

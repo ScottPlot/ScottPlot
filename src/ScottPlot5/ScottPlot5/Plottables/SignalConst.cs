@@ -2,12 +2,22 @@
 
 namespace ScottPlot.Plottables;
 
-public class SignalConst<T>(T[] ys, double period) : IPlottable
+public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasMarker
     where T : struct, IComparable
 {
     readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
-    public readonly MarkerStyle Marker = new();
-    public readonly LineStyle LineStyle = new();
+
+    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
+    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
+    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+
+    public LineStyle LineStyle { get; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public string? Label { get; set; }
 
@@ -16,9 +26,9 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable
         get => LineStyle.Color;
         set
         {
-            LineStyle.Color = value;
-            Marker.Fill.Color = value;
-            Marker.Outline.Color = value;
+            LineColor = value;
+            MarkerFillColor = value;
+            MarkerLineColor = value;
         }
     }
 

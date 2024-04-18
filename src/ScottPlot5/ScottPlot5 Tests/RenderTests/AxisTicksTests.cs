@@ -52,4 +52,47 @@ internal class AxisTicksTests
 
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_MultilineRotated_TickLabels()
+    {
+        Plot myPlot = new();
+
+        var sig1 = myPlot.Add.Signal(Generate.Sin(mult: 50));
+        sig1.Axes.XAxis = myPlot.Axes.Bottom;
+        sig1.Axes.YAxis = myPlot.Axes.Left;
+
+        var sig2 = myPlot.Add.Signal(Generate.Cos(mult: 50));
+        sig2.Axes.XAxis = myPlot.Axes.Top;
+        sig2.Axes.YAxis = myPlot.Axes.Right;
+
+        ScottPlot.TickGenerators.NumericManual tickGen = new();
+        tickGen.AddMajor(25, "line one\nline two");
+
+        myPlot.Axes.Bottom.TickGenerator = tickGen;
+        myPlot.Axes.Bottom.TickLabelStyle.Rotation = 45;
+        myPlot.Axes.Bottom.TickLabelStyle.FontSize = 22;
+        myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+        myPlot.Axes.Bottom.MinimumSize = 150;
+
+        myPlot.Axes.Top.TickGenerator = tickGen;
+        myPlot.Axes.Top.TickLabelStyle.Rotation = -45;
+        myPlot.Axes.Top.TickLabelStyle.FontSize = 22;
+        myPlot.Axes.Top.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+        myPlot.Axes.Top.MinimumSize = 150;
+
+        myPlot.Axes.Left.TickGenerator = tickGen;
+        myPlot.Axes.Left.TickLabelStyle.Rotation = 45;
+        myPlot.Axes.Left.TickLabelStyle.FontSize = 22;
+        myPlot.Axes.Left.TickLabelStyle.Alignment = Alignment.MiddleRight;
+        myPlot.Axes.Left.MinimumSize = 150;
+
+        myPlot.Axes.Right.TickGenerator = tickGen;
+        myPlot.Axes.Right.TickLabelStyle.Rotation = 45;
+        myPlot.Axes.Right.TickLabelStyle.FontSize = 22;
+        myPlot.Axes.Right.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+        myPlot.Axes.Right.MinimumSize = 150;
+
+        myPlot.SaveTestImage(800, 600);
+    }
 }

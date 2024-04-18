@@ -61,19 +61,19 @@ public class HorizontalLine : AxisLine
             return;
 
         float x = LabelOppositeAxis
-            ? rp.DataRect.Right + LabelStyle.Padding
-            : rp.DataRect.Left - LabelStyle.Padding;
+            ? rp.DataRect.Right + LabelStyle.PixelPadding.Right
+            : rp.DataRect.Left - LabelStyle.PixelPadding.Left;
 
         Alignment defaultAlignment = LabelOppositeAxis
             ? Alignment.UpperCenter
             : Alignment.LowerCenter;
 
-        LabelStyle.Alignment = TextAlignment ?? defaultAlignment;
+        LabelStyle.Alignment = ManualLabelAlignment ?? defaultAlignment;
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
 
         using SKPaint paint = new();
-        LabelStyle.Render(rp.Canvas, x, y, paint);
+        LabelStyle.Render(rp.Canvas, new Pixel(x, y), paint);
     }
 }

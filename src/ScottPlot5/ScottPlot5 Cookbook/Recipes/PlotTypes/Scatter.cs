@@ -168,10 +168,10 @@ public class Scatter : ICategory
                 sp.Color = palette.GetColor(i);
 
                 var txt = myPlot.Add.Text(patterns[i].ToString(), 51, yOffset);
-                txt.Label.ForeColor = sp.Color;
-                txt.Label.FontSize = 22;
-                txt.Label.Bold = true;
-                txt.Label.Alignment = Alignment.MiddleLeft;
+                txt.LabelFontColor = sp.Color;
+                txt.LabelFontSize = 22;
+                txt.LabelBold = true;
+                txt.LabelAlignment = Alignment.MiddleLeft;
             }
 
             myPlot.Axes.Margins(.05, .5, .05, .05);
