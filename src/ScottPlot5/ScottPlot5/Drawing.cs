@@ -9,6 +9,7 @@ namespace ScottPlot;
 /// </summary>
 public static class Drawing
 {
+    [Obsolete("use the Label logic if you can, or move that logic here.")]
     public static PixelSize MeasureString(string text, SKPaint paint)
     {
         var strings = text.Split('\n');

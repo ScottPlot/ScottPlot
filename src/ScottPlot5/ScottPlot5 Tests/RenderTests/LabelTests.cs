@@ -205,16 +205,4 @@ internal class LabelTests
 
         surface.SaveTestImage();
     }
-
-    [Test]
-    public void Test_Label_LineBreak()
-    {
-        ScottPlot.Plot plt = new();
-
-        plt.Legend.ManualItems.Add(new LegendItem() { Label = "one\nalpha" });
-        plt.Legend.ManualItems.Add(new LegendItem() { Label = "two\beta" });
-        plt.ShowLegend();
-
-        plt.SaveTestImage(300, 200);
-    }
 }

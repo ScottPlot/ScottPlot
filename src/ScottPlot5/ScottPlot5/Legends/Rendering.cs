@@ -4,7 +4,7 @@ public static class Rendering
 {
     public static void Render(Legend legend, RenderPack rp)
     {
-        LegendPack lp = LegendPack.GetLegendPack(legend, rp.DataRect);
+        LegendPack lp = LegendPackFactory.LegendOnPlot(legend, rp.DataRect);
 
         RenderLegend(legend, rp.Canvas, lp);
     }
@@ -14,7 +14,7 @@ public static class Rendering
         if (svgStream is null)
             throw new NullReferenceException($"invalid Stream");
 
-        LegendPack lp = LegendPack.GetLegendPack(legend, maxWidth, maxHeight);
+        LegendPack lp = LegendPackFactory.StandaloneLegend(legend, maxWidth, maxHeight);
 
         SKRect rect = new(0, 0, lp.LegendRect.Width, lp.LegendRect.Height);
         using SKCanvas canvas = SKSvgCanvas.Create(rect, svgStream);
@@ -23,7 +23,7 @@ public static class Rendering
 
     public static Image GetImage(Legend legend, int maxWidth = 0, int maxHeight = 0)
     {
-        LegendPack lp = LegendPack.GetLegendPack(legend, maxWidth, maxHeight);
+        LegendPack lp = LegendPackFactory.StandaloneLegend(legend, maxWidth, maxHeight);
 
         SKImageInfo info = new(
             width: Math.Max(1, (int)Math.Ceiling(lp.LegendRect.Width)),
@@ -41,7 +41,7 @@ public static class Rendering
 
     public static string GetSvgXml(Legend legend)
     {
-        LegendPack lp = LegendPack.GetLegendPack(legend, 0, 0);
+        LegendPack lp = LegendPackFactory.StandaloneLegend(legend, 0, 0);
 
         int width = (int)Math.Ceiling(lp.LegendRect.Width);
         int height = (int)Math.Ceiling(lp.LegendRect.Height);
@@ -71,7 +71,7 @@ public static class Rendering
             bool isHorizontal = legend.Orientation == Orientation.Horizontal;
             bool isWider = (xOffset + item.Size.WithChildren.Width) > lp.LegendRect.Right;
 
-            if (isHorizontal && legend.AllowMultiline && isWider)
+            if (isHorizontal && isWider)
             {
                 yOffset += prevHeight;
                 xOffset = lp.Offset.X;

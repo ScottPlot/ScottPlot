@@ -8,7 +8,6 @@ public static class GetItemLogic
     /// Return top-level items for this legend.
     /// Items may have children.
     /// </summary>
-    /// <returns></returns>
     public static LegendItem[] GetItems(Legend legend)
     {
         LegendItem[] items = legend.Plot.PlottableList
@@ -37,27 +36,15 @@ public static class GetItemLogic
     /// </summary>
     public static LegendItem[] GetAllLegendItems(Legend legend, IEnumerable<LegendItem> items)
     {
-        List<LegendItem> allItems = new();
+        List<LegendItem> allItems = [];
+
         foreach (LegendItem item in items)
         {
             allItems.Add(item);
             allItems.AddRange(GetAllLegendItems(legend, item.Children));
         }
-        return allItems.ToArray();
-    }
 
-    public static ItemSizeAndChildren[] GetSizedLegendItems(Legend legend, SKPaint paint, IEnumerable<LegendItem> allItems)
-    {
-        LegendItem[] items = GetAllLegendItems(legend, allItems)
-            .Where(x => x.IsVisible)
-            .Where(x => !string.IsNullOrWhiteSpace(x.Label))
-            .ToArray();
-
-        if (items.Length == 0)
-            return [];
-
-        // measure all items to determine dimensions of the legend
-        return LegendSizing.GetSizedLegendItems(legend, items, paint);
+        return [.. allItems];
     }
 
     #endregion

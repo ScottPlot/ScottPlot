@@ -89,4 +89,17 @@ internal class LegendTests
         plt.GetLegendImage();
         plt.GetLegendSvgXml();
     }
+
+    [Test]
+    public void Test_Label_MultiLine()
+    {
+        ScottPlot.Plot plt = new();
+
+        plt.Legend.ManualItems.Add(new LegendItem() { Label = "one\nalpha" });
+        plt.Legend.ManualItems.Add(new LegendItem() { Label = "two\nbeta" });
+        plt.Legend.ManualItems.Add(new LegendItem() { Label = "three" }); ;
+        plt.ShowLegend();
+
+        plt.SaveTestImage(300, 200);
+    }
 }

@@ -12,7 +12,6 @@ public class Legend(Plot plot)
     public float SymbolWidth { get; } = 20;
     public float SymbolLabelSeparation { get; } = 5;
     public List<LegendItem> ManualItems { get; set; } = [];
-    public bool AllowMultiline { get; set; } = false;
 
     /// <summary>
     /// Enabling this allows multi-language text in the figure legend,

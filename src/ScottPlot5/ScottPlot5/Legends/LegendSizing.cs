@@ -1,5 +1,6 @@
 ﻿namespace ScottPlot.Legends;
 
+[Obsolete("use new sizing class")]
 public static class LegendSizing
 {
     public static ItemSizeAndChildren[] GetSizedLegendItems(Legend legend, IEnumerable<LegendItem> items, SKPaint paint)
@@ -19,15 +20,15 @@ public static class LegendSizing
 
             LegendItem[] visibleItems = GetItemLogic.GetAllLegendItems(legend, item.Children).Where(x => x.IsVisible).ToArray();
             ItemSizeAndChildren[] sizedChildren = GetSizedLegendItems(legend, visibleItems, paint);
-            ItemSize itemSize = Measure(item, paint, sizedChildren, legend.SymbolWidth, legend.SymbolLabelSeparation, legend.Padding, legend.ItemPadding);
-            ItemSizeAndChildren sizedItem = new(item, itemSize, sizedChildren);
+            ItemSize sizeWithChildren = MeasureLegendItemAndItsChildren(item, paint, sizedChildren, legend.SymbolWidth, legend.SymbolLabelSeparation, legend.Padding, legend.ItemPadding);
+            ItemSizeAndChildren sizedItem = new(item, sizeWithChildren, sizedChildren);
             sizedItems.Add(sizedItem);
         }
 
         return [.. sizedItems];
     }
 
-    public static PixelSize GetLegendSize(Legend legend, ItemSizeAndChildren[] sizedItems, float maxWidth = 0, float maxHeight = 0, bool withOffset = false)
+    public static PixelSize GetSizeOfEntireLegend(Legend legend, ItemSizeAndChildren[] sizedItems, float maxWidth = 0, float maxHeight = 0, bool withOffset = false)
     {
         if (sizedItems.Length == 0)
             return PixelSize.Zero;
@@ -39,7 +40,7 @@ public static class LegendSizing
             legendWidth = sizedItems.Select(x => x.Size.WithChildren.Width).Max();
             legendHeight = sizedItems.Select(x => x.Size.WithChildren.Height).Sum();
         }
-        else if (legend.AllowMultiline && maxWidth > 0)
+        else if (maxWidth > 0)
         {
             float lw = 0;
             float lh = 0;
@@ -79,12 +80,14 @@ public static class LegendSizing
     /// <summary>
     /// Return the size of the given item including all its children
     /// </summary>
-    private static ItemSize Measure(LegendItem item, SKPaint paint, ItemSizeAndChildren[] children, 
+    private static ItemSize MeasureLegendItemAndItsChildren(LegendItem item, SKPaint paint, ItemSizeAndChildren[] sizeAndChildren, 
         float symbolWidth, float symbolPadRight, PixelPadding Padding, PixelPadding ItemPadding)
     {
         PixelSize labelRect = !string.IsNullOrWhiteSpace(item.Label)
-            ? Drawing.MeasureString(item.Label ?? string.Empty, paint)
+            ? item.LabelStyle.MeasureMultiLines(paint, item.LabelText)
             : new(0, 0);
+
+        Console.WriteLine($"TEXT: {item.LabelText} \t HEIGHT: {labelRect.Height}");
 
         float width2 = item.HasSymbol ? symbolWidth : 0;
         float width = width2 + symbolPadRight + labelRect.Width + ItemPadding.Horizontal;
@@ -92,7 +95,7 @@ public static class LegendSizing
 
         PixelSize ownSize = new(width, height);
 
-        foreach (ItemSizeAndChildren childItem in children)
+        foreach (ItemSizeAndChildren childItem in sizeAndChildren)
         {
             width = Math.Max(width, Padding.Left + childItem.Size.WithChildren.Width);
             height += childItem.Size.WithChildren.Height;
