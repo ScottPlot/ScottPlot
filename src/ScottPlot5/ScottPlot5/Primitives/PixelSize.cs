@@ -90,4 +90,9 @@ public struct PixelSize : IEquatable<PixelSize>
     {
         return Width.GetHashCode() ^ Height.GetHashCode();
     }
+
+    public PixelSize Expanded(PixelPadding pad)
+    {
+        return new PixelSize(Width + pad.Left + pad.Right, Height + pad.Top + pad.Bottom);
+    }
 }
