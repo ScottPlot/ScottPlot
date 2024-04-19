@@ -10,7 +10,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);
     public double GetY(double x) => Source.Get(x);
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -43,13 +43,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine
         }
     }
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle.None,
-            Line = LineStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 
     public AxisLimits GetAxisLimits()
     {

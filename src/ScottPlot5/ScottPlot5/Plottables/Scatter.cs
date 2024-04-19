@@ -6,12 +6,12 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerStyle MarkerStyle { get; } = new() { Size = 5, Shape = MarkerShape.FilledCircle };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }

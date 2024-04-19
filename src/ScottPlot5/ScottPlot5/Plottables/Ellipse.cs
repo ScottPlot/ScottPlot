@@ -6,7 +6,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -15,7 +15,6 @@ public class Ellipse : IPlottable, IHasLine, IHasFill
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
-
 
     /// <summary>
     /// Label to appear in the legend

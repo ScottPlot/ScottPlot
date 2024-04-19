@@ -4,9 +4,14 @@ public class Rectangle : IPlottable, IHasLine, IHasFill
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, FillStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => [new LegendItem()
+    {
+        Label = Label,
+        FillStyle = FillStyle,
+        OutlineStyle = LineStyle,
+    }];
 
-    public LineStyle LineStyle { get; set; } = new();
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

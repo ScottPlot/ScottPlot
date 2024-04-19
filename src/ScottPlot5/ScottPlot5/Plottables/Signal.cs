@@ -1,22 +1,22 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Signal : IPlottable, IHasLine, IHasMarker
+public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public readonly ISignalSource Data;
+    public readonly ISignalSource Data = data;
 
     public string Label { get; set; } = string.Empty;
 
-    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerStyle MarkerStyle { get; } = new() { Size = 5, Shape = MarkerShape.FilledCircle };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
     public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
     public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -29,7 +29,7 @@ public class Signal : IPlottable, IHasLine, IHasMarker
 
     public Color Color
     {
-        get => LineStyle.Color;
+        get => LineColor;
         set
         {
             LineColor = value;
@@ -38,27 +38,9 @@ public class Signal : IPlottable, IHasLine, IHasMarker
         }
     }
 
-    public Signal(ISignalSource data)
-    {
-        Data = data;
-
-        MarkerStyle = new(MarkerShape.FilledCircle, 5)
-        {
-            Outline = LineStyle.None
-        };
-
-        LineStyle = new();
-    }
-
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle,
-            Line = LineStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle, LineStyle);
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {

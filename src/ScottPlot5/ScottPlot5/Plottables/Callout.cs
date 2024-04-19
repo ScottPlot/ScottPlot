@@ -4,13 +4,12 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
 {
     public Text LabelPlottable { get; } = new() { LabelPadding = 5 };
     public Arrow ArrowPlottable { get; } = new();
-    public override Label LabelStyle => LabelPlottable.LabelStyle;
+    public override Label LabelStyle { get => LabelPlottable.LabelStyle; set => LabelPlottable.LabelStyle = value; }
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
 
-    // TODO: use a real Arrow
-    public ArrowStyle ArrowStyle => throw new NotImplementedException();
-    public ArrowAnchor ArrowAnchor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public float ArrowLineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public ArrowStyle ArrowStyle { get; set; } = new();
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
 
     public Color ArrowColor
     {

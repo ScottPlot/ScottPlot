@@ -28,11 +28,11 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
     }
 
     public IEnumerable<LegendItem> LegendItems => Slices
-        .Select(slice => new LegendItem
+        .Select((Func<PieSlice, LegendItem>)(slice => new LegendItem
         {
             Label = slice.Label,
-            Fill = slice.Fill,
-        });
+            FillStyle = slice.Fill,
+        }));
 
     public void Render(RenderPack rp)
     {

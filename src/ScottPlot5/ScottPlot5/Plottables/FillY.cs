@@ -6,13 +6,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle,
-            Line = new LineStyle() { Width = 10, Color = FillStyle.Color },
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, FillStyle, LineStyle);
 
     private Polygon Poly { get; set; } = Polygon.Empty;
 
@@ -21,7 +15,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

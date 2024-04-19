@@ -4,7 +4,7 @@ public class Arrow : IPlottable, IHasArrow
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => [new LegendItem() { ArrowStyle = ArrowStyle, LabelText = Label }];
 
     /// <summary>
     /// Label to appear in the legend
@@ -24,43 +24,42 @@ public class Arrow : IPlottable, IHasArrow
     /// <summary>
     /// Advanced styling options
     /// </summary>
-    public readonly LineStyle LineStyle = new() { Color = Colors.Gray, Width = 2 };
+    public LineStyle LineStyle { get => ArrowStyle.LineStyle; set => ArrowStyle.LineStyle = value; }
 
     /// <summary>
     /// Color of the arrow line and arrowhead
     /// </summary>
-    public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
+    public Color Color { get => ArrowColor; set => ArrowColor = value; }
 
     /// <summary>
     /// Thickness of the line at the base of the arrow
     /// </summary>
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public float LineWidth { get => ArrowLineWidth; set => ArrowLineWidth = value; }
 
     /// <summary>
     /// Total width of the arrowhead in pixels
     /// </summary>
-    public float ArrowheadWidth { get; set; } = 10;
+    public float ArrowheadWidth { get => ArrowStyle.ArrowheadWidth; set => ArrowStyle.ArrowheadWidth = value; }
 
     /// <summary>
     /// Length of the arrowhead in pixels
     /// </summary>
-    public float ArrowheadLength { get; set; } = 16;
+    public float ArrowheadLength { get => ArrowStyle.ArrowheadLength; set => ArrowStyle.ArrowheadLength = value; }
 
     /// <summary>
     /// The base of the arrow will be expanded away from the tip so its length is always at least this number of pixels
     /// </summary>
-    public float MinimumLength { get; set; } = 0;
+    public float MinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
 
     /// <summary>
     /// Back the arrow away from its tip along its axis by this many pixels
     /// </summary>
-    public float Offset { get; set; } = 0;
+    public float Offset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
 
-    // TODO: actually use the arrow style
-    public ArrowStyle ArrowStyle => throw new NotImplementedException();
-    public ArrowAnchor ArrowAnchor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Color ArrowColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public float ArrowLineWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+    public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
 
     public AxisLimits GetAxisLimits() => new(
         Math.Min(Base.X, Tip.X),

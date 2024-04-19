@@ -7,9 +7,10 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
+    public string Label { get; set; } = string.Empty;
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

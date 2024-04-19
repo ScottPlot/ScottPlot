@@ -10,7 +10,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public override Label LabelStyle { get; } = new();
+    public override Label LabelStyle { get; set; } = new();
     public string Text { get => LabelText; set => LabelText = value; }
     public Alignment? ManualLabelAlignment { get; set; } = null;
 

@@ -2,7 +2,7 @@
 
 public class Text : LabelStyleProperties, IPlottable
 {
-    public override Label LabelStyle { get; } = new();
+    public override Label LabelStyle { get; set; } = new();
     public Coordinates Location { get; set; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
