@@ -1,0 +1,82 @@
+﻿@inject IRecipesService RecipeService
+@implements IDisposable
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ScottPlot Blazor Demo</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
+    <hr />
+    <nav class="flex-column px-2">
+        @foreach (var recipes in FilteredRecipes)
+        {
+            <h1 class="mt-4">@recipes.Key.CategoryName</h1>
+
+            @foreach (var recipe in recipes.Value)
+            {
+                @if (RecipeService.IsSelected(recipe))
+                {
+                    <div class="sidebar-selected">
+                        <a>@recipe.Name</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
+                        <a>@recipe.Name</a>
+                    </div>
+                }
+            }
+        }
+    </nav>
+</div>
+
+@code {
+    string SearchTerm { get; set; } = "";
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override void OnInitialized()
+    {
+        RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
+    }
+
+    public void Dispose()
+    {
+        RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    IReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
+    {
+        get
+        {
+            var filter = SearchTerm?.Trim();
+            if (string.IsNullOrEmpty(filter))
+                return RecipeService.RecipesByCategory;
+
+            var d = new Dictionary<ICategory, IEnumerable<IRecipe>>();
+            foreach (var x in RecipeService.RecipesByCategory)
+            {
+                var l = x.Value.Where(v => v.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                if (l.Count > 0)
+                    d.Add(x.Key, l);
+            }
+            return d;
+        }
+    }
+    protected void ShowRecipe(IRecipe recipe)
+    {
+        RecipeService.Recipe = recipe;
+    }
+}

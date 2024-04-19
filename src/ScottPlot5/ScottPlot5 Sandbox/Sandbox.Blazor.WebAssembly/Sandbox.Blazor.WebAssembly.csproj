@@ -26,4 +26,16 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\NavMenu.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Layout\NavMenu.razor" />
+  </ItemGroup>
+
 </Project>

@@ -1,104 +1,29 @@
-﻿@page "/{selectRecipe?}"
+﻿@page "/"
+@page "/recipe/{selectRecipe?}"
 
-@using ScottPlot;
-@using ScottPlot.Blazor;
-@using ScottPlotCookbook;
-@using System.Text.Json
-@inject HttpClient Http
-@inject IJSRuntime JS
-
-<style>
-    body {
-        margin: 0;
-    }
-
-    .sidebar {
-        background-color: #67217a;
-        color: white;
-        position: fixed;
-        top: 0;
-        height: 100%;
-        width: 300px;
-    }
-
-    .sidebar-inner {
-        height: 100%;
-        width: 100%;
-        margin: 0px;
-        overflow-y: scroll;
-        overflow-x: scroll;
-    }
-
-    .sidebar-button {
-        color: #FFFFFF99;
-        cursor: pointer;
-        padding-left: .5rem;
-    }
-
-        .sidebar-button :hover {
-            color: #FFFFFFEE;
-            background-color: #FFFFFF11;
-        }
-
-    .sidebar h1 {
-        font-size: 1.2em;
-        margin: 1rem 1em .3rem .5rem;
-    }
-
-    main {
-        display: block !important;
-        margin-left: 300px;
-    }
-
-    .hljs {
-        background-color: transparent;
-    }
-</style>
-
-<nav class="sidebar">
-
-    <h1>ScottPlot Blazor Demo</h1>
-    <input class="mx-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
-    <hr />
-
-    <div class="sidebar-inner">
-        @foreach (var recipes in FilteredRecipes)
-        {
-            <h1>@recipes.Key.CategoryName</h1>
-
-            @foreach (var recipe in recipes.Value)
-            {
-                <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
-                    <div>
-                        <a>@recipe.Name</a>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-</nav>
+@inject IRecipesService RecipeService
+@implements IDisposable
 
 <main>
-    @if (Recipe is not null)
+    @if (RecipeService.HasRecipe)
     {
         <div class="p-3">
-            <div class="fs-3">@Recipe.Name</div>
-            <div>@Recipe.Description</div>
+            <div class="fs-3">@RecipeService.RecipeName</div>
+            <div>@RecipeService.RecipeDescription</div>
         </div>
         <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
         <div class="m-3">
             <div class="bg-light border rounded d-inline-block p-3">
-                @if (string.IsNullOrEmpty(SourceCode))
+                @if (RecipeService.HasSourceCode)
                 {
-                    <p>Loading...</p>
+                    <CodeSnippet Code="@RecipeService.SourceCode" />
                 }
                 else
                 {
-                    <CodeSnippet Code="@SourceCode" />
+                    <p>Loading...</p>
                 }
             </div>
         </div>
-
     }
     <div class="text-muted p-4" style="margin-top: 10rem;">
         @ScottPlot.Version.LongString Running on .NET @Environment.Version
@@ -107,72 +32,62 @@
 
 @code {
     [Parameter]
-    public string SelectRecipe { get; set; }
+    public string SelectRecipe { get; set; } = string.Empty;
 
-    readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = ScottPlotCookbook.Query.GetRecipesByCategory();
 
     BlazorPlot BlazorPlot { get; set; } = new();
     string SearchTerm { get; set; } = "";
-    string SourceCode { get; set; } = "";
 
-    IRecipe? Recipe;
-    JsonDocument? JsonRecipes = null;
+    protected override void OnInitialized()
+    {
+        RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
+        RecipeService.RecipeChanged += this.UpdatePlot; // subscribe
+    }
 
-    protected override async Task OnParametersSetAsync()
+    public void Dispose()
+    {
+        RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
+        RecipeService.RecipeChanged -= this.UpdatePlot; // subscribe
+    }
+
+    protected override void OnParametersSet()
     {
         if (!string.IsNullOrEmpty(SelectRecipe))
         {
-            foreach (var category in RecipesByCategory)
+            if (RecipeService.FindRecipe(SelectRecipe))
             {
-                foreach(var recipe in category.Value)
-                {
-                    if (string.Compare(recipe.Name, SelectRecipe, true) == 0 || string.Compare(string.Join(string.Empty, recipe.Name.Split()), SelectRecipe, true) == 0)
-                    {
-                        await ShowRecipe(recipe);
-                        return;
-                    }
-                }
+                ShowRecipe(RecipeService.Recipe!);
             }
         }
     }
-
-    protected async Task ShowRecipe(IRecipe recipe)
+    protected void UpdatePlot()
     {
-        SourceCode = string.Empty;
-        Recipe = recipe;
-        if (JsonRecipes is null)
+        InvokeAsync(async () =>
         {
-            string json = await Http.GetStringAsync("sample-data/recipes.json");
-            JsonRecipes = JsonDocument.Parse(json);
-        }
-        BlazorPlot.Reset();
-        Recipe.Execute(BlazorPlot.Plot);
-        BlazorPlot.Refresh();
+            // add little delay to ensure BlazorPlot is visible to ensure refresh works!
+            await Task.Delay(1);
 
-        string source = "// source code not found";
-        foreach (JsonElement recipeElement in JsonRecipes.RootElement.GetProperty("recipes").EnumerateArray())
-        {
-            string name = recipeElement.GetProperty("name").GetString() ?? string.Empty;
-            string desc = recipeElement.GetProperty("description").GetString() ?? string.Empty;
-            if (name == Recipe.Name && desc == Recipe.Description)
-            {
-                source = recipeElement.GetProperty("source").GetString() ?? string.Empty;
-                break;
-            }
-        }
-        SourceCode = source;
+            BlazorPlot.Reset();
+            RecipeService.Recipe?.Execute(BlazorPlot.Plot);
+            BlazorPlot.Refresh();
+        });
+    }
+    protected void ShowRecipe(IRecipe recipe)
+    {
+        RecipeService.Recipe = recipe;
+        UpdatePlot();
     }
 
-    Dictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
+    IReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
     {
         get
         {
             var filter = SearchTerm?.Trim();
             if (string.IsNullOrEmpty(filter))
-                return RecipesByCategory;
+                return RecipeService.RecipesByCategory;
 
             var d = new Dictionary<ICategory, IEnumerable<IRecipe>>();
-            foreach (var x in RecipesByCategory)
+            foreach (var x in RecipeService.RecipesByCategory)
             {
                 var l = x.Value.Where(v => v.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)).ToList();
                 if (l.Count > 0)
