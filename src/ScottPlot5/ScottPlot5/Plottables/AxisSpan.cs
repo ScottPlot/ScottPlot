@@ -1,12 +1,15 @@
 ﻿namespace ScottPlot.Plottables;
 
-public abstract class AxisSpan : IPlottable, IHasLine, IHasFill
+public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
 
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+
+    public string LegendText { get; set; } = string.Empty;
 
     public LineStyle LineStyle { get; } = new();
 

@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Plottables;
 
-public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasMarker
+public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasMarker, IHasLegendText
     where T : struct, IComparable
 {
     readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
@@ -19,7 +19,9 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public string? Label { get; set; }
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public Color Color
     {

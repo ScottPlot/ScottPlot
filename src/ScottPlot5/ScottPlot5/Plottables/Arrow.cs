@@ -1,15 +1,17 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class Arrow : IPlottable, IHasArrow
+namespace ScottPlot.Plottables;
+
+public class Arrow : IPlottable, IHasArrow, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => [new LegendItem() { ArrowStyle = ArrowStyle, LabelText = Label }];
+    public IEnumerable<LegendItem> LegendItems => [new LegendItem() { ArrowStyle = ArrowStyle, LabelText = LegendText }];
 
-    /// <summary>
-    /// Label to appear in the legend
-    /// </summary>
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+
+    public string LegendText { get; set; } = string.Empty;
 
     /// <summary>
     /// ImagePosition of the base of the arrow in coordinate units

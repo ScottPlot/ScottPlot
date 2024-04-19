@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class LinePlot : IPlottable, IHasLine, IHasMarker
+public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
     public Coordinates Start { get; set; }
     public Coordinates End { get; set; }
@@ -12,10 +12,12 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker
     public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
     public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
 
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle, MarkerStyle);
 
     public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }

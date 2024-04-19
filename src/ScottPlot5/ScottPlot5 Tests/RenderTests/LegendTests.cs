@@ -265,71 +265,46 @@ internal class LegendTests
         double[] ys = [1, 2, 3];
         double[] err = [1, 2, 3];
 
+
         Plot plt = new();
 
-        var arrow = plt.Add.Arrow(1, 2, 3, 4);
-        arrow.Label = "arrow";
+        plt.Add.Arrow(1, 2, 3, 4);
+        plt.Add.VerticalLine(0);
+        plt.Add.VerticalSpan(2, 3);
+        plt.Add.Bar(2, 3);
+        plt.Add.Box(new Box());
+        plt.Add.DataLogger();
+        plt.Add.DataStreamer(100);
+        plt.Add.Ellipse(1, 2, 3, 4);
+        plt.Add.ErrorBar(xs, ys, err);
+        plt.Add.FillY(xs, ys, err);
+        plt.Add.Function(SampleData.DunningKrugerCurve);
+        plt.Add.Line(1, 2, 3, 4);
+        plt.Add.Marker(1, 2);
+        plt.Add.Markers(xs, ys);
+        plt.Add.Polygon(xs, ys);
+        plt.Add.Rectangle(1, 2, 3, 4);
+        plt.Add.Scatter(xs, ys);
+        plt.Add.Signal(ys);
+        plt.Add.SignalConst(ys);
+        plt.Add.SignalXY(xs, ys);
 
-        var axLine = plt.Add.VerticalLine(0);
-        axLine.LabelText = "axis line";
+        foreach (var plottable in plt.GetPlottables())
+        {
+            if (plottable is IHasLegendText h)
+            {
+                h.LegendText = plottable.GetType().Name;
+            }
+            else
+            {
+                Assert.Fail($"${plottable} does not implement {nameof(IHasLegendText)}");
+            }
+        }
 
-        var axSpan = plt.Add.VerticalSpan(2, 3);
-        axSpan.Label = "axis span";
-
-        var bar = plt.Add.Bar(2, 3);
-        bar.Label = "bar";
-
-        var box = plt.Add.Box(new Box());
-        box.Label = "box";
-
-        var dataLogger = plt.Add.DataLogger();
-        dataLogger.Label = "data logger";
-
-        var dataStreamer = plt.Add.DataStreamer(100);
-        dataStreamer.Label = "data streamer";
-
-        var ellipse = plt.Add.Ellipse(1, 2, 3, 4);
-        ellipse.Label = "ellipse";
-
-        var errorBar = plt.Add.ErrorBar(xs, ys, err);
-        errorBar.Label = "error bar";
-
-        var filly = plt.Add.FillY(xs, ys, err);
-        filly.Label = "fill Y";
-
-        var func = plt.Add.Function(SampleData.DunningKrugerCurve);
-        func.Label = "function";
-
-        var line = plt.Add.Line(1, 2, 3, 4);
-        line.Label = "line";
-
-        var marker = plt.Add.Marker(1, 2);
-        marker.Label = "marker";
-
-        var markers = plt.Add.Markers(xs, ys);
-        markers.Label = "markers";
-
+        // special cases of plottables with child legend items
         var pie = plt.Add.Pie(xs);
         foreach (var slice in pie.Slices)
-            slice.Label = "pie slice";
-
-        var poly = plt.Add.Polygon(xs, ys);
-        poly.Label = "polygon";
-
-        var rect = plt.Add.Rectangle(1, 2, 3, 4);
-        rect.Label = "rectangle";
-
-        var scatter = plt.Add.Scatter(xs, ys);
-        scatter.Label = "scatter";
-
-        var sig = plt.Add.Signal(ys);
-        sig.Label = "signal";
-
-        var sigConst = plt.Add.SignalConst(ys);
-        sigConst.Label = "signal const";
-
-        var sigXY = plt.Add.SignalXY(xs, ys);
-        sigXY.Label = "signal XY";
+            slice.LegendText = "pie slice";
 
         plt.GetLegendImage().SaveTestImage();
     }

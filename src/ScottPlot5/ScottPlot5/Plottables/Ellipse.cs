@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Ellipse : IPlottable, IHasLine, IHasFill
+public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -16,10 +16,10 @@ public class Ellipse : IPlottable, IHasLine, IHasFill
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    /// <summary>
-    /// Label to appear in the legend
-    /// </summary>
-    public string Label { get; set; } = string.Empty;
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public Coordinates Center = Coordinates.Origin;
 

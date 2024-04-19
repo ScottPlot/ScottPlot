@@ -4,7 +4,7 @@
 /// A polygon is a collection of X/Y points that are all connected to form a closed shape.
 /// Polygons can be optionally filled with a color or a gradient.
 /// </summary>
-public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
+public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
 {
     public static Polygon Empty => new();
 
@@ -13,7 +13,9 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
     // TODO: replace with a generic data source
     public Coordinates[] Coordinates { get; private set; } = Array.Empty<Coordinates>();
 
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public bool IsVisible { get; set; } = true;
 

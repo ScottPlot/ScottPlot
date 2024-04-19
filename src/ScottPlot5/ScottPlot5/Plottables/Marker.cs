@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Marker : IPlottable, IHasMarker
+public class Marker : IPlottable, IHasMarker, IHasLegendText
 {
     public double X { get; set; }
     public double Y { get; set; }
@@ -10,7 +10,9 @@ public class Marker : IPlottable, IHasMarker
         set { X = value.X; Y = value.Y; }
     }
 
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
 
     public MarkerStyle MarkerStyle { get; } = new();

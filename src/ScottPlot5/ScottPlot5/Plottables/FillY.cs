@@ -1,12 +1,14 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
+public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
 {
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, FillStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle, LineStyle);
 
     private Polygon Poly { get; set; } = Polygon.Empty;
 

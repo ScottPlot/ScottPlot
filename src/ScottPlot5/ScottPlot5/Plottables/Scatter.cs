@@ -1,8 +1,11 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker
+public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 

@@ -4,13 +4,16 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine
+public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
     public DataLoggerSource Data { get; set; } = new();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
-    public string Label { get; set; } = string.Empty;
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public bool ManageAxisLimits { get; set; } = true;
     public IAxisLimitManager AxisManager { get; set; } = new Full();

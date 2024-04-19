@@ -3,12 +3,15 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine
+public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
-    public string Label { get; set; } = string.Empty;
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }

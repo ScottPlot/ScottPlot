@@ -1,8 +1,10 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Markers(IScatterSource data) : IPlottable, IHasMarker
+public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendText
 {
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
@@ -27,14 +29,14 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
 
     public void Render(RenderPack rp)
     {
         if (this.MarkerStyle == MarkerStyle.None)
             return;
 
-        // TODO: can this be more effecient by moving this logic into the DataSource to avoid copying?
+        // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
         if (!markerPixels.Any())

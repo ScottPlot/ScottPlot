@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker
+public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
     public ISignalXYSource Data { get; set; } = dataSource;
 
@@ -32,7 +32,10 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
         }
     }
 
-    public string Label = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle, MarkerStyle);
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();

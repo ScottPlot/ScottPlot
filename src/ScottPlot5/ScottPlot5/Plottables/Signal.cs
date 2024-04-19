@@ -1,13 +1,15 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker
+public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
     public readonly ISignalSource Data = data;
 
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public MarkerStyle MarkerStyle { get; } = new() { Size = 5, Shape = MarkerShape.FilledCircle };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }

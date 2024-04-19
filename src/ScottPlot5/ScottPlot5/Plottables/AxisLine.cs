@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine
+namespace ScottPlot.Plottables;
+
+public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -13,6 +15,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public override Label LabelStyle { get; set; } = new();
     public string Text { get => LabelText; set => LabelText = value; }
     public Alignment? ManualLabelAlignment { get; set; } = null;
+    public string LegendText { get => LabelText; set => LabelText = value; }
 
     #region obsolete
 

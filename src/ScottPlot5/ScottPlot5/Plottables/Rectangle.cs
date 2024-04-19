@@ -1,12 +1,12 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Rectangle : IPlottable, IHasLine, IHasFill
+public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => [new LegendItem()
     {
-        Label = Label,
+        Label = LegendText,
         FillStyle = FillStyle,
         OutlineStyle = LineStyle,
     }];
@@ -21,7 +21,11 @@ public class Rectangle : IPlottable, IHasLine, IHasFill
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    public string Label { get; set; } = string.Empty;
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
     public double X1 { get; set; }
     public double X2 { get; set; }
     public double Y1 { get; set; }

@@ -1,10 +1,12 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine
+public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     private IFunctionSource Source { get; set; } = source;
     private CoordinateRange MaxObservedRangeY { get; set; } = CoordinateRange.NotSet;
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);

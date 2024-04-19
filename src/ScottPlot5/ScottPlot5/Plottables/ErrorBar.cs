@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables
 {
-    public class ErrorBar : IPlottable, IHasLine
+    public class ErrorBar : IPlottable, IHasLine, IHasLegendText
     {
         // TODO: use an errorbar source instead of so many lists
 
@@ -36,8 +36,11 @@
             YErrorNegative = yErrorsNegative;
         }
 
-        public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
-        public string Label { get; set; } = string.Empty;
+        public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
+
+        [Obsolete("use LegendText")]
+        public string Label { get => LegendText; set => LegendText = value; }
+        public string LegendText { get; set; } = string.Empty;
 
         public AxisLimits GetAxisLimits()
         {
