@@ -9,11 +9,11 @@
         </button>
     </div>
 </div>
-
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" /><br/>
-    <input class="mx-2 mt-2" checked="@RecipeService.ShowOpenGL" type="checkbox" @oninput="args => ToggleBackend()"/> use openGL
+    <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" /><br />
+    <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> use openGL
     <hr />
+
     <nav class="flex-column px-2">
         @foreach (var recipes in FilteredRecipes)
         {
@@ -56,11 +56,6 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
-    }
-
-    private void ToggleBackend()
-    {
-        RecipeService.ShowOpenGL = !RecipeService.ShowOpenGL;
     }
 
     IReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes

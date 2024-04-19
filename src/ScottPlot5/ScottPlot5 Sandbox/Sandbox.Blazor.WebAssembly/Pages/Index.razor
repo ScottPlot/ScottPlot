@@ -13,12 +13,12 @@
         </div>
         @if (RecipeService.ShowOpenGL)
         {
-            <h5>OpenGL</h5>
+            <h5>OpenGL control</h5>
             <BlazorPlotGL @ref=BlazorPlotGL Style="width: min(100%, 800px); height: 600px;" />
         }
         else
         {
-            <h5>Standard</h5>
+            <h5>Standard control</h5>
             <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
         }
         <div class="m-3">
@@ -50,18 +50,14 @@
 
     protected override void OnInitialized()
     {
-        RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
-        RecipeService.RecipeChanged += this.UpdatePlot; // subscribe
-        RecipeService.BackendChanged += this.StateHasChanged; // subscribe
-        RecipeService.BackendChanged += this.UpdatePlot; // subscribe
+        RecipeService.RecipeChanged += this.RefreshWithPlot; // subscribe
+        RecipeService.BackendChanged += this.RefreshWithPlot; // subscribe
     }
 
     public void Dispose()
     {
-        RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
-        RecipeService.RecipeChanged -= this.UpdatePlot; // subscribe
-        RecipeService.BackendChanged -= this.StateHasChanged; // unsubscribe
-        RecipeService.BackendChanged -= this.UpdatePlot; // unsubscribe
+        RecipeService.RecipeChanged -= this.RefreshWithPlot; // unsubscribe
+        RecipeService.BackendChanged -= this.RefreshWithPlot; // unsubscribe
     }
 
     protected override void OnParametersSet()
@@ -74,6 +70,11 @@
             }
         }
     }
+    protected void RefreshWithPlot()
+    {
+        StateHasChanged();
+        UpdatePlot();
+    }
     protected void UpdatePlot()
     {
         InvokeAsync(async () =>
@@ -81,38 +82,24 @@
             // add little delay to ensure BlazorPlot is visible to ensure refresh works!
             await Task.Delay(1);
 
-            BlazorPlotGL.Reset();
-            RecipeService.Recipe?.Execute(BlazorPlotGL.Plot);
-            BlazorPlotGL.Refresh();
-
-            BlazorPlot.Reset();
-            RecipeService.Recipe?.Execute(BlazorPlot.Plot);
-            BlazorPlot.Refresh();
+            if (RecipeService.ShowOpenGL)
+            {
+                BlazorPlotGL.Reset();
+                RecipeService.Recipe?.Execute(BlazorPlotGL.Plot);
+                BlazorPlotGL.Refresh();
+            }
+            else
+            {
+                BlazorPlot.Reset();
+                RecipeService.Recipe?.Execute(BlazorPlot.Plot);
+                BlazorPlot.Refresh();
+            }
         });
     }
     protected void ShowRecipe(IRecipe recipe)
     {
         RecipeService.Recipe = recipe;
         UpdatePlot();
-    }
-
-    IReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
-    {
-        get
-        {
-            var filter = SearchTerm?.Trim();
-            if (string.IsNullOrEmpty(filter))
-                return RecipeService.RecipesByCategory;
-
-            var d = new Dictionary<ICategory, IEnumerable<IRecipe>>();
-            foreach (var x in RecipeService.RecipesByCategory)
-            {
-                var l = x.Value.Where(v => v.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                if (l.Count > 0)
-                    d.Add(x.Key, l);
-            }
-            return d;
-        }
     }
 }
 
