@@ -95,10 +95,10 @@ public class ScottPlotQuickstart : ICategory
         public override void Execute()
         {
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
-            sig1.Label = "Sin";
+            sig1.LegendText = "Sin";
 
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
-            sig2.Label = "Cos";
+            sig2.LegendText = "Cos";
 
             myPlot.ShowLegend();
         }
@@ -123,7 +123,7 @@ public class ScottPlotQuickstart : ICategory
                 Size = 20,
                 Color = Colors.Magenta,
                 Shape = MarkerShape.OpenDiamond,
-                Label = "My Marker",
+                LegendText = "My Marker",
             };
 
             // add the custom plottable to the plot

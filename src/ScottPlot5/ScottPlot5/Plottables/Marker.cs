@@ -32,7 +32,7 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     }
 
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
     public AxisLimits GetAxisLimits() => new(Location);
 
     public void Render(RenderPack rp)

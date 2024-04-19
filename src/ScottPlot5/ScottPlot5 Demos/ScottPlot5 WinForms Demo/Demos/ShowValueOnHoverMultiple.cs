@@ -26,7 +26,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
             double[] xs = Generate.RandomSample(30);
             double[] ys = Generate.RandomSample(30);
             ScottPlot.Plottables.Scatter scatter = formsPlot1.Plot.Add.ScatterPoints(xs, ys);
-            scatter.Label = $"Scatter {i}";
+            scatter.LegendText = $"Scatter {i}";
             scatter.MarkerStyle.Size = 10;
             MyScatters.Add(scatter);
         }
@@ -106,7 +106,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
                 MyHighlightText.LabelFontColor = scatter.MarkerStyle.Fill.Color;
 
                 formsPlot1.Refresh();
-                base.Text = $"Selected Scatter={scatter.Label}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";
+                base.Text = $"Selected Scatter={scatter.LegendText}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";
             }
 
             // hide the crosshair, marker and text when no point is selected

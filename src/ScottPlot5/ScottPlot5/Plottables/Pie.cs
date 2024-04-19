@@ -30,7 +30,7 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
     public IEnumerable<LegendItem> LegendItems => Slices
         .Select((Func<PieSlice, LegendItem>)(slice => new LegendItem
         {
-            Label = slice.Label,
+            Label = slice.LegendText,
             FillStyle = slice.Fill,
         }));
 

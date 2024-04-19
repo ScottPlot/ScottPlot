@@ -22,7 +22,7 @@ public partial class LegendOutsideBitmap : Form, IDemoWindow
             var sig = formsPlot1.Plot.Add.Signal(ys);
             sig.Color = Colors.Category20[i];
             sig.LineWidth = 2;
-            sig.Label = $"Line #{i + 1}";
+            sig.LegendText = $"Line #{i + 1}";
         }
 
         formsPlot1.Plot.Legend.OutlineStyle.Width = 0;

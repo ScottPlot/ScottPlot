@@ -22,8 +22,8 @@ public class AxisSpans : ICategory
             var hSpan = myPlot.Add.HorizontalSpan(10, 20);
             var vSpan = myPlot.Add.VerticalSpan(0.25, 0.75);
 
-            hSpan.Label = "Horizontal Span";
-            vSpan.Label = "Vertical Span";
+            hSpan.LegendText = "Horizontal Span";
+            vSpan.LegendText = "Vertical Span";
             myPlot.ShowLegend();
         }
     }
@@ -40,7 +40,7 @@ public class AxisSpans : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             var hs = myPlot.Add.HorizontalSpan(10, 20);
-            hs.Label = "Hello";
+            hs.LegendText = "Hello";
             hs.LineStyle.Width = 2;
             hs.LineStyle.Color = Colors.Magenta;
             hs.LineStyle.Pattern = LinePattern.Dashed;

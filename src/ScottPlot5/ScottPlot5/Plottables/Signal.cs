@@ -42,7 +42,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, MarkerStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {

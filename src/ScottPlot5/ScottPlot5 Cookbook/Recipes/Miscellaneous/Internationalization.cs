@@ -42,8 +42,8 @@ public class Internationalization : ICategory
             var sig1 = myPlot.Add.Signal(Generate.Sin());
             var sig2 = myPlot.Add.Signal(Generate.Cos());
 
-            sig1.Label = "测试"; // Chinese
-            sig2.Label = "테스트"; // Korean
+            sig1.LegendText = "测试"; // Chinese
+            sig2.LegendText = "테스트"; // Korean
             myPlot.ShowLegend();
 
             myPlot.Title("测试"); // Chinese

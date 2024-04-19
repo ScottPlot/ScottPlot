@@ -45,7 +45,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
 
     public IEnumerable<LegendItem> LegendItems => [new LegendItem()
     {
-        Label = Label,
+        Label = LegendText,
         FillStyle = FillStyle,
         OutlineStyle = LineStyle,
         MarkerStyle = MarkerStyle,
@@ -68,7 +68,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
 
     public override string ToString()
     {
-        string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
+        string label = string.IsNullOrWhiteSpace(LegendText) ? "" : $" ({LegendText})";
         return $"PlottablePolygon{label} with {PointCount} points";
     }
 

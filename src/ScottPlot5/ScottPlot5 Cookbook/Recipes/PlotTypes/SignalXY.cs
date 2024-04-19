@@ -74,21 +74,21 @@ public class SignalXY : ICategory
             double[] ys = Generate.RandomWalk(1000);
 
             var sigAll = myPlot.Add.SignalXY(xs, ys);
-            sigAll.Label = "Full";
+            sigAll.LegendText = "Full";
             sigAll.Data.YOffset = 80;
 
             var sigLeft = myPlot.Add.SignalXY(xs, ys);
-            sigLeft.Label = "Left";
+            sigLeft.LegendText = "Left";
             sigLeft.Data.YOffset = 60;
             sigLeft.Data.MaximumIndex = 700;
 
             var sigRight = myPlot.Add.SignalXY(xs, ys);
-            sigRight.Label = "Right";
+            sigRight.LegendText = "Right";
             sigRight.Data.YOffset = 40;
             sigRight.Data.MinimumIndex = 300;
 
             var sigMid = myPlot.Add.SignalXY(xs, ys);
-            sigMid.Label = "Mid";
+            sigMid.LegendText = "Mid";
             sigMid.Data.YOffset = 20;
             sigMid.Data.MinimumIndex = 300;
             sigMid.Data.MaximumIndex = 700;

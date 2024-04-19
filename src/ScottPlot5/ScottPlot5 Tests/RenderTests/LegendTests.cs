@@ -9,8 +9,8 @@ internal class LegendTests
         var sig1 = plt.Add.Signal(Generate.Sin());
         var sig2 = plt.Add.Signal(Generate.Cos());
 
-        sig1.Label = "Sine";
-        sig2.Label = "Cosine";
+        sig1.LegendText = "Sine";
+        sig2.LegendText = "Cosine";
 
         plt.SaveTestImage(300, 200, "legend-default");
 
@@ -29,8 +29,8 @@ internal class LegendTests
         var sig1 = plt.Add.Signal(Generate.Sin());
         var sig2 = plt.Add.Signal(Generate.Cos());
 
-        sig1.Label = "Sine";
-        sig2.Label = "Cosine";
+        sig1.LegendText = "Sine";
+        sig2.LegendText = "Cosine";
 
         plt.Legend.IsVisible = true;
         plt.Legend.Font.Size = 26;
@@ -47,8 +47,8 @@ internal class LegendTests
         var sig1 = plt.Add.Signal(Generate.Sin());
         var sig2 = plt.Add.Signal(Generate.Cos());
 
-        sig1.Label = "Sine";
-        sig2.Label = "Cosine";
+        sig1.LegendText = "Sine";
+        sig2.LegendText = "Cosine";
 
         Image img = plt.GetLegendImage();
         img.SaveTestImage();
@@ -62,8 +62,8 @@ internal class LegendTests
         var sig1 = plt.Add.Signal(Generate.Sin());
         var sig2 = plt.Add.Signal(Generate.Cos());
 
-        sig1.Label = "Sine";
-        sig2.Label = "Cosine";
+        sig1.LegendText = "Sine";
+        sig2.LegendText = "Cosine";
 
         plt.Legend.IsVisible = true;
 

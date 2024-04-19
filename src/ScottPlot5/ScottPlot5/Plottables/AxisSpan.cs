@@ -22,7 +22,7 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, FillStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle);
 
     public abstract AxisLimits GetAxisLimits();
 

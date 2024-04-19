@@ -2,7 +2,6 @@
 
 public class PieSlice : LabelStyleProperties, IHasLegendText, IHasLabel
 {
-    [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
     public string LegendText { get => LabelStyle.Text; set => LabelStyle.Text = value; }
     public double Value { get; set; }

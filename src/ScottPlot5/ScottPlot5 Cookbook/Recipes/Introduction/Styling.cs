@@ -214,7 +214,7 @@ public class Styling : ICategory
             {
                 var sig = myPlot.Add.Signal(Generate.Sin(51, phase: -.05 * i));
                 sig.LineWidth = 3;
-                sig.Label = $"Line {i + 1}";
+                sig.LegendText = $"Line {i + 1}";
             }
             myPlot.XLabel("Horizontal Axis");
             myPlot.YLabel("Vertical Axis");

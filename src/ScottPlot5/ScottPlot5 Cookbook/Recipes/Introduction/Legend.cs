@@ -16,10 +16,10 @@ public class Legend : ICategory
         public override void Execute()
         {
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
-            sig1.Label = "Sin";
+            sig1.LegendText = "Sin";
 
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
-            sig2.Label = "Cos";
+            sig2.LegendText = "Cos";
 
             myPlot.ShowLegend();
         }
@@ -70,10 +70,10 @@ public class Legend : ICategory
         public override void Execute()
         {
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
-            sig1.Label = "Sin";
+            sig1.LegendText = "Sin";
 
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
-            sig2.Label = "Cos";
+            sig2.LegendText = "Cos";
 
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.OutlineStyle.Color = Colors.Navy;
@@ -98,9 +98,9 @@ public class Legend : ICategory
             var sig2 = myPlot.Add.Signal(Generate.Sin(51, phase: .4));
             var sig3 = myPlot.Add.Signal(Generate.Sin(51, phase: .6));
 
-            sig1.Label = "Signal 1";
-            sig2.Label = "Signal 2";
-            sig3.Label = "Signal 3";
+            sig1.LegendText = "Signal 1";
+            sig2.LegendText = "Signal 2";
+            sig3.LegendText = "Signal 3";
 
             myPlot.ShowLegend(Alignment.UpperLeft, Orientation.Horizontal);
         }
@@ -117,7 +117,7 @@ public class Legend : ICategory
             for (int i = 1; i <= 10; i++)
             {
                 var sig = myPlot.Add.Signal(Generate.Sin(51, phase: .02 * i));
-                sig.Label = $"#{i}";
+                sig.LegendText = $"#{i}";
             }
 
             myPlot.Legend.IsVisible = true;
