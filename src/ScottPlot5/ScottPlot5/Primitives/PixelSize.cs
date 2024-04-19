@@ -27,6 +27,7 @@ public struct PixelSize : IEquatable<PixelSize>
     public static PixelSize Zero => new(0, 0);
 
     public static PixelSize NaN => new(float.NaN, float.NaN);
+    public static PixelSize Infinity => new(float.PositiveInfinity, float.PositiveInfinity);
 
     public PixelRect ToPixelRect()
     {
