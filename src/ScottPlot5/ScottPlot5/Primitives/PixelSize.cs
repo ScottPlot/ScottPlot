@@ -96,4 +96,9 @@ public struct PixelSize : IEquatable<PixelSize>
     {
         return new PixelSize(Width + pad.Left + pad.Right, Height + pad.Top + pad.Bottom);
     }
+
+    public PixelSize Contracted(PixelPadding pad)
+    {
+        return new PixelSize(Width - pad.Left - pad.Right, Height - pad.Top - pad.Bottom);
+    }
 }
