@@ -261,72 +261,69 @@ public readonly struct PixelRect : IEquatable<PixelRect>
             top: Top + offset.Y
         );
     }
-}
 
-public static class PixelRectExtensions
-{
     /// <summary>
-    /// Create a rectangle of given sized aligned inside a larger rectangle
+    /// Return the position of this rectangle aligned inside a larger one
     /// </summary>
-    public static PixelRect AlignedInside(this PixelSize size, PixelRect rect, Alignment alignment, PixelPadding padding)
+    public PixelRect AlignedInside(PixelRect largerRect, Alignment alignment, PixelPadding padding)
     {
-        PixelRect inner = rect.Contract(padding);
+        PixelRect inner = largerRect.Contract(padding);
 
         return alignment switch
         {
             Alignment.UpperLeft => new PixelRect(
                 left: inner.Left,
-                right: inner.Left + size.Width,
-                bottom: inner.Top + size.Height,
+                right: inner.Left + Width,
+                bottom: inner.Top + Height,
                 top: inner.Top),
 
             Alignment.UpperCenter => new PixelRect(
-                left: inner.HorizontalCenter - size.Width / 2,
-                right: inner.HorizontalCenter + size.Width / 2,
-                bottom: inner.Top + size.Height,
+                left: inner.HorizontalCenter - Width / 2,
+                right: inner.HorizontalCenter + Width / 2,
+                bottom: inner.Top + Height,
                 top: inner.Top),
 
             Alignment.UpperRight => new PixelRect(
-                left: inner.Right - size.Width,
+                left: inner.Right - Width,
                 right: inner.Right,
-                bottom: inner.Top + size.Height,
+                bottom: inner.Top + Height,
                 top: inner.Top),
 
             Alignment.MiddleLeft => new PixelRect(
                 left: inner.Left,
-                right: inner.Left + size.Width,
-                bottom: inner.VerticalCenter + size.Height / 2,
-                top: inner.VerticalCenter - size.Height / 2),
+                right: inner.Left + Width,
+                bottom: inner.VerticalCenter + Height / 2,
+                top: inner.VerticalCenter - Height / 2),
 
             Alignment.MiddleCenter => new PixelRect(
-                left: inner.HorizontalCenter - size.Width / 2,
-                right: inner.HorizontalCenter + size.Width / 2,
-                bottom: inner.VerticalCenter + size.Height / 2,
-                top: inner.VerticalCenter - size.Height / 2),
+                left: inner.HorizontalCenter - Width / 2,
+                right: inner.HorizontalCenter + Width / 2,
+                bottom: inner.VerticalCenter + Height / 2,
+                top: inner.VerticalCenter - Height / 2),
 
             Alignment.MiddleRight => new PixelRect(
-                left: inner.Right - size.Width,
+                left: inner.Right - Width,
                 right: inner.Right,
-                bottom: inner.VerticalCenter + size.Height / 2,
-                top: inner.VerticalCenter - size.Height / 2),
+                bottom: inner.VerticalCenter + Height / 2,
+                top: inner.VerticalCenter - Height / 2),
 
             Alignment.LowerLeft => new PixelRect(
                 left: inner.Left,
-                right: inner.Left + size.Width,
+                right: inner.Left + Width,
                 bottom: inner.Bottom,
-                top: inner.Bottom - size.Height),
+                top: inner.Bottom - Height),
 
             Alignment.LowerCenter => new PixelRect(
-                left: inner.HorizontalCenter - size.Width / 2,
-                right: inner.HorizontalCenter + size.Width / 2,
+                left: inner.HorizontalCenter - Width / 2,
+                right: inner.HorizontalCenter + Width / 2,
                 bottom: inner.Bottom,
-                top: inner.Bottom - size.Height),
+                top: inner.Bottom - Height),
 
             Alignment.LowerRight => new PixelRect(
-                left: inner.Right - size.Width,
+                left: inner.Right - Width,
                 right: inner.Right,
                 bottom: inner.Bottom,
-                top: inner.Bottom - size.Height),
+                top: inner.Bottom - Height),
 
             _ => throw new NotImplementedException(),
         };
