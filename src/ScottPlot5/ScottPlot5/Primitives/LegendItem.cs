@@ -32,7 +32,7 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
 
-    public PixelSize Measure()
+    public PixelSize MeasureLabel()
     {
         return LabelStyle.MeasureLine();
     }

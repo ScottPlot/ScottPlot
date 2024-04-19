@@ -2,16 +2,16 @@
 
 public class SingleColumn : ILegendLayoutEngine
 {
-    public LegendLayout GetLayout(Legend legend)
+    public LegendLayout GetLayout(Legend legend, PixelSize maxSize)
     {
         LegendItem[] items = legend.GetItems();
 
-        PixelSize[] itemSizes = items.Select(x => x.Measure()).ToArray();
+        PixelSize[] itemSizes = items.Select(x => x.MeasureLabel()).ToArray();
         float maxLabelWidth = itemSizes.Select(x => x.Width).Max();
         float heightOfAllLabels = itemSizes.Select(x => x.Height).Sum();
 
         float legendWidth = legend.SymbolWidth + legend.SymbolPadding + maxLabelWidth;
-        float legendHeight = heightOfAllLabels + legend.InterItemPadding * (items.Length - 1);
+        float legendHeight = heightOfAllLabels + legend.InterItemPadding.Bottom * (items.Length - 1);
 
         PixelSize legendSize = new PixelSize(legendWidth, legendHeight).Expanded(legend.Padding);
         PixelRect legendRect = new(legendSize);
@@ -33,7 +33,7 @@ public class SingleColumn : ILegendLayoutEngine
             float labelRight = labelLeft + maxLabelWidth;
             labelRects[i] = new(labelLeft, labelRight, bottom, top);
 
-            nextItemY += itemSizes[i].Height + legend.InterItemPadding;
+            nextItemY += itemSizes[i].Height + legend.InterItemPadding.Bottom;
         }
 
         return new LegendLayout

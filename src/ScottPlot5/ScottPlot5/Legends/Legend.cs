@@ -24,12 +24,12 @@ public class Legend(Plot plot)
     /// <summary>
     /// Distance from the edge of the data area to the edge of the legend
     /// </summary>
-    public PixelPadding Margin { get; set; } = new(10);
+    public PixelPadding Margin { get; set; } = new(7, 7);
 
     /// <summary>
     /// Distance between the legend frame and the items within it
     /// </summary>
-    public PixelPadding Padding { get; set; } = new(5);
+    public PixelPadding Padding { get; set; } = new(10, 5);
 
     /// <summary>
     /// Width of the symbol in a legend item
@@ -44,7 +44,7 @@ public class Legend(Plot plot)
     /// <summary>
     /// Space separating legend items
     /// </summary>
-    public float InterItemPadding { get; set; } = 3;
+    public PixelPadding InterItemPadding { get; set; } = new(10, 10, 3, 3);
 
     /// <summary>
     /// Items in this list will always be displayed in the legend
@@ -74,7 +74,7 @@ public class Legend(Plot plot)
 
     public static bool ShowDebugLines { get; set; } = false;
 
-    public ILegendLayoutEngine LayoutEngine { get; set; } = new LegendLayoutEngines.SingleColumn();
+    public ILegendLayoutEngine LayoutEngine { get; set; } = new LegendLayoutEngines.Wrapping();
 
     public LegendItem[] GetItems() => Plot.PlottableList
             .Where(item => item.IsVisible)
@@ -90,8 +90,9 @@ public class Legend(Plot plot)
         if (GetItems().Length == 0)
             return;
 
-        LegendLayout layout = LayoutEngine.GetLayout(this);
-        PixelRect standaloneLegendRect = layout.LegendRect.AlignedInside(rp.DataRect, Alignment, Margin);
+        PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
+        LegendLayout layout = LayoutEngine.GetLayout(this, dataRectAfterMargin.Size);
+        PixelRect standaloneLegendRect = layout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
         PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
 
         LegendLayout layout2 = new()
@@ -111,7 +112,7 @@ public class Legend(Plot plot)
     public Image GetImage()
     {
         LegendLayout lp = GetItems().Length > 0
-            ? LayoutEngine.GetLayout(this)
+            ? LayoutEngine.GetLayout(this, PixelSize.Infinity)
             : LegendLayout.NoLegend;
 
         SKImageInfo info = new(
@@ -135,7 +136,7 @@ public class Legend(Plot plot)
     public string GetSvgXml()
     {
         LegendLayout lp = GetItems().Length > 0
-            ? LayoutEngine.GetLayout(this)
+            ? LayoutEngine.GetLayout(this, PixelSize.Infinity)
             : LegendLayout.NoLegend;
 
         int width = (int)Math.Ceiling(lp.LegendRect.Width);

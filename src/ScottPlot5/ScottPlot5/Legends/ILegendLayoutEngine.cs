@@ -2,5 +2,5 @@
 
 public interface ILegendLayoutEngine
 {
-    LegendLayout GetLayout(Legend legend);
+    LegendLayout GetLayout(Legend legend, PixelSize maxSize);
 }

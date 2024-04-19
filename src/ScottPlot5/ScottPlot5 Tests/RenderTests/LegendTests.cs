@@ -207,4 +207,54 @@ internal class LegendTests
 
         plt.SaveTestImage(300, 200);
     }
+
+    [Test]
+    public void Test_Legend_WrappingHorizontal()
+    {
+        ScottPlot.Plot plt = new();
+
+        for (int i = 0; i < 13; i++)
+        {
+            Color color = Color.RandomHue();
+            LegendItem item = new()
+            {
+                LabelText = $"Item #{i + 1}",
+                LabelFontColor = color,
+                LabelFontSize = 16,
+                LineColor = color,
+                LineWidth = 3,
+            };
+            plt.Legend.ManualItems.Add(item);
+        }
+
+        plt.Legend.Orientation = Orientation.Horizontal;
+        plt.ShowLegend();
+
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Legend_WrappingVertical()
+    {
+        ScottPlot.Plot plt = new();
+
+        for (int i = 0; i < 33; i++)
+        {
+            Color color = Color.RandomHue();
+            LegendItem item = new()
+            {
+                LabelText = $"Item #{i + 1}",
+                LabelFontColor = color,
+                LabelFontSize = 16,
+                LineColor = color,
+                LineWidth = 3,
+            };
+            plt.Legend.ManualItems.Add(item);
+        }
+
+        plt.Legend.Orientation = Orientation.Vertical;
+        plt.ShowLegend();
+
+        plt.SaveTestImage();
+    }
 }

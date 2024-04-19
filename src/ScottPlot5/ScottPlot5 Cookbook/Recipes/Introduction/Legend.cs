@@ -82,7 +82,7 @@ public class Legend : ICategory
             myPlot.Legend.ShadowFill.Color = Colors.Blue.WithOpacity(.5);
             myPlot.Legend.Font.Size = 16;
             myPlot.Legend.Font.Name = Fonts.Serif;
-            myPlot.Legend.Location = Alignment.UpperCenter;
+            myPlot.Legend.Alignment = Alignment.UpperCenter;
         }
     }
 
@@ -102,8 +102,7 @@ public class Legend : ICategory
             sig2.Label = "Signal 2";
             sig3.Label = "Signal 3";
 
-            myPlot.Legend.IsVisible = true;
-            myPlot.Legend.Orientation = Orientation.Horizontal;
+            myPlot.ShowLegend(Alignment.UpperLeft, Orientation.Horizontal);
         }
     }
 
@@ -118,7 +117,7 @@ public class Legend : ICategory
             for (int i = 1; i <= 10; i++)
             {
                 var sig = myPlot.Add.Signal(Generate.Sin(51, phase: .02 * i));
-                sig.Label = $"Signal #{i}";
+                sig.Label = $"#{i}";
             }
 
             myPlot.Legend.IsVisible = true;
