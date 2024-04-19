@@ -88,7 +88,7 @@ public class Bar : ICategory
             // set the label for each bar
             foreach (var bar in barPlot.Bars)
             {
-                bar.Label = "Label " + bar.Value.ToString();                
+                bar.Label = "Label " + bar.Value.ToString();
             }
 
             // customize label style
