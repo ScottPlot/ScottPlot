@@ -15,6 +15,7 @@ namespace Sandbox.Blazor.WebAssembly.Services
         public ReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory => _recipesByCategory.AsReadOnly();
 
         public event Action? RecipeChanged;
+        public event Action? BackendChanged;
         public IRecipe? Recipe
         {
             get => _recipe;
@@ -39,6 +40,18 @@ namespace Sandbox.Blazor.WebAssembly.Services
             {
                 string json = await _httpClient.GetStringAsync("sample-data/recipes.json");
                 JsonRecipes = JsonDocument.Parse(json);
+            }
+        }
+
+        private bool _showOpenGL = false;
+        public bool ShowOpenGL 
+        {
+            get => _showOpenGL;
+            set
+            {
+                if (_showOpenGL == value) return;
+                _showOpenGL = value;
+                BackendChanged?.Invoke();
             }
         }
         private void SetRecipe(IRecipe? recipe)
