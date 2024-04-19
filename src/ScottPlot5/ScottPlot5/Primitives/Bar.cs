@@ -122,8 +122,7 @@ public class Bar
                 labelStyle.Render(rp.Canvas, labelPixel);
             }
             else
-            {
-                //float xPx = rect.RightCenter.X + (LabelOffset + labelStyle.Measure().Width);
+            {                
                 float xPx = rect.RightCenter.X + (LabelOffset + labelStyle.Measure().Width/2);
                 float yPx = rect.RightCenter.Y + (labelStyle.Measure().Height/2);
                 Pixel labelPixel = new(xPx, yPx);
