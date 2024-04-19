@@ -272,6 +272,14 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     /// <summary>
     /// Return the position of this rectangle aligned inside a larger one
     /// </summary>
+    public PixelRect AlignedInside(PixelRect largerRect, Alignment alignment)
+    {
+        return AlignedInside(largerRect, alignment, PixelPadding.Zero);
+    }
+
+    /// <summary>
+    /// Return the position of this rectangle aligned inside a larger one
+    /// </summary>
     public PixelRect AlignedInside(PixelRect largerRect, Alignment alignment, PixelPadding padding)
     {
         PixelRect inner = largerRect.Contract(padding);
