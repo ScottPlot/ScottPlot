@@ -68,6 +68,13 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     }
 
     /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
+    public PixelRect(PixelSize size) : this(0, size.Width, size.Height, 0)
+    {
+    }
+
+    /// <summary>
     /// Create a rectangle from the given edges.
     /// This constructor permits inverted rectangles with negative area.
     /// </summary>
