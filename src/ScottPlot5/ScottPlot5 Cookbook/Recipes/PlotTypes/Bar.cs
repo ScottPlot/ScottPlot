@@ -82,13 +82,13 @@ public class Bar : ICategory
         [Test]
         public override void Execute()
         {
-            double[] values = { -5, 10, 7, 13 };
+            double[] values = { -20, 10, 7, 13 };
             var barPlot = myPlot.Add.Bars(values);
 
             // set the label for each bar
             foreach (var bar in barPlot.Bars)
             {
-                bar.Label = bar.Value.ToString();
+                bar.Label = bar.Value.ToString();                
             }
 
             // customize label style
