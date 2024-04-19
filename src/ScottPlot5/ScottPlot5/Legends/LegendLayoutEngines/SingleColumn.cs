@@ -1,8 +1,8 @@
-﻿namespace ScottPlot.Legends;
+﻿namespace ScottPlot.Legends.LegendLayoutEngines;
 
-public static class LegendLayoutFactory
+public class SingleColumn : ILegendLayoutEngine
 {
-    public static LegendLayout LegendOnPlot(Legend legend, PixelRect dataRect)
+    public LegendLayout GetLayout(Legend legend)
     {
         LegendItem[] items = legend.GetItems();
 
@@ -11,10 +11,10 @@ public static class LegendLayoutFactory
         float heightOfAllLabels = itemSizes.Select(x => x.Height).Sum();
 
         float legendWidth = legend.SymbolWidth + legend.SymbolPadding + maxLabelWidth;
-        float legendHeight = heightOfAllLabels + legend.VerticalSpacing * (items.Length - 1);
+        float legendHeight = heightOfAllLabels + legend.InterItemPadding * (items.Length - 1);
 
         PixelSize legendSize = new PixelSize(legendWidth, legendHeight).Expanded(legend.Padding);
-        PixelRect legendRect = legendSize.AlignedInside(dataRect, legend.Location, legend.Margin);
+        PixelRect legendRect = new(legendSize);
 
         PixelRect[] labelRects = new PixelRect[items.Length];
         PixelRect[] symbolRects = new PixelRect[items.Length];
@@ -33,7 +33,7 @@ public static class LegendLayoutFactory
             float labelRight = labelLeft + maxLabelWidth;
             labelRects[i] = new(labelLeft, labelRight, bottom, top);
 
-            nextItemY += itemSizes[i].Height + legend.VerticalSpacing;
+            nextItemY += itemSizes[i].Height + legend.InterItemPadding;
         }
 
         return new LegendLayout
@@ -42,18 +42,6 @@ public static class LegendLayoutFactory
             LegendRect = legendRect,
             LabelRects = labelRects,
             SymbolRects = symbolRects,
-        };
-    }
-
-    // TODO: support this later
-    public static LegendLayout StandaloneLegend(Legend legend, int maxWidth, int maxHeight)
-    {
-        return new LegendLayout
-        {
-            LegendItems = [],
-            LegendRect = PixelRect.NaN,
-            LabelRects = [],
-            SymbolRects = [],
         };
     }
 }

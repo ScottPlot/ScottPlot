@@ -113,78 +113,86 @@ internal class LegendTests
         plt.SaveTestImage(300, 200);
     }
 
-
-    [Test]
-    public void Test_Legend_Symbols()
-    {
-        ScottPlot.Plot plt = new();
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+    private LegendItem[] GetSampleLegendItems(int fontSize = 16) =>
+    [
+        new LegendItem()
         {
             LabelText = $"Default",
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+            LabelFontSize = fontSize,
+        },
+        new LegendItem()
         {
             LabelText = $"Line",
+            LabelFontSize = fontSize,
             LineWidth = 2,
             LineColor = Colors.Blue,
             LinePattern = LinePattern.Dotted,
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+        },
+        new LegendItem()
         {
             LabelText = $"Fill",
+            LabelFontSize = fontSize,
             FillColor = Colors.Green.WithAlpha(.5),
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+        },
+        new LegendItem()
         {
             LabelText = $"Outline",
+            LabelFontSize = fontSize,
             OutlineColor = Colors.Blue,
             OutlineWidth = 2,
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+        },
+        new LegendItem()
         {
             LabelText = $"Fill+Outline",
+            LabelFontSize = fontSize,
             FillColor = Colors.Green.WithAlpha(.5),
             OutlineColor = Colors.Blue,
             OutlineWidth = 2,
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+        },
+        new LegendItem()
         {
             LabelText = $"Marker",
+            LabelFontSize = fontSize,
             MarkerShape = MarkerShape.FilledDiamond,
             MarkerFillColor = Colors.Green.WithAlpha(.5),
             MarkerLineColor = Colors.Blue,
             MarkerLineWidth = 2,
             MarkerSize = 15,
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+        },
+        new LegendItem()
         {
             LabelText = $"Marker+Line",
+            LabelFontSize = fontSize,
             MarkerShape = MarkerShape.FilledCircle,
             MarkerFillColor = Colors.Green.WithAlpha(.5),
             MarkerSize = 10,
             LineWidth = 2,
             LineColor = Colors.Blue,
-        });
-
-        plt.Legend.ManualItems.Add(new LegendItem()
+        },
+        new LegendItem()
         {
             LabelText = $"Arrow",
+            LabelFontSize = fontSize,
             ArrowLineWidth = 2,
             ArrowColor = Colors.Blue,
-        });
+        },
+    ];
 
-        plt.Legend.ManualItems.ForEach(x => x.LabelFontSize = 18);
-
+    [Test]
+    public void Test_Legend_Symbols()
+    {
+        ScottPlot.Plot plt = new();
+        GetSampleLegendItems().ToList().ForEach(plt.Legend.ManualItems.Add);
         plt.ShowLegend();
-
         plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_LegendImage_Symbols()
+    {
+        ScottPlot.Plot plt = new();
+        GetSampleLegendItems().ToList().ForEach(plt.Legend.ManualItems.Add);
+        plt.GetLegendImage().SaveTestImage();
     }
 
     [Test]

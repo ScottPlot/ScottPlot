@@ -8,12 +8,23 @@ public class Legend(Plot plot)
     /// <summary>
     /// Position of the legend relative to the data area
     /// </summary>
-    public Alignment Location { get; set; } = Alignment.LowerRight; // TODO: name Alignment
+    public Alignment Alignment { get; set; } = Alignment.LowerRight;
+
+    /// <summary>
+    /// Position of the legend relative to the data area
+    /// </summary>
+    [Obsolete("use Alignment")]
+    public Alignment Location { get => Alignment; set => Alignment = value; }
+
+    /// <summary>
+    /// Stack items in the legend according to this preferred orientation
+    /// </summary>
+    public Orientation Orientation { get; set; } = Orientation.Vertical;
 
     /// <summary>
     /// Distance from the edge of the data area to the edge of the legend
     /// </summary>
-    public PixelPadding Margin { get; set; } = new(8);
+    public PixelPadding Margin { get; set; } = new(10);
 
     /// <summary>
     /// Distance between the legend frame and the items within it
@@ -21,24 +32,23 @@ public class Legend(Plot plot)
     public PixelPadding Padding { get; set; } = new(5);
 
     /// <summary>
-    /// Padding between a symbol and label within a legend item
-    /// </summary>
-    public float SymbolPadding { get; set; } = 5;
-
-    /// <summary>
     /// Width of the symbol in a legend item
     /// </summary>
     public float SymbolWidth { get; set; } = 20;
 
     /// <summary>
-    /// Vertical spacing separating legend items
+    /// Padding between a symbol and label within a legend item
     /// </summary>
-    public float VerticalSpacing { get; set; } = 3;
+    public float SymbolPadding { get; set; } = 5;
 
-    public Orientation Orientation { get; set; } = Orientation.Vertical;
+    /// <summary>
+    /// Space separating legend items
+    /// </summary>
+    public float InterItemPadding { get; set; } = 3;
 
-    public float SymbolLabelSeparation { get; } = 5;
-
+    /// <summary>
+    /// Items in this list will always be displayed in the legend
+    /// </summary>
     public List<LegendItem> ManualItems { get; set; } = [];
 
     /// <summary>
@@ -62,8 +72,9 @@ public class Legend(Plot plot)
     public PixelOffset ShadowOffset { get; set; } = new(3, 3);
     public Alignment ShadowAlignment { get; set; } = Alignment.LowerRight;
 
-    public void Show() => IsVisible = true;
-    public void Hide() => IsVisible = false;
+    public static bool ShowDebugLines { get; set; } = false;
+
+    public ILegendLayoutEngine LayoutEngine { get; set; } = new LegendLayoutEngines.SingleColumn();
 
     public LegendItem[] GetItems() => Plot.PlottableList
             .Where(item => item.IsVisible)
@@ -71,7 +82,101 @@ public class Legend(Plot plot)
             .Concat(ManualItems)
             .ToArray();
 
-    public void Render(RenderPack rp) => Rendering.Render(this, rp);
-    public string GetSvgXml() => Rendering.GetSvgXml(this);
-    public Image GetImage(int maxWidth = 0, int maxHeight = 0) => Rendering.GetImage(this, maxWidth, maxHeight);
+    /// <summary>
+    /// This is called by the render manager
+    /// </summary>
+    public void Render(RenderPack rp)
+    {
+        if (GetItems().Length == 0)
+            return;
+
+        LegendLayout layout = LayoutEngine.GetLayout(this);
+        PixelRect standaloneLegendRect = layout.LegendRect.AlignedInside(rp.DataRect, Alignment, Margin);
+        PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
+
+        LegendLayout layout2 = new()
+        {
+            LegendItems = layout.LegendItems,
+            LegendRect = layout.LegendRect.WithOffset(legendOffset),
+            LabelRects = layout.LabelRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+            SymbolRects = layout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+        };
+
+        Render(rp.Canvas, layout2);
+    }
+
+    /// <summary>
+    /// Return an Image containing just the legend
+    /// </summary>
+    public Image GetImage()
+    {
+        LegendLayout lp = GetItems().Length > 0
+            ? LayoutEngine.GetLayout(this)
+            : LegendLayout.NoLegend;
+
+        SKImageInfo info = new(
+            width: Math.Max(1, (int)Math.Ceiling(lp.LegendRect.Width)),
+            height: Math.Max(1, (int)Math.Ceiling(lp.LegendRect.Height)),
+            colorType: SKColorType.Rgba8888,
+            alphaType: SKAlphaType.Premul);
+
+        using SKSurface surface = SKSurface.Create(info)
+            ?? throw new NullReferenceException($"invalid SKImageInfo");
+
+        Render(surface.Canvas, lp);
+
+        return new Image(surface);
+    }
+
+    /// <summary>
+    /// Return contents of a SVG image containing just the legend
+    /// </summary>
+    /// <returns></returns>
+    public string GetSvgXml()
+    {
+        LegendLayout lp = GetItems().Length > 0
+            ? LayoutEngine.GetLayout(this)
+            : LegendLayout.NoLegend;
+
+        int width = (int)Math.Ceiling(lp.LegendRect.Width);
+        int height = (int)Math.Ceiling(lp.LegendRect.Height);
+        using SvgImage svg = new(width, height);
+        Render(svg.Canvas, lp);
+        return svg.GetXml();
+    }
+
+    private void Render(SKCanvas canvas, LegendLayout lp)
+    {
+        using SKPaint paint = new();
+
+        // render the legend panel
+        PixelRect shadowRect = lp.LegendRect.WithOffset(ShadowOffset);
+        Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFill);
+        Drawing.FillRectangle(canvas, lp.LegendRect, paint, BackgroundFill);
+        Drawing.DrawRectangle(canvas, lp.LegendRect, paint, OutlineStyle);
+
+        // render items inside the legend
+        for (int i = 0; i < lp.LegendItems.Length; i++)
+        {
+            LegendItem item = lp.LegendItems[i];
+            PixelRect labelRect = lp.LabelRects[i];
+            PixelRect symbolRect = lp.SymbolRects[i];
+            PixelRect symbolFillRect = symbolRect.Contract(0, symbolRect.Height * .2f);
+            PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
+            PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
+
+            if (ShowDebugLines)
+            {
+                Drawing.DrawRectangle(canvas, symbolRect, Colors.Black.WithAlpha(.2), 1);
+                Drawing.DrawRectangle(canvas, labelRect, Colors.Black.WithAlpha(.2), 1);
+            }
+
+            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            item.LineStyle.Render(canvas, symbolLine, paint);
+            item.FillStyle.Render(canvas, symbolFillRect, paint);
+            item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+            item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
+            item.ArrowStyle.Render(canvas, symbolLine, paint);
+        }
+    }
 }
