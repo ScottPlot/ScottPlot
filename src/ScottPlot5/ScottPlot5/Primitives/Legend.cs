@@ -4,7 +4,7 @@ public class Legend(Plot plot) : IPlottable
 {
     public Plot Plot { get; } = plot;
 
-    public bool IsVisible { get; set; } = false;
+    public bool IsVisible { get; set; } = true;
 
     /// <summary>
     /// Position of the legend relative to the data area
@@ -82,6 +82,7 @@ public class Legend(Plot plot) : IPlottable
     public LegendItem[] GetItems() => Plot.PlottableList
             .Where(item => item.IsVisible)
             .SelectMany(x => x.LegendItems)
+            .Where(x => !string.IsNullOrEmpty(x.LabelText))
             .Concat(ManualItems)
             .ToArray();
 
