@@ -116,12 +116,42 @@ public class Legend : ICategory
         {
             for (int i = 1; i <= 10; i++)
             {
-                var sig = myPlot.Add.Signal(Generate.Sin(51, phase: .02 * i));
+                double[] data = Generate.Sin(51, phase: .02 * i);
+                var sig = myPlot.Add.Signal(data);
                 sig.LegendText = $"#{i}";
             }
 
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.Orientation = Orientation.Horizontal;
+        }
+    }
+
+
+    public class LegendMultiple : RecipeBase
+    {
+        public override string Name => "Multiple Legends";
+        public override string Description => "Multiple legends may be added to a plot";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                double[] data = Generate.Sin(51, phase: .02 * i);
+                var sig = myPlot.Add.Signal(data);
+                sig.LegendText = $"Signal #{i}";
+                sig.LineWidth = 2;
+            }
+
+            // default legend
+            var leg1 = myPlot.ShowLegend();
+            leg1.Alignment = Alignment.LowerRight;
+            leg1.Orientation = Orientation.Vertical;
+
+            // additional legend
+            var leg2 = myPlot.Add.Legend();
+            leg2.Alignment = Alignment.UpperCenter;
+            leg2.Orientation = Orientation.Horizontal;
         }
     }
 }

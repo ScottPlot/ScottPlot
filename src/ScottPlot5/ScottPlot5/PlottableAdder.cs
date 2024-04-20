@@ -358,6 +358,13 @@ public class PlottableAdder(Plot plot)
         return span;
     }
 
+    public Legend Legend()
+    {
+        Legend legend = new(Plot) { IsVisible = true };
+        Plot.PlottableList.Add(legend);
+        return legend;
+    }
+
     public LinePlot Line(Coordinates start, Coordinates end)
     {
         LinePlot lp = new()
@@ -372,13 +379,6 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(lp);
 
         return lp;
-    }
-
-    public Legend Legend()
-    {
-        Legend legend = new(Plot);
-        Plot.PlottableList.Add(legend);
-        return Legend();
     }
 
     public LinePlot Line(CoordinateLine line)

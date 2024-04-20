@@ -457,48 +457,53 @@ public class Plot : IDisposable
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void ShowLegend()
+    public Legend ShowLegend()
     {
         Legend.IsVisible = true;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// and setting <see cref="Legend.Location"/> to the provided one.
     /// </summary>
-    public void ShowLegend(Alignment alignment)
+    public Legend ShowLegend(Alignment alignment)
     {
         Legend.IsVisible = true;
         Legend.Alignment = alignment;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for setting the Legend's IsVisible, Alignment, and Orientation
     /// properties all at once.
     /// </summary>
-    public void ShowLegend(Alignment alignment, Orientation orientation)
+    public Legend ShowLegend(Alignment alignment, Orientation orientation)
     {
         Legend.IsVisible = true;
         Legend.Alignment = alignment;
         Legend.Orientation = orientation;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for displaying specific items in the legend
     /// </summary>
-    public void ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
+    public Legend ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
     {
         ShowLegend(location);
         Legend.ManualItems.Clear();
         Legend.ManualItems.AddRange(items);
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void HideLegend()
+    public Legend HideLegend()
     {
         Legend.IsVisible = false;
+        return Legend;
     }
 
     /// <summary>
