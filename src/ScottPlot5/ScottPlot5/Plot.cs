@@ -1,7 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Control;
 using ScottPlot.Grids;
-using ScottPlot.Legends;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
 

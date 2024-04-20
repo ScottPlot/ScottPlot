@@ -1,8 +1,9 @@
-﻿namespace ScottPlot.Legends;
+﻿namespace ScottPlot;
 
-public class Legend(Plot plot)
+public class Legend(Plot plot) : IPlottable
 {
     public Plot Plot { get; } = plot;
+
     public bool IsVisible { get; set; } = false;
 
     /// <summary>
@@ -72,39 +73,17 @@ public class Legend(Plot plot)
     public PixelOffset ShadowOffset { get; set; } = new(3, 3);
     public Alignment ShadowAlignment { get; set; } = Alignment.LowerRight;
 
-    public static bool ShowDebugLines { get; set; } = false;
+    public ILegendLayout LayoutEngine { get; set; } = new LegendLayouts.Wrapping();
 
-    public ILegendLayoutEngine LayoutEngine { get; set; } = new LegendLayoutEngines.Wrapping();
+    public IAxes Axes { get; set; } = new Axes();
+    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
     public LegendItem[] GetItems() => Plot.PlottableList
             .Where(item => item.IsVisible)
             .SelectMany(x => x.LegendItems)
             .Concat(ManualItems)
             .ToArray();
-
-    /// <summary>
-    /// This is called by the render manager
-    /// </summary>
-    public void Render(RenderPack rp)
-    {
-        if (GetItems().Length == 0)
-            return;
-
-        PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
-        LegendLayout layout = LayoutEngine.GetLayout(this, dataRectAfterMargin.Size);
-        PixelRect standaloneLegendRect = layout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
-        PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
-
-        LegendLayout layout2 = new()
-        {
-            LegendItems = layout.LegendItems,
-            LegendRect = layout.LegendRect.WithOffset(legendOffset),
-            LabelRects = layout.LabelRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
-            SymbolRects = layout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
-        };
-
-        Render(rp.Canvas, layout2);
-    }
 
     /// <summary>
     /// Return an Image containing just the legend
@@ -124,7 +103,7 @@ public class Legend(Plot plot)
         using SKSurface surface = SKSurface.Create(info)
             ?? throw new NullReferenceException($"invalid SKImageInfo");
 
-        Render(surface.Canvas, lp);
+        RenderLayout(surface.Canvas, lp);
 
         return new Image(surface);
     }
@@ -142,35 +121,53 @@ public class Legend(Plot plot)
         int width = (int)Math.Ceiling(lp.LegendRect.Width);
         int height = (int)Math.Ceiling(lp.LegendRect.Height);
         using SvgImage svg = new(width, height);
-        Render(svg.Canvas, lp);
+        RenderLayout(svg.Canvas, lp);
         return svg.GetXml();
     }
 
-    private void Render(SKCanvas canvas, LegendLayout lp)
+    /// <summary>
+    /// This is called by the render manager
+    /// </summary>
+    public void Render(RenderPack rp)
+    {
+        if (GetItems().Length == 0)
+            return;
+
+        PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
+        LegendLayout tightLayout = LayoutEngine.GetLayout(this, dataRectAfterMargin.Size);
+        PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
+        PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
+
+        LegendLayout layout = new()
+        {
+            LegendItems = tightLayout.LegendItems,
+            LegendRect = tightLayout.LegendRect.WithOffset(legendOffset),
+            LabelRects = tightLayout.LabelRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+            SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+        };
+
+        RenderLayout(rp.Canvas, layout);
+    }
+
+    private void RenderLayout(SKCanvas canvas, LegendLayout layout)
     {
         using SKPaint paint = new();
 
         // render the legend panel
-        PixelRect shadowRect = lp.LegendRect.WithOffset(ShadowOffset);
+        PixelRect shadowRect = layout.LegendRect.WithOffset(ShadowOffset);
         Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFill);
-        Drawing.FillRectangle(canvas, lp.LegendRect, paint, BackgroundFill);
-        Drawing.DrawRectangle(canvas, lp.LegendRect, paint, OutlineStyle);
+        Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFill);
+        Drawing.DrawRectangle(canvas, layout.LegendRect, paint, OutlineStyle);
 
         // render items inside the legend
-        for (int i = 0; i < lp.LegendItems.Length; i++)
+        for (int i = 0; i < layout.LegendItems.Length; i++)
         {
-            LegendItem item = lp.LegendItems[i];
-            PixelRect labelRect = lp.LabelRects[i];
-            PixelRect symbolRect = lp.SymbolRects[i];
+            LegendItem item = layout.LegendItems[i];
+            PixelRect labelRect = layout.LabelRects[i];
+            PixelRect symbolRect = layout.SymbolRects[i];
             PixelRect symbolFillRect = symbolRect.Contract(0, symbolRect.Height * .2f);
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
-
-            if (ShowDebugLines)
-            {
-                Drawing.DrawRectangle(canvas, symbolRect, Colors.Black.WithAlpha(.2), 1);
-                Drawing.DrawRectangle(canvas, labelRect, Colors.Black.WithAlpha(.2), 1);
-            }
 
             item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
             item.LineStyle.Render(canvas, symbolLine, paint);

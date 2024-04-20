@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Legends;
+﻿namespace ScottPlot;
 
 public readonly struct LegendLayout
 {

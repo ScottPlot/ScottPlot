@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Legends.LegendLayoutEngines;
+﻿namespace ScottPlot.LegendLayouts;
 
-public class Wrapping : ILegendLayoutEngine
+public class Wrapping : ILegendLayout
 {
     public LegendLayout GetLayout(Legend legend, PixelSize maxSize)
     {

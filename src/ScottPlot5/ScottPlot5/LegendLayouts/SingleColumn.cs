@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Legends.LegendLayoutEngines;
+﻿namespace ScottPlot.LegendLayouts;
 
-public class SingleColumn : ILegendLayoutEngine
+public class SingleColumn : ILegendLayout
 {
     public LegendLayout GetLayout(Legend legend, PixelSize maxSize)
     {

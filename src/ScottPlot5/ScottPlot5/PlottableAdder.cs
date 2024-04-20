@@ -3,6 +3,7 @@ using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
 using System.Numerics;
+using ScottPlot.Rendering.RenderActions;
 
 namespace ScottPlot;
 
@@ -371,6 +372,13 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(lp);
 
         return lp;
+    }
+
+    public Legend Legend()
+    {
+        Legend legend = new(Plot);
+        Plot.PlottableList.Add(legend);
+        return Legend();
     }
 
     public LinePlot Line(CoordinateLine line)
