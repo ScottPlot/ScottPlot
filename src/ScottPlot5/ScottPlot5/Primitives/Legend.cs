@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public class Legend(Plot plot) : IPlottable
+public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasShadow
 {
     public Plot Plot { get; } = plot;
 
@@ -59,15 +59,27 @@ public class Legend(Plot plot) : IPlottable
     public bool SetBestFontOnEachRender { get; set; } = false;
 
     public FontStyle Font { get; set; } = new();
+    public ILegendLayout LayoutEngine { get; set; } = new LegendLayouts.Wrapping();
 
-    // TODO: implement IHasFill and IHasBackground
     public LineStyle OutlineStyle { get; set; } = new();
-    public FillStyle BackgroundFill { get; set; } = new() { Color = Colors.White };
-    public FillStyle ShadowFill { get; set; } = new() { Color = Colors.Black.WithOpacity(.2) };
+    public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
+    public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
+    public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
+
+
+    [Obsolete("Assign BackgroundColor or interact with BackgroundFillStyle")]
+    public FillStyle BackgroundFill { get => BackgroundFillStyle; set { } }
+    public FillStyle BackgroundFillStyle => new() { Color = Colors.White };
+    public Color BackgroundColor { get => BackgroundFillStyle.Color; set => BackgroundFillStyle.Color = value; }
+    public Color BackgroundHatchColor { get => BackgroundFillStyle.HatchColor; set => BackgroundFillStyle.HatchColor = value; }
+    public IHatch? BackgroundHatch { get => BackgroundFillStyle.Hatch; set => BackgroundFillStyle.Hatch = value; }
+
+    [Obsolete("Assign ShadowColor or interact with ShadowFillStyle")]
+    public FillStyle ShadowFill { get => ShadowFillStyle; set { } }
+    public FillStyle ShadowFillStyle { get; } = new() { Color = Colors.Black.WithOpacity(.2) };
+    public Color ShadowColor { get => ShadowFillStyle.Color; set => ShadowFillStyle.Color = value; }
     public PixelOffset ShadowOffset { get; set; } = new(3, 3);
     public Alignment ShadowAlignment { get; set; } = Alignment.LowerRight;
-
-    public ILegendLayout LayoutEngine { get; set; } = new LegendLayouts.Wrapping();
 
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
