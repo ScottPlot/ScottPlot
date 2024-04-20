@@ -57,12 +57,6 @@ public class Legend(Plot plot) : IPlottable
     /// but may slow down the render loop.
     /// </summary>
     public bool SetBestFontOnEachRender { get; set; } = false;
-    // TODO: improve per-item font style customization.
-    // This is hard now because plottables don't store legend item styling details.
-    // Enabling proper support means adding a LegendItemStyle property to all plottables,
-    // Then SetBestFonts() changes the font name based on the label contents.
-    // Presently GetLegendItems() generates a new LegendItem every time it's called
-    // in the render loop, so it cannot be used for long term storage of font information.
 
     public FontStyle Font { get; set; } = new();
 
@@ -79,20 +73,35 @@ public class Legend(Plot plot) : IPlottable
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public LegendItem[] GetItems() => Plot.PlottableList
+    public LegendItem[] GetItems()
+    {
+        LegendItem[] items = Plot.PlottableList
             .Where(item => item.IsVisible)
             .SelectMany(x => x.LegendItems)
             .Where(x => !string.IsNullOrEmpty(x.LabelText))
             .Concat(ManualItems)
             .ToArray();
 
+        if (SetBestFontOnEachRender)
+        {
+            foreach (LegendItem item in items)
+            {
+                item.LabelStyle.SetBestFont();
+            }
+        }
+
+        return items;
+    }
+
     /// <summary>
     /// Return an Image containing just the legend
     /// </summary>
     public Image GetImage()
     {
-        LegendLayout lp = GetItems().Length > 0
-            ? LayoutEngine.GetLayout(this, PixelSize.Infinity)
+        LegendItem[] items = GetItems();
+
+        LegendLayout lp = items.Length > 0
+            ? LayoutEngine.GetLayout(this, items, PixelSize.Infinity)
             : LegendLayout.NoLegend;
 
         SKImageInfo info = new(
@@ -115,8 +124,10 @@ public class Legend(Plot plot) : IPlottable
     /// <returns></returns>
     public string GetSvgXml()
     {
-        LegendLayout lp = GetItems().Length > 0
-            ? LayoutEngine.GetLayout(this, PixelSize.Infinity)
+        LegendItem[] items = GetItems();
+
+        LegendLayout lp = items.Length > 0
+            ? LayoutEngine.GetLayout(this, items, PixelSize.Infinity)
             : LegendLayout.NoLegend;
 
         int width = (int)Math.Ceiling(lp.LegendRect.Width);
@@ -131,11 +142,12 @@ public class Legend(Plot plot) : IPlottable
     /// </summary>
     public void Render(RenderPack rp)
     {
-        if (GetItems().Length == 0)
+        LegendItem[] items = GetItems();
+        if (items.Length == 0)
             return;
 
         PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
-        LegendLayout tightLayout = LayoutEngine.GetLayout(this, dataRectAfterMargin.Size);
+        LegendLayout tightLayout = LayoutEngine.GetLayout(this, items, dataRectAfterMargin.Size);
         PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
         PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
 

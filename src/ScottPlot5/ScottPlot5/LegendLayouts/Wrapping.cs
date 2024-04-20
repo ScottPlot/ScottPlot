@@ -2,9 +2,8 @@
 
 public class Wrapping : ILegendLayout
 {
-    public LegendLayout GetLayout(Legend legend, PixelSize maxSize)
+    public LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize)
     {
-        LegendItem[] items = legend.GetItems();
         PixelSize maxSizeAfterPadding = maxSize.Contracted(legend.Padding);
 
         PixelSize[] labelSizes = items.Select(x => x.MeasureLabel()).ToArray();

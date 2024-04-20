@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests;
+﻿using ScottPlot.Rendering.RenderActions;
+
+namespace ScottPlotTests.RenderTests;
 
 internal class LegendTests
 {
@@ -200,12 +202,15 @@ internal class LegendTests
     {
         ScottPlot.Plot plt = new();
 
-        plt.Legend.ManualItems.Add(new LegendItem() { Label = "one\nalpha" });
-        plt.Legend.ManualItems.Add(new LegendItem() { Label = "two\nbeta" });
-        plt.Legend.ManualItems.Add(new LegendItem() { Label = "three" }); ;
-        plt.ShowLegend();
+        for (int i = 0; i < 5; i++)
+        {
+            var sig = plt.Add.Signal(Generate.Sin(phase: i / 20.0));
+            sig.LineWidth = 2;
+            sig.LegendText = i % 2 == 0 ? $"Single Line" : "Multi\nLine";
+        }
 
-        plt.SaveTestImage(300, 200);
+        plt.ShowLegend();
+        plt.SaveTestImage();
     }
 
     [Test]

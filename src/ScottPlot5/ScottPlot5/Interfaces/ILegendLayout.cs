@@ -2,5 +2,5 @@
 
 public interface ILegendLayout
 {
-    LegendLayout GetLayout(Legend legend, PixelSize maxSize);
+    LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize);
 }

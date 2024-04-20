@@ -164,18 +164,21 @@ public class Label
         Render(canvas, new Pixel(x, y), paint);
     }
 
-    public PixelSize Measure()
-    {
-        using SKPaint paint = new();
-        return Measure(paint);
-    }
+    // TODO: figure which measure methods to obsolete
 
-    public PixelSize MeasureLine()
+    public PixelSize MeasureMultiline() // NOTE: this is probably the best
     {
         using SKPaint paint = new();
         float width = Measure(paint).Width;
         float height = paint.FontSpacing;
-        return new PixelSize(width, height);
+        int lines = Text.Split('\n').Length;
+        return new PixelSize(width, height * lines);
+    }
+
+    public PixelSize Measure()
+    {
+        using SKPaint paint = new();
+        return Measure(paint);
     }
 
     public PixelSize Measure(string text)
