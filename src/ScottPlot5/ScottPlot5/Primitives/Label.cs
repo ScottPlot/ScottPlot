@@ -166,13 +166,17 @@ public class Label
 
     // TODO: figure which measure methods to obsolete
 
-    public PixelSize MeasureMultiline() // NOTE: this is probably the best
+    // TODO: pass paints in
+
+    public PixelSize MeasureMultiline()
+    {
+        return MeasureMultiline(Text);
+    }
+
+    public PixelSize MeasureMultiline(string text)
     {
         using SKPaint paint = new();
-        float width = Measure(paint).Width;
-        float height = paint.FontSpacing;
-        int lines = Text.Split('\n').Length;
-        return new PixelSize(width, height * lines);
+        return MeasureMultiLines(paint, text);
     }
 
     public PixelSize Measure()

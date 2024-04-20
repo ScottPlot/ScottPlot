@@ -22,11 +22,9 @@ public class Plot : IDisposable
     internal float ScaleFactorF = 1.0f;
 
     public AxisManager Axes { get; }
-
     public PlotStyler Style { get; }
     public FontStyler Font { get; }
-
-    public Legend Legend { get; set; }
+    public Legend Legend { get; }
 
     public DefaultGrid Grid => Axes.DefaultGrid;
 

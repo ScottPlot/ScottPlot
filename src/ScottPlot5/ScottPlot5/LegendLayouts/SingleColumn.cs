@@ -4,7 +4,7 @@ public class SingleColumn : ILegendLayout
 {
     public LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize)
     {
-        PixelSize[] itemSizes = items.Select(x => x.MeasureLabel()).ToArray();
+        PixelSize[] itemSizes = items.Select(x => legend.FontStyle.MeasureMultiline(x.LabelText)).ToArray();
         float maxLabelWidth = itemSizes.Select(x => x.Width).Max();
         float heightOfAllLabels = itemSizes.Select(x => x.Height).Sum();
 

@@ -32,8 +32,6 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
 
-    public PixelSize MeasureLabel() => LabelStyle.MeasureMultiline();
-
     #region obsolete these
     public FontStyle? CustomFontStyle { get; set; } = null;
     public LineStyle Line { get => LineStyle; set => LineStyle = value; }

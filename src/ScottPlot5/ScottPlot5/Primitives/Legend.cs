@@ -58,8 +58,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// </summary>
     public bool SetBestFontOnEachRender { get; set; } = false;
 
-    public FontStyle Font { get; set; } = new();
-    public ILegendLayout LayoutEngine { get; set; } = new LegendLayouts.Wrapping();
+    [Obsolete("use FontSize, FontName, FontColor, or FontStyle")]
+    public Label Font { get => FontStyle; set => FontStyle = value; }
+    public Label FontStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
+    public float FontSize { get => FontStyle.FontSize; set => FontStyle.FontSize = value; }
+    public string FontName { get => FontStyle.FontName; set => FontStyle.FontName = value; }
+    public Color FontColor { get => FontStyle.ForeColor; set => FontStyle.ForeColor = value; }
+
+    public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
 
     public LineStyle OutlineStyle { get; set; } = new();
     public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
@@ -69,7 +75,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     [Obsolete("Assign BackgroundColor or interact with BackgroundFillStyle")]
     public FillStyle BackgroundFill { get => BackgroundFillStyle; set { } }
-    public FillStyle BackgroundFillStyle => new() { Color = Colors.White };
+    public FillStyle BackgroundFillStyle { get; } = new() { Color = Colors.White };
     public Color BackgroundColor { get => BackgroundFillStyle.Color; set => BackgroundFillStyle.Color = value; }
     public Color BackgroundHatchColor { get => BackgroundFillStyle.HatchColor; set => BackgroundFillStyle.HatchColor = value; }
     public IHatch? BackgroundHatch { get => BackgroundFillStyle.Hatch; set => BackgroundFillStyle.Hatch = value; }
@@ -113,7 +119,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         LegendItem[] items = GetItems();
 
         LegendLayout lp = items.Length > 0
-            ? LayoutEngine.GetLayout(this, items, PixelSize.Infinity)
+            ? Layout.GetLayout(this, items, PixelSize.Infinity)
             : LegendLayout.NoLegend;
 
         SKImageInfo info = new(
@@ -139,7 +145,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         LegendItem[] items = GetItems();
 
         LegendLayout lp = items.Length > 0
-            ? LayoutEngine.GetLayout(this, items, PixelSize.Infinity)
+            ? Layout.GetLayout(this, items, PixelSize.Infinity)
             : LegendLayout.NoLegend;
 
         int width = (int)Math.Ceiling(lp.LegendRect.Width);
@@ -159,7 +165,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             return;
 
         PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
-        LegendLayout tightLayout = LayoutEngine.GetLayout(this, items, dataRectAfterMargin.Size);
+        LegendLayout tightLayout = Layout.GetLayout(this, items, dataRectAfterMargin.Size);
         PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
         PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
 
@@ -180,8 +186,8 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
         // render the legend panel
         PixelRect shadowRect = layout.LegendRect.WithOffset(ShadowOffset);
-        Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFill);
-        Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFill);
+        Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFillStyle);
+        Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFillStyle);
         Drawing.DrawRectangle(canvas, layout.LegendRect, paint, OutlineStyle);
 
         // render items inside the legend
@@ -194,7 +200,10 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            //item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            FontStyle.Text = item.LabelText;
+            FontStyle.Render(canvas, labelRect.LeftCenter, paint);
+
             item.LineStyle.Render(canvas, symbolLine, paint);
             item.FillStyle.Render(canvas, symbolFillRect, paint);
             item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);

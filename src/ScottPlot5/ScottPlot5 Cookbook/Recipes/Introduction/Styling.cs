@@ -222,13 +222,17 @@ public class Styling : ICategory
             myPlot.ShowLegend();
 
             // change figure colors
-            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
-            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
             myPlot.FigureBackground.Color = Color.FromHex("#181818");
             myPlot.DataBackground.Color = Color.FromHex("#1f1f1f");
-            myPlot.Legend.BackgroundFill.Color = Color.FromHex("#404040");
-            myPlot.Legend.Font.Color = Color.FromHex("#d7d7d7");
-            myPlot.Legend.OutlineStyle.Color = Color.FromHex("#d7d7d7");
+
+            // change axis and grid colors
+            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
+            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
+
+            // change legend colors
+            myPlot.Legend.BackgroundColor = Color.FromHex("#404040");
+            myPlot.Legend.FontColor = Color.FromHex("#d7d7d7");
+            myPlot.Legend.OutlineColor = Color.FromHex("#d7d7d7");
         }
     }
 }

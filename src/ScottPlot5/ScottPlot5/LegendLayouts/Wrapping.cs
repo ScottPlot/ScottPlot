@@ -6,7 +6,7 @@ public class Wrapping : ILegendLayout
     {
         PixelSize maxSizeAfterPadding = maxSize.Contracted(legend.Padding);
 
-        PixelSize[] labelSizes = items.Select(x => x.MeasureLabel()).ToArray();
+        PixelSize[] labelSizes = items.Select(x => legend.FontStyle.MeasureMultiline(x.LabelText)).ToArray();
         float maxLabelWidth = labelSizes.Select(x => x.Width).Max();
         float maxLabelHeight = labelSizes.Select(x => x.Height).Max();
         PixelSize itemSize = new(legend.SymbolWidth + legend.SymbolPadding + maxLabelWidth, maxLabelHeight);

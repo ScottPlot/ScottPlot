@@ -35,8 +35,8 @@ internal class LegendTests
         sig2.LegendText = "Cosine";
 
         plt.Legend.IsVisible = true;
-        plt.Legend.Font.Size = 26;
-        plt.Legend.Font.Color = Colors.Magenta;
+        plt.Legend.FontSize = 26;
+        plt.Legend.FontColor = Colors.Magenta;
 
         plt.SaveTestImage();
     }

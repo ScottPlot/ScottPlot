@@ -76,13 +76,17 @@ public class Legend : ICategory
             sig2.LegendText = "Cos";
 
             myPlot.Legend.IsVisible = true;
-            myPlot.Legend.OutlineStyle.Color = Colors.Navy;
-            myPlot.Legend.OutlineStyle.Width = 2;
-            myPlot.Legend.BackgroundFill.Color = Colors.LightBlue;
-            myPlot.Legend.ShadowFill.Color = Colors.Blue.WithOpacity(.5);
-            myPlot.Legend.Font.Size = 16;
-            myPlot.Legend.Font.Name = Fonts.Serif;
             myPlot.Legend.Alignment = Alignment.UpperCenter;
+
+            myPlot.Legend.OutlineColor = Colors.Navy;
+            myPlot.Legend.OutlineWidth = 5;
+            myPlot.Legend.BackgroundColor = Colors.LightBlue;
+
+            myPlot.Legend.ShadowColor = Colors.Blue.WithOpacity(.2);
+            myPlot.Legend.ShadowOffset = new(10, 10);
+
+            myPlot.Legend.FontSize = 32;
+            myPlot.Legend.FontName = Fonts.Serif;
         }
     }
 
