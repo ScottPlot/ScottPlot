@@ -144,8 +144,6 @@ public class Signal : ICategory
             int[] values = Generate.RandomIntegers(1000, -100, 100);
 
             myPlot.Add.Signal(values);
-
-            myPlot.Title("Signal Plot with 1 Million Points");
         }
     }
 
