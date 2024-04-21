@@ -319,6 +319,8 @@ internal class AxisRuleTests
 
         plt.Axes.Rules.Add(new ScottPlot.AxisRules.SquareZoomOut(plt.Axes.Bottom, plt.Axes.Left));
 
+        // NOTE: ticks are not always stable across successive render requests!
+
         for (int i = 0; i < 3; i++)
         {
             plt.RenderInMemory();
@@ -335,9 +337,22 @@ internal class AxisRuleTests
 
         plt.Axes.Rules.Add(new ScottPlot.AxisRules.SnapToTicksX(plt.Axes.Bottom));
 
+        // NOTE: ticks are not always stable across successive render requests!
+
         plt.RenderInMemory();
+        Console.WriteLine("Render 1");
         plt.Axes.GetLimits().Left.Should().Be(-5);
         plt.Axes.GetLimits().Right.Should().Be(55);
+
+        plt.RenderInMemory();
+        Console.WriteLine("Render 2");
+        plt.Axes.GetLimits().Left.Should().Be(-10);
+        plt.Axes.GetLimits().Right.Should().Be(60);
+
+        plt.RenderInMemory();
+        Console.WriteLine("Render 3");
+        plt.Axes.GetLimits().Left.Should().Be(-20);
+        plt.Axes.GetLimits().Right.Should().Be(70);
     }
 
     [Test]
@@ -349,8 +364,11 @@ internal class AxisRuleTests
 
         plt.Axes.Rules.Add(new ScottPlot.AxisRules.SnapToTicksY(plt.Axes.Left));
 
-        plt.RenderInMemory();
-        plt.Axes.GetLimits().Bottom.Should().Be(-1.2);
-        plt.Axes.GetLimits().Top.Should().Be(1.2);
+        for (int i = 0; i < 3; i++)
+        {
+            plt.RenderInMemory();
+            plt.Axes.GetLimits().Bottom.Should().Be(-1.2);
+            plt.Axes.GetLimits().Top.Should().Be(1.2);
+        }
     }
 }

@@ -9,6 +9,11 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         if (beforeLayout)
             return;
 
+        // do not attempt to set limits according to ticks while the window is resizing
+        if (rp.Plot.RenderManager.LastRender.DataRect != rp.DataRect)
+            return;
+
+        YAxis.RegenerateTicks(new PixelLength(rp.FigureRect.Height));
         var ticks = YAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).Select(x => x.Position);
         if (ticks.Count() < 2)
             return;
