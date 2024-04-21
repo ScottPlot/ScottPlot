@@ -1,6 +1,4 @@
-﻿using ScottPlot.Interfaces;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class Arrow : IPlottable, IHasArrow, IHasLegendText
 {
@@ -16,12 +14,12 @@ public class Arrow : IPlottable, IHasArrow, IHasLegendText
     /// <summary>
     /// ImagePosition of the base of the arrow in coordinate units
     /// </summary>
-    public Coordinates Base = Coordinates.Origin;
+    public Coordinates Base { get; set; } = Coordinates.Origin;
 
     /// <summary>
     /// ImagePosition of the base of the arrowhead in coordinate units
     /// </summary>
-    public Coordinates Tip = Coordinates.Origin;
+    public Coordinates Tip { get; set; } = Coordinates.Origin;
 
     /// <summary>
     /// Advanced styling options
