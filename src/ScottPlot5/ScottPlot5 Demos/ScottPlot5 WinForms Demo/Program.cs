@@ -12,7 +12,7 @@ static class Program
         // use this to quickly launch a test Form while developing
         if (true && Environment.MachineName == "DESKTOP-L7MMAB7")
         {
-            Demos.DraggableCallout window = new() { StartPosition = FormStartPosition.CenterScreen };
+            Demos.DataLogger window = new() { StartPosition = FormStartPosition.CenterScreen };
             Application.Run(window);
             Application.Run(new MainMenuForm());
         }
