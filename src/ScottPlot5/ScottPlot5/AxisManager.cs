@@ -648,6 +648,15 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Modify limits of all axes to apply the given zoom.
+    /// Fractional values >1 zoom in and <1 zoom out.
+    /// </summary>
+    public void ZoomIn(double fracX = 1.0, double fracY = 1.0)
+    {
+        Zoom(fracX, fracY);
+    }
+
+    /// <summary>
     /// Zoom out so the new view is the given fraction of the original view
     /// </summary>
     public void ZoomOut(double x = 1.0, double y = 1.0)
