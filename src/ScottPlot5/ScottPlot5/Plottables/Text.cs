@@ -2,13 +2,16 @@
 
 public class Text : LabelStyleProperties, IPlottable
 {
-    public override Label LabelStyle { get; } = new();
     public Coordinates Location { get; set; }
+    public float OffsetX { get; set; }
+    public float OffsetY { get; set; }
+
+    public override Label LabelStyle { get; set; } = new() { FontSize = 14 };
+    public Alignment Alignment { get => LabelAlignment; set => LabelAlignment = value; }
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-    public float OffsetX { get; set; }
-    public float OffsetY { get; set; }
 
     #region obsolete
 
@@ -16,18 +19,18 @@ public class Text : LabelStyleProperties, IPlottable
     public readonly Label Label = null!;
 
     [Obsolete("Use LabelFontColor", true)]
-    public Color Color { get => LabelFontColor; set => LabelFontColor = value; }
+    public Color Color { get; set; }
 
     [Obsolete("Use LabelFontColor", true)]
-    public Color FontColor { get => LabelBackgroundColor; set => LabelFontColor = value; }
+    public Color FontColor { get; set; }
 
     [Obsolete("Use LabelBackgroundColor", true)]
-    public Color BackgroundColor { get => LabelBackgroundColor; set => LabelBackgroundColor = value; }
+    public Color BackgroundColor { get; set; }
 
     [Obsolete("use LabelBackgroundColor", true)]
     public Color BackColor { get; set; }
 
-    [Obsolete("use LabelBackgroundColor", true)]
+    [Obsolete("use LabelBorderColor", true)]
     public Color BorderColor { get => LabelBorderColor; set => LabelBorderColor = value; }
 
     [Obsolete("use LabelBorderWidth", true)]

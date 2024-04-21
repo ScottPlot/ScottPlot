@@ -110,22 +110,22 @@ internal class PlottableManagement
         Plot myPlot = new();
 
         var sp1 = myPlot.Add.Scatter(xs, ys);
-        sp1.Label = "AAA";
+        sp1.LegendText = "AAA";
 
         var sp2 = myPlot.Add.Scatter(xs, ys);
-        sp2.Label = "ABC";
+        sp2.LegendText = "ABC";
 
         var sp3 = myPlot.Add.Scatter(xs, ys);
-        sp3.Label = "ABAB";
+        sp3.LegendText = "ABAB";
 
         var sp4 = myPlot.Add.Scatter(xs, ys);
-        sp4.Label = "LOLOLOLOLOLOL";
+        sp4.LegendText = "LOLOLOLOLOLOL";
         sp4.Color = Colors.Magenta;
 
         myPlot.PlottableList.Count.Should().Be(4);
 
         // match label content
-        myPlot.Remove<ScottPlot.Plottables.Scatter>(x => x.Label!.Contains('B'));
+        myPlot.Remove<ScottPlot.Plottables.Scatter>(x => x.LegendText!.Contains('B'));
         myPlot.PlottableList.Count.Should().Be(2);
 
         // match style options

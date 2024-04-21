@@ -1,7 +1,4 @@
-﻿using SkiaSharp;
-using System.ComponentModel;
-
-namespace ScottPlotCookbook.Recipes.Axis;
+﻿namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingTicks : ICategory
 {
@@ -93,7 +90,7 @@ public class CustomizingTicks : ICategory
             ticks.AddMinor(42);
             ticks.AddMinor(45);
 
-            // tell the horizontal axis to use the custom tick genrator
+            // tell the horizontal axis to use the custom tick generator
             myPlot.Axes.Bottom.TickGenerator = ticks;
         }
     }
@@ -276,7 +273,7 @@ public class CustomizingTicks : ICategory
     {
         public override string Name => "Log Scale Tick Marks";
         public override string Description =>
-            "The apperance of logarithmic scaling can be achieved by log-scaling " +
+            "The appearance of logarithmic scaling can be achieved by log-scaling " +
             "the data to be displayed then customizing the minor ticks and grid.";
 
         [Test]
@@ -289,7 +286,7 @@ public class CustomizingTicks : ICategory
             // log-scale the data and account for negative values
             double[] logYs = ys.Select(Math.Log10).ToArray();
 
-            // add log-scaled data to th eplot
+            // add log-scaled data to the plot
             var sp = myPlot.Add.Scatter(xs, logYs);
             sp.LineWidth = 0;
 

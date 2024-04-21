@@ -38,8 +38,8 @@ public class PlotStyler(Plot plot)
         Plot.FigureBackground.Color = Color.FromHex("#181818");
         Plot.DataBackground.Color = Color.FromHex("#1f1f1f");
 
-        Plot.Legend.BackgroundFill.Color = Color.FromHex("#404040");
-        Plot.Legend.Font.Color = Color.FromHex("#d7d7d7");
-        Plot.Legend.OutlineStyle.Color = Color.FromHex("#d7d7d7");
+        Plot.Legend.BackgroundColor = Color.FromHex("#404040");
+        Plot.Legend.FontColor = Color.FromHex("#d7d7d7");
+        Plot.Legend.OutlineColor = Color.FromHex("#d7d7d7");
     }
 }

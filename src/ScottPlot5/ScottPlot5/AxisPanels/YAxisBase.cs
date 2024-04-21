@@ -43,7 +43,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
         foreach (Tick tick in TickGenerator.Ticks)
         {
-            PixelSize tickLabelSize = Drawing.MeasureString(tick.Label, paint);
+            PixelSize tickLabelSize = Label.MeasureText(paint, tick.Label);
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
         }
 
@@ -115,6 +115,6 @@ public abstract class YAxisBase : AxisBase, IYAxis
     {
         using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
-        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint);
+        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, Label);
     }
 }

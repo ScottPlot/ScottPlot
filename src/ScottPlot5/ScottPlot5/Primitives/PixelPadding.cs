@@ -21,6 +21,14 @@ public struct PixelPadding
         Top = padding;
     }
 
+    public PixelPadding(float x, float y)
+    {
+        Left = x;
+        Right = x;
+        Bottom = y;
+        Top = y;
+    }
+
     public PixelPadding(float left, float right, float bottom, float top)
     {
         Left = left;

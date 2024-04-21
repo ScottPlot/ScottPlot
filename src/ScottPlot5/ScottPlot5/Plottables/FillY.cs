@@ -1,18 +1,14 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
+public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
 {
-    public string? Label { get; set; }
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle,
-            Line = new LineStyle() { Width = 10, Color = FillStyle.Color },
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle, LineStyle);
 
     private Polygon Poly { get; set; } = Polygon.Empty;
 
@@ -21,7 +17,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -29,9 +25,9 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker
     public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; }
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
-    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
-    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
     /// <summary>
     /// Creates an empty RangePlot plot, call SetDataSource() to set the coordinates.

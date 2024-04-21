@@ -104,15 +104,28 @@ public class Styling : ICategory
         public override void Execute()
         {
             MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+            ScottPlot.Palettes.Category10 palette = new();
 
             for (int i = 0; i < markerShapes.Length; i++)
             {
-                double[] xs = Generate.Consecutive(20);
-                double[] ys = Generate.Sin(20, offset: markerShapes.Length - i);
+                double[] xs = Generate.Consecutive(10);
+                double[] ys = Generate.Sin(10, offset: markerShapes.Length - i);
+                Color color = palette.GetColor(i);
+
                 var scatter = myPlot.Add.Scatter(xs, ys);
                 scatter.MarkerStyle.Shape = markerShapes[i];
                 scatter.MarkerStyle.Size = 10;
+                scatter.LineColor = color.WithAlpha(.2);
+                scatter.MarkerFillColor = color;
+                scatter.MarkerLineColor = color;
+
+                var txt = myPlot.Add.Text(markerShapes[i].ToString(), 10, ys.Last());
+                txt.LabelAlignment = Alignment.MiddleLeft;
+                txt.LabelFontColor = color;
             }
+
+            myPlot.Axes.SetLimitsX(-2, 20);
+            myPlot.HideGrid();
         }
     }
 
@@ -132,9 +145,9 @@ public class Styling : ICategory
                 var mp = myPlot.Add.Marker(x: i, y: 0);
                 mp.MarkerStyle.Shape = markerShapes[i];
                 mp.MarkerStyle.Size = 10;
-                mp.MarkerStyle.Outline.Width = 1.5f;
-                mp.MarkerStyle.Outline.Color = palette.GetColor(i);
-                mp.MarkerStyle.Fill.Color = palette.GetColor(i).WithAlpha(.5);
+                mp.MarkerStyle.OutlineWidth = 1.5f;
+                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
+                mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
 
                 var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
                 txt.LabelRotation = -90;
@@ -214,7 +227,7 @@ public class Styling : ICategory
             {
                 var sig = myPlot.Add.Signal(Generate.Sin(51, phase: -.05 * i));
                 sig.LineWidth = 3;
-                sig.Label = $"Line {i + 1}";
+                sig.LegendText = $"Line {i + 1}";
             }
             myPlot.XLabel("Horizontal Axis");
             myPlot.YLabel("Vertical Axis");
@@ -222,13 +235,17 @@ public class Styling : ICategory
             myPlot.ShowLegend();
 
             // change figure colors
-            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
-            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
             myPlot.FigureBackground.Color = Color.FromHex("#181818");
             myPlot.DataBackground.Color = Color.FromHex("#1f1f1f");
-            myPlot.Legend.BackgroundFill.Color = Color.FromHex("#404040");
-            myPlot.Legend.Font.Color = Color.FromHex("#d7d7d7");
-            myPlot.Legend.OutlineStyle.Color = Color.FromHex("#d7d7d7");
+
+            // change axis and grid colors
+            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
+            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
+
+            // change legend colors
+            myPlot.Legend.BackgroundColor = Color.FromHex("#404040");
+            myPlot.Legend.FontColor = Color.FromHex("#d7d7d7");
+            myPlot.Legend.OutlineColor = Color.FromHex("#d7d7d7");
         }
     }
 }

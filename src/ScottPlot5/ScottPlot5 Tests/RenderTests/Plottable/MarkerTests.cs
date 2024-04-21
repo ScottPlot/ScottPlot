@@ -8,7 +8,7 @@ internal class MarkerTests
         Plot plt = new();
 
         var m = plt.Add.Marker(123, 456);
-        m.Label = "test";
+        m.LegendText = "test";
 
         plt.ShowLegend();
         plt.Legend.GetItems().Should().HaveCount(1);

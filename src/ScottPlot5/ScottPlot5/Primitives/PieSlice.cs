@@ -1,11 +1,12 @@
 ﻿namespace ScottPlot;
 
-public class PieSlice
+public class PieSlice : LabelStyleProperties, IHasLegendText, IHasLabel
 {
-    public string Label { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get => LabelStyle.Text; set => LabelStyle.Text = value; }
     public double Value { get; set; }
     public FillStyle Fill { get; set; } = new();
-    public Label LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
+    public override Label LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
 
     public PieSlice() { }
@@ -19,7 +20,7 @@ public class PieSlice
     public PieSlice(double value, Color color, string label)
     {
         Value = value;
-        Label = label;
+        LegendText = label;
         Fill.Color = color;
     }
 }

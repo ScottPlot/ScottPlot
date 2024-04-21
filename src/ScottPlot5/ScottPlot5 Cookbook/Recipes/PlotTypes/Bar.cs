@@ -34,12 +34,12 @@ public class Bar : ICategory
             double[] xs1 = { 1, 2, 3, 4 };
             double[] ys1 = { 5, 10, 7, 13 };
             var bars1 = myPlot.Add.Bars(xs1, ys1);
-            bars1.Label = "Alpha";
+            bars1.LegendText = "Alpha";
 
             double[] xs2 = { 6, 7, 8, 9 };
             double[] ys2 = { 7, 12, 9, 15 };
             var bars2 = myPlot.Add.Bars(xs2, ys2);
-            bars2.Label = "Beta";
+            bars2.LegendText = "Beta";
 
             myPlot.ShowLegend(Alignment.UpperLeft);
             myPlot.Axes.Margins(bottom: 0);
@@ -246,10 +246,10 @@ public class Bar : ICategory
 
             // build the legend manually
             myPlot.Legend.IsVisible = true;
-            myPlot.Legend.Location = Alignment.UpperLeft;
-            myPlot.Legend.ManualItems.Add(new() { Label = "Monday", FillColor = palette.GetColor(0) });
-            myPlot.Legend.ManualItems.Add(new() { Label = "Tuesday", FillColor = palette.GetColor(1) });
-            myPlot.Legend.ManualItems.Add(new() { Label = "Wednesday", FillColor = palette.GetColor(2) });
+            myPlot.Legend.Alignment = Alignment.UpperLeft;
+            myPlot.Legend.ManualItems.Add(new() { LabelText = "Monday", FillColor = palette.GetColor(0) });
+            myPlot.Legend.ManualItems.Add(new() { LabelText = "Tuesday", FillColor = palette.GetColor(1) });
+            myPlot.Legend.ManualItems.Add(new() { LabelText = "Wednesday", FillColor = palette.GetColor(2) });
 
             // show group labels on the bottom axis
             Tick[] ticks =
@@ -336,7 +336,7 @@ public class Bar : ICategory
             {
                 LegendItem item = new()
                 {
-                    Label = categoryNames[i],
+                    LabelText = categoryNames[i],
                     FillColor = categoryColors[i]
                 };
                 myPlot.Legend.ManualItems.Add(item);

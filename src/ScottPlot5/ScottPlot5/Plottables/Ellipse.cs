@@ -1,12 +1,12 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Ellipse : IPlottable, IHasLine, IHasFill
+public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -17,10 +17,9 @@ public class Ellipse : IPlottable, IHasLine, IHasFill
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
 
-    /// <summary>
-    /// Label to appear in the legend
-    /// </summary>
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public Coordinates Center = Coordinates.Origin;
 

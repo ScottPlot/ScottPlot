@@ -57,13 +57,13 @@ public class Marker : ICategory
         public override void Execute()
         {
             var sin = myPlot.Add.Signal(Generate.Sin());
-            sin.Label = "Sine";
+            sin.LegendText = "Sine";
 
             var cos = myPlot.Add.Signal(Generate.Cos());
-            cos.Label = "Cosine";
+            cos.LegendText = "Cosine";
 
             var marker = myPlot.Add.Marker(25, .5);
-            marker.Label = "Marker";
+            marker.LegendText = "Marker";
             myPlot.ShowLegend();
         }
     }
