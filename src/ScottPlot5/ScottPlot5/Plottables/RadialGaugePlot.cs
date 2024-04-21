@@ -232,10 +232,10 @@ public class RadialGaugePlot : IPlottable
             {
                 var item = new LegendItem()
                 {
-                    Label = Labels[i],
+                    LabelText = Labels[i],
                     LineColor = Colors[i],
                     LineWidth = 10,
-                    Marker = MarkerStyle.None
+                    MarkerStyle = MarkerStyle.None
                 };
                 legendItems.Add(item);
             }

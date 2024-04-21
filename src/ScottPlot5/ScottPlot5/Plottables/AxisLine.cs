@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine
+public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -10,9 +10,10 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public override Label LabelStyle { get; } = new();
+    public override Label LabelStyle { get; set; } = new();
     public string Text { get => LabelText; set => LabelText = value; }
     public Alignment? ManualLabelAlignment { get; set; } = null;
+    public string LegendText { get => LabelText; set => LabelText = value; }
 
     #region obsolete
 
@@ -70,9 +71,9 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
         {
             return LegendItem.Single(new LegendItem()
             {
-                Label = ExcludeFromLegend ? string.Empty : LabelStyle.Text,
-                Line = LineStyle,
-                Marker = MarkerStyle.None,
+                LabelText = ExcludeFromLegend ? string.Empty : LabelStyle.Text,
+                LineStyle = LineStyle,
+                MarkerStyle = MarkerStyle.None,
             });
         }
     }

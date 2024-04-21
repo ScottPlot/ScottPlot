@@ -27,6 +27,7 @@ public struct PixelSize : IEquatable<PixelSize>
     public static PixelSize Zero => new(0, 0);
 
     public static PixelSize NaN => new(float.NaN, float.NaN);
+    public static PixelSize Infinity => new(float.PositiveInfinity, float.PositiveInfinity);
 
     public PixelRect ToPixelRect()
     {
@@ -89,5 +90,15 @@ public struct PixelSize : IEquatable<PixelSize>
     public override int GetHashCode()
     {
         return Width.GetHashCode() ^ Height.GetHashCode();
+    }
+
+    public PixelSize Expanded(PixelPadding pad)
+    {
+        return new PixelSize(Width + pad.Left + pad.Right, Height + pad.Top + pad.Bottom);
+    }
+
+    public PixelSize Contracted(PixelPadding pad)
+    {
+        return new PixelSize(Width - pad.Left - pad.Right, Height - pad.Top - pad.Bottom);
     }
 }

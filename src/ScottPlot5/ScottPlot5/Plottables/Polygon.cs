@@ -4,7 +4,7 @@
 /// A polygon is a collection of X/Y points that are all connected to form a closed shape.
 /// Polygons can be optionally filled with a color or a gradient.
 /// </summary>
-public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
+public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
 {
     public static Polygon Empty => new();
 
@@ -13,11 +13,13 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
     // TODO: replace with a generic data source
     public Coordinates[] Coordinates { get; private set; } = Array.Empty<Coordinates>();
 
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public bool IsVisible { get; set; } = true;
 
-    public LineStyle LineStyle { get; } = new() { Width = 0 };
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -30,9 +32,9 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
     public MarkerStyle MarkerStyle { get; } = new();
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
-    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
-    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
 
     public int PointCount { get => Coordinates.Length; }
@@ -41,13 +43,13 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
 
     private AxisLimits limits;
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle,
-            Line = LineStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => [new LegendItem()
+    {
+        LabelText = LegendText,
+        FillStyle = FillStyle,
+        OutlineStyle = LineStyle,
+        MarkerStyle = MarkerStyle,
+    }];
 
     private Polygon()
     {
@@ -66,7 +68,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker
 
     public override string ToString()
     {
-        string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
+        string label = string.IsNullOrWhiteSpace(LegendText) ? "" : $" ({LegendText})";
         return $"PlottablePolygon{label} with {PointCount} points";
     }
 

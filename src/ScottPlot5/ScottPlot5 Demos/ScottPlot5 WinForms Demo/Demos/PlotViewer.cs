@@ -28,7 +28,7 @@ public partial class PlotViewer : Form, IDemoWindow
                 var mp = myPlot.Add.Scatter(xs, ys);
                 mp.MarkerShape = ScottPlot.Generate.RandomMarkerShape();
                 mp.MarkerSize = (float)ScottPlot.Generate.RandomNumber(25, 50);
-                mp.MarkerStyle.Outline.Width = 3;
+                mp.MarkerStyle.OutlineWidth = 3;
                 mp.Color = new ScottPlot.Colormaps.Turbo().GetColor(ScottPlot.Generate.RandomNumber());
 
                 // Create a plot viewer form and display it to the user

@@ -10,7 +10,7 @@ public class Benchmark : LabelStyleProperties, IPlottable
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public override Label LabelStyle { get; } = new()
+    public override Label LabelStyle { get; set; } = new()
     {
         FontName = Fonts.Monospace,
         Alignment = Alignment.LowerLeft,

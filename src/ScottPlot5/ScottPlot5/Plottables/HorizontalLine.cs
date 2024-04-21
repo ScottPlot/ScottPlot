@@ -45,7 +45,7 @@ public class HorizontalLine : AxisLine
         // draw line inside the data area
         PixelLine line = new(x1, y, x2, y);
         using SKPaint paint = new();
-        LineStyle.Render(rp.Canvas, paint, line);
+        LineStyle.Render(rp.Canvas, line, paint);
     }
 
     public override void RenderLast(RenderPack rp)

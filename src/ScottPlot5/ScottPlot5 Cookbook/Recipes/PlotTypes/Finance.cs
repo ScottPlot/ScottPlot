@@ -108,7 +108,7 @@ public class Finance : ICategory
             {
                 ScottPlot.Finance.SimpleMovingAverage sma = new(prices, windowSize);
                 var sp = myPlot.Add.Scatter(sma.Dates, sma.Means);
-                sp.Label = $"SMA {windowSize}";
+                sp.LegendText = $"SMA {windowSize}";
                 sp.MarkerSize = 0;
                 sp.LineWidth = 3;
                 sp.Color = Colors.Navy.WithAlpha(1 - windowSize / 30.0);

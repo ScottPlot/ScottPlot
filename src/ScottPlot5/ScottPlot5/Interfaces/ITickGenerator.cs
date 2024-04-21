@@ -5,7 +5,7 @@ public interface ITickGenerator
     /// <summary>
     /// Ticks to display the next time the axis is rendered.
     /// This array and its contents should not be modified directly.
-    /// Call <see cref="Regenerate(CoordinateRange, Edge, PixelLength, SKPaint)"/> to update this array.
+    /// Call Regenerate() to update this array.
     /// </summary>
     Tick[] Ticks { get; }
 
@@ -17,5 +17,5 @@ public interface ITickGenerator
     /// <summary>
     /// Generate ticks based on the current settings and store the result in <see cref="Ticks"/>
     /// </summary>
-    void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint);
+    void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle);
 }

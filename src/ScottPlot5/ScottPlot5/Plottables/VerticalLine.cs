@@ -44,7 +44,7 @@ public class VerticalLine : AxisLine
         PixelLine line = new(x, y1, x, y2);
 
         using SKPaint paint = new();
-        LineStyle.Render(rp.Canvas, paint, line);
+        LineStyle.Render(rp.Canvas, line, paint);
     }
 
     public override void RenderLast(RenderPack rp)

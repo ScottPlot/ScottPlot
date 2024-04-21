@@ -35,12 +35,12 @@ public class Signal : ICategory
             var sig1 = myPlot.Add.Signal(Generate.Sin());
             sig1.Color = Colors.Magenta;
             sig1.LineWidth = 10;
-            sig1.Label = "Sine";
+            sig1.LegendText = "Sine";
 
             var sig2 = myPlot.Add.Signal(Generate.Cos());
             sig2.Color = Colors.Green;
             sig2.LineWidth = 5;
-            sig2.Label = "Cosine";
+            sig2.LegendText = "Cosine";
 
             myPlot.ShowLegend();
         }
@@ -57,12 +57,12 @@ public class Signal : ICategory
             double[] values = ScottPlot.Generate.Sin(51);
 
             var sig1 = myPlot.Add.Signal(values);
-            sig1.Label = "Default";
+            sig1.LegendText = "Default";
 
             var sig2 = myPlot.Add.Signal(values);
             sig2.Data.XOffset = 10;
             sig2.Data.YOffset = .25;
-            sig2.Label = "Offset";
+            sig2.LegendText = "Offset";
 
             myPlot.Legend.IsVisible = true;
         }
@@ -78,16 +78,16 @@ public class Signal : ICategory
         public override void Execute()
         {
             var sig1 = myPlot.Add.Signal(Generate.Cos());
-            sig1.Label = "Default";
+            sig1.LegendText = "Default";
             sig1.Data.YOffset = 3;
 
             var sig2 = myPlot.Add.Signal(Generate.Cos());
-            sig2.Label = "Large Markers";
+            sig2.LegendText = "Large Markers";
             sig2.MaximumMarkerSize = 20;
             sig2.Data.YOffset = 2;
 
             var sig3 = myPlot.Add.Signal(Generate.Cos());
-            sig3.Label = "Hidden Markers";
+            sig3.LegendText = "Hidden Markers";
             sig3.MaximumMarkerSize = 0;
             sig3.Data.YOffset = 1;
 
@@ -108,21 +108,21 @@ public class Signal : ICategory
             double[] values = Generate.RandomWalk(1000);
 
             var sigAll = myPlot.Add.Signal(values);
-            sigAll.Label = "Full";
+            sigAll.LegendText = "Full";
             sigAll.Data.YOffset = 80;
 
             var sigLeft = myPlot.Add.Signal(values);
-            sigLeft.Label = "Left";
+            sigLeft.LegendText = "Left";
             sigLeft.Data.YOffset = 60;
             sigLeft.Data.MaximumIndex = 700;
 
             var sigRight = myPlot.Add.Signal(values);
-            sigRight.Label = "Right";
+            sigRight.LegendText = "Right";
             sigRight.Data.YOffset = 40;
             sigRight.Data.MinimumIndex = 300;
 
             var sigMid = myPlot.Add.Signal(values);
-            sigMid.Label = "Mid";
+            sigMid.LegendText = "Mid";
             sigMid.Data.YOffset = 20;
             sigMid.Data.MinimumIndex = 300;
             sigMid.Data.MaximumIndex = 700;
@@ -144,8 +144,6 @@ public class Signal : ICategory
             int[] values = Generate.RandomIntegers(1000, -100, 100);
 
             myPlot.Add.Signal(values);
-
-            myPlot.Title("Signal Plot with 1 Million Points");
         }
     }
 

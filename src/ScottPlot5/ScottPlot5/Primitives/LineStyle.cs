@@ -6,7 +6,7 @@
 /// </summary>
 public class LineStyle
 {
-    public float Width { get; set; } = 1.0f;
+    public float Width { get; set; } = 0;
     public Color Color { get; set; } = Colors.Black;
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
 
@@ -18,6 +18,40 @@ public class LineStyle
 
     public static LineStyle None => new() { Width = 0 };
 
+    public void Render(SKCanvas canvas, PixelLine line, SKPaint paint)
+    {
+        if (!IsVisible)
+            return;
+
+        Drawing.DrawLine(canvas, paint, line, this);
+    }
+
+    public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    {
+        if (!IsVisible)
+            return;
+
+        Pixel[] pixels =
+        [
+            rect.BottomLeft,
+            rect.TopLeft,
+            rect.TopRight,
+            rect.BottomRight,
+            rect.BottomLeft,
+        ];
+
+        Drawing.DrawLines(canvas, paint, pixels, this);
+    }
+
+    public void Render(SKCanvas canvas, SKPath path, SKPaint paint)
+    {
+        if (!IsVisible)
+            return;
+
+        Drawing.DrawPath(canvas, paint, path, this);
+    }
+
+    [Obsolete("use the overload where the paint is passed last")]
     public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
     {
         if (!IsVisible)
