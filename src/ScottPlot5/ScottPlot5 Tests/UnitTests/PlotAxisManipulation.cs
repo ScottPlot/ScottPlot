@@ -21,7 +21,7 @@ internal class PlotAxisManipulation
         AxisLimits initialLimits = new(-7, 42, -13, 69);
         plt.Axes.SetLimits(initialLimits);
 
-        PixelSize panDistance = new(20, 10);
+        PixelOffset panDistance = new(20, 10);
 
         Action panBeforeRender = () => plt.Axes.Pan(panDistance);
         panBeforeRender.Should().Throw<InvalidOperationException>();

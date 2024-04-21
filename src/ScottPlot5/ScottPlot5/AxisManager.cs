@@ -628,13 +628,13 @@ public class AxisManager
     /// <summary>
     /// Adjust limits all axes to pan by the given distance in pixel space
     /// </summary>
-    public void Pan(PixelSize distance)
+    public void Pan(PixelOffset offset)
     {
         if (Plot.RenderManager.LastRender.Count == 0)
             throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, Plot.RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, Plot.RenderManager.LastRender.DataRect)));
+        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
