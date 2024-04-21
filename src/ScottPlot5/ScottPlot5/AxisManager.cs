@@ -622,10 +622,10 @@ public class AxisManager
     /// <summary>
     /// Adjust limits all axes to pan by the given distance in coordinate space
     /// </summary>
-    public void Pan(CoordinateSize distance)
+    public void Pan(CoordinateOffset distance)
     {
-        XAxes.ForEach(x => x.Range.Pan(distance.Width));
-        YAxes.ForEach(x => x.Range.Pan(distance.Height));
+        XAxes.ForEach(x => x.Range.Pan(distance.X));
+        YAxes.ForEach(x => x.Range.Pan(distance.Y));
     }
 
     /// <summary>
