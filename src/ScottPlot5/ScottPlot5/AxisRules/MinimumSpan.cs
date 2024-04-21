@@ -1,20 +1,12 @@
 ﻿namespace ScottPlot.AxisRules;
 
-public class MinimumSpan : IAxisRule
+public class MinimumSpan(IXAxis xAxis, IYAxis yAxis, double xSpan, double ySpan) : IAxisRule
 {
-    readonly IXAxis XAxis;
-    readonly IYAxis YAxis;
+    readonly IXAxis XAxis = xAxis;
+    readonly IYAxis YAxis = yAxis;
 
-    public double XSpan;
-    public double YSpan;
-
-    public MinimumSpan(IXAxis xAxis, IYAxis yAxis, double xSpan = double.Epsilon, double ySpan = double.Epsilon)
-    {
-        XAxis = xAxis;
-        YAxis = yAxis;
-        XSpan = xSpan;
-        YSpan = ySpan;
-    }
+    public double XSpan = xSpan;
+    public double YSpan = ySpan;
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {

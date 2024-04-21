@@ -90,6 +90,7 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     }
 
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
+    public static AxisLimits Unset => new(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity);
 
     public static AxisLimits VerticalOnly(double yMin, double yMax) => new(double.NaN, double.NaN, yMin, yMax);
 
