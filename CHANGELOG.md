@@ -12,6 +12,7 @@ _Not yet on NuGet..._
 * Legend: Added many additional customization options and support for multiple shapes (#3689)
 * Legend: Text appearing in the legend for many plot types has been renamed from `Label` to `LegendText` (#3689)
 * Rendering: Added `Plot.GetSvgXml()` so plots can create SVG images in memory without saving to disk (#3694) @aespitia
+* Bar: Improved alignment of value labels on horizontal bar charts (#3698) @aespitia
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
