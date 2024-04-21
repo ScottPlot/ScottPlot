@@ -443,9 +443,6 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits(IXAxis xAxis, IYAxis yAxis)
     {
-        if (!xAxis.Range.HasBeenSet || !yAxis.Range.HasBeenSet)
-            AutoScale(xAxis, yAxis);
-
         return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
     }
 
