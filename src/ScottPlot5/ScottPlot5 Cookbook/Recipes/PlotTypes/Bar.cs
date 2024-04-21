@@ -83,9 +83,9 @@ public class Bar : ICategory
         public override void Execute()
         {
             double[] values = { -20, 10, 7, 13 };
-            var barPlot = myPlot.Add.Bars(values);
 
             // set the label for each bar
+            var barPlot = myPlot.Add.Bars(values);
             foreach (var bar in barPlot.Bars)
             {
                 bar.Label = "Label " + bar.Value.ToString();
@@ -97,7 +97,8 @@ public class Bar : ICategory
             barPlot.Horizontal = true;
 
             // add extra margin to account for label
-            myPlot.Axes.Margins(left: .2, right: .2);
+            myPlot.Axes.SetLimitsX(-45, 35);
+            myPlot.Add.VerticalLine(0, 1, Colors.Black);
         }
     }
 
