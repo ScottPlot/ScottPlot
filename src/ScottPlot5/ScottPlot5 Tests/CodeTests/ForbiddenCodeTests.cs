@@ -52,4 +52,14 @@ internal class ForbiddenCodeTests
             .ToList()
             .ForEach(t => Assert.Fail($"{t.Name} should be in the namespace ScottPlot (not ScottPlot.Primitives)"));
     }
+
+    [Test]
+    public void Test_InterfacesNamespace_IsNeverUsed()
+    {
+        Assembly.GetAssembly(typeof(Plot))!
+            .GetTypes()
+            .Where(x => x.Namespace is not null && x.Namespace.Contains("ScottPlot.Interfaces"))
+            .ToList()
+            .ForEach(t => Assert.Fail($"{t.Name} should be in the namespace ScottPlot (not ScottPlot.Interfaces)"));
+    }
 }
