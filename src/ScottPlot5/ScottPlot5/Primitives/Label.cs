@@ -91,6 +91,10 @@ public class Label
     public float OffsetX = 0; // TODO: automatic padding support for arbitrary rotations
     public float OffsetY = 0; // TODO: automatic padding support for arbitrary rotations
 
+    public float BorderRadius { get => BorderRadiusX; set { BorderRadiusX = value; BorderRadiusY = value; } }
+    public float BorderRadiusX = 0;
+    public float BorderRadiusY = 0;
+
     /// <summary>
     /// Use the characters in <see cref="Text"/> to determine an installed 
     /// system font most likely to support this character set.
@@ -324,7 +328,7 @@ public class Label
 
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         ApplyBorderPaint(paint);
-        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
     }
 
     private void DrawText(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
@@ -356,13 +360,13 @@ public class Label
         if (ShadowColor != Colors.Transparent)
         {
             ApplyShadowPaint(paint);
-            canvas.DrawRect(shadowRect.ToSKRect(), paint);
+            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
         }
 
         if (BackgroundColor != Colors.Transparent)
         {
             ApplyBackgroundPaint(paint);
-            canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
         }
 
         // TODO: support rotation

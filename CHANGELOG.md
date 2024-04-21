@@ -15,6 +15,7 @@ _Not yet on NuGet..._
 * Bar: Improved alignment of value labels on horizontal bar charts (#3698) @aespitia
 * Legend: Created a `LegendPanel` to allow legends to be displayed outside the data area (#3672, #3635) @Graat @mikeKuester
 * Axis: Prevent left axis from appearing if no plottables use it (#3637) @jpgarza93
+* Label: Added `BorderRadius` to support backgrounds and outlines with rounded edges (#3659)
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
