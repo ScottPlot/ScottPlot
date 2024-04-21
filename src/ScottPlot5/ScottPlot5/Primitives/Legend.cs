@@ -106,14 +106,23 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
+    public bool DisplayPlottableLegendItems { get; set; } = true;
+
     public LegendItem[] GetItems()
     {
-        LegendItem[] items = Plot.PlottableList
-            .Where(item => item.IsVisible)
-            .SelectMany(x => x.LegendItems)
-            .Where(x => !string.IsNullOrEmpty(x.LabelText))
-            .Concat(ManualItems)
-            .ToArray();
+        List<LegendItem> items = [];
+
+        if (DisplayPlottableLegendItems)
+        {
+            var plottableLegendItems = Plot.PlottableList
+                        .Where(item => item.IsVisible)
+                        .SelectMany(x => x.LegendItems)
+                        .Where(x => !string.IsNullOrEmpty(x.LabelText));
+
+            items.AddRange(plottableLegendItems);
+        }
+
+        items.AddRange(ManualItems);
 
         if (SetBestFontOnEachRender)
         {
@@ -133,7 +142,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 item.LabelFontColor = FontColor.Value;
         }
 
-        return items;
+        return items.ToArray();
     }
 
     /// <summary>
