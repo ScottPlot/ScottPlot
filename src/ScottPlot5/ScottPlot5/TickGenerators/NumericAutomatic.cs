@@ -75,18 +75,19 @@ public class NumericAutomatic : ITickGenerator
 
     private Tick[] GenerateFinalTicks(double[] positions, string[] labels, CoordinateRange visibleRange)
     {
-        // TODO: make this process cleaner
         if (IntegerTicksOnly)
         {
-            List<int> indexes = [];
+            List<int> indexesToKeep = [];
             for (int i = 0; i < positions.Length; i++)
             {
-                if (positions[i] == (int)positions[i])
-                    indexes.Add(i);
+                double position = positions[i];
+                double distanceFromInteger = Math.Abs(position - (int)position);
+                if (distanceFromInteger < .01)
+                    indexesToKeep.Add(i);
             }
 
-            positions = indexes.Select(x => positions[x]).ToArray();
-            labels = indexes.Select(x => labels[x]).ToArray();
+            positions = indexesToKeep.Select(x => positions[x]).ToArray();
+            labels = indexesToKeep.Select(x => labels[x]).ToArray();
         }
 
         var majorTicks = positions.Select((position, i) => Tick.Major(position, labels[i]));
