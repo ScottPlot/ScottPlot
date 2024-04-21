@@ -12,7 +12,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);
     public double GetY(double x) => Source.Get(x);
 
-    public LineStyle LineStyle { get; } = new() { Width = 1 };
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

@@ -6,18 +6,19 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
     public IAxes Axes { get; set; } = new Axes();
 
 
-    [Obsolete("use LegendText")]
-    public string Label { get => LegendText; set => LegendText = value; }
+    [Obsolete("set LegendText")]
+    public Label Label { get => ObsoleteLabel; set => LegendText = value.Text; }
+    private readonly Label ObsoleteLabel = new();
 
     public string LegendText { get; set; } = string.Empty;
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; set; } = new();
 
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public FillStyle FillStyle { get; } = new();
+    public FillStyle FillStyle { get; set; } = new();
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }

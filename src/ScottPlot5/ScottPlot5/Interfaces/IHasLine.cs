@@ -6,7 +6,7 @@
 /// </summary>
 public interface IHasLine
 {
-    public LineStyle LineStyle { get; }
+    public LineStyle LineStyle { get; set; }
 
     public float LineWidth { get; set; }
     public LinePattern LinePattern { get; set; }

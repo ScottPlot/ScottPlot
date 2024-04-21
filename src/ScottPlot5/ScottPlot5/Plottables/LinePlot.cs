@@ -5,11 +5,12 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
     public Coordinates Start { get; set; }
     public Coordinates End { get; set; }
 
-    public MarkerStyle MarkerStyle { get; } = new() { Size = 0 };
+    public MarkerStyle MarkerStyle { get; set; } = new() { Size = 0 };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
     public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
     [Obsolete("use LegendText")]
@@ -19,7 +20,7 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle, MarkerStyle);
 
-    public LineStyle LineStyle { get; } = new() { Width = 1 };
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

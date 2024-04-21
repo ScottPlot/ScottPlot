@@ -15,6 +15,7 @@ public class MarkerStyle : IHasOutline, IHasFill
     /// </summary>
     public float Size { get; set; }
 
+    public Color MarkerColor { get => OutlineColor; set { FillColor = value; OutlineColor = value; } }
 
     [Obsolete("use OutlineWidth, OutlineColor, OutlinePattern, or OutlineStyle")]
     public LineStyle Outline { get => OutlineStyle; set => OutlineStyle = value; }

@@ -18,43 +18,43 @@ public class Text : LabelStyleProperties, IPlottable
     [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle", true)]
     public readonly Label Label = null!;
 
-    [Obsolete("Use LabelFontColor", true)]
-    public Color Color { get; set; }
+    [Obsolete("Use LabelFontColor")]
+    public Color Color { get => LabelFontColor; set => LabelFontColor = value; }
 
-    [Obsolete("Use LabelFontColor", true)]
-    public Color FontColor { get; set; }
+    [Obsolete("Use LabelFontColor")]
+    public Color FontColor { get => LabelFontColor; set => LabelFontColor = value; }
 
-    [Obsolete("Use LabelBackgroundColor", true)]
-    public Color BackgroundColor { get; set; }
+    [Obsolete("Use LabelBackgroundColor")]
+    public Color BackgroundColor { get => LabelBackgroundColor; set => LabelBackgroundColor = value; }
 
-    [Obsolete("use LabelBackgroundColor", true)]
-    public Color BackColor { get; set; }
+    [Obsolete("use LabelBackgroundColor")]
+    public Color BackColor { get => LabelBackgroundColor; set => LabelBackgroundColor = value; }
 
-    [Obsolete("use LabelBorderColor", true)]
+    [Obsolete("use LabelBorderColor")]
     public Color BorderColor { get => LabelBorderColor; set => LabelBorderColor = value; }
 
-    [Obsolete("use LabelBorderWidth", true)]
+    [Obsolete("use LabelBorderWidth")]
     public float BorderWidth { get => LabelBorderWidth; set => LabelBorderWidth = value; }
 
-    [Obsolete("use LabelPadding or LabelPixelPadding", true)]
+    [Obsolete("use LabelPadding or LabelPixelPadding")]
     public float Padding { set => LabelPadding = value; }
 
-    [Obsolete("use LabelFontSize", true)]
+    [Obsolete("use LabelFontSize")]
     public float Size { get => LabelFontSize; set => LabelFontSize = value; }
 
-    [Obsolete("use LabelFontSize", true)]
+    [Obsolete("use LabelFontSize")]
     public float FontSize { get => LabelFontSize; set => LabelFontSize = value; }
 
-    [Obsolete("use LabelBold", true)]
+    [Obsolete("use LabelBold")]
     public bool Bold { get => LabelBold; set => LabelBold = value; }
 
-    [Obsolete("use LabelRotation", true)]
+    [Obsolete("use LabelRotation")]
     public float Rotation { get => LabelRotation; set => LabelRotation = value; }
 
-    [Obsolete("use LabelFontName", true)]
+    [Obsolete("use LabelFontName")]
     public string FontName { get => LabelFontName; set => LabelFontName = value; }
 
-    [Obsolete("use LineSpacing", true)]
+    [Obsolete("use LabelLineSpacing")]
     public float? LineSpacing { get => LabelLineSpacing; set => LabelLineSpacing = value; }
 
     #endregion

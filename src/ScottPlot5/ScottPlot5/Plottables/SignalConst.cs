@@ -7,14 +7,15 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
 {
     readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
 
-    public MarkerStyle MarkerStyle { get; } = new();
+    public MarkerStyle MarkerStyle { get; set; } = new();
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
     public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; set; } = new();
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

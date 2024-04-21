@@ -73,6 +73,12 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// </summary>
     public Color? FontColor { get; set; } = null;
 
+    [Obsolete("Assign FontSize, FontName, or FontColor to control appearance of all legend items", true)]
+    public FillStyle Font { get; set; }
+
+    [Obsolete("Multiline is now enabled by default.", true)]
+    public bool AllowMultiline { get; set; }
+
     public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
 
     public LineStyle OutlineStyle { get; set; } = new();

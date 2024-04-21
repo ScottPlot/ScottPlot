@@ -10,7 +10,7 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
     public double Padding { get; set; } = 0.2;
     public double DonutFraction { get; set; } = 0;
 
-    public LineStyle LineStyle { get; } = new() { Width = 0 };
+    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
