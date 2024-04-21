@@ -45,7 +45,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// <summary>
     /// Space separating legend items
     /// </summary>
-    public PixelPadding InterItemPadding { get; set; } = new(10, 10, 3, 3);
+    public PixelPadding InterItemPadding { get; set; } = new(10, 10, 6, 6);
 
     /// <summary>
     /// Items in this list will always be displayed in the legend
@@ -58,12 +58,20 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// </summary>
     public bool SetBestFontOnEachRender { get; set; } = false;
 
-    [Obsolete("use FontSize, FontName, FontColor, or FontStyle")]
-    public Label Font { get => FontStyle; set => FontStyle = value; }
-    public Label FontStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
-    public float FontSize { get => FontStyle.FontSize; set => FontStyle.FontSize = value; }
-    public string FontName { get => FontStyle.FontName; set => FontStyle.FontName = value; }
-    public Color FontColor { get => FontStyle.ForeColor; set => FontStyle.ForeColor = value; }
+    /// <summary>
+    /// If set, this overrides the value in the LegendItem's FontStyle
+    /// </summary>
+    public float? FontSize { get; set; } = null;
+
+    /// <summary>
+    /// If set, this overrides the value in the LegendItem's FontStyle
+    /// </summary>
+    public string? FontName { get; set; } = null;
+
+    /// <summary>
+    /// If set, this overrides the value in the LegendItem's FontStyle
+    /// </summary>
+    public Color? FontColor { get; set; } = null;
 
     public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
 
@@ -164,6 +172,16 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         if (items.Length == 0)
             return;
 
+        foreach (LegendItem item in items)
+        {
+            if (FontSize is not null)
+                item.LabelFontSize = FontSize.Value;
+            if (FontName is not null)
+                item.LabelFontName = FontName;
+            if (FontColor is not null)
+                item.LabelFontColor = FontColor.Value;
+        }
+
         PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
         LegendLayout tightLayout = Layout.GetLayout(this, items, dataRectAfterMargin.Size);
         PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
@@ -200,9 +218,17 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            //item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
-            FontStyle.Text = item.LabelText;
-            FontStyle.Render(canvas, labelRect.LeftCenter, paint);
+            item.LabelStyle.ApplyToPaint(paint);
+            SKFontMetrics metrics = item.LabelStyle.GetFontMetrics(paint);
+            Pixel labelPx = labelRect.LeftCenter.WithOffset(0, -metrics.Descent / 2); // improve vertical centering
+            item.LabelStyle.Render(canvas, labelPx, paint);
+
+            bool SHOW_DEBUG_RECTANGLES = false;
+            if (SHOW_DEBUG_RECTANGLES)
+            {
+                Drawing.DrawRectangle(canvas, symbolRect, Colors.Magenta.WithAlpha(.2));
+                Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
+            }
 
             item.LineStyle.Render(canvas, symbolLine, paint);
             item.FillStyle.Render(canvas, symbolFillRect, paint);

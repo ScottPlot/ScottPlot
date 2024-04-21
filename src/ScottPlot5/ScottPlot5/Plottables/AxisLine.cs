@@ -71,9 +71,9 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
         {
             return LegendItem.Single(new LegendItem()
             {
-                Label = ExcludeFromLegend ? string.Empty : LabelStyle.Text,
-                Line = LineStyle,
-                Marker = MarkerStyle.None,
+                LabelText = ExcludeFromLegend ? string.Empty : LabelStyle.Text,
+                LineStyle = LineStyle,
+                MarkerStyle = MarkerStyle.None,
             });
         }
     }

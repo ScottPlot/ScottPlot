@@ -70,7 +70,7 @@ public class BarPlot : IPlottable, IHasLegendText
 
             LegendItem item = new()
             {
-                Label = LegendText,
+                LabelText = LegendText,
                 FillColor = Bars.First().FillColor,
             };
 

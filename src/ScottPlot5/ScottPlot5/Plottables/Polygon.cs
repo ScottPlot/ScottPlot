@@ -45,7 +45,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
 
     public IEnumerable<LegendItem> LegendItems => [new LegendItem()
     {
-        Label = LegendText,
+        LabelText = LegendText,
         FillStyle = FillStyle,
         OutlineStyle = LineStyle,
         MarkerStyle = MarkerStyle,

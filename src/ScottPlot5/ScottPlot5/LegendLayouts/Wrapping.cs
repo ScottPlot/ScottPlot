@@ -4,9 +4,9 @@ public class Wrapping : ILegendLayout
 {
     public LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize)
     {
+        using SKPaint paint = new();
         PixelSize maxSizeAfterPadding = maxSize.Contracted(legend.Padding);
-
-        PixelSize[] labelSizes = items.Select(x => legend.FontStyle.MeasureMultiline(x.LabelText)).ToArray();
+        PixelSize[] labelSizes = items.Select(x => x.LabelStyle.Measure2(x.LabelText, paint)).ToArray();
         float maxLabelWidth = labelSizes.Select(x => x.Width).Max();
         float maxLabelHeight = labelSizes.Select(x => x.Height).Max();
         PixelSize itemSize = new(legend.SymbolWidth + legend.SymbolPadding + maxLabelWidth, maxLabelHeight);

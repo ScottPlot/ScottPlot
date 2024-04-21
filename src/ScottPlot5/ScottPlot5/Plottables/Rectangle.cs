@@ -6,7 +6,7 @@ public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => [new LegendItem()
     {
-        Label = LegendText,
+        LabelText = LegendText,
         FillStyle = FillStyle,
         OutlineStyle = LineStyle,
     }];

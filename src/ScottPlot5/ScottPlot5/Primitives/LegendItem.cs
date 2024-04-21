@@ -32,15 +32,14 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
 
-    #region obsolete these
-    public FontStyle? CustomFontStyle { get; set; } = null;
+    [Obsolete("use LineStyle")]
     public LineStyle Line { get => LineStyle; set => LineStyle = value; }
+
+    [Obsolete("use MarkerStyle")]
     public MarkerStyle Marker { get => MarkerStyle; set => MarkerStyle = value; }
+
+    [Obsolete("use LabelText")]
     public string Label { get => LabelText; set => LabelText = value; }
-    public bool HasArrow { get => ArrowStyle.LineStyle.IsVisible; set => ArrowStyle.LineStyle.IsVisible = value; }
-    public bool IsVisible => !string.IsNullOrEmpty(LabelText);
-    public bool HasSymbol => HasArrow || Marker.IsVisible;
-    #endregion
 
     #region Static Builders
 
@@ -52,9 +51,9 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     {
         LegendItem item = new()
         {
-            Label = label,
-            Marker = markerStyle,
-            Line = LineStyle.None,
+            LabelText = label,
+            MarkerStyle = markerStyle,
+            LineStyle = LineStyle.None,
         };
 
         return Single(item);
@@ -64,9 +63,9 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     {
         LegendItem item = new()
         {
-            Label = label,
-            Marker = markerStyle,
-            Line = lineStyle,
+            LabelText = label,
+            MarkerStyle = markerStyle,
+            LineStyle = lineStyle,
         };
 
         return Single(item);
@@ -76,9 +75,9 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     {
         LegendItem item = new()
         {
-            Label = label,
-            Marker = MarkerStyle.None,
-            Line = lineStyle,
+            LabelText = label,
+            MarkerStyle = MarkerStyle.None,
+            LineStyle = lineStyle,
         };
 
         return Single(item);
@@ -88,10 +87,10 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     {
         LegendItem item = new()
         {
-            Label = label,
-            Marker = MarkerStyle.None,
+            LabelText = label,
+            MarkerStyle = MarkerStyle.None,
             FillStyle = fillStyle,
-            Line = LineStyle.None,
+            LineStyle = LineStyle.None,
         };
 
         return Single(item);
@@ -101,10 +100,10 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     {
         LegendItem item = new()
         {
-            Label = label,
-            Marker = MarkerStyle.None,
+            LabelText = label,
+            MarkerStyle = MarkerStyle.None,
             FillStyle = fillStyle,
-            Line = lineStyle,
+            LineStyle = lineStyle,
         };
 
         return Single(item);
@@ -114,9 +113,9 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     {
         LegendItem item = new()
         {
-            Label = label,
-            Marker = markerStyle,
-            Line = lineStyle,
+            LabelText = label,
+            MarkerStyle = markerStyle,
+            LineStyle = lineStyle,
         };
 
         return Single(item);

@@ -43,7 +43,7 @@ public class Legend : ICategory
                 MarkerFillColor = Colors.Magenta,
                 MarkerLineColor = Colors.Magenta,
                 LineWidth = 2,
-                Label = "Alpha"
+                LabelText = "Alpha"
             };
 
             LegendItem item2 = new()
@@ -52,7 +52,7 @@ public class Legend : ICategory
                 MarkerFillColor = Colors.Green,
                 MarkerLineColor = Colors.Green,
                 LineWidth = 4,
-                Label = "Beta"
+                LabelText = "Beta"
             };
 
             LegendItem[] items = { item1, item2 };

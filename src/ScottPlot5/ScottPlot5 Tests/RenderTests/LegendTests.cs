@@ -1,6 +1,4 @@
-﻿using ScottPlot.Rendering.RenderActions;
-
-namespace ScottPlotTests.RenderTests;
+﻿namespace ScottPlotTests.RenderTests;
 
 internal class LegendTests
 {
@@ -101,9 +99,9 @@ internal class LegendTests
         {
             LegendItem item = new()
             {
-                LabelText = $"Item #{i + 1}",
+                LabelText = $"AgAgAg Item #{i + 1}",
                 LabelFontColor = Colors.Category10[i],
-                LabelFontSize = 16,
+                LabelFontSize = 22,
                 LineColor = Colors.Category10[i],
                 LineWidth = 3,
             };
@@ -112,7 +110,33 @@ internal class LegendTests
 
         plt.ShowLegend();
 
-        plt.SaveTestImage(300, 200);
+        plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Legend_FontOverride()
+    {
+        ScottPlot.Plot plt = new();
+
+        for (int i = 0; i < 5; i++)
+        {
+            LegendItem item = new()
+            {
+                LabelText = $"AgAgAg Item #{i + 1}",
+                LabelFontColor = Colors.Category10[i],
+                LabelFontSize = 22,
+                LineColor = Colors.Category10[i],
+                LineWidth = 3,
+            };
+            plt.Legend.ManualItems.Add(item);
+        }
+
+        plt.Legend.FontSize = 12;
+        plt.Legend.FontColor = Colors.Magenta;
+        plt.Legend.FontName = Fonts.Monospace;
+
+        plt.ShowLegend();
+        plt.SaveTestImage();
     }
 
     private LegendItem[] GetSampleLegendItems(int fontSize = 16) =>

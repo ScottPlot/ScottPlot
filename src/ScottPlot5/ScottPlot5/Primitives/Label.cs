@@ -166,7 +166,22 @@ public class Label
 
     // TODO: figure which measure methods to obsolete
 
-    // TODO: pass paints in
+    // TODO: always pass paints in
+
+    public PixelSize Measure2(string text, SKPaint paint)
+    {
+        string[] lines = text.Split('\n');
+        ApplyToPaint(paint);
+        float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
+        float maxWidth = lines.Select(paint.MeasureText).Max();
+        return new PixelSize(maxWidth, lineHeight);
+    }
+
+    public SKFontMetrics GetFontMetrics(SKPaint paint)
+    {
+        paint.GetFontMetrics(out SKFontMetrics metrics);
+        return metrics;
+    }
 
     public PixelSize MeasureMultiline()
     {

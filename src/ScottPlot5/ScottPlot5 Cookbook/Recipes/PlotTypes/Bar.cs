@@ -247,9 +247,9 @@ public class Bar : ICategory
             // build the legend manually
             myPlot.Legend.IsVisible = true;
             myPlot.Legend.Alignment = Alignment.UpperLeft;
-            myPlot.Legend.ManualItems.Add(new() { Label = "Monday", FillColor = palette.GetColor(0) });
-            myPlot.Legend.ManualItems.Add(new() { Label = "Tuesday", FillColor = palette.GetColor(1) });
-            myPlot.Legend.ManualItems.Add(new() { Label = "Wednesday", FillColor = palette.GetColor(2) });
+            myPlot.Legend.ManualItems.Add(new() { LabelText = "Monday", FillColor = palette.GetColor(0) });
+            myPlot.Legend.ManualItems.Add(new() { LabelText = "Tuesday", FillColor = palette.GetColor(1) });
+            myPlot.Legend.ManualItems.Add(new() { LabelText = "Wednesday", FillColor = palette.GetColor(2) });
 
             // show group labels on the bottom axis
             Tick[] ticks =
@@ -336,7 +336,7 @@ public class Bar : ICategory
             {
                 LegendItem item = new()
                 {
-                    Label = categoryNames[i],
+                    LabelText = categoryNames[i],
                     FillColor = categoryColors[i]
                 };
                 myPlot.Legend.ManualItems.Add(item);
