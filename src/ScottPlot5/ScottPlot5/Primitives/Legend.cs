@@ -218,10 +218,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            item.LabelStyle.ApplyToPaint(paint);
-            SKFontMetrics metrics = item.LabelStyle.GetFontMetrics(paint);
-            Pixel labelPx = labelRect.LeftCenter.WithOffset(0, -metrics.Descent / 2); // improve vertical centering
-            item.LabelStyle.Render(canvas, labelPx, paint);
+            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
 
             bool SHOW_DEBUG_RECTANGLES = false;
             if (SHOW_DEBUG_RECTANGLES)

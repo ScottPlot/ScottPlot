@@ -95,17 +95,31 @@ internal class LegendTests
     {
         ScottPlot.Plot plt = new();
 
+        var leg2 = plt.Add.Legend();
+        leg2.Alignment = Alignment.LowerCenter;
+
         for (int i = 0; i < 5; i++)
         {
-            LegendItem item = new()
+            LegendItem item1 = new()
             {
-                LabelText = $"AgAgAg Item #{i + 1}",
+                LabelText = $"ASDFgj",
                 LabelFontColor = Colors.Category10[i],
                 LabelFontSize = 22,
                 LineColor = Colors.Category10[i],
                 LineWidth = 3,
             };
-            plt.Legend.ManualItems.Add(item);
+
+            LegendItem item2 = new()
+            {
+                LabelText = $"ASDF",
+                LabelFontColor = Colors.Category10[i],
+                LabelFontSize = 22,
+                LineColor = Colors.Category10[i],
+                LineWidth = 3,
+            };
+
+            plt.Legend.ManualItems.Add(item1);
+            leg2.ManualItems.Add(item2);
         }
 
         plt.ShowLegend();
