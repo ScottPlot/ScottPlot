@@ -211,6 +211,11 @@ public class AxisManager
         Panels.Remove(panel);
     }
 
+    public void AddPanel(IPanel panel)
+    {
+        Panels.Add(panel);
+    }
+
     /// <summary>
     /// Remove all bottom axes, create a DateTime bottom axis, add it to the plot, and return it.
     /// </summary>

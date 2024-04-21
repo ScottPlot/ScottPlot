@@ -80,6 +80,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public bool AllowMultiline { get; set; }
 
     public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
+    public PixelSize LastRenderSize { get; private set; } = PixelSize.NaN;
 
     public LineStyle OutlineStyle { get; set; } = new();
     public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
@@ -120,6 +121,16 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             {
                 item.LabelStyle.SetBestFont();
             }
+        }
+
+        foreach (LegendItem item in items)
+        {
+            if (FontSize is not null)
+                item.LabelFontSize = FontSize.Value;
+            if (FontName is not null)
+                item.LabelFontName = FontName;
+            if (FontColor is not null)
+                item.LabelFontColor = FontColor.Value;
         }
 
         return items;
@@ -170,29 +181,45 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     }
 
     /// <summary>
-    /// This is called by the render manager
+    /// This is called automatically by the render manager
     /// </summary>
     public void Render(RenderPack rp)
     {
+        if (!IsVisible)
+            return;
+
         LegendItem[] items = GetItems();
         if (items.Length == 0)
             return;
-
-        foreach (LegendItem item in items)
-        {
-            if (FontSize is not null)
-                item.LabelFontSize = FontSize.Value;
-            if (FontName is not null)
-                item.LabelFontName = FontName;
-            if (FontColor is not null)
-                item.LabelFontColor = FontColor.Value;
-        }
 
         PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
         LegendLayout tightLayout = Layout.GetLayout(this, items, dataRectAfterMargin.Size);
         PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
         PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
+        LegendLayout layout = new()
+        {
+            LegendItems = tightLayout.LegendItems,
+            LegendRect = tightLayout.LegendRect.WithOffset(legendOffset),
+            LabelRects = tightLayout.LabelRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+            SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+        };
 
+        RenderLayout(rp.Canvas, layout);
+    }
+
+    /// <summary>
+    /// Render the legend inside the given rectangle
+    /// </summary>
+    /// <param name="rp"></param>
+    public void Render(RenderPack rp, PixelRect rect, Alignment alignment)
+    {
+        LegendItem[] items = GetItems();
+        if (items.Length == 0)
+            return;
+
+        LegendLayout tightLayout = Layout.GetLayout(this, items, rect.Size);
+        PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(rect, alignment);
+        PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
         LegendLayout layout = new()
         {
             LegendItems = tightLayout.LegendItems,
@@ -206,6 +233,8 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     private void RenderLayout(SKCanvas canvas, LegendLayout layout)
     {
+        LastRenderSize = layout.LegendRect.Size;
+
         using SKPaint paint = new();
 
         // render the legend panel

@@ -351,4 +351,28 @@ internal class LegendTests
 
         plt.GetLegendImage().SaveTestImage();
     }
+
+    [Test]
+    public void Test_Legend_Panel()
+    {
+        ScottPlot.Plot plt = new();
+
+        var sig1 = plt.Add.Signal(Generate.Sin());
+        var sig2 = plt.Add.Signal(Generate.Cos());
+
+        sig1.LegendText = "Sine";
+        sig2.LegendText = "Cosine";
+        
+        plt.HideLegend(); // hide the default legend
+
+        ScottPlot.Panels.LegendPanel pan = new(plt.Legend)
+        {
+            Edge = Edge.Right,
+            Alignment = Alignment.UpperCenter,
+        };
+
+        plt.Axes.AddPanel(pan);
+
+        plt.SaveTestImage();
+    }
 }

@@ -130,7 +130,6 @@ public class Legend : ICategory
         }
     }
 
-
     public class LegendMultiple : RecipeBase
     {
         public override string Name => "Multiple Legends";
@@ -156,6 +155,35 @@ public class Legend : ICategory
             var leg2 = myPlot.Add.Legend();
             leg2.Alignment = Alignment.UpperCenter;
             leg2.Orientation = Orientation.Horizontal;
+        }
+    }
+
+    public class LegendOutside : RecipeBase
+    {
+        public override string Name => "Legend Outside the Plot";
+        public override string Description => "The default legend can be hidden so that it " +
+            "may be added into a legend panel and displayed outside the data area.";
+
+        [Test]
+        public override void Execute()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin());
+            var sig2 = myPlot.Add.Signal(Generate.Cos());
+
+            sig1.LegendText = "Sine";
+            sig2.LegendText = "Cosine";
+
+            // hide the default legend
+            myPlot.HideLegend();
+
+            // display the legend in a LegendPanel outside the plot
+            ScottPlot.Panels.LegendPanel pan = new(myPlot.Legend)
+            {
+                Edge = Edge.Right,
+                Alignment = Alignment.UpperCenter,
+            };
+
+            myPlot.Axes.AddPanel(pan);
         }
     }
 }
