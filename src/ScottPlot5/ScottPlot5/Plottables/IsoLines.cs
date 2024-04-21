@@ -52,7 +52,7 @@ public class IsoLines : IPlottable, IHasLine
     private void RenderLines(RenderPack rp, SKPaint paint, List<PixelLine> lines)
     {
         LineStyle.ApplyToPaint(paint);
-        lines.ForEach(line => LineStyle.Render(rp.Canvas, paint, line));
+        lines.ForEach(line => LineStyle.Render(rp.Canvas, line, paint));
     }
 
     private void RenderLabelsFixed(RenderPack rp, SKPaint paint, List<PixelLine> lines)

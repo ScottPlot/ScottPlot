@@ -102,7 +102,7 @@ public class FillY : ICategory
             xyy.LineStyle.Color = Colors.DarkBlue;
             xyy.LineStyle.Pattern = LinePattern.Dotted;
             xyy.LineStyle.Width = 2;
-            xyy.Label = "xyy";
+            xyy.LegendText = "xyy";
 
             myPlot.Legend.IsVisible = true;
         }

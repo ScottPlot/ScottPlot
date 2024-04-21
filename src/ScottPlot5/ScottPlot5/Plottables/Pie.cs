@@ -26,15 +26,13 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
         return new AxisLimits(-radius, radius, -radius, radius);
 
     }
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
+
+    public IEnumerable<LegendItem> LegendItems => Slices
+        .Select((Func<PieSlice, LegendItem>)(slice => new LegendItem
         {
-            Children = Slices.Select(slice => new LegendItem
-            {
-                Label = slice.Label,
-                Fill = slice.Fill
-            })
-        });
+            LabelText = slice.LegendText,
+            FillStyle = slice.Fill,
+        }));
 
     public void Render(RenderPack rp)
     {

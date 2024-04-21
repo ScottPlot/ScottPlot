@@ -28,7 +28,7 @@ public class NumericManual : ITickGenerator
         }
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
     {
         Ticks = TickList.Where(x => range.Contains(x.Position)).ToArray();
     }

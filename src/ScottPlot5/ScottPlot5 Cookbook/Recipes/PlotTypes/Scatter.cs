@@ -129,13 +129,13 @@ public class Scatter : ICategory
             double[] ys2 = Generate.Cos(51);
 
             var sp1 = myPlot.Add.Scatter(xs, ys1);
-            sp1.Label = "Sine";
+            sp1.LegendText = "Sine";
             sp1.LineWidth = 3;
             sp1.Color = Colors.Magenta;
             sp1.MarkerSize = 15;
 
             var sp2 = myPlot.Add.Scatter(xs, ys2);
-            sp2.Label = "Cosine";
+            sp2.LegendText = "Cosine";
             sp2.LineWidth = 2;
             sp2.Color = Colors.Green;
             sp2.MarkerSize = 10;
@@ -228,15 +228,15 @@ public class Scatter : ICategory
 
             var sp1 = myPlot.Add.Scatter(xs, ys1);
             sp1.ConnectStyle = ConnectStyle.Straight;
-            sp1.Label = "Straight";
+            sp1.LegendText = "Straight";
 
             var sp2 = myPlot.Add.Scatter(xs, ys2);
             sp2.ConnectStyle = ConnectStyle.StepHorizontal;
-            sp2.Label = "StepHorizontal";
+            sp2.LegendText = "StepHorizontal";
 
             var sp3 = myPlot.Add.Scatter(xs, ys3);
             sp3.ConnectStyle = ConnectStyle.StepVertical;
-            sp3.Label = "StepVertical";
+            sp3.LegendText = "StepVertical";
 
             myPlot.ShowLegend();
         }
@@ -287,7 +287,7 @@ public class Scatter : ICategory
 
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.Smooth = true;
-            sp.Label = "Smooth";
+            sp.LegendText = "Smooth";
             sp.LineWidth = 2;
             sp.MarkerSize = 10;
         }
@@ -318,7 +318,7 @@ public class Scatter : ICategory
                 var sp = myPlot.Add.ScatterLine(xs, ys);
                 sp.Smooth = true;
                 sp.SmoothTension = tension;
-                sp.Label = $"Tension {tension}";
+                sp.LegendText = $"Tension {tension}";
                 sp.LineWidth = 2;
             }
 
@@ -341,7 +341,7 @@ public class Scatter : ICategory
 
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.PathStrategy = new ScottPlot.PathStrategies.QuadHalfPoint();
-            sp.Label = "Smooth";
+            sp.LegendText = "Smooth";
             sp.LineWidth = 2;
             sp.MarkerSize = 10;
         }

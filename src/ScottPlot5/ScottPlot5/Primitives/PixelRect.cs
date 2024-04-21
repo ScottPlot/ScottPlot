@@ -20,7 +20,13 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     public Pixel RightCenter => new(Right, VerticalCenter);
     public Pixel BottomCenter => new(HorizontalCenter, Bottom);
     public Pixel TopCenter => new(HorizontalCenter, Top);
+    public Pixel Center => new(HorizontalCenter, VerticalCenter);
     public PixelSize Size => new(Width, Height);
+
+    public PixelLine BottomLine => new(BottomLeft, BottomRight);
+    public PixelLine TopLine => new(TopLeft, TopRight);
+    public PixelLine LeftLine => new(TopLeft, BottomLeft);
+    public PixelLine RightLine => new(TopRight, BottomRight);
 
     public static PixelRect Zero => new(0, 0, 0, 0);
     public static PixelRect NaN => new(Pixel.NaN, PixelSize.NaN);
@@ -50,7 +56,21 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     /// <summary>
     /// Create a rectangle representing pixels on a screen
     /// </summary>
+    public PixelRect(PixelOffset offset, PixelSize size) : this(offset.X, offset.X + size.Width, offset.Y, offset.Y + size.Height)
+    {
+    }
+
+    /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
     public PixelRect(Pixel topLeftCorner, float width, float height) : this(topLeftCorner.X, topLeftCorner.X + width, topLeftCorner.Y, topLeftCorner.Y + height)
+    {
+    }
+
+    /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
+    public PixelRect(PixelSize size) : this(0, size.Width, size.Height, 0)
     {
     }
 
@@ -94,10 +114,15 @@ public readonly struct PixelRect : IEquatable<PixelRect>
 
     public PixelRect Contract(float delta)
     {
-        float left = Math.Min(Left + delta, HorizontalCenter);
-        float right = Math.Max(Right - delta, HorizontalCenter);
-        float bottom = Math.Max(Bottom - delta, VerticalCenter);
-        float top = Math.Min(Top + delta, VerticalCenter);
+        return Contract(delta, delta);
+    }
+
+    public PixelRect Contract(float x, float y)
+    {
+        float left = Math.Min(Left + x, HorizontalCenter);
+        float right = Math.Max(Right - x, HorizontalCenter);
+        float bottom = Math.Max(Bottom - y, VerticalCenter);
+        float top = Math.Min(Top + y, VerticalCenter);
         return new PixelRect(left, right, bottom, top);
     }
 
@@ -243,72 +268,77 @@ public readonly struct PixelRect : IEquatable<PixelRect>
             top: Top + offset.Y
         );
     }
-}
 
-public static class PixelRectExtensions
-{
     /// <summary>
-    /// Create a rectangle of given sized aligned inside a larger rectangle
+    /// Return the position of this rectangle aligned inside a larger one
     /// </summary>
-    public static PixelRect AlignedInside(this PixelSize size, PixelRect rect, Alignment alignment, PixelPadding padding)
+    public PixelRect AlignedInside(PixelRect largerRect, Alignment alignment)
     {
-        PixelRect inner = rect.Contract(padding);
+        return AlignedInside(largerRect, alignment, PixelPadding.Zero);
+    }
+
+    /// <summary>
+    /// Return the position of this rectangle aligned inside a larger one
+    /// </summary>
+    public PixelRect AlignedInside(PixelRect largerRect, Alignment alignment, PixelPadding padding)
+    {
+        PixelRect inner = largerRect.Contract(padding);
 
         return alignment switch
         {
             Alignment.UpperLeft => new PixelRect(
                 left: inner.Left,
-                right: inner.Left + size.Width,
-                bottom: inner.Top + size.Height,
+                right: inner.Left + Width,
+                bottom: inner.Top + Height,
                 top: inner.Top),
 
             Alignment.UpperCenter => new PixelRect(
-                left: inner.HorizontalCenter - size.Width / 2,
-                right: inner.HorizontalCenter + size.Width / 2,
-                bottom: inner.Top + size.Height,
+                left: inner.HorizontalCenter - Width / 2,
+                right: inner.HorizontalCenter + Width / 2,
+                bottom: inner.Top + Height,
                 top: inner.Top),
 
             Alignment.UpperRight => new PixelRect(
-                left: inner.Right - size.Width,
+                left: inner.Right - Width,
                 right: inner.Right,
-                bottom: inner.Top + size.Height,
+                bottom: inner.Top + Height,
                 top: inner.Top),
 
             Alignment.MiddleLeft => new PixelRect(
                 left: inner.Left,
-                right: inner.Left + size.Width,
-                bottom: inner.VerticalCenter + size.Height / 2,
-                top: inner.VerticalCenter - size.Height / 2),
+                right: inner.Left + Width,
+                bottom: inner.VerticalCenter + Height / 2,
+                top: inner.VerticalCenter - Height / 2),
 
             Alignment.MiddleCenter => new PixelRect(
-                left: inner.HorizontalCenter - size.Width / 2,
-                right: inner.HorizontalCenter + size.Width / 2,
-                bottom: inner.VerticalCenter + size.Height / 2,
-                top: inner.VerticalCenter - size.Height / 2),
+                left: inner.HorizontalCenter - Width / 2,
+                right: inner.HorizontalCenter + Width / 2,
+                bottom: inner.VerticalCenter + Height / 2,
+                top: inner.VerticalCenter - Height / 2),
 
             Alignment.MiddleRight => new PixelRect(
-                left: inner.Right - size.Width,
+                left: inner.Right - Width,
                 right: inner.Right,
-                bottom: inner.VerticalCenter + size.Height / 2,
-                top: inner.VerticalCenter - size.Height / 2),
+                bottom: inner.VerticalCenter + Height / 2,
+                top: inner.VerticalCenter - Height / 2),
 
             Alignment.LowerLeft => new PixelRect(
                 left: inner.Left,
-                right: inner.Left + size.Width,
+                right: inner.Left + Width,
                 bottom: inner.Bottom,
-                top: inner.Bottom - size.Height),
+                top: inner.Bottom - Height),
 
             Alignment.LowerCenter => new PixelRect(
-                left: inner.HorizontalCenter - size.Width / 2,
-                right: inner.HorizontalCenter + size.Width / 2,
+                left: inner.HorizontalCenter - Width / 2,
+                right: inner.HorizontalCenter + Width / 2,
                 bottom: inner.Bottom,
-                top: inner.Bottom - size.Height),
+                top: inner.Bottom - Height),
 
             Alignment.LowerRight => new PixelRect(
-                left: inner.Right - size.Width,
+                left: inner.Right - Width,
                 right: inner.Right,
                 bottom: inner.Bottom,
-                top: inner.Bottom - size.Height),
+                top: inner.Bottom - Height),
 
             _ => throw new NotImplementedException(),
         };

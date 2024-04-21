@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -9,69 +10,6 @@ namespace ScottPlot;
 /// </summary>
 public static class Drawing
 {
-    public static PixelSize MeasureString(string text, SKPaint paint)
-    {
-        var strings = text.Split('\n');
-        if (strings.Length > 1)
-        {
-            return strings
-                .Select(s => MeasureString(s, paint))
-                .Aggregate((a, b) => new PixelSize(Math.Max(a.Width, b.Width), a.Height + b.Height));
-        }
-
-        SKRect bounds = new();
-        ///INFO: MeasureText(string str, ref SKRect rect) works as follow:
-        /// - returned value is the length of the text with leading and trailing white spaces
-        /// - rect.Left contains the width of leading white spaces
-        /// - rect.width contains the length of the text __without__ leading or trailing white spaces
-        float width = paint.MeasureText(text, ref bounds);
-
-        float height = bounds.Height;
-        return new PixelSize(width, height);
-    }
-
-    public static (string text, PixelLength width) MeasureWidestString(string[] strings)
-    {
-        using SKPaint paint = new();
-        return MeasureWidestString(strings, paint);
-    }
-
-    public static (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaint paint)
-    {
-        float maxWidth = 0;
-        string maxText = string.Empty;
-
-        for (int i = 0; i < strings.Length; i++)
-        {
-            PixelSize size = MeasureString(strings[i], paint);
-            if (size.Width > maxWidth)
-            {
-                maxWidth = size.Width;
-                maxText = strings[i];
-            }
-        }
-
-        return (maxText, maxWidth);
-    }
-
-    public static (string text, float height) MeasureHighestString(string[] strings, SKPaint paint)
-    {
-        float maxHeight = 0;
-        string maxText = string.Empty;
-
-        for (int i = 0; i < strings.Length; i++)
-        {
-            PixelSize size = MeasureString(strings[i], paint);
-            if (size.Height > maxHeight)
-            {
-                maxHeight = size.Height;
-                maxText = strings[i];
-            }
-        }
-
-        return (maxText, maxHeight);
-    }
-
     public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pixelLine)
     {
         DrawLine(canvas, paint, pixelLine.Pixel1, pixelLine.Pixel2);
@@ -92,7 +30,7 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false)
+        if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false || lineStyle.Color == Colors.Transparent)
             return;
 
         lineStyle.ApplyToPaint(paint);
@@ -153,6 +91,15 @@ public static class Drawing
         };
 
         DrawLines(canvas, paint, pixels, ls);
+    }
+
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    {
+        if (lineStyle.IsVisible == false || lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+            return;
+
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawPath(path, paint);
     }
 
     private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();
@@ -287,23 +234,23 @@ public static class Drawing
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-        renderer.LineWidth = style.Outline.Width;
-        renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
+        renderer.LineWidth = style.OutlineWidth;
+        renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        bool lineIsVisible = style.Outline.IsVisible && style.Outline.Color.Alpha != 0 && style.Outline.Width > 0;
-        bool fillIsVisible = style.Fill.Color.Alpha != 0;
+        bool lineIsVisible = style.OutlineStyle.IsVisible && style.OutlineColor.Alpha != 0 && style.OutlineStyle.Width > 0;
+        bool fillIsVisible = style.FillColor.Alpha != 0;
         if ((lineIsVisible || fillIsVisible) == false)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-        renderer.LineWidth = style.Outline.Width;
+        renderer.LineWidth = style.OutlineWidth;
 
         foreach (Pixel pixel in pixels)
         {
-            renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
+            renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
         }
     }
 

@@ -3,12 +3,16 @@
 /// <summary>
 /// Displays 1 or more boxes all styled the same
 /// </summary>
-public class BoxPlot : IPlottable
+public class BoxPlot : IPlottable, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public string Label { get; set; } = string.Empty;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, Boxes.First().Fill);
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, Boxes.First().Fill);
 
     public readonly List<Box> Boxes = new();
 

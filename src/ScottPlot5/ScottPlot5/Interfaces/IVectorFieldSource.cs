@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interfaces;
+﻿namespace ScottPlot;
 
 public interface IVectorFieldSource
 {

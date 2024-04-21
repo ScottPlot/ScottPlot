@@ -1,7 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Control;
 using ScottPlot.Grids;
-using ScottPlot.Legends;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
 
@@ -23,11 +22,9 @@ public class Plot : IDisposable
     internal float ScaleFactorF = 1.0f;
 
     public AxisManager Axes { get; }
-
     public PlotStyler Style { get; }
     public FontStyler Font { get; }
-
-    public Legend Legend { get; set; }
+    public Legend Legend { get; }
 
     public DefaultGrid Grid => Axes.DefaultGrid;
 
@@ -458,37 +455,53 @@ public class Plot : IDisposable
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void ShowLegend()
+    public Legend ShowLegend()
     {
         Legend.IsVisible = true;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// and setting <see cref="Legend.Location"/> to the provided one.
     /// </summary>
-    public void ShowLegend(Alignment location)
+    public Legend ShowLegend(Alignment alignment)
     {
         Legend.IsVisible = true;
-        Legend.Location = location;
+        Legend.Alignment = alignment;
+        return Legend;
+    }
+
+    /// <summary>
+    /// Helper method for setting the Legend's IsVisible, Alignment, and Orientation
+    /// properties all at once.
+    /// </summary>
+    public Legend ShowLegend(Alignment alignment, Orientation orientation)
+    {
+        Legend.IsVisible = true;
+        Legend.Alignment = alignment;
+        Legend.Orientation = orientation;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for displaying specific items in the legend
     /// </summary>
-    public void ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
+    public Legend ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
     {
         ShowLegend(location);
         Legend.ManualItems.Clear();
         Legend.ManualItems.AddRange(items);
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void HideLegend()
+    public Legend HideLegend()
     {
         Legend.IsVisible = false;
+        return Legend;
     }
 
     /// <summary>

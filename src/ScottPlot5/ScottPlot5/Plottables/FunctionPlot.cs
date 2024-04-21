@@ -1,16 +1,18 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine
+public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public string? Label { get; set; }
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     private IFunctionSource Source { get; set; } = source;
     private CoordinateRange MaxObservedRangeY { get; set; } = CoordinateRange.NotSet;
     private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);
     public double GetY(double x) => Source.Get(x);
 
-    public LineStyle LineStyle { get; } = new();
+    public LineStyle LineStyle { get; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -43,13 +45,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine
         }
     }
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle.None,
-            Line = LineStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
 
     public AxisLimits GetAxisLimits()
     {
