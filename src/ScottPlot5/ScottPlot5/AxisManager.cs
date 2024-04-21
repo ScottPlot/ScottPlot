@@ -1,6 +1,5 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -16,17 +15,17 @@ public class AxisManager
     /// <summary>
     /// Horizontal axes
     /// </summary>
-    internal List<IXAxis> XAxes { get; } = new();
+    internal List<IXAxis> XAxes { get; } = [];
 
     /// <summary>
     /// Vertical axes
     /// </summary>
-    internal List<IYAxis> YAxes { get; } = new();
+    internal List<IYAxis> YAxes { get; } = [];
 
     /// <summary>
-    /// Panels take up spce on one side of the data area (like a colorbar)
+    /// Panels take up space on one side of the data area (like a colorbar)
     /// </summary>
-    internal List<IPanel> Panels { get; } = new();
+    internal List<IPanel> Panels { get; } = [];
 
     /// <summary>
     /// A special panel
@@ -282,7 +281,8 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
-        if (xAxis.Range.HasBeenSet) AutoScaler.InvertedX = left > right ? true : false;
+        if (xAxis.Range.HasBeenSet)
+            AutoScaler.InvertedX = left > right;
     }
 
     public void SetLimitsY(double bottom, double top, IYAxis yAxis)
@@ -290,7 +290,8 @@ public class AxisManager
         yAxis.Min = bottom;
         yAxis.Max = top;
 
-        if (yAxis.Range.HasBeenSet) AutoScaler.InvertedY = bottom > top ? true : false;
+        if (yAxis.Range.HasBeenSet)
+            AutoScaler.InvertedY = bottom > top;
     }
 
     public void SetLimitsX(double left, double right)
@@ -434,7 +435,6 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits()
     {
-        // TODO: autoscale limits used by all plottables
         return GetLimits(Bottom, Left);
     }
 
