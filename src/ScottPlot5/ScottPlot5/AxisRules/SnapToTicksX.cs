@@ -10,7 +10,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
             return;
 
         // do not attempt to set limits according to ticks while the window is resizing
-        if (rp.Plot.RenderManager.LastRender.DataRect != rp.DataRect)
+        if (rp.Plot.RenderManager.RenderCount > 0 && rp.Plot.RenderManager.LastRender.DataRect != rp.DataRect)
             return;
 
         XAxis.RegenerateTicks(new PixelLength(rp.FigureRect.Width));
