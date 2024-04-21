@@ -362,7 +362,7 @@ internal class LegendTests
 
         sig1.LegendText = "Sine";
         sig2.LegendText = "Cosine";
-        
+
         plt.HideLegend(); // hide the default legend
 
         ScottPlot.Panels.LegendPanel pan = new(plt.Legend)
