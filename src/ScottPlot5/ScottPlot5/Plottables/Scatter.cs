@@ -14,12 +14,12 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public MarkerStyle MarkerStyle { get; } = new() { Size = 5, Shape = MarkerShape.FilledCircle };
+    public MarkerStyle MarkerStyle { get; } = new() { OutlineWidth = 1, Size = 5, Shape = MarkerShape.FilledCircle, IsVisible = true };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
-    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
-    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
     public IScatterSource Data { get; } = data;
     public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
@@ -78,8 +78,8 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         set
         {
             LineStyle.Color = value;
-            MarkerStyle.Fill.Color = value;
-            MarkerStyle.Outline.Color = value;
+            MarkerStyle.FillColor = value;
+            MarkerStyle.OutlineColor = value;
         }
     }
 

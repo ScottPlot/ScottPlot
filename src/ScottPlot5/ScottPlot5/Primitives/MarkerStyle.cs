@@ -4,7 +4,7 @@
 /// This configuration object (reference type) permanently lives inside objects which require styling.
 /// It is recommended to use this object as an init-only property.
 /// </summary>
-public class MarkerStyle
+public class MarkerStyle : IHasOutline, IHasFill
 {
     public bool IsVisible { get; set; } = true;
 
@@ -15,9 +15,20 @@ public class MarkerStyle
     /// </summary>
     public float Size { get; set; }
 
-    public FillStyle Fill { get; set; } = new();
 
-    public LineStyle Outline { get; set; } = new();
+    [Obsolete("use OutlineWidth, OutlineColor, OutlinePattern, or OutlineStyle")]
+    public LineStyle Outline { get => OutlineStyle; set => OutlineStyle = value; }
+    public LineStyle OutlineStyle { get; set; } = new();
+    public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
+    public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
+    public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
+
+    [Obsolete("use FillColor, FillHatchColor, FillHatch, or FillStyle")]
+    public FillStyle Fill { get => FillStyle; set => FillStyle = value; }
+    public FillStyle FillStyle { get; set; } = new();
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
     public MarkerStyle()
     {
@@ -32,15 +43,15 @@ public class MarkerStyle
     public MarkerStyle(MarkerShape shape, float size, Color color)
     {
         Shape = shape;
-        Outline.Color = color;
+        OutlineColor = color;
         if (shape.IsOutlined())
         {
-            Fill.Color = Colors.Transparent;
-            Outline.Width = 2;
+            FillColor = Colors.Transparent;
+            OutlineWidth = 2;
         }
         else
         {
-            Fill.Color = color;
+            FillColor = color;
         }
 
         Size = size;

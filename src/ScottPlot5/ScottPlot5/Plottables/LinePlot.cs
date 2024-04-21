@@ -8,9 +8,9 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
     public MarkerStyle MarkerStyle { get; } = new() { Size = 0 };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
-    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
-    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -30,7 +30,7 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
         set
         {
             LineStyle.Color = value;
-            MarkerStyle.Fill.Color = value;
+            MarkerStyle.FillColor = value;
         }
     }
 

@@ -11,19 +11,19 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
     public MarkerStyle MarkerStyle { get; } = new();
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
-    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
-    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
     public IScatterSource Data { get; } = data;
 
     public Color Color
     {
-        get => MarkerStyle.Fill.Color;
+        get => MarkerStyle.FillColor;
         set
         {
-            MarkerStyle.Fill.Color = value;
-            MarkerStyle.Outline.Color = value;
+            MarkerStyle.FillColor = value;
+            MarkerStyle.OutlineColor = value;
         }
     }
 

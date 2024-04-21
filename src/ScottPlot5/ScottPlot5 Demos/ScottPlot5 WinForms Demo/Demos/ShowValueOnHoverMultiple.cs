@@ -94,16 +94,16 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
                 MyCrosshair.IsVisible = true;
                 MyCrosshair.Position = point.Coordinates;
-                MyCrosshair.LineColor = scatter.MarkerStyle.Fill.Color;
+                MyCrosshair.LineColor = scatter.MarkerStyle.FillColor;
 
                 MyHighlightMarker.IsVisible = true;
                 MyHighlightMarker.Location = point.Coordinates;
-                MyHighlightMarker.MarkerStyle.Outline.Color = scatter.MarkerStyle.Fill.Color;
+                MyHighlightMarker.MarkerStyle.OutlineColor = scatter.MarkerStyle.FillColor;
 
                 MyHighlightText.IsVisible = true;
                 MyHighlightText.Location = point.Coordinates;
                 MyHighlightText.LabelText = $"{point.X:0.##}, {point.Y:0.##}";
-                MyHighlightText.LabelFontColor = scatter.MarkerStyle.Fill.Color;
+                MyHighlightText.LabelFontColor = scatter.MarkerStyle.FillColor;
 
                 formsPlot1.Refresh();
                 base.Text = $"Selected Scatter={scatter.LegendText}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";

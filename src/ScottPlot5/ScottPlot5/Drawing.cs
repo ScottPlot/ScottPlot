@@ -234,23 +234,23 @@ public static class Drawing
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-        renderer.LineWidth = style.Outline.Width;
-        renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
+        renderer.LineWidth = style.OutlineWidth;
+        renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        bool lineIsVisible = style.Outline.IsVisible && style.Outline.Color.Alpha != 0 && style.Outline.Width > 0;
-        bool fillIsVisible = style.Fill.Color.Alpha != 0;
+        bool lineIsVisible = style.OutlineStyle.IsVisible && style.OutlineColor.Alpha != 0 && style.OutlineStyle.Width > 0;
+        bool fillIsVisible = style.FillColor.Alpha != 0;
         if ((lineIsVisible || fillIsVisible) == false)
             return;
 
         IMarker renderer = style.Shape.GetRenderer();
-        renderer.LineWidth = style.Outline.Width;
+        renderer.LineWidth = style.OutlineWidth;
 
         foreach (Pixel pixel in pixels)
         {
-            renderer.Render(canvas, paint, pixel, style.Size, style.Fill, style.Outline);
+            renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
         }
     }
 

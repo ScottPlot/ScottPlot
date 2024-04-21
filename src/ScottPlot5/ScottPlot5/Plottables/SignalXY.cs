@@ -17,9 +17,9 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public MarkerStyle MarkerStyle { get; } = new() { Size = 5, Shape = MarkerShape.FilledCircle };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.Fill.Color; set => MarkerStyle.Fill.Color = value; }
-    public Color MarkerLineColor { get => MarkerStyle.Outline.Color; set => MarkerStyle.Outline.Color = value; }
-    public float MarkerLineWidth { get => MarkerStyle.Outline.Width; set => MarkerStyle.Outline.Width = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
 
     public Color Color
     {
@@ -27,8 +27,8 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
         set
         {
             LineStyle.Color = value;
-            MarkerStyle.Fill.Color = value;
-            MarkerStyle.Outline.Color = value;
+            MarkerStyle.FillColor = value;
+            MarkerStyle.OutlineColor = value;
         }
     }
 

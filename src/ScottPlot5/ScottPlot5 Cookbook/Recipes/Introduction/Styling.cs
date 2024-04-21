@@ -104,15 +104,28 @@ public class Styling : ICategory
         public override void Execute()
         {
             MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+            ScottPlot.Palettes.Category10 palette = new();
 
             for (int i = 0; i < markerShapes.Length; i++)
             {
-                double[] xs = Generate.Consecutive(20);
-                double[] ys = Generate.Sin(20, offset: markerShapes.Length - i);
+                double[] xs = Generate.Consecutive(10);
+                double[] ys = Generate.Sin(10, offset: markerShapes.Length - i);
+                Color color = palette.GetColor(i);
+
                 var scatter = myPlot.Add.Scatter(xs, ys);
                 scatter.MarkerStyle.Shape = markerShapes[i];
                 scatter.MarkerStyle.Size = 10;
+                scatter.LineColor = color.WithAlpha(.2);
+                scatter.MarkerFillColor = color;
+                scatter.MarkerLineColor = color;
+
+                var txt = myPlot.Add.Text(markerShapes[i].ToString(), 10, ys.Last());
+                txt.LabelAlignment = Alignment.MiddleLeft;
+                txt.LabelFontColor = color;
             }
+
+            myPlot.Axes.SetLimitsX(-2, 20);
+            myPlot.HideGrid();
         }
     }
 
@@ -132,9 +145,9 @@ public class Styling : ICategory
                 var mp = myPlot.Add.Marker(x: i, y: 0);
                 mp.MarkerStyle.Shape = markerShapes[i];
                 mp.MarkerStyle.Size = 10;
-                mp.MarkerStyle.Outline.Width = 1.5f;
-                mp.MarkerStyle.Outline.Color = palette.GetColor(i);
-                mp.MarkerStyle.Fill.Color = palette.GetColor(i).WithAlpha(.5);
+                mp.MarkerStyle.OutlineWidth = 1.5f;
+                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
+                mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
 
                 var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
                 txt.LabelRotation = -90;

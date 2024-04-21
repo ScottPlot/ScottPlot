@@ -2,13 +2,16 @@
 
 public class Text : LabelStyleProperties, IPlottable
 {
-    public override Label LabelStyle { get; set; } = new();
     public Coordinates Location { get; set; }
+    public float OffsetX { get; set; }
+    public float OffsetY { get; set; }
+
+    public override Label LabelStyle { get; set; } = new();
+    public Alignment Alignment { get => LabelAlignment; set => LabelAlignment = value; }
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-    public float OffsetX { get; set; }
-    public float OffsetY { get; set; }
 
     #region obsolete
 
