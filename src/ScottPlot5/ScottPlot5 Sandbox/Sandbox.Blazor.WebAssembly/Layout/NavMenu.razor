@@ -14,6 +14,7 @@
         </button>
     </div>
 </div>
+
 <div class="bottom-row">
     <div class="icon-menu-arrow">
         @if (!@IconMenuActive)
@@ -26,24 +27,28 @@
         }
     </div>
 </div>
+
 @if (!@IconMenuActive)
 {
     <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-        <h2 class="mt-4 fs-6 ps-2 fw-bold">Getting Started</h2>
+        <h2 class="mt-4 fs-6 ps-3 fw-bold">Getting Started</h2>
         <div class="sidebar-button">
-            <div href="/quickstart" class="sidebar-button">Quickstart</div>
+            <a href="/quickstart" class="sidebar-button">Quickstart</a>
         </div>
         <div class="sidebar-button">
-            <div href="/signal" class="sidebar-button">Signal Plot</div>
+            <a href="/signal" class="sidebar-button">Performance Test</a>
         </div>
         <hr />
-        <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
-        <br />
-        
+
+        <h1 class="mt-4 fs-3 ps-3">ScottPlot Cookbook</h1>
+        <div class="px-3">
+            <input class="form-control w-100" @bind-value="SearchTerm" placeholder="Search..." @bind-value:event="oninput" />
+        </div>
+
         <nav class="flex-column px-2">
             @foreach (string chapter in GetFilteredRecipeChapters())
             {
-                <h1 class="mt-4 fs-3 ps-2">@chapter</h1>
+                <h1 class="mt-4 fs-4 ps-2">@chapter</h1>
 
                 @foreach (ICategory category in GetFilteredRecipeCategories(chapter))
                 {
