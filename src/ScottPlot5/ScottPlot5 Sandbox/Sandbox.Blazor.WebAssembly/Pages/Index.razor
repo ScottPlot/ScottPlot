@@ -2,7 +2,7 @@
 @page "/recipe/{selectRecipe?}"
 
 @inject IRecipesService RecipeService
-@inject IResizeService  ResizeService
+@inject IResizeService ResizeService
 @implements IDisposable
 
 @if (RecipeService.HasRecipe)
@@ -38,6 +38,7 @@
         <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
     </div>
 }
+
 <div class="text-muted p-4" style="margin-top: 10rem;">
     @ScottPlot.Version.LongString Running on .NET @Environment.Version
 </div>
@@ -51,7 +52,7 @@
     BlazorPlotGL BlazorPlotGL { get; set; } = new();
     string SearchTerm { get; set; } = "";
 
-    string plotSize { get;  set; } = "width: min(100%, 800px); height: 600px;";
+    string plotSize { get; set; } = "width: min(100%, 800px); height: 600px;";
 
     protected override void OnInitialized()
     {
