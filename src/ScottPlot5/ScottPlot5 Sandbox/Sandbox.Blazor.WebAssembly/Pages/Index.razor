@@ -11,16 +11,16 @@
         <div class="fs-3">@RecipeService.RecipeName</div>
         <div>@RecipeService.RecipeDescription</div>
     </div>
+
     @if (RecipeService.ShowOpenGL)
     {
-        <h5>OpenGL control</h5>
         <BlazorPlotGL @ref=BlazorPlotGL Style="@plotSize" />
     }
     else
     {
-        <h5>Standard control</h5>
         <BlazorPlot @ref=BlazorPlot Style="@plotSize" />
     }
+
     <div class="m-3">
         <div class="bg-light border rounded d-inline-block p-3">
             @if (RecipeService.HasSourceCode)
@@ -32,6 +32,10 @@
                 <p>Loading...</p>
             }
         </div>
+    </div>
+
+    <div class="my-5 p-3">
+        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
     </div>
 }
 <div class="text-muted p-4" style="margin-top: 10rem;">

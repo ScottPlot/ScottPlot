@@ -39,9 +39,7 @@
         <hr />
         <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
         <br />
-        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
-        <hr />
-
+        
         <nav class="flex-column px-2">
             @foreach (string chapter in GetFilteredRecipeChapters())
             {
