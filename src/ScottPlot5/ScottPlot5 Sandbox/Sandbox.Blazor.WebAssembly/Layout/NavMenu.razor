@@ -4,7 +4,7 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <img src="favicon.svg" height="36px"/>
+        <img src="favicon.svg" height="36px" />
         @if (!@IconMenuActive)
         {
             <a class="navbar-brand" href="">ScottPlot Blazor Demo</a>
@@ -42,23 +42,28 @@
         <hr />
 
         <nav class="flex-column px-2">
-            @foreach (var recipes in FilteredRecipes)
+            @foreach (string chapter in GetFilteredRecipeChapters())
             {
-                <h1 class="mt-4">@recipes.Key.CategoryName</h1>
+                <h1 class="mt-4 fs-3 ps-2">@chapter</h1>
 
-                @foreach (var recipe in recipes.Value)
+                @foreach (ICategory category in GetFilteredRecipeCategories(chapter))
                 {
-                    @if (RecipeService.IsSelected(recipe))
+                    <h2 class="mt-4 fs-6 ps-2 fw-bold">@category.CategoryName</h2>
+
+                    @foreach (IRecipe recipe in GetFilteredRecipes(category))
                     {
-                        <div class="sidebar-selected">
-                            <a>@recipe.Name</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
-                            <a>@recipe.Name</a>
-                        </div>
+                        @if (RecipeService.IsSelected(recipe))
+                        {
+                            <div class="sidebar-selected">
+                                <a>@recipe.Name</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
+                                <a>@recipe.Name</a>
+                            </div>
+                        }
                     }
                 }
             }
@@ -67,17 +72,20 @@
 }
 
 @code {
-    string SearchTerm { get; set; } = "";
+    string _SearchTerm = string.Empty;
+    string SearchTerm { get => _SearchTerm; set { _SearchTerm = value; UpdateFilter(); } }
+
     private bool collapseNavMenu = true;
     private bool IconMenuActive { get; set; } = false;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-   //EventCallback for sending bool to MainLayout
+    //EventCallback for sending bool to MainLayout
     [Parameter]
     public EventCallback<bool> ShowIconMenu { get; set; }
 
     protected override void OnInitialized()
     {
+        UpdateFilter();
         RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
     }
 
@@ -90,30 +98,45 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
     private async Task ToggleIconMenu()
     {
         IconMenuActive = !IconMenuActive;
 
         await ShowIconMenu.InvokeAsync(IconMenuActive);
     }
-    IReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
-    {
-        get
-        {
-            var filter = SearchTerm?.Trim();
-            if (string.IsNullOrEmpty(filter))
-                return RecipeService.RecipesByCategory;
 
-            var d = new Dictionary<ICategory, IEnumerable<IRecipe>>();
-            foreach (var x in RecipeService.RecipesByCategory)
-            {
-                var l = x.Value.Where(v => v.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                if (l.Count > 0)
-                    d.Add(x.Key, l);
-            }
-            return d;
+    private void UpdateFilter()
+    {
+        if (string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            FilteredRecipes = AllRecipes;
+            return;
         }
+
+        string term = SearchTerm.Trim();
+
+        List<Query.RecipeInfo> hits = [];
+        foreach (Query.RecipeInfo info in AllRecipes)
+        {
+            bool hit = false;
+            hit |= info.Category.CategoryName.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            hit |= info.Category.CategoryDescription.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            hit |= info.Recipe.Name.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            hit |= info.Recipe.Description.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            if (hit)
+                hits.Add(info);
+        }
+
+        FilteredRecipes = hits;
     }
+
+    private IEnumerable<Query.RecipeInfo> AllRecipes = Query.GetRecipes();
+    private IEnumerable<Query.RecipeInfo> FilteredRecipes = [];
+    private IEnumerable<string> GetFilteredRecipeChapters() => FilteredRecipes.Select(x => x.Chapter).Distinct();
+    private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter == chapter).Select(x => x.Category).Distinct();
+    private IEnumerable<IRecipe> GetFilteredRecipes(ICategory category) => FilteredRecipes.Where(x => x.Category.CategoryName == category.CategoryName).Select(x => x.Recipe);
+
     protected void ShowRecipe(IRecipe recipe)
     {
         NavManager.NavigateTo("/", replace: true);

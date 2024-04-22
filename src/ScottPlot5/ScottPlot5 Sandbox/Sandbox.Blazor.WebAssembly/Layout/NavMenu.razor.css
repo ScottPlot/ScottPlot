@@ -84,12 +84,6 @@
     padding-left: .5rem;
 }
 
-.sidebar h1 {
-    font-size: 1.1em;
-    margin: 1rem 1em .3rem .5rem;
-}
-
-
 @media (min-width: 641px) {
     .navbar-toggler {
         display: none;
