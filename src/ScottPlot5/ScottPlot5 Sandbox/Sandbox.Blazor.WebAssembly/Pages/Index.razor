@@ -2,42 +2,41 @@
 @page "/recipe/{selectRecipe?}"
 
 @inject IRecipesService RecipeService
+@inject IResizeService  ResizeService
 @implements IDisposable
 
-<main>
-    @if (RecipeService.HasRecipe)
-    {
-        <div class="p-3">
-            <div class="fs-3">@RecipeService.RecipeName</div>
-            <div>@RecipeService.RecipeDescription</div>
-        </div>
-        @if (RecipeService.ShowOpenGL)
-        {
-            <h5>OpenGL control</h5>
-            <BlazorPlotGL @ref=BlazorPlotGL Style="width: min(100%, 800px); height: 600px;" />
-        }
-        else
-        {
-            <h5>Standard control</h5>
-            <BlazorPlot @ref=BlazorPlot Style="width: min(100%, 800px); height: 600px;" />
-        }
-        <div class="m-3">
-            <div class="bg-light border rounded d-inline-block p-3">
-                @if (RecipeService.HasSourceCode)
-                {
-                    <CodeSnippet Code="@RecipeService.SourceCode" />
-                }
-                else
-                {
-                    <p>Loading...</p>
-                }
-            </div>
-        </div>
-    }
-    <div class="text-muted p-4" style="margin-top: 10rem;">
-        @ScottPlot.Version.LongString Running on .NET @Environment.Version
+@if (RecipeService.HasRecipe)
+{
+    <div class="p-3">
+        <div class="fs-3">@RecipeService.RecipeName</div>
+        <div>@RecipeService.RecipeDescription</div>
     </div>
-</main>
+    @if (RecipeService.ShowOpenGL)
+    {
+        <h5>OpenGL control</h5>
+        <BlazorPlotGL @ref=BlazorPlotGL Style="@plotSize" />
+    }
+    else
+    {
+        <h5>Standard control</h5>
+        <BlazorPlot @ref=BlazorPlot Style="@plotSize" />
+    }
+    <div class="m-3">
+        <div class="bg-light border rounded d-inline-block p-3">
+            @if (RecipeService.HasSourceCode)
+            {
+                <CodeSnippet Code="@RecipeService.SourceCode" />
+            }
+            else
+            {
+                <p>Loading...</p>
+            }
+        </div>
+    </div>
+}
+<div class="text-muted p-4" style="margin-top: 10rem;">
+    @ScottPlot.Version.LongString Running on .NET @Environment.Version
+</div>
 
 @code {
     [Parameter]
@@ -48,16 +47,20 @@
     BlazorPlotGL BlazorPlotGL { get; set; } = new();
     string SearchTerm { get; set; } = "";
 
+    string plotSize { get;  set; } = "width: min(100%, 800px); height: 600px;";
+
     protected override void OnInitialized()
     {
-        RecipeService.RecipeChanged += this.RefreshWithPlot; // subscribe
-        RecipeService.BackendChanged += this.RefreshWithPlot; // subscribe
+        RecipeService.RecipeChanged += this.RefreshWithPlot;
+        RecipeService.BackendChanged += this.RefreshWithPlot;
+        ResizeService.Resize += this.ResizePlot;
     }
 
     public void Dispose()
     {
-        RecipeService.RecipeChanged -= this.RefreshWithPlot; // unsubscribe
-        RecipeService.BackendChanged -= this.RefreshWithPlot; // unsubscribe
+        RecipeService.RecipeChanged -= this.RefreshWithPlot;
+        RecipeService.BackendChanged -= this.RefreshWithPlot;
+        ResizeService.Resize -= this.ResizePlot;
     }
 
     protected override void OnParametersSet()
@@ -100,6 +103,11 @@
     {
         RecipeService.Recipe = recipe;
         UpdatePlot();
+    }
+    protected void ResizePlot(System.Drawing.SizeF newSize)
+    {
+        plotSize = $"width: min(100%, {newSize.Width:F0}px); height: 600px;";
+        RefreshWithPlot();
     }
 }
 

@@ -1,7 +1,5 @@
-﻿using ScottPlot.Blazor;
-using ScottPlotCookbook;
+﻿using ScottPlotCookbook;
 using System.Collections.ObjectModel;
-using static System.Net.WebRequestMethods;
 using System.Text.Json;
 
 namespace Sandbox.Blazor.WebAssembly.Services
