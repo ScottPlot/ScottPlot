@@ -19,13 +19,26 @@ public static class Query
     // TODO: private
     public static IEnumerable<ICategory> GetCategories()
     {
-        return AppDomain.CurrentDomain
+        List<ICategory> categories = AppDomain.CurrentDomain
             .GetAssemblies()
             .SelectMany(x => x.GetTypes())
             .Where(type => type.IsClass && !type.IsAbstract)
             .Where(type => typeof(ICategory).IsAssignableFrom(type))
             .Select(type => Activator.CreateInstance(type))
-            .Cast<ICategory>();
+            .Cast<ICategory>()
+            .ToList();
+
+        foreach (string name in GetChapterNamesInOrder().Reverse())
+        {
+            ICategory? match = categories
+                .Where(x => string.Equals(x.Chapter, name, StringComparison.InvariantCultureIgnoreCase))
+                .First();
+
+            categories.Remove(match);
+            categories.Insert(0, match);
+        }
+
+        return categories;
     }
 
     public static Dictionary<ICategory, IEnumerable<IRecipe>> GetRecipesByCategory()
