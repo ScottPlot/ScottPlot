@@ -2,56 +2,59 @@
 
 public class Text : LabelStyleProperties, IPlottable
 {
-    public override Label LabelStyle { get; } = new();
     public Coordinates Location { get; set; }
+    public float OffsetX { get; set; }
+    public float OffsetY { get; set; }
+
+    public override Label LabelStyle { get; set; } = new() { FontSize = 14 };
+    public Alignment Alignment { get => LabelAlignment; set => LabelAlignment = value; }
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-    public float OffsetX { get; set; }
-    public float OffsetY { get; set; }
 
     #region obsolete
 
     [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle", true)]
     public readonly Label Label = null!;
 
-    [Obsolete("Use LabelFontColor", true)]
+    [Obsolete("Use LabelFontColor")]
     public Color Color { get => LabelFontColor; set => LabelFontColor = value; }
 
-    [Obsolete("Use LabelFontColor", true)]
-    public Color FontColor { get => LabelBackgroundColor; set => LabelFontColor = value; }
+    [Obsolete("Use LabelFontColor")]
+    public Color FontColor { get => LabelFontColor; set => LabelFontColor = value; }
 
-    [Obsolete("Use LabelBackgroundColor", true)]
+    [Obsolete("Use LabelBackgroundColor")]
     public Color BackgroundColor { get => LabelBackgroundColor; set => LabelBackgroundColor = value; }
 
-    [Obsolete("use LabelBackgroundColor", true)]
-    public Color BackColor { get; set; }
+    [Obsolete("use LabelBackgroundColor")]
+    public Color BackColor { get => LabelBackgroundColor; set => LabelBackgroundColor = value; }
 
-    [Obsolete("use LabelBackgroundColor", true)]
+    [Obsolete("use LabelBorderColor")]
     public Color BorderColor { get => LabelBorderColor; set => LabelBorderColor = value; }
 
-    [Obsolete("use LabelBorderWidth", true)]
+    [Obsolete("use LabelBorderWidth")]
     public float BorderWidth { get => LabelBorderWidth; set => LabelBorderWidth = value; }
 
-    [Obsolete("use LabelPadding or LabelPixelPadding", true)]
+    [Obsolete("use LabelPadding or LabelPixelPadding")]
     public float Padding { set => LabelPadding = value; }
 
-    [Obsolete("use LabelFontSize", true)]
+    [Obsolete("use LabelFontSize")]
     public float Size { get => LabelFontSize; set => LabelFontSize = value; }
 
-    [Obsolete("use LabelFontSize", true)]
+    [Obsolete("use LabelFontSize")]
     public float FontSize { get => LabelFontSize; set => LabelFontSize = value; }
 
-    [Obsolete("use LabelBold", true)]
+    [Obsolete("use LabelBold")]
     public bool Bold { get => LabelBold; set => LabelBold = value; }
 
-    [Obsolete("use LabelRotation", true)]
+    [Obsolete("use LabelRotation")]
     public float Rotation { get => LabelRotation; set => LabelRotation = value; }
 
-    [Obsolete("use LabelFontName", true)]
+    [Obsolete("use LabelFontName")]
     public string FontName { get => LabelFontName; set => LabelFontName = value; }
 
-    [Obsolete("use LineSpacing", true)]
+    [Obsolete("use LabelLineSpacing")]
     public float? LineSpacing { get => LabelLineSpacing; set => LabelLineSpacing = value; }
 
     #endregion

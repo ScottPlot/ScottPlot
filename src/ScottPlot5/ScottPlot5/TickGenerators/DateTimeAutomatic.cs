@@ -56,12 +56,12 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         return null;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
     {
         if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span))
         {
             // cases of extreme zoom (10,000 years)
-            Ticks = Array.Empty<Tick>();
+            Ticks = [];
             return;
         }
 
@@ -89,7 +89,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
             }
 
             // attempt to generate the ticks given these conditions
-            (List<Tick>? ticks, PixelSize? largestTickLabelSize) = GenerateTicks(range, timeUnit, niceIncrement.Value, tickLabelBounds, paint);
+            (List<Tick>? ticks, PixelSize? largestTickLabelSize) = GenerateTicks(range, timeUnit, niceIncrement.Value, tickLabelBounds, paint, labelStyle);
 
             // if ticks were returned, use them
             if (ticks is not null)
@@ -116,7 +116,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
     /// If all labels fit within the bounds, the list of ticks is returned.
     /// If a label doesn't fit in the bounds, the list is null and the size of the large tick label is returned.
     /// </summary>
-    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaint paint)
+    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaint paint, Label labelStyle)
     {
         DateTime rangeMin = range.Min.ToDateTime();
         DateTime rangeMax = range.Max.ToDateTime();
@@ -136,7 +136,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
                 continue;
 
             string tickLabel = dt.ToString(dtFormat);
-            PixelSize tickLabelSize = Drawing.MeasureString(tickLabel, paint);
+            PixelSize tickLabelSize = labelStyle.MeasureText(paint, tickLabel);
 
             bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);
             if (tickLabelIsTooLarge)

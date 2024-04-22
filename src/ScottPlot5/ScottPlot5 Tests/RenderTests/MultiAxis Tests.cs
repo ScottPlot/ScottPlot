@@ -43,4 +43,24 @@ internal class MultiAxis_Tests
         sig2.Axes.YAxis = myPlot.Axes.Left;
         myPlot.Should().SavePngWithoutThrowing("2");
     }
+
+    [Test]
+    public void Test_RightAxis_NoLeftAxis()
+    {
+        Plot myPlot = new();
+
+        var sig = myPlot.Add.Signal(Generate.Sin());
+        sig.Axes.YAxis = myPlot.Axes.Right;
+
+        myPlot.Axes.Left.Range.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Right.Range.HasBeenSet.Should().BeFalse();
+
+        myPlot.Should().SavePngWithoutThrowing();
+        myPlot.Axes.Left.Range.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Right.Range.HasBeenSet.Should().BeTrue();
+
+        myPlot.Should().SavePngWithoutThrowing();
+        myPlot.Axes.Left.Range.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Right.Range.HasBeenSet.Should().BeTrue();
+    }
 }

@@ -3,6 +3,7 @@ using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
 using System.Numerics;
+using ScottPlot.Rendering.RenderActions;
 
 namespace ScottPlot;
 
@@ -228,14 +229,16 @@ public class PlottableAdder(Plot plot)
 
     public Ellipse Ellipse(Coordinates center, double radiusX, double radiusY, float rotation = 0)
     {
-        var ellipse = new Ellipse()
+        Color color = GetNextColor();
+
+        Ellipse ellipse = new()
         {
             Center = center,
             RadiusX = radiusX,
             RadiusY = radiusY,
-            Rotation = rotation
+            Rotation = rotation,
+            LineColor = color,
         };
-        ellipse.LineStyle.Color = GetNextColor();
 
         Plot.PlottableList.Add(ellipse);
         return ellipse;
@@ -355,6 +358,13 @@ public class PlottableAdder(Plot plot)
         return span;
     }
 
+    public Legend Legend()
+    {
+        Legend legend = new(Plot) { IsVisible = true };
+        Plot.PlottableList.Add(legend);
+        return legend;
+    }
+
     public LinePlot Line(Coordinates start, Coordinates end)
     {
         LinePlot lp = new()
@@ -364,7 +374,7 @@ public class PlottableAdder(Plot plot)
         };
 
         lp.LineStyle.Color = GetNextColor();
-        lp.MarkerStyle.Fill.Color = lp.LineStyle.Color;
+        lp.MarkerStyle.FillColor = lp.LineStyle.Color;
 
         Plot.PlottableList.Add(lp);
 
@@ -526,7 +536,12 @@ public class PlottableAdder(Plot plot)
 
     public Polygon Polygon(Coordinates[] coordinates)
     {
-        Polygon poly = new(coordinates);
+        Color color = GetNextColor();
+        Polygon poly = new(coordinates)
+        {
+            LineColor = color,
+            FillColor = color.WithAlpha(.5),
+        };
         Plot.PlottableList.Add(poly);
         return poly;
     }
@@ -534,9 +549,7 @@ public class PlottableAdder(Plot plot)
     public Polygon Polygon<TX, TY>(IEnumerable<TX> xs, IEnumerable<TY> ys)
     {
         Coordinates[] coordinates = NumericConversion.GenericToCoordinates(xs, ys);
-        Polygon poly = new(coordinates);
-        Plot.PlottableList.Add(poly);
-        return poly;
+        return Polygon(coordinates);
     }
 
     public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)
@@ -556,15 +569,17 @@ public class PlottableAdder(Plot plot)
 
     public Rectangle Rectangle(double left, double right, double bottom, double top)
     {
+        Color color = GetNextColor();
         Rectangle rp = new()
         {
             X1 = left,
             X2 = right,
             Y1 = bottom,
             Y2 = top,
+            LineColor = color,
+            FillColor = color.WithAlpha(.5),
         };
 
-        rp.FillStyle.Color = GetNextColor();
         Plot.PlottableList.Add(rp);
         return rp;
     }
@@ -572,9 +587,12 @@ public class PlottableAdder(Plot plot)
     public Scatter Scatter(IScatterSource source, Color? color = null)
     {
         Color nextColor = color ?? GetNextColor();
-        Scatter scatter = new(source);
-        scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
+        Scatter scatter = new(source)
+        {
+            LineColor = nextColor,
+            MarkerFillColor = nextColor,
+            MarkerLineColor = nextColor,
+        };
         Plot.PlottableList.Add(scatter);
         return scatter;
     }
@@ -618,7 +636,7 @@ public class PlottableAdder(Plot plot)
         ScatterSourceGenericArray<T1, T2> source = new(xs, ys);
         Scatter scatter = new(source);
         scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
+        scatter.MarkerStyle.FillColor = nextColor;
         Plot.PlottableList.Add(scatter);
         return scatter;
     }
@@ -629,7 +647,7 @@ public class PlottableAdder(Plot plot)
         ScatterSourceGenericList<T1, T2> source = new(xs, ys);
         Scatter scatter = new(source);
         scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
+        scatter.MarkerStyle.FillColor = nextColor;
         Plot.PlottableList.Add(scatter);
         return scatter;
     }
@@ -733,43 +751,19 @@ public class PlottableAdder(Plot plot)
     public Signal Signal(double[] ys, double period = 1, Color? color = null)
     {
         SignalSourceDouble source = new(ys, period);
-
-        Signal sig = new(source)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        return Signal(source, color);
     }
 
     public Signal Signal<T>(T[] ys, double period = 1, Color? color = null)
     {
         SignalSourceGenericArray<T> source = new(ys, period);
-
-        Signal sig = new(source)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        return Signal(source, color);
     }
 
     public Signal Signal<T>(List<T> ys, double period = 1, Color? color = null)
     {
         SignalSourceGenericList<T> source = new(ys, period);
-
-        Signal sig = new(source)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        return Signal(source, color);
     }
 
     public SignalConst<T> SignalConst<T>(T[] ys, double period = 1, Color? color = null)
@@ -785,11 +779,9 @@ public class PlottableAdder(Plot plot)
         return sig;
     }
 
-    public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
+    public SignalXY SignalXY(ISignalXYSource source, Color? color = null)
     {
-        SignalXYSourceDoubleArray dataSource = new(xs, ys);
-
-        SignalXY sig = new(dataSource)
+        SignalXY sig = new(source)
         {
             Color = color ?? GetNextColor()
         };
@@ -799,18 +791,16 @@ public class PlottableAdder(Plot plot)
         return sig;
     }
 
+    public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
+    {
+        SignalXYSourceDoubleArray source = new(xs, ys);
+        return SignalXY(source, color);
+    }
+
     public SignalXY SignalXY<TX, TY>(TX[] xs, TY[] ys, Color? color = null)
     {
-        var dataSource = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
-
-        SignalXY sig = new(dataSource)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
+        return SignalXY(source, color);
     }
 
     public Text Text(string text, Coordinates location)

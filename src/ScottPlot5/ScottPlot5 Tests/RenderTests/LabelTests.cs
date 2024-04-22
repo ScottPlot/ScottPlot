@@ -205,4 +205,28 @@ internal class LabelTests
 
         surface.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Label_Rounded()
+    {
+        SKBitmap bmp = new(200, 150);
+        using SKCanvas canvas = new(bmp);
+        canvas.Clear(SKColors.Navy);
+
+        Label lbl = new()
+        {
+            Text = $"Hello",
+            FontSize = 32,
+            ForeColor = Colors.White.WithOpacity(.5),
+            BorderColor = Colors.Yellow.WithAlpha(.5),
+            BackgroundColor = Colors.White.WithAlpha(.2),
+            BorderWidth = 2,
+            Padding = 10,
+            BorderRadius = 15,
+        };
+
+        lbl.Render(canvas, new(50, 50));
+
+        bmp.SaveTestImage();
+    }
 }

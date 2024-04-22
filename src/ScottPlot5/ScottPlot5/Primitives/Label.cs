@@ -91,6 +91,10 @@ public class Label
     public float OffsetX = 0; // TODO: automatic padding support for arbitrary rotations
     public float OffsetY = 0; // TODO: automatic padding support for arbitrary rotations
 
+    public float BorderRadius { get => BorderRadiusX; set { BorderRadiusX = value; BorderRadiusY = value; } }
+    public float BorderRadiusX = 0;
+    public float BorderRadiusY = 0;
+
     /// <summary>
     /// Use the characters in <see cref="Text"/> to determine an installed 
     /// system font most likely to support this character set.
@@ -164,6 +168,36 @@ public class Label
         Render(canvas, new Pixel(x, y), paint);
     }
 
+    // TODO: figure which measure methods to obsolete
+
+    // TODO: always pass paints in
+
+    public PixelSize Measure2(string text, SKPaint paint)
+    {
+        string[] lines = text.Split('\n');
+        ApplyToPaint(paint);
+        float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
+        float maxWidth = lines.Select(paint.MeasureText).Max();
+        return new PixelSize(maxWidth, lineHeight);
+    }
+
+    public SKFontMetrics GetFontMetrics(SKPaint paint)
+    {
+        paint.GetFontMetrics(out SKFontMetrics metrics);
+        return metrics;
+    }
+
+    public PixelSize MeasureMultiline()
+    {
+        return MeasureMultiline(Text);
+    }
+
+    public PixelSize MeasureMultiline(string text)
+    {
+        using SKPaint paint = new();
+        return MeasureMultiLines(paint, text);
+    }
+
     public PixelSize Measure()
     {
         using SKPaint paint = new();
@@ -205,7 +239,7 @@ public class Label
         return new PixelSize(width, height);
     }
 
-    private PixelSize MeasureText(SKPaint paint, string text)
+    public PixelSize MeasureText(SKPaint paint, string text)
     {
         ApplyTextPaint(paint);
         SKRect textBounds = new();
@@ -263,6 +297,9 @@ public class Label
 
     public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
     {
+        if (!IsVisible)
+            return;
+
         PixelSize size = Measure(paint);
 
         float xOffset = size.Width * Alignment.HorizontalFraction();
@@ -291,7 +328,7 @@ public class Label
 
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         ApplyBorderPaint(paint);
-        canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+        canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
     }
 
     private void DrawText(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
@@ -323,13 +360,13 @@ public class Label
         if (ShadowColor != Colors.Transparent)
         {
             ApplyShadowPaint(paint);
-            canvas.DrawRect(shadowRect.ToSKRect(), paint);
+            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
         }
 
         if (BackgroundColor != Colors.Transparent)
         {
             ApplyBackgroundPaint(paint);
-            canvas.DrawRect(backgroundRect.ToSKRect(), paint);
+            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
         }
 
         // TODO: support rotation
@@ -344,5 +381,41 @@ public class Label
             ApplyPointPaint(paint);
             canvas.DrawCircle(0, 0, PointSize, paint);
         }
+    }
+
+    public (string text, float height) MeasureHighestString(string[] strings, SKPaint paint)
+    {
+        float maxHeight = 0;
+        string maxText = string.Empty;
+
+        for (int i = 0; i < strings.Length; i++)
+        {
+            PixelSize size = MeasureText(paint, strings[i]);
+            if (size.Height > maxHeight)
+            {
+                maxHeight = size.Height;
+                maxText = strings[i];
+            }
+        }
+
+        return (maxText, maxHeight);
+    }
+
+    public (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaint paint)
+    {
+        float maxWidth = 0;
+        string maxText = string.Empty;
+
+        for (int i = 0; i < strings.Length; i++)
+        {
+            PixelSize size = MeasureText(paint, strings[i]);
+            if (size.Width > maxWidth)
+            {
+                maxWidth = size.Width;
+                maxText = strings[i];
+            }
+        }
+
+        return (maxText, maxWidth);
     }
 }

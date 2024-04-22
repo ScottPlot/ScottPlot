@@ -57,4 +57,14 @@ internal class FileFormatTests
         plt.Add.Signal(Generate.Cos(51));
         plt.SaveSvg("test-images/test_save.svg", 400, 300);
     }
+
+    [Test]
+    public void Test_Get_Svg()
+    {
+        Plot plt = new();
+        plt.Add.Signal(Generate.Sin(51));
+        plt.Add.Signal(Generate.Cos(51));
+        var svgXml = plt.GetSvgXml(400, 300);
+        Assert.IsTrue(!string.IsNullOrEmpty(svgXml));
+    }
 }

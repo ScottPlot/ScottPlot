@@ -138,7 +138,8 @@ public partial class AxisRules : Form, IDemoWindow
 
     private void btnLockHorizontal_Click(object sender, EventArgs e)
     {
-        ScottPlot.AxisRules.LockedHorizontal rule = new(formsPlot1.Plot.Axes.Bottom);
+        AxisLimits limits = formsPlot1.Plot.Axes.GetLimits();
+        ScottPlot.AxisRules.LockedHorizontal rule = new(formsPlot1.Plot.Axes.Bottom, limits.Left, limits.Right);
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
@@ -149,7 +150,8 @@ public partial class AxisRules : Form, IDemoWindow
 
     private void btnLockVertical_Click(object sender, EventArgs e)
     {
-        ScottPlot.AxisRules.LockedVertical rule = new(formsPlot1.Plot.Axes.Left);
+        AxisLimits limits = formsPlot1.Plot.Axes.GetLimits();
+        ScottPlot.AxisRules.LockedVertical rule = new(formsPlot1.Plot.Axes.Left, limits.Bottom, limits.Top);
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);

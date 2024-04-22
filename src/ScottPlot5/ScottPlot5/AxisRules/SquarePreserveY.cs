@@ -1,19 +1,13 @@
 ﻿namespace ScottPlot.AxisRules;
 
-public class SquarePreserveY : IAxisRule
+public class SquarePreserveY(IXAxis xAxis, IYAxis yAxis) : IAxisRule
 {
-    readonly IXAxis XAxis;
-    readonly IYAxis YAxis;
-
-    public SquarePreserveY(IXAxis xAxis, IYAxis yAxis)
-    {
-        XAxis = xAxis;
-        YAxis = yAxis;
-    }
+    readonly IXAxis XAxis = xAxis;
+    readonly IYAxis YAxis = yAxis;
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        // rules that refer to the datarect must wait for the layout to occur
+        // rules that refer to the DataRect must wait for the layout to occur
         if (beforeLayout)
             return;
 

@@ -8,69 +8,36 @@ public partial class DataLogger : Form, IDemoWindow
     readonly System.Windows.Forms.Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
-    readonly ScottPlot.Plottables.DataLogger Logger;
+    readonly ScottPlot.Plottables.DataLogger Logger1;
+    readonly ScottPlot.Plottables.DataLogger Logger2;
 
     public DataLogger()
     {
         InitializeComponent();
 
-        Logger = formsPlot1.Plot.Add.DataLogger();
+        Logger1 = formsPlot1.Plot.Add.DataLogger();
+        Logger2 = formsPlot1.Plot.Add.DataLogger();
 
-        // disable mouse interaction by default
-        formsPlot1.Interaction.Disable();
+        var axis1 = formsPlot1.Plot.Axes.Right;
+        Logger1.Axes.YAxis = axis1;
 
-        // setup a timer to add data to the streamer periodically
+        var axis2 = formsPlot1.Plot.Axes.AddRightAxis();
+        Logger2.Axes.YAxis = axis2;
+
+        formsPlot1.Plot.RenderInMemory(); // force a single render
+        formsPlot1.Plot.Axes.Left.Range.Reset();
+
         AddNewDataTimer.Tick += (s, e) =>
         {
             var newValues = ScottPlot.Generate.RandomWalker.Next(10);
-            Logger.Add(newValues);
+            Logger1.Add(newValues);
+            Logger2.Add(newValues.Select(x => x * 4));
         };
 
-        // setup a timer to request a render periodically
         UpdatePlotTimer.Tick += (s, e) =>
         {
-            if (Logger.HasNewData)
-            {
-                formsPlot1.Plot.Title($"Processed {Logger.Data.CountTotal:N0} points");
+            if (Logger1.HasNewData || Logger2.HasNewData)
                 formsPlot1.Refresh();
-            }
-        };
-
-        // setup configuration actions
-        btnFull.Click += (s, e) => Logger.ViewFull();
-        btnJump.Click += (s, e) => Logger.ViewJump();
-        btnSlide.Click += (s, e) => Logger.ViewSlide();
-
-        // control automatic axis limit modification behavior
-        chkManageLimits.CheckedChanged += (s, e) =>
-        {
-            if (chkManageLimits.Checked)
-            {
-                Logger.ManageAxisLimits = true;
-                formsPlot1.Interaction.Disable();
-                formsPlot1.Plot.Axes.AutoScale();
-            }
-            else
-            {
-                Logger.ManageAxisLimits = false;
-                formsPlot1.Interaction.Enable();
-            }
-        };
-
-        // switch between using primary and secondary Y axes
-        chkRightAxis.CheckedChanged += (s, e) =>
-        {
-            lock (formsPlot1.Plot.Sync)
-            {
-                // reset old axis limits so ticks are not displayed on unused axes 
-                formsPlot1.Plot.Axes.Left.Range.Reset();
-                formsPlot1.Plot.Axes.Right.Range.Reset();
-
-                // tell the datalogger which axis to use and modify moving forward
-                Logger.Axes.YAxis = chkRightAxis.Checked
-                    ? formsPlot1.Plot.Axes.Right
-                    : formsPlot1.Plot.Axes.Left;
-            }
         };
     }
 }

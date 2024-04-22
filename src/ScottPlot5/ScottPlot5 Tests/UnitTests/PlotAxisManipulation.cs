@@ -7,7 +7,7 @@ internal class PlotAxisManipulation
     {
         Plot plt = new();
         plt.Axes.SetLimits(-7, 42, -13, 69);
-        plt.Axes.Pan(new CoordinateSize(1, 2));
+        plt.Axes.Pan(new CoordinateOffset(1, 2));
 
         AxisLimits expectedLimits = new(-6, 43, -11, 71);
         plt.Axes.GetLimits().Should().Be(expectedLimits);
@@ -21,7 +21,7 @@ internal class PlotAxisManipulation
         AxisLimits initialLimits = new(-7, 42, -13, 69);
         plt.Axes.SetLimits(initialLimits);
 
-        PixelSize panDistance = new(20, 10);
+        PixelOffset panDistance = new(20, 10);
 
         Action panBeforeRender = () => plt.Axes.Pan(panDistance);
         panBeforeRender.Should().Throw<InvalidOperationException>();

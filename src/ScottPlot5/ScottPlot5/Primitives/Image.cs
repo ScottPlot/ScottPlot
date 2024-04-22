@@ -48,6 +48,19 @@ public class Image : IDisposable
         SKImage = SKImage.FromBitmap(bmp);
     }
 
+    public Image(int width, int height) : this(width, height, Colors.Black)
+    {
+
+    }
+
+    public Image(int width, int height, Color color)
+    {
+        SKSurface surface = SKSurface.Create(new SKImageInfo(width, height));
+        var canvas = surface.Canvas;
+        canvas.Clear(color.ToSKColor());
+        SKImage = surface.Snapshot();
+    }
+
     /// <summary>
     /// SkiaSharp cannot natively create BMP files. 
     /// This function creates bitmaps in memory manually.

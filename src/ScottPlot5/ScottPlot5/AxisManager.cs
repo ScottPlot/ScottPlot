@@ -1,6 +1,5 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -16,17 +15,17 @@ public class AxisManager
     /// <summary>
     /// Horizontal axes
     /// </summary>
-    internal List<IXAxis> XAxes { get; } = new();
+    internal List<IXAxis> XAxes { get; } = [];
 
     /// <summary>
     /// Vertical axes
     /// </summary>
-    internal List<IYAxis> YAxes { get; } = new();
+    internal List<IYAxis> YAxes { get; } = [];
 
     /// <summary>
-    /// Panels take up spce on one side of the data area (like a colorbar)
+    /// Panels take up space on one side of the data area (like a colorbar)
     /// </summary>
-    internal List<IPanel> Panels { get; } = new();
+    internal List<IPanel> Panels { get; } = [];
 
     /// <summary>
     /// A special panel
@@ -211,6 +210,11 @@ public class AxisManager
         Panels.Remove(panel);
     }
 
+    public void AddPanel(IPanel panel)
+    {
+        Panels.Add(panel);
+    }
+
     /// <summary>
     /// Remove all bottom axes, create a DateTime bottom axis, add it to the plot, and return it.
     /// </summary>
@@ -277,7 +281,8 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
-        if (xAxis.Range.HasBeenSet) AutoScaler.InvertedX = left > right ? true : false;
+        if (xAxis.Range.HasBeenSet)
+            AutoScaler.InvertedX = left > right;
     }
 
     public void SetLimitsY(double bottom, double top, IYAxis yAxis)
@@ -285,7 +290,8 @@ public class AxisManager
         yAxis.Min = bottom;
         yAxis.Max = top;
 
-        if (yAxis.Range.HasBeenSet) AutoScaler.InvertedY = bottom > top ? true : false;
+        if (yAxis.Range.HasBeenSet)
+            AutoScaler.InvertedY = bottom > top;
     }
 
     public void SetLimitsX(double left, double right)
@@ -429,7 +435,6 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits()
     {
-        // TODO: autoscale limits used by all plottables
         return GetLimits(Bottom, Left);
     }
 
@@ -438,9 +443,6 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits(IXAxis xAxis, IYAxis yAxis)
     {
-        if (!xAxis.Range.HasBeenSet || !yAxis.Range.HasBeenSet)
-            AutoScale(xAxis, yAxis);
-
         return new AxisLimits(xAxis.Min, xAxis.Max, yAxis.Min, yAxis.Max);
     }
 
@@ -617,22 +619,22 @@ public class AxisManager
     /// <summary>
     /// Adjust limits all axes to pan by the given distance in coordinate space
     /// </summary>
-    public void Pan(CoordinateSize distance)
+    public void Pan(CoordinateOffset distance)
     {
-        XAxes.ForEach(x => x.Range.Pan(distance.Width));
-        YAxes.ForEach(x => x.Range.Pan(distance.Height));
+        XAxes.ForEach(x => x.Range.Pan(distance.X));
+        YAxes.ForEach(x => x.Range.Pan(distance.Y));
     }
 
     /// <summary>
     /// Adjust limits all axes to pan by the given distance in pixel space
     /// </summary>
-    public void Pan(PixelSize distance)
+    public void Pan(PixelOffset offset)
     {
         if (Plot.RenderManager.LastRender.Count == 0)
             throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, Plot.RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, Plot.RenderManager.LastRender.DataRect)));
+        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -643,6 +645,15 @@ public class AxisManager
     {
         XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
         YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
+    }
+
+    /// <summary>
+    /// Modify limits of all axes to apply the given zoom.
+    /// Fractional values >1 zoom in and <1 zoom out.
+    /// </summary>
+    public void ZoomIn(double fracX = 1.0, double fracY = 1.0)
+    {
+        Zoom(fracX, fracY);
     }
 
     /// <summary>

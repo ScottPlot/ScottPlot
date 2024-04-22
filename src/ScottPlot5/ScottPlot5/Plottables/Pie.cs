@@ -10,7 +10,7 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
     public double Padding { get; set; } = 0.2;
     public double DonutFraction { get; set; } = 0;
 
-    public LineStyle LineStyle { get; } = new() { Width = 0 };
+    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -26,15 +26,13 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
         return new AxisLimits(-radius, radius, -radius, radius);
 
     }
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
+
+    public IEnumerable<LegendItem> LegendItems => Slices
+        .Select((Func<PieSlice, LegendItem>)(slice => new LegendItem
         {
-            Children = Slices.Select(slice => new LegendItem
-            {
-                Label = slice.Label,
-                Fill = slice.Fill
-            })
-        });
+            LabelText = slice.LegendText,
+            FillStyle = slice.Fill,
+        }));
 
     public void Render(RenderPack rp)
     {

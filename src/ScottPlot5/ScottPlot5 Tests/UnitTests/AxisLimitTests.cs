@@ -8,6 +8,7 @@ internal class AxisLimitTests
         ScottPlot.Plot plot = new();
         plot.Add.Signal(Generate.Sin(51));
 
+        plot.RenderInMemory();
         AxisLimits limits = plot.Axes.GetLimits();
 
         limits.Left.Should().BeApproximately(0, 5);
@@ -23,6 +24,7 @@ internal class AxisLimitTests
         var sig = plot.Add.Signal(Generate.Sin(51));
         sig.Axes.YAxis = plot.Axes.Right;
 
+        plot.RenderInMemory();
         AxisLimits limits = plot.Axes.GetLimits(plot.Axes.Bottom, plot.Axes.Right);
 
         limits.Left.Should().BeApproximately(0, 5);

@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace ScottPlot.Rendering;
 
 public class RenderManager(Plot plot)
@@ -7,7 +8,29 @@ public class RenderManager(Plot plot)
     /// This list of actions is performed in sequence to render a plot.
     /// It may be modified externally to inject custom functionality.
     /// </summary>
-    public List<IRenderAction> RenderActions { get; } = DefaultRenderActions;
+    public List<IRenderAction> RenderActions { get; } = [
+        new RenderActions.PreRenderLock(),
+        new RenderActions.ClearCanvas(),
+        new RenderActions.RenderFigureBackground(),
+        new RenderActions.ReplaceNullAxesWithDefaults(),
+        new RenderActions.AutoScaleUnsetAxes(),
+        new RenderActions.ExecutePlottableAxisManagers(),
+        new RenderActions.ApplyAxisRulesBeforeLayout(),
+        new RenderActions.CalculateLayout(),
+        new RenderActions.ApplyAxisRulesAfterLayout(),
+        new RenderActions.RegenerateTicks(),
+        new RenderActions.RenderStartingEvent(),
+        new RenderActions.RenderDataBackground(),
+        new RenderActions.RenderGridsBelowPlottables(),
+        new RenderActions.RenderPlottables(),
+        new RenderActions.RenderGridsAbovePlottables(),
+        new RenderActions.RenderLegends(),
+        new RenderActions.RenderPanels(),
+        new RenderActions.RenderZoomRectangle(),
+        new RenderActions.SyncGLPlottables(),
+        new RenderActions.RenderPlottablesLast(),
+        new RenderActions.RenderBenchmark(),
+    ];
 
     /// <summary>
     /// Information about the previous render
@@ -63,31 +86,6 @@ public class RenderManager(Plot plot)
     /// </summary>
     public int RenderCount { get; private set; } = 0;
 
-    public static List<IRenderAction> DefaultRenderActions => new()
-    {
-        new RenderActions.PreRenderLock(),
-        new RenderActions.ClearCanvas(),
-        new RenderActions.RenderFigureBackground(),
-        new RenderActions.ReplaceNullAxesWithDefaults(),
-        new RenderActions.AutoScaleUnsetAxes(),
-        new RenderActions.ExecutePlottableAxisManagers(),
-        new RenderActions.ApplyAxisRulesBeforeLayout(),
-        new RenderActions.CalculateLayout(),
-        new RenderActions.ApplyAxisRulesAfterLayout(),
-        new RenderActions.RegenerateTicks(),
-        new RenderActions.RenderStartingEvent(),
-        new RenderActions.RenderDataBackground(),
-        new RenderActions.RenderGridsBelowPlottables(),
-        new RenderActions.RenderPlottables(),
-        new RenderActions.RenderGridsAbovePlottables(),
-        new RenderActions.RenderLegends(),
-        new RenderActions.RenderPanels(),
-        new RenderActions.RenderZoomRectangle(),
-        new RenderActions.SyncGLPlottables(),
-        new RenderActions.RenderPlottablesLast(),
-        new RenderActions.RenderBenchmark(),
-    };
-
     public void Render(SKCanvas canvas, PixelRect rect)
     {
         if (EnableRendering == false)
@@ -97,7 +95,7 @@ public class RenderManager(Plot plot)
         canvas.Scale(Plot.ScaleFactorF);
 
         // TODO: make this an object
-        List<(string, TimeSpan)> actionTimes = new();
+        List<(string, TimeSpan)> actionTimes = [];
 
         RenderPack rp = new(Plot, rect, canvas);
 
@@ -111,7 +109,8 @@ public class RenderManager(Plot plot)
             actionTimes.Add((action.ToString() ?? string.Empty, sw.Elapsed));
         }
 
-        RenderDetails thisRenderDetails = new(rp, actionTimes.ToArray(), LastRender);
+        RenderDetails thisRenderDetails = new(rp, [.. actionTimes], LastRender);
+
         LastRender = thisRenderDetails;
         RenderCount += 1;
         IsRendering = false;
@@ -130,6 +129,8 @@ public class RenderManager(Plot plot)
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
         }
+
+
         // TODO: event for when layout changes
     }
 }

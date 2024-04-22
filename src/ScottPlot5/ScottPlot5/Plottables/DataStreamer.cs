@@ -1,15 +1,19 @@
-﻿using ScottPlot.AxisLimitCalculators;
+﻿using ScottPlot.AxisLimitManagers;
 using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine
+public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
 
-    public LineStyle LineStyle { get; } = new();
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }

@@ -8,6 +8,15 @@ _Not yet on NuGet..._
 * Ticks: improve appearance of rotated multiline tick labels (#3673) @aespitia
 * Demo: Add an example window where the legend is displayed outside the plot control (#3672, #3635) @mikeKuester @Graat
 * Demo: Fix mouse tracking logic to improve behavior of the multi-series mouseover demo (#3680, #3684) @jamaa @Graat
+* Ticks: Refined tick label measurement for improved tick spacing (#3689)
+* Legend: Added many additional customization options and support for multiple shapes (#3689)
+* Legend: Text appearing in the legend for many plot types has been renamed from `Label` to `LegendText` (#3689)
+* Rendering: Added `Plot.GetSvgXml()` so plots can create SVG images in memory without saving to disk (#3694) @aespitia
+* Bar: Improved alignment of value labels on horizontal bar charts (#3698) @aespitia
+* Legend: Created a `LegendPanel` to allow legends to be displayed outside the data area (#3672, #3635) @Graat @mikeKuester
+* Axis: Prevent left axis from appearing if no plottables use it (#3637) @jpgarza93
+* Label: Added `BorderRadius` to support backgrounds and outlines with rounded edges (#3659)
+* Axis Rules: Changed behavior of axis rules to reduce reliance on previous renders (#3674, #1966, #3547)
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_

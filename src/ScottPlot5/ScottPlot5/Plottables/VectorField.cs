@@ -1,12 +1,13 @@
-﻿using ScottPlot.Interfaces;
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow
+public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public string? Label { get; set; }
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public ArrowStyle ArrowStyle { get; set; } = new();
     public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
@@ -18,10 +19,8 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow
     public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
         new LegendItem
         {
-            Label = Label,
-            Marker = MarkerStyle.None,
-            Line = ArrowStyle.LineStyle,
-            HasArrow = true
+            LabelText = LegendText,
+            ArrowStyle = ArrowStyle,
         });
 
     IVectorFieldSource Source { get; set; } = source;
