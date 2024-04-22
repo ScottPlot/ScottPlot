@@ -4,52 +4,77 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">ScottPlot Blazor Demo</a>
+        <img src="favicon.svg" height="36px"/>
+        @if (!@IconMenuActive)
+        {
+            <a class="navbar-brand" href="">ScottPlot Blazor Demo</a>
+        }
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <div class="sidebar-button">
-        <a href="/quickstart">ScottPlot Blazor Quickstart</a>
-    </div>
-    <div class="sidebar-button">
-        <a href="/signal">Signal Plot</a>
-    </div>
-    <hr />
-    <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" /><br />
-    <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> use openGL
-    <hr />
-
-    <nav class="flex-column px-2">
-        @foreach (var recipes in FilteredRecipes)
+<div class="bottom-row">
+    <div class="icon-menu-arrow">
+        @if (!@IconMenuActive)
         {
-            <h1 class="mt-4">@recipes.Key.CategoryName</h1>
+            <span class="oi oi-arrow-left" style="color: white;" @onclick="ToggleIconMenu"></span>
+        }
+        else
+        {
+            <span class="oi oi-arrow-right" style="color: white;" @onclick="ToggleIconMenu"></span>
+        }
+    </div>
+</div>
+@if (!@IconMenuActive)
+{
+    <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+        <div class="sidebar-button">
+            <a href="/quickstart">ScottPlot Blazor Quickstart</a>
+        </div>
+        <div class="sidebar-button">
+            <a href="/signal">Signal Plot</a>
+        </div>
+        <hr />
+        <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
+        <br />
+        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
+        <hr />
 
-            @foreach (var recipe in recipes.Value)
+        <nav class="flex-column px-2">
+            @foreach (var recipes in FilteredRecipes)
             {
-                @if (RecipeService.IsSelected(recipe))
+                <h1 class="mt-4">@recipes.Key.CategoryName</h1>
+
+                @foreach (var recipe in recipes.Value)
                 {
-                    <div class="sidebar-selected">
-                        <a>@recipe.Name</a>
-                    </div>
-                }
-                else
-                {
-                    <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
-                        <a>@recipe.Name</a>
-                    </div>
+                    @if (RecipeService.IsSelected(recipe))
+                    {
+                        <div class="sidebar-selected">
+                            <a>@recipe.Name</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
+                            <a>@recipe.Name</a>
+                        </div>
+                    }
                 }
             }
-        }
-    </nav>
-</div>
+        </nav>
+    </div>
+}
 
 @code {
     string SearchTerm { get; set; } = "";
     private bool collapseNavMenu = true;
+    private bool IconMenuActive { get; set; } = false;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+   //EventCallback for sending bool to MainLayout
+    [Parameter]
+    public EventCallback<bool> ShowIconMenu { get; set; }
 
     protected override void OnInitialized()
     {
@@ -65,7 +90,12 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+    private async Task ToggleIconMenu()
+    {
+        IconMenuActive = !IconMenuActive;
 
+        await ShowIconMenu.InvokeAsync(IconMenuActive);
+    }
     IReadOnlyDictionary<ICategory, IEnumerable<IRecipe>> FilteredRecipes
     {
         get

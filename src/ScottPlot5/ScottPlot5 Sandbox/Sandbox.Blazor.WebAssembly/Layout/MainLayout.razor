@@ -5,8 +5,8 @@
 @implements IAsyncDisposable
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
+    <div class="sidebar" style="@IconMenuCssClass">
+        <NavMenu ShowIconMenu="ToggleIconMenu" />
     </div>
 
     <main @ref=mainElement style="width: 100%;" class="content px-4">
@@ -18,6 +18,8 @@
 {
     private ElementReference? mainElement { get; set; } = null;
     private ResizeTask? taskReference = null;
+    private bool _iconMenuActive { get; set; }
+    private string? IconMenuCssClass => _iconMenuActive ? "width: 80px;" : null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,5 +58,9 @@
                 ResizeService.SetSize(Convert.ToSingle(entry.ContentRect.Width), Convert.ToSingle(entry.ContentRect.Height));
             }
         }
+    }
+    protected void ToggleIconMenu(bool iconMenuActive)
+    {
+        _iconMenuActive = iconMenuActive;
     }
 }
