@@ -1,10 +1,21 @@
-﻿.navbar-toggler {
+﻿.burger {
+    opacity: .3;
+}
+
+    .burger:hover {
+        opacity: .7;
+    }
+
+.navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.top-row {
-    height: 3.5rem;
+.top-row-show {
     background-color: rgba(0,0,0,0.4);
+    border-bottom: 1px solid black;
+}
+
+.top-row-hide {
 }
 
 .navbar-brand {

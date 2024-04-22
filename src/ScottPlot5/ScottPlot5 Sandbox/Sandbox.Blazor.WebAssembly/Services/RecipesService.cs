@@ -82,7 +82,7 @@ namespace Sandbox.Blazor.WebAssembly.Services
             {
                 foreach (var recipe in category.Value)
                 {
-                    if (string.Compare(recipe.Name, name, true) == 0 || string.Compare(string.Join(string.Empty, recipe.Name.Split()), name, true) == 0)
+                    if (recipe.GetType().Name == name)
                     {
                         SetRecipe(recipe);
                         return true;
