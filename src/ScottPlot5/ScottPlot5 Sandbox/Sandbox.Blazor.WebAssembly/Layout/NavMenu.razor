@@ -29,11 +29,12 @@
 @if (!@IconMenuActive)
 {
     <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+        <h2 class="mt-4 fs-6 ps-2 fw-bold">Getting Started</h2>
         <div class="sidebar-button">
-            <a href="/quickstart">ScottPlot Blazor Quickstart</a>
+            <div href="/quickstart" class="sidebar-button">Quickstart</div>
         </div>
         <div class="sidebar-button">
-            <a href="/signal">Signal Plot</a>
+            <div href="/signal" class="sidebar-button">Signal Plot</div>
         </div>
         <hr />
         <input class="mx-2 mt-2" @bind-value="SearchTerm" placeholder="Filter..." @bind-value:event="oninput" />
