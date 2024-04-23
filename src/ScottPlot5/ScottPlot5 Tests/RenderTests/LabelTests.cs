@@ -229,4 +229,53 @@ internal class LabelTests
 
         bmp.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Label_AntiAlias()
+    {
+        SKBitmap bmp = new(200, 200);
+        using SKCanvas canvas = new(bmp);
+        canvas.Clear(SKColors.White);
+
+        Label lbl1 = new()
+        {
+            Text = $"Default",
+            BorderColor = Colors.Black,
+            BorderWidth = 1,
+            Padding = 3,
+            ShadowColor = Colors.Black.WithAlpha(.5),
+            ShadowOffset = new(5, 5),
+            BackgroundColor = Colors.White,
+        };
+
+        Label lbl2 = new()
+        {
+            Text = $"AntiAliasBackground = false",
+            BorderColor = Colors.Black,
+            BorderWidth = 1,
+            Padding = 3,
+            ShadowColor = Colors.Black.WithAlpha(.5),
+            ShadowOffset = new(5, 5),
+            BackgroundColor = Colors.White,
+            AntiAliasBackground = false,
+        };
+
+        Label lbl3 = new()
+        {
+            Text = $"AntiAliasText = false",
+            BorderColor = Colors.Black,
+            BorderWidth = 1,
+            Padding = 3,
+            ShadowColor = Colors.Black.WithAlpha(.5),
+            ShadowOffset = new(5, 5),
+            BackgroundColor = Colors.White,
+            AntiAliasText = false,
+        };
+
+        lbl1.Render(canvas, new(25, 50));
+        lbl2.Render(canvas, new(25, 100));
+        lbl3.Render(canvas, new(25, 150));
+
+        bmp.SaveTestImage();
+    }
 }

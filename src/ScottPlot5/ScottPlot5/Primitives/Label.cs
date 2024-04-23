@@ -1,7 +1,4 @@
-﻿using ScottPlot.Plottables;
-using System.Drawing;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class Label
 {
@@ -28,9 +25,12 @@ public class Label
 
     public PixelRect LastRenderPixelRect { get; private set; }
 
-    public Color ShadowColor = Colors.Transparent;
+    public Color ShadowColor { get; set; } = Colors.Transparent;
 
-    public PixelOffset ShadowOffset = new(3, 3);
+    public PixelOffset ShadowOffset { get; set; } = new(3, 3);
+
+    public bool AntiAliasBackground { get; set; } = true;
+    public bool AntiAliasText { get; set; } = true;
 
     // TODO: use a class for cached typeface management
 
@@ -74,7 +74,10 @@ public class Label
     public float? LineSpacing { get; set; } = null;
 
     public bool Italic = false;
+
+    [Obsolete("use AntiAliasBackground and AntiAliasText", true)]
     public bool AntiAlias = true;
+
     public float Padding
     {
         [Obsolete("Get PixelPadding instead", true)]
@@ -114,7 +117,7 @@ public class Label
         paint.IsStroke = !PointFilled;
         paint.StrokeWidth = 1;
         paint.Color = PointColor.ToSKColor();
-        paint.IsAntialias = AntiAlias;
+        paint.IsAntialias = AntiAliasBackground;
     }
 
     private void ApplyBorderPaint(SKPaint paint)
@@ -122,21 +125,21 @@ public class Label
         paint.IsStroke = true;
         paint.StrokeWidth = BorderWidth;
         paint.Color = BorderColor.ToSKColor();
-        paint.IsAntialias = AntiAlias;
+        paint.IsAntialias = AntiAliasBackground;
     }
 
     private void ApplyShadowPaint(SKPaint paint)
     {
         paint.IsStroke = false;
         paint.Color = ShadowColor.ToSKColor();
-        paint.IsAntialias = AntiAlias;
+        paint.IsAntialias = AntiAliasBackground;
     }
 
     private void ApplyBackgroundPaint(SKPaint paint)
     {
         paint.IsStroke = false;
         paint.Color = BackgroundColor.ToSKColor();
-        paint.IsAntialias = AntiAlias;
+        paint.IsAntialias = AntiAliasBackground;
     }
 
     private void ApplyTextPaint(SKPaint paint)
@@ -146,7 +149,7 @@ public class Label
         paint.Typeface = Typeface;
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
-        paint.IsAntialias = AntiAlias;
+        paint.IsAntialias = AntiAliasText;
     }
 
     public void ApplyToPaint(SKPaint paint)
@@ -360,7 +363,7 @@ public class Label
         if (ShadowColor != Colors.Transparent)
         {
             ApplyShadowPaint(paint);
-            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
+            canvas.DrawRoundRect(shadowRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
         }
 
         if (BackgroundColor != Colors.Transparent)

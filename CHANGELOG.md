@@ -19,6 +19,7 @@ _Not yet on NuGet..._
 * Axis Rules: Changed behavior of axis rules to reduce reliance on previous renders (#3674, #1966, #3547)
 * Blazor: Numerous improvements to the Blazor cookbook (#3667) @KroMignon
 * Finance: Improve support for DateTime candlesticks before 1900 where OADate is negative (#3678)
+* Label: Added ability to separately control background vs. text Anti-Aliasing (#3686)
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
