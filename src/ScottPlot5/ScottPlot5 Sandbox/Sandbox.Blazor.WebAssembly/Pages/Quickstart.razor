@@ -1,7 +1,6 @@
-﻿@page "/quickstart"
-@inject NavigationManager NavManager
-@using ScottPlot;
-@using ScottPlot.Blazor;
+﻿@page "/"
+@page "/quickstart"
+@inject IRecipesService RecipeService
 
 <div class="container">
     <h3>ScottPlot Blazor Quickstart</h3>
@@ -15,9 +14,11 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        BlazorPlot.Plot.Add.Signal(Generate.Sin());
-        BlazorPlot.Plot.Add.Signal(Generate.Cos());
-
+        if (firstRender)
+        {
+            BlazorPlot.Plot.Add.Signal(Generate.Sin());
+            BlazorPlot.Plot.Add.Signal(Generate.Cos());
+        }
         base.OnAfterRender(firstRender);
     }
 }
