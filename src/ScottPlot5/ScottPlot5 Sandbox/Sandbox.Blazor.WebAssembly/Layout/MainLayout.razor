@@ -18,6 +18,9 @@
 {
     private ElementReference? mainElement { get; set; } = null;
     private ResizeTask? taskReference = null;
+    /// <summary>
+    /// True when side bar is minimized
+    /// </summary>
     private bool _iconMenuActive { get; set; }
     private string? IconMenuCssClass => _iconMenuActive ? "width: auto; background-color: transparent;" : null;
 

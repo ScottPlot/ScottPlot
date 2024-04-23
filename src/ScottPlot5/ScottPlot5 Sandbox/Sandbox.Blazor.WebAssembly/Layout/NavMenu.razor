@@ -38,11 +38,11 @@
 {
     <div class="@NavMenuCssClass nav-scrollable">
         <h2 class="mt-4 fs-6 ps-3 fw-bold">Getting Started</h2>
-        <div class="sidebar-button">
-            <a href="/quickstart" class="sidebar-button">Quickstart</a>
+        <div class="sidebar-button" @onclick='() => NavigateTo("quickstart")'>
+            <a class="sidebar-button">Quickstart</a>
         </div>
-        <div class="sidebar-button">
-            <a href="/signal" class="sidebar-button">Performance Test</a>
+        <div class="sidebar-button" @onclick='() => NavigateTo("signal")'>
+            <a class="sidebar-button">Performance Test</a>
         </div>
         <hr />
 
@@ -85,12 +85,18 @@
     string _SearchTerm = string.Empty;
     string SearchTerm { get => _SearchTerm; set { _SearchTerm = value; UpdateFilter(); } }
 
-    private bool IsMenuCollapsed { get; set; } = false;
+    /// <summary>
+    /// For "small device" to show/hide drop-down menu
+    /// </summary>
+    private bool IsMenuCollapsed { get; set; } = true;
     private string? NavMenuCssClass => IsMenuCollapsed ? "collapse" : null;
     private string? NavMenuTopCssClass => IsMenuCollapsed ? "top-row-hide" : "top-row-show";
     private string BurgerIconColor => IsMenuCollapsed ? "#000000" : "#FFFFFF";
 
-    //EventCallback for sending bool to MainLayout
+    /// <summary>
+    /// EventCallback for sending bool to MainLayout to update side bar width when
+    /// side bar is collapsed (for large screen devices)
+    /// </summary>
     [Parameter]
     public EventCallback<bool> ShowIconMenu { get; set; }
 
@@ -105,9 +111,13 @@
         RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
     }
 
+    /// <summary>
+    /// On "large device" to minimize side menu bar
+    /// </summary>
     private async Task ToggleIconMenu()
     {
         IsMenuCollapsed = !IsMenuCollapsed;
+        // to inform MainLayout about parameter changes
         await ShowIconMenu.InvokeAsync(IsMenuCollapsed);
     }
 
@@ -142,10 +152,27 @@
     private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter == chapter).Select(x => x.Category).Distinct();
     private IEnumerable<IRecipe> GetFilteredRecipes(ICategory category) => FilteredRecipes.Where(x => x.Category.CategoryName == category.CategoryName).Select(x => x.Recipe);
 
+    /// <summary>
+    /// Navigates to a specified URI
+    /// </summary>
+    /// <param name="uri">The destination URI. This can be absolute, or relative to the base URI</param>
+    /// <param name="replace">If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack.</param>
+    protected void NavigateTo(string uri, bool replace = false)
+    {
+        // for small devies, to collapse the dropdown menu
+        IsMenuCollapsed = true;
+        NavManager.NavigateTo(uri, replace: replace);
+    }
+
+    /// <summary>
+    /// Navigates to q specified recipe.
+    /// </summary>
+    /// <param name="recipe">Recipe to be dispayed.</param>
     protected void ShowRecipe(IRecipe recipe)
     {
-        string recipeUrlName = recipe.GetType().Name;
-        NavManager.NavigateTo($"recipe/{recipeUrlName}", replace: true);
+        // for small devies, to collapse the dropdown menu
+        IsMenuCollapsed = true;
+        NavigateTo($"recipe/{recipe.GetType().Name}", true);
         RecipeService.Recipe = recipe;
     }
 }
