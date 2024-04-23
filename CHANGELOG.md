@@ -17,6 +17,7 @@ _Not yet on NuGet..._
 * Axis: Prevent left axis from appearing if no plottables use it (#3637) @jpgarza93
 * Label: Added `BorderRadius` to support backgrounds and outlines with rounded edges (#3659)
 * Axis Rules: Changed behavior of axis rules to reduce reliance on previous renders (#3674, #1966, #3547)
+* Blazor: Numerous improvements to the Blazor cookbook (#3667) @KroMignon
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
