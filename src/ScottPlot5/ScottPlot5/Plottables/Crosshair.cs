@@ -19,9 +19,10 @@ public class Crosshair : IPlottable, IRenderLast
     public float LineWidth { set { HorizontalLine.LineWidth = value; VerticalLine.LineWidth = value; } }
     public LinePattern LinePattern { set { HorizontalLine.LinePattern = value; VerticalLine.LinePattern = value; } }
 
-    [Obsolete("Assign values to Color, LineWidth, or LinePattern properties to set style for both lines. " +
-        "HorizontalLine.LineStyle and VerticalLine.LineStyle are individually available as well.", true)]
+    [Obsolete("Assign values to LineColor, LineWidth, or LinePattern properties to set style for both lines. " +
+        "HorizontalLine and VerticalLine have properties that can be set individually as well.", true)]
     public LineStyle LineStyle { get; set; } = new();
+
     [Obsolete("Use TextColor and TextBackgroundColor instead", true)]
     public Color FontColor;
 
