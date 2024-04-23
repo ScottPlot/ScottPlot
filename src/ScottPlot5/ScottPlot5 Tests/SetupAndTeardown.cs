@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests;
+﻿using System.Globalization;
+
+namespace ScottPlotTests;
 
 [SetUpFixture]
 internal class SetupAndTeardown
@@ -12,6 +14,9 @@ internal class SetupAndTeardown
 
         // create a fresh output folder
         Directory.CreateDirectory(Paths.OutputFolder);
+
+        // use invariant culture for all tests
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
     }
 
     [OneTimeTearDown]
