@@ -110,8 +110,16 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
             // rectangle
             SKRect rect = new(left, Math.Max(open, close), right, Math.Min(open, close));
-            fillStyle.ApplyToPaint(paint, rect.ToPixelRect());
-            rp.Canvas.DrawRect(rect, paint);
+            if (open != close)
+            {
+                fillStyle.ApplyToPaint(paint, rect.ToPixelRect());
+                rp.Canvas.DrawRect(rect, paint);
+            }
+            else
+            {
+                lineStyle.ApplyToPaint(paint);
+                rp.Canvas.DrawLine(left, open, right, open, paint);
+            }
         }
     }
 }

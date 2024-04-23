@@ -34,9 +34,34 @@ public struct OHLC
         return new OHLC(Open, High, Low, Close, DateTime, TimeSpan);
     }
 
+    public readonly OHLC WithOpen(double price)
+    {
+        return new OHLC(price, High, Low, Close, DateTime, TimeSpan);
+    }
+
+    public readonly OHLC WithHigh(double price)
+    {
+        return new OHLC(Open, price, Low, Close, DateTime, TimeSpan);
+    }
+
+    public readonly OHLC WithLow(double price)
+    {
+        return new OHLC(Open, High, price, Close, DateTime, TimeSpan);
+    }
+
+    public readonly OHLC WithClose(double price)
+    {
+        return new OHLC(Open, High, Low, price, DateTime, TimeSpan);
+    }
+
     public readonly OHLC WithDate(DateTime dateTime)
     {
         return new OHLC(Open, High, Low, Close, dateTime, TimeSpan);
+    }
+
+    public readonly OHLC WithTimeSpan(TimeSpan timeSpan)
+    {
+        return new OHLC(Open, High, Low, Close, DateTime, timeSpan);
     }
 
     public readonly OHLC ShiftedBy(TimeSpan timeSpan)
