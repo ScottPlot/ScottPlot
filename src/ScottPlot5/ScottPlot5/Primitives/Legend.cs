@@ -192,7 +192,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// <summary>
     /// This is called automatically by the render manager
     /// </summary>
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;

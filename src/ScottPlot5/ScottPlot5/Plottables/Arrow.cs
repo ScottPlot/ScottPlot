@@ -67,7 +67,7 @@ public class Arrow : IPlottable, IHasArrow, IHasLegendText
         Math.Min(Base.Y, Tip.Y),
         Math.Max(Base.Y, Tip.Y));
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible) { return; }
 

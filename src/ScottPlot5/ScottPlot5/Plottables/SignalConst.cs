@@ -42,7 +42,7 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
 
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);

@@ -57,7 +57,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
         return new AxisLimits(xRange, MaxObservedRangeY);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         var unitsPerPixel = Axes.XAxis.GetCoordinateDistance(1, rp.DataRect);
 

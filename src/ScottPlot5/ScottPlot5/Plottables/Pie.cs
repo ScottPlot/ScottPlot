@@ -34,7 +34,7 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
             FillStyle = slice.Fill,
         }));
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         double total = Slices.Sum(s => s.Value);
         float[] sliceSizeDegrees = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();

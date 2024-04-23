@@ -62,7 +62,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         return new(left, right, limits.Bottom, limits.Top);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 

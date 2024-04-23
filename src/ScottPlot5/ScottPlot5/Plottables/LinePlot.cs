@@ -41,7 +41,7 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
         return new AxisLimits(boundingRect);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         CoordinateLine line = new(Start, End);
         PixelLine pxLine = Axes.GetPixelLine(line);

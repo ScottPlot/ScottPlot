@@ -60,7 +60,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         return GetVisibleXRange(Axes.DataRect).Span / Axes.DataRect.Width / Data.Period;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (PointsPerPixel() < 1)
         {

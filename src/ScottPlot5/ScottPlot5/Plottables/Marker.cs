@@ -36,7 +36,7 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
     public AxisLimits GetAxisLimits() => new(Location);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Location), MarkerStyle);

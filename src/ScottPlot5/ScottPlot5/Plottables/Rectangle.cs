@@ -52,7 +52,7 @@ public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
 
     public AxisLimits GetAxisLimits() => new(CoordinateRect);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 

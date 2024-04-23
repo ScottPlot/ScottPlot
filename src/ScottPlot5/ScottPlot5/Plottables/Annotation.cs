@@ -19,7 +19,7 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;

@@ -251,7 +251,7 @@ public class RadialGaugePlot : IPlottable
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         ValidateData();
 

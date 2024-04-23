@@ -101,7 +101,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
         return Poly.GetAxisLimits();
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Poly.Render(rp);
     }

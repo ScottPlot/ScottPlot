@@ -93,7 +93,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();

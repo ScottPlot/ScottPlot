@@ -31,7 +31,7 @@ public class Crosshair : IPlottable, IRenderLast
     public IEnumerable<LegendItem> LegendItems => HorizontalLine.LegendItems.Concat(VerticalLine.LegendItems);
     public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;

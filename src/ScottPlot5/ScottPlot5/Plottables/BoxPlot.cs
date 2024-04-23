@@ -33,7 +33,7 @@ public class BoxPlot : IPlottable, IHasLegendText
         return limits.AxisLimits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 

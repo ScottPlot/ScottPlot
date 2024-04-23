@@ -64,7 +64,7 @@ public class Text : LabelStyleProperties, IPlottable
         return new AxisLimits(Location);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Pixel pixelLocation = Axes.GetPixel(Location);
         pixelLocation.X += OffsetX;

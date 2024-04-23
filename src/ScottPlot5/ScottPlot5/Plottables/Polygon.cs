@@ -102,7 +102,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
         return limits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (IsEmpty)
             return;

@@ -55,7 +55,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         }
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
         using SKPath risingPath = new();

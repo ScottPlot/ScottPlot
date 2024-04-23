@@ -44,7 +44,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
         Data.GetNearest(location, renderInfo, maxDistance);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Pixel[] pixels = Data.GetPixelsToDraw(rp, Axes);
 

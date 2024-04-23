@@ -27,7 +27,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
 
     public AxisLimits GetAxisLimits() => Source.GetLimits();
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;

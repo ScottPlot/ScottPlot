@@ -21,6 +21,7 @@ _Not yet on NuGet..._
 * Finance: Improve support for DateTime candlesticks before 1900 where OADate is negative (#3678)
 * Label: Added ability to separately control background vs. text Anti-Aliasing (#3686)
 * Ticks: Use system `CultureInfo` to generate numeric tick labels (#3688, #3687) @xantiva @mikeKuester
+* Plottables: Made all `Render()` methods `virtual void` to facilitate advanced customization (#3693) @sdhongjun
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_

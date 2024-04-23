@@ -80,7 +80,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         return new(Center.ToRect(x, y));
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible || RadiusX.IsInfiniteOrNaN() || RadiusY.IsInfiniteOrNaN()) { return; }
 

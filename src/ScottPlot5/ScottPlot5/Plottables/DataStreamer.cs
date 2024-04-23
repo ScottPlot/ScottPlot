@@ -147,7 +147,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
         Plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Renderer.Render(rp);
         Data.CountTotalOnLastRender = Data.CountTotal;

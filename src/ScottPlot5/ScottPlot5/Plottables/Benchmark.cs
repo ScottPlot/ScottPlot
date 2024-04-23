@@ -20,7 +20,7 @@ public class Benchmark : LabelStyleProperties, IPlottable
         BorderColor = Colors.Black,
     };
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;

@@ -32,7 +32,7 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (this.MarkerStyle == MarkerStyle.None)
             return;

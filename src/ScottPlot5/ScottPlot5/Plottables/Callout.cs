@@ -108,7 +108,7 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
         return Axes.GetCoordinates(closestAttachPoint);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         TextPixel = Axes.GetPixel(TextCoordinates);
 

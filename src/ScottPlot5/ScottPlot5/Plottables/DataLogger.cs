@@ -87,7 +87,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
         }
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         IEnumerable<Pixel> points = Data.Coordinates.Select(Axes.GetPixel);
 
