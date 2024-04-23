@@ -66,7 +66,11 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
 
         using SKPath path = new();
         bool penIsDown = false;
-        for (double x = MinX; x <= MaxX; x += unitsPerPixel)
+
+        double minX = Math.Max(MinX, Axes.XAxis.Min);
+        double maxX = Math.Min(MaxX, Axes.XAxis.Max);
+
+        for (double x = minX; x <= maxX; x += unitsPerPixel)
         {
             double y = Source.Get(x);
             if (y.IsInfiniteOrNaN())

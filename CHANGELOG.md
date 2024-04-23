@@ -22,6 +22,7 @@ _Not yet on NuGet..._
 * Label: Added ability to separately control background vs. text Anti-Aliasing (#3686)
 * Ticks: Use system `CultureInfo` to generate numeric tick labels (#3688, #3687) @xantiva @mikeKuester
 * Plottables: Made all `Render()` methods `virtual void` to facilitate advanced customization (#3693) @sdhongjun
+* Function: Improve function plot performance by only calculating visible range (#3703) @Matthew-Chidlow
 
 ## ScottPlot 5.0.26
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
