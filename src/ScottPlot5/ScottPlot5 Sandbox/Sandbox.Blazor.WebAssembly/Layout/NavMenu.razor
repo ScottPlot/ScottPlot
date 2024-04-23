@@ -145,7 +145,7 @@
     protected void ShowRecipe(IRecipe recipe)
     {
         string recipeUrlName = recipe.GetType().Name;
-        NavManager.NavigateTo($"/recipe/{recipeUrlName}", replace: true);
+        NavManager.NavigateTo($"recipe/{recipeUrlName}", replace: true);
         RecipeService.Recipe = recipe;
     }
 }
