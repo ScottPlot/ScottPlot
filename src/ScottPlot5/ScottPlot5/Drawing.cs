@@ -103,6 +103,15 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
+    {
+        if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
+            return;
+
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawPath(path, paint);
+    }
+
     private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
@@ -154,6 +163,12 @@ public static class Drawing
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, LineStyle lineStyle)
     {
         lineStyle.ApplyToPaint(paint);
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
+    {
+        fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
@@ -248,10 +263,9 @@ public static class Drawing
         if (!style.IsVisible)
             return;
 
-        IMarker renderer = style.CustomRenderer ?? Markers.Rendering.GetRendererWithSpecialProperties(style.Shape);
-        renderer.LineWidth = style.OutlineWidth;
+        IMarker marker = style.CustomRenderer ?? style.Shape.GetMarker();
 
-        renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
+        marker.Render(canvas, paint, pixel, style.Size, style);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
@@ -259,12 +273,11 @@ public static class Drawing
         if (!style.IsVisible)
             return;
 
-        IMarker renderer = style.CustomRenderer ?? Markers.Rendering.GetRendererWithSpecialProperties(style.Shape);
-        renderer.LineWidth = style.OutlineWidth;
+        IMarker marker = style.CustomRenderer ?? style.Shape.GetMarker();
 
         foreach (Pixel pixel in pixels)
         {
-            renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
+            marker.Render(canvas, paint, pixel, style.Size, style);
         }
     }
 

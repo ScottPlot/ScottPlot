@@ -21,7 +21,7 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
         var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
         sp.MarkerStyle.CustomRenderer = MyCustomMarker;
         sp.MarkerStyle.FillColor = Colors.Yellow;
-        sp.MarkerStyle.OutlineColor = Colors.Black;
+        sp.MarkerStyle.LineColor = Colors.Black;
         sp.MarkerSize = 20;
         sp.LineWidth = 5;
 
@@ -36,13 +36,9 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
 
     class CustomMarker : IMarker
     {
-        public bool Fill { get; set; } = true;
-
-        public float LineWidth { get; set; } = 1;
-
         public double Happiness = 1.0;
 
-        public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fillStyle, LineStyle lineStyle)
+        public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
         {
             float faceRadius = size / 2;
             float eyeRadius = faceRadius * 0.1f;
@@ -50,19 +46,18 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
             float centerY = center.Y;
 
             // face
-            fillStyle.ApplyToPaint(paint, new PixelRect(center, size));
-            Drawing.DrawCircle(canvas, center, faceRadius, fillStyle, paint);
-            Drawing.DrawCircle(canvas, center, faceRadius, lineStyle, paint);
+            Drawing.DrawCircle(canvas, center, faceRadius, markerStyle.FillStyle, paint);
+            Drawing.DrawCircle(canvas, center, faceRadius, markerStyle.LineStyle, paint);
 
             // left eye
             var leftEyeX = centerX - faceRadius / 3;
             var leftEyeY = centerY - faceRadius / 3;
-            Drawing.DrawCircle(canvas, new Pixel(leftEyeX, leftEyeY), eyeRadius, lineStyle, paint);
+            Drawing.DrawCircle(canvas, new Pixel(leftEyeX, leftEyeY), eyeRadius, markerStyle.LineStyle, paint);
 
             // right eye
             var rightEyeX = centerX + faceRadius / 3;
             var rightEyeY = leftEyeY;
-            Drawing.DrawCircle(canvas, new Pixel(rightEyeX, rightEyeY), eyeRadius, lineStyle, paint);
+            Drawing.DrawCircle(canvas, new Pixel(rightEyeX, rightEyeY), eyeRadius, markerStyle.LineStyle, paint);
 
             // mouth
             float smileHeight = faceRadius * (float)Happiness;

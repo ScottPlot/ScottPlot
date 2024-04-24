@@ -2,14 +2,8 @@
 
 internal class Cross : IMarker
 {
-    public bool Fill { get; set; } = false;
-    public float LineWidth { get; set; } = 1;
-
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
-        if (LineWidth == 0)
-            return;
-
         float offset = size / 2;
 
         var path = new SKPath();
@@ -18,8 +12,6 @@ internal class Cross : IMarker
         path.MoveTo(center.X, center.Y + offset);
         path.LineTo(center.X, center.Y - offset);
 
-        outline.ApplyToPaint(paint);
-        paint.StrokeWidth = LineWidth;
-        canvas.DrawPath(path, paint);
+        Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
 }

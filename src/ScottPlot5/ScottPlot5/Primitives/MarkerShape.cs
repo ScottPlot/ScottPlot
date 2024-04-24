@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Markers;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Standard markers supported by ScottPlot.
@@ -29,6 +31,36 @@ public enum MarkerShape
 
 public static class MarkerShapeExtensions
 {
+    /// <summary>
+    /// Get the marker object for a standard marker shape
+    /// </summary>
+    public static IMarker GetMarker(this MarkerShape shape)
+    {
+        return shape switch
+        {
+            MarkerShape.FilledCircle => new FilledCircle(),
+            MarkerShape.OpenCircle => new OpenCircle(),
+            MarkerShape.FilledSquare => new FilledSquare(),
+            MarkerShape.OpenSquare => new OpenSquare(),
+            MarkerShape.FilledTriangleUp => new FilledTriangleUp(),
+            MarkerShape.OpenTriangleUp => new OpenTriangleUp(),
+            MarkerShape.FilledTriangleDown => new FilledTriangleDown(),
+            MarkerShape.OpenTriangleDown => new OpenTriangleDown(),
+            MarkerShape.FilledDiamond => new FilledDiamond(),
+            MarkerShape.OpenDiamond => new OpenDiamond(),
+            MarkerShape.Eks => new Eks(),
+            MarkerShape.Cross => new Cross(),
+            MarkerShape.VerticalBar => new VerticalBar(),
+            MarkerShape.HorizontalBar => new HorizontalBar(),
+            MarkerShape.TriUp => new TriUp(),
+            MarkerShape.TriDown => new TriDown(),
+            MarkerShape.Asterisk => new Asterisk(),
+            MarkerShape.HashTag => new HashTag(),
+            MarkerShape.None => new None(),
+            _ => throw new NotImplementedException(shape.ToString()),
+        };
+    }
+
     public static bool IsOutlined(this MarkerShape shape)
     {
         return shape switch

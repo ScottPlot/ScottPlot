@@ -4,7 +4,7 @@
 /// This configuration object (reference type) permanently lives inside objects which require styling.
 /// It is recommended to use this object as an init-only property.
 /// </summary>
-public class MarkerStyle : IHasOutline, IHasFill
+public class MarkerStyle : IHasLine, IHasFill
 {
     public bool IsVisible { get; set; } = true;
 
@@ -15,22 +15,50 @@ public class MarkerStyle : IHasOutline, IHasFill
     /// </summary>
     public float Size { get; set; }
 
-    public Color MarkerColor { get => OutlineColor; set { FillColor = value; OutlineColor = value; } }
+    public Color MarkerColor
+    {
+        get => LineColor; set
+        {
+            FillColor = value;
+            LineColor = value;
+        }
+    }
 
-    [Obsolete("use OutlineWidth, OutlineColor, OutlinePattern, or OutlineStyle")]
-    public LineStyle Outline { get => OutlineStyle; set => OutlineStyle = value; }
-    public LineStyle OutlineStyle { get; set; } = new();
-    public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
-    public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
-    public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
+    // the line is for shapes like open circles
+    public LineStyle LineStyle { get; set; } = new();
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    [Obsolete("use FillColor, FillHatchColor, FillHatch, or FillStyle")]
-    public FillStyle Fill { get => FillStyle; set => FillStyle = value; }
     public FillStyle FillStyle { get; set; } = new();
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
     public IMarker? CustomRenderer { get; set; } = null;
+
+    #region obsolete
+
+    [Obsolete("use LineWidth, LineColor, etc.")]
+    public LineStyle Outline { get => LineStyle; set => LineStyle = value; }
+
+    [Obsolete("use LineWidth, LineColor, etc.")]
+    public LineStyle OutlineStyle { get => LineStyle; set => LineStyle = value; }
+
+    [Obsolete("use LineWidth, LineColor, etc.")]
+    public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
+
+    [Obsolete("use LineWidth, LineColor, etc.")]
+    public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
+
+    [Obsolete("use LineWidth, LineColor, etc.")]
+    public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
+
+
+
+    [Obsolete("use FillColor, FillHatchColor, FillHatch, or FillStyle")]
+    public FillStyle Fill { get => FillStyle; set => FillStyle = value; }
+
+    #endregion
 
     public MarkerStyle()
     {
@@ -45,11 +73,11 @@ public class MarkerStyle : IHasOutline, IHasFill
     public MarkerStyle(MarkerShape shape, float size, Color color)
     {
         Shape = shape;
-        OutlineColor = color;
+        LineColor = color;
         if (shape.IsOutlined())
         {
             FillColor = Colors.Transparent;
-            OutlineWidth = 2;
+            LineWidth = 2;
         }
         else
         {
