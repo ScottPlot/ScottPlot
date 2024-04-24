@@ -273,6 +273,21 @@ public static class Generate
             .ToArray();
     }
 
+    /// <summary>
+    /// Sequence of ascending numbers with random spacing between values.
+    /// </summary>
+    public static double[] RandomAscending(int count, double minDelta = 0, double maxDelta = 1)
+    {
+        double[] values = RandomSample(count, minDelta, maxDelta);
+
+        for (int i = 1; i < count; i++)
+        {
+            values[i] += values[i - 1];
+        }
+
+        return values;
+    }
+
     public static double[] RandomNormal(int count, double mean = 0, double stdDev = 1)
     {
         return Enumerable.Range(0, count)
