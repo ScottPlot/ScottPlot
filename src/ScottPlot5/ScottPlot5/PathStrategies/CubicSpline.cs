@@ -62,8 +62,8 @@ public class CubicSpline : IPathStrategy
             bool closed = first == last;
 
             // Fill in the empty padded points
-            segment[0] = closed ? nextLast : first - (second - first);
-            segment[^1] = closed ? second : last + (last - nextLast);
+            segment[0] = closed ? nextLast : first;
+            segment[^1] = closed ? second : last;
 
             path.MoveTo(first.ToSKPoint());
 
