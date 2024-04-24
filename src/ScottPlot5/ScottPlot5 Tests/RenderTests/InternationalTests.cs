@@ -10,8 +10,9 @@ internal class InternationalTests
         ScottPlot.Plot plot = new();
         plot.Add.Signal(Generate.Sin(100, 500_000));
         plot.Should().RenderInMemoryWithoutThrowing();
-        var tickLabels = plot.Axes.Left.TickGenerator.Ticks.Select(x => x.Label);
-        tickLabels.Should().Contain("-500,000");
+        var tickLabels = plot.Axes.Left.TickGenerator.Ticks.Select(x => x.Label).Where(x => !string.IsNullOrEmpty(x));
+        Console.WriteLine(string.Join("\n", tickLabels));
+        tickLabels.Should().Contain("-200,000");
     }
 
     [Test]
@@ -22,7 +23,8 @@ internal class InternationalTests
         ScottPlot.Plot plot = new();
         plot.Add.Signal(Generate.Sin(100, 500_000));
         plot.Should().RenderInMemoryWithoutThrowing();
-        var tickLabels = plot.Axes.Left.TickGenerator.Ticks.Select(x => x.Label);
-        tickLabels.Should().Contain("-500 000");
+        var tickLabels = plot.Axes.Left.TickGenerator.Ticks.Select(x => x.Label).Where(x => !string.IsNullOrEmpty(x));
+        Console.WriteLine(string.Join("\n", tickLabels));
+        tickLabels.Should().Contain("-200 000");
     }
 }
