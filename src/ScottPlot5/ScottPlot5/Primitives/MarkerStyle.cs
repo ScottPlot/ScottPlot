@@ -30,6 +30,7 @@ public class MarkerStyle : IHasOutline, IHasFill
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+    public IMarker? CustomRenderer { get; set; } = null;
 
     public MarkerStyle()
     {

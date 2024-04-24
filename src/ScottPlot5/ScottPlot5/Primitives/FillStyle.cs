@@ -20,4 +20,9 @@ public class FillStyle
 
         Drawing.FillRectangle(canvas, rect, paint, this);
     }
+
+    public void ApplyToPaint(SKPaint paint, PixelRect rect)
+    {
+        SkiaSharpExtensions.ApplyToPaint(this, paint, rect);
+    }
 }

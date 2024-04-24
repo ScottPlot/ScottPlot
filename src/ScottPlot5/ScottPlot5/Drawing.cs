@@ -248,19 +248,18 @@ public static class Drawing
         if (!style.IsVisible)
             return;
 
-        IMarker renderer = style.Shape.GetRenderer();
+        IMarker renderer = style.CustomRenderer ?? Markers.Rendering.GetRendererWithSpecialProperties(style.Shape);
         renderer.LineWidth = style.OutlineWidth;
+
         renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        bool lineIsVisible = style.OutlineStyle.IsVisible && style.OutlineColor.Alpha != 0 && style.OutlineStyle.Width > 0;
-        bool fillIsVisible = style.FillColor.Alpha != 0;
-        if ((lineIsVisible || fillIsVisible) == false)
+        if (!style.IsVisible)
             return;
 
-        IMarker renderer = style.Shape.GetRenderer();
+        IMarker renderer = style.CustomRenderer ?? Markers.Rendering.GetRendererWithSpecialProperties(style.Shape);
         renderer.LineWidth = style.OutlineWidth;
 
         foreach (Pixel pixel in pixels)
