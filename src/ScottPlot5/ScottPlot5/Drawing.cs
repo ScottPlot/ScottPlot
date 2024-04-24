@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using ScottPlot.Extensions;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ScottPlot;
@@ -201,6 +202,7 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
+    // TODO: obsolete
     public static void DrawCircle(SKCanvas canvas, Pixel center, Color color, float radius = 5, bool fill = true)
     {
         using SKPaint paint = new()
@@ -210,6 +212,19 @@ public static class Drawing
             IsAntialias = true,
         };
 
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
+    {
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
+    {
+        PixelRect rect = new(center, radius);
+        fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
