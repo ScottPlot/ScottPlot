@@ -98,7 +98,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
                 MyHighlightMarker.IsVisible = true;
                 MyHighlightMarker.Location = point.Coordinates;
-                MyHighlightMarker.MarkerStyle.OutlineColor = scatter.MarkerStyle.FillColor;
+                MyHighlightMarker.MarkerStyle.LineColor = scatter.MarkerStyle.FillColor;
 
                 MyHighlightText.IsVisible = true;
                 MyHighlightText.Location = point.Coordinates;

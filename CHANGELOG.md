@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.28
 _Not yet on NuGet..._
+* Marker: Refactored marker system to support improved styling and the ability to use custom markers (#3716, #3141)
 
 ## ScottPlot 5.0.27
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-23_

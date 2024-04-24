@@ -145,8 +145,8 @@ public class Styling : ICategory
                 var mp = myPlot.Add.Marker(x: i, y: 0);
                 mp.MarkerStyle.Shape = markerShapes[i];
                 mp.MarkerStyle.Size = 10;
-                mp.MarkerStyle.OutlineWidth = 1.5f;
-                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
+                mp.MarkerStyle.LineWidth = 1.5f;
+                mp.MarkerStyle.LineColor = palette.GetColor(i);
                 mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
 
                 var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);

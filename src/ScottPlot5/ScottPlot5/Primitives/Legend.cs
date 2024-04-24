@@ -74,7 +74,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public Color? FontColor { get; set; } = null;
 
     [Obsolete("Assign FontSize, FontName, or FontColor to control appearance of all legend items", true)]
-    public FillStyle Font { get; set; }
+    public FillStyle Font { get; set; } = new();
 
     [Obsolete("Multiline is now enabled by default.", true)]
     public bool AllowMultiline { get; set; }

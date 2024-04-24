@@ -59,4 +59,9 @@ public class LineStyle
 
         Drawing.DrawLine(canvas, paint, line, this);
     }
+
+    public void ApplyToPaint(SKPaint paint)
+    {
+        Extensions.SkiaSharpExtensions.ApplyToPaint(this, paint);
+    }
 }

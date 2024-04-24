@@ -8,13 +8,13 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public MarkerStyle MarkerStyle { get; set; } = new() { OutlineWidth = 1 };
+    public MarkerStyle MarkerStyle { get; set; } = new() { LineWidth = 1 };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     public IScatterSource Data { get; } = data;
 
@@ -24,7 +24,7 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
         set
         {
             MarkerStyle.FillColor = value;
-            MarkerStyle.OutlineColor = value;
+            MarkerStyle.LineColor = value;
         }
     }
 

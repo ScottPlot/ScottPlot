@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using ScottPlot.Extensions;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ScottPlot;
@@ -102,6 +103,15 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
+    {
+        if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
+            return;
+
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawPath(path, paint);
+    }
+
     private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
@@ -156,6 +166,12 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
+    {
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
     {
         canvas.DrawRect(rect.ToSKRect(), paint);
@@ -201,6 +217,7 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
+    // TODO: obsolete
     public static void DrawCircle(SKCanvas canvas, Pixel center, Color color, float radius = 5, bool fill = true)
     {
         using SKPaint paint = new()
@@ -210,6 +227,19 @@ public static class Drawing
             IsAntialias = true,
         };
 
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
+    {
+        lineStyle.ApplyToPaint(paint);
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+    }
+
+    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
+    {
+        PixelRect rect = new(center, radius);
+        fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
@@ -233,24 +263,21 @@ public static class Drawing
         if (!style.IsVisible)
             return;
 
-        IMarker renderer = style.Shape.GetRenderer();
-        renderer.LineWidth = style.OutlineWidth;
-        renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
+        IMarker marker = style.CustomRenderer ?? style.Shape.GetMarker();
+
+        marker.Render(canvas, paint, pixel, style.Size, style);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
-        bool lineIsVisible = style.OutlineStyle.IsVisible && style.OutlineColor.Alpha != 0 && style.OutlineStyle.Width > 0;
-        bool fillIsVisible = style.FillColor.Alpha != 0;
-        if ((lineIsVisible || fillIsVisible) == false)
+        if (!style.IsVisible)
             return;
 
-        IMarker renderer = style.Shape.GetRenderer();
-        renderer.LineWidth = style.OutlineWidth;
+        IMarker marker = style.CustomRenderer ?? style.Shape.GetMarker();
 
         foreach (Pixel pixel in pixels)
         {
-            renderer.Render(canvas, paint, pixel, style.Size, style.FillStyle, style.OutlineStyle);
+            marker.Render(canvas, paint, pixel, style.Size, style);
         }
     }
 

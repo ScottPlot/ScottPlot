@@ -7,6 +7,8 @@
     string FinalCode { get; set; } = string.Empty;
     private bool _isFirstRenderDone = false;
 
+#pragma warning disable CS8618
+
     [Inject]
     private IJSRuntime JSRuntime { get; set; }
     [Parameter]
@@ -14,8 +16,9 @@
     [Parameter]
     public string Language { get; set; } = "csharp";
     [Parameter]
-    public string Code { get; set; }
+    public string Code { get; set; } = string.Empty;
 
+#pragma warning restore CS8618
 
     protected override async Task OnParametersSetAsync()
     {
@@ -26,6 +29,7 @@
             await JSRuntime.InvokeVoidAsync("highlightElementById", DisplayId);
         }
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
