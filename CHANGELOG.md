@@ -1,5 +1,8 @@
-## ScottPlot 5.0.28
+## ScottPlot 5.0.29
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.28
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-25_
 * Marker: Refactored marker system to support improved styling and the ability to use custom markers (#3716, #3141)
 * Interpolation: Improved control points for the first and last points of an interpolated cubic Bézier spline (#3717) @drolevar
 * FillY: Improved default line style (#3726, #3723) @SebastianDirks @Fruchtzwerg94
