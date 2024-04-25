@@ -162,12 +162,19 @@ public static class Drawing
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, LineStyle lineStyle)
     {
+        if (!lineStyle.IsVisible) return;
+        if (lineStyle.Width == 0) return;
+        if (lineStyle.Color == Colors.Transparent) return;
+
         lineStyle.ApplyToPaint(paint);
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
     {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
+
         fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
@@ -217,27 +224,21 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    // TODO: obsolete
-    public static void DrawCircle(SKCanvas canvas, Pixel center, Color color, float radius = 5, bool fill = true)
-    {
-        using SKPaint paint = new()
-        {
-            Color = color.ToSKColor(),
-            IsStroke = !fill,
-            IsAntialias = true,
-        };
-
-        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
-    }
-
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
     {
+        if (!lineStyle.IsVisible) return;
+        if (lineStyle.Width == 0) return;
+        if (lineStyle.Color == Colors.Transparent) return;
+
         lineStyle.ApplyToPaint(paint);
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
     {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
+
         PixelRect rect = new(center, radius);
         fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
@@ -245,8 +246,9 @@ public static class Drawing
 
     public static void DrawOval(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect)
     {
-        if (lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
-            return;
+        if (!lineStyle.IsVisible) return;
+        if (lineStyle.Width == 0) return;
+        if (lineStyle.Color == Colors.Transparent) return;
 
         lineStyle.ApplyToPaint(paint);
         canvas.DrawOval(rect.ToSKRect(), paint);
@@ -254,6 +256,9 @@ public static class Drawing
 
     public static void FillOval(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect)
     {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
+
         fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
