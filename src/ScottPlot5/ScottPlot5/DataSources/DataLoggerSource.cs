@@ -12,7 +12,7 @@ public class DataLoggerSource
     double YMin = double.NaN;
     double YMax = double.NaN;
 
-    public int CountOnLastRender = -1;
+    public int CountOnLastRender { get; internal set; } = -1;
     public int CountTotal => Coordinates.Count;
 
     public void Add(double y)

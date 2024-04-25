@@ -1,4 +1,7 @@
-﻿namespace WinForms_Demo.Demos;
+﻿using ScottPlot;
+using ScottPlot.AxisPanels;
+
+namespace WinForms_Demo.Demos;
 
 public partial class DataLogger : Form, IDemoWindow
 {
@@ -11,27 +14,35 @@ public partial class DataLogger : Form, IDemoWindow
     readonly ScottPlot.Plottables.DataLogger Logger1;
     readonly ScottPlot.Plottables.DataLogger Logger2;
 
+    readonly ScottPlot.DataGenerators.RandomWalker Walker1 = new(0, multiplier: 0.01);
+    readonly ScottPlot.DataGenerators.RandomWalker Walker2 = new(1, multiplier: 1000);
+
     public DataLogger()
     {
         InitializeComponent();
 
+        // disable interactivity by default
+        formsPlot1.Interaction.Disable();
+
+        // create two loggers and add them to the plot
         Logger1 = formsPlot1.Plot.Add.DataLogger();
         Logger2 = formsPlot1.Plot.Add.DataLogger();
 
-        var axis1 = formsPlot1.Plot.Axes.Right;
+        // use the right axis (already there by default) for the first logger
+        RightAxis axis1 = (RightAxis)formsPlot1.Plot.Axes.Right;
         Logger1.Axes.YAxis = axis1;
+        axis1.Color(Logger1.Color);
 
-        var axis2 = formsPlot1.Plot.Axes.AddRightAxis();
+        // create and add a secondary right axis to use for the other logger
+        RightAxis axis2 = formsPlot1.Plot.Axes.AddRightAxis();
         Logger2.Axes.YAxis = axis2;
-
-        formsPlot1.Plot.RenderInMemory(); // force a single render
-        formsPlot1.Plot.Axes.Left.Range.Reset();
+        axis2.Color(Logger2.Color);
 
         AddNewDataTimer.Tick += (s, e) =>
         {
-            var newValues = ScottPlot.Generate.RandomWalker.Next(10);
-            Logger1.Add(newValues);
-            Logger2.Add(newValues.Select(x => x * 4));
+            int count = 5;
+            Logger1.Add(Walker1.Next(count));
+            Logger2.Add(Walker2.Next(count));
         };
 
         UpdatePlotTimer.Tick += (s, e) =>
@@ -39,5 +50,10 @@ public partial class DataLogger : Form, IDemoWindow
             if (Logger1.HasNewData || Logger2.HasNewData)
                 formsPlot1.Refresh();
         };
+
+        // wire our buttons to change the view modes of each logger
+        btnFull.Click += (s, e) => { Logger1.ViewFull(); Logger2.ViewFull(); };
+        btnJump.Click += (s, e) => { Logger1.ViewJump(); Logger2.ViewJump(); };
+        btnSlide.Click += (s, e) => { Logger1.ViewSlide(); Logger2.ViewSlide(); };
     }
 }

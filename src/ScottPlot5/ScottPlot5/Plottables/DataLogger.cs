@@ -33,9 +33,16 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
 
     public void UpdateAxisLimits(Plot plot)
     {
-        AxisLimits viewLimits = plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
+        bool firstTimeRenderingData = Data.CountOnLastRender < 1 && Data.CountTotal > 0;
+
         AxisLimits dataLimits = GetAxisLimits();
+
+        AxisLimits viewLimits = firstTimeRenderingData
+            ? dataLimits
+            : plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
+
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
+
         plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
     }
 
@@ -110,11 +117,13 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
     public void ViewJump(double width = 1000, double paddingFraction = .5)
     {
         ManageAxisLimits = true;
+
         AxisManager = new Slide()
         {
             Width = width,
             PaddingFractionX = paddingFraction,
         };
+
         Data.CountOnLastRender = -1;
     }
 
