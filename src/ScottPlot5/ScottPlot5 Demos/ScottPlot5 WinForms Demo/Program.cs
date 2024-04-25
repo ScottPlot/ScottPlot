@@ -1,4 +1,5 @@
-﻿namespace WinForms_Demo;
+﻿
+namespace WinForms_Demo;
 
 static class Program
 {
@@ -9,16 +10,7 @@ static class Program
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        // use this to quickly launch a test Form while developing
-        if (true && Environment.MachineName == "DESKTOP-L7MMAB7")
-        {
-            Demos.CustomMarkerDemo window = new() { StartPosition = FormStartPosition.CenterScreen };
-            Application.Run(window);
-            //Application.Run(new MainMenuForm());
-        }
-        else
-        {
-            Application.Run(new MainMenuForm());
-        }
+        Type testingFormType = typeof(Demos.CookbookViewer);
+        Application.Run(new MainMenuForm(testingFormType));
     }
 }

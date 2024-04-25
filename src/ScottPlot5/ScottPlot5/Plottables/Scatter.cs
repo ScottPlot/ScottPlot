@@ -16,7 +16,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     public MarkerStyle MarkerStyle { get; set; } = new()
     {
-        LineWidth = 1,
+        LineWidth = 0,
         Size = 5,
         Shape = MarkerShape.FilledCircle,
     };
