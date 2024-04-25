@@ -20,7 +20,15 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
     public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
-    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
+    public Color MarkerColor
+    {
+        get => MarkerFillColor;
+        set
+        {
+            MarkerFillColor = value;
+            MarkerLineColor = value;
+        }
+    }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     public float Size { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
@@ -28,8 +36,12 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     public MarkerShape Shape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public Color Color
     {
-        get => MarkerStyle.FillColor;
-        set { MarkerStyle.FillColor = value; MarkerStyle.FillColor = value; }
+        get => MarkerFillColor;
+        set
+        {
+            MarkerFillColor = value;
+            MarkerLineColor = value;
+        }
     }
 
     public IAxes Axes { get; set; } = new Axes();
