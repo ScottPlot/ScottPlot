@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottables;
+﻿using System.Data;
+
+namespace ScottPlot.Plottables;
 
 public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
@@ -30,6 +32,14 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public IScatterSource Data { get; } = data;
     public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
     public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
+
+    public bool FillY { get; set; } = false;
+    public bool FillYBelow { get; set; } = true;
+    public bool FillYAbove { get; set; } = true;
+    public double FillYValue { get; set; } = 0;
+    public Color FillYAboveColor { get; set; } = Colors.Blue.WithAlpha(.2);
+    public Color FillYBelowColor { get; set; } = Colors.Blue.WithAlpha(.2);
+    public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
     /// <summary>
     /// The style of lines to use when connecting points.
@@ -89,7 +99,15 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         }
     }
 
-    public AxisLimits GetAxisLimits() => Data.GetLimits();
+    public AxisLimits GetAxisLimits()
+    {
+        ExpandingAxisLimits limits = new(Data.GetLimits());
+
+        if (FillY)
+            limits.ExpandY(FillYValue);
+
+        return limits.AxisLimits;
+    }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
 
@@ -111,6 +129,30 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         using SKPaint paint = new();
         using SKPath path = PathStrategy.GetPath(linePixels);
+
+        if (FillY)
+        {
+            FillStyle fs = new() { IsVisible = true };
+
+            PixelRect rect = new(linePixels);
+            float yValuePixel = Axes.YAxis.GetPixel(FillYValue, rp.DataRect);
+
+            using SKPath fillPath = new(path);
+            fillPath.LineTo(rect.Right, yValuePixel);
+            fillPath.LineTo(rect.Left, yValuePixel);
+
+            PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
+            rp.CanvasState.Clip(rectAbove);
+            fs.Color = FillYAboveColor;
+            Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
+            rp.CanvasState.Restore();
+
+            PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
+            rp.CanvasState.Clip(rectBelow);
+            fs.Color = FillYBelowColor;
+            Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
+            rp.CanvasState.Restore();
+        }
 
         Drawing.DrawLines(rp.Canvas, paint, path, LineStyle);
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);

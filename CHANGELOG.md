@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * Plot: Added `MoveToFront()` and `MoveToBack()` to control the order plottables are rendered
 * Scatter: Disable marker outline visibility by default (#3720)
 * Markers: Disable rendering of lines when `LineWidth` is `0` (#3720)
+* Scatter: Added support for filling above and below the curve (#3318, #3380) @xichaoqiang @Diddlik @slotinvo
 
 ## ScottPlot 5.0.27
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-23_

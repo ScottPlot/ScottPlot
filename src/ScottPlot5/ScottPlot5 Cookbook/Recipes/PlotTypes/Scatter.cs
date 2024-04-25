@@ -366,4 +366,58 @@ public class Scatter : ICategory
             sp.MaxRenderIndex = 40;
         }
     }
+
+    public class ScatterFill : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Fill";
+        public override string Description => "The area beneath a scatter plot can be filled.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.FillY = true;
+            sp.FillYColor = sp.Color.WithAlpha(.2);
+        }
+    }
+
+    public class ScatterFillValue : RecipeBase
+    {
+        public override string Name => "Scatter Plot Filled to a Value";
+        public override string Description => "The base of the fill can be defined.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.FillY = true;
+            sp.FillYColor = sp.Color.WithAlpha(.2);
+            sp.FillYValue = 0.6;
+        }
+    }
+
+    public class ScatterFillAboveBelow : RecipeBase
+    {
+        public override string Name => "Scatter Plot Filled Above and Below";
+        public override string Description => "Filled areas above and " +
+            "below the FillY value can be individually customized";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.FillY = true;
+            sp.FillYAboveColor = Colors.Green.WithAlpha(.2);
+            sp.FillYBelowColor = Colors.Red.WithAlpha(.2);
+        }
+    }
 }

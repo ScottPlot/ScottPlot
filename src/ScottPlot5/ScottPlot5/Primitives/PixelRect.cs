@@ -97,6 +97,25 @@ public readonly struct PixelRect : IEquatable<PixelRect>
         Top = yRange.Top;
     }
 
+    public PixelRect(IEnumerable<Pixel> pixels)
+    {
+        if (!pixels.Any())
+            return;
+
+        Left = pixels.First().X;
+        Right = pixels.First().X;
+        Bottom = pixels.First().Y;
+        Top = pixels.First().Y;
+
+        foreach (var pixel in pixels)
+        {
+            Left = Math.Min(pixel.X, Left);
+            Right = Math.Max(pixel.X, Right);
+            Bottom = Math.Max(pixel.Y, Bottom);
+            Top = Math.Min(pixel.Y, Top);
+        }
+    }
+
     public PixelRect WithPan(float x, float y)
     {
         return new PixelRect(Left + x, Right + x, Bottom + y, Top + y);
