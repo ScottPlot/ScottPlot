@@ -32,6 +32,7 @@ partial class DataStreamer
         cbManageLimits = new CheckBox();
         btnWipeRight = new Button();
         btnScrollLeft = new Button();
+        cbContinuouslyAutoscale = new CheckBox();
         SuspendLayout();
         // 
         // formsPlot1
@@ -73,11 +74,22 @@ partial class DataStreamer
         btnScrollLeft.Text = "Scroll";
         btnScrollLeft.UseVisualStyleBackColor = true;
         // 
+        // cbContinuouslyAutoscale
+        // 
+        cbContinuouslyAutoscale.AutoSize = true;
+        cbContinuouslyAutoscale.Location = new Point(344, 21);
+        cbContinuouslyAutoscale.Name = "cbContinuouslyAutoscale";
+        cbContinuouslyAutoscale.Size = new Size(152, 19);
+        cbContinuouslyAutoscale.TabIndex = 6;
+        cbContinuouslyAutoscale.Text = "Continuously Autoscale";
+        cbContinuouslyAutoscale.UseVisualStyleBackColor = true;
+        // 
         // DataStreamer
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(800, 450);
+        Controls.Add(cbContinuouslyAutoscale);
         Controls.Add(btnScrollLeft);
         Controls.Add(btnWipeRight);
         Controls.Add(cbManageLimits);
@@ -94,4 +106,5 @@ partial class DataStreamer
     private CheckBox cbManageLimits;
     private Button btnWipeRight;
     private Button btnScrollLeft;
+    private CheckBox cbContinuouslyAutoscale;
 }

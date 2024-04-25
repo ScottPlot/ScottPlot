@@ -10,7 +10,7 @@ static class Program
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        Type testingFormType = typeof(Demos.CookbookViewer);
+        Type testingFormType = typeof(Demos.DataStreamer);
         Application.Run(new MainMenuForm(testingFormType));
     }
 }

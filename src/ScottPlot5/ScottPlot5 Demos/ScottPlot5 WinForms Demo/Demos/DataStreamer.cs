@@ -57,5 +57,7 @@ public partial class DataStreamer : Form, IDemoWindow
                 formsPlot1.Interaction.Enable();
             }
         };
+
+        cbContinuouslyAutoscale.CheckedChanged += (s, e) => Streamer.ContinuouslyAutoscale = cbContinuouslyAutoscale.Checked;
     }
 }

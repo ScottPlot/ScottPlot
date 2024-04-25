@@ -21,6 +21,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public DataStreamerSource Data { get; set; }
+    public int Count => Data.Length;
 
     public double Period { get => Data.SamplePeriod; set => Data.SamplePeriod = value; }
 
@@ -33,6 +34,12 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     /// If enabled, axis limits will be adjusted automatically if new data runs off the screen.
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
+
+    /// <summary>
+    /// If disabled, vertical axis limits will always be set to the min and max value ever observed.
+    /// If enabled, vertical axis limits will be recalculated to tightly fit the data before every render.
+    /// </summary>
+    public bool ContinuouslyAutoscale { get; set; } = false;
 
     /// <summary>
     /// Contains logic for automatically adjusting axis limits if new data runs off the screen.
@@ -136,13 +143,13 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
 
     public AxisLimits GetAxisLimits()
     {
-        return Data.GetAxisLimits();
+        return Data.GetAxisLimits(ContinuouslyAutoscale);
     }
 
     public void UpdateAxisLimits(Plot plot, bool force = false)
     {
         AxisLimits limits = Plot.Axes.GetLimits(Axes);
-        AxisLimits dataLimits = Data.GetAxisLimits();
+        AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);
         Plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
     }
@@ -150,6 +157,10 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     public virtual void Render(RenderPack rp)
     {
         Renderer.Render(rp);
+
+        if (ManageAxisLimits && ContinuouslyAutoscale)
+            rp.Plot.Axes.AutoScaler.AutoScaleAll([this]);
+
         Data.CountTotalOnLastRender = Data.CountTotal;
     }
 }

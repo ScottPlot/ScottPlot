@@ -93,13 +93,15 @@ public class DataStreamerSource
         CountTotal = 0;
     }
 
-    public AxisLimits GetAxisLimits()
+    public AxisLimits GetAxisLimits(bool tight)
     {
         if (double.IsInfinity(DataMin) || double.IsInfinity(DataMax))
             return AxisLimits.NoLimits;
 
         double xMin = OffsetX;
         double xMax = xMin + Data.Length * SamplePeriod;
-        return new AxisLimits(xMin, xMax, DataMin, DataMax);
+        CoordinateRange xRange = new(xMin, xMax);
+        CoordinateRange yRange = tight ? CoordinateRange.MinMaxNan(Data) : new(DataMin, DataMax);
+        return new AxisLimits(xRange, yRange);
     }
 }

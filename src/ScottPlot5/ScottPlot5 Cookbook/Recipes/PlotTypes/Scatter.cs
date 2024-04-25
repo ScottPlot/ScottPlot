@@ -416,6 +416,7 @@ public class Scatter : ICategory
 
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.FillY = true;
+            sp.FillYValue = 0;
             sp.FillYAboveColor = Colors.Green.WithAlpha(.2);
             sp.FillYBelowColor = Colors.Red.WithAlpha(.2);
         }
