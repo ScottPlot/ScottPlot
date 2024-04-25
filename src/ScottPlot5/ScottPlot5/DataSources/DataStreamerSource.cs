@@ -14,7 +14,17 @@ public class DataStreamerSource
     public int NextIndex { get; private set; } = 0;
 
     /// <summary>
-    /// The fied number of visible data points to display
+    /// Index in <see cref="Data"/> holding the newest data point
+    /// </summary>
+    public int NewestIndex { get; private set; } = 0;
+
+    /// <summary>
+    /// Value of the most recently added data point
+    /// </summary>
+    public double NewestPoint => Data[NewestIndex];
+
+    /// <summary>
+    /// The number of visible data points to display
     /// </summary>
     public int Length => Data.Length;
 
@@ -61,6 +71,10 @@ public class DataStreamerSource
         if (NextIndex >= Data.Length)
             NextIndex = 0;
 
+        NewestIndex = NextIndex - 1;
+        if (NewestIndex < 0)
+            NewestIndex = Data.Length - 1;
+
         DataMin = Math.Min(value, DataMin);
         DataMax = Math.Max(value, DataMax);
 
@@ -89,11 +103,12 @@ public class DataStreamerSource
         DataMin = value;
         DataMax = value;
 
+        NewestIndex = 0;
         NextIndex = 0;
         CountTotal = 0;
     }
 
-    public AxisLimits GetAxisLimits(bool tight)
+    public AxisLimits GetAxisLimits(bool tight = true)
     {
         if (double.IsInfinity(DataMin) || double.IsInfinity(DataMax))
             return AxisLimits.NoLimits;

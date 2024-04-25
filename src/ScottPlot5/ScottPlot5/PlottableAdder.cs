@@ -214,7 +214,7 @@ public class PlottableAdder(Plot plot)
 
     public DataStreamer DataStreamer(int points, double period = 1)
     {
-        double[] data = new double[points];
+        double[] data = Generate.NaN(points);
 
         DataStreamer streamer = new(Plot, data)
         {

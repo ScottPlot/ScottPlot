@@ -23,6 +23,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
 
     public DataStreamerSource Data { get; set; }
     public int Count => Data.Length;
+    public int CountTotal => Data.CountTotal;
 
     public double Period { get => Data.SamplePeriod; set => Data.SamplePeriod = value; }
 
@@ -36,10 +37,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
 
-    /// <summary>
-    /// If disabled, vertical axis limits will always be set to the min and max value ever observed.
-    /// If enabled, vertical axis limits will be recalculated to tightly fit the data before every render.
-    /// </summary>
+    [Obsolete("set Plot.Axes.ContinuouslyAutoscale", true)]
     public bool ContinuouslyAutoscale { get; set; } = false;
 
     /// <summary>
@@ -90,7 +88,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     }
 
     /// <summary>
-    /// Display the data using a view where new data overlapps old data from left to right.
+    /// Display the data using a view where new data overlaps old data from left to right.
     /// </summary>
     public void ViewWipeRight(double blankFraction = 0)
     {
@@ -98,7 +96,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     }
 
     /// <summary>
-    /// Display the data using a view where new data overlapps old data from right to left.
+    /// Display the data using a view where new data overlaps old data from right to left.
     /// </summary>
     public void ViewWipeLeft()
     {
@@ -144,10 +142,10 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
 
     public AxisLimits GetAxisLimits()
     {
-        return Data.GetAxisLimits(ContinuouslyAutoscale);
+        return Data.GetAxisLimits();
     }
 
-    public void UpdateAxisLimits(Plot plot, bool force = false)
+    public void UpdateAxisLimits(Plot plot)
     {
         AxisLimits limits = Plot.Axes.GetLimits(Axes);
         AxisLimits dataLimits = GetAxisLimits();
@@ -158,14 +156,6 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     public virtual void Render(RenderPack rp)
     {
         Renderer.Render(rp);
-
-        if (ManageAxisLimits && ContinuouslyAutoscale)
-        {
-            bool thisIsLastStreamer = rp.Plot.GetPlottables<DataStreamer>().Last() == this;
-            if (thisIsLastStreamer)
-                rp.Plot.Axes.AutoScale();
-        }
-
         Data.CountTotalOnLastRender = Data.CountTotal;
     }
 }

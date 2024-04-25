@@ -31,16 +31,12 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public void UpdateAxisLimits(Plot plot, bool force = false)
+    public void UpdateAxisLimits(Plot plot)
     {
-        AxisLimits viewLimits = force ? AxisLimits.NoLimits : plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
+        AxisLimits viewLimits = plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
-
         plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
-
-        if (force)
-            UpdateAxisLimits(plot);
     }
 
     public void Add(double y)
