@@ -26,12 +26,20 @@ internal class MarkerTests
 
         for (int i = 0; i < markerShapes.Length; i++)
         {
-            var mp = plt.Add.Marker(x: 0, y: -i);
-            mp.MarkerStyle.Shape = markerShapes[i];
-            mp.MarkerStyle.Size = 20;
-            mp.MarkerStyle.LineWidth = 2;
-            mp.MarkerStyle.LineColor = palette.GetColor(i);
-            mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
+            var mp1 = plt.Add.Marker(x: 0, y: -i);
+            mp1.MarkerStyle.Shape = markerShapes[i];
+            mp1.MarkerStyle.Size = 20;
+            mp1.MarkerStyle.LineWidth = 2;
+            mp1.MarkerStyle.LineColor = Colors.Black;
+            mp1.MarkerStyle.FillColor = Colors.Yellow;
+
+            var mp2 = plt.Add.Marker(x: .5, y: -i);
+            mp2.MarkerStyle.Shape = markerShapes[i];
+            mp2.MarkerStyle.Size = 20;
+            mp2.MarkerStyle.LineWidth = 2;
+            mp2.MarkerStyle.LineColor = palette.GetColor(i);
+            mp2.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.3);
+            mp2.MarkerStyle.FillOutline = true;
 
             var txt = plt.Add.Text(markerShapes[i].ToString(), 1, -i);
             txt.LabelAlignment = Alignment.MiddleLeft;

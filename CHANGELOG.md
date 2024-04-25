@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * Markers: Disable rendering of lines when `LineWidth` is `0` (#3720)
 * Scatter: Added support for filling above and below the curve (#3318, #3380) @xichaoqiang @Diddlik @slotinvo
 * DataStreamer: Added `ContinuouslyAutoscale` flag to allow the vertical range to always tightly fit the data (#3561) @hazenjaqdx3 @zhhding @Xhichn
+* Markers: Added `FillOutline` flag to make drawing lines on filled markers an opt-in feature
 
 ## ScottPlot 5.0.27
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-23_

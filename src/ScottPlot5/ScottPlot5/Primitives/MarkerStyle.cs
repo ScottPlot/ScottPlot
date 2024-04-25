@@ -25,7 +25,7 @@ public class MarkerStyle : IHasLine, IHasFill
     }
 
     // the line is for shapes like open circles
-    public LineStyle LineStyle { get; set; } = new();
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -35,6 +35,8 @@ public class MarkerStyle : IHasLine, IHasFill
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
     public IMarker? CustomRenderer { get; set; } = null;
+
+    public bool FillOutline { get; set; } = false;
 
     #region obsolete
 
