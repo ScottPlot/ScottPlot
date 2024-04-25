@@ -127,10 +127,18 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
-        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
-        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
-        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+        double x1 = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double x2 = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double y1 = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double y2 = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+
+        // rectify rectangles for inverted axes
+        // https://github.com/ScottPlot/ScottPlot/issues/3731
+        double left = Math.Min(x1, x2);
+        double right = Math.Max(x1, x2);
+        double bottom = Math.Min(y1, y2);
+        double top = Math.Max(y1, y2);
+
         return new CoordinateRect(left, right, bottom, top);
     }
 
