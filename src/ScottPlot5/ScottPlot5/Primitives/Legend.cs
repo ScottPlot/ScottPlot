@@ -82,7 +82,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
     public PixelSize LastRenderSize { get; private set; } = PixelSize.NaN;
 
-    public LineStyle OutlineStyle { get; set; } = new() { Width = 1, Color = Colors.Black, AntiAlias = false, };
+    public LineStyle OutlineStyle { get; set; } = new() { Width = 1, Color = Colors.Black, };
     public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
     public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
     public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
