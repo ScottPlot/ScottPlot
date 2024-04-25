@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisLimitManagers;
 using ScottPlot.DataSources;
+using System.Runtime.CompilerServices;
 
 namespace ScottPlot.Plottables;
 
@@ -159,7 +160,11 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
         Renderer.Render(rp);
 
         if (ManageAxisLimits && ContinuouslyAutoscale)
-            rp.Plot.Axes.AutoScaler.AutoScaleAll([this]);
+        {
+            bool thisIsLastStreamer = rp.Plot.GetPlottables<DataStreamer>().Last() == this;
+            if (thisIsLastStreamer)
+                rp.Plot.Axes.AutoScale();
+        }
 
         Data.CountTotalOnLastRender = Data.CountTotal;
     }
