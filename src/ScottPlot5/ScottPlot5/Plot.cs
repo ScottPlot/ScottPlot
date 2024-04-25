@@ -3,6 +3,7 @@ using ScottPlot.Control;
 using ScottPlot.Grids;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
+using System.ComponentModel;
 
 namespace ScottPlot;
 
@@ -427,11 +428,18 @@ public class Plot : IDisposable
         toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
+    [Obsolete("use MoveToFront()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToTop(IPlottable plottable) => MoveToFront(plottable);
+
+    [Obsolete("use MoveToBack()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToBottom(IPlottable plottable) => MoveToBack(plottable);
+
     /// <summary>
     /// Move the indicated plottable to the end of the list so it is rendered last
     /// </summary>
-    /// <param name="plottable"></param>
-    public void MoveToTop(IPlottable plottable)
+    public void MoveToFront(IPlottable plottable)
     {
         // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
         int index = PlottableList.IndexOf(plottable);
@@ -441,6 +449,21 @@ public class Plot : IDisposable
 
         PlottableList.RemoveAt(index);
         PlottableList.Add(plottable);
+    }
+
+    /// <summary>
+    /// Move the indicated plottable to the start of the list so it is rendered first
+    /// </summary>
+    public void MoveToBack(IPlottable plottable)
+    {
+        // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
+        int index = PlottableList.IndexOf(plottable);
+
+        if (index < 0)
+            return;
+
+        PlottableList.RemoveAt(index);
+        PlottableList.Insert(0, plottable);
     }
 
     /// <summary>
