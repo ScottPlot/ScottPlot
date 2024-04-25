@@ -14,6 +14,7 @@ public class RenderManager(Plot plot)
         new RenderActions.RenderFigureBackground(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
+        new RenderActions.ContinuouslyAutoscale(),
         new RenderActions.ExecutePlottableAxisManagers(),
         new RenderActions.ApplyAxisRulesBeforeLayout(),
         new RenderActions.CalculateLayout(),

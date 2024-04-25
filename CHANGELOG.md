@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.29
 _Not yet on NuGet..._
+* Axes: Added a `Plot.Axes.ContinuouslyAutoscale` flag useful for plots containing continuously updating data (#3732) @rubenslkirchner
 
 ## ScottPlot 5.0.28
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-25_

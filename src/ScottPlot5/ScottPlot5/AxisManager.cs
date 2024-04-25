@@ -97,6 +97,24 @@ public class AxisManager
     public List<IAxisRule> Rules { get; } = [];
 
     /// <summary>
+    /// If enabled, AutoScale() will be called at the start of each render.
+    /// This can negatively impact performance of plots with an extremely large number of data points.
+    /// </summary>
+    public bool ContinuouslyAutoscale { get; set; } = false;
+
+    /// <summary>
+    /// When <see cref="ContinuouslyAutoscale"/> is true, 
+    /// this action is called before each frame is rendered.
+    /// Users can assign their own static function to customize continuous autoscaling behavior.
+    /// </summary>
+    public Action<RenderPack> ContinuousAutoscaleAction { get; set; } = DefaultContinuousAutoscaleAction;
+
+    public static void DefaultContinuousAutoscaleAction(RenderPack rp)
+    {
+        rp.Plot.Axes.AutoScale();
+    }
+
+    /// <summary>
     /// Contains state and logic for axes
     /// </summary>
     public AxisManager(Plot plot)
