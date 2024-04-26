@@ -42,7 +42,7 @@ namespace Sandbox.Blazor.WebAssembly.Services
         }
 
         private bool _showOpenGL = false;
-        public bool ShowOpenGL 
+        public bool ShowOpenGL
         {
             get => _showOpenGL;
             set
