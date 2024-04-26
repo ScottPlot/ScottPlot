@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Plot: Improved `CoordinateRect()` support for inverted axes (#3731) @Fokatu
 * Grid: Improved behavior of `MajorLineWidth` property
 * Cookbook: Demonstrate grid alignment with non-standard axes (#3714) @MichaelKuelshammer
+* Demo: Improved strategy for axis limit copying in the shared axis demo (#3729) @rubenslkirchner
 
 ## ScottPlot 5.0.28
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-25_
