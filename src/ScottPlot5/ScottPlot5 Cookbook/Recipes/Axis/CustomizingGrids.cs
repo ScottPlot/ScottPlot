@@ -77,8 +77,23 @@ public class CustomizingGrids : ICategory
             sig.LineWidth = 10;
 
             myPlot.Grid.MajorLineWidth = 3;
-            myPlot.Grid.MajorLineColor = Colors.WhiteSmoke;
+            myPlot.Grid.MajorLineColor = Colors.Black.WithAlpha(.2);
             myPlot.Grid.IsBeneathPlottables = false;
+        }
+    }
+
+    public class GridWithTopAxis : RecipeBase
+    {
+        public override string Name => "Grid with Top Axis";
+        public override string Description => "Grid lines use the bottom and left axes by default, " +
+            "but this behavior can be customized for plots which use other axes.";
+
+        [Test]
+        public override void Execute()
+        {
+            var sig = myPlot.Add.Signal(ScottPlot.Generate.Sin());
+            sig.Axes.XAxis = myPlot.Axes.Top;
+            myPlot.Grid.XAxis = myPlot.Axes.Top;
         }
     }
 }
