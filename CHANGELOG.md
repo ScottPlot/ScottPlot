@@ -1,5 +1,8 @@
-## ScottPlot 5.0.29
+## ScottPlot 5.0.30
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.29
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
 * Axes: Added a `Plot.Axes.ContinuouslyAutoscale` flag useful for plots containing continuously updating data (#3732) @rubenslkirchner
 * DataStreamer: Improved axis limit management behavior (#3732) @rubenslkirchner
 * Plot: Improved `CoordinateRect()` support for inverted axes (#3731) @Fokatu
