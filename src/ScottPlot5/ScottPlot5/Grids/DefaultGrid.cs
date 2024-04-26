@@ -31,8 +31,8 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
     {
         set
         {
-            XAxisStyle.MinorLineStyle.Width = value;
-            YAxisStyle.MinorLineStyle.Width = value;
+            XAxisStyle.MajorLineStyle.Width = value;
+            YAxisStyle.MajorLineStyle.Width = value;
         }
     }
 

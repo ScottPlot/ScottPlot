@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.Axis;
+﻿using System.ComponentModel;
+
+namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingGrids : ICategory
 {
@@ -34,8 +36,10 @@ public class CustomizingGrids : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.Grid.MajorLineColor = Colors.Green.WithOpacity(.5);
-            myPlot.Grid.MinorLineColor = Colors.Green.WithOpacity(.1);
+            myPlot.Grid.MajorLineColor = Colors.Green.WithOpacity(.3);
+            myPlot.Grid.MajorLineWidth = 2;
+
+            myPlot.Grid.MinorLineColor = Colors.Gray.WithOpacity(.1);
             myPlot.Grid.MinorLineWidth = 1;
         }
     }
