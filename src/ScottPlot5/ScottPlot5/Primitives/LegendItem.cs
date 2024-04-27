@@ -28,7 +28,7 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public Color MarkerColor { get => MarkerFillColor; set { MarkerFillColor = value; MarkerLineColor = value; } }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
-    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
+    public ArrowStyle ArrowStyle { get; set; } = new();
     public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
     public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
