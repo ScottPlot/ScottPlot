@@ -81,7 +81,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             float center, left, right;
             if (Sequential == false)
             {
-                double centerNumber = ohlc.DateTime.ToNumber();
+                double centerNumber = NumericConversion.ToNumber(ohlc.DateTime);
                 center = Axes.GetPixelX(centerNumber);
                 double halfWidthNumber = ohlc.TimeSpan.TotalDays / 2 * SymbolWidth;
                 left = Axes.GetPixelX(centerNumber - halfWidthNumber);

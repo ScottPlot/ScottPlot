@@ -18,18 +18,18 @@
 
         public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
         {
-            return dates.Select(dt => dt.ToNumber());
+            return dates.Select(NumericConversion.ToNumber);
         }
 
         public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
         {
             List<Tick> ticks = new();
 
-            DateTime start = Interval.Next(range.Min.ToDateTime(), -1);
-            DateTime end = Interval.Next(range.Max.ToDateTime(), 1);
+            DateTime start = Interval.Next(NumericConversion.ToDateTime(range.Min), -1);
+            DateTime end = Interval.Next(NumericConversion.ToDateTime(range.Max), 1);
             for (DateTime dt = start; dt <= end; dt = Interval.Next(dt, IntervalsPerTick))
             {
-                ticks.Add(new Tick(dt.ToNumber(), dt.ToString(Interval.GetDateTimeFormatString()), true));
+                ticks.Add(new Tick(NumericConversion.ToNumber(dt), dt.ToString(Interval.GetDateTimeFormatString()), true));
             }
 
             Ticks = ticks.Where(x => range.Contains(x.Position)).ToArray();
