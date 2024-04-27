@@ -1,22 +1,27 @@
 ﻿using ScottPlot;
-using ScottPlot.Control;
 
 namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
+    System.Windows.Forms.Timer Timer = new() { Interval = 10 };
+    ScottPlot.DataGenerators.RandomWalker2D Walker = new();
     public Form1()
     {
         InitializeComponent();
 
-        var sig1 = formsPlot1.Plot.Add.Signal(Generate.Sin());
-        sig1.Axes.YAxis = formsPlot1.Plot.Axes.Left;
-        formsPlot1.Plot.Axes.Color(sig1.Axes.YAxis, sig1.Color);
+        var logger = formsPlot1.Plot.Add.DataLogger();
+        logger.Add(0, 0);
+        logger.LineWidth = 2;
 
-        var sig2 = formsPlot1.Plot.Add.Signal(Generate.Cos(mult: 1000));
-        sig2.Axes.YAxis = formsPlot1.Plot.Axes.Right;
-        formsPlot1.Plot.Axes.Color(sig2.Axes.YAxis, sig2.Color);
+        Timer.Tick += (s, e) =>
+        {
+            Coordinates pt = Walker.Next();
+            logger.Add(pt);
+            formsPlot1.Refresh();
+        };
 
-        checkBox1.CheckedChanged += (s, e) => formsPlot1.Interaction.ChangeOpposingAxesTogether = checkBox1.Checked;
+        Timer.Start();
+
     }
 }
