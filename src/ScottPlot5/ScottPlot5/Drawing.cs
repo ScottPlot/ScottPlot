@@ -1,6 +1,4 @@
-﻿using ScottPlot.Extensions;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -27,6 +25,14 @@ public static class Drawing
     public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pxLine, LineStyle lineStyle)
     {
         DrawLine(canvas, paint, pxLine.Pixel1, pxLine.Pixel2, lineStyle);
+    }
+
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<PixelLine> pxLines, LineStyle lineStyle)
+    {
+        foreach(PixelLine line in pxLines)
+        {
+            DrawLine(canvas, paint, line.Pixel1, line.Pixel2, lineStyle);
+        }
     }
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
@@ -92,6 +98,45 @@ public static class Drawing
         };
 
         DrawLines(canvas, paint, pixels, ls);
+    }
+
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    {
+        if (lineStyle.IsVisible == false || lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+            return;
+
+        using SKPath path = new();
+        path.MoveTo(pixels.First().ToSKPoint());
+        foreach (Pixel px in pixels.Skip(1))
+        {
+            path.LineTo(px.ToSKPoint());
+        }
+        DrawPath(canvas, paint, path, lineStyle);
+    }
+
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
+    {
+        if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
+            return;
+
+        float xMin = pixels.First().X;
+        float xMax = pixels.First().X;
+        float yMin = pixels.First().Y;
+        float yMax = pixels.First().Y;
+
+        using SKPath path = new();
+        path.MoveTo(pixels.First().ToSKPoint());
+        foreach (Pixel px in pixels.Skip(1))
+        {
+            path.LineTo(px.ToSKPoint());
+            xMin = Math.Min(xMin, px.X);
+            xMax = Math.Max(xMax, px.X);
+            yMin = Math.Min(yMin, px.Y);
+            yMax = Math.Max(yMax, px.Y);
+        }
+
+        PixelRect rect = new(xMin, xMax, yMax, yMin);
+        DrawPath(canvas, paint, path, fillStyle, rect);
     }
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)

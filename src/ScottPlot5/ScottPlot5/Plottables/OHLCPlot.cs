@@ -75,7 +75,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
 
             if (Sequential == false)
             {
-                double centerNumber = ohlc.DateTime.ToNumber();
+                double centerNumber = NumericConversion.ToNumber(ohlc.DateTime);
                 center = Axes.GetPixelX(centerNumber);
                 double halfWidthNumber = ohlc.TimeSpan.TotalDays / 2 * SymbolWidth;
                 left = Axes.GetPixelX(centerNumber - halfWidthNumber);

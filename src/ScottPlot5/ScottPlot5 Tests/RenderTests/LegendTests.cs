@@ -214,7 +214,8 @@ internal class LegendTests
             LabelText = $"Arrow",
             LabelFontSize = fontSize,
             ArrowLineWidth = 2,
-            ArrowColor = Colors.Blue,
+            ArrowFillColor = Colors.Blue,
+            ArrowLineColor = Colors.Transparent,
         },
     ];
 

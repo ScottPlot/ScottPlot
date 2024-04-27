@@ -363,3 +363,11 @@ public readonly struct PixelRect : IEquatable<PixelRect>
         };
     }
 }
+
+public static class PixelRectExtensions
+{
+    public static PixelRect ToPixelRect(this SKRect rect)
+    {
+        return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
+    }
+}

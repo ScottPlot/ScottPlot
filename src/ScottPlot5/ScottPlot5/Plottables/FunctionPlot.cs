@@ -57,6 +57,8 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
         return new AxisLimits(xRange, MaxObservedRangeY);
     }
 
+    private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
+
     public virtual void Render(RenderPack rp)
     {
         var unitsPerPixel = Axes.XAxis.GetCoordinateDistance(1, rp.DataRect);
@@ -73,7 +75,8 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
         for (double x = minX; x <= maxX; x += unitsPerPixel)
         {
             double y = Source.Get(x);
-            if (y.IsInfiniteOrNaN())
+            
+            if (!IsFinite(y))
             {
                 penIsDown = false; // Picking up pen allows us to skip over regions where the function is undefined
                 continue;

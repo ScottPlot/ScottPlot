@@ -106,4 +106,16 @@ public class FontStyle
             AntiAlias = AntiAlias,
         };
     }
+
+    public void ApplyToPaint(SKPaint paint)
+    {
+        paint.Shader = null;
+        paint.IsStroke = false;
+        paint.Typeface = Typeface;
+        paint.TextSize = Size;
+        paint.Color = Color.ToSKColor();
+        paint.IsAntialias = AntiAlias;
+        paint.FakeBoldText = Bold;
+    }
+
 }
