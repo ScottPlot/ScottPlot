@@ -10,7 +10,7 @@ static class Program
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        Type testingFormType = typeof(Demos.CustomArrows);
+        Type testingFormType = typeof(Demos.DataLogger);
         Application.Run(new MainMenuForm(testingFormType));
     }
 }
