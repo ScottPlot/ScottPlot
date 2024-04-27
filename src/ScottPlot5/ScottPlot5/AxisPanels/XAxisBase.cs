@@ -6,7 +6,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
     public XAxisBase()
     {
-        Label.Rotation = 0;
+        LabelRotation = 0;
     }
 
     public float Measure()
@@ -27,9 +27,9 @@ public abstract class XAxisBase : AxisBase, IXAxis
         float tickLabelHeight = lineHeight * numberOfLines;
 
         float axisLabelHeight = 0;
-        if (Label.IsVisible && !string.IsNullOrWhiteSpace(Label.Text))
+        if (LabelStyle.IsVisible && !string.IsNullOrWhiteSpace(LabelStyle.Text))
         {
-            Label.ApplyToPaint(paint);
+            LabelStyle.ApplyToPaint(paint);
             axisLabelHeight = paint.FontSpacing;
         }
 
@@ -91,11 +91,11 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
         }
 
-        Label.Alignment = Alignment.LowerCenter;
-        Label.Render(rp.Canvas, labelPoint);
+        LabelAlignment = Alignment.LowerCenter;
+        LabelStyle.Render(rp.Canvas, labelPoint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
@@ -115,6 +115,6 @@ public abstract class XAxisBase : AxisBase, IXAxis
     {
         using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
-        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, Label);
+        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, LabelStyle);
     }
 }

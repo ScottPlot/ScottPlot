@@ -29,7 +29,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
             return SizeWhenNoData;
 
         float largestTickSize = MeasureTicks();
-        float largestTickLabelSize = Label.Measure().Height;
+        float largestTickLabelSize = LabelStyle.Measure().Height;
         float spaceBetweenTicksAndAxisLabel = 15;
         return largestTickSize + largestTickLabelSize + spaceBetweenTicksAndAxisLabel;
     }
@@ -43,7 +43,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
         foreach (Tick tick in TickGenerator.Ticks)
         {
-            PixelSize tickLabelSize = Label.MeasureText(paint, tick.Label);
+            PixelSize tickLabelSize = LabelStyle.MeasureText(paint, tick.Label);
             largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
         }
 
@@ -91,11 +91,11 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
         }
 
-        Label.Alignment = Alignment.UpperCenter;
-        Label.Render(rp.Canvas, labelPoint);
+        LabelAlignment = Alignment.UpperCenter;
+        LabelStyle.Render(rp.Canvas, labelPoint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
@@ -115,6 +115,6 @@ public abstract class YAxisBase : AxisBase, IYAxis
     {
         using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
-        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, Label);
+        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, LabelStyle);
     }
 }
