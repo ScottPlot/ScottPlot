@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot5\ScottPlot.csproj", "{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Unit Tests", "ScottPlot5 Tests\Unit Tests\ScottPlot Unit Tests.csproj", "{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{957BAA80-422B-4231-BEC1-D03FD89425A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{7533069F-CC26-4B2F-8F23-4D5451C75538}"
@@ -61,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphical Tests", "ScottPlo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphical Test Runner", "ScottPlot5 Tests\Graphical Test Runner\Graphical Test Runner.csproj", "{AA39141A-E248-43FB-ABF4-92D7E94F6190}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Unit Tests", "ScottPlot5 Tests\Unit Tests\ScottPlot Unit Tests.csproj", "{6CED419A-A9F9-4200-80A7-A38AE1295F0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,10 +71,6 @@ Global
 		{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7533069F-CC26-4B2F-8F23-4D5451C75538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7533069F-CC26-4B2F-8F23-4D5451C75538}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7533069F-CC26-4B2F-8F23-4D5451C75538}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -167,6 +163,10 @@ Global
 		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
