@@ -16,8 +16,9 @@ public class DoubleLine : IArrowShape
 
         rp.CanvasState.Save();
         rp.CanvasState.Translate(arrowLine.Pixel2);
-        rp.CanvasState.RotateDegrees(arrowLine.SlopeDegrees);
+        rp.CanvasState.RotateDegrees(arrowLine.AngleDegrees + 90);
 
+        // origin is the tip, base extends to the right
         Drawing.DrawLines(rp.Canvas, rp.Paint, lines, arrowStyle.LineStyle);
 
         rp.CanvasState.Restore();

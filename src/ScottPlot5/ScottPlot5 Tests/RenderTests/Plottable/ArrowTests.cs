@@ -26,4 +26,101 @@ internal class ArrowTests
         myPlot.HideGrid();
         myPlot.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Arrow_Directions()
+    {
+        Plot myPlot = new();
+
+        {
+            // up
+            Coordinates p1 = new(0, 1);
+            Coordinates p2 = new(0, 2);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"N angle {line.SlopeDegrees}");
+        }
+
+        {
+            // upper right
+            Coordinates p1 = new(1, 1);
+            Coordinates p2 = new(2, 2);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"NE angle {line.SlopeDegrees}");
+        }
+
+        {
+            // right
+            Coordinates p1 = new(1, 0);
+            Coordinates p2 = new(2, 0);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"E angle {line.SlopeDegrees}");
+        }
+
+        {
+            // lower right
+            Coordinates p1 = new(1, -1);
+            Coordinates p2 = new(2, -2);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"SE angle {line.SlopeDegrees}");
+        }
+
+        {
+            // lower
+            Coordinates p1 = new(0, -1);
+            Coordinates p2 = new(0, -2);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"S angle {line.SlopeDegrees}");
+        }
+
+        {
+            // lower left
+            Coordinates p1 = new(-1, -1);
+            Coordinates p2 = new(-2, -2);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"SW angle {line.SlopeDegrees}");
+        }
+
+        {
+            // left
+            Coordinates p1 = new(-1, 0);
+            Coordinates p2 = new(-2, 0);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"W angle {line.SlopeDegrees}");
+        }
+
+        {
+            // upper left
+            Coordinates p1 = new(-1, 1);
+            Coordinates p2 = new(-2, 2);
+            CoordinateLine line = new(p1, p2);
+            myPlot.Add.Arrow(line);
+            myPlot.Add.Line(line);
+            myPlot.Add.Marker(p2);
+            Console.WriteLine($"NW angle {line.SlopeDegrees}");
+        }
+
+        myPlot.Axes.SetLimits(-5, 5, -5, 5);
+        myPlot.SaveTestImage();
+    }
 }

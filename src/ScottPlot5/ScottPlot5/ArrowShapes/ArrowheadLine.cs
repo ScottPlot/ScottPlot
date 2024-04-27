@@ -6,8 +6,9 @@ public class ArrowheadLine : IArrowShape
     {
         rp.CanvasState.Save();
         rp.CanvasState.Translate(arrowLine.Pixel2);
-        rp.CanvasState.RotateDegrees(arrowLine.SlopeDegrees);
+        rp.CanvasState.RotateDegrees(arrowLine.AngleDegrees + 90);
 
+        // origin is the tip, base extends to the right
         PixelLine line1 = new(new(0, 0), new(arrowStyle.ArrowheadLength, arrowStyle.ArrowheadWidth / 2));
         PixelLine line2 = new(new(0, 0), new(arrowStyle.ArrowheadLength, -arrowStyle.ArrowheadWidth / 2));
 

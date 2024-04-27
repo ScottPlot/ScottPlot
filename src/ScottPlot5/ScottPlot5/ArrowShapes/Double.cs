@@ -8,8 +8,9 @@ public class Double : IArrowShape
 
         rp.CanvasState.Save();
         rp.CanvasState.Translate(arrowLine.Pixel2);
-        rp.CanvasState.RotateDegrees(arrowLine.SlopeDegrees);
+        rp.CanvasState.RotateDegrees(arrowLine.AngleDegrees + 90);
 
+        // origin is the tip, base extends to the right
         Pixel[] pixels = [
             new(0, 0),
             new(arrowStyle.ArrowheadLength, arrowStyle.ArrowheadWidth / 2),
