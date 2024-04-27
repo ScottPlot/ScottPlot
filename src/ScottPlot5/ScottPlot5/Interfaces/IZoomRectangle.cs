@@ -7,6 +7,7 @@ public interface IZoomRectangle
     bool IsVisible { get; set; }
     Pixel MouseDown { get; set; }
     Pixel MouseUp { get; set; }
-    void Apply(Plot plot);
+    void Apply(IXAxis xAxes);
+    void Apply(IYAxis yAxes);
     void Render(RenderPack rp);
 }

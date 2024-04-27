@@ -34,4 +34,10 @@ public interface IPlotInteraction
     void DoubleClick();
 
     void MouseWheelVertical(Pixel pixel, float delta);
+
+    /// <summary>
+    /// If enabled, mouse interactions over a single axis will be applied to
+    /// all axes with the same orientation.
+    /// </summary>
+    public bool ChangeOpposingAxesTogether { get; set; }
 }
