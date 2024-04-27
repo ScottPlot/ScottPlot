@@ -46,6 +46,15 @@ internal class SignalTests
     }
 
     [Test]
+    public void Test_Signal_Scale()
+    {
+        ScottPlot.Plot plt = new();
+        var sig = plt.Add.Signal(ScottPlot.Generate.Sin());
+        sig.Data.YScale = 100;
+        plt.SaveTestImage();
+    }
+
+    [Test]
     public void Test_Signal_GenericType()
     {
         UInt16[] values = { 1, 3, 2, 4 };

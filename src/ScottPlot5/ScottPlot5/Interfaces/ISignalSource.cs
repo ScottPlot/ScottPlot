@@ -22,6 +22,11 @@ public interface ISignalSource
     double YOffset { get; set; }
 
     /// <summary>
+    /// Multiple Y values by this scale factor (before applying offset)
+    /// </summary>
+    double YScale { get; set; }
+
+    /// <summary>
     /// Do not display data above this index
     /// </summary>
     public int MaximumIndex { get; set; }
