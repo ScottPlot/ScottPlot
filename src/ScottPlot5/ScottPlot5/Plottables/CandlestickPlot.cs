@@ -50,6 +50,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         if (Sequential)
         {
             limits = new AxisLimits(0, Data.GetOHLCs().Count, limits.Bottom, limits.Top);
+            return limits;
         }
 
         List<OHLC> ohlcs = Data.GetOHLCs();
