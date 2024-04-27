@@ -25,7 +25,7 @@ public partial class LegendOutsideBitmap : Form, IDemoWindow
         }
 
         formsPlot1.Plot.Legend.OutlineWidth = 0;
-        formsPlot1.Plot.Legend.BackgroundColor = ScottPlot.Color.FromARGB(SystemColors.Control.ToArgb());
+        formsPlot1.Plot.Legend.BackgroundColor = ScottPlot.Color.FromColor(SystemColors.Control);
         ScottPlot.Image legendImage = formsPlot1.Plot.GetLegendImage();
         byte[] legendBitmapBytes = legendImage.GetImageBytes(ImageFormat.Bmp);
         MemoryStream ms = new(legendBitmapBytes);

@@ -23,7 +23,7 @@ public class FormsPlot : FormsPlotBase
         HandleCreated += (s, e) => SetupSKControl();
         HandleDestroyed += (s, e) => TeardownSKControl();
         SetupSKControl();
-        Plot.FigureBackground.Color = Color.FromARGB(SystemColors.Control.ToArgb());
+        Plot.FigureBackground.Color = Color.FromColor(SystemColors.Control);
         Plot.DataBackground.Color = Colors.White;
     }
 

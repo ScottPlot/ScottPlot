@@ -38,14 +38,14 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         {
             base.BackColor = value;
             if (Plot is not null)
-                Plot.FigureBackground.Color = Color.FromARGB(value.ToArgb());
+                Plot.FigureBackground.Color = Color.FromColor(value);
         }
     }
 
     public void Reset()
     {
         Plot plot = new();
-        plot.FigureBackground.Color = Color.FromARGB(this.BackColor.ToArgb());
+        plot.FigureBackground.Color = Color.FromColor(BackColor);
         plot.DataBackground.Color = Colors.White;
         Reset(plot);
     }

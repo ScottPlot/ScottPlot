@@ -149,6 +149,11 @@ public readonly struct Color
         return hex.Select(x => FromHex(x)).ToArray();
     }
 
+    public static Color FromColor(System.Drawing.Color color)
+    {
+        return new Color(color.R, color.G, color.B, color.A);
+    }
+
     public string ToHex()
     {
         return Alpha == 255
