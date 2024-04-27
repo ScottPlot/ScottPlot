@@ -1,6 +1,4 @@
-﻿using ScottPlot.Extensions;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 

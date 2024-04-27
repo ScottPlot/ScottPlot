@@ -9,6 +9,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
 * RandomWalk2D: Created `ScottPlot.DataGenerators.RandomWalk2D` for easily generating 2D random data with randomly changing velocity
 * Ticks: Improve tick distribution by using the `TickLabelStyle` font size to evaluate maximum tick label size (#3736) @ebarnard
 * Arrow: Refactored the arrow system to support multiple arrow types including user-provided ones (#3745, #3697)
+* Extensions: `using ScottPlot` no longer exposes extension methods to the user. `Color.FromARGB()` can be used to convert between color types. (#3745)
 
 ## ScottPlot 5.0.29
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_

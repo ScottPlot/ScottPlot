@@ -109,6 +109,11 @@ public readonly struct Color
 
     public static Color Gray(byte value) => new(value, value, value);
 
+    public static Color FromARGB(int argb)
+    {
+        return FromARGB(argb);
+    }
+
     public static Color FromARGB(uint argb)
     {
         byte alpha = (byte)(argb >> 24);
