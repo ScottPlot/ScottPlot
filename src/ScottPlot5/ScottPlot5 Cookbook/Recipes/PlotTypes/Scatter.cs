@@ -203,7 +203,7 @@ public class Scatter : ICategory
         [Test]
         public override void Execute()
         {
-            DateTime[] xs = Generate.DateTime.Days(100);
+            DateTime[] xs = Generate.ConsecutiveDays(100);
             double[] ys = Generate.RandomWalk(xs.Length);
 
             myPlot.Add.Scatter(xs, ys);

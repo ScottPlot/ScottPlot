@@ -107,7 +107,7 @@ internal class ScatterTests
     public void Test_Scatter_DateTimeXs()
     {
         DateTime firstDay = new(2024, 01, 01);
-        DateTime[] days = Generate.DateTime.Days(365, firstDay);
+        DateTime[] days = Generate.ConsecutiveDays(365, firstDay);
         double[] values = Generate.RandomWalk(days.Length);
 
         ScottPlot.Plot plt = new();

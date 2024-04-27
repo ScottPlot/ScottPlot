@@ -15,7 +15,7 @@ public class DateTimeAxes : ICategory
         public override void Execute()
         {
             // plot data using DateTime units
-            DateTime[] dates = Generate.DateTime.Days(100);
+            DateTime[] dates = Generate.ConsecutiveDays(100);
             double[] ys = Generate.RandomWalk(100);
             myPlot.Add.Scatter(dates, ys);
 
@@ -70,7 +70,7 @@ public class DateTimeAxes : ICategory
         public override void Execute()
         {
             // plot sample DateTime data
-            DateTime[] dates = Generate.DateTime.Days(100);
+            DateTime[] dates = Generate.ConsecutiveDays(100);
             double[] ys = Generate.RandomWalk(100);
             myPlot.Add.Scatter(dates, ys);
             myPlot.Axes.DateTimeTicksBottom();
