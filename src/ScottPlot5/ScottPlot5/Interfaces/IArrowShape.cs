@@ -6,5 +6,5 @@
 /// </summary>
 public interface IArrowShape
 {
-    public void Render(RenderPack rp, Pixel pxBase, Pixel pxTip, ArrowStyle arrowStyle);
+    public void Render(RenderPack rp, PixelLine pxLine, ArrowStyle arrowStyle);
 }

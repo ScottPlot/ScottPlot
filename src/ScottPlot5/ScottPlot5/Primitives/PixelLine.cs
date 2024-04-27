@@ -44,21 +44,16 @@ public readonly struct PixelLine
         return $"PixelLine from ({X1}, {Y1}) to ({X2}, {Y2})";
     }
 
-    /// <summary>
-    /// Adjust the line to fit within the boundaries of the given rectangle.
-    /// The slope and Y intercept will not be changed.
-    /// </summary>
-    public PixelLine ExtendTo(PixelRect rect)
+    public PixelLine BackedUpBy(float distance)
     {
-        float dBottomX = Y1 - rect.Bottom;
-        float xAtBottom = X1 - dBottomX * Slope;
-        Pixel bottom = new(xAtBottom, rect.Bottom);
+        float dX = distance * (float)Math.Cos(SlopeRadians);
+        float dY = distance * (float)Math.Sin(SlopeRadians);
+        return WithDelta(dX, dY);
+    }
 
-        float dTopX = rect.Top - Y1;
-        float xAtTop = X1 + dTopX * Slope;
-        Pixel top = new(xAtTop, rect.Top);
-
-        return new PixelLine(bottom, top);
+    public PixelLine WithDelta(float dx, float dy)
+    {
+        return new PixelLine(X1 + dx, Y1 + dy, X2 + dx, Y2 + dy);
     }
 
     /// <summary>

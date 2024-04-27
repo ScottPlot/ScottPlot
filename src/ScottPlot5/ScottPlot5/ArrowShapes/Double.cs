@@ -2,13 +2,12 @@
 
 public class Double : IArrowShape
 {
-    public void Render(RenderPack rp, Pixel pxBase, Pixel pxTip, ArrowStyle arrowStyle)
+    public void Render(RenderPack rp, PixelLine arrowLine, ArrowStyle arrowStyle)
     {
-        PixelLine arrowLine = new(pxBase, pxTip);
         float length = arrowLine.Length;
 
         rp.CanvasState.Save();
-        rp.CanvasState.Translate(pxTip);
+        rp.CanvasState.Translate(arrowLine.Pixel2);
         rp.CanvasState.RotateDegrees(arrowLine.SlopeDegrees);
 
         Pixel[] pixels = [

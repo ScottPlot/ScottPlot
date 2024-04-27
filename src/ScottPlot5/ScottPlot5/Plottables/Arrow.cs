@@ -60,6 +60,11 @@ public class Arrow : IPlottable, IHasArrow, IHasLegendText
     {
         Pixel pxBase = Axes.GetPixel(Base);
         Pixel pxTip = Axes.GetPixel(Tip);
-        ArrowShape.Render(rp, pxBase, pxTip, ArrowStyle);
+        PixelLine pxLine = new(pxBase, pxTip);
+
+        if (ArrowOffset != 0)
+            pxLine = pxLine.BackedUpBy(ArrowOffset);
+
+        ArrowShape.Render(rp, pxLine, ArrowStyle);
     }
 }

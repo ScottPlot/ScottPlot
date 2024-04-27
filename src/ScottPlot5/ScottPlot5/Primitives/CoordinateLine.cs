@@ -76,4 +76,9 @@ public readonly struct CoordinateLine
         double y = Slope * x + YIntercept;
         return y;
     }
+
+    public CoordinateLine WithDelta(double dX, double dY)
+    {
+        return new CoordinateLine(X1 + dX, Y1 + dY, X2 + dX, Y2 + dY);
+    }
 }

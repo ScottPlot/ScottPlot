@@ -40,14 +40,14 @@ public class PlottableAdder(Plot plot)
         return an;
     }
 
-    public Arrow Arrow(Coordinates @base, Coordinates tip)
+    public Arrow Arrow(Coordinates arrowBase, Coordinates arrowTip)
     {
         Color color = GetNextColor();
 
         Arrow arrow = new()
         {
-            Base = @base,
-            Tip = tip,
+            Base = arrowBase,
+            Tip = arrowTip,
             ArrowLineColor = color,
             ArrowFillColor = color.WithAlpha(.3),
         };
@@ -59,9 +59,14 @@ public class PlottableAdder(Plot plot)
 
     public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
     {
-        Coordinates cBase = new(xBase, yBase);
-        Coordinates cTip = new(xTip, yTip);
-        return Arrow(cBase, cTip);
+        Coordinates arrowBase = new(xBase, yBase);
+        Coordinates arrowTip = new(xTip, yTip);
+        return Arrow(arrowBase, arrowTip);
+    }
+
+    public Arrow Arrow(CoordinateLine line)
+    {
+        return Arrow(line.Start, line.End);
     }
 
     public BarPlot Bar(Bar bar)
