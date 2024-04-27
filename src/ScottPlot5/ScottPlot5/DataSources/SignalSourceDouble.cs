@@ -62,13 +62,13 @@ public class SignalSourceDouble : SignalSourceBase, ISignalSource
         int i2 = GetIndex(xRangeMax, true);
 
         // first and last Y vales for this column
-        float yEnter = axes.GetPixelY(Ys[i1] + YOffset);
-        float yExit = axes.GetPixelY(Ys[i2] + YOffset);
+        float yEnter = axes.GetPixelY(Ys[i1] * YScale + YOffset);
+        float yExit = axes.GetPixelY(Ys[i2] * YScale + YOffset);
 
         // column min and max
         SignalRangeY rangeY = GetLimitsY(i1, i2);
-        float yBottom = axes.GetPixelY(rangeY.Min + YOffset);
-        float yTop = axes.GetPixelY(rangeY.Max + YOffset);
+        float yBottom = axes.GetPixelY(rangeY.Min * YScale + YOffset);
+        float yTop = axes.GetPixelY(rangeY.Max * YScale + YOffset);
 
         return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
     }
