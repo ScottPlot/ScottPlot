@@ -49,8 +49,15 @@ internal class SignalTests
     public void Test_Signal_Scale()
     {
         ScottPlot.Plot plt = new();
+
         var sig = plt.Add.Signal(ScottPlot.Generate.Sin());
         sig.Data.YScale = 100;
+
+        var sig2 = plt.Add.Signal(ScottPlot.Generate.Sin(51));
+        sig2.Data.YScale = 100;
+        sig2.Data.XOffset = 10;
+        sig2.Data.YOffset = 50;
+
         plt.SaveTestImage();
     }
 
@@ -58,8 +65,15 @@ internal class SignalTests
     public void Test_SignalXY_Scale()
     {
         ScottPlot.Plot plt = new();
+
         var sig = plt.Add.SignalXY(ScottPlot.Generate.Consecutive(51), ScottPlot.Generate.Sin(51));
         sig.Data.YScale = 100;
+
+        var sig2 = plt.Add.SignalXY(ScottPlot.Generate.Consecutive(51), ScottPlot.Generate.Sin(51));
+        sig2.Data.YScale = 100;
+        sig2.Data.XOffset = 10;
+        sig2.Data.YOffset = 50;
+
         plt.SaveTestImage();
     }
 
