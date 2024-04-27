@@ -24,12 +24,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
 
     public IColormap? Colormap { get; set; } = null;
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
-        {
-            LabelText = LegendText,
-            ArrowStyle = ArrowStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => [new LegendItem { LabelText = LegendText, ArrowStyle = ArrowStyle }];
 
     IVectorFieldSource Source { get; set; } = source;
 
