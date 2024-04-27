@@ -79,4 +79,21 @@ public static class AlignmentExtensions
     {
         return a == Alignment.UpperRight || a == Alignment.MiddleRight || a == Alignment.LowerRight;
     }
+
+    public static SKTextAlign ToSKTextAlign(this Alignment alignment)
+    {
+        return alignment switch
+        {
+            Alignment.UpperLeft => SKTextAlign.Left,
+            Alignment.UpperCenter => SKTextAlign.Center,
+            Alignment.UpperRight => SKTextAlign.Right,
+            Alignment.MiddleLeft => SKTextAlign.Left,
+            Alignment.MiddleCenter => SKTextAlign.Center,
+            Alignment.MiddleRight => SKTextAlign.Right,
+            Alignment.LowerLeft => SKTextAlign.Left,
+            Alignment.LowerCenter => SKTextAlign.Center,
+            Alignment.LowerRight => SKTextAlign.Right,
+            _ => throw new NotImplementedException(),
+        };
+    }
 }

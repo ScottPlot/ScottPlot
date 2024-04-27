@@ -72,6 +72,14 @@ public class LineStyle
 
     public void ApplyToPaint(SKPaint paint)
     {
-        Extensions.SkiaSharpExtensions.ApplyToPaint(this, paint);
+        paint.Shader = null;
+        paint.IsStroke = true;
+        paint.Color = Color.ToSKColor();
+        paint.StrokeWidth = Width;
+        paint.PathEffect = Pattern.GetPathEffect();
+        paint.IsAntialias = AntiAlias;
+        paint.StrokeCap = StrokeCap;
+        paint.StrokeJoin = StrokeJoin;
+        paint.StrokeMiter = StrokeMiter;
     }
 }
