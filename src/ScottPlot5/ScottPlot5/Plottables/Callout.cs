@@ -7,7 +7,7 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     public override Label LabelStyle { get => LabelPlottable.LabelStyle; set => LabelPlottable.LabelStyle = value; }
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
 
-    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
+    public ArrowStyle ArrowStyle { get => ArrowPlottable.ArrowStyle; set => ArrowPlottable.ArrowStyle = value; }
     public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
     public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
@@ -124,7 +124,6 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
         LabelPlottable.Axes = Axes;
         LabelPlottable.Location = TextCoordinates;
         LabelPlottable.Render(rp);
-
 
         ArrowPlottable.Axes = Axes;
         ArrowPlottable.Base = CalculateClosestAttachPoint();
