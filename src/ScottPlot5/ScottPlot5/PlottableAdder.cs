@@ -42,14 +42,19 @@ public class PlottableAdder(Plot plot)
 
     public Arrow Arrow(Coordinates @base, Coordinates tip)
     {
-        Arrow ar = new()
+        Color color = GetNextColor();
+
+        Arrow arrow = new()
         {
-            Color = GetNextColor(),
             Base = @base,
             Tip = tip,
+            ArrowLineColor = color,
+            ArrowFillColor = color.WithAlpha(.3),
         };
-        Plot.PlottableList.Add(ar);
-        return ar;
+
+        Plot.PlottableList.Add(arrow);
+
+        return arrow;
     }
 
     public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
@@ -148,7 +153,8 @@ public class PlottableAdder(Plot plot)
             Text = text,
             TextCoordinates = textLocation,
             TipCoordinates = tipLocation,
-            ArrowColor = color,
+            ArrowLineColor = Colors.Transparent,
+            ArrowFillColor = color,
             TextBackgroundColor = color.Lighten(.5),
             TextBorderColor = color,
             TextBorderWidth = 2,

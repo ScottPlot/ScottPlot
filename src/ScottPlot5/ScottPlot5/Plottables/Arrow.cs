@@ -2,64 +2,48 @@
 
 public class Arrow : IPlottable, IHasArrow, IHasLegendText
 {
+    public Coordinates Base { get; set; } = Coordinates.Origin;
+    public Coordinates Tip { get; set; } = Coordinates.Origin;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => [new LegendItem() { ArrowStyle = ArrowStyle, LabelText = LegendText }];
+    public string LegendText { get; set; } = string.Empty;
+
+    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
+    public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
+    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+    public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
+    public float ArrowMinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
+    public float ArrowMaximumLength { get => ArrowStyle.MaximumLength; set => ArrowStyle.MaximumLength = value; }
+    public float ArrowOffset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+
+    #region obsolete
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
 
-    public string LegendText { get; set; } = string.Empty;
+    [Obsolete("use ArrowLineColor or ArrowFillColor", true)]
+    public Color ArrowColor { get; set; }
 
-    /// <summary>
-    /// ImagePosition of the base of the arrow in coordinate units
-    /// </summary>
-    public Coordinates Base { get; set; } = Coordinates.Origin;
+    [Obsolete("use ArrowLineColor or ArrowFillColor", true)]
+    public Color Color { get; set; }
 
-    /// <summary>
-    /// ImagePosition of the base of the arrowhead in coordinate units
-    /// </summary>
-    public Coordinates Tip { get; set; } = Coordinates.Origin;
+    [Obsolete("use ArrowOffset", true)]
+    public float Offset { get; set; }
 
-    /// <summary>
-    /// Advanced styling options
-    /// </summary>
+    [Obsolete("use ArrowMinimumLength", true)]
+    public float MinimumLength { get; set; }
+
+    [Obsolete("use ArrowLineWidth", true)]
+    public float LineWidth { get; set; }
+
+    [Obsolete("use ArrowLineWidth, ArrowLineColor, or ArrowStyle.LineStyle", true)]
     public LineStyle LineStyle { get => ArrowStyle.LineStyle; set => ArrowStyle.LineStyle = value; }
 
-    /// <summary>
-    /// Color of the arrow line and arrowhead
-    /// </summary>
-    public Color Color { get => ArrowColor; set => ArrowColor = value; }
+    #endregion
 
-    /// <summary>
-    /// Thickness of the line at the base of the arrow
-    /// </summary>
-    public float LineWidth { get => ArrowLineWidth; set => ArrowLineWidth = value; }
-
-    /// <summary>
-    /// Total width of the arrowhead in pixels
-    /// </summary>
-    public float ArrowheadWidth { get => ArrowStyle.ArrowheadWidth; set => ArrowStyle.ArrowheadWidth = value; }
-
-    /// <summary>
-    /// Length of the arrowhead in pixels
-    /// </summary>
-    public float ArrowheadLength { get => ArrowStyle.ArrowheadLength; set => ArrowStyle.ArrowheadLength = value; }
-
-    /// <summary>
-    /// The base of the arrow will be expanded away from the tip so its length is always at least this number of pixels
-    /// </summary>
-    public float MinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
-
-    /// <summary>
-    /// Back the arrow away from its tip along its axis by this many pixels
-    /// </summary>
-    public float Offset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
-
-    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
-    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
-    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
-    public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
 
     public AxisLimits GetAxisLimits() => new(
         Math.Min(Base.X, Tip.X),
@@ -67,12 +51,24 @@ public class Arrow : IPlottable, IHasArrow, IHasLegendText
         Math.Min(Base.Y, Tip.Y),
         Math.Max(Base.Y, Tip.Y));
 
+    public IArrow ArrowRenderer { get; set; } = new Arrows.Single();
+
     public virtual void Render(RenderPack rp)
+    {
+        Pixel pxBase = Axes.GetPixel(Base);
+        Pixel pxTip = Axes.GetPixel(Tip);
+        ArrowRenderer.Render(rp, pxBase, pxTip, ArrowStyle);
+    }
+
+    public float ArrowheadWidth { get => ArrowStyle.ArrowheadWidth; set => ArrowStyle.ArrowheadWidth = value; }
+    public float ArrowheadLength { get => ArrowStyle.ArrowheadLength; set => ArrowStyle.ArrowheadLength = value; }
+
+    public virtual void Render_OLD(RenderPack rp)
     {
         if (!IsVisible) { return; }
 
         using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
+        ArrowStyle.LineStyle.ApplyToPaint(paint);
 
         var px_base = Axes.GetPixel(Base);
         var px_tip = Axes.GetPixel(Tip);
@@ -149,24 +145,24 @@ public class Arrow : IPlottable, IHasArrow, IHasLegendText
 
             angle = Math.Atan2(px_edge_tip.Y - px_edge_base.Y, px_edge_tip.X - px_edge_base.X);
 
-            if (Offset == 0)
+            if (ArrowOffset == 0)
             {
                 skpt_tip_offset = px_tip.ToSKPoint();
             }
             else
             {
-                skpt_tip_offset = Rotate_(px_tip.X - Offset, px_tip.Y, px_tip.X, px_tip.Y, angle);
-                dist -= Offset;
+                skpt_tip_offset = Rotate_(px_tip.X - ArrowOffset, px_tip.Y, px_tip.X, px_tip.Y, angle);
+                dist -= ArrowOffset;
             }
 
             SKPoint skpt_base_extended;
-            if (dist < MinimumLength)
+            if (dist < ArrowMinimumLength)
             {
-                var m = MinimumLength / CalcDistance_(ref px_edge_base, ref px_edge_tip);
+                var m = ArrowMinimumLength / CalcDistance_(ref px_edge_base, ref px_edge_tip);
                 skpt_base_extended = new(
                     skpt_tip_offset.X - (px_edge_tip.X - px_edge_base.X) * m,
                     skpt_tip_offset.Y - (px_edge_tip.Y - px_edge_base.Y) * m);
-                dist = MinimumLength;
+                dist = ArrowMinimumLength;
             }
             else
             {

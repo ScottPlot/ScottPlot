@@ -28,10 +28,14 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     public Color MarkerColor { get => MarkerFillColor; set { MarkerFillColor = value; MarkerLineColor = value; } }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
-    public ArrowStyle ArrowStyle { get; set; } = new();
-    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
-    public Color ArrowColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
+    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
+    public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+    public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
+    public float ArrowMinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
+    public float ArrowMaximumLength { get => ArrowStyle.MaximumLength; set => ArrowStyle.MaximumLength = value; }
+    public float ArrowOffset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
 
     [Obsolete("use LineStyle")]
     public LineStyle Line { get => LineStyle; set => LineStyle = value; }

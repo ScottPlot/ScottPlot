@@ -7,15 +7,17 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     public override Label LabelStyle { get => LabelPlottable.LabelStyle; set => LabelPlottable.LabelStyle = value; }
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
 
-    public ArrowStyle ArrowStyle { get; set; } = new();
-    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, LineColor = Colors.Black };
+    public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+    public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
+    public float ArrowMinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
+    public float ArrowMaximumLength { get => ArrowStyle.MaximumLength; set => ArrowStyle.MaximumLength = value; }
+    public float ArrowOffset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
 
-    public Color ArrowColor
-    {
-        get => ArrowPlottable.Color;
-        set => ArrowPlottable.Color = value;
-    }
+    [Obsolete("use ArrowLineColor and ArrowFillColor", true)]
+    public Color ArrowColor { get; set; }
 
     public Color TextColor
     {
