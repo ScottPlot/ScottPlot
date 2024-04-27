@@ -1,22 +1,33 @@
-﻿using ScottPlot;
-using ScottPlot.Control;
-
-namespace Sandbox.WinForms;
+﻿namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
+    System.Windows.Forms.Timer Timer = new() { Interval = 10 };
+
     public Form1()
     {
         InitializeComponent();
 
-        var sig1 = formsPlot1.Plot.Add.Signal(Generate.Sin());
-        sig1.Axes.YAxis = formsPlot1.Plot.Axes.Left;
-        formsPlot1.Plot.Axes.Color(sig1.Axes.YAxis, sig1.Color);
+        var logger = formsPlot1.Plot.Add.DataLogger();
+        logger.Add(0, 0);
+        logger.LineWidth = 2;
 
-        var sig2 = formsPlot1.Plot.Add.Signal(Generate.Cos(mult: 1000));
-        sig2.Axes.YAxis = formsPlot1.Plot.Axes.Right;
-        formsPlot1.Plot.Axes.Color(sig2.Axes.YAxis, sig2.Color);
+        double xMult = 1;
+        double yMult = 1;
 
-        checkBox1.CheckedChanged += (s, e) => formsPlot1.Interaction.ChangeOpposingAxesTogether = checkBox1.Checked;
+        Timer.Tick += (s, e) =>
+        {
+            if (Random.Shared.Next(100) == 1) xMult = -xMult;
+            if (Random.Shared.Next(100) == 1) yMult = -yMult;
+
+            double x = logger.Data.Coordinates.Last().X + Random.Shared.NextDouble() * xMult;
+            double y = logger.Data.Coordinates.Last().Y + Random.Shared.NextDouble() * yMult;
+            logger.Add(x, y);
+
+            formsPlot1.Refresh();
+        };
+
+        Timer.Start();
+
     }
 }
