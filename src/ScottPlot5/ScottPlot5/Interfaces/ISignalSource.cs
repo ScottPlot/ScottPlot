@@ -22,7 +22,7 @@ public interface ISignalSource
     double YOffset { get; set; }
 
     /// <summary>
-    /// Multiple Y values by this scale factor (before applying offset)
+    /// Multiply Y values by this scale factor (before applying offset)
     /// </summary>
     double YScale { get; set; }
 

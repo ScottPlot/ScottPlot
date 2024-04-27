@@ -10,7 +10,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
 * Ticks: Improve tick distribution by using the `TickLabelStyle` font size to evaluate maximum tick label size (#3736) @ebarnard
 * Arrow: Refactored the arrow system to support multiple arrow types including user-provided ones (#3745, #3697)
 * Color: Colors can be created from System.Drawing colors with `ScottPlot.Color.FromColor(System.Drawing.Color.Blue)` (#3745)
-* Signal: Added `YScale` parameter to display data vertically scaled by the specified fraction (#3711, #3708) @feichti92
+* Signal and SignalXY: Added `YScale` parameter to display data vertically scaled by the specified fraction (#3711, #3708) @feichti92
 
 ## ScottPlot 5.0.29
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
