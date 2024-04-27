@@ -75,7 +75,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
         for (double x = minX; x <= maxX; x += unitsPerPixel)
         {
             double y = Source.Get(x);
-            
+
             if (!IsFinite(y))
             {
                 penIsDown = false; // Picking up pen allows us to skip over regions where the function is undefined

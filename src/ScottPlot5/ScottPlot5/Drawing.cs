@@ -29,7 +29,7 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<PixelLine> pxLines, LineStyle lineStyle)
     {
-        foreach(PixelLine line in pxLines)
+        foreach (PixelLine line in pxLines)
         {
             DrawLine(canvas, paint, line.Pixel1, line.Pixel2, lineStyle);
         }

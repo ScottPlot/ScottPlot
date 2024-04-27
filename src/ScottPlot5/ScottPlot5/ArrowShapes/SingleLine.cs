@@ -8,8 +8,8 @@ public class SingleLine : IArrowShape
 
         PixelLine[] lines = [
             new PixelLine(0, 0, length, 0),
-            new PixelLine(0, 0, arrowStyle.ArrowheadLength, arrowStyle.ArrowheadWidth/2),
-            new PixelLine(0, 0, arrowStyle.ArrowheadLength, -arrowStyle.ArrowheadWidth/2),
+            new PixelLine(0, 0, arrowStyle.ArrowheadLength, arrowStyle.ArrowheadWidth / 2),
+            new PixelLine(0, 0, arrowStyle.ArrowheadLength, -arrowStyle.ArrowheadWidth / 2),
         ];
 
         rp.CanvasState.Save();
