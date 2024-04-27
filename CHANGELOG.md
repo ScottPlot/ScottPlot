@@ -1,5 +1,12 @@
-## ScottPlot 5.0.31
+## ScottPlot 5.0.32
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.31
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-27_
+* Arrow: Refactored the arrow system to support multiple arrow types including user-provided ones (#3745, #3697)
+* Color: Colors can be created from System.Drawing colors with `ScottPlot.Color.FromColor(System.Drawing.Color.Blue)` (#3745)
+* Signal and SignalXY: Added `YScale` parameter to display data vertically scaled by the specified fraction (#3711, #3708) @feichti92
+* Generate: Added `ConsecutiveHours()`, `ConsecutiveDays()`, `ConsecutiveWeekdays()`, to replace `Generate.DateTime` methods (#3721)
 
 ## ScottPlot 5.0.30
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
@@ -8,10 +15,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
 * DataLogger: Remove requirement for new data points to contain ascending X values (#3737) @TenebrosFR
 * RandomWalk2D: Created `ScottPlot.DataGenerators.RandomWalk2D` for easily generating 2D random data with randomly changing velocity
 * Ticks: Improve tick distribution by using the `TickLabelStyle` font size to evaluate maximum tick label size (#3736) @ebarnard
-* Arrow: Refactored the arrow system to support multiple arrow types including user-provided ones (#3745, #3697)
-* Color: Colors can be created from System.Drawing colors with `ScottPlot.Color.FromColor(System.Drawing.Color.Blue)` (#3745)
-* Signal and SignalXY: Added `YScale` parameter to display data vertically scaled by the specified fraction (#3711, #3708) @feichti92
-* Generate: Added `ConsecutiveHours()`, `ConsecutiveDays()`, `ConsecutiveWeekdays()`, to replace `Generate.DateTime` methods (#3721)
+
 
 ## ScottPlot 5.0.29
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
