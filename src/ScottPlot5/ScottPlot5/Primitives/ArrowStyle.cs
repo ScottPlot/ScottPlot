@@ -16,15 +16,10 @@ public class ArrowStyle : IHasLine, IHasFill
 
     public bool IsVisible { get; set; } = true;
 
-    /// <summary>
-    /// Total width of the arrowhead in pixels
-    /// </summary>
-    public float ArrowheadWidth { get; set; } = 5;
-
-    /// <summary>
-    /// Length of the arrowhead in pixels
-    /// </summary>
-    public float ArrowheadLength { get; set; } = 5;
+    public float ArrowWidth { get; set; } = 7;
+    public float ArrowheadAxisLength { get; set; } = 15;
+    public float ArrowheadLength { get; set; } = 20;
+    public float ArrowheadWidth { get; set; } = 20;
 
     /// <summary>
     /// The arrow will always be rendered to be at least this long (in pixels).

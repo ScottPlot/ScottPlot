@@ -1,12 +1,7 @@
-﻿namespace ScottPlot.Arrows;
+﻿namespace ScottPlot.ArrowShapes;
 
-public class SingleLines : IArrow
+public class SingleLine : IArrowShape
 {
-    public float Width { get; set; } = 5;
-    public float HeadAxisLength { get; set; } = 15;
-    public float HeadLength { get; set; } = 20;
-    public float HeadWidth { get; set; } = 20;
-
     public void Render(RenderPack rp, Pixel pxBase, Pixel pxTip, ArrowStyle arrowStyle)
     {
         PixelLine arrowLine = new(pxBase, pxTip);
@@ -14,8 +9,8 @@ public class SingleLines : IArrow
 
         PixelLine[] lines = [
             new PixelLine(0, 0, length, 0),
-            new PixelLine(0, 0, HeadLength, HeadWidth/2),
-            new PixelLine(0, 0, HeadLength, -HeadWidth/2),
+            new PixelLine(0, 0, arrowStyle.ArrowheadLength, arrowStyle.ArrowheadWidth/2),
+            new PixelLine(0, 0, arrowStyle.ArrowheadLength, -arrowStyle.ArrowheadWidth/2),
         ];
 
         rp.CanvasState.Save();

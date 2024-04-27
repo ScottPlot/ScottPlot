@@ -1,24 +1,29 @@
-﻿using SkiaSharp;
-
-namespace ScottPlotTests.RenderTests.Plottable;
+﻿namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class ArrowTests
 {
     [Test]
-    public void Test_Arrow_Render()
+    public void Test_Arrow_Shapes()
     {
-        ScottPlot.Plot myPlot = new();
+        Plot myPlot = new();
 
-        double[] values = Generate.Sin();
-        myPlot.Add.Signal(values);
+        ArrowShape[] arrowShapes = Enum.GetValues<ArrowShape>().ToArray();
 
-        Coordinates arrowTip = new(25, 0);
-        Coordinates arrowBase = arrowTip.WithDelta(5, .5);
-        var arrow = myPlot.Add.Arrow(arrowBase, arrowTip);
+        for (int i = 0; i < arrowShapes.Length; i++)
+        {
+            Coordinates arrowTip = new(0, -i);
+            Coordinates arrowBase = arrowTip.WithDelta(1, 0);
+            var arrow = myPlot.Add.Arrow(arrowBase, arrowTip);
+            arrow.ArrowShape = arrowShapes[i].GetShape();
 
-        arrow.ArrowRenderer = new ScottPlot.Arrows.SingleLines();
-        arrow.ArrowLineWidth = 5;
+            var txt = myPlot.Add.Text(arrowShapes[i].ToString(), arrowBase.WithDelta(.1, 0));
+            txt.LabelFontColor = arrow.ArrowLineColor;
+            txt.LabelAlignment = Alignment.MiddleLeft;
+            txt.LabelFontSize = 26;
+        }
 
+        myPlot.Axes.SetLimits(-1, 3, -arrowShapes.Length - 1, 1);
+        myPlot.HideGrid();
         myPlot.SaveTestImage();
     }
 }

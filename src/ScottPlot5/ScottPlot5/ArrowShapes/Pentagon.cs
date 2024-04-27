@@ -1,12 +1,7 @@
-﻿namespace ScottPlot.Arrows;
+﻿namespace ScottPlot.ArrowShapes;
 
-public class Single : IArrow
+public class Pentagon : IArrowShape
 {
-    public float Width { get; set; } = 5;
-    public float HeadAxisLength { get; set; } = 15;
-    public float HeadLength { get; set; } = 20;
-    public float HeadWidth { get; set; } = 20;
-
     public void Render(RenderPack rp, Pixel pxBase, Pixel pxTip, ArrowStyle arrowStyle)
     {
         PixelLine arrowLine = new(pxBase, pxTip);
@@ -18,12 +13,10 @@ public class Single : IArrow
 
         Pixel[] pixels = [
             new(0, 0),
-            new(HeadLength, HeadWidth / 2),
-            new(HeadAxisLength, Width / 2),
-            new(length, Width / 2),
-            new(length, -Width / 2),
-            new(HeadAxisLength, -Width / 2),
-            new(HeadLength, -HeadWidth / 2),
+            new(arrowStyle.ArrowheadLength, arrowStyle.ArrowheadWidth / 2),
+            new(length, arrowStyle.ArrowheadWidth / 2),
+            new(length, -arrowStyle.ArrowheadWidth / 2),
+            new(arrowStyle.ArrowheadLength, -arrowStyle.ArrowheadWidth / 2),
             new(0, 0),
         ];
 

@@ -10,4 +10,8 @@ public interface IHasArrow
     float ArrowMaximumLength { get; set; }
     float ArrowOffset { get; set; }
     ArrowAnchor ArrowAnchor { get; set; }
+    public float ArrowWidth { get; set; }
+    public float ArrowheadAxisLength { get; set; }
+    public float ArrowheadLength { get; set; }
+    public float ArrowheadWidth { get; set; }
 }
