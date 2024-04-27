@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Arrows;
 
-public class Single : IArrow
+public class SingleLines : IArrow
 {
     public float Width { get; set; } = 5;
     public float HeadAxisLength { get; set; } = 15;
@@ -12,23 +12,17 @@ public class Single : IArrow
         PixelLine arrowLine = new(pxBase, pxTip);
         float length = arrowLine.Length;
 
+        PixelLine[] lines = [
+            new PixelLine(0, 0, length, 0),
+            new PixelLine(0, 0, HeadLength, HeadWidth/2),
+            new PixelLine(0, 0, HeadLength, -HeadWidth/2),
+        ];
+
         rp.CanvasState.Save();
         rp.CanvasState.Translate(pxTip);
         rp.CanvasState.RotateDegrees(arrowLine.SlopeDegrees);
 
-        Pixel[] pixels = [
-            new(0, 0),
-            new(HeadLength, HeadWidth / 2),
-            new(HeadAxisLength, Width / 2),
-            new(length, Width / 2),
-            new(length, -Width / 2),
-            new(HeadAxisLength, -Width / 2),
-            new(HeadLength, -HeadWidth / 2),
-            new(0, 0),
-        ];
-
-        Drawing.DrawPath(rp.Canvas, rp.Paint, pixels, arrowStyle.FillStyle);
-        Drawing.DrawPath(rp.Canvas, rp.Paint, pixels, arrowStyle.LineStyle);
+        Drawing.DrawLines(rp.Canvas, rp.Paint, lines, arrowStyle.LineStyle);
 
         rp.CanvasState.Restore();
     }

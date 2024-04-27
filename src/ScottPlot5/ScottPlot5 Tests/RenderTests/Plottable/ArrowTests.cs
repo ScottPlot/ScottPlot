@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests.Plottable;
+﻿using SkiaSharp;
+
+namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class ArrowTests
 {
@@ -13,6 +15,9 @@ internal class ArrowTests
         Coordinates arrowTip = new(25, 0);
         Coordinates arrowBase = arrowTip.WithDelta(5, .5);
         var arrow = myPlot.Add.Arrow(arrowBase, arrowTip);
+
+        arrow.ArrowRenderer = new ScottPlot.Arrows.SingleLines();
+        arrow.ArrowLineWidth = 5;
 
         myPlot.SaveTestImage();
     }

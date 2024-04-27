@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot;
 
+/// <summary>
+/// Contains settings and logic for how to draw an arrow
+/// once the base and tip pixels have been determined
+/// </summary>
 public interface IArrow
 {
     // styling options mimic names from matplotlib
@@ -9,9 +13,6 @@ public interface IArrow
     public float HeadLength { get; set; }
     public float Width { get; set; }
     public float HeadWidth { get; set; }
-    public float Scale { get; set; }
-    public float MinimumLength { get; set; }
-    public float MaximumLength { get; set; }
 
     public void Render(RenderPack rp, Pixel pxBase, Pixel pxTip, ArrowStyle arrowStyle);
 }

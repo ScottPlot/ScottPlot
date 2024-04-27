@@ -29,6 +29,14 @@ public static class Drawing
         DrawLine(canvas, paint, pxLine.Pixel1, pxLine.Pixel2, lineStyle);
     }
 
+    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<PixelLine> pxLines, LineStyle lineStyle)
+    {
+        foreach(PixelLine line in pxLines)
+        {
+            DrawLine(canvas, paint, line.Pixel1, line.Pixel2, lineStyle);
+        }
+    }
+
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
         if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false || lineStyle.Color == Colors.Transparent)

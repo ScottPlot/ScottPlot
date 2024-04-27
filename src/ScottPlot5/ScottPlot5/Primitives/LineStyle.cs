@@ -13,6 +13,16 @@ public class LineStyle
     public bool IsVisible { get; set; } = true;
     public bool AntiAlias { get; set; } = true;
 
+    public bool Rounded
+    {
+        get => StrokeCap == SKStrokeCap.Round;
+        set { StrokeCap = SKStrokeCap.Round; StrokeJoin = SKStrokeJoin.Round; }
+    }
+    public SKStrokeCap StrokeCap = SKStrokeCap.Butt;
+    public SKStrokeJoin StrokeJoin = SKStrokeJoin.Miter;
+
+    public float StrokeMiter = 4;
+
     [Obsolete("Use explicit logic", true)]
     public bool CanBeRendered => IsVisible && Width > 0 && Color.Alpha > 0;
 

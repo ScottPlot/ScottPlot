@@ -69,6 +69,7 @@ public static class SkiaSharpExtensions
         return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 
+    // TODO: move these inside the classes rather than use them as extension methods
     public static void ApplyToPaint(this LineStyle style, SKPaint paint)
     {
         paint.Shader = null;
@@ -77,6 +78,9 @@ public static class SkiaSharpExtensions
         paint.StrokeWidth = style.Width;
         paint.PathEffect = style.Pattern.GetPathEffect();
         paint.IsAntialias = style.AntiAlias;
+        paint.StrokeCap = style.StrokeCap;
+        paint.StrokeJoin = style.StrokeJoin;
+        paint.StrokeMiter = style.StrokeMiter;
     }
 
     public static void ApplyToPaint(this FillStyle fs, SKPaint paint, PixelRect rect)

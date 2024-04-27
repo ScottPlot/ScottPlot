@@ -26,27 +26,27 @@ public class ArrowCoordinated : ICategory
 
             // you can define a minimum length so the line persists even when zooming out
             var arrow2 = myPlot.Add.Arrow(23, -.5, 27, -.25);
-            arrow2.Color = Colors.Red;
-            arrow2.MinimumLength = 100;
+            arrow2.ArrowLineColor = Colors.Red;
+            arrow2.ArrowMinimumLength = 100;
 
             // the shape of the arrowhead can be adjusted
             var skinny = myPlot.Add.Arrow(12, .5, 12, 1);
-            skinny.Color = Colors.Green;
+            skinny.ArrowLineColor = Colors.Green;
             skinny.ArrowheadLength = 24;
             skinny.ArrowheadWidth = 8;
 
             var fat = myPlot.Add.Arrow(20, 1, 20, .6);
-            fat.Color = Colors.Blue;
+            fat.ArrowLineColor = Colors.Blue;
             fat.ArrowheadLength = 24;
             fat.ArrowheadWidth = 36;
-            fat.LineWidth = 8;
+            fat.ArrowLineWidth = 8;
 
             // offset backs the arrow away from the tip coordinate
             myPlot.Add.Marker(40, 0.3);
             var arrow4 = myPlot.Add.Arrow(35, 0.6, 40, 0.3);
-            arrow4.Color = Colors.Fuchsia;
-            arrow4.Offset = 10;
-            arrow4.MinimumLength = 50;
+            arrow4.ArrowLineColor = Colors.Fuchsia;
+            arrow4.ArrowOffset = 10;
+            arrow4.ArrowMinimumLength = 50;
         }
     }
 }

@@ -16,6 +16,6 @@ public partial class CustomArrows : Form
         var arrow = formsPlot1.Plot.Add.Arrow(arrowBase, arrowTip);
         arrow.ArrowheadLength = 24;
         arrow.ArrowheadWidth = 36;
-        arrow.LineWidth = 8;
+        arrow.ArrowLineWidth = 8;
     }
 }
