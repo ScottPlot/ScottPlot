@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.AxisPanels;
 
-public abstract class AxisBase
+public abstract class AxisBase : LabelStyleProperties
 {
     public bool IsVisible { get; set; } = true;
 
@@ -30,7 +30,10 @@ public abstract class AxisBase
 
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
-    public Label Label { get; private set; } = new()
+    [Obsolete("use LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", true)]
+    public Label Label => LabelStyle;
+
+    public override Label LabelStyle { get; set; } = new()
     {
         Text = string.Empty,
         FontSize = 16,
@@ -66,7 +69,7 @@ public abstract class AxisBase
     /// </summary>
     public void Color(Color color)
     {
-        Label.ForeColor = color;
+        LabelStyle.ForeColor = color;
         TickLabelStyle.ForeColor = color;
         MajorTickStyle.Color = color;
         MinorTickStyle.Color = color;

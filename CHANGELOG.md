@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * Controls: Added a `Interaction.ChangeOpposingAxesTogether` flag to enable mouse actions to one axis to be applied to all axes with the same orientation (#3729) @rubenslkirchner
 * DataLogger: Remove requirement for new data points to contain ascending X values (#3737) @TenebrosFR
 * RandomWalk2D: Created `ScottPlot.DataGenerators.RandomWalk2D` for easily generating 2D random data with randomly changing velocity
+* Ticks: Improve tick distribution by using the `TickLabelStyle` font size to evaluate maximum tick label size (#3736) @ebarnard
 
 ## ScottPlot 5.0.29
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_

@@ -95,4 +95,12 @@ internal class AxisTicksTests
 
         myPlot.SaveTestImage(800, 600);
     }
+
+    [Test]
+    public void Test_Ticks_LargeFontSize()
+    {
+        Plot myPlot = new();
+        myPlot.Axes.Bottom.TickLabelStyle.FontSize = 96;
+        myPlot.SaveTestImage();
+    }
 }
