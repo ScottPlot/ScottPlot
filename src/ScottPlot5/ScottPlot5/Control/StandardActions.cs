@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using System.Data;
+
+namespace ScottPlot.Control;
 
 // TODO: refactor individual actions into their own classes which inherit IControlAction
 
@@ -15,7 +17,7 @@ public static class StandardActions
             double xFrac = locked.X ? 1 : zoomInFraction;
             double yFrac = locked.Y ? 1 : zoomInFraction;
 
-            MouseZoom(control.Plot, xFrac, yFrac, pixel);
+            MouseZoom(control.Plot, xFrac, yFrac, pixel, control.Interaction.ChangeOpposingAxesTogether);
             control.Refresh();
         }
     }
@@ -29,7 +31,7 @@ public static class StandardActions
             double xFrac = locked.X ? 1 : zoomOutFraction;
             double yFrac = locked.Y ? 1 : zoomOutFraction;
 
-            MouseZoom(control.Plot, xFrac, yFrac, pixel);
+            MouseZoom(control.Plot, xFrac, yFrac, pixel, control.Interaction.ChangeOpposingAxesTogether);
             control.Refresh();
         }
     }
@@ -107,10 +109,20 @@ public static class StandardActions
 
             if (axisUnderMouse is not null)
             {
-                // modify a single axis
-                float scaledDelta = axisUnderMouse.IsHorizontal() ? scaledDeltaX : scaledDeltaY;
-                float dataSize = axisUnderMouse.IsHorizontal() ? dataRect.Width : dataRect.Height;
-                axisUnderMouse.Range.PanMouse(scaledDelta, dataSize);
+                if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
+                {
+                    control.Plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, dataRect.Width));
+                }
+                else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+                {
+                    control.Plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, dataRect.Height));
+                }
+                else
+                {
+                    float scaledDelta = axisUnderMouse.IsHorizontal() ? scaledDeltaX : scaledDeltaY;
+                    float dataSize = axisUnderMouse.IsHorizontal() ? dataRect.Width : dataRect.Height;
+                    axisUnderMouse.Range.PanMouse(scaledDelta, dataSize);
+                }
             }
             else
             {
@@ -145,10 +157,21 @@ public static class StandardActions
 
             if (axisUnderMouse is not null)
             {
-                // modify a single axis
-                float pixelDelta = axisUnderMouse.IsHorizontal() ? pixelDeltaX : pixelDeltaY;
-                float dataSize = axisUnderMouse.IsHorizontal() ? lastRenderDataRect.Width : lastRenderDataRect.Height;
-                axisUnderMouse.Range.ZoomMouseDelta(pixelDelta, dataSize);
+                if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
+                {
+                    control.Plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
+                }
+                else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+                {
+                    control.Plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
+                }
+                else
+                {
+                    // modify a single axis
+                    float pixelDelta = axisUnderMouse.IsHorizontal() ? pixelDeltaX : pixelDeltaY;
+                    float dataSize = axisUnderMouse.IsHorizontal() ? lastRenderDataRect.Width : lastRenderDataRect.Height;
+                    axisUnderMouse.Range.ZoomMouseDelta(pixelDelta, dataSize);
+                }
             }
             else
             {
@@ -174,7 +197,33 @@ public static class StandardActions
     {
         lock (control.Plot.Sync)
         {
-            control.Plot.ZoomRectangle.Apply(control.Plot);
+            IAxis? axisUnderMouse = control.Plot.GetAxis(control.Plot.ZoomRectangle.MouseDown);
+
+            if (axisUnderMouse is not null)
+            {
+                if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
+                {
+                    control.Plot.Axes.XAxes.ForEach(control.Plot.ZoomRectangle.Apply);
+                }
+                else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+                {
+                    control.Plot.Axes.YAxes.ForEach(control.Plot.ZoomRectangle.Apply);
+                }
+                else if (axisUnderMouse is IXAxis xAxis)
+                {
+                    control.Plot.ZoomRectangle.Apply(xAxis);
+                }
+                else if (axisUnderMouse is IYAxis yAxis)
+                {
+                    control.Plot.ZoomRectangle.Apply(yAxis);
+                }
+            }
+            else
+            {
+                control.Plot.Axes.XAxes.ForEach(control.Plot.ZoomRectangle.Apply);
+                control.Plot.Axes.YAxes.ForEach(control.Plot.ZoomRectangle.Apply);
+            }
+
             control.Refresh();
         }
     }
@@ -189,6 +238,8 @@ public static class StandardActions
             IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From);
             if (axisUnderMouse is not null)
             {
+                // NOTE: this function only changes shape of the rectangle.
+                // It doesn't modify axis limits, so no action is required on the opposite axis.
                 control.Plot.ZoomRectangle.VerticalSpan = axisUnderMouse.IsHorizontal();
                 control.Plot.ZoomRectangle.HorizontalSpan = axisUnderMouse.IsVertical();
             }
@@ -220,13 +271,27 @@ public static class StandardActions
 
             if (axisUnderMouse is not null)
             {
-                if (axisUnderMouse is IYAxis yAxisUnderMouse)
+                if (control.Interaction.ChangeOpposingAxesTogether)
                 {
-                    control.Plot.Axes.AutoScaleY(yAxisUnderMouse);
+                    if (axisUnderMouse.IsHorizontal())
+                    {
+                        control.Plot.Axes.XAxes.ForEach(control.Plot.Axes.AutoScaleX);
+                    }
+                    else if (axisUnderMouse.IsVertical())
+                    {
+                        control.Plot.Axes.YAxes.ForEach(control.Plot.Axes.AutoScaleY);
+                    }
                 }
-                else if (axisUnderMouse is IXAxis xAxisUnderMouse)
+                else
                 {
-                    control.Plot.Axes.AutoScaleX(xAxisUnderMouse);
+                    if (axisUnderMouse is IYAxis yAxisUnderMouse)
+                    {
+                        control.Plot.Axes.AutoScaleY(yAxisUnderMouse);
+                    }
+                    else if (axisUnderMouse is IXAxis xAxisUnderMouse)
+                    {
+                        control.Plot.Axes.AutoScaleX(xAxisUnderMouse);
+                    }
                 }
             }
             else
@@ -243,7 +308,7 @@ public static class StandardActions
         control.ShowContextMenu(position);
     }
 
-    private static void MouseZoom(Plot plot, double fracX, double fracY, Pixel pixel)
+    private static void MouseZoom(Plot plot, double fracX, double fracY, Pixel pixel, bool ChangeOpposingAxesTogether)
     {
         MultiAxisLimitManager originalLimits = new(plot);
         PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
@@ -255,10 +320,20 @@ public static class StandardActions
 
         if (axisUnderMouse is not null)
         {
-            // modify a single axis
-            double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
-            float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / plot.ScaleFactorF;
-            axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
+            if (ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
+            {
+                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X / plot.ScaleFactorF, dataRect)));
+            }
+            if (ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+            {
+                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y / plot.ScaleFactorF, dataRect)));
+            }
+            else
+            {
+                double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
+                float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / plot.ScaleFactorF;
+                axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
+            }
         }
         else
         {

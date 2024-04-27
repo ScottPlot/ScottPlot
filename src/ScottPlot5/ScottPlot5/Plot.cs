@@ -18,7 +18,7 @@ public class Plot : IDisposable
     public BackgroundStyle FigureBackground = new() { Color = Colors.White };
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
-    public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
+    public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
     internal float ScaleFactorF = 1.0f;
 
@@ -47,6 +47,7 @@ public class Plot : IDisposable
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
+        ZoomRectangle = new StandardZoomRectangle(this);
     }
 
     public void Dispose()

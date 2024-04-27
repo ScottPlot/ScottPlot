@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.30
 _Not yet on NuGet..._
 * Bar: Set default line width to 1 so error bars are visible without requiring line customization (#3741) @Kareltje1980
+* Controls: Added a `Interaction.ChangeOpposingAxesTogether` flag to enable mouse actions to one axis to be applied to all axes with the same orientation (#3729) @rubenslkirchner
 
 ## ScottPlot 5.0.29
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
