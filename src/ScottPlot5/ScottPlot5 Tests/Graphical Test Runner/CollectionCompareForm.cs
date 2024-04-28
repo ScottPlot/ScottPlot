@@ -1,0 +1,115 @@
+using GraphicalTestRunner;
+using System.Data;
+using System.Diagnostics;
+
+namespace Graphical_Test_Runner;
+
+public partial class CollectionCompareForm : Form
+{
+    FolderComparisonResults? FolderResults = null;
+
+    public CollectionCompareForm()
+    {
+        InitializeComponent();
+        Width = 890;
+        Height = 832;
+
+        var docsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        tbBefore.Text = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections\2024-04-23");
+        tbAfter.Text = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections\2024-04-27");
+
+        btnHelp.Click += (s, e) => new HelpForm().Show();
+
+        btnAnalyze.Click += (s, e) =>
+        {
+            FolderResults = new(tbBefore.Text, tbAfter.Text);
+
+            DataTable table = new();
+            table.Columns.Add("name", typeof(string));
+            table.Columns.Add("change", typeof(string));
+            table.Columns.Add("total diff", typeof(double));
+            table.Columns.Add("max diff", typeof(double));
+            table.Columns.Add("max diffX", typeof(int));
+            table.Columns.Add("max diffY", typeof(int));
+
+            dataGridView1.DataSource = table;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            int MAX_IMAGE_COUNT = int.MaxValue;
+            //MAX_IMAGE_COUNT = 20;
+
+            for (int i = 0; i < Math.Min(FolderResults.ImageDiffs.Length, MAX_IMAGE_COUNT); i++)
+            {
+                progressBar1.Maximum = FolderResults.ImageDiffs.Length;
+                progressBar1.Value = i + 1;
+                Text = $"Analyzing {i + 1} of {FolderResults.ImageDiffs.Length}...";
+                FolderResults.Analyze(i);
+                Application.DoEvents();
+
+                if (cbChanged.Checked && FolderResults.Summaries[i] != "changed")
+                    continue;
+
+                DataRow row = table.NewRow();
+                row.SetField(0, FolderResults.Filenames[i]);
+                row.SetField(1, FolderResults.Summaries[i]);
+                row.SetField(2, FolderResults.ImageDiffs[i]?.TotalDifference);
+                row.SetField(3, FolderResults.ImageDiffs[i]?.MaxDifference);
+                row.SetField(4, FolderResults.ImageDiffs[i]?.MaxDifferenceX);
+                row.SetField(5, FolderResults.ImageDiffs[i]?.MaxDifferenceY);
+
+                table.Rows.Add(row);
+                dataGridView1.AutoResizeColumns();
+                if (i == 0)
+                    dataGridView1.Rows[0].Selected = true;
+            }
+
+            Text = $"Analyzed {FolderResults.ImageDiffs.Length} image pairs";
+            progressBar1.Value = 0;
+        };
+
+        dataGridView1.SelectionChanged += (s, e) =>
+        {
+            if (FolderResults is null)
+                return;
+
+            int selectedRowCount = dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Selected);
+            if (selectedRowCount == 0)
+                return;
+
+            int rowIndex = dataGridView1.SelectedRows[0].Index;
+            string path1 = FolderResults.GetPath1(rowIndex);
+            string path2 = FolderResults.GetPath2(rowIndex);
+            imageComparer1.SetImages(path1, path2);
+        };
+
+        btnUT.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath("../../../../../../../src/ScottPlot5/ScottPlot5 Tests/Unit Tests/bin/Debug/net6.0/test-images");
+            Process.Start("explorer.exe", path);
+        };
+
+        btnCB.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath("../../../../../../../dev/www/cookbook/5.0/images");
+            Process.Start("explorer.exe", path);
+        };
+
+        btn1.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath(tbBefore.Text);
+            Process.Start("explorer.exe", path);
+        };
+
+        btn2.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath(tbAfter.Text);
+            Process.Start("explorer.exe", path);
+        };
+    }
+}
