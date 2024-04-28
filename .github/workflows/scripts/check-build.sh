@@ -2,7 +2,7 @@
 
 project_files=(
     "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
-    "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj"
+    "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Tests.csproj"
     "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
     "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
     "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WPF Demo/WPF Demo.csproj"
