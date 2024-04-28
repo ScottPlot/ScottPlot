@@ -1,9 +1,4 @@
-﻿/* SkiaSharp cannot create BMP files, so bitmap IO is implemented manually
- * https://github.com/mono/SkiaSharp/issues/320
- */
-
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using ScottPlot.IO;
 
 namespace ScottPlot;
@@ -14,12 +9,10 @@ namespace ScottPlot;
 public class Image : IDisposable
 {
     private bool IsDisposed = false;
-
-    protected readonly SKImage SKImage;
+    protected SKImage SKImage { get; }
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
     public PixelSize Size => new(Width, Height);
-    public byte Alpha => 255;
 
     [Obsolete("Use initializer that accepts a SKSurface", true)]
     public Image(SKImage image)
@@ -34,6 +27,9 @@ public class Image : IDisposable
 
     public Image(string filename)
     {
+        if (!File.Exists(filename))
+            throw new FileNotFoundException(filename);
+
         using SKBitmap bmp = SKBitmap.Decode(filename);
         SKImage = SKImage.FromBitmap(bmp);
     }
@@ -53,12 +49,87 @@ public class Image : IDisposable
 
     }
 
+    public Image(PixelSize size) : this((int)size.Width, (int)size.Height, Colors.Black)
+    {
+
+    }
+
     public Image(int width, int height, Color color)
     {
         SKSurface surface = SKSurface.Create(new SKImageInfo(width, height));
         var canvas = surface.Canvas;
         canvas.Clear(color.ToSKColor());
         SKImage = surface.Snapshot();
+    }
+
+    public Image(byte[,] pixelArray)
+    {
+        int width = pixelArray.GetLength(1);
+        int height = pixelArray.GetLength(0);
+
+        uint[] pixelValues = new uint[width * height];
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                byte red = pixelArray[y, x];
+                byte green = pixelArray[y, x];
+                byte blue = pixelArray[y, x];
+                byte alpha = 255;
+
+                uint pixelValue =
+                    (uint)(red << 0) +
+                    (uint)(green << 8) +
+                    (uint)(blue << 16) +
+                    (uint)(alpha << 24);
+
+                pixelValues[y * width + x] = pixelValue;
+            }
+        }
+
+        // https://swharden.com/csdv/skiasharp/array-to-image/
+        SKBitmap bmp = new();
+        GCHandle gcHandle = GCHandle.Alloc(pixelValues, GCHandleType.Pinned);
+        SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+        IntPtr ptr = gcHandle.AddrOfPinnedObject();
+        int rowBytes = info.RowBytes;
+        bmp.InstallPixels(info, ptr, rowBytes, delegate { gcHandle.Free(); });
+        SKImage = SKImage.FromBitmap(bmp);
+    }
+
+    public Image(byte[,,] pixelArray)
+    {
+        int width = pixelArray.GetLength(1);
+        int height = pixelArray.GetLength(0);
+
+        uint[] pixelValues = new uint[width * height];
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                byte red = pixelArray[y, x, 0];
+                byte green = pixelArray[y, x, 1];
+                byte blue = pixelArray[y, x, 2];
+                byte alpha = 255;
+
+                uint pixelValue =
+                    (uint)(red << 0) +
+                    (uint)(green << 8) +
+                    (uint)(blue << 16) +
+                    (uint)(alpha << 24);
+
+                pixelValues[y * width + x] = pixelValue;
+            }
+        }
+
+        // https://swharden.com/csdv/skiasharp/array-to-image/
+        SKBitmap bmp = new();
+        GCHandle gcHandle = GCHandle.Alloc(pixelValues, GCHandleType.Pinned);
+        SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+        IntPtr ptr = gcHandle.AddrOfPinnedObject();
+        int rowBytes = info.RowBytes;
+        bmp.InstallPixels(info, ptr, rowBytes, delegate { gcHandle.Free(); });
+        SKImage = SKImage.FromBitmap(bmp);
     }
 
     /// <summary>
@@ -161,8 +232,74 @@ public class Image : IDisposable
 
     public void Render(SKCanvas canvas, PixelRect target, SKPaint paint, bool antiAlias)
     {
-        paint.Color = SKColors.White.WithAlpha(Alpha);
+        paint.Color = SKColors.White;
         paint.FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None;
         canvas.DrawImage(SKImage, target.ToSKRect(), paint);
+    }
+
+    public byte[,] GetArrayGrayscale()
+    {
+        using SKBitmap bmp = SKBitmap.FromImage(SKImage);
+        int Width = bmp.Width;
+        int Height = bmp.Height;
+
+        ReadOnlySpan<byte> spn = bmp.GetPixelSpan();
+        byte[,] GrayscaleBytes = new byte[bmp.Height, bmp.Width];
+        for (int y = 0; y < bmp.Height; y++)
+        {
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                int offset = (y * bmp.Width + x) * bmp.BytesPerPixel;
+                byte r = spn[offset + 0];
+                byte g = spn[offset + 1];
+                byte b = spn[offset + 2];
+                GrayscaleBytes[y, x] = (byte)((r + g + b) / 3);
+            }
+        }
+
+        return GrayscaleBytes;
+    }
+
+    public byte[,,] GetArrayRGB()
+    {
+        using SKBitmap bmp = SKBitmap.FromImage(SKImage);
+        int Width = bmp.Width;
+        int Height = bmp.Height;
+
+        ReadOnlySpan<byte> spn = bmp.GetPixelSpan();
+        byte[,,] RgbBytes = new byte[bmp.Height, bmp.Width, 3];
+        for (int y = 0; y < bmp.Height; y++)
+        {
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                int offset = (y * bmp.Width + x) * bmp.BytesPerPixel;
+                byte r = spn[offset + 0];
+                byte g = spn[offset + 1];
+                byte b = spn[offset + 2];
+                RgbBytes[y, x, 2] = r;
+                RgbBytes[y, x, 1] = g;
+                RgbBytes[y, x, 0] = b;
+            }
+        }
+
+        return RgbBytes;
+    }
+
+    public Image GetAutoscaledImage()
+    {
+        byte[,,] values = GetArrayRGB();
+
+        byte maxValue = 0;
+        for (int y = 0; y < values.GetLength(0); y++)
+            for (int x = 0; x < values.GetLength(1); x++)
+                for (int c = 0; c < values.GetLength(2); c++)
+                    maxValue = Math.Max(maxValue, values[y, x, c]);
+
+        for (int y = 0; y < values.GetLength(0); y++)
+            for (int x = 0; x < values.GetLength(1); x++)
+                for (int c = 0; c < values.GetLength(2); c++)
+                    values[y, x, c] = (byte)((double)values[y, x, c] / maxValue * 255);
+
+        return new Image(values);
     }
 }
