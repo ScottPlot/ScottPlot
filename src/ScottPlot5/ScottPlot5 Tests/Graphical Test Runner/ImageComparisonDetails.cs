@@ -7,6 +7,8 @@ public class ImageComparisonDetails
     public string Filename { get; }
     public string Change { get; }
     public double Difference { get; }
+    RasterTestImage ImageBefore { get; }
+    RasterTestImage ImageAfter { get; }
 
     public ImageComparisonDetails(string before, string after, string filename)
     {
@@ -36,19 +38,57 @@ public class ImageComparisonDetails
             return;
         }
 
-        // TODO: image comparison
-        byte[] beforeBytes = File.ReadAllBytes(BeforePath);
-        byte[] afterBytes = File.ReadAllBytes(AfterPath);
-        float minLength = Math.Min(beforeBytes.Length, afterBytes.Length);
+        ImageBefore = new RasterTestImage(BeforePath);
+        ImageAfter = new RasterTestImage(AfterPath);
 
-        int diffs = 0;
-        for (int i = 0; i < minLength; i++)
+        //Difference = PercentPixelsDifferent(ImageBefore, ImageAfter);
+        Difference = AmountPixelsDifferent(ImageBefore, ImageAfter);
+        Change = (Difference == 0) ? "identical" : "changed";
+    }
+
+    private static double PercentPixelsDifferent(RasterTestImage img1, RasterTestImage img2)
+    {
+        if (img1.Width != img2.Width || img1.Height != img2.Height)
+            throw new InvalidOperationException();
+
+        int count = 0;
+
+        for (int y = 0; y < img1.Height; y++)
         {
-            if (beforeBytes[i] != afterBytes[i])
-                diffs += 1;
+            for (int x = 0; x < img1.Width; x++)
+            {
+                byte value1 = img1.GrayscaleBytes[y, x];
+                byte value2 = img2.GrayscaleBytes[y, x];
+                if (value1 != value2)
+                {
+                    count += 1;
+                }
+            }
         }
 
-        Difference = (double)diffs / beforeBytes.Length * 100;
-        Change = (diffs == 0) ? "identical" : "changed";
+        return (double)count / (img1.Width * img1.Height) * 100;
+    }
+
+    private static double AmountPixelsDifferent(RasterTestImage img1, RasterTestImage img2)
+    {
+        if (img1.Width != img2.Width || img1.Height != img2.Height)
+            throw new InvalidOperationException();
+
+        double sum = 0;
+
+        for (int y = 0; y < img1.Height; y++)
+        {
+            for (int x = 0; x < img1.Width; x++)
+            {
+                byte value1 = img1.GrayscaleBytes[y, x];
+                byte value2 = img2.GrayscaleBytes[y, x];
+                if (value1 != value2)
+                {
+                    sum += Math.Abs(value1 - value2);
+                }
+            }
+        }
+
+        return sum;
     }
 }

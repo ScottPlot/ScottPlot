@@ -38,6 +38,10 @@ partial class CollectionCompareForm
         pictureBox1 = new PictureBox();
         pictureBox2 = new PictureBox();
         pictureBox3 = new PictureBox();
+        btnCB = new Button();
+        btnUT = new Button();
+        btn2 = new Button();
+        btn1 = new Button();
         ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
         tableLayoutPanel2.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -59,7 +63,7 @@ partial class CollectionCompareForm
         tbBefore.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         tbBefore.Location = new Point(12, 12);
         tbBefore.Name = "tbBefore";
-        tbBefore.Size = new Size(1302, 23);
+        tbBefore.Size = new Size(1259, 23);
         tbBefore.TabIndex = 3;
         // 
         // tbAfter
@@ -67,7 +71,7 @@ partial class CollectionCompareForm
         tbAfter.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         tbAfter.Location = new Point(12, 41);
         tbAfter.Name = "tbAfter";
-        tbAfter.Size = new Size(1302, 23);
+        tbAfter.Size = new Size(1259, 23);
         tbAfter.TabIndex = 4;
         // 
         // progressBar1
@@ -75,7 +79,7 @@ partial class CollectionCompareForm
         progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         progressBar1.Location = new Point(219, 70);
         progressBar1.Name = "progressBar1";
-        progressBar1.Size = new Size(1095, 23);
+        progressBar1.Size = new Size(1009, 23);
         progressBar1.TabIndex = 5;
         // 
         // dataGridView1
@@ -150,11 +154,55 @@ partial class CollectionCompareForm
         pictureBox3.TabIndex = 2;
         pictureBox3.TabStop = false;
         // 
+        // btnCB
+        // 
+        btnCB.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnCB.Location = new Point(1277, 70);
+        btnCB.Name = "btnCB";
+        btnCB.Size = new Size(37, 23);
+        btnCB.TabIndex = 12;
+        btnCB.Text = "CB";
+        btnCB.UseVisualStyleBackColor = true;
+        // 
+        // btnUT
+        // 
+        btnUT.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnUT.Location = new Point(1234, 70);
+        btnUT.Name = "btnUT";
+        btnUT.Size = new Size(37, 23);
+        btnUT.TabIndex = 13;
+        btnUT.Text = "UT";
+        btnUT.UseVisualStyleBackColor = true;
+        // 
+        // btn2
+        // 
+        btn2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btn2.Location = new Point(1277, 41);
+        btn2.Name = "btn2";
+        btn2.Size = new Size(37, 23);
+        btn2.TabIndex = 14;
+        btn2.Text = "2";
+        btn2.UseVisualStyleBackColor = true;
+        // 
+        // btn1
+        // 
+        btn1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btn1.Location = new Point(1277, 11);
+        btn1.Name = "btn1";
+        btn1.Size = new Size(37, 23);
+        btn1.TabIndex = 15;
+        btn1.Text = "1";
+        btn1.UseVisualStyleBackColor = true;
+        // 
         // CollectionCompareForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1326, 819);
+        Controls.Add(btn1);
+        Controls.Add(btn2);
+        Controls.Add(btnUT);
+        Controls.Add(btnCB);
         Controls.Add(tableLayoutPanel2);
         Controls.Add(cbChanged);
         Controls.Add(dataGridView1);
@@ -189,4 +237,8 @@ partial class CollectionCompareForm
     private PictureBox pictureBox1;
     private PictureBox pictureBox2;
     private PictureBox pictureBox3;
+    private Button btnCB;
+    private Button btnUT;
+    private Button btn2;
+    private Button btn1;
 }

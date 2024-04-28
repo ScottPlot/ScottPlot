@@ -1,7 +1,6 @@
 using GraphicalTestRunner;
 using System.Data;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace Graphical_Test_Runner;
 
@@ -14,6 +13,7 @@ public partial class CollectionCompareForm : Form
     public CollectionCompareForm()
     {
         InitializeComponent();
+        Height = 1200;
 
         tbBefore.Text = @"C:\Users\scott\Documents\ScottPlot\TestImageCollections\2024-04-23";
         tbAfter.Text = @"C:\Users\scott\Documents\ScottPlot\TestImageCollections\2024-04-27";
@@ -31,6 +31,7 @@ public partial class CollectionCompareForm : Form
             {
                 progressBar1.Maximum = FolderResults.Images.Length;
                 progressBar1.Value = i + 1;
+                Application.DoEvents();
                 ImageComparisonDetails image = FolderResults.Images[i];
 
                 if (cbChanged.Checked && image.Change != "changed")
@@ -46,9 +47,11 @@ public partial class CollectionCompareForm : Form
 
             dataGridView1.DataSource = table;
             dataGridView1.RowHeadersVisible = false;
-            dataGridView1.AutoResizeColumns();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
+            dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dataGridView1.AutoResizeColumns();
+            dataGridView1.Rows[0].Selected = true;
         };
 
         dataGridView1.SelectionChanged += (s, e) =>
@@ -84,6 +87,30 @@ public partial class CollectionCompareForm : Form
         pictureBox2.Click += (s, e) =>
         {
             Text = SelectedAfterImagePath;
+        };
+
+        btnUT.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath("../../../../../../../src/ScottPlot5/ScottPlot5 Tests/Unit Tests/bin/Debug/net6.0/test-images");
+            Process.Start("explorer.exe", path);
+        };
+
+        btnCB.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath("../../../../../../../dev/www/cookbook/5.0/images");
+            Process.Start("explorer.exe", path);
+        };
+
+        btn1.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath(tbBefore.Text);
+            Process.Start("explorer.exe", path);
+        };
+
+        btn2.Click += (s, e) =>
+        {
+            string path = Path.GetFullPath(tbAfter.Text);
+            Process.Start("explorer.exe", path);
         };
     }
 }
