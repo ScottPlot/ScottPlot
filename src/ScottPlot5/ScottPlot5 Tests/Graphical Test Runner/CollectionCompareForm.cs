@@ -16,56 +16,17 @@ public partial class CollectionCompareForm : Form
         Height = 832;
 
         var docsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        tbBefore.Text = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections\2024-04-23");
-        tbAfter.Text = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections\2024-04-27");
+        tbBefore.Text = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections\2024-04-29a");
+        tbAfter.Text = Path.GetFullPath(@"..\..\..\..\..\..\..\dev\www\cookbook\5.0\images");
 
         btnHelp.Click += (s, e) => new HelpForm().Show();
 
         btnAnalyze.Click += (s, e) =>
         {
-            FolderResults = new(tbBefore.Text, tbAfter.Text);
-
-            DataTable table = new();
-            table.Columns.Add("name", typeof(string));
-            table.Columns.Add("change", typeof(string));
-            table.Columns.Add("total diff", typeof(double));
-            table.Columns.Add("max diff", typeof(double));
-
-            dataGridView1.DataSource = table;
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.MultiSelect = false;
-            dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            int MAX_IMAGE_COUNT = int.MaxValue;
-            //MAX_IMAGE_COUNT = 20;
-
-            for (int i = 0; i < Math.Min(FolderResults.ImageDiffs.Length, MAX_IMAGE_COUNT); i++)
-            {
-                progressBar1.Maximum = FolderResults.ImageDiffs.Length;
-                progressBar1.Value = i + 1;
-                Text = $"Analyzing {i + 1} of {FolderResults.ImageDiffs.Length}...";
-                FolderResults.Analyze(i);
-                Application.DoEvents();
-
-                DataRow row = table.NewRow();
-                row.SetField(0, FolderResults.Filenames[i]);
-                row.SetField(1, FolderResults.Summaries[i]);
-                row.SetField(2, FolderResults.ImageDiffs[i]?.TotalDifference);
-                row.SetField(3, FolderResults.ImageDiffs[i]?.MaxDifference);
-
-                table.Rows.Add(row);
-                Recolor(dataGridView1.Rows[i]);
-                dataGridView1.AutoResizeColumns();
-                if (i == 0)
-                    dataGridView1.Rows[0].Selected = true;
-            }
-
-            Text = $"Analyzed {FolderResults.ImageDiffs.Length} image pairs";
-            progressBar1.Value = 0;
+            if (btnAnalyze.Text == "Analyze")
+                Analyze();
+            else
+                Stop = true;
         };
 
         dataGridView1.SelectionChanged += (s, e) =>
@@ -113,6 +74,62 @@ public partial class CollectionCompareForm : Form
             string path = Path.GetFullPath(tbAfter.Text);
             Process.Start("explorer.exe", path);
         };
+    }
+
+    private bool Stop = false;
+
+    private void Analyze()
+    {
+        FolderResults = new(tbBefore.Text, tbAfter.Text);
+
+        Stop = false;
+        btnAnalyze.Text = "Stop";
+
+        DataTable table = new();
+        table.Columns.Add("name", typeof(string));
+        table.Columns.Add("change", typeof(string));
+        table.Columns.Add("total diff", typeof(double));
+        table.Columns.Add("max diff", typeof(double));
+
+        dataGridView1.DataSource = table;
+        dataGridView1.RowHeadersVisible = false;
+        dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dataGridView1.MultiSelect = false;
+        dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
+        dataGridView1.AllowUserToAddRows = false;
+        dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+        int MAX_IMAGE_COUNT = int.MaxValue;
+        //MAX_IMAGE_COUNT = 20;
+
+        for (int i = 0; i < Math.Min(FolderResults.ImageDiffs.Length, MAX_IMAGE_COUNT); i++)
+        {
+            if (Stop)
+                break;
+
+            progressBar1.Maximum = FolderResults.ImageDiffs.Length;
+            progressBar1.Value = i + 1;
+            Text = $"Analyzing {i + 1} of {FolderResults.ImageDiffs.Length}...";
+            FolderResults.Analyze(i);
+            Application.DoEvents();
+
+            DataRow row = table.NewRow();
+            row.SetField(0, FolderResults.Filenames[i]);
+            row.SetField(1, FolderResults.Summaries[i]);
+            row.SetField(2, FolderResults.ImageDiffs[i]?.TotalDifference);
+            row.SetField(3, FolderResults.ImageDiffs[i]?.MaxDifference);
+
+            table.Rows.Add(row);
+            Recolor(dataGridView1.Rows[i]);
+            dataGridView1.AutoResizeColumns();
+            if (i == 0)
+                dataGridView1.Rows[0].Selected = true;
+        }
+
+        Text = $"Analyzed {FolderResults.ImageDiffs.Length} image pairs";
+        progressBar1.Value = 0;
+        btnAnalyze.Text = "Analyze";
     }
 
     private void Recolor(DataGridViewRow row)

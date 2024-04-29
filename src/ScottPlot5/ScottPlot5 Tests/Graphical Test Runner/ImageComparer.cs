@@ -96,9 +96,8 @@ public partial class ImageComparer : UserControl
             ImgDiff = null;
         }
 
-        SetBitmap1();
+        SwitchImages(0);
         UpdateDiffBitmap();
-        ImageMode = 0;
         pictureBox1.BackColor = SystemColors.Control;
         pictureBox2.BackColor = SystemColors.Control;
     }
