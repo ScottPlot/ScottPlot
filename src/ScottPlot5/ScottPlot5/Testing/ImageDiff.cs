@@ -9,8 +9,6 @@ public class ImageDiff
     public double PercentOfDifferencePixels { get; }
     public double TotalDifference { get; }
     public double MaxDifference { get; }
-    public int MaxDifferenceX { get; }
-    public int MaxDifferenceY { get; }
     public Image? DifferenceImage { get; }
 
     public ImageDiff(Image img1, Image img2, bool saveDiffImage = true)
@@ -36,8 +34,6 @@ public class ImageDiff
                 if (diffValue > MaxDifference)
                 {
                     MaxDifference = diffValue;
-                    MaxDifferenceX = x;
-                    MaxDifferenceY = y;
                 }
             }
         }

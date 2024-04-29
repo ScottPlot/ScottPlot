@@ -33,7 +33,6 @@ partial class CollectionCompareForm
         tbAfter = new TextBox();
         progressBar1 = new ProgressBar();
         dataGridView1 = new DataGridView();
-        cbChanged = new CheckBox();
         imageComparer1 = new GraphicalTestRunner.ImageComparer();
         btnCB = new Button();
         btnUT = new Button();
@@ -76,9 +75,9 @@ partial class CollectionCompareForm
         // progressBar1
         // 
         progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        progressBar1.Location = new Point(219, 70);
+        progressBar1.Location = new Point(111, 70);
         progressBar1.Name = "progressBar1";
-        progressBar1.Size = new Size(449, 23);
+        progressBar1.Size = new Size(557, 23);
         progressBar1.TabIndex = 5;
         // 
         // dataGridView1
@@ -89,18 +88,6 @@ partial class CollectionCompareForm
         dataGridView1.Name = "dataGridView1";
         dataGridView1.Size = new Size(791, 291);
         dataGridView1.TabIndex = 6;
-        // 
-        // cbChanged
-        // 
-        cbChanged.AutoSize = true;
-        cbChanged.Checked = true;
-        cbChanged.CheckState = CheckState.Checked;
-        cbChanged.Location = new Point(111, 73);
-        cbChanged.Name = "cbChanged";
-        cbChanged.Size = new Size(102, 19);
-        cbChanged.TabIndex = 10;
-        cbChanged.Text = "Changed Only";
-        cbChanged.UseVisualStyleBackColor = true;
         // 
         // imageComparer1
         // 
@@ -189,7 +176,6 @@ partial class CollectionCompareForm
         Controls.Add(btn2);
         Controls.Add(btnUT);
         Controls.Add(btnCB);
-        Controls.Add(cbChanged);
         Controls.Add(progressBar1);
         Controls.Add(tbAfter);
         Controls.Add(tbBefore);
@@ -213,7 +199,6 @@ partial class CollectionCompareForm
     private TextBox tbAfter;
     private ProgressBar progressBar1;
     private DataGridView dataGridView1;
-    private CheckBox cbChanged;
     private Button btnCB;
     private Button btnUT;
     private Button btn2;

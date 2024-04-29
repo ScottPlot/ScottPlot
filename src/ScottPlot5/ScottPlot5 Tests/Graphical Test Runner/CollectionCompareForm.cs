@@ -1,4 +1,5 @@
 using GraphicalTestRunner;
+using ScottPlot;
 using System.Data;
 using System.Diagnostics;
 
@@ -29,8 +30,6 @@ public partial class CollectionCompareForm : Form
             table.Columns.Add("change", typeof(string));
             table.Columns.Add("total diff", typeof(double));
             table.Columns.Add("max diff", typeof(double));
-            table.Columns.Add("max diffX", typeof(int));
-            table.Columns.Add("max diffY", typeof(int));
 
             dataGridView1.DataSource = table;
             dataGridView1.RowHeadersVisible = false;
@@ -52,18 +51,14 @@ public partial class CollectionCompareForm : Form
                 FolderResults.Analyze(i);
                 Application.DoEvents();
 
-                if (cbChanged.Checked && FolderResults.Summaries[i] != "changed")
-                    continue;
-
                 DataRow row = table.NewRow();
                 row.SetField(0, FolderResults.Filenames[i]);
                 row.SetField(1, FolderResults.Summaries[i]);
                 row.SetField(2, FolderResults.ImageDiffs[i]?.TotalDifference);
                 row.SetField(3, FolderResults.ImageDiffs[i]?.MaxDifference);
-                row.SetField(4, FolderResults.ImageDiffs[i]?.MaxDifferenceX);
-                row.SetField(5, FolderResults.ImageDiffs[i]?.MaxDifferenceY);
 
                 table.Rows.Add(row);
+                Recolor(dataGridView1.Rows[i]);
                 dataGridView1.AutoResizeColumns();
                 if (i == 0)
                     dataGridView1.Rows[0].Selected = true;
@@ -82,10 +77,17 @@ public partial class CollectionCompareForm : Form
             if (selectedRowCount == 0)
                 return;
 
-            int rowIndex = dataGridView1.SelectedRows[0].Index;
-            string path1 = FolderResults.GetPath1(rowIndex);
-            string path2 = FolderResults.GetPath2(rowIndex);
+            string selectedFilename = dataGridView1.SelectedRows[0].Cells[0].Value.ToString()!;
+            int index = Array.IndexOf(FolderResults.Filenames, selectedFilename);
+            string path1 = FolderResults.GetPath1(index);
+            string path2 = FolderResults.GetPath2(index);
             imageComparer1.SetImages(path1, path2);
+        };
+
+        dataGridView1.Sorted += (s, e) =>
+        {
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+                Recolor(dataGridView1.Rows[i]);
         };
 
         btnUT.Click += (s, e) =>
@@ -111,5 +113,25 @@ public partial class CollectionCompareForm : Form
             string path = Path.GetFullPath(tbAfter.Text);
             Process.Start("explorer.exe", path);
         };
+    }
+
+    private void Recolor(DataGridViewRow row)
+    {
+        if (row.Cells[1].Value.ToString() == "changed")
+        {
+            row.Cells[1].Style.BackColor = System.Drawing.Color.Yellow;
+        }
+        else if (row.Cells[1].Value.ToString() == "unchanged")
+        {
+            for (int j = 0; j < dataGridView1.Columns.Count; j++)
+            {
+                row.Cells[j].Style.BackColor = SystemColors.ControlLight;
+                row.Cells[j].Style.ForeColor = SystemColors.ControlDark;
+            }
+        }
+        else
+        {
+            row.Cells[1].Style.BackColor = System.Drawing.Color.LightSteelBlue;
+        }
     }
 }
