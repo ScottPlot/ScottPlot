@@ -11,6 +11,6 @@ internal class ImageDiffTests
 
         diff.PercentOfDifferencePixels.Should().BeApproximately(17.94, .01);
         diff.NumberOfDifferentPixels.Should().Be(1601);
-        diff.DifferenceImage.SaveTestImage();
+        diff.DifferenceImage?.SaveTestImage();
     }
 }
