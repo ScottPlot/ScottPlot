@@ -181,8 +181,10 @@ public class Label
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
         float maxWidth = lines.Select(paint.MeasureText).Max();
-        return new PixelSize(maxWidth, lineHeight);
+        return new PixelSize(maxWidth, lineHeight * lines.Length);
     }
+
+    // TODO: obsolete all other measurement tests
 
     public SKFontMetrics GetFontMetrics(SKPaint paint)
     {
@@ -303,7 +305,7 @@ public class Label
         if (!IsVisible)
             return;
 
-        PixelSize size = Measure(paint);
+        PixelSize size = Measure2(Text, paint);
 
         float xOffset = size.Width * Alignment.HorizontalFraction();
         float yOffset = size.Height * Alignment.VerticalFraction();
@@ -334,7 +336,7 @@ public class Label
         canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
     }
 
-    private void DrawText(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    private void DrawText(SKCanvas canvas, SKPaint paint, PixelRect textRect)
     {
         ApplyTextPaint(paint);
         if (Text.Contains('\n'))
@@ -351,7 +353,7 @@ public class Label
         }
         else
         {
-            canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
+            canvas.DrawText(Text, textRect.Left + OffsetX, textRect.Bottom + OffsetY, paint);
         }
     }
 
