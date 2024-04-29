@@ -28,26 +28,19 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
-        float largestTickSize = MeasureTicks();
-        float largestTickLabelSize = LabelStyle.Measure().Height;
-        float spaceBetweenTicksAndAxisLabel = 15;
-        return largestTickSize + largestTickLabelSize + spaceBetweenTicksAndAxisLabel;
-    }
-
-    private float MeasureTicks()
-    {
         using SKPaint paint = new();
-        TickLabelStyle.ApplyToPaint(paint);
+        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.MeasureText(paint, x.Label).Width).Max();
 
-        float largestTickWidth = 0;
+        float axisLabelHeight = 0;
+        float spaceBetweenTicksAndAxisLabel = 30;
 
-        foreach (Tick tick in TickGenerator.Ticks)
+        if (LabelStyle.IsVisible && !string.IsNullOrWhiteSpace(LabelStyle.Text))
         {
-            PixelSize tickLabelSize = LabelStyle.MeasureText(paint, tick.Label);
-            largestTickWidth = Math.Max(largestTickWidth, tickLabelSize.Width + 10);
+            LabelStyle.ApplyToPaint(paint);
+            axisLabelHeight = paint.FontSpacing;
         }
 
-        return largestTickWidth;
+        return maxTickLabelWidth + axisLabelHeight + spaceBetweenTicksAndAxisLabel;
     }
 
     private PixelRect GetPanelRectangleLeft(PixelRect dataRect, float size, float offset)
