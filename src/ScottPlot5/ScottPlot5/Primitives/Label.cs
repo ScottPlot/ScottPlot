@@ -1,4 +1,7 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Primitives;
+using System.Drawing;
+
+namespace ScottPlot;
 
 public class Label
 {
@@ -171,17 +174,23 @@ public class Label
         Render(canvas, new Pixel(x, y), paint);
     }
 
-    // TODO: figure which measure methods to obsolete
-
-    // TODO: always pass paints in
-
-    public PixelSize Measure2(string text, SKPaint paint)
+    public MeasuredText Measure2(string text, SKPaint paint)
     {
         string[] lines = text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
         float maxWidth = lines.Select(paint.MeasureText).Max();
-        return new PixelSize(maxWidth, lineHeight * lines.Length);
+        PixelSize size = new(maxWidth, lineHeight * lines.Length);
+
+        // https://github.com/ScottPlot/ScottPlot/issues/3700
+        float verticalOffset = metrics.Top + metrics.CapHeight - metrics.Bottom / 2;
+
+        return new MeasuredText()
+        {
+            Size = size,
+            LineHeight = lineHeight,
+            VerticalOffset = verticalOffset,
+        };
     }
 
     // TODO: obsolete all other measurement tests
@@ -305,12 +314,8 @@ public class Label
         if (!IsVisible)
             return;
 
-        PixelSize size = Measure2(Text, paint);
-
-        float xOffset = size.Width * Alignment.HorizontalFraction();
-        float yOffset = size.Height * Alignment.VerticalFraction();
-        PixelRect textRect = new(0, size.Width, size.Height, 0);
-        textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
+        MeasuredText measured = Measure2(Text, paint);
+        PixelRect textRect = measured.Rect(Alignment);
 
         CanvasState canvasState = new(canvas);
         canvasState.Save();
@@ -319,7 +324,7 @@ public class Label
         canvas.RotateDegrees(Rotation);
 
         DrawBackground(canvas, px, paint, textRect);
-        DrawText(canvas, px, paint, textRect);
+        DrawText(canvas, measured, paint, textRect);
         DrawBorder(canvas, px, paint, textRect);
         DrawPoint(canvas, px, paint);
 
@@ -336,7 +341,7 @@ public class Label
         canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
     }
 
-    private void DrawText(SKCanvas canvas, SKPaint paint, PixelRect textRect)
+    private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaint paint, PixelRect textRect)
     {
         ApplyTextPaint(paint);
         if (Text.Contains('\n'))
@@ -346,7 +351,7 @@ public class Label
 
             for (int i = 0; i < lines.Length; i++)
             {
-                float yPx = textRect.Top + (1 + i) * lineHeight;
+                float yPx = textRect.Top + (1 + i) * lineHeight + measured.VerticalOffset;
                 float xPx = textRect.Left;
                 canvas.DrawText(lines[i], xPx, yPx, paint);
             }
