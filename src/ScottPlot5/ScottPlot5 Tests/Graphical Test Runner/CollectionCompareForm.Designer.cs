@@ -208,8 +208,6 @@ partial class CollectionCompareForm
 
     #endregion
 
-    private Button button1;
-    private Button button2;
     private Button btnAnalyze;
     private TextBox tbBefore;
     private TextBox tbAfter;
