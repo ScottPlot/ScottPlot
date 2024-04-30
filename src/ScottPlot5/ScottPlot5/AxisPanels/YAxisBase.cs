@@ -29,7 +29,11 @@ public abstract class YAxisBase : AxisBase, IYAxis
             return SizeWhenNoData;
 
         using SKPaint paint = new();
-        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(TickLabelStyle.Text, paint).Width).Max();
+        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max();
+
+        string ticks = string.Join(", ", TickGenerator.Ticks.Select(x => x.Label));
+        Console.WriteLine($"left panel ticks: {ticks}");
+        Console.WriteLine($"maxTickLabelWidth: {maxTickLabelWidth}");
 
         float axisLabelHeight = 0;
         float spaceBetweenTicksAndAxisLabel = 30;

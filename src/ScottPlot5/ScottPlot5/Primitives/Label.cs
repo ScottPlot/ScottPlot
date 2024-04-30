@@ -85,6 +85,7 @@ public class Label
         set => PixelPadding = new(value);
     }
 
+    // TODO: should add padding and margin
     public PixelPadding PixelPadding { get; set; } = new(0, 0, 0, 0);
 
     public float PointSize = 0;
@@ -262,14 +263,16 @@ public class Label
 
             for (int i = 0; i < lines.Length; i++)
             {
-                float yPx = textRect.Top + (1 + i) * lineHeight + measured.VerticalOffset;
                 float xPx = textRect.Left;
+                float yPx = textRect.Top + (1 + i) * lineHeight + measured.VerticalOffset;
                 canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
-            canvas.DrawText(Text, textRect.Left + OffsetX, textRect.Bottom + OffsetY, paint);
+            float xPx = textRect.Left + OffsetX;
+            float yPx = textRect.Bottom + OffsetY + measured.VerticalOffset;
+            canvas.DrawText(Text, xPx, yPx, paint);
         }
     }
 

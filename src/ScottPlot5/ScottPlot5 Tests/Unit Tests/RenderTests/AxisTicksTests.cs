@@ -103,4 +103,13 @@ internal class AxisTicksTests
         myPlot.Axes.Bottom.TickLabelStyle.FontSize = 96;
         myPlot.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Ticks_LongLabels()
+    {
+        Plot plt = new();
+        plt.Axes.SetLimitsY(0, 1e9);
+        plt.SaveTestImage();
+        //plt.SaveTestImage();
+    }
 }
