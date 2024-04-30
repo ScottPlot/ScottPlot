@@ -7,8 +7,6 @@ internal class FilledSquare : IMarker
         PixelRect rect = new(center, size / 2);
 
         Drawing.DrawRectangle(canvas, rect, paint, markerStyle.FillStyle);
-
-        if (markerStyle.FillOutline)
-            Drawing.DrawRectangle(canvas, rect, paint, markerStyle.LineStyle);
+        Drawing.DrawRectangle(canvas, rect, paint, markerStyle.OutlineStyle);
     }
 }

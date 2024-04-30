@@ -20,8 +20,6 @@ internal class FilledDiamond : IMarker
         path.AddPoly(pointsList);
 
         Drawing.DrawPath(canvas, paint, path, markerStyle.FillStyle, rect);
-
-        if (markerStyle.FillOutline)
-            Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
+        Drawing.DrawPath(canvas, paint, path, markerStyle.OutlineStyle);
     }
 }

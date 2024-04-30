@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Marker : ICategory
 {
@@ -43,13 +41,22 @@ public class Marker : ICategory
                 var mp = myPlot.Add.Marker(x: i, y: 0);
                 mp.MarkerStyle.Shape = markerShapes[i];
                 mp.MarkerStyle.Size = 10;
-                mp.MarkerStyle.LineWidth = 1.5f;
-                mp.MarkerStyle.LineColor = palette.GetColor(i);
+
+                // markers made from filled shapes have can be customized
                 mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
+
+                // markers made from filled shapes have optional outlines
+                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
+                mp.MarkerStyle.OutlineWidth = 2;
+
+                // markers created from lines can be customized
+                mp.MarkerStyle.LineWidth = 2f;
+                mp.MarkerStyle.LineColor = palette.GetColor(i);
 
                 var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
                 txt.LabelRotation = -90;
                 txt.LabelAlignment = Alignment.MiddleLeft;
+                txt.LabelFontColor = Colors.Black;
             }
 
             myPlot.Title("Marker Names");
