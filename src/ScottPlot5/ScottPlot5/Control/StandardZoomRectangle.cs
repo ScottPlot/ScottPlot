@@ -10,7 +10,10 @@ public class StandardZoomRectangle(Plot plot) : IZoomRectangle
 
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
 
-    public LineStyle LineStyle { get; } = new() { Color = new Color(255, 0, 0).WithAlpha(200) };
+    public LineStyle LineStyle { get; set; } = new()
+    {
+        Color = new Color(255, 0, 0).WithAlpha(200)
+    };
 
     public Pixel MouseDown { get; set; }
     public Pixel MouseUp { get; set; }
