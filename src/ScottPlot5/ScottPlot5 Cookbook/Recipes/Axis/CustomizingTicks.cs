@@ -109,7 +109,6 @@ public class CustomizingTicks : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
-            myPlot.Axes.Bottom.TickLabelStyle.OffsetY = -8;
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
         }
     }
