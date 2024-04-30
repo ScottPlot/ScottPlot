@@ -95,44 +95,11 @@ public class Styling : ICategory
         }
     }
 
-    public class Markers : RecipeBase
+    public class MarkerShapes : RecipeBase
     {
-        public override string Name => "Markers";
-        public override string Description => "Many plot types have a MarkerStyle which can be customized.";
-
-        [Test]
-        public override void Execute()
-        {
-            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
-            ScottPlot.Palettes.Category10 palette = new();
-
-            for (int i = 0; i < markerShapes.Length; i++)
-            {
-                double[] xs = Generate.Consecutive(10);
-                double[] ys = Generate.Sin(10, offset: markerShapes.Length - i);
-                Color color = palette.GetColor(i);
-
-                var scatter = myPlot.Add.Scatter(xs, ys);
-                scatter.MarkerStyle.Shape = markerShapes[i];
-                scatter.MarkerStyle.Size = 10;
-                scatter.LineColor = color.WithAlpha(.2);
-                scatter.MarkerFillColor = color;
-                scatter.MarkerLineColor = color;
-
-                var txt = myPlot.Add.Text(markerShapes[i].ToString(), 10, ys.Last());
-                txt.LabelAlignment = Alignment.MiddleLeft;
-                txt.LabelFontColor = color;
-            }
-
-            myPlot.Axes.SetLimitsX(-2, 20);
-            myPlot.HideGrid();
-        }
-    }
-
-    public class MarkerNames : RecipeBase
-    {
-        public override string Name => "Marker Names";
-        public override string Description => "Markers can be referred to by their name.";
+        public override string Name => "Marker Shapes";
+        public override string Description => "Standard marker shapes are provided, " +
+            "but advanced users are able to create their own as well.";
 
         [Test]
         public override void Execute()
