@@ -36,7 +36,6 @@ public abstract class YAxisBase : AxisBase, IYAxis
         Console.WriteLine($"maxTickLabelWidth: {maxTickLabelWidth}");
 
         float axisLabelHeight = 0;
-        float spaceBetweenTicksAndAxisLabel = 30;
 
         if (LabelStyle.IsVisible && !string.IsNullOrWhiteSpace(LabelStyle.Text))
         {
@@ -44,6 +43,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
             axisLabelHeight = paint.FontSpacing;
         }
 
+        float spaceBetweenTicksAndAxisLabel = 20;
         return maxTickLabelWidth + axisLabelHeight + spaceBetweenTicksAndAxisLabel;
     }
 
