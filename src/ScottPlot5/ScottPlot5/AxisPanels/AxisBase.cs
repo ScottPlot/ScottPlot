@@ -10,6 +10,9 @@ public abstract class AxisBase : LabelStyleProperties
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
     public float SizeWhenNoData { get; set; } = 15;
+    public PixelPadding EmptyLabelPadding { get; set; } = new(10, 5);
+    public PixelPadding PaddingBetweenTickAndAxisLabels { get; set; } = new(5, 3);
+    public PixelPadding PaddingOutsideAxisLabels { get; set; } = new(2, 0);
 
     public double Min
     {

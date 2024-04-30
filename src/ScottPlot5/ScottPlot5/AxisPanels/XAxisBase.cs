@@ -21,21 +21,15 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         float tickHeight = MajorTickStyle.Length;
 
-        TickLabelStyle.ApplyToPaint(paint);
-        float lineHeight = paint.FontSpacing;
-        int numberOfLines = TickGenerator.Ticks.Select(x => x.Label).Select(x => x.Split('\n').Length).FirstOrDefault();
-        float tickLabelHeight = lineHeight * numberOfLines;
+        float maxTickLabelHeight = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Height).Max();
 
-        float axisLabelHeight = 0;
-        if (LabelStyle.IsVisible && !string.IsNullOrWhiteSpace(LabelStyle.Text))
-        {
-            LabelStyle.ApplyToPaint(paint);
-            axisLabelHeight = paint.FontSpacing;
-        }
+        float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text)
+            ? EmptyLabelPadding.Vertical
+            : LabelStyle.Measure(LabelText, paint).LineHeight
+                + PaddingBetweenTickAndAxisLabels.Vertical
+                + PaddingOutsideAxisLabels.Vertical;
 
-        float spaceBetweenTicksAndAxisLabel = 10;
-
-        return tickHeight + tickLabelHeight + spaceBetweenTicksAndAxisLabel + axisLabelHeight;
+        return tickHeight + maxTickLabelHeight + axisLabelHeight;
     }
 
     public float GetPixel(double position, PixelRect dataArea)
@@ -88,8 +82,11 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
-        float textDistanceFromEdge = 10;
-        Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom - textDistanceFromEdge);
+        float y = Edge == Edge.Bottom
+            ? panelRect.Bottom + PaddingOutsideAxisLabels.Vertical
+            : panelRect.Top - PaddingOutsideAxisLabels.Vertical;
+
+        Pixel labelPoint = new(panelRect.HorizontalCenter, y);
 
         if (ShowDebugInformation)
         {
