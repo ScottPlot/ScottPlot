@@ -12,6 +12,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
+        using SKPaint paint = new();
 
         int y = 20;
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
@@ -29,7 +30,7 @@ internal class LabelTests
                 PointColor = Colors.White,
             };
 
-            lbl.Render(canvas, pixel);
+            lbl.Render(canvas, pixel, paint);
 
             y += 50;
         }
@@ -45,6 +46,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
+        using SKPaint paint = new();
 
         for (int i = 0; i < 360; i += 45)
         {
@@ -65,7 +67,7 @@ internal class LabelTests
                 BorderWidth = 1,
             };
 
-            lbl.Render(canvas, center);
+            lbl.Render(canvas, center, paint);
         }
 
         bmp.SaveTestImage();
@@ -79,6 +81,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
+        using SKPaint paint = new();
 
         int y = 20;
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
@@ -97,7 +100,7 @@ internal class LabelTests
                 Rotation = 30,
             };
 
-            lbl.Render(canvas, pixel);
+            lbl.Render(canvas, pixel, paint);
 
             y += 50;
         }
@@ -113,6 +116,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
+        using SKPaint paint = new();
 
         Alignment[,] alignmentMatrix = AlignmentExtensions.AlignmentMatrix;
 
@@ -140,7 +144,7 @@ internal class LabelTests
                     Rotation = 45,
                 };
 
-                label.Render(canvas, pixel);
+                label.Render(canvas, pixel, paint);
             }
         }
 
@@ -154,6 +158,7 @@ internal class LabelTests
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.Navy);
 
+        using SKPaint paint = new();
         string[] fonts = { "Times New Roman", "Consolas", "Impact", "Arial Narrow" };
 
         float yOffset = 20;
@@ -170,7 +175,7 @@ internal class LabelTests
             };
 
             Pixel px = new(20, yOffset);
-            lbl.Render(canvas, px);
+            lbl.Render(canvas, px, paint);
 
             yOffset += 100;
         }
@@ -185,6 +190,7 @@ internal class LabelTests
         SKSurface surface = Drawing.CreateSurface(400, 300);
         SKCanvas canvas = surface.Canvas;
         canvas.Clear(SKColors.Navy);
+        using SKPaint paint = new();
 
         Label lbl = new()
         {
@@ -197,11 +203,11 @@ internal class LabelTests
             BorderColor = Colors.Yellow,
         };
 
-        lbl.Render(canvas, 200, 100);
+        lbl.Render(canvas, new(200, 100), paint);
 
         lbl.Rotation = 45;
 
-        lbl.Render(canvas, 200, 200);
+        lbl.Render(canvas, new(200, 200), paint);
 
         surface.SaveTestImage();
     }
@@ -212,6 +218,7 @@ internal class LabelTests
         SKBitmap bmp = new(200, 150);
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.Navy);
+        using SKPaint paint = new();
 
         Label lbl = new()
         {
@@ -225,7 +232,7 @@ internal class LabelTests
             BorderRadius = 15,
         };
 
-        lbl.Render(canvas, new(50, 50));
+        lbl.Render(canvas, new(50, 50), paint);
 
         bmp.SaveTestImage();
     }
@@ -236,6 +243,7 @@ internal class LabelTests
         SKBitmap bmp = new(200, 200);
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.White);
+        using SKPaint paint = new();
 
         Label lbl1 = new()
         {
@@ -272,9 +280,9 @@ internal class LabelTests
             AntiAliasText = false,
         };
 
-        lbl1.Render(canvas, new(25, 50));
-        lbl2.Render(canvas, new(25, 100));
-        lbl3.Render(canvas, new(25, 150));
+        lbl1.Render(canvas, new(25, 50), paint);
+        lbl2.Render(canvas, new(25, 100), paint);
+        lbl3.Render(canvas, new(25, 150), paint);
 
         bmp.SaveTestImage();
     }

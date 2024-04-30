@@ -10,7 +10,7 @@ static class Program
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        Type testingFormType = typeof(Demos.DataLogger);
+        Type testingFormType = typeof(Demos.LabelDemo);
         Application.Run(new MainMenuForm(testingFormType));
     }
 }

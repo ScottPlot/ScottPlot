@@ -85,6 +85,7 @@ public class Label
         set => PixelPadding = new(value);
     }
 
+    // TODO: should add padding and margin
     public PixelPadding PixelPadding { get; set; } = new(0, 0, 0, 0);
 
     public float PointSize = 0;
@@ -157,110 +158,33 @@ public class Label
         ApplyTextPaint(paint);
     }
 
-    // TODO: obsolete this (require a paint)
-    public void Render(SKCanvas canvas, Pixel pixel)
-    {
-        using SKPaint paint = new();
-        Render(canvas, pixel, paint);
-    }
-
-    // TODO: obsolete this (require a paint)
-    public void Render(SKCanvas canvas, float x, float y)
-    {
-        using SKPaint paint = new();
-        Render(canvas, new Pixel(x, y), paint);
-    }
-
-    // TODO: figure which measure methods to obsolete
-
-    // TODO: always pass paints in
-
-    public PixelSize Measure2(string text, SKPaint paint)
+    public MeasuredText Measure(string text, SKPaint paint)
     {
         string[] lines = text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
         float maxWidth = lines.Select(paint.MeasureText).Max();
-        return new PixelSize(maxWidth, lineHeight);
-    }
+        PixelSize size = new(maxWidth, lineHeight * lines.Length);
 
-    public SKFontMetrics GetFontMetrics(SKPaint paint)
-    {
-        paint.GetFontMetrics(out SKFontMetrics metrics);
-        return metrics;
-    }
+        // https://github.com/ScottPlot/ScottPlot/issues/3700
+        float verticalOffset = metrics.Top + metrics.CapHeight - metrics.Bottom / 2;
 
-    public PixelSize MeasureMultiline()
-    {
-        return MeasureMultiline(Text);
-    }
-
-    public PixelSize MeasureMultiline(string text)
-    {
-        using SKPaint paint = new();
-        return MeasureMultiLines(paint, text);
-    }
-
-    public PixelSize Measure()
-    {
-        using SKPaint paint = new();
-        return Measure(paint);
-    }
-
-    public PixelSize Measure(string text)
-    {
-        using SKPaint paint = new();
-
-        if (Text.Contains('\n'))
-            return MeasureMultiLines(paint, text);
-
-        return MeasureText(paint, text);
-    }
-
-    public PixelSize Measure(SKPaint paint)
-    {
-        if (Text.Contains('\n'))
-            return MeasureMultiLines(paint, Text);
-
-        return MeasureText(paint, Text);
-    }
-
-    public PixelSize MeasureMultiLines(SKPaint paint, string text)
-    {
-        ApplyTextPaint(paint);
-        string[] lines = text.Split('\n');
-        int lineNumber = lines.Length;
-
-        // height measure
-        float height = MeasureText(paint, text).Height;
-        height = (height * lineNumber) + (LineSpacing ?? paint.FontSpacing) * (lineNumber - 1);
-
-        // width measure
-        string? longestLine = lines.OrderByDescending(line => line.Length).FirstOrDefault();
-        float width = MeasureText(paint, longestLine ?? lines[0]).Width;
-
-        return new PixelSize(width, height);
-    }
-
-    public PixelSize MeasureText(SKPaint paint, string text)
-    {
-        ApplyTextPaint(paint);
-        SKRect textBounds = new();
-        ///INFO: MeasureText(string str, ref SKRect rect) works as follow:
-        /// - returned value is the length of the text with leading and trailing white spaces
-        /// - rect.Left contains the width of leading white spaces
-        /// - rect.width contains the length of the text __without__ leading or trailing white spaces
-        float fullTextWidth = paint.MeasureText(text, ref textBounds);
-        return new PixelSize(fullTextWidth, textBounds.Height);
+        return new MeasuredText()
+        {
+            Size = size,
+            LineHeight = lineHeight,
+            VerticalOffset = verticalOffset,
+            Bottom = metrics.Bottom,
+        };
     }
 
     /// <summary>
     /// Use the Label's size and <see cref="Alignment"/> to determine where it should be drawn
     /// relative to the given rectangle (aligned to the rectangle according to <paramref name="rectAlignment"/>).
     /// </summary>
-    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY)
+    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY, SKPaint paint)
     {
-        PixelSize textSize = Measure();
+        PixelSize textSize = Measure(Text, paint).Size;
         float textWidth = textSize.Width;
         float textHeight = textSize.Height;
 
@@ -298,17 +222,13 @@ public class Label
         return new Pixel(x, y);
     }
 
-    public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
+    public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
     {
         if (!IsVisible)
             return;
 
-        PixelSize size = Measure(paint);
-
-        float xOffset = size.Width * Alignment.HorizontalFraction();
-        float yOffset = size.Height * Alignment.VerticalFraction();
-        PixelRect textRect = new(0, size.Width, size.Height, 0);
-        textRect = textRect.WithDelta(-xOffset, yOffset - size.Height);
+        MeasuredText measured = Measure(Text, paint);
+        PixelRect textRect = measured.Rect(Alignment);
 
         CanvasState canvasState = new(canvas);
         canvasState.Save();
@@ -317,7 +237,7 @@ public class Label
         canvas.RotateDegrees(Rotation);
 
         DrawBackground(canvas, px, paint, textRect);
-        DrawText(canvas, px, paint, textRect);
+        DrawText(canvas, measured, paint, textRect, bottom);
         DrawBorder(canvas, px, paint, textRect);
         DrawPoint(canvas, px, paint);
 
@@ -334,9 +254,12 @@ public class Label
         canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
     }
 
-    private void DrawText(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaint paint, PixelRect textRect, bool bottom)
     {
         ApplyTextPaint(paint);
+
+        float dV = bottom ? -measured.Bottom : measured.VerticalOffset;
+
         if (Text.Contains('\n'))
         {
             string[] lines = Text.Split('\n');
@@ -344,14 +267,16 @@ public class Label
 
             for (int i = 0; i < lines.Length; i++)
             {
-                float yPx = textRect.Top + (1 + i) * lineHeight;
                 float xPx = textRect.Left;
+                float yPx = textRect.Top + (1 + i) * lineHeight + dV;
                 canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
-            canvas.DrawText(Text, textRect.Left, textRect.Bottom, paint);
+            float xPx = textRect.Left + OffsetX;
+            float yPx = textRect.Bottom + OffsetY + dV;
+            canvas.DrawText(Text, xPx, yPx, paint);
         }
     }
 
@@ -393,7 +318,7 @@ public class Label
 
         for (int i = 0; i < strings.Length; i++)
         {
-            PixelSize size = MeasureText(paint, strings[i]);
+            PixelSize size = Measure(strings[i], paint).Size;
             if (size.Height > maxHeight)
             {
                 maxHeight = size.Height;
@@ -411,7 +336,7 @@ public class Label
 
         for (int i = 0; i < strings.Length; i++)
         {
-            PixelSize size = MeasureText(paint, strings[i]);
+            PixelSize size = Measure(strings[i], paint).Size;
             if (size.Width > maxWidth)
             {
                 maxWidth = size.Width;

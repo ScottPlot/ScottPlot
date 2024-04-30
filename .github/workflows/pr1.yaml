@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: bash .github/workflows/scripts/check-build.sh
       - name: ScottPlot5 Unit Tests
-        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests/ScottPlot Tests.csproj" --configuration Release --no-build --verbosity minimal
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj" --configuration Release --no-build --verbosity minimal
       - name: ScottPlot5 Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj" --configuration Release --no-build --verbosity minimal
       - name: ScottPlot5 Tests

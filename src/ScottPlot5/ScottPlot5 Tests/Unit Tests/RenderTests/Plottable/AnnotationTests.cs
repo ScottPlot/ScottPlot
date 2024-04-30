@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests.Plottable
+﻿using System.Text;
+
+namespace ScottPlotTests.RenderTests.Plottable
 {
     internal class AnnotationTests
     {
@@ -12,6 +14,16 @@
                 plt.Add.Annotation(alignment.ToString(), alignment);
             }
 
+            plt.SaveTestImage();
+        }
+
+        [Test]
+        public void Test_Annotation_Height()
+        {
+            //https://github.com/ScottPlot/ScottPlot/issues/3749
+            ScottPlot.Plot plt = new();
+            string multiline = string.Join("\n", Enumerable.Range(0, 10).Select(x => $"Line {x + 1}"));
+            plt.Add.Annotation(multiline);
             plt.SaveTestImage();
         }
     }

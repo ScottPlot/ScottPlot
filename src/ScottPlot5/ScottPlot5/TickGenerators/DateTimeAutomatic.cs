@@ -136,7 +136,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
                 continue;
 
             string tickLabel = dt.ToString(dtFormat);
-            PixelSize tickLabelSize = labelStyle.MeasureText(paint, tickLabel);
+            PixelSize tickLabelSize = labelStyle.Measure(tickLabel, paint).Size;
 
             bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);
             if (tickLabelIsTooLarge)

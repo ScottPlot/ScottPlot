@@ -119,7 +119,7 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
                 double x = Math.Cos(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
                 double y = -Math.Sin(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
                 Pixel px = Axes.GetPixel(new Coordinates(x, y));
-                Slices[i].LabelStyle.Render(rp.Canvas, px);
+                Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
             }
         }
     }

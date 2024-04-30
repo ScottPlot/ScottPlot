@@ -62,4 +62,74 @@ internal class ForbiddenCodeTests
             .ToList()
             .ForEach(t => Assert.Fail($"{t.Name} should be in the namespace ScottPlot (not ScottPlot.Interfaces)"));
     }
+
+    [Test]
+    public void Test_Canvas_DoNotCallDrawText()
+    {
+        int offences = 0;
+        StringBuilder errorMessages = new();
+        foreach (string filePath in SourceFilePaths)
+        {
+            if (Path.GetFileName(filePath) == "Label.cs")
+                continue;
+
+            if (Path.GetFileName(filePath) == "MeasuredText.cs")
+                continue;
+
+            string[] lines = File.ReadAllLines(filePath);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string file2 = filePath.Replace(SourceCodeParsing.SourceFolder, string.Empty);
+                string line = lines[i];
+
+                if (line.Contains(".DrawText("))
+                {
+                    offences += 1;
+                    errorMessages.AppendLine($"{file2} line {i + 1}");
+                    errorMessages.AppendLine(line.Trim());
+                    errorMessages.AppendLine();
+                }
+            }
+        }
+
+        offences.Should().Be(0,
+            $"SKCanvas.DrawText() must never be called directly." +
+            $"Create a Label, style it as desired, and call it's Render() method." +
+            $"{offences} offences:\n" +
+            $"{errorMessages}");
+    }
+
+
+    [Test]
+    public void Test_Paint_FontSpacing()
+    {
+        int offences = 0;
+        StringBuilder errorMessages = new();
+        foreach (string filePath in SourceFilePaths)
+        {
+            if (Path.GetFileName(filePath) == "Label.cs")
+                continue;
+
+            string[] lines = File.ReadAllLines(filePath);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string file2 = filePath.Replace(SourceCodeParsing.SourceFolder, string.Empty);
+                string line = lines[i];
+
+                if (line.Contains(".FontSpacing"))
+                {
+                    offences += 1;
+                    errorMessages.AppendLine($"{file2} line {i + 1}");
+                    errorMessages.AppendLine(line.Trim());
+                    errorMessages.AppendLine();
+                }
+            }
+        }
+
+        offences.Should().Be(0,
+            $"SKPaint.FontSpacing must never be accessed." +
+            $"Create a Label, style it as desired, use its Measeure() method." +
+            $"{offences} offences:\n" +
+            $"{errorMessages}");
+    }
 }

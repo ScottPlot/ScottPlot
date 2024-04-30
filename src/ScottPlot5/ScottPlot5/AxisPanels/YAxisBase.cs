@@ -29,18 +29,17 @@ public abstract class YAxisBase : AxisBase, IYAxis
             return SizeWhenNoData;
 
         using SKPaint paint = new();
-        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.MeasureText(paint, x.Label).Width).Max();
+        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max();
 
-        float axisLabelHeight = 0;
-        float spaceBetweenTicksAndAxisLabel = 30;
+        string ticks = string.Join(", ", TickGenerator.Ticks.Select(x => x.Label));
 
-        if (LabelStyle.IsVisible && !string.IsNullOrWhiteSpace(LabelStyle.Text))
-        {
-            LabelStyle.ApplyToPaint(paint);
-            axisLabelHeight = paint.FontSpacing;
-        }
+        float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text)
+            ? EmptyLabelPadding.Horizontal
+            : LabelStyle.Measure(LabelText, paint).LineHeight
+                + PaddingBetweenTickAndAxisLabels.Horizontal
+                + PaddingOutsideAxisLabels.Horizontal;
 
-        return maxTickLabelWidth + axisLabelHeight + spaceBetweenTicksAndAxisLabel;
+        return maxTickLabelWidth + axisLabelHeight;
     }
 
     private PixelRect GetPanelRectangleLeft(PixelRect dataRect, float size, float offset)
@@ -74,21 +73,19 @@ public abstract class YAxisBase : AxisBase, IYAxis
             return;
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
-
-        float textDistanceFromEdge = 10;
-        float labelX = Edge == Edge.Left
-            ? panelRect.Left + textDistanceFromEdge
-            : panelRect.Right - textDistanceFromEdge;
-
-        Pixel labelPoint = new(labelX, rp.DataRect.VerticalCenter);
+        float x = Edge == Edge.Left
+            ? panelRect.Left + PaddingOutsideAxisLabels.Horizontal
+            : panelRect.Right - PaddingOutsideAxisLabels.Horizontal;
+        Pixel labelPoint = new(x, rp.DataRect.VerticalCenter);
 
         if (ShowDebugInformation)
         {
             Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
         }
 
+        using SKPaint paint = new();
         LabelAlignment = Alignment.UpperCenter;
-        LabelStyle.Render(rp.Canvas, labelPoint);
+        LabelStyle.Render(rp.Canvas, labelPoint, paint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);

@@ -10,6 +10,9 @@ public abstract class AxisBase : LabelStyleProperties
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
     public float SizeWhenNoData { get; set; } = 15;
+    public PixelPadding EmptyLabelPadding { get; set; } = new(10, 5);
+    public PixelPadding PaddingBetweenTickAndAxisLabels { get; set; } = new(5, 3);
+    public PixelPadding PaddingOutsideAxisLabels { get; set; } = new(2, 0);
 
     public double Min
     {
@@ -124,7 +127,7 @@ public abstract class AxisBase : LabelStyleProperties
             float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
             float yPx = axis.Edge == Edge.Bottom ? y + pxDistanceFromEdge : y - pxDistanceFromEdge;
             Pixel labelPixel = new(xPx, yPx);
-            label.Render(rp.Canvas, labelPixel);
+            label.Render(rp.Canvas, labelPixel, paint);
         }
     }
 
@@ -159,7 +162,7 @@ public abstract class AxisBase : LabelStyleProperties
             float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
             float xPx = axis.Edge == Edge.Left ? x - pxDistanceFromEdge : x + pxDistanceFromEdge;
             Pixel px = new(xPx, yPx);
-            label.Render(rp.Canvas, px);
+            label.Render(rp.Canvas, px, paint);
         }
     }
 
