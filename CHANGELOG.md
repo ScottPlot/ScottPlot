@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Annotation: Improved positioning of annotations containing many lines (#3749, #3700) @LerkLin
 * Label: Significantly improved precision of single and multi-line text measurement and alignment (#3700)
 * Axis Line: Set default line width to 1 which also improved default appearance of crosshair (#3752) @fdesordi
+* Rendering: Copy the plottable list inside the render loop to facilitate plottable list modification mid-render (#3753) @ZSYMAX
 
 ## ScottPlot 5.0.31
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-27_
