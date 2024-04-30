@@ -95,38 +95,6 @@ public class Styling : ICategory
         }
     }
 
-    public class MarkerShapes : RecipeBase
-    {
-        public override string Name => "Marker Shapes";
-        public override string Description => "Standard marker shapes are provided, " +
-            "but advanced users are able to create their own as well.";
-
-        [Test]
-        public override void Execute()
-        {
-            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
-            ScottPlot.Palettes.Category20 palette = new();
-
-            for (int i = 0; i < markerShapes.Length; i++)
-            {
-                var mp = myPlot.Add.Marker(x: i, y: 0);
-                mp.MarkerStyle.Shape = markerShapes[i];
-                mp.MarkerStyle.Size = 10;
-                mp.MarkerStyle.LineWidth = 1.5f;
-                mp.MarkerStyle.LineColor = palette.GetColor(i);
-                mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
-
-                var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
-                txt.LabelRotation = -90;
-                txt.LabelAlignment = Alignment.MiddleLeft;
-            }
-
-            myPlot.Title("Marker Names");
-            myPlot.Axes.SetLimits(-1, markerShapes.Length, -1, 4);
-            myPlot.HideGrid();
-        }
-    }
-
     public class ArrowShapeNames : RecipeBase
     {
         public override string Name => "Arrow Shapes";
