@@ -29,7 +29,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
             return SizeWhenNoData;
 
         using SKPaint paint = new();
-        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.MeasureText(paint, x.Label).Width).Max();
+        float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(TickLabelStyle.Text, paint).Width).Max();
 
         float axisLabelHeight = 0;
         float spaceBetweenTicksAndAxisLabel = 30;
@@ -72,7 +72,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
     {
         if (!IsVisible)
             return;
-        
+
         using SKPaint paint = new();
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);

@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.Axis;
+﻿using SkiaSharp;
+
+namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingTicks : ICategory
 {
@@ -142,9 +144,10 @@ public class CustomizingTicks : ICategory
 
             // determine the width of the largest tick label
             float largestLabelWidth = 0;
+            using SKPaint paint = new();
             foreach (Tick tick in ticks)
             {
-                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label);
+                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label, paint).Size;
                 largestLabelWidth = Math.Max(largestLabelWidth, size.Width);
             }
 

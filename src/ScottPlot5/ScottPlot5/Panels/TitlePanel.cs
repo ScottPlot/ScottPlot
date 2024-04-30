@@ -45,7 +45,8 @@ public class TitlePanel : IPanel
         if (string.IsNullOrWhiteSpace(Label.Text))
             return 0;
 
-        return Label.Measure().Height + VerticalPadding;
+        using SKPaint paint = new();
+        return Label.Measure(Label.Text, paint).Height + VerticalPadding;
     }
 
     public void Render(RenderPack rp, float size, float offset)

@@ -24,9 +24,10 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
         if (!IsVisible)
             return;
 
-        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY);
-
         using SKPaint paint = new();
+
+        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY, paint);
+
         LabelStyle.Render(rp.Canvas, px, paint);
     }
 }
