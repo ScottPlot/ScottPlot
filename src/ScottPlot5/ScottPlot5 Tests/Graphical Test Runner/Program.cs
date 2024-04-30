@@ -1,4 +1,4 @@
-namespace Graphical_Test_Runner;
+﻿namespace Graphical_Test_Runner;
 
 static class Program
 {
@@ -12,5 +12,5 @@ static class Program
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
         Application.Run(new CollectionCompareForm());
-    }    
+    }
 }
