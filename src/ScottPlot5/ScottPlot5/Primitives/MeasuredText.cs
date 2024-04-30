@@ -21,6 +21,8 @@ public readonly struct MeasuredText
     /// </summary>
     public required float VerticalOffset { get; init; }
 
+    public required float Bottom { get; init; }
+
     public float Width => Size.Width;
     public float Height => Size.Height;
 

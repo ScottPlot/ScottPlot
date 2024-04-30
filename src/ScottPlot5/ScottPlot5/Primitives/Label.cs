@@ -174,6 +174,7 @@ public class Label
             Size = size,
             LineHeight = lineHeight,
             VerticalOffset = verticalOffset,
+            Bottom = metrics.Bottom,
         };
     }
 
@@ -221,7 +222,7 @@ public class Label
         return new Pixel(x, y);
     }
 
-    public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
+    public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
     {
         if (!IsVisible)
             return;
@@ -236,7 +237,7 @@ public class Label
         canvas.RotateDegrees(Rotation);
 
         DrawBackground(canvas, px, paint, textRect);
-        DrawText(canvas, measured, paint, textRect);
+        DrawText(canvas, measured, paint, textRect, bottom);
         DrawBorder(canvas, px, paint, textRect);
         DrawPoint(canvas, px, paint);
 
@@ -253,9 +254,12 @@ public class Label
         canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
     }
 
-    private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaint paint, PixelRect textRect)
+    private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaint paint, PixelRect textRect, bool bottom)
     {
         ApplyTextPaint(paint);
+
+        float dV = bottom ? -measured.Bottom : measured.VerticalOffset;
+
         if (Text.Contains('\n'))
         {
             string[] lines = Text.Split('\n');
@@ -264,14 +268,14 @@ public class Label
             for (int i = 0; i < lines.Length; i++)
             {
                 float xPx = textRect.Left;
-                float yPx = textRect.Top + (1 + i) * lineHeight + measured.VerticalOffset;
+                float yPx = textRect.Top + (1 + i) * lineHeight + dV;
                 canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
             float xPx = textRect.Left + OffsetX;
-            float yPx = textRect.Bottom + OffsetY + measured.VerticalOffset;
+            float yPx = textRect.Bottom + OffsetY + dV;
             canvas.DrawText(Text, xPx, yPx, paint);
         }
     }

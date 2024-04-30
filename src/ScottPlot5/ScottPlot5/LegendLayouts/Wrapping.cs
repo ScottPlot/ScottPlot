@@ -36,7 +36,11 @@ public class Wrapping : ILegendLayout
             // create rectangles for the item using the current position
             PixelRect itemRect = new(nextPixel, itemSize);
             symbolRects[i] = new(itemRect.Left, itemRect.Left + legend.SymbolWidth, itemRect.Bottom, itemRect.Top);
-            labelRects[i] = new(itemRect.Left + legend.SymbolWidth + legend.SymbolPadding, itemRect.Right, itemRect.Bottom, itemRect.Top);
+            labelRects[i] = new(
+                left: itemRect.Left + legend.SymbolWidth + legend.SymbolPadding, 
+                right: itemRect.Right,
+                bottom: itemRect.Bottom, 
+                top: itemRect.Top);
 
             // move the position forward according to the size of this item
 

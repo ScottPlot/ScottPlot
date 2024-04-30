@@ -262,7 +262,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
             bool SHOW_DEBUG_RECTANGLES = false;
             if (SHOW_DEBUG_RECTANGLES)
