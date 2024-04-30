@@ -30,8 +30,8 @@ public class Image : IDisposable
         if (!File.Exists(filename))
             throw new FileNotFoundException(filename);
 
-        using SKBitmap bmp = SKBitmap.Decode(filename);
-        SKImage = SKImage.FromBitmap(bmp);
+        byte[] bytes = File.ReadAllBytes(filename);
+        SKImage = SKImage.FromEncodedData(bytes);
     }
 
     public Image(byte[] bytes)
