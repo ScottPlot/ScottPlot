@@ -4,7 +4,7 @@ public class RenderPlottables : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        IPlottable[] visiblePlottables = rp.Plot.PlottableList.Where(x=>x.IsVisible).ToArray();
+        IPlottable[] visiblePlottables = rp.Plot.PlottableList.Where(x => x.IsVisible).ToArray();
 
         foreach (IPlottable plottable in visiblePlottables)
         {
