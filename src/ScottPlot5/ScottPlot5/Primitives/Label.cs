@@ -1,7 +1,4 @@
-﻿using ScottPlot.Primitives;
-using System.Drawing;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class Label
 {
@@ -158,20 +155,6 @@ public class Label
     public void ApplyToPaint(SKPaint paint)
     {
         ApplyTextPaint(paint);
-    }
-
-    // TODO: obsolete this (require a paint)
-    public void Render(SKCanvas canvas, Pixel pixel)
-    {
-        using SKPaint paint = new();
-        Render(canvas, pixel, paint);
-    }
-
-    // TODO: obsolete this (require a paint)
-    public void Render(SKCanvas canvas, float x, float y)
-    {
-        using SKPaint paint = new();
-        Render(canvas, new Pixel(x, y), paint);
     }
 
     public MeasuredText Measure2(string text, SKPaint paint)

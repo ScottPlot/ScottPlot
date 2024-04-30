@@ -72,6 +72,8 @@ public abstract class YAxisBase : AxisBase, IYAxis
     {
         if (!IsVisible)
             return;
+        
+        using SKPaint paint = new();
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
@@ -88,7 +90,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         }
 
         LabelAlignment = Alignment.UpperCenter;
-        LabelStyle.Render(rp.Canvas, labelPoint);
+        LabelStyle.Render(rp.Canvas, labelPoint, paint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);

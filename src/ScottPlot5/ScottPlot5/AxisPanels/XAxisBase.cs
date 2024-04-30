@@ -84,6 +84,8 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (!IsVisible)
             return;
 
+        using SKPaint paint = new();
+
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         float textDistanceFromEdge = 10;
@@ -95,7 +97,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         }
 
         LabelAlignment = Alignment.LowerCenter;
-        LabelStyle.Render(rp.Canvas, labelPoint);
+        LabelStyle.Render(rp.Canvas, labelPoint, paint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);

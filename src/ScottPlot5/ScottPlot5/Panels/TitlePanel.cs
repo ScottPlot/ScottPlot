@@ -53,6 +53,8 @@ public class TitlePanel : IPanel
         if (!IsVisible)
             return;
 
+        using SKPaint paint = new();
+
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom);
@@ -62,6 +64,6 @@ public class TitlePanel : IPanel
             Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
         }
 
-        Label.Render(rp.Canvas, labelPoint);
+        Label.Render(rp.Canvas, labelPoint, paint);
     }
 }

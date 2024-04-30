@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Primitives;
+﻿namespace ScottPlot;
 
 public readonly struct MeasuredText
 {
