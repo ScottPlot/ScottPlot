@@ -83,8 +83,8 @@ public abstract class XAxisBase : AxisBase, IXAxis
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
         float y = Edge == Edge.Bottom
-            ? panelRect.Bottom + PaddingOutsideAxisLabels.Vertical
-            : panelRect.Top - PaddingOutsideAxisLabels.Vertical;
+            ? panelRect.Bottom - PaddingOutsideAxisLabels.Vertical
+            : panelRect.Top + PaddingOutsideAxisLabels.Vertical;
 
         Pixel labelPoint = new(panelRect.HorizontalCenter, y);
 

@@ -12,7 +12,7 @@ public abstract class AxisBase : LabelStyleProperties
     public float SizeWhenNoData { get; set; } = 15;
     public PixelPadding EmptyLabelPadding { get; set; } = new(10, 5);
     public PixelPadding PaddingBetweenTickAndAxisLabels { get; set; } = new(5, 3);
-    public PixelPadding PaddingOutsideAxisLabels { get; set; } = new(2, 0);
+    public PixelPadding PaddingOutsideAxisLabels { get; set; } = new(2, 2);
 
     public double Min
     {
