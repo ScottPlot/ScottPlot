@@ -1,7 +1,4 @@
-﻿using ScottPlot;
-using System.Diagnostics;
-
-namespace GraphicalTestRunner;
+﻿namespace GraphicalTestRunner;
 
 public partial class ImageComparer : UserControl
 {
@@ -10,7 +7,9 @@ public partial class ImageComparer : UserControl
     ScottPlot.Testing.ImageDiff? ImgDiff;
     int ImageMode = 0;
 
-    System.Drawing.Color SelectedBackgroundColor = System.Drawing.Color.FromArgb(50, SystemColors.ControlDark);
+    private string Path1 = string.Empty;
+    private string Path2 = string.Empty;
+    Color SelectedBackgroundColor = System.Drawing.Color.FromArgb(50, SystemColors.ControlDark);
 
     public ImageComparer()
     {
@@ -23,6 +22,9 @@ public partial class ImageComparer : UserControl
 
         checkBox1.CheckedChanged += (s, e) => timer1.Enabled = checkBox1.Checked;
         checkBox2.CheckedChanged += (s, e) => UpdateDiffBitmap();
+
+        pictureBox1.DoubleClick += (s, e) => System.Diagnostics.Process.Start("explorer.exe", Path1!);
+        pictureBox2.DoubleClick += (s, e) => System.Diagnostics.Process.Start("explorer.exe", Path2!);
     }
 
     private void SwitchImages(int delta)
@@ -68,6 +70,8 @@ public partial class ImageComparer : UserControl
 
     public void SetImages(string path1, string path2)
     {
+        Path1 = path1;
+        Path2 = path2;
         ScottPlot.Image? img1 = null;
         ScottPlot.Image? img2 = null;
 
