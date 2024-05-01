@@ -105,7 +105,6 @@ public abstract class AxisBase : LabelStyleProperties
         }
 
         using SKPaint paint = new();
-        label.ApplyToPaint(paint);
 
         foreach (Tick tick in ticks)
         {
@@ -123,10 +122,11 @@ public abstract class AxisBase : LabelStyleProperties
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
                 continue;
             label.Text = tick.Label;
-            float pxDistanceFromTick = 10;
+            float pxDistanceFromTick = 2;
             float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
             float yPx = axis.Edge == Edge.Bottom ? y + pxDistanceFromEdge : y - pxDistanceFromEdge;
             Pixel labelPixel = new(xPx, yPx);
+            label.Alignment = axis.Edge == Edge.Bottom ? Alignment.UpperCenter : Alignment.LowerCenter;
             label.Render(rp.Canvas, labelPixel, paint);
         }
     }
