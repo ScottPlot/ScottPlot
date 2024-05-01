@@ -156,7 +156,7 @@ public abstract class AxisBase : LabelStyleProperties
             // draw label
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
                 continue;
-            label.Text = tick.Label;  float pxDistanceFromTick = 5;
+            label.Text = tick.Label; float pxDistanceFromTick = 5;
             float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
             float xPx = axis.Edge == Edge.Left ? x - pxDistanceFromEdge : x + pxDistanceFromEdge;
             Pixel px = new(xPx, yPx);
