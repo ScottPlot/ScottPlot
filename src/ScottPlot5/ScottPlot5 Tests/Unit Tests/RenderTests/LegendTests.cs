@@ -290,6 +290,7 @@ internal class LegendTests
                 LineColor = Colors.Blue,
                 LineWidth = 3,
             };
+            plt.Legend.TightHorizontalWrapping = true;
             plt.Legend.ManualItems.Add(item);
         }
 

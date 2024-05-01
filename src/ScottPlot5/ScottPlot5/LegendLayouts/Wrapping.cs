@@ -9,7 +9,8 @@ public class Wrapping : ILegendLayout
         PixelSize[] labelSizes = items.Select(x => x.LabelStyle.Measure(x.LabelText, paint).Size).ToArray();
         float maxLabelWidth = labelSizes.Select(x => x.Width).Max();
         float maxLabelHeight = labelSizes.Select(x => x.Height).Max();
-        PixelSize itemSize = new(legend.SymbolWidth + legend.SymbolPadding + maxLabelWidth, maxLabelHeight);
+        float maxItemWidth = legend.SymbolWidth + legend.SymbolPadding + maxLabelWidth;
+        float maxItemHeight = maxLabelHeight;
 
         PixelRect[] labelRects = new PixelRect[items.Length];
         PixelRect[] symbolRects = new PixelRect[items.Length];
@@ -17,24 +18,28 @@ public class Wrapping : ILegendLayout
         Pixel nextPixel = new(0, 0);
         for (int i = 0; i < items.Length; i++)
         {
+            float itemWidth = legend.TightHorizontalWrapping
+                ? legend.SymbolWidth + legend.SymbolPadding + labelSizes[i].Width
+                : maxItemWidth;
+
             // if the next position will cause an overflow, wrap to the next position
             if (legend.Orientation == Orientation.Horizontal)
             {
-                if (nextPixel.X + itemSize.Width > maxSizeAfterPadding.Width)
+                if (nextPixel.X + itemWidth > maxSizeAfterPadding.Width)
                 {
-                    nextPixel = new(0, nextPixel.Y + itemSize.Height + legend.InterItemPadding.Bottom);
+                    nextPixel = new(0, nextPixel.Y + maxItemHeight + legend.InterItemPadding.Bottom);
                 }
             }
             else
             {
-                if (nextPixel.Y + itemSize.Height > maxSizeAfterPadding.Height)
+                if (nextPixel.Y + maxItemHeight > maxSizeAfterPadding.Height)
                 {
-                    nextPixel = new(nextPixel.X + itemSize.Width + legend.InterItemPadding.Right, 0);
+                    nextPixel = new(nextPixel.X + itemWidth + legend.InterItemPadding.Right, 0);
                 }
             }
 
             // create rectangles for the item using the current position
-            PixelRect itemRect = new(nextPixel, itemSize);
+            PixelRect itemRect = new(nextPixel, new PixelSize(itemWidth, maxItemHeight));
             symbolRects[i] = new(itemRect.Left, itemRect.Left + legend.SymbolWidth, itemRect.Bottom, itemRect.Top);
             labelRects[i] = new(
                 left: itemRect.Left + legend.SymbolWidth + legend.SymbolPadding,
@@ -46,11 +51,11 @@ public class Wrapping : ILegendLayout
 
             if (legend.Orientation == Orientation.Horizontal)
             {
-                nextPixel = new(nextPixel.X + itemSize.Width + legend.InterItemPadding.Right, nextPixel.Y);
+                nextPixel = new(nextPixel.X + itemWidth + legend.InterItemPadding.Right, nextPixel.Y);
             }
             else
             {
-                nextPixel = new(nextPixel.X, nextPixel.Y + itemSize.Height + legend.InterItemPadding.Bottom);
+                nextPixel = new(nextPixel.X, nextPixel.Y + maxItemHeight + legend.InterItemPadding.Bottom);
             }
         }
 
