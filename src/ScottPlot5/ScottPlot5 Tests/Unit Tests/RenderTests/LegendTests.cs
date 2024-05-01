@@ -278,6 +278,29 @@ internal class LegendTests
     }
 
     [Test]
+    public void Test_Legend_WrappingHorizontalTightWrap()
+    {
+        ScottPlot.Plot plt = new();
+
+        for (int i = 0; i < 5; i++)
+        {
+            LegendItem item = new()
+            {
+                LabelText = new string('A', count: i * 5 + 1),
+                LineColor = Colors.Blue,
+                LineWidth = 3,
+            };
+            plt.Legend.ManualItems.Add(item);
+        }
+
+        plt.Legend.Orientation = Orientation.Horizontal;
+        plt.ShowLegend();
+
+        plt.SaveTestImage();
+    }
+
+
+    [Test]
     public void Test_Legend_WrappingVertical()
     {
         ScottPlot.Plot plt = new();
