@@ -58,6 +58,9 @@ public class DateTimeAxes : ICategory
             myPlot.Add.Scatter(dateTimes, Generate.Sin(numberOfHours));
             myPlot.Add.Scatter(dateDoubles, Generate.Cos(numberOfHours));
             myPlot.Axes.DateTimeTicksBottom();
+
+            // add padding on the right to make room for wide tick labels
+            myPlot.Axes.Right.MinimumSize = 50;
         }
     }
 
