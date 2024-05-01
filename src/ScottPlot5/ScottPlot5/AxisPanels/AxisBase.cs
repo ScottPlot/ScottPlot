@@ -126,7 +126,8 @@ public abstract class AxisBase : LabelStyleProperties
             float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
             float yPx = axis.Edge == Edge.Bottom ? y + pxDistanceFromEdge : y - pxDistanceFromEdge;
             Pixel labelPixel = new(xPx, yPx);
-            label.Alignment = axis.Edge == Edge.Bottom ? Alignment.UpperCenter : Alignment.LowerCenter;
+            if (label.Rotation == 0)
+                label.Alignment = axis.Edge == Edge.Bottom ? Alignment.UpperCenter : Alignment.LowerCenter;
             label.Render(rp.Canvas, labelPixel, paint);
         }
     }
@@ -139,8 +140,6 @@ public abstract class AxisBase : LabelStyleProperties
         }
 
         using SKPaint paint = new();
-        label.ApplyToPaint(paint);
-        label.Alignment = axis.Edge == Edge.Left ? Alignment.MiddleRight : Alignment.MiddleLeft;
 
         foreach (Tick tick in ticks)
         {
@@ -157,11 +156,12 @@ public abstract class AxisBase : LabelStyleProperties
             // draw label
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
                 continue;
-            label.Text = tick.Label;
-            float pxDistanceFromTick = 5;
+            label.Text = tick.Label;  float pxDistanceFromTick = 5;
             float pxDistanceFromEdge = tickLength + pxDistanceFromTick;
             float xPx = axis.Edge == Edge.Left ? x - pxDistanceFromEdge : x + pxDistanceFromEdge;
             Pixel px = new(xPx, yPx);
+            if (label.Rotation == 0)
+                label.Alignment = axis.Edge == Edge.Left ? Alignment.MiddleRight : Alignment.MiddleLeft;
             label.Render(rp.Canvas, px, paint);
         }
     }
