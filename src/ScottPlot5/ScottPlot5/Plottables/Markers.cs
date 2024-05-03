@@ -34,14 +34,12 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
 
     public virtual void Render(RenderPack rp)
     {
-        if (this.MarkerStyle == MarkerStyle.None)
+        IReadOnlyList<Coordinates> points = Data.GetScatterPoints();
+
+        if (this.MarkerStyle == MarkerStyle.None || points.Count == 0)
             return;
 
-        // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
-        Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
-
-        if (!markerPixels.Any())
-            return;
+        IEnumerable<Pixel> markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel);
 
         using SKPaint paint = new();
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
