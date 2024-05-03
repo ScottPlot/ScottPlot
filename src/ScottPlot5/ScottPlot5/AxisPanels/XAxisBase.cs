@@ -21,7 +21,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         float tickHeight = MajorTickStyle.Length;
 
-        float maxTickLabelHeight = TickGenerator.Ticks.Length > 0 
+        float maxTickLabelHeight = TickGenerator.Ticks.Length > 0
             ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Height).Max()
             : 0;
 
