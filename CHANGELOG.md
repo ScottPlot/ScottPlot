@@ -1,7 +1,7 @@
 ## ScottPlot 5.0.33
 _Not yet on NuGet..._
 * Markers: Reduced memory allocations and improved performance during rendering (#3767) @drolevar
-* Axes: Prevent exceptions for conditions where tick generation produces no ticks (#3768) @drolevar
+* Axes: Prevent exceptions for conditions where tick generation produces no ticks (#3768) @drolevar @bclehmann
 * Signal: Added an experimental signal source that uses caching of binned ranges to improve performance of large datasets (#3718) @Cardroid
 
 ## ScottPlot 5.0.32

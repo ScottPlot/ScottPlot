@@ -14,14 +14,16 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (!IsVisible)
             return 0;
 
-        if (!Range.HasBeenSet || TickGenerator.Ticks.Length == 0)
+        if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
         using SKPaint paint = new();
 
         float tickHeight = MajorTickStyle.Length;
 
-        float maxTickLabelHeight = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Height).Max();
+        float maxTickLabelHeight = TickGenerator.Ticks.Length > 0 
+            ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Height).Max()
+            : 0;
 
         float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text)
             ? EmptyLabelPadding.Vertical
