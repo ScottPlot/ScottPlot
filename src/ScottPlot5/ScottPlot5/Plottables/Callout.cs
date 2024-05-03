@@ -7,15 +7,21 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     public override Label LabelStyle { get => LabelPlottable.LabelStyle; set => LabelPlottable.LabelStyle = value; }
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
 
-    public ArrowStyle ArrowStyle { get; set; } = new();
-    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public ArrowStyle ArrowStyle { get => ArrowPlottable.ArrowStyle; set => ArrowPlottable.ArrowStyle = value; }
+    public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
     public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+    public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
+    public float ArrowMinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
+    public float ArrowMaximumLength { get => ArrowStyle.MaximumLength; set => ArrowStyle.MaximumLength = value; }
+    public float ArrowOffset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public float ArrowWidth { get => ArrowStyle.ArrowWidth; set => ArrowStyle.ArrowWidth = value; }
+    public float ArrowheadAxisLength { get => ArrowStyle.ArrowheadAxisLength; set => ArrowStyle.ArrowheadAxisLength = value; }
+    public float ArrowheadLength { get => ArrowStyle.ArrowheadLength; set => ArrowStyle.ArrowheadLength = value; }
+    public float ArrowheadWidth { get => ArrowStyle.ArrowheadWidth; set => ArrowStyle.ArrowheadWidth = value; }
 
-    public Color ArrowColor
-    {
-        get => ArrowPlottable.Color;
-        set => ArrowPlottable.Color = value;
-    }
+    [Obsolete("use ArrowLineColor and ArrowFillColor", true)]
+    public Color ArrowColor { get; set; }
 
     public Color TextColor
     {
@@ -79,7 +85,8 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     /// <returns>The coordinates of the attachment point on the label.</returns>
     public Coordinates CalculateClosestAttachPoint()
     {
-        PixelSize labelSize = LabelStyle.Measure();
+        using SKPaint paint = new();
+        PixelSize labelSize = LabelStyle.Measure(LabelStyle.Text, paint).Size;
 
         Pixel[] attachPoints = [
             new(TextPixel.X - LabelStyle.PixelPadding.Left, TextPixel.Y + labelSize.Height / 2), // west
@@ -118,7 +125,6 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
         LabelPlottable.Axes = Axes;
         LabelPlottable.Location = TextCoordinates;
         LabelPlottable.Render(rp);
-
 
         ArrowPlottable.Axes = Axes;
         ArrowPlottable.Base = CalculateClosestAttachPoint();

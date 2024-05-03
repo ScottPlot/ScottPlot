@@ -118,8 +118,8 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
     /// </summary>
     private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaint paint, Label labelStyle)
     {
-        DateTime rangeMin = range.Min.ToDateTime();
-        DateTime rangeMax = range.Max.ToDateTime();
+        DateTime rangeMin = NumericConversion.ToDateTime(range.Min);
+        DateTime rangeMax = NumericConversion.ToDateTime(range.Max);
 
         // range.Min could be anything, but when calculating start it must be "snapped" to the best tick
         DateTime start = GetLargerTimeUnit(unit).Snap(rangeMin);
@@ -136,13 +136,13 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
                 continue;
 
             string tickLabel = dt.ToString(dtFormat);
-            PixelSize tickLabelSize = labelStyle.MeasureText(paint, tickLabel);
+            PixelSize tickLabelSize = labelStyle.Measure(tickLabel, paint).Size;
 
             bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);
             if (tickLabelIsTooLarge)
                 return (null, tickLabelSize);
 
-            double tickPosition = dt.ToNumber();
+            double tickPosition = NumericConversion.ToNumber(dt);
             Tick tick = new(tickPosition, tickLabel, isMajor: true);
             ticks.Add(tick);
 
@@ -156,6 +156,6 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
     {
-        return dates.Select(dt => dt.ToNumber());
+        return dates.Select(NumericConversion.ToNumber);
     }
 }

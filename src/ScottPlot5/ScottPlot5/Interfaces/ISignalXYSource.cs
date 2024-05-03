@@ -13,6 +13,11 @@ public interface ISignalXYSource
     double YOffset { get; set; }
 
     /// <summary>
+    /// Multiply Y values by this scale factor (before applying offset)
+    /// </summary>
+    public double YScale { get; set; }
+
+    /// <summary>
     /// Do not display data below this index
     /// </summary>
     public int MinimumIndex { get; set; }

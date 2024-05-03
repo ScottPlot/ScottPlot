@@ -87,7 +87,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Data.GetY(i) + Data.YOffset);
+            float y = Axes.GetPixelY(Data.GetY(i) * Data.YScale + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }

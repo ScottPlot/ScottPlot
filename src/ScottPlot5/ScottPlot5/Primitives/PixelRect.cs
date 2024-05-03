@@ -75,6 +75,20 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     }
 
     /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
+    public PixelRect(PixelSize size, Pixel offset) : this(offset.X, size.Width, size.Height, offset.Y)
+    {
+    }
+
+    /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
+    public PixelRect(PixelSize size, PixelOffset offset) : this(offset.X, size.Width, size.Height, offset.Y)
+    {
+    }
+
+    /// <summary>
     /// Create a rectangle from the given edges.
     /// This constructor permits inverted rectangles with negative area.
     /// </summary>
@@ -95,6 +109,25 @@ public readonly struct PixelRect : IEquatable<PixelRect>
         Right = xRange.Right;
         Bottom = yRange.Bottom;
         Top = yRange.Top;
+    }
+
+    public PixelRect(IEnumerable<Pixel> pixels)
+    {
+        if (!pixels.Any())
+            return;
+
+        Left = pixels.First().X;
+        Right = pixels.First().X;
+        Bottom = pixels.First().Y;
+        Top = pixels.First().Y;
+
+        foreach (var pixel in pixels)
+        {
+            Left = Math.Min(pixel.X, Left);
+            Right = Math.Max(pixel.X, Right);
+            Bottom = Math.Max(pixel.Y, Bottom);
+            Top = Math.Min(pixel.Y, Top);
+        }
     }
 
     public PixelRect WithPan(float x, float y)
@@ -342,5 +375,13 @@ public readonly struct PixelRect : IEquatable<PixelRect>
 
             _ => throw new NotImplementedException(),
         };
+    }
+}
+
+public static class PixelRectExtensions
+{
+    public static PixelRect ToPixelRect(this SKRect rect)
+    {
+        return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
 }

@@ -42,6 +42,7 @@ public class Annotation : ICategory
             anno.LabelFontColor = Colors.RebeccaPurple;
             anno.LabelBorderColor = Colors.Green;
             anno.LabelBorderWidth = 3;
+            anno.LabelShadowColor = Colors.Transparent;
             anno.OffsetY = 40;
             anno.OffsetX = 20;
         }

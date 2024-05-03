@@ -3,6 +3,7 @@ using ScottPlot.Control;
 using ScottPlot.Grids;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
+using System.ComponentModel;
 
 namespace ScottPlot;
 
@@ -17,7 +18,7 @@ public class Plot : IDisposable
     public BackgroundStyle FigureBackground = new() { Color = Colors.White };
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
-    public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
+    public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
     internal float ScaleFactorF = 1.0f;
 
@@ -46,6 +47,7 @@ public class Plot : IDisposable
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
+        ZoomRectangle = new StandardZoomRectangle(this);
     }
 
     public void Dispose()
@@ -126,10 +128,18 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
-        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
-        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
-        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+        double x1 = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double x2 = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double y1 = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double y2 = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+
+        // rectify rectangles for inverted axes
+        // https://github.com/ScottPlot/ScottPlot/issues/3731
+        double left = Math.Min(x1, x2);
+        double right = Math.Max(x1, x2);
+        double bottom = Math.Min(y1, y2);
+        double top = Math.Max(y1, y2);
+
         return new CoordinateRect(left, right, bottom, top);
     }
 
@@ -427,11 +437,18 @@ public class Plot : IDisposable
         toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
+    [Obsolete("use MoveToFront()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToTop(IPlottable plottable) => MoveToFront(plottable);
+
+    [Obsolete("use MoveToBack()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToBottom(IPlottable plottable) => MoveToBack(plottable);
+
     /// <summary>
     /// Move the indicated plottable to the end of the list so it is rendered last
     /// </summary>
-    /// <param name="plottable"></param>
-    public void MoveToTop(IPlottable plottable)
+    public void MoveToFront(IPlottable plottable)
     {
         // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
         int index = PlottableList.IndexOf(plottable);
@@ -441,6 +458,21 @@ public class Plot : IDisposable
 
         PlottableList.RemoveAt(index);
         PlottableList.Add(plottable);
+    }
+
+    /// <summary>
+    /// Move the indicated plottable to the start of the list so it is rendered first
+    /// </summary>
+    public void MoveToBack(IPlottable plottable)
+    {
+        // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
+        int index = PlottableList.IndexOf(plottable);
+
+        if (index < 0)
+            return;
+
+        PlottableList.RemoveAt(index);
+        PlottableList.Insert(0, plottable);
     }
 
     /// <summary>

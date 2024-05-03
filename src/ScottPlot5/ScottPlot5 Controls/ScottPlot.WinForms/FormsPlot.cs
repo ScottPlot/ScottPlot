@@ -1,5 +1,4 @@
-﻿using ScottPlot.Extensions;
-using SkiaSharp;
+﻿using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System.ComponentModel;
 using System.Drawing;
@@ -24,7 +23,7 @@ public class FormsPlot : FormsPlotBase
         HandleCreated += (s, e) => SetupSKControl();
         HandleDestroyed += (s, e) => TeardownSKControl();
         SetupSKControl();
-        Plot.FigureBackground.Color = SystemColors.Control.ToColor();
+        Plot.FigureBackground.Color = Color.FromColor(SystemColors.Control);
         Plot.DataBackground.Color = Colors.White;
     }
 

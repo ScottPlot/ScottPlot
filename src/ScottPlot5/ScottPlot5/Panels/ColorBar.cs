@@ -126,7 +126,7 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
 
     private void RenderColorbarBitmap(RenderPack rp, PixelRect colormapRect)
     {
-        using SKBitmap bmp = Source.Colormap.GetBitmap(Edge.IsVertical());
+        using SKBitmap bmp = Source.Colormap.GetSKBitmap(Edge.IsVertical());
         rp.Canvas.DrawBitmap(bmp, colormapRect.ToSKRect());
     }
 

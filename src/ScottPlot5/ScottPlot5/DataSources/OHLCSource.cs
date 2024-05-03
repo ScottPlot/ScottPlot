@@ -22,7 +22,7 @@ public class OHLCSource : IOHLCSource
     public CoordinateRange GetLimitsX()
     {
         var dates = Prices.Select(x => x.DateTime);
-        return new CoordinateRange(dates.Min().ToNumber(), dates.Max().ToNumber());
+        return new CoordinateRange(NumericConversion.ToNumber(dates.Min()), NumericConversion.ToNumber(dates.Max()));
     }
 
     public CoordinateRange GetLimitsY()

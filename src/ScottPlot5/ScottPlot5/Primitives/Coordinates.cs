@@ -79,4 +79,9 @@ public struct Coordinates : IEquatable<Coordinates>
     {
         return ToRect(radius, radius);
     }
+
+    public Coordinates WithDelta(double dX, double dY)
+    {
+        return new(X + dX, Y + dY);
+    }
 }

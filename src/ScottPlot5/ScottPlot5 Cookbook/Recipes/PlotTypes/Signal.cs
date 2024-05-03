@@ -68,6 +68,23 @@ public class Signal : ICategory
         }
     }
 
+    public class SignalScaleY : RecipeBase
+    {
+        public override string Name => "Signal Scaling";
+        public override string Description => "Signal plots can be scaled vertically according to a user-defined amount.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot values between -1 and 1
+            double[] values = ScottPlot.Generate.Sin(51);
+            var signal = myPlot.Add.Signal(values);
+
+            // increase the vertical scaling
+            signal.Data.YScale = 500;
+        }
+    }
+
     public class SignalMarkerSize : RecipeBase
     {
         public override string Name => "Signal Marker Size";

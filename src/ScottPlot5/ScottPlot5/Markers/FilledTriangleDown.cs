@@ -22,6 +22,6 @@ internal class FilledTriangleDown : IMarker
 
         PixelRect rect = new(center, radius);
         Drawing.DrawPath(canvas, paint, path, markerStyle.FillStyle, rect);
-        Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
+        Drawing.DrawPath(canvas, paint, path, markerStyle.OutlineStyle);
     }
 }

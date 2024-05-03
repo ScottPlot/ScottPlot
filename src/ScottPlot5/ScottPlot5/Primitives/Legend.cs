@@ -53,6 +53,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public List<LegendItem> ManualItems { get; set; } = [];
 
     /// <summary>
+    /// If enabled, items in horizontal oriented legends will not
+    /// be aligned in columns but instead resized tightly to fit their contents
+    /// </summary>
+    public bool TightHorizontalWrapping { get; set; } = false;
+
+    public bool ShowItemRectangles_DEBUG { get; set; } = false;
+
+    /// <summary>
     /// Enabling this allows multi-language text in the figure legend,
     /// but may slow down the render loop.
     /// </summary>
@@ -82,7 +90,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
     public PixelSize LastRenderSize { get; private set; } = PixelSize.NaN;
 
-    public LineStyle OutlineStyle { get; set; } = new();
+    public LineStyle OutlineStyle { get; set; } = new() { Width = 1, Color = Colors.Black, };
     public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
     public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
     public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
@@ -262,10 +270,9 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
-            bool SHOW_DEBUG_RECTANGLES = false;
-            if (SHOW_DEBUG_RECTANGLES)
+            if (ShowItemRectangles_DEBUG)
             {
                 Drawing.DrawRectangle(canvas, symbolRect, Colors.Magenta.WithAlpha(.2));
                 Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));

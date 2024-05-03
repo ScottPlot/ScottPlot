@@ -4,12 +4,12 @@ public class RenderPlottables : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        foreach (IPlottable plottable in rp.Plot.PlottableList)
-        {
-            if (!plottable.IsVisible)
-                continue;
+        IPlottable[] visiblePlottables = rp.Plot.PlottableList.Where(x => x.IsVisible).ToArray();
 
+        foreach (IPlottable plottable in visiblePlottables)
+        {
             plottable.Axes.DataRect = rp.DataRect;
+
             rp.CanvasState.Save();
 
             if (plottable is IPlottableGL plottableGL)

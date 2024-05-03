@@ -13,6 +13,16 @@ public class LineStyle
     public bool IsVisible { get; set; } = true;
     public bool AntiAlias { get; set; } = true;
 
+    public bool Rounded
+    {
+        get => StrokeCap == SKStrokeCap.Round;
+        set { StrokeCap = SKStrokeCap.Round; StrokeJoin = SKStrokeJoin.Round; }
+    }
+    public SKStrokeCap StrokeCap = SKStrokeCap.Butt;
+    public SKStrokeJoin StrokeJoin = SKStrokeJoin.Miter;
+
+    public float StrokeMiter = 4;
+
     [Obsolete("Use explicit logic", true)]
     public bool CanBeRendered => IsVisible && Width > 0 && Color.Alpha > 0;
 
@@ -62,6 +72,14 @@ public class LineStyle
 
     public void ApplyToPaint(SKPaint paint)
     {
-        Extensions.SkiaSharpExtensions.ApplyToPaint(this, paint);
+        paint.Shader = null;
+        paint.IsStroke = true;
+        paint.Color = Color.ToSKColor();
+        paint.StrokeWidth = Width;
+        paint.PathEffect = Pattern.GetPathEffect();
+        paint.IsAntialias = AntiAlias;
+        paint.StrokeCap = StrokeCap;
+        paint.StrokeJoin = StrokeJoin;
+        paint.StrokeMiter = StrokeMiter;
     }
 }

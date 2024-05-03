@@ -1,6 +1,56 @@
-## ScottPlot 5.0.28
+## ScottPlot 5.0.33
 _Not yet on NuGet..._
+* Markers: Reduced memory allocations and improved performance during rendering (#3767) @drolevar
+* Axes: Prevent exceptions for conditions where tick generation produces no ticks (#3768) @drolevar
+
+## ScottPlot 5.0.32
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-01_
+* Image: Added support support conversion to/from pixel value arrays to facilitate differential image analysis and testing (#3748, #3727)
+* Layout: Improve measurement of vertical axis tick labels (#3736) @ebarnard
+* Annotation: Improved positioning of annotations containing many lines (#3749, #3700) @LerkLin
+* Label: Significantly improved precision of single and multi-line text measurement and alignment (#3700)
+* Axis Line: Set default line width to 1 which also improved default appearance of crosshair (#3752) @fdesordi
+* Rendering: Copy the plottable list inside the render loop to facilitate plottable list modification mid-render (#3753) @ZSYMAX
+* Controls: Exposed `ZoomRectangle.LineStyle` setter to support advanced customization of middle-click-drag zoom rectangle (#3754) @Graat
+* Markers: Separate `LineColor`, `LineWidth`, etc. from `OutlineColor`, `OutlineWidth`, etc. to allow separate customization of line-based vs. fill-based marker shapes (#3755, #3716) @CD-SailingPerf
+* Legend: Added `TightHorizontalWrapping` flag to allow items in horizontally oriented legends to wrap without aligning to columns (#3758) @MCF
+
+## ScottPlot 5.0.31
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-27_
+* Arrow: Refactored the arrow system to support multiple arrow types including user-provided ones (#3745, #3697)
+* Color: Colors can be created from System.Drawing colors with `ScottPlot.Color.FromColor(System.Drawing.Color.Blue)` (#3745)
+* Signal and SignalXY: Added `YScale` parameter to display data vertically scaled by the specified fraction (#3711, #3708) @feichti92
+* Generate: Added `ConsecutiveHours()`, `ConsecutiveDays()`, `ConsecutiveWeekdays()`, to replace `Generate.DateTime` methods (#3721)
+
+## ScottPlot 5.0.30
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
+* Bar: Set default line width to 1 so error bars are visible without requiring line customization (#3741) @Kareltje1980
+* Controls: Added a `Interaction.ChangeOpposingAxesTogether` flag to enable mouse actions to one axis to be applied to all axes with the same orientation (#3729) @rubenslkirchner
+* DataLogger: Remove requirement for new data points to contain ascending X values (#3737) @TenebrosFR
+* RandomWalk2D: Created `ScottPlot.DataGenerators.RandomWalk2D` for easily generating 2D random data with randomly changing velocity
+* Ticks: Improve tick distribution by using the `TickLabelStyle` font size to evaluate maximum tick label size (#3736) @ebarnard
+
+
+## ScottPlot 5.0.29
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
+* Axes: Added a `Plot.Axes.ContinuouslyAutoscale` flag useful for plots containing continuously updating data (#3732) @rubenslkirchner
+* DataStreamer: Improved axis limit management behavior (#3732) @rubenslkirchner
+* Plot: Improved `CoordinateRect()` support for inverted axes (#3731) @Fokatu
+* Grid: Improved behavior of `MajorLineWidth` property
+* Cookbook: Demonstrate grid alignment with non-standard axes (#3714) @MichaelKuelshammer
+* Demo: Improved strategy for axis limit copying in the shared axis demo (#3729) @rubenslkirchner
+
+## ScottPlot 5.0.28
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-25_
 * Marker: Refactored marker system to support improved styling and the ability to use custom markers (#3716, #3141)
+* Interpolation: Improved control points for the first and last points of an interpolated cubic Bézier spline (#3717) @drolevar
+* FillY: Improved default line style (#3726, #3723) @SebastianDirks @Fruchtzwerg94
+* Plot: Added `MoveToFront()` and `MoveToBack()` to control the order plottables are rendered
+* Scatter: Disable marker outline visibility by default (#3720)
+* Markers: Disable rendering of lines when `LineWidth` is `0` (#3720)
+* Scatter: Added support for filling above and below the curve (#3318, #3380) @xichaoqiang @Diddlik @slotinvo
+* DataStreamer: Added `ContinuouslyAutoscale` flag to allow the vertical range to always tightly fit the data (#3561) @hazenjaqdx3 @zhhding @Xhichn
+* Markers: Added `FillOutline` flag to make drawing lines on filled markers an opt-in feature
 
 ## ScottPlot 5.0.27
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-23_

@@ -11,8 +11,10 @@ public class DataLoggerSource
 
     double YMin = double.NaN;
     double YMax = double.NaN;
+    double XMin = double.NaN;
+    double XMax = double.NaN;
 
-    public int CountOnLastRender = -1;
+    public int CountOnLastRender { get; internal set; } = -1;
     public int CountTotal => Coordinates.Count;
 
     public void Add(double y)
@@ -28,22 +30,21 @@ public class DataLoggerSource
 
     public void Add(Coordinates coordinates)
     {
-        if (Coordinates.Any())
-        {
-            if (coordinates.X < Coordinates.Last().X)
-            {
-                throw new ArgumentException("new X values cannot be smaller than existing ones");
-            }
-        }
-
         Coordinates.Add(coordinates);
 
         double y = coordinates.Y;
+        double x = coordinates.X;
 
         if (!double.IsNaN(y))
         {
             YMin = double.IsNaN(YMin) ? y : Math.Min(YMin, y);
             YMax = double.IsNaN(YMax) ? y : Math.Max(YMax, y);
+        }
+
+        if (!double.IsNaN(x))
+        {
+            XMin = double.IsNaN(XMin) ? x : Math.Min(XMin, x);
+            XMax = double.IsNaN(XMax) ? x : Math.Max(XMax, x);
         }
     }
 
@@ -53,12 +54,15 @@ public class DataLoggerSource
 
         YMin = double.NaN;
         YMax = double.NaN;
+        XMin = double.NaN;
+        XMax = double.NaN;
     }
 
     public AxisLimits GetAxisLimits()
     {
-        return Coordinates.Any()
-            ? new AxisLimits(Coordinates.First().X, Coordinates.Last().X, YMin, YMax)
-            : AxisLimits.NoLimits;
+        if (!Coordinates.Any())
+            return AxisLimits.NoLimits;
+
+        return new AxisLimits(XMin, XMax, YMin, YMax);
     }
 }
