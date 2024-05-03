@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.33
 _Not yet on NuGet..._
 * Markers: Reduced memory allocations and improved performance during rendering (#3767) @drolevar
+* Axes: Prevent exceptions for conditions where tick generation produces no ticks (#3768) @drolevar
 
 ## ScottPlot 5.0.32
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-01_

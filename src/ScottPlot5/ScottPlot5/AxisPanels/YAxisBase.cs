@@ -25,13 +25,11 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (!IsVisible)
             return 0;
 
-        if (!Range.HasBeenSet)
+        if (!Range.HasBeenSet || TickGenerator.Ticks.Length == 0)
             return SizeWhenNoData;
 
         using SKPaint paint = new();
         float maxTickLabelWidth = TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max();
-
-        string ticks = string.Join(", ", TickGenerator.Ticks.Select(x => x.Label));
 
         float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text)
             ? EmptyLabelPadding.Horizontal
