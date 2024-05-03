@@ -10,7 +10,9 @@ static class Program
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        Type testingFormType = typeof(Demos.LabelDemo);
+        // CTRL+D opens this window (useful for testing in development)
+        Type testingFormType = typeof(Demos.SignalPlotTypes);
+
         Application.Run(new MainMenuForm(testingFormType));
     }
 }
