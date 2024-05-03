@@ -158,6 +158,23 @@ public class Label
         ApplyTextPaint(paint);
     }
 
+    /// <summary>
+    /// Return size information for the contents of the <see cref="Text"/> property
+    /// </summary>
+    public MeasuredText Measure() // NOTE: This should never be called internally
+    {
+        return Measure(Text);
+    }
+
+    /// <summary>
+    /// Return size information for the given text
+    /// </summary>
+    public MeasuredText Measure(string text) // NOTE: This should never be called internally
+    {
+        using SKPaint paint = new();
+        return Measure(text, paint);
+    }
+
     public MeasuredText Measure(string text, SKPaint paint)
     {
         string[] lines = text.Split('\n');
