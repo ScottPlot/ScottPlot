@@ -1,5 +1,9 @@
-## ScottPlot 5.0.32
+## ScottPlot 5.0.33
 _Not yet on NuGet..._
+* Markers: Reduced memory allocations and improved performance during rendering (#3767) @drolevar
+
+## ScottPlot 5.0.32
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-01_
 * Image: Added support support conversion to/from pixel value arrays to facilitate differential image analysis and testing (#3748, #3727)
 * Layout: Improve measurement of vertical axis tick labels (#3736) @ebarnard
 * Annotation: Improved positioning of annotations containing many lines (#3749, #3700) @LerkLin
