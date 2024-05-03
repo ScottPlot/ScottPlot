@@ -15,8 +15,9 @@ public partial class SignalPlotTypes : Form, IDemoWindow
 
         double[] data = Generate.RandomWalk(10_000_000);
         SetupSignal(formsPlot1, data);
-        SetupSignalConst(formsPlot2, data);
-        SetupSignalBinned(formsPlot3, data);
+        SetupSignalConstGeneric(formsPlot2, data);
+        SetupSignalConstDouble(formsPlot3, data);
+        SetupSignalBinned(formsPlot4, data);
     }
 
     private static void SetupSignal(IPlotControl formsPlot, double[] data)
@@ -26,9 +27,16 @@ public partial class SignalPlotTypes : Form, IDemoWindow
         formsPlot.Plot.Add.Signal(data);
     }
 
-    private static void SetupSignalConst(IPlotControl formsPlot, double[] data)
+    private static void SetupSignalConstGeneric(IPlotControl formsPlot, double[] data)
     {
-        formsPlot.Plot.Title("SignalConst with 10 million points");
+        formsPlot.Plot.Title("SignalConst (Generic) with 10 million points");
+        formsPlot.Plot.Benchmark.IsVisible = true;
+        formsPlot.Plot.Add.SignalConst<double>(data);
+    }
+
+    private static void SetupSignalConstDouble(IPlotControl formsPlot, double[] data)
+    {
+        formsPlot.Plot.Title("SignalConst (double) with 10 million points");
         formsPlot.Plot.Benchmark.IsVisible = true;
         formsPlot.Plot.Add.SignalConst(data);
     }

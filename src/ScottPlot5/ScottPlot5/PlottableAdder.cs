@@ -777,10 +777,22 @@ public class PlottableAdder(Plot plot)
         return Signal(source, color);
     }
 
-    public SignalConst<T> SignalConst<T>(T[] ys, double period = 1, Color? color = null)
+    public SignalConstDoubleArray SignalConst(double[] ys, double period = 1, Color? color = null)
+    {
+        SignalConstDoubleArray sig = new(ys, period)
+        {
+            Color = color ?? GetNextColor()
+        };
+
+        Plot.PlottableList.Add(sig);
+
+        return sig;
+    }
+
+    public SignalConstGenericArray<T> SignalConst<T>(T[] ys, double period = 1, Color? color = null)
         where T : struct, IComparable
     {
-        SignalConst<T> sig = new(ys, period)
+        SignalConstGenericArray<T> sig = new(ys, period)
         {
             Color = color ?? GetNextColor()
         };

@@ -32,6 +32,7 @@ partial class SignalPlotTypes
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
         formsPlot2 = new ScottPlot.WinForms.FormsPlot();
         formsPlot3 = new ScottPlot.WinForms.FormsPlot();
+        formsPlot4 = new ScottPlot.WinForms.FormsPlot();
         tableLayoutPanel1.SuspendLayout();
         SuspendLayout();
         // 
@@ -42,13 +43,15 @@ partial class SignalPlotTypes
         tableLayoutPanel1.Controls.Add(formsPlot1, 0, 0);
         tableLayoutPanel1.Controls.Add(formsPlot2, 0, 1);
         tableLayoutPanel1.Controls.Add(formsPlot3, 0, 2);
+        tableLayoutPanel1.Controls.Add(formsPlot4, 0, 3);
         tableLayoutPanel1.Dock = DockStyle.Fill;
         tableLayoutPanel1.Location = new Point(0, 0);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
-        tableLayoutPanel1.RowCount = 3;
-        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+        tableLayoutPanel1.RowCount = 4;
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
         tableLayoutPanel1.Size = new Size(914, 777);
         tableLayoutPanel1.TabIndex = 0;
         // 
@@ -58,26 +61,35 @@ partial class SignalPlotTypes
         formsPlot1.Dock = DockStyle.Fill;
         formsPlot1.Location = new Point(3, 3);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(908, 252);
+        formsPlot1.Size = new Size(908, 188);
         formsPlot1.TabIndex = 0;
         // 
         // formsPlot2
         // 
         formsPlot2.DisplayScale = 1F;
         formsPlot2.Dock = DockStyle.Fill;
-        formsPlot2.Location = new Point(3, 261);
+        formsPlot2.Location = new Point(3, 197);
         formsPlot2.Name = "formsPlot2";
-        formsPlot2.Size = new Size(908, 252);
+        formsPlot2.Size = new Size(908, 188);
         formsPlot2.TabIndex = 1;
         // 
         // formsPlot3
         // 
         formsPlot3.DisplayScale = 1F;
         formsPlot3.Dock = DockStyle.Fill;
-        formsPlot3.Location = new Point(3, 519);
+        formsPlot3.Location = new Point(3, 391);
         formsPlot3.Name = "formsPlot3";
-        formsPlot3.Size = new Size(908, 255);
+        formsPlot3.Size = new Size(908, 188);
         formsPlot3.TabIndex = 2;
+        // 
+        // formsPlot4
+        // 
+        formsPlot4.DisplayScale = 1F;
+        formsPlot4.Dock = DockStyle.Fill;
+        formsPlot4.Location = new Point(3, 585);
+        formsPlot4.Name = "formsPlot4";
+        formsPlot4.Size = new Size(908, 189);
+        formsPlot4.TabIndex = 3;
         // 
         // SignalPlotTypes
         // 
@@ -97,4 +109,5 @@ partial class SignalPlotTypes
     private ScottPlot.WinForms.FormsPlot formsPlot1;
     private ScottPlot.WinForms.FormsPlot formsPlot2;
     private ScottPlot.WinForms.FormsPlot formsPlot3;
+    private ScottPlot.WinForms.FormsPlot formsPlot4;
 }

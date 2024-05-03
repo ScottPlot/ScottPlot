@@ -1,9 +1,9 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalConstSourceDoubleArray<T>
+public class SignalConstSourceGenericArray<T>
     where T : struct, IComparable
 {
-    public readonly SegmentedTree<T> SegmentedTree = new();
+    public readonly SegmentedTreeGeneric<T> SegmentedTree = new();
 
     public readonly T[] Ys;
     public readonly double Period;
@@ -13,7 +13,7 @@ public class SignalConstSourceDoubleArray<T>
     public int MinRenderIndex = 0;
     public int MaxRenderIndex = int.MaxValue;
 
-    public SignalConstSourceDoubleArray(T[] ys, double period)
+    public SignalConstSourceGenericArray(T[] ys, double period)
     {
         Ys = ys;
         Period = period;

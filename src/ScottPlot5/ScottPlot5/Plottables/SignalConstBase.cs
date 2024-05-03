@@ -1,12 +1,7 @@
-﻿using ScottPlot.DataSources;
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasMarker, IHasLegendText
-    where T : struct, IComparable
+public abstract class SignalConstBase : IHasLine, IHasMarker, IHasLegendText
 {
-    readonly SignalConstSourceDoubleArray<T> Data = new(ys, period);
-
     public MarkerStyle MarkerStyle { get; set; } = new();
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
@@ -37,19 +32,14 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
-
-    public virtual void Render(RenderPack rp)
+    public void Render(RenderPack rp, List<PixelColumn> cols)
     {
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        List<PixelColumn> cols = Data.GetPixelColumns(Axes);
-
-        if (!cols.Any())
+        if (cols.Count == 0)
             return;
 
         using SKPath path = new();

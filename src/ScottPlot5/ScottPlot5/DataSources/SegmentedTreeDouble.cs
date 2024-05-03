@@ -6,25 +6,15 @@ namespace ScottPlot.DataSources;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor.
 #pragma warning disable CS8604 // Possible null reference argument.
 
-public class SegmentedTree<T> where T : struct, IComparable
+public class SegmentedTreeDouble
 {
-    private T[] sourceArray;
-
-    private T[] TreeMin;
-    private T[] TreeMax;
+    private double[] sourceArray;
+    private double[] TreeMin;
+    private double[] TreeMax;
     private int n = 0; // size of each Tree
     public bool TreesReady = false;
 
-    // precompiled lambda expressions for fast math on generic
-    private static Func<T, T, T> MinExp;
-    private static Func<T, T, T> MaxExp;
-    private static Func<T, T, bool> EqualExp;
-    private static Func<T> MaxValue;
-    private static Func<T> MinValue;
-    private static Func<T, T, bool> LessThanExp;
-    private static Func<T, T, bool> GreaterThanExp;
-
-    public T[] SourceArray
+    public double[] SourceArray
     {
         get => sourceArray;
         set
@@ -34,49 +24,13 @@ public class SegmentedTree<T> where T : struct, IComparable
         }
     }
 
-    public SegmentedTree()
-    {
-        try // runtime check
-        {
-            var v = new T();
-            NumericConversion.GenericToDouble(ref v);
-        }
-        catch
-        {
-            throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
-        }
-        InitExp();
-    }
-
-    public async Task SetSourceAsync(T[] data)
+    public async Task SetSourceAsync(double[] data)
     {
         sourceArray = data ?? throw new ArgumentNullException("Data cannot be null");
         await Task.Run(() => UpdateTrees());
     }
 
-    private void InitExp()
-    {
-        ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
-        ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
-        // add the parameters together
-        ConditionalExpression bodyMin = Expression.Condition(Expression.LessThanOrEqual(paramA, paramB), paramA, paramB);
-        ConditionalExpression bodyMax = Expression.Condition(Expression.GreaterThanOrEqual(paramA, paramB), paramA, paramB);
-        BinaryExpression bodyEqual = Expression.Equal(paramA, paramB);
-        MemberExpression bodyMaxValue = Expression.MakeMemberAccess(null, typeof(T).GetField("MaxValue"));
-        MemberExpression bodyMinValue = Expression.MakeMemberAccess(null, typeof(T).GetField("MinValue"));
-        BinaryExpression bodyLessThan = Expression.LessThan(paramA, paramB);
-        BinaryExpression bodyGreaterThan = Expression.GreaterThan(paramA, paramB);
-        // compile it
-        MinExp = Expression.Lambda<Func<T, T, T>>(bodyMin, paramA, paramB).Compile();
-        MaxExp = Expression.Lambda<Func<T, T, T>>(bodyMax, paramA, paramB).Compile();
-        EqualExp = Expression.Lambda<Func<T, T, bool>>(bodyEqual, paramA, paramB).Compile();
-        MaxValue = Expression.Lambda<Func<T>>(bodyMaxValue).Compile();
-        MinValue = Expression.Lambda<Func<T>>(bodyMinValue).Compile();
-        LessThanExp = Expression.Lambda<Func<T, T, bool>>(bodyLessThan, paramA, paramB).Compile();
-        GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
-    }
-
-    public void updateElement(int index, T newValue)
+    public void updateElement(int index, double newValue)
     {
         sourceArray[index] = newValue;
         // Update Tree, can be optimized            
@@ -87,33 +41,33 @@ public class SegmentedTree<T> where T : struct, IComparable
         }
         else if (index % 2 == 0) // even elem have right pair
         {
-            TreeMin[n / 2 + index / 2] = MinExp(sourceArray[index], sourceArray[index + 1]);
-            TreeMax[n / 2 + index / 2] = MaxExp(sourceArray[index], sourceArray[index + 1]);
+            TreeMin[n / 2 + index / 2] = Math.Min(sourceArray[index], sourceArray[index + 1]);
+            TreeMax[n / 2 + index / 2] = Math.Max(sourceArray[index], sourceArray[index + 1]);
         }
         else // odd elem have left pair
         {
-            TreeMin[n / 2 + index / 2] = MinExp(sourceArray[index], sourceArray[index - 1]);
-            TreeMax[n / 2 + index / 2] = MaxExp(sourceArray[index], sourceArray[index - 1]);
+            TreeMin[n / 2 + index / 2] = Math.Min(sourceArray[index], sourceArray[index - 1]);
+            TreeMax[n / 2 + index / 2] = Math.Max(sourceArray[index], sourceArray[index - 1]);
         }
 
-        T candidate;
+        double candidate;
         for (int i = (n / 2 + index / 2) / 2; i > 0; i /= 2)
         {
-            candidate = MinExp(TreeMin[i * 2], TreeMin[i * 2 + 1]);
-            if (EqualExp(TreeMin[i], candidate)) // if node same then new value don't need to recalc all upper
+            candidate = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+            if (TreeMin[i] == candidate) // if node same then new value don't need to recalc all upper
                 break;
             TreeMin[i] = candidate;
         }
         for (int i = (n / 2 + index / 2) / 2; i > 0; i /= 2)
         {
-            candidate = MaxExp(TreeMax[i * 2], TreeMax[i * 2 + 1]);
-            if (EqualExp(TreeMax[i], candidate)) // if node same then new value don't need to recalc all upper
+            candidate = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+            if (TreeMax[i] == candidate) // if node same then new value don't need to recalc all upper
                 break;
             TreeMax[i] = candidate;
         }
     }
 
-    public void updateRange(int from, int to, T[] newData, int fromData = 0) // RangeUpdate
+    public void updateRange(int from, int to, double[] newData, int fromData = 0) // RangeUpdate
     {
         //update source signal
         for (int i = from; i < to; i++)
@@ -123,8 +77,8 @@ public class SegmentedTree<T> where T : struct, IComparable
 
         for (int i = n / 2 + from / 2; i < n / 2 + to / 2; i++)
         {
-            TreeMin[i] = MinExp(sourceArray[i * 2 - n], sourceArray[i * 2 + 1 - n]);
-            TreeMax[i] = MaxExp(sourceArray[i * 2 - n], sourceArray[i * 2 + 1 - n]);
+            TreeMin[i] = Math.Min(sourceArray[i * 2 - n], sourceArray[i * 2 + 1 - n]);
+            TreeMax[i] = Math.Max(sourceArray[i * 2 - n], sourceArray[i * 2 + 1 - n]);
         }
         if (to == sourceArray.Length) // last elem haven't pair
         {
@@ -133,22 +87,22 @@ public class SegmentedTree<T> where T : struct, IComparable
         }
         else if (to % 2 == 1) //last elem even(to-1) and not last
         {
-            TreeMin[n / 2 + to / 2] = MinExp(sourceArray[to - 1], sourceArray[to]);
-            TreeMax[n / 2 + to / 2] = MaxExp(sourceArray[to - 1], sourceArray[to]);
+            TreeMin[n / 2 + to / 2] = Math.Min(sourceArray[to - 1], sourceArray[to]);
+            TreeMax[n / 2 + to / 2] = Math.Max(sourceArray[to - 1], sourceArray[to]);
         }
 
         from = (n / 2 + from / 2) / 2;
         to = (n / 2 + to / 2) / 2;
 
-        T candidate;
+        double candidate;
         while (from != 0) // up to root elem, that is [1], [0] - is free elem
         {
             if (from != to)
             {
                 for (int i = from; i <= to; i++) // Recalc all level nodes in range 
                 {
-                    TreeMin[i] = MinExp(TreeMin[i * 2], TreeMin[i * 2 + 1]);
-                    TreeMax[i] = MaxExp(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                    TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                    TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
                 }
             }
             else
@@ -156,16 +110,16 @@ public class SegmentedTree<T> where T : struct, IComparable
                 // left == rigth, so no need more from to loop
                 for (int i = from; i > 0; i /= 2) // up to root node
                 {
-                    candidate = MinExp(TreeMin[i * 2], TreeMin[i * 2 + 1]);
-                    if (EqualExp(TreeMin[i], candidate)) // if node same then new value don't need to recalc all upper
+                    candidate = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                    if (TreeMin[i] == candidate) // if node same then new value don't need to recalc all upper
                         break;
                     TreeMin[i] = candidate;
                 }
 
                 for (int i = from; i > 0; i /= 2) // up to root node
                 {
-                    candidate = MaxExp(TreeMax[i * 2], TreeMax[i * 2 + 1]);
-                    if (EqualExp(TreeMax[i], candidate)) // if node same then new value don't need to recalc all upper
+                    candidate = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                    if (TreeMax[i] == candidate) // if node same then new value don't need to recalc all upper
                         break;
                     TreeMax[i] = candidate;
                 }
@@ -178,12 +132,12 @@ public class SegmentedTree<T> where T : struct, IComparable
         }
     }
 
-    public void updateData(int from, T[] newData)
+    public void updateData(int from, double[] newData)
     {
         updateRange(from, newData.Length, newData);
     }
 
-    public void updateData(T[] newData)
+    public void updateData(double[] newData)
     {
         updateRange(0, newData.Length, newData);
     }
@@ -208,16 +162,16 @@ public class SegmentedTree<T> where T : struct, IComparable
             while (pow2 < 0x40_00_00_00 && pow2 < sourceArray.Length)
                 pow2 <<= 1;
             n = pow2;
-            TreeMin = new T[n];
-            TreeMax = new T[n];
-            T maxValue = MaxValue();
-            T minValue = MinValue();
+            TreeMin = new double[n];
+            TreeMax = new double[n];
+            double maxValue = double.MaxValue;
+            double minValue = double.MinValue;
 
             // fill bottom layer of tree
             for (int i = 0; i < sourceArray.Length / 2; i++) // with source array pairs min/max
             {
-                TreeMin[n / 2 + i] = MinExp(sourceArray[i * 2], sourceArray[i * 2 + 1]);
-                TreeMax[n / 2 + i] = MaxExp(sourceArray[i * 2], sourceArray[i * 2 + 1]);
+                TreeMin[n / 2 + i] = Math.Min(sourceArray[i * 2], sourceArray[i * 2 + 1]);
+                TreeMax[n / 2 + i] = Math.Max(sourceArray[i * 2], sourceArray[i * 2 + 1]);
             }
             if (sourceArray.Length % 2 == 1) // if array size odd, last element haven't pair to compare
             {
@@ -232,8 +186,8 @@ public class SegmentedTree<T> where T : struct, IComparable
             // fill other layers
             for (int i = n / 2 - 1; i > 0; i--)
             {
-                TreeMin[i] = MinExp(TreeMin[2 * i], TreeMin[2 * i + 1]);
-                TreeMax[i] = MaxExp(TreeMax[2 * i], TreeMax[2 * i + 1]);
+                TreeMin[i] = Math.Min(TreeMin[2 * i], TreeMin[2 * i + 1]);
+                TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
             }
             TreesReady = true;
         }
@@ -249,8 +203,8 @@ public class SegmentedTree<T> where T : struct, IComparable
     //  O(log(n)) for each range min/max query
     public void MinMaxRangeQuery(int l, int r, out double lowestValue, out double highestValue)
     {
-        T lowestValueT;
-        T highestValueT;
+        double lowestValueT;
+        double highestValueT;
         // if the tree calculation isn't finished or if it crashed
         if (!TreesReady)
         {
@@ -259,9 +213,9 @@ public class SegmentedTree<T> where T : struct, IComparable
             highestValueT = sourceArray[l];
             for (int i = l; i < r; i++)
             {
-                if (LessThanExp(sourceArray[i], lowestValueT))
+                if (sourceArray[i] < lowestValueT)
                     lowestValueT = sourceArray[i];
-                if (GreaterThanExp(sourceArray[i], highestValueT))
+                if (sourceArray[i] > highestValueT)
                     highestValueT = sourceArray[i];
             }
             lowestValue = NumericConversion.GenericToDouble(ref lowestValueT);
@@ -269,8 +223,8 @@ public class SegmentedTree<T> where T : struct, IComparable
             return;
         }
 
-        lowestValueT = MaxValue();
-        highestValueT = MinValue();
+        lowestValueT = double.MaxValue;
+        highestValueT = double.MinValue;
         if (l == r)
         {
             lowestValue = highestValue = NumericConversion.GenericToDouble(ref sourceArray[l]);
@@ -279,13 +233,13 @@ public class SegmentedTree<T> where T : struct, IComparable
         // first iteration on source array that virtualy bottom of tree
         if ((l & 1) == 1) // l is right child
         {
-            lowestValueT = MinExp(lowestValueT, sourceArray[l]);
-            highestValueT = MaxExp(highestValueT, sourceArray[l]);
+            lowestValueT = Math.Min(lowestValueT, sourceArray[l]);
+            highestValueT = Math.Max(highestValueT, sourceArray[l]);
         }
         if ((r & 1) != 1) // r is left child
         {
-            lowestValueT = MinExp(lowestValueT, sourceArray[r]);
-            highestValueT = MaxExp(highestValueT, sourceArray[r]);
+            lowestValueT = Math.Min(lowestValueT, sourceArray[r]);
+            highestValueT = Math.Max(highestValueT, sourceArray[r]);
         }
         // go up from array to bottom of Tree
         l = (l + n + 1) / 2;
@@ -295,13 +249,13 @@ public class SegmentedTree<T> where T : struct, IComparable
         {
             if ((l & 1) == 1) // l is right child
             {
-                lowestValueT = MinExp(lowestValueT, TreeMin[l]);
-                highestValueT = MaxExp(highestValueT, TreeMax[l]);
+                lowestValueT = Math.Min(lowestValueT, TreeMin[l]);
+                highestValueT = Math.Max(highestValueT, TreeMax[l]);
             }
             if ((r & 1) != 1) // r is left child
             {
-                lowestValueT = MinExp(lowestValueT, TreeMin[r]);
-                highestValueT = MaxExp(highestValueT, TreeMax[r]);
+                lowestValueT = Math.Min(lowestValueT, TreeMin[r]);
+                highestValueT = Math.Max(highestValueT, TreeMax[r]);
             }
             // go up one level
             l = (l + 1) / 2;
