@@ -14,7 +14,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (!IsVisible)
             return 0;
 
-        if (!Range.HasBeenSet)
+        if (!Range.HasBeenSet || TickGenerator.Ticks.Length == 0)
             return SizeWhenNoData;
 
         using SKPaint paint = new();
