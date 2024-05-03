@@ -20,7 +20,8 @@ namespace ScottPlot
             this.Cache = cache;
 
             // Create MinMax caches in parallel at regular intervals
-            Parallel.For(0, cacheSize, (i) => {
+            Parallel.For(0, cacheSize, (i) =>
+            {
                 double min = double.PositiveInfinity;
                 double max = double.NegativeInfinity;
 
