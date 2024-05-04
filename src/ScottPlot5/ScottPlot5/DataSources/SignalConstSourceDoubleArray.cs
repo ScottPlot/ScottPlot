@@ -48,17 +48,8 @@ public class SignalConstSourceDoubleArray<T>
 
     public SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
-        double min = double.PositiveInfinity;
-        double max = double.NegativeInfinity;
-
-        for (int i = firstIndex; i <= lastIndex; i++)
-        {
-            double value = NumericConversion.GenericToDouble(Ys, i);
-            min = Math.Min(min, value);
-            max = Math.Max(max, value);
-        }
-
-        return new SignalRangeY(min, max);
+        SegmentedTree.MinMaxRangeQuery(firstIndex, lastIndex, out double min, out double max);
+        return new(min, max);
     }
 
     public List<PixelColumn> GetPixelColumns(IAxes axes)
