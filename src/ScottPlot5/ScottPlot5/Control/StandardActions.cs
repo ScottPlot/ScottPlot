@@ -310,35 +310,35 @@ public static class StandardActions
 
     private static void MouseZoom(Plot plot, double fracX, double fracY, Pixel pixel, bool ChangeOpposingAxesTogether)
     {
+        Pixel scaledPixel = new(pixel.X / plot.ScaleFactorF, pixel.Y / plot.ScaleFactorF);
         MultiAxisLimitManager originalLimits = new(plot);
         PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
 
         // restore MouseDown limits
         originalLimits.Apply(plot);
 
-        var axisUnderMouse = plot.GetAxis(pixel);
+        var axisUnderMouse = plot.GetAxis(scaledPixel);
 
         if (axisUnderMouse is not null)
         {
             if (ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
-                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X / plot.ScaleFactorF, dataRect)));
+                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, dataRect)));
             }
             if (ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
-                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y / plot.ScaleFactorF, dataRect)));
+                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, dataRect)));
             }
             else
             {
                 double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
-                float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y) / plot.ScaleFactorF;
+                float scaledCoord = (axisUnderMouse.IsHorizontal() ? scaledPixel.X : scaledPixel.Y);
                 axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
             }
         }
         else
         {
             // modify all axes
-            Pixel scaledPixel = new(pixel.X / plot.ScaleFactor, pixel.Y / plot.ScaleFactor);
             plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, dataRect)));
             plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, dataRect)));
         }
