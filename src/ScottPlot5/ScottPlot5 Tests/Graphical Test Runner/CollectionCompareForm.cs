@@ -16,7 +16,18 @@ public partial class CollectionCompareForm : Form
         Height = 832;
 
         var docsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        tbBefore.Text = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections\2024-04-29a");
+
+        string defaultFolder = Path.Combine(docsFolder, @"ScottPlot\TestImageCollections");
+        if (Directory.Exists(defaultFolder))
+        {
+            defaultFolder = Directory.GetDirectories(defaultFolder).Last();
+        }
+        else
+        {
+            defaultFolder = "C:/path/to/old/images/";
+        }
+
+        tbBefore.Text = defaultFolder;
         tbAfter.Text = Path.GetFullPath(@"..\..\..\..\..\..\..\dev\www\cookbook\5.0\images");
 
         btnHelp.Click += (s, e) => new HelpForm().Show();
