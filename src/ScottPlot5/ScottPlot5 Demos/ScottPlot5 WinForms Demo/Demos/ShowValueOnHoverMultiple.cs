@@ -1,6 +1,4 @@
 ﻿using ScottPlot;
-using ScottPlot.Plottables;
-using ScottPlotCookbook.Recipes.PlotTypes;
 
 namespace WinForms_Demo.Demos;
 
