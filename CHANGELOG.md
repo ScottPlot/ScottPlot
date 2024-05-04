@@ -7,6 +7,7 @@ _Not yet on NuGet..._
 * Signal: Fix rendering artifacts for `List<T>` data sources introduced in version 5.0.31 (#3765, #3747) @Limula-PMA
 * Crosshair: Added options for a marker to be rendered at the intersection if `MarkerShape` is defined
 * Label: Added `FontFile` and `SetTypeface()` to allow users to apply custom fonts (#3722) @kebox7
+* SignalXY: Added `ConnectStyle` property to mimic scatter plots and allow for step display style (#3764) @kareem469
 
 ## ScottPlot 5.0.32
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-01_

@@ -22,6 +22,11 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
+    /// <summary>
+    /// The style of lines to use when connecting points.
+    /// </summary>
+    public ConnectStyle ConnectStyle { get; set; } = ConnectStyle.Straight;
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -46,10 +51,18 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
 
     public virtual void Render(RenderPack rp)
     {
-        Pixel[] pixels = Data.GetPixelsToDraw(rp, Axes);
+        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes);
+
+        Pixel[] linePixels = ConnectStyle switch
+        {
+            ConnectStyle.Straight => markerPixels,
+            ConnectStyle.StepHorizontal => Scatter.GetStepDisplayPixels(markerPixels, true),
+            ConnectStyle.StepVertical => Scatter.GetStepDisplayPixels(markerPixels, false),
+            _ => throw new NotImplementedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
+        };
 
         using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
+        Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
     }
 }
