@@ -1,5 +1,8 @@
-## ScottPlot 5.0.33
+## ScottPlot 5.0.34
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.33
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-04_
 * Markers: Reduced memory allocations and improved performance during rendering (#3767) @drolevar
 * Axes: Prevent exceptions for conditions where tick generation produces no ticks (#3768) @drolevar @bclehmann
 * Signal: Added an experimental signal source that uses caching of binned ranges to improve performance of large datasets (#3718) @Cardroid
