@@ -34,16 +34,24 @@ public class Label
 
     // TODO: use a class for cached typeface management
 
-    public bool UseCachedTypefaces = true;
     private SKTypeface? CachedTypeface = null;
     private SKTypeface Typeface
     {
         get
         {
-            if (UseCachedTypefaces)
-                return CachedTypeface ??= FontStyle.CreateTypeface(FontName, Bold, Italic);
-            return FontStyle.CreateTypeface(FontName, Bold, Italic);
+            if (CachedTypeface is not null)
+                return CachedTypeface;
+
+            if (FontFile is not null)
+                return FontStyle.CreateTypefaceFromFile(FontFile);
+
+            return FontStyle.CreateTypefaceFromName(FontName, Bold, Italic);
         }
+    }
+
+    public void SetTypeface(SKTypeface typeface)
+    {
+        CachedTypeface = typeface;
     }
 
     private string _FontName = Fonts.Default;
@@ -51,6 +59,13 @@ public class Label
     {
         get => _FontName;
         set { _FontName = value; ClearCachedTypeface(); }
+    }
+
+    private string? _FontFile = null;
+    public string? FontFile
+    {
+        get => _FontFile;
+        set { _FontFile = value; ClearCachedTypeface(); }
     }
 
     private float _FontSize = 12;

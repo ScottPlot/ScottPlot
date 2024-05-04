@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System.Runtime.InteropServices.ComTypes;
+
+namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
@@ -14,7 +16,7 @@ public class FontStyle
     private SKTypeface? CachedTypeface = null;
 
     // TODO: use a class for cached typeface management
-    public SKTypeface Typeface => CachedTypeface ??= CreateTypeface(Name, Bold, Italic);
+    public SKTypeface Typeface => CachedTypeface ??= CreateTypefaceFromName(Name, Bold, Italic);
 
     private string _name = Fonts.Default;
     public string Name
@@ -76,13 +78,21 @@ public class FontStyle
         CachedTypeface = null;
     }
 
-    public static SKTypeface CreateTypeface(string font, bool bold, bool italic)
+    public static SKTypeface CreateTypefaceFromName(string font, bool bold, bool italic)
     {
         SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
         SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle skfs = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(font, skfs);
+        SKFontStyle style = new(weight, width, slant);
+        return SKTypeface.FromFamilyName(font, style);
+    }
+
+    public static SKTypeface CreateTypefaceFromFile(string path)
+    {
+        path = Path.GetFullPath(path);
+        if (!File.Exists(path))
+            throw new FileNotFoundException(path);
+        return SKTypeface.FromFile(path);
     }
 
     /// <summary>
