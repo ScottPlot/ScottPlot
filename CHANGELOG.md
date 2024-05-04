@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Signal: Added an experimental signal source that uses caching of binned ranges to improve performance of large datasets (#3718) @Cardroid
 * Label: Added `Measure()` overloads to facilitate label size evaluation without requiring `SKPaint` (#3761) @aespitia
 * Signal: Fix rendering artifacts for `List<T>` data sources introduced in version 5.0.31 (#3765, #3747) @Limula-PMA
+* Crosshair: Added options for a marker to be rendered at the intersection if `MarkerShape` is defined
 
 ## ScottPlot 5.0.32
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-01_
