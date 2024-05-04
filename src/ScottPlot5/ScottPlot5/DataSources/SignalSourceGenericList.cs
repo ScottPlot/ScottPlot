@@ -76,8 +76,8 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
             yMin = Math.Min(yMin, value);
             yMax = Math.Max(yMax, value);
         }
-        yMin = yMin * YOffset;
-        yMax = yMax * YOffset;
+        yMin = yMin * YScale + YOffset;
+        yMax = yMax * YScale + YOffset;
 
         float yBottom = axes.GetPixelY(yMin);
         float yTop = axes.GetPixelY(yMax);
