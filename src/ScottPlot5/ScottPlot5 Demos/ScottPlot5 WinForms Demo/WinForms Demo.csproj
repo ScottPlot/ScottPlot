@@ -44,4 +44,17 @@
         </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Fonts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Fonts\ShadowsIntoLight\OFL.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Fonts\ShadowsIntoLight\ShadowsIntoLight-Regular.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
