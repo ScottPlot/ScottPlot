@@ -635,6 +635,68 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Autoscale axes limited to the data area defined by the supplied list. Supplied IPlottable objects that
+    /// are not members of the current plot will be ignored.
+    /// </summary>
+    public void AutoScaleLimited(List<IPlottable> plottables)
+    {
+        ReplaceNullAxesWithDefaults();
+        AutoScaler.AutoScaleAll(plottables.Where(x => Plot.PlottableList.Contains(x)));
+    }
+
+    public void AutoScaleLimitedX(List<IPlottable> plottables)
+    {
+        ReplaceNullAxesWithDefaults();
+        plottables = plottables.Where(x => Plot.PlottableList.Contains(x)).ToList();
+
+        AxisLimits initialLimits = plottables[0].GetAxisLimits();
+        double minX = initialLimits.Left;
+        double maxX = initialLimits.Right;
+
+        for (int i = 1; i < plottables.Count; i++)
+        {
+            AxisLimits limits = plottables[i].GetAxisLimits();
+
+            if (limits.Left < minX)
+                minX = limits.Left;
+
+            if (limits.Right > maxX)
+                maxX = limits.Right;
+        }
+
+        IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
+
+        foreach (IXAxis axis in xAxes)
+            SetLimitsX(minX, maxX, axis);
+    }
+
+    public void AutoScaleLimitedY(List<IPlottable> plottables)
+    {
+        ReplaceNullAxesWithDefaults();
+        plottables = plottables.Where(x => Plot.PlottableList.Contains(x)).ToList();
+
+        AxisLimits initialLimits = plottables[0].GetAxisLimits();
+        double minY = initialLimits.Bottom;
+        double maxY = initialLimits.Top;
+
+        for (int i = 1; i < plottables.Count; i++)
+        {
+            AxisLimits limits = plottables[i].GetAxisLimits();
+
+            if (limits.Bottom < minY)
+                minY = limits.Bottom;
+
+            if (limits.Top > maxY)
+                maxY = limits.Top;
+        }
+
+        IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
+
+        foreach (IYAxis axis in yAxes)
+            SetLimitsY(minY, maxY, axis);
+    }
+
+    /// <summary>
     /// Adjust limits all axes to pan by the given distance in coordinate space
     /// </summary>
     public void Pan(CoordinateOffset distance)
