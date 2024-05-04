@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Marker : ICategory
 {
@@ -29,22 +27,41 @@ public class Marker : ICategory
     public class MarkerShapes : RecipeBase
     {
         public override string Name => "Marker Shapes";
-        public override string Description => "Many marker shapes are available.";
+        public override string Description => "Standard marker shapes are provided, " +
+            "but advanced users are able to create their own as well.";
 
         [Test]
         public override void Execute()
         {
-            ScottPlot.Colormaps.Turbo colormap = new();
+            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+            ScottPlot.Palettes.Category20 palette = new();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < markerShapes.Length; i++)
             {
-                MarkerShape shape = Generate.RandomMarkerShape();
-                Coordinates location = Generate.RandomCoordinates();
-                float size = Generate.RandomInteger(5, 10);
-                Color color = Generate.RandomColor(colormap);
+                var mp = myPlot.Add.Marker(x: i, y: 0);
+                mp.MarkerStyle.Shape = markerShapes[i];
+                mp.MarkerStyle.Size = 10;
 
-                myPlot.Add.Marker(location, shape, size, color);
+                // markers made from filled shapes have can be customized
+                mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
+
+                // markers made from filled shapes have optional outlines
+                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
+                mp.MarkerStyle.OutlineWidth = 2;
+
+                // markers created from lines can be customized
+                mp.MarkerStyle.LineWidth = 2f;
+                mp.MarkerStyle.LineColor = palette.GetColor(i);
+
+                var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
+                txt.LabelRotation = -90;
+                txt.LabelAlignment = Alignment.MiddleLeft;
+                txt.LabelFontColor = Colors.Black;
             }
+
+            myPlot.Title("Marker Names");
+            myPlot.Axes.SetLimits(-1, markerShapes.Length, -1, 4);
+            myPlot.HideGrid();
         }
     }
 
@@ -57,13 +74,13 @@ public class Marker : ICategory
         public override void Execute()
         {
             var sin = myPlot.Add.Signal(Generate.Sin());
-            sin.Label = "Sine";
+            sin.LegendText = "Sine";
 
             var cos = myPlot.Add.Signal(Generate.Cos());
-            cos.Label = "Cosine";
+            cos.LegendText = "Cosine";
 
             var marker = myPlot.Add.Marker(25, .5);
-            marker.Label = "Marker";
+            marker.LegendText = "Marker";
             myPlot.ShowLegend();
         }
     }

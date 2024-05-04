@@ -1,4 +1,5 @@
-﻿namespace WinForms_Demo;
+﻿
+namespace WinForms_Demo;
 
 static class Program
 {
@@ -9,15 +10,9 @@ static class Program
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        // use this to quickly launch a test Form while developing
-        if (false && Environment.MachineName == "DESKTOP-L7MMAB7")
-        {
-            Demos.DraggableAxisLines window = new() { StartPosition = FormStartPosition.CenterScreen };
-            Application.Run(window);
-        }
-        else
-        {
-            Application.Run(new MainMenuForm());
-        }
+        // CTRL+D opens this window (useful for testing in development)
+        Type testingFormType = typeof(Demos.CustomFonts);
+
+        Application.Run(new MainMenuForm(testingFormType));
     }
 }

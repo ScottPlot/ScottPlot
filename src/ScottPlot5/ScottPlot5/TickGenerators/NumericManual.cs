@@ -2,11 +2,7 @@
 
 public class NumericManual : ITickGenerator
 {
-    public Tick[] Ticks
-    {
-        get => TickList.ToArray();
-        set => throw new InvalidOperationException();
-    }
+    public Tick[] Ticks { get; private set; } = [];
 
     private readonly List<Tick> TickList = new();
 
@@ -32,7 +28,10 @@ public class NumericManual : ITickGenerator
         }
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint) { }
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
+    {
+        Ticks = TickList.Where(x => range.Contains(x.Position)).ToArray();
+    }
 
     public void Add(Tick tick)
     {

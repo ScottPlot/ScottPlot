@@ -1,6 +1,4 @@
-﻿using SkiaSharp;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class RadialGauge : ICategory
 {
@@ -26,6 +24,7 @@ public class RadialGauge : ICategory
         public override string Name => "Gauge Colors";
         public override string Description => "Gauge colors can be customized by changing the default palette.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -39,6 +38,7 @@ public class RadialGauge : ICategory
         public override string Name => "Negative Values";
         public override string Description => "Radial gauge plots support positive and negative values.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -54,6 +54,7 @@ public class RadialGauge : ICategory
             "Sequential gauge mode indicates that the base of each gauge starts " +
             "at the tip of the previous gauge.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -69,6 +70,7 @@ public class RadialGauge : ICategory
         public override string Description =>
             "Gauges are displayed from the center outward by default but the order can be customized.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -86,6 +88,7 @@ public class RadialGauge : ICategory
             "The SingleGauge mode draws all gauges stacked together as a single gauge. " +
             "This is useful for showing a progress gauges composed of many individual smaller gauges.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -104,6 +107,7 @@ public class RadialGauge : ICategory
         public override string Description =>
             "The direction of gauges can be customized. Clockwise is used by default.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -120,6 +124,7 @@ public class RadialGauge : ICategory
         public override string Description =>
             "The empty space between gauges can be adjusted as a fraction of their width. ";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -129,26 +134,6 @@ public class RadialGauge : ICategory
         }
     }
 
-    // This does not apply unless we create our own caps drawing
-
-    //public class RadialGaugeCaps : RecipeBase
-    //{
-    //    public override string Name => "Gauge Caps";
-    //    public override string Description =>
-    //        "Caps can be customized for the starting and end of the gauges. ";
-
-    //    public override void Execute()
-    //    {
-    //        myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
-    //        double[] values = { 100, 80, 65, 45, 20 };
-
-    //        var radialGaugePlot = myPlot.Add.RadialGaugePlot(values);
-    //        radialGaugePlot.CircularBackground = false;
-    //        radialGaugePlot.StartCap = SKStrokeCap.Round;
-    //        radialGaugePlot.EndCap = SKStrokeCap.Round;
-    //    }
-    //}
-
     public class RadialGaugeStart : RecipeBase
     {
         public override string Name => "Gauge Starting Angle";
@@ -156,6 +141,7 @@ public class RadialGauge : ICategory
             "The starting angle for gauges can be customized. " +
             "270 for North (default value), 0 for East, 90 for South, 180 for West, etc.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -173,6 +159,7 @@ public class RadialGauge : ICategory
             "By default gauges are full circles (360 degrees) but smaller gauges can be created " +
             "by customizing the gauge size.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -190,6 +177,7 @@ public class RadialGauge : ICategory
             "The value of each gauge is displayed as text by default but this behavior can be overridden. " +
             "Note that this is different than the labels fiels which is what appears in the legened.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -207,6 +195,7 @@ public class RadialGauge : ICategory
             "Gauge level text is positioned at the tip of each gauge by default, " +
             "but this position can be adjusted by the user.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -223,6 +212,7 @@ public class RadialGauge : ICategory
         public override string Description =>
             "Size of the gauge level text as a fraction of the gauge width.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -239,6 +229,7 @@ public class RadialGauge : ICategory
         public override string Description =>
             "Level text fonts may be customized.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -255,6 +246,7 @@ public class RadialGauge : ICategory
         public override string Description =>
             "Radial gauge labels will appear in the legend if they are assigned. ";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -273,6 +265,7 @@ public class RadialGauge : ICategory
             "By default the full range of each gauge is drawn as a semitransparent ring. " +
             "The amount of transparency can be adjusted as desired.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();
@@ -290,6 +283,7 @@ public class RadialGauge : ICategory
             "Gauge backgrounds are drawn as full circles by default. " +
             "This behavior can be disabled to draw partial backgrounds for non-circular gauges.";
 
+        [Test]
         public override void Execute()
         {
             myPlot.Add.Palette = new ScottPlot.Palettes.Nord();

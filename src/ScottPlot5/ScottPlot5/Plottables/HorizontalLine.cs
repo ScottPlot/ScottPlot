@@ -13,12 +13,12 @@ public class HorizontalLine : AxisLine
 
     public HorizontalLine()
     {
-        Label.Rotation = -90;
-        Label.Alignment = Alignment.LowerCenter;
-        Label.FontSize = 14;
-        Label.Bold = true;
-        Label.ForeColor = Colors.White;
-        Label.Padding = 5;
+        LabelStyle.Rotation = -90;
+        LabelStyle.Alignment = Alignment.LowerCenter;
+        LabelStyle.FontSize = 14;
+        LabelStyle.Bold = true;
+        LabelStyle.ForeColor = Colors.White;
+        LabelStyle.Padding = 5;
     }
 
     public override bool IsUnderMouse(CoordinateRect rect) => IsDraggable && rect.ContainsY(Y);
@@ -45,12 +45,12 @@ public class HorizontalLine : AxisLine
         // draw line inside the data area
         PixelLine line = new(x1, y, x2, y);
         using SKPaint paint = new();
-        LineStyle.Render(rp.Canvas, paint, line);
+        LineStyle.Render(rp.Canvas, line, paint);
     }
 
     public override void RenderLast(RenderPack rp)
     {
-        if (Label.IsVisible == false || string.IsNullOrEmpty(Label.Text))
+        if (LabelStyle.IsVisible == false || string.IsNullOrEmpty(LabelStyle.Text))
             return;
 
         // determine location
@@ -61,17 +61,19 @@ public class HorizontalLine : AxisLine
             return;
 
         float x = LabelOppositeAxis
-            ? rp.DataRect.Right + Label.Padding
-            : rp.DataRect.Left - Label.Padding;
+            ? rp.DataRect.Right + LabelStyle.PixelPadding.Right
+            : rp.DataRect.Left - LabelStyle.PixelPadding.Left;
 
-        Label.Alignment = LabelOppositeAxis
+        Alignment defaultAlignment = LabelOppositeAxis
             ? Alignment.UpperCenter
             : Alignment.LowerCenter;
 
+        LabelStyle.Alignment = ManualLabelAlignment ?? defaultAlignment;
+
         // draw label outside the data area
-        rp.DisableClipping();
+        rp.CanvasState.DisableClipping();
 
         using SKPaint paint = new();
-        Label.Render(rp.Canvas, x, y, paint);
+        LabelStyle.Render(rp.Canvas, new Pixel(x, y), paint);
     }
 }

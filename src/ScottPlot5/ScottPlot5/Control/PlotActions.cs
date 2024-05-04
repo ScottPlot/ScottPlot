@@ -18,7 +18,7 @@ public class PlotActions
     public Action<IPlotControl> ZoomRectangleClear = delegate { };
     public Action<IPlotControl> ZoomRectangleApply = delegate { };
     public Action<IPlotControl> ToggleBenchmark = delegate { };
-    public Action<IPlotControl> AutoScale = delegate { };
+    public Action<IPlotControl, Pixel> AutoScale = delegate { };
     public Action<IPlotControl, Pixel> ShowContextMenu = delegate { };
 
     public static PlotActions Standard()

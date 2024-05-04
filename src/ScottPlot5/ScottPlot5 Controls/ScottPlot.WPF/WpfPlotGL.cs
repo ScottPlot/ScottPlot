@@ -12,6 +12,7 @@ public class WpfPlotGL : WpfPlotBase
 
     private SkiaSharp.Views.WPF.SKGLElement? SKElement;
 
+    protected override FrameworkElement PlotFrameworkElement => SKElement!;
     public override GRContext GRContext => SKElement?.GRContext ?? GRContext.CreateGl();
 
     static WpfPlotGL()
@@ -47,6 +48,12 @@ public class WpfPlotGL : WpfPlotBase
 
     public override void Refresh()
     {
+        if (!CheckAccess())
+        {
+            Dispatcher.BeginInvoke(Refresh);
+            return;
+        }
+
         SKElement?.InvalidateVisual();
     }
 

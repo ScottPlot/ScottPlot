@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>ScottPlot Blazor Sandbox</title>
     <base href="/" />
-    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/app.css" rel="stylesheet" />
-    <link href="Sandbox.Blazor.WebAssembly.styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="Sandbox.Blazor.WebAssembly.styles.css" />
+    <link rel="stylesheet" href="css/highlightjs/vs.css">
+    <script src="js/highlight.min.js"></script>
 </head>
 
 <body>
@@ -25,6 +27,26 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    <script>
+        window.getInnterText = (id) => {
+            var ele = document.getElementById(id);
+            return ele == null ? "" : ele.innerText;
+        };
+
+        window.setInnerHtml = (id, txt) => {
+            var ele = document.getElementById(id);
+            if (ele == null)
+                return;
+            ele.innerHTML = txt;
+            // to highlight again the element
+            if (ele.dataset.highlighted)
+                delete ele.dataset.highlighted;
+        }
+
+        window.highlightElementById = (id) => {
+            return hljs.highlightElement(document.getElementById(id));
+        };
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

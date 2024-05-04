@@ -1,0 +1,28 @@
+# This workflow is used for quickly evaluating whether PRs are ready to merge.
+# It checks for basic compile errors and ensures tests pass.
+
+name: PR1
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  quick:
+    name: Quick Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build
+        run: bash .github/workflows/scripts/check-build.sh
+      - name: ScottPlot5 Unit Tests
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj" --configuration Release --no-build --verbosity minimal
+      - name: ScottPlot5 Cookbook
+        run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj" --configuration Release --no-build --verbosity minimal
+      - name: ScottPlot5 Tests
+        run: dotnet test "src/ScottPlot4/ScottPlot/ScottPlot.csproj" --configuration Release --no-build --verbosity minimal

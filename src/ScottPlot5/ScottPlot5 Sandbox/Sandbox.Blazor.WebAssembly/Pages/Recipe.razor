@@ -1,0 +1,117 @@
+﻿@page "/recipe/{selectRecipe?}"
+
+@inject IRecipesService RecipeService
+@inject IResizeService ResizeService
+@implements IDisposable
+
+@if (RecipeService.HasRecipe)
+{
+    <div class="p-3">
+        <div class="fs-3">@RecipeService.RecipeName</div>
+        <div>@RecipeService.RecipeDescription</div>
+    </div>
+
+    @if (RecipeService.ShowOpenGL)
+    {
+        <BlazorPlotGL @ref=BlazorPlotGL Style="@plotSize" />
+    }
+    else
+    {
+        <BlazorPlot @ref=BlazorPlot Style="@plotSize" />
+    }
+
+    <div class="m-3">
+        <div class="bg-light border rounded d-inline-block p-3">
+            @if (RecipeService.HasSourceCode)
+            {
+                <CodeSnippet Code="@RecipeService.SourceCode" />
+            }
+            else
+            {
+                <p>Loading...</p>
+            }
+        </div>
+    </div>
+
+    <div class="my-5 p-3">
+        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
+    </div>
+}
+
+<div class="text-muted p-4" style="margin-top: 10rem;">
+    @ScottPlot.Version.LongString Running on .NET @Environment.Version
+</div>
+
+@code {
+    [Parameter]
+    public string SelectRecipe { get; set; } = string.Empty;
+
+
+    BlazorPlot BlazorPlot { get; set; } = new();
+    BlazorPlotGL BlazorPlotGL { get; set; } = new();
+    string SearchTerm { get; set; } = "";
+
+    string plotSize { get; set; } = "width: min(100%, 800px); height: 600px;";
+
+    protected override void OnInitialized()
+    {
+        RecipeService.RecipeChanged += this.RefreshWithPlot;
+        RecipeService.BackendChanged += this.RefreshWithPlot;
+        ResizeService.Resize += this.ResizePlot;
+    }
+
+    public void Dispose()
+    {
+        RecipeService.RecipeChanged -= this.RefreshWithPlot;
+        RecipeService.BackendChanged -= this.RefreshWithPlot;
+        ResizeService.Resize -= this.ResizePlot;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(SelectRecipe))
+        {
+            if (RecipeService.FindRecipe(SelectRecipe))
+            {
+                ShowRecipe(RecipeService.Recipe!);
+            }
+        }
+    }
+    protected void RefreshWithPlot()
+    {
+        StateHasChanged();
+        UpdatePlot();
+    }
+    protected void UpdatePlot()
+    {
+        InvokeAsync(async () =>
+        {
+            // add little delay to ensure BlazorPlot is visible to ensure refresh works!
+            await Task.Delay(1);
+
+            if (RecipeService.ShowOpenGL)
+            {
+                BlazorPlotGL.Reset();
+                RecipeService.Recipe?.Execute(BlazorPlotGL.Plot);
+                BlazorPlotGL.Refresh();
+            }
+            else
+            {
+                BlazorPlot.Reset();
+                RecipeService.Recipe?.Execute(BlazorPlot.Plot);
+                BlazorPlot.Refresh();
+            }
+        });
+    }
+    protected void ShowRecipe(IRecipe recipe)
+    {
+        RecipeService.Recipe = recipe;
+        UpdatePlot();
+    }
+    protected void ResizePlot(System.Drawing.SizeF newSize)
+    {
+        plotSize = $"width: min(100%, {newSize.Width:F0}px); height: 600px;";
+        RefreshWithPlot();
+    }
+}
+

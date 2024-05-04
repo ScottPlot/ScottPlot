@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public struct Layout : IEquatable<Layout>
+public readonly struct Layout : IEquatable<Layout>
 {
     /// <summary>
     /// Size of the figure this layout represents

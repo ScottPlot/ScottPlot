@@ -1,42 +1,65 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FunctionPlot : IPlottable
+public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+    private IFunctionSource Source { get; set; } = source;
+    private CoordinateRange MaxObservedRangeY { get; set; } = CoordinateRange.NotSet;
+    private CoordinateRange LastRenderHorizontalSpan { get; set; } = new(-10, 10);
+    public double GetY(double x) => Source.Get(x);
 
-    /// <summary>
-    /// Default horizontal range to use when autoscaling
-    /// </summary>
-    public CoordinateRange XRange { get; set; } = new(-10, 10);
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public string? Label { get; set; }
-    public LineStyle LineStyle { get; } = new();
-    IFunctionSource Source { get; set; }
-    AxisLimits LastRenderLimits { get; set; } = AxisLimits.NoLimits;
-
-    public FunctionPlot(IFunctionSource source)
+    public double MinX
     {
-        Source = source;
+        get
+        {
+            return double.IsInfinity(Source.RangeX.Min)
+                ? Axes.XAxis.Min
+                : Source.RangeX.Min;
+        }
+        set
+        {
+            Source.RangeX = new CoordinateRange(value, Source.RangeX.Max);
+        }
     }
 
-    private double MinX => Math.Min(Source.RangeX.Min.FiniteCoallesce(Axes.XAxis.Min), Axes.XAxis.Min);
-    private double MaxX => Math.Max(Source.RangeX.Max.FiniteCoallesce(Axes.XAxis.Max), Axes.XAxis.Max);
-
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
+    public double MaxX
+    {
+        get
         {
-            Label = Label,
-            Marker = MarkerStyle.None,
-            Line = LineStyle,
-        });
+            return double.IsInfinity(Source.RangeX.Max)
+                ? Axes.XAxis.Max
+                : Source.RangeX.Max;
+        }
+        set
+        {
+            Source.RangeX = new CoordinateRange(Source.RangeX.Min, value);
+        }
+    }
+
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
 
     public AxisLimits GetAxisLimits()
     {
-        return LastRenderLimits;
+        if (MaxObservedRangeY == CoordinateRange.NotSet)
+            return new AxisLimits(-10, 10, -10, 10);
+
+        bool sourceRangeIsFinite = !(double.IsInfinity(Source.RangeX.Min) || double.IsInfinity(Source.RangeX.Max));
+        CoordinateRange xRange = sourceRangeIsFinite ? Source.RangeX : LastRenderHorizontalSpan;
+        return new AxisLimits(xRange, MaxObservedRangeY);
     }
 
-    public void Render(RenderPack rp)
+    private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
+
+    public virtual void Render(RenderPack rp)
     {
         var unitsPerPixel = Axes.XAxis.GetCoordinateDistance(1, rp.DataRect);
 
@@ -45,10 +68,15 @@ public class FunctionPlot : IPlottable
 
         using SKPath path = new();
         bool penIsDown = false;
-        for (double x = MinX; x <= MaxX; x += unitsPerPixel)
+
+        double minX = Math.Max(MinX, Axes.XAxis.Min);
+        double maxX = Math.Min(MaxX, Axes.XAxis.Max);
+
+        for (double x = minX; x <= maxX; x += unitsPerPixel)
         {
             double y = Source.Get(x);
-            if (y.IsInfiniteOrNaN())
+
+            if (!IsFinite(y))
             {
                 penIsDown = false; // Picking up pen allows us to skip over regions where the function is undefined
                 continue;
@@ -75,6 +103,16 @@ public class FunctionPlot : IPlottable
 
         rp.Canvas.DrawPath(path, paint);
 
-        LastRenderLimits = new AxisLimits(XRange.Min, XRange.Max, min, max);
+        bool somethingWasRendered = min <= max;
+        if (somethingWasRendered)
+        {
+            if (min < MaxObservedRangeY.Min)
+                MaxObservedRangeY = MaxObservedRangeY.Expanded(min);
+
+            if (max > MaxObservedRangeY.Max)
+                MaxObservedRangeY = MaxObservedRangeY.Expanded(max);
+        }
+
+        LastRenderHorizontalSpan = Axes.XAxis.Range.ToCoordinateRange;
     }
 }

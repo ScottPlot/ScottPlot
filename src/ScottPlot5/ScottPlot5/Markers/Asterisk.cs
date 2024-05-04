@@ -2,10 +2,9 @@
 
 internal class Asterisk : IMarker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float crossOffset = size / 2;
-
         float eksOffset = (float)(size / 2.828);
 
         var path = new SKPath();
@@ -21,7 +20,6 @@ internal class Asterisk : IMarker
         path.MoveTo(center.X - eksOffset, center.Y + eksOffset);
         path.LineTo(center.X + eksOffset, center.Y - eksOffset);
 
-        outline.ApplyToPaint(paint);
-        canvas.DrawPath(path, paint);
+        Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
 }

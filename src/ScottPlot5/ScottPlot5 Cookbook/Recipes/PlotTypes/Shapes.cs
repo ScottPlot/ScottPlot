@@ -43,7 +43,21 @@ public class Shapes : ICategory
         [Test]
         public override void Execute()
         {
-            // TODO: need a circle plot type
+            var c1 = myPlot.Add.Circle(1, 0, .5);
+            var c2 = myPlot.Add.Circle(2, 0, .5);
+            var c3 = myPlot.Add.Circle(3, 0, .5);
+
+            c1.FillStyle.Color = Colors.Blue;
+            c2.FillStyle.Color = Colors.Blue.Darken(.75);
+            c3.FillStyle.Color = Colors.Blue.Lighten(.75);
+
+            c1.LineWidth = 0;
+            c2.LineWidth = 0;
+            c3.LineWidth = 0;
+
+            // force circles to remain circles
+            ScottPlot.AxisRules.SquareZoomOut squareRule = new(myPlot.Axes.Bottom, myPlot.Axes.Left);
+            myPlot.Axes.Rules.Add(squareRule);
         }
     }
 
@@ -56,7 +70,16 @@ public class Shapes : ICategory
         [Test]
         public override void Execute()
         {
-            // TODO: need ellipse plot type
+            for (int i = 0; i < 10; i++)
+            {
+                var el = myPlot.Add.Ellipse(0, 0, 1, 10, rotation: i * 10);
+                double fraction = i / 10.0;
+                el.LineColor = Colors.Blue.WithAlpha(fraction);
+            }
+
+            // force circles to remain circles
+            ScottPlot.AxisRules.SquareZoomOut squareRule = new(myPlot.Axes.Bottom, myPlot.Axes.Left);
+            myPlot.Axes.Rules.Add(squareRule);
         }
     }
 
@@ -99,30 +122,23 @@ public class Shapes : ICategory
             };
 
             var poly = myPlot.Add.Polygon(points);
-
-            poly.FillStyle = new FillStyle
+            poly.FillColor = Colors.Green;
+            poly.FillHatchColor = Colors.Blue;
+            poly.FillHatch = new Gradient()
             {
-                Color = Colors.Green,
-                HatchColor = Colors.Blue,
-                Hatch = new Gradient()
-                {
-                    GradientType = GradientType.Linear,
-                    AlignmentStart = Alignment.UpperRight,
-                    AlignmentEnd = Alignment.LowerLeft,
-                }
+                GradientType = GradientType.Linear,
+                AlignmentStart = Alignment.UpperRight,
+                AlignmentEnd = Alignment.LowerLeft,
             };
 
-            poly.LineStyle = new LineStyle
-            {
-                AntiAlias = true,
-                Color = Colors.Black,
-                Pattern = LinePattern.Dashed,
-                Width = 2
-            };
+            poly.LineColor = Colors.Black;
+            poly.LinePattern = LinePattern.Dashed;
+            poly.LineWidth = 2;
 
-            poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);
-            poly.MarkerStyle.Fill.Color = Colors.Gold;
-            poly.MarkerStyle.Outline.Color = Colors.Brown;
+            poly.MarkerShape = MarkerShape.OpenCircle;
+            poly.MarkerSize = 8;
+            poly.MarkerFillColor = Colors.Gold;
+            poly.MarkerLineColor = Colors.Brown;
         }
     }
 }

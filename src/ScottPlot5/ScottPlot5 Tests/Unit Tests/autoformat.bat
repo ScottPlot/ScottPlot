@@ -1,0 +1,2 @@
+dotnet format
+pause

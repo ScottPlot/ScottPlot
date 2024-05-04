@@ -1,35 +1,50 @@
-﻿namespace ScottPlot.Control;
+﻿
+namespace ScottPlot.Control;
 
 /// <summary>
 /// Logic for drawing the shaded region on the plot when the user middle-click-drags to zoom
 /// </summary>
-public class StandardZoomRectangle : IZoomRectangle
+public class StandardZoomRectangle(Plot plot) : IZoomRectangle
 {
     public bool IsVisible { get; set; } = false;
 
     public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
 
-    public LineStyle LineStyle { get; } = new() { Color = new Color(255, 0, 0).WithAlpha(200) };
+    public LineStyle LineStyle { get; set; } = new()
+    {
+        Color = new Color(255, 0, 0).WithAlpha(200)
+    };
 
-    public Pixel MouseDown { get; private set; }
-    public Pixel MouseUp { get; private set; }
+    public Pixel MouseDown { get; set; }
+    public Pixel MouseUp { get; set; }
     public bool HorizontalSpan { get; set; } = false;
     public bool VerticalSpan { get; set; } = false;
+    public Plot Plot { get; } = plot;
 
-    public StandardZoomRectangle()
+    public void Apply(IXAxis xAxis)
     {
+        if (HorizontalSpan == true)
+            return;
+
+        PixelRect dataRect = Plot.RenderManager.LastRender.DataRect;
+        double x1 = xAxis.GetCoordinate(MouseDown.X, dataRect);
+        double x2 = xAxis.GetCoordinate(MouseUp.X, dataRect);
+        double xMin = Math.Min(x1, x2);
+        double xMax = Math.Max(x1, x2);
+        xAxis.Range.Set(xMin, xMax);
     }
 
-    public void Update(Pixel mouseDown, Pixel mouseUp)
+    public void Apply(IYAxis yAxis)
     {
-        MouseDown = mouseDown;
-        MouseUp = mouseUp;
-        IsVisible = true;
-    }
+        if (VerticalSpan == true)
+            return;
 
-    public void Clear()
-    {
-        IsVisible = false;
+        PixelRect dataRect = Plot.RenderManager.LastRender.DataRect;
+        double y1 = yAxis.GetCoordinate(MouseDown.Y, dataRect);
+        double y2 = yAxis.GetCoordinate(MouseUp.Y, dataRect);
+        double xMin = Math.Min(y1, y2);
+        double xMax = Math.Max(y1, y2);
+        yAxis.Range.Set(xMin, xMax);
     }
 
     public void Render(RenderPack rp)
@@ -39,7 +54,7 @@ public class StandardZoomRectangle : IZoomRectangle
 
         SKRect rect = new(MouseDown.X, MouseDown.Y, MouseUp.X, MouseUp.Y);
 
-        canvas.Save();
+        rp.CanvasState.Save();
         canvas.ClipRect(dataRect.ToSKRect());
 
         if (HorizontalSpan)
@@ -68,6 +83,6 @@ public class StandardZoomRectangle : IZoomRectangle
         paint.IsStroke = true;
         canvas.DrawRect(rect, paint);
 
-        canvas.Restore();
+        rp.CanvasState.Restore();
     }
 }

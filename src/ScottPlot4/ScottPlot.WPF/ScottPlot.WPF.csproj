@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows;net461;net472;net48;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>net462;net472;net48;net6.0-windows;net8.0-windows</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <UseWPF>true</UseWPF>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.71</Version>
-        <AssemblyVersion>4.1.71.0</AssemblyVersion>
-        <FileVersion>4.1.71.0</FileVersion>
+        <Version>4.1.74</Version>
+        <AssemblyVersion>4.1.74.0</AssemblyVersion>
+        <FileVersion>4.1.74.0</FileVersion>
 
         <AssemblyName>ScottPlot.WPF</AssemblyName>
         <OutputType>Library</OutputType>

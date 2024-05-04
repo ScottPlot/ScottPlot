@@ -1,0 +1,30 @@
+# run the autoformatter and commit changes back to the main branch
+
+name: Analyze Code Metrics
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      private-ssh-key:
+        required: true
+
+jobs:
+  code-metrics:
+    name: Code Metrics
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+      - name: ✨ Setup .NET
+        uses: actions/setup-dotnet@v4
+      - name: 🧪 Run Code Analysis
+        run: dotnet run dotnet run --project dev/CodeAnalysis
+      - name: 🔐 Create Key File
+        run: install -m 600 -D /dev/null ~/.ssh/id_rsa
+      - name: 🔑 Populate Key
+        run: echo "${{ secrets.private-ssh-key }}" > ~/.ssh/id_rsa
+      - name: 🚀 Deploy Webpage
+        run: rsync -e 'ssh -p 18765 -o StrictHostKeyChecking=no' 'dev/www/metrics/index.html' 'scottplot.net@ssh.scottplot.net:/home/customer/www/scottplot.net/public_html/metrics/index.html'
+      - name: 🧹 Clear Cache
+        run: ssh scottplot.net@ssh.scottplot.net -p 18765 "site-tools-client domain update id=1 flush_cache=1"

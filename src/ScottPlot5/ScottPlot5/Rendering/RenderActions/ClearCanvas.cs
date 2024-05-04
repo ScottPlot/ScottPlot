@@ -1,9 +1,9 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
-public class ClearCanvas : IRenderAction
+internal class ClearCanvas : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        rp.Canvas.Clear(rp.Plot.FigureBackground.ToSKColor());
+        rp.Canvas.Clear();
     }
 }

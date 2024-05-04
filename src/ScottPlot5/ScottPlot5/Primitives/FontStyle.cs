@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Runtime.InteropServices.ComTypes;
 
 namespace ScottPlot;
 
@@ -16,7 +16,7 @@ public class FontStyle
     private SKTypeface? CachedTypeface = null;
 
     // TODO: use a class for cached typeface management
-    public SKTypeface Typeface => CachedTypeface ??= CreateTypeface(Name, Bold, Italic);
+    public SKTypeface Typeface => CachedTypeface ??= CreateTypefaceFromName(Name, Bold, Italic);
 
     private string _name = Fonts.Default;
     public string Name
@@ -68,17 +68,64 @@ public class FontStyle
     public float Size { get; set; } = 12;
     public bool AntiAlias { get; set; } = true;
 
+    public override string ToString()
+    {
+        return $"{Name}, Size {Size}, {Color}";
+    }
+
     private void ClearCachedTypeface()
     {
         CachedTypeface = null;
     }
 
-    public static SKTypeface CreateTypeface(string font, bool bold, bool italic)
+    public static SKTypeface CreateTypefaceFromName(string font, bool bold, bool italic)
     {
         SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
         SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle skfs = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(font, skfs);
+        SKFontStyle style = new(weight, width, slant);
+        return SKTypeface.FromFamilyName(font, style);
     }
+
+    public static SKTypeface CreateTypefaceFromFile(string path)
+    {
+        path = Path.GetFullPath(path);
+        if (!File.Exists(path))
+            throw new FileNotFoundException(path);
+        return SKTypeface.FromFile(path);
+    }
+
+    /// <summary>
+    /// Use the characters in <paramref name="text"/> to determine an installed 
+    /// system font most likely to support this character set.
+    /// </summary>
+    public void SetBestFont(string text)
+    {
+        Name = Fonts.Detect(text);
+    }
+
+    public FontStyle Clone()
+    {
+        return new FontStyle()
+        {
+            Name = Name,
+            Bold = Bold,
+            Italic = Italic,
+            Color = Color,
+            Size = Size,
+            AntiAlias = AntiAlias,
+        };
+    }
+
+    public void ApplyToPaint(SKPaint paint)
+    {
+        paint.Shader = null;
+        paint.IsStroke = false;
+        paint.Typeface = Typeface;
+        paint.TextSize = Size;
+        paint.Color = Color.ToSKColor();
+        paint.IsAntialias = AntiAlias;
+        paint.FakeBoldText = Bold;
+    }
+
 }

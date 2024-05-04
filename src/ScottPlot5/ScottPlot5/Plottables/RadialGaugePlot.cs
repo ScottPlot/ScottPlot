@@ -38,7 +38,7 @@ public class RadialGaugePlot : IPlottable
     /// Number of labels must equal number of gauges.
     /// May be null if gauges are not to appear in the legend.
     /// </summary>
-    public string[] Labels { get; set; }
+    public string[]? Labels { get; set; }
 
     /// <summary>
     /// Colors for each gauge.
@@ -232,10 +232,10 @@ public class RadialGaugePlot : IPlottable
             {
                 var item = new LegendItem()
                 {
-                    Label = Labels[i],
+                    LabelText = Labels[i],
                     LineColor = Colors[i],
                     LineWidth = 10,
-                    Marker = MarkerStyle.None
+                    MarkerStyle = MarkerStyle.None
                 };
                 legendItems.Add(item);
             }
@@ -251,7 +251,7 @@ public class RadialGaugePlot : IPlottable
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         ValidateData();
 

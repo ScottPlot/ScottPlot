@@ -15,7 +15,7 @@ public class DateTimeAxes : ICategory
         public override void Execute()
         {
             // plot data using DateTime units
-            DateTime[] dates = Generate.DateTime.Days(100);
+            DateTime[] dates = Generate.ConsecutiveDays(100);
             double[] ys = Generate.RandomWalk(100);
             myPlot.Add.Scatter(dates, ys);
 
@@ -36,7 +36,7 @@ public class DateTimeAxes : ICategory
         public override void Execute()
         {
             // create an array of DateTimes one hour apart
-            int numberOfHours = 72;
+            int numberOfHours = 24;
             DateTime[] dateTimes = new DateTime[numberOfHours];
             DateTime startDateTime = new(2024, 1, 1);
             TimeSpan deltaTimeSpan = TimeSpan.FromHours(1);
@@ -58,6 +58,9 @@ public class DateTimeAxes : ICategory
             myPlot.Add.Scatter(dateTimes, Generate.Sin(numberOfHours));
             myPlot.Add.Scatter(dateDoubles, Generate.Cos(numberOfHours));
             myPlot.Axes.DateTimeTicksBottom();
+
+            // add padding on the right to make room for wide tick labels
+            myPlot.Axes.Right.MinimumSize = 50;
         }
     }
 
@@ -70,7 +73,7 @@ public class DateTimeAxes : ICategory
         public override void Execute()
         {
             // plot sample DateTime data
-            DateTime[] dates = Generate.DateTime.Days(100);
+            DateTime[] dates = Generate.ConsecutiveDays(100);
             double[] ys = Generate.RandomWalk(100);
             myPlot.Add.Scatter(dates, ys);
             myPlot.Axes.DateTimeTicksBottom();

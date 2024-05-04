@@ -56,12 +56,12 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         return null;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
     {
         if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span))
         {
             // cases of extreme zoom (10,000 years)
-            Ticks = Array.Empty<Tick>();
+            Ticks = [];
             return;
         }
 
@@ -89,12 +89,12 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
             }
 
             // attempt to generate the ticks given these conditions
-            (List<Tick>? ticks, PixelSize? largestTickLabelSize) = GenerateTicks(range, timeUnit, niceIncrement.Value, tickLabelBounds, paint);
+            (List<Tick>? ticks, PixelSize? largestTickLabelSize) = GenerateTicks(range, timeUnit, niceIncrement.Value, tickLabelBounds, paint, labelStyle);
 
             // if ticks were returned, use them
             if (ticks is not null)
             {
-                Ticks = ticks.Where(x => range.Contains(x.Position)).ToArray();
+                Ticks = ticks.ToArray();
                 return;
             }
 
@@ -116,32 +116,33 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
     /// If all labels fit within the bounds, the list of ticks is returned.
     /// If a label doesn't fit in the bounds, the list is null and the size of the large tick label is returned.
     /// </summary>
-    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaint paint)
+    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaint paint, Label labelStyle)
     {
-        DateTime rangeMin = range.Min.ToDateTime();
-        DateTime rangeMax = range.Max.ToDateTime();
+        DateTime rangeMin = NumericConversion.ToDateTime(range.Min);
+        DateTime rangeMax = NumericConversion.ToDateTime(range.Max);
 
-        // range.Min could be anything, but when calculating start and stop it must be "snapped" to the best tick
-        rangeMin = GetLargerTimeUnit(unit).Snap(rangeMin);
-        rangeMax = unit.Snap(rangeMax);
+        // range.Min could be anything, but when calculating start it must be "snapped" to the best tick
+        DateTime start = GetLargerTimeUnit(unit).Snap(rangeMin);
 
-        DateTime start = unit.Next(rangeMin, -increment);
-        DateTime end = unit.Next(rangeMax, increment);
+        start = unit.Next(start, -increment);
         string dtFormat = unit.GetDateTimeFormatString();
 
         List<Tick> ticks = new();
 
         const int maxTickCount = 1000;
-        for (DateTime dt = start; dt <= end; dt = unit.Next(dt, increment))
+        for (DateTime dt = start; dt <= rangeMax; dt = unit.Next(dt, increment))
         {
+            if (dt < rangeMin)
+                continue;
+
             string tickLabel = dt.ToString(dtFormat);
-            PixelSize tickLabelSize = Drawing.MeasureString(tickLabel, paint);
+            PixelSize tickLabelSize = labelStyle.Measure(tickLabel, paint).Size;
 
             bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);
             if (tickLabelIsTooLarge)
                 return (null, tickLabelSize);
 
-            double tickPosition = dt.ToNumber();
+            double tickPosition = NumericConversion.ToNumber(dt);
             Tick tick = new(tickPosition, tickLabel, isMajor: true);
             ticks.Add(tick);
 
@@ -155,6 +156,6 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
     {
-        return dates.Select(dt => dt.ToNumber());
+        return dates.Select(NumericConversion.ToNumber);
     }
 }

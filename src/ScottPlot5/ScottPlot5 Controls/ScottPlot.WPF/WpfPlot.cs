@@ -11,6 +11,7 @@ namespace ScottPlot.WPF
         private const string PART_SKElement = "PART_SKElement";
 
         private SkiaSharp.Views.WPF.SKElement? SKElement;
+        protected override FrameworkElement PlotFrameworkElement => SKElement!;
 
         public override GRContext GRContext => null!;
 
@@ -46,6 +47,12 @@ namespace ScottPlot.WPF
 
         public override void Refresh()
         {
+            if (!CheckAccess())
+            {
+                Dispatcher.BeginInvoke(Refresh);
+                return;
+            }
+
             SKElement?.InvalidateVisual();
         }
     }

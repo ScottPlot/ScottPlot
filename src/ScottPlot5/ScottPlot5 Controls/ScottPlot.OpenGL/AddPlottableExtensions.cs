@@ -17,7 +17,7 @@ public static class AddPlottableExtensions
         Plottables.ScatterGL sp = new(sourceWithCaching, control);
         Color nextColor = add.GetNextColor();
         sp.LineStyle.Color = nextColor;
-        sp.MarkerStyle.Fill.Color = nextColor;
+        sp.MarkerStyle.FillColor = nextColor;
         add.Plottable(sp);
         return sp;
     }
@@ -31,7 +31,7 @@ public static class AddPlottableExtensions
         Plottables.ScatterGLCustom sp = new(data, control);
         Color nextColor = add.GetNextColor();
         sp.LineStyle.Color = nextColor;
-        sp.MarkerStyle.Fill.Color = nextColor;
+        sp.MarkerStyle.FillColor = nextColor;
         add.Plottable(sp);
         return sp;
     }

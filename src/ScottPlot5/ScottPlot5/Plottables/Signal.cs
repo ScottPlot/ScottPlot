@@ -1,21 +1,28 @@
-﻿/* Minimal case signal plot for testing only
- * !! Avoid temptation to use generics or generic math at this early stage of development
- */
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class Signal : IPlottable
+public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public readonly ISignalSource Data;
+    public readonly ISignalSource Data = data;
 
-    public string? Label { get; set; }
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
-    public readonly MarkerStyle Marker;
+    public MarkerStyle MarkerStyle { get; set; } = new() { Size = 5, Shape = MarkerShape.FilledCircle };
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
+    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
-    public readonly LineStyle LineStyle;
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     /// <summary>
     /// Maximum size of the marker (in pixels) to display
@@ -23,51 +30,29 @@ public class Signal : IPlottable
     /// </summary>
     public float MaximumMarkerSize { get; set; } = 4;
 
-    public float LineWidth
-    {
-        get => LineStyle.Width;
-        set => LineStyle.Width = value;
-    }
-
     public Color Color
     {
-        get => LineStyle.Color;
+        get => LineColor;
         set
         {
-            LineStyle.Color = value;
-            Marker.Fill.Color = value;
-            Marker.Outline.Color = value;
+            LineColor = value;
+            MarkerFillColor = value;
+            MarkerLineColor = value;
         }
-    }
-
-    public Signal(ISignalSource data)
-    {
-        Data = data;
-
-        Marker = new(MarkerShape.FilledCircle, 5)
-        {
-            Outline = LineStyle.None
-        };
-
-        LineStyle = new();
     }
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = Marker,
-            Line = LineStyle,
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {
         // TODO: put GetRange in axis translator
         double xViewLeft = Axes.GetCoordinateX(dataRect.Left);
         double xViewRight = Axes.GetCoordinateX(dataRect.Right);
-        return new CoordinateRange(xViewLeft, xViewRight);
+        return (xViewLeft <= xViewRight)
+            ? new CoordinateRange(xViewLeft, xViewRight)
+            : new CoordinateRange(xViewRight, xViewLeft);
     }
 
     private double PointsPerPixel()
@@ -75,7 +60,7 @@ public class Signal : IPlottable
         return GetVisibleXRange(Axes.DataRect).Span / Axes.DataRect.Width / Data.Period;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (PointsPerPixel() < 1)
         {
@@ -97,13 +82,12 @@ public class Signal : IPlottable
         int i1 = Data.GetIndex(visibleXRange.Min, true);
         int i2 = Data.GetIndex(visibleXRange.Max + Data.Period, true);
 
-        IReadOnlyList<double> Ys = Data.GetYs();
+        List<Pixel> points = [];
 
-        List<Pixel> points = new();
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Ys[i] + Data.YOffset);
+            float y = Axes.GetPixelY(Data.GetY(i) * Data.YScale + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }
@@ -124,8 +108,8 @@ public class Signal : IPlottable
         {
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
-            Marker.Size = radius * MaximumMarkerSize * .2f;
-            Drawing.DrawMarkers(rp.Canvas, paint, points, Marker);
+            MarkerSize = radius * MaximumMarkerSize * .2f;
+            Drawing.DrawMarkers(rp.Canvas, paint, points, MarkerStyle);
         }
     }
 

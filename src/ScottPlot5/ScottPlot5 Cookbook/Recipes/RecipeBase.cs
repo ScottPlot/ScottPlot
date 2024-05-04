@@ -36,8 +36,11 @@ public abstract class RecipeBase : IRecipe
     [Test]
     public abstract void Execute();
 
-    // TODO: create test to assert true for all tests
-    public bool RecipeHasTestAttribute => GetType().IsDefined(typeof(Test), false);
+    [SetUp]
+    public void ResetRandomNumberGenerator()
+    {
+        Generate.RandomData.Seed(0);
+    }
 
     [TearDown]
     public void SaveRecipeImage()
