@@ -134,6 +134,7 @@ public class Label
         paint.StrokeWidth = 1;
         paint.Color = PointColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
+        paint.Shader = null;
     }
 
     private void ApplyBorderPaint(SKPaint paint)
@@ -142,6 +143,7 @@ public class Label
         paint.StrokeWidth = BorderWidth;
         paint.Color = BorderColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
+        paint.Shader = null;
     }
 
     private void ApplyShadowPaint(SKPaint paint)
@@ -149,6 +151,7 @@ public class Label
         paint.IsStroke = false;
         paint.Color = ShadowColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
+        paint.Shader = null;
     }
 
     private void ApplyBackgroundPaint(SKPaint paint)
@@ -156,6 +159,7 @@ public class Label
         paint.IsStroke = false;
         paint.Color = BackgroundColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
+        paint.Shader = null;
     }
 
     private void ApplyTextPaint(SKPaint paint)
@@ -166,6 +170,7 @@ public class Label
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
+        paint.Shader = null;
     }
 
     public void ApplyToPaint(SKPaint paint)
