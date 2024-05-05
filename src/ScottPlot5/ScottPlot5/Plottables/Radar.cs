@@ -37,7 +37,9 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
 
         const float startAngle = -90;
         int seriesArity = Series.First().Values.Count();
-        StarAxis.Render(rp, Axes, 1, seriesArity, startAngle);
+        var rotationPerSlice = Math.PI * 2 / seriesArity;
+
+        StarAxis.Render(rp, Axes, 1, seriesArity, (float)(startAngle - rotationPerSlice * 180 / Math.PI / 2));
 
         double maxValue = Series.SelectMany(s => s.Values).Max();
         if (maxValue == 0)
@@ -50,7 +52,6 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         rp.Canvas.Translate(origin.X, origin.Y);
 
-        var rotationPerSlice = Math.PI * 2 / seriesArity;
 
         foreach (var serie in Series)
         {
@@ -61,7 +62,7 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
                 float minY = Math.Abs(Axes.GetPixelY(coordinateRadius) - origin.Y);
                 var radius = Math.Min(minX, minY);
 
-                var theta = rotationPerSlice * i + rotationPerSlice / 2 + startAngle;
+                var theta = rotationPerSlice * i + startAngle * Math.PI / 180;
                 float x = (float)(radius * Math.Cos(theta));
                 float y = (float)(radius * Math.Sin(theta));
 
