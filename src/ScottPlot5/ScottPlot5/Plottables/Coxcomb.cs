@@ -1,6 +1,4 @@
 ﻿
-using ScottPlot.Interfaces;
-
 namespace ScottPlot.Plottables;
 
 public class Coxcomb : PieBase

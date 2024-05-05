@@ -1,6 +1,4 @@
-﻿using ScottPlot.Interfaces;
-
-namespace ScottPlot.StarAxes;
+﻿namespace ScottPlot.StarAxes;
 
 public class PolygonalStarAxis : SpokedStarAxis
 {
