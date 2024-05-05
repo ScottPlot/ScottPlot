@@ -13,17 +13,17 @@ namespace ScottPlot.TickGenerators
         /// The number of <see cref="Interval"/> units between major ticks (e.g. major ticks every 7 <see cref="Day"/>s)
         /// </summary>
         public int IntervalsPerTick { get; set; }
-        
+
         /// <summary>
         /// The time unit to use for minor ticks. If null, no minor ticks are generated.
         /// </summary>
         public ITimeUnit? MinorInterval { get; set; }
-        
+
         /// <summary>
         /// The number of <see cref="MinorInterval"/> units between minor ticks.
         /// </summary>
         public int MinorIntervalsPerTick { get; set; }
-        
+
         /// <summary>
         /// An optional function to override where the intervals for ticks start. The DateTime argument provided is
         /// the start range of the axis (i.e. <see cref="IAxis.Min"/>). 
@@ -98,7 +98,7 @@ namespace ScottPlot.TickGenerators
                     {
                         continue;
                     }
-                    
+
                     ticks.Add(new Tick(NumericConversion.ToNumber(dt), dt.ToString(Interval.GetDateTimeFormatString()), false));
                 }
             }

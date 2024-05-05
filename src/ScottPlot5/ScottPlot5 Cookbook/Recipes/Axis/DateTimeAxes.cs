@@ -94,7 +94,7 @@ public class DateTimeAxes : ICategory
             };
         }
     }
-    
+
     public class DateTimeAxisFixedIntervalTicks : RecipeBase
     {
         public override string Name => "DateTime Axis Fixed Interval Ticks";
@@ -110,11 +110,11 @@ public class DateTimeAxes : ICategory
             double[] ys = Generate.RandomWalk(24 * 60);
             myPlot.Add.Scatter(dates, ys);
             var dtAx = myPlot.Axes.DateTimeTicksBottom();
-            
+
             // Create fixed-intervals ticks, major ticks every 6 hours, minor ticks every hour
             dtAx.TickGenerator = new DateTimeFixedInterval(
                 new Hour(), 6,
-                new Hour(), 1, 
+                new Hour(), 1,
                 // Here we provide a delegate to override when the ticks start. In this case, we want the majors to be
                 // 00:00, 06:00, 12:00, etc. and the minors to be on the hour, every hour, so we start at midnight.
                 // If you do not provide this delegate, the ticks will start at whatever the Min on the x-axis is.
@@ -129,7 +129,7 @@ public class DateTimeAxes : ICategory
             myPlot.Grid.XAxisStyle.MinorLineStyle.Color = Colors.Gray.WithOpacity(0.25);
             myPlot.Grid.XAxisStyle.MinorLineStyle.Width = 1;
             myPlot.Grid.XAxisStyle.MinorLineStyle.Pattern = LinePattern.DenselyDashed;
-            
+
             // Remove labels on minor ticks, otherwise there is a lot of tick label overlap
             myPlot.RenderManager.RenderStarting += (s, e) =>
             {
@@ -140,7 +140,7 @@ public class DateTimeAxes : ICategory
                     {
                         continue;
                     }
-                    
+
                     ticks[i] = new Tick(ticks[i].Position, "", ticks[i].IsMajor);
                 }
             };
