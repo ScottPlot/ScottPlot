@@ -72,7 +72,7 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
             }
 
             path.Close();
-            
+
             serie.Fill.ApplyToPaint(paint, rp.FigureRect);
             rp.Canvas.DrawPath(path, paint);
 
