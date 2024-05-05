@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -610,16 +611,25 @@ public class AxisManager
         AutoScaleExpandY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the bottom horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX()
     {
         AutoScaleX(Bottom);
     }
 
+    /// <summary>
+    /// Autoscale the left vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY()
     {
         AutoScaleY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the supplied horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX(IXAxis xAxis)
     {
         ReplaceNullAxesWithDefaults();
@@ -627,6 +637,9 @@ public class AxisManager
         SetLimitsX(limits.Left, limits.Right, xAxis);
     }
 
+    /// <summary>
+    /// Autoscale the supplied vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY(IYAxis yAxis)
     {
         ReplaceNullAxesWithDefaults();
@@ -635,74 +648,45 @@ public class AxisManager
     }
 
     /// <summary>
-    /// Autoscale axes limited to the data area defined by the supplied list. Supplied IPlottable objects that
-    /// are not members of the current plot will be ignored.
+    /// Autoscale the default (left and bottom) axis limits to fit the data of the supplied plottables
     /// </summary>
-    public void AutoScaleLimited(List<IPlottable> plottables)
+    public void AutoScale(IEnumerable<IPlottable> plottables)
     {
-        if (plottables.Count == 0)
+        if (!plottables.Any())
             return;
 
         ReplaceNullAxesWithDefaults();
-        AutoScaler.AutoScaleAll(plottables.Where(x => Plot.PlottableList.Contains(x)));
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimits(limits);
     }
 
-    public void AutoScaleLimitedX(List<IPlottable> plottables)
+    /// <summary>
+    /// Autoscale the default bottom horizontal axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleX(IEnumerable<IPlottable> plottables)
     {
-        if (plottables.Count == 0)
+        if (!plottables.Any())
             return;
 
         ReplaceNullAxesWithDefaults();
-        plottables = plottables.Where(x => Plot.PlottableList.Contains(x)).ToList();
 
-        AxisLimits initialLimits = plottables[0].GetAxisLimits();
-        double minX = initialLimits.Left;
-        double maxX = initialLimits.Right;
-
-        for (int i = 1; i < plottables.Count; i++)
-        {
-            AxisLimits limits = plottables[i].GetAxisLimits();
-
-            if (limits.Left < minX)
-                minX = limits.Left;
-
-            if (limits.Right > maxX)
-                maxX = limits.Right;
-        }
-
-        IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
-
-        foreach (IXAxis axis in xAxes)
-            SetLimitsX(minX, maxX, axis);
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsX(limits);
     }
 
-    public void AutoScaleLimitedY(List<IPlottable> plottables)
+    /// <summary>
+    /// Autoscale the default left vertical axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleY(IEnumerable<IPlottable> plottables)
     {
-        if (plottables.Count == 0)
+        if (!plottables.Any())
             return;
 
         ReplaceNullAxesWithDefaults();
-        plottables = plottables.Where(x => Plot.PlottableList.Contains(x)).ToList();
 
-        AxisLimits initialLimits = plottables[0].GetAxisLimits();
-        double minY = initialLimits.Bottom;
-        double maxY = initialLimits.Top;
-
-        for (int i = 1; i < plottables.Count; i++)
-        {
-            AxisLimits limits = plottables[i].GetAxisLimits();
-
-            if (limits.Bottom < minY)
-                minY = limits.Bottom;
-
-            if (limits.Top > maxY)
-                maxY = limits.Top;
-        }
-
-        IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
-
-        foreach (IYAxis axis in yAxes)
-            SetLimitsY(minY, maxY, axis);
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsY(limits);
     }
 
     /// <summary>
