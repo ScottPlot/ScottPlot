@@ -108,7 +108,8 @@ public class Coxcomb : PieBase
         float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
         var maxRadius = Math.Min(minX, minY) * NormalizedSlices.Max();
 
-        switch (AxisType){
+        switch (AxisType)
+        {
             case StarAxis.Circle:
                 foreach (var tick in ticks)
                 {
@@ -130,7 +131,7 @@ public class Coxcomb : PieBase
                             path.MoveTo(x, y);
                         else
                             path.LineTo(x, y);
-                        
+
                         cumRotation += sweepAngle;
                     }
                     path.Close();
