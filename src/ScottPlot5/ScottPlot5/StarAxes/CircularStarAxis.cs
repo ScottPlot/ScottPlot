@@ -7,7 +7,7 @@ public class CircularStarAxis : SpokedStarAxis
         Color = Colors.DarkGray
     };
 
-    public override void Render(RenderPack rp, IAxes axes, IReadOnlyList<double> values, float rotationDegrees)
+    public override void Render(RenderPack rp, IAxes axes, double maxSpokeLength, int numSpokes, float rotationDegrees)
     {
 
         var paint = new SKPaint();
@@ -16,13 +16,12 @@ public class CircularStarAxis : SpokedStarAxis
         var ticks = new float[] { 0.25f, 0.5f, 1 };
         Pixel origin = axes.GetPixel(Coordinates.Origin);
 
-        double maxSliceProportion = values.Max() / values.Sum();
 
         float minX = Math.Abs(axes.GetPixelX(1) - origin.X);
         float minY = Math.Abs(axes.GetPixelY(1) - origin.Y);
-        var maxRadius = Math.Min(minX, minY) * maxSliceProportion;
+        var maxRadius = Math.Min(minX, minY) * maxSpokeLength;
 
-        RenderSpokes(rp, axes, values.Count, maxRadius, rotationDegrees);
+        RenderSpokes(rp, axes, maxRadius, numSpokes, rotationDegrees);
 
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         rp.Canvas.Translate(origin.X, origin.Y);

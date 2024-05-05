@@ -25,10 +25,10 @@ public class Coxcomb : PieBase
     public override void Render(RenderPack rp)
     {
         const float startAngle = -90;
-        StarAxis.Render(rp, Axes, Slices.Select(s => s.Value).ToArray(), startAngle);
 
         var sliceSizes = NormalizedSlices;
         double maxRadius = NormalizedSlices.Max();
+        StarAxis.Render(rp, Axes, maxRadius, Slices.Count, startAngle);
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
