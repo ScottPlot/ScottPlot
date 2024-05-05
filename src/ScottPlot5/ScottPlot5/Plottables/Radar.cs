@@ -30,7 +30,7 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!Series.Any())
             return;
