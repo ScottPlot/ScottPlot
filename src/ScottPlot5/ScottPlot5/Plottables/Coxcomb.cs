@@ -24,9 +24,11 @@ public class Coxcomb : PieBase
 
     public override void Render(RenderPack rp)
     {
-        StarAxis.Render(rp, Axes, Slices.Select(s => s.Value).ToArray(), -90);
+        const float startAngle = -90;
+        StarAxis.Render(rp, Axes, Slices.Select(s => s.Value).ToArray(), startAngle);
 
         var sliceSizes = NormalizedSlices;
+        double maxRadius = NormalizedSlices.Max();
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
@@ -34,10 +36,10 @@ public class Coxcomb : PieBase
         using SKPaint paint = new() { IsAntialias = true };
 
         var rotationPerSlice = 360f / Slices.Count;
+
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         rp.Canvas.Translate(origin.X, origin.Y);
-        rp.Canvas.RotateDegrees(-90);
-
+        rp.Canvas.RotateDegrees(startAngle);
 
         for (int i = 0; i < Slices.Count; i++)
         {
@@ -73,16 +75,20 @@ public class Coxcomb : PieBase
             rp.Canvas.DrawPath(path, paint);
 
             path.Reset();
-        }
 
-        if (ShowSliceLabels)
-        {
-            for (int i = 0; i < Slices.Count; i++)
+            if (ShowSliceLabels)
             {
-                double x = Math.Cos(rotationPerSlice * Math.PI / 180) * SliceLabelDistance;
-                double y = -Math.Sin(rotationPerSlice * Math.PI / 180) * SliceLabelDistance;
+                double cumulativeRotation = (i + 1) * rotationPerSlice;
+                double x = SliceLabelDistance * maxRadius * Math.Cos(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
+                double y = SliceLabelDistance * maxRadius * Math.Sin(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
                 Pixel px = Axes.GetPixel(new Coordinates(x, y));
+
+                using var textTransform = new SKAutoCanvasRestore(rp.Canvas);
+                rp.Canvas.RotateDegrees((float)-cumulativeRotation - startAngle);
+                rp.Canvas.Translate(-origin.X, -origin.Y);
+
                 Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
+
             }
         }
     }
