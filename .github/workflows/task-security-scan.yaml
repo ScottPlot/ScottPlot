@@ -8,20 +8,6 @@ on:
   workflow_call:
 
 jobs:
-  dependency-scan:
-    name: NuGet Dependency Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🛒 Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-      - name: SP4 vulnerable package check
-        working-directory: ./src/ScottPlot4
-        run: dotnet list package --vulnerable
-      - name: SP5 vulnerable package check
-        working-directory: ./src/ScottPlot5
-        run: dotnet list package --vulnerable
   security-scan:
     name: CodeQL Code Scan
     runs-on: ubuntu-latest
