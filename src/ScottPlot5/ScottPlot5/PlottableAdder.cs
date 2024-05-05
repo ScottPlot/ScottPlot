@@ -589,6 +589,27 @@ public class PlottableAdder(Plot plot)
         return Polygon(coordinates);
     }
 
+    public Radar Radar(IReadOnlyList<RadarSeries> series)
+    {
+        Radar radar = new(series);
+        Plot.PlottableList.Add(radar);
+        return radar;
+    }
+
+    public Radar Radar(IEnumerable<IEnumerable<double>> series)
+    {
+        List<RadarSeries> radarSeries = new();
+        foreach (var values in series)
+        {
+            var radarSerie = new RadarSeries(values.ToList(), Palette.GetColor(radarSeries.Count).WithOpacity(0.5));
+            radarSeries.Add(radarSerie);
+        }
+
+        Radar radar = new(radarSeries);
+        Plot.PlottableList.Add(radar);
+        return radar;
+    }
+
     public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)
     {
         Color[] colors = Enumerable.Range(0, values.Count()).Select(x => Palette.GetColor(x)).ToArray();
