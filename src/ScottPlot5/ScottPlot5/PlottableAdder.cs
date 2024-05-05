@@ -198,6 +198,32 @@ public class PlottableAdder(Plot plot)
         return colorBar;
     }
 
+    public Coxcomb Coxcomb(IList<PieSlice> slices)
+    {
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
+    public Coxcomb Coxcomb(IEnumerable<double> values)
+    {
+        List<PieSlice> slices = new();
+        foreach (double value in values)
+        {
+            PieSlice slice = new()
+            {
+                Value = value,
+                FillColor = Palette.GetColor(slices.Count).WithOpacity(0.5),
+            };
+
+            slices.Add(slice);
+        }
+
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
     public Crosshair Crosshair(double x, double y)
     {
         Crosshair ch = new()
