@@ -640,12 +640,18 @@ public class AxisManager
     /// </summary>
     public void AutoScaleLimited(List<IPlottable> plottables)
     {
+        if (plottables.Count == 0)
+            return;
+
         ReplaceNullAxesWithDefaults();
         AutoScaler.AutoScaleAll(plottables.Where(x => Plot.PlottableList.Contains(x)));
     }
 
     public void AutoScaleLimitedX(List<IPlottable> plottables)
     {
+        if (plottables.Count == 0)
+            return;
+
         ReplaceNullAxesWithDefaults();
         plottables = plottables.Where(x => Plot.PlottableList.Contains(x)).ToList();
 
@@ -672,6 +678,9 @@ public class AxisManager
 
     public void AutoScaleLimitedY(List<IPlottable> plottables)
     {
+        if (plottables.Count == 0)
+            return;
+
         ReplaceNullAxesWithDefaults();
         plottables = plottables.Where(x => Plot.PlottableList.Contains(x)).ToList();
 
