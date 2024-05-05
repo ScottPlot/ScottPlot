@@ -112,4 +112,23 @@ internal class AxisTicksTests
         plt.SaveTestImage();
         //plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Ticks_Null()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/3736
+
+        Plot plt = new();
+
+        plt.Add.Signal(Generate.Sin());
+        plt.Add.Signal(Generate.Cos());
+
+        ScottPlot.TickGenerators.NumericManual tickGen = new();
+        for (int i = 1; i <= 10; i++)
+            tickGen.AddMajor(i, null!);
+
+        plt.Axes.Bottom.TickGenerator = tickGen;
+
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
 }
