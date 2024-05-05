@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -610,16 +611,25 @@ public class AxisManager
         AutoScaleExpandY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the bottom horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX()
     {
         AutoScaleX(Bottom);
     }
 
+    /// <summary>
+    /// Autoscale the left vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY()
     {
         AutoScaleY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the supplied horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX(IXAxis xAxis)
     {
         ReplaceNullAxesWithDefaults();
@@ -627,11 +637,56 @@ public class AxisManager
         SetLimitsX(limits.Left, limits.Right, xAxis);
     }
 
+    /// <summary>
+    /// Autoscale the supplied vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY(IYAxis yAxis)
     {
         ReplaceNullAxesWithDefaults();
         AxisLimits limits = AutoScaler.GetAxisLimits(Plot, Bottom, yAxis);
         SetLimitsY(limits.Bottom, limits.Top, yAxis);
+    }
+
+    /// <summary>
+    /// Autoscale the default (left and bottom) axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScale(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimits(limits);
+    }
+
+    /// <summary>
+    /// Autoscale the default bottom horizontal axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleX(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsX(limits);
+    }
+
+    /// <summary>
+    /// Autoscale the default left vertical axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleY(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsY(limits);
     }
 
     /// <summary>

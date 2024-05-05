@@ -1,5 +1,7 @@
 ## ScottPlot 5.0.34
 _Not yet on NuGet..._
+* Axes: Added `AutoScale()` overloads that accept user-defined lists of plottables (#3776) @levipara
+* SignalConst: Properly implement range search to achieve extreme performance improvements for large datasets (#3778) @StendProg @bclehmann @Cardroid
 
 ## ScottPlot 5.0.33
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-04_

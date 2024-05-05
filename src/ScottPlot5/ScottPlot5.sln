@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphical Test Runner", "Sc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Unit Tests", "ScottPlot5 Tests\Unit Tests\ScottPlot Unit Tests.csproj", "{6CED419A-A9F9-4200-80A7-A38AE1295F0A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms3D", "ScottPlot5 Sandbox\Sandbox.WinForms3D\Sandbox.WinForms3D.csproj", "{0AE452FC-1D87-45C5-9B09-E645A759FCD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +163,10 @@ Global
 		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +193,7 @@ Global
 		{0A738D46-7654-4C7D-99BF-C420602965F7} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{68FECF4F-9557-4B01-9C87-CCD6FE50CDEF} = {6500EB02-9E5D-4FDF-AAEC-84B831B4E396}
 		{AA39141A-E248-43FB-ABF4-92D7E94F6190} = {B0708928-FFD3-4062-A3AD-3BA9D7CD8A55}
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
