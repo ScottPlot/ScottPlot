@@ -1,0 +1,31 @@
+﻿
+using ScottPlot.Interfaces;
+
+namespace ScottPlot.StarAxes;
+
+public abstract class SpokedStarAxis : IStarAxis
+{
+    public abstract LineStyle AxisStyle { get; set; }
+    public abstract void Render(RenderPack rp, IAxes axes, IReadOnlyList<double> values, float rotationDegrees = 0);
+    
+    public virtual void RenderSpokes(RenderPack rp, IAxes axes, int numSpokes, double spokeLength, float rotationDegrees = 0)
+    {
+        var paint = new SKPaint();
+        AxisStyle.ApplyToPaint(paint);
+
+        var sweepAngle = 2 * Math.PI / numSpokes;
+        Pixel origin = axes.GetPixel(Coordinates.Origin);
+
+        using SKAutoCanvasRestore _ = new(rp.Canvas);
+        rp.Canvas.Translate(origin.X, origin.Y);
+        rp.Canvas.RotateDegrees(rotationDegrees);
+
+        for (int i = 0; i < numSpokes; i++)
+        {
+            var theta = i * sweepAngle + sweepAngle / 2;
+            var x = (float)(spokeLength * Math.Cos(theta));
+            var y = (float)(spokeLength * Math.Sin(theta));
+            rp.Canvas.DrawLine(0, 0, x, y, paint);
+        }
+    }
+}

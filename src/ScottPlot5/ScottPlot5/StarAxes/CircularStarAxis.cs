@@ -2,14 +2,16 @@
 
 namespace ScottPlot.StarAxes;
 
-public class CircularStarAxis : IStarAxis
+public class CircularStarAxis : SpokedStarAxis 
 {
-    public LineStyle AxisStyle { get; set; } = new LineStyle()
+    public override LineStyle AxisStyle { get; set; } = new LineStyle()
     {
-        Color = Colors.LightGray
+        Color = Colors.DarkGray
     };
-    public void Render(RenderPack rp, IAxes axes, IReadOnlyList<double> values, float rotationDegrees)
+
+    public override void Render(RenderPack rp, IAxes axes, IReadOnlyList<double> values, float rotationDegrees)
     {
+        
         var paint = new SKPaint();
         AxisStyle.ApplyToPaint(paint);
 
@@ -21,6 +23,8 @@ public class CircularStarAxis : IStarAxis
         float minX = Math.Abs(axes.GetPixelX(1) - origin.X);
         float minY = Math.Abs(axes.GetPixelY(1) - origin.Y);
         var maxRadius = Math.Min(minX, minY) * maxSliceProportion;
+        
+        RenderSpokes(rp, axes, values.Count, maxRadius, rotationDegrees);
 
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         rp.Canvas.Translate(origin.X, origin.Y);

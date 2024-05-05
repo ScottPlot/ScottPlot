@@ -5,7 +5,7 @@ namespace ScottPlot.Plottables;
 
 public class Coxcomb : PieBase
 {
-    public IStarAxis StarAxis { get; set; } = new StarAxes.PolygonalStarAxis();
+    public IStarAxis StarAxis { get; set; } = new StarAxes.CircularStarAxis();
 
     public Coxcomb(IList<PieSlice> slices)
     {
