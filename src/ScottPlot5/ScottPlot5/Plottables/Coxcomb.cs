@@ -12,9 +12,11 @@ public class Coxcomb : PieBase
 
     public override AxisLimits GetAxisLimits()
     {
+        double maxRadius = NormalizedSlices.Max();
+
         double radius = ShowSliceLabels
-            ? SliceLabelDistance + Padding
-            : 1 + Padding;
+            ? maxRadius * SliceLabelDistance + Padding
+            : maxRadius + Padding;
 
         return new AxisLimits(-radius, radius, -radius, radius);
     }
