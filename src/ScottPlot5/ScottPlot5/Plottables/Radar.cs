@@ -22,6 +22,7 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
     public IReadOnlyList<RadarSeries> Series { get; set; } = series;
     public double Padding { get; set; } = 0.2;
     public double LabelDistance { get; set; } = 1.2;
+    public IReadOnlyList<Label>? Labels { get; set; }
 
     public AxisLimits GetAxisLimits()
     {
@@ -36,7 +37,7 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
             return;
 
         const float startAngle = -90;
-        int seriesArity = Series.First().Values.Count();
+        int seriesArity = Series.Select(s => s.Values.Count()).Min();
         var rotationPerSlice = Math.PI * 2 / seriesArity;
 
         StarAxis.Render(rp, Axes, 1, seriesArity, (float)(startAngle - rotationPerSlice * 180 / Math.PI / 2));
@@ -58,18 +59,13 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
             for (int i = 0; i < seriesArity; i++)
             {
                 double coordinateRadius = serie.Values[i] / maxValue;
-                float minX = Math.Abs(Axes.GetPixelX(coordinateRadius) - origin.X);
-                float minY = Math.Abs(Axes.GetPixelY(coordinateRadius) - origin.Y);
-                var radius = Math.Min(minX, minY);
-
-                var theta = rotationPerSlice * i + startAngle * Math.PI / 180;
-                float x = (float)(radius * Math.Cos(theta));
-                float y = (float)(radius * Math.Sin(theta));
+                var theta = GetAngleRadians(rotationPerSlice, i, startAngle);
+                var px = PixelFromPolar(coordinateRadius, theta, origin);
 
                 if (i == 0)
-                    path.MoveTo(x, y);
+                    path.MoveTo(px.ToSKPoint());
                 else
-                    path.LineTo(x, y);
+                    path.LineTo(px.ToSKPoint());
             }
 
             path.Close();
@@ -82,5 +78,36 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
 
             path.Reset();
         }
+
+        if (Labels is not null)
+        {
+            for (int i = 0; i < seriesArity; i++)
+            {
+                if (i >= Labels.Count)
+                    break;
+
+                var theta = GetAngleRadians(rotationPerSlice, i, startAngle);
+                var px = PixelFromPolar(LabelDistance, theta, origin);
+
+                Labels[i].Render(rp.Canvas, px, paint);
+            }
+        }
+    }
+
+    private static double GetAngleRadians(double rotationPerSliceDegrees, int i, double startAngleDegrees)
+    {
+        return rotationPerSliceDegrees * i + startAngleDegrees * Math.PI / 180;
+    }
+
+    private Pixel PixelFromPolar(double coordinateRadius, double theta, Pixel origin)
+    {
+        float minX = Math.Abs(Axes.GetPixelX(coordinateRadius) - origin.X);
+        float minY = Math.Abs(Axes.GetPixelY(coordinateRadius) - origin.Y);
+        var radius = Math.Min(minX, minY);
+
+        float x = (float)(radius * Math.Cos(theta));
+        float y = (float)(radius * Math.Sin(theta));
+
+        return new(x, y);
     }
 }
