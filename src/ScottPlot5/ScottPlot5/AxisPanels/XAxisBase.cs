@@ -9,7 +9,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         LabelRotation = 0;
     }
 
-    public float Measure()
+    public virtual float Measure()
     {
         if (!IsVisible)
             return 0;
@@ -75,7 +75,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
             : GetPanelRectangleTop(dataRect, size, offset);
     }
 
-    public void Render(RenderPack rp, float size, float offset)
+    public virtual void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;

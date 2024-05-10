@@ -253,7 +253,17 @@ public class AxisManager
 
         return dateAxis;
     }
+    
+    public void AddYAxis<T>(T axis) where T : IYAxis
+    {
+        YAxes.Add(axis);
+    }
 
+    public void AddXAxis<T>(T axis) where T : IXAxis
+    {
+        XAxes.Add(axis);
+    }
+    
     /// <summary>
     /// Crete a new axis, add it to the plot, and return it
     /// </summary>
