@@ -573,6 +573,15 @@ public class Plot : IDisposable
     public void Clear() => PlottableList.Clear();
 
     /// <summary>
+    /// Clear a all instances of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be cleared</typeparam>
+    public void Clear<T>() where T : IPlottable
+    {
+        Remove<T>();
+    }
+
+    /// <summary>
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
     /// Assign properties of <see cref="TitlePanel"/> Label to customize size, color, font, etc.
     /// </summary>
