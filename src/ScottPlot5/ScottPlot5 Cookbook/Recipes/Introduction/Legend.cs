@@ -173,7 +173,7 @@ public class Legend : ICategory
             sig1.LegendText = "Sine";
             sig2.LegendText = "Cosine";
 
-            myPlot.ShowLegend(Edge.Right, Alignment.UpperCenter);
+            myPlot.ShowLegend(Edge.Right);
         }
     }
 }

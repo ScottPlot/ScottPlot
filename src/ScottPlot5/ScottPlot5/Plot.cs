@@ -539,14 +539,18 @@ public class Plot : IDisposable
     /// placed on the edge of the figure outside the data area.
     /// </summary>
     /// <returns></returns>
-    public Panels.LegendPanel ShowLegend(Edge edge, Alignment alignment)
+    public Panels.LegendPanel ShowLegend(Edge edge)
     {
         HideLegend();
+
+        Legend.Orientation = edge.IsVertical()
+            ? Orientation.Vertical
+            : Orientation.Horizontal;
 
         Panels.LegendPanel legendPanel = new(Legend)
         {
             Edge = edge,
-            Alignment = alignment,
+            Alignment = Alignment.MiddleCenter,
         };
 
         Axes.AddPanel(legendPanel);
