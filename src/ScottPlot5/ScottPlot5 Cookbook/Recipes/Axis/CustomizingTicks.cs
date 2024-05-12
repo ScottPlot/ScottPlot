@@ -44,7 +44,7 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Bottom.TickGenerator = myTickGenerator;
         }
     }
-    
+
     public class DateTimeAutomaticTickFormatter : RecipeBase
     {
         public override string Name => "DateTimeAutomatic Tick Formatters";
@@ -54,18 +54,27 @@ public class CustomizingTicks : ICategory
         [Test]
         public override void Execute()
         {
-            // create a static function containing the formatting logic
-            string CustomFormatter(DateTime arg)
+            // plot data using DateTime values on the horizontal axis
+            DateTime[] xs = Generate.ConsecutiveHours(100);
+            double[] ys = Generate.RandomWalk(100);
+            myPlot.Add.Scatter(xs, ys);
+
+            // setup the bottom axis to use DateTime ticks
+            var axis = myPlot.Axes.DateTimeTicksBottom();
+
+            // create a custom formatter to return a string with
+            // date only when zoomed out and time only when zoomed in
+            static string CustomFormatter(DateTime dt)
             {
-                return arg is { Hour: 0, Minute: 0, Second: 0 } ? arg.ToShortDateString() : arg.ToLongTimeString();
+                bool isMidnight = dt is { Hour: 0, Minute: 0, Second: 0 };
+                return isMidnight
+                    ? DateOnly.FromDateTime(dt).ToString()
+                    : TimeOnly.FromDateTime(dt).ToString();
             }
 
-            // add a datetime ticks to axis, for example to bottom axis
-            myPlot.Axes.DateTimeTicksBottom();
-            // set up a label formatter function
-            ((DateTimeAutomatic)myPlot.Axes.Bottom.TickGenerator).LabelFormatter = CustomFormatter;
-            
-            myPlot.Axes.SetLimitsX(45000, 45003);
+            // apply our custom tick formatter
+            DateTimeAutomatic tickGen = (DateTimeAutomatic)axis.TickGenerator;
+            tickGen.LabelFormatter = CustomFormatter;
         }
     }
 
