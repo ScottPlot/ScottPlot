@@ -161,8 +161,8 @@ public class Legend : ICategory
     public class LegendOutside : RecipeBase
     {
         public override string Name => "Legend Outside the Plot";
-        public override string Description => "The default legend can be hidden so that it " +
-            "may be added into a legend panel and displayed outside the data area.";
+        public override string Description => "Use the ShowLegend() overload that accepts " +
+            "an Edge to display the legend outside the data area.";
 
         [Test]
         public override void Execute()
@@ -173,17 +173,7 @@ public class Legend : ICategory
             sig1.LegendText = "Sine";
             sig2.LegendText = "Cosine";
 
-            // hide the default legend
-            myPlot.HideLegend();
-
-            // display the legend in a LegendPanel outside the plot
-            ScottPlot.Panels.LegendPanel pan = new(myPlot.Legend)
-            {
-                Edge = Edge.Right,
-                Alignment = Alignment.UpperCenter,
-            };
-
-            myPlot.Axes.AddPanel(pan);
+            myPlot.ShowLegend(Edge.Right, Alignment.UpperCenter);
         }
     }
 }
