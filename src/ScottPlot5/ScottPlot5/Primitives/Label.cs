@@ -197,10 +197,10 @@ public class Label
 
     public MeasuredText Measure(string text, SKPaint paint)
     {
-        string[] lines = text.Split('\n');
+        string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
-        float maxWidth = lines.Select(paint.MeasureText).Max();
+        float maxWidth = lines.Length == 0 ? 0 : lines.Select(paint.MeasureText).Max();
         PixelSize size = new(maxWidth, lineHeight * lines.Length);
 
         // https://github.com/ScottPlot/ScottPlot/issues/3700

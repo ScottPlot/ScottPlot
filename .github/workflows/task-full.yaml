@@ -50,5 +50,11 @@ jobs:
           dotnet build "${{ env.SP4_SOLUTION }}" --configuration Release
       - name: Test ScottPlot4
         run: dotnet test "${{ env.SP4_SOLUTION }}" --configuration Release --no-build --verbosity minimal
+      - name: SP4 vulnerable package check
+        working-directory: src/ScottPlot4
+        run: dotnet list package --vulnerable
+      - name: SP5 vulnerable package check
+        working-directory: src/ScottPlot5
+        run: dotnet list package --vulnerable
       - name: Security Scan
         uses: github/codeql-action/analyze@v3

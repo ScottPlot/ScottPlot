@@ -33,6 +33,14 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         Expand(initialLimits);
     }
 
+    public ExpandingAxisLimits(IEnumerable<IPlottable> plottables)
+    {
+        foreach (IPlottable plottable in plottables)
+        {
+            Expand(plottable.GetAxisLimits());
+        }
+    }
+
     public override string ToString()
     {
         return $"Expanding Limits: X=[{Left}, {Right}] Y=[{Bottom}, {Top}]";

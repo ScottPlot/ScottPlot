@@ -1,5 +1,12 @@
-## ScottPlot 5.0.34
+## ScottPlot 5.0.35
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.34
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
+* Axes: Added `AutoScale()` overloads that accept user-defined lists of plottables (#3776) @levipara
+* SignalConst: Properly implement range search to achieve extreme performance improvements for large datasets (#3778) @StendProg @bclehmann @Cardroid
+* Ticks: Added options for minor ticks when using DateTime axes (#3779, #3408) @EricEzaM
+* Label: Improved support for measurement of labels with null strings (#3736) @Or8e4m4n
 
 ## ScottPlot 5.0.33
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-04_

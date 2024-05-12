@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalConstSourceDoubleArray<T>
+public class SignalConstSource<T>
     where T : struct, IComparable
 {
     public readonly SegmentedTree<T> SegmentedTree = new();
@@ -13,7 +13,7 @@ public class SignalConstSourceDoubleArray<T>
     public int MinRenderIndex = 0;
     public int MaxRenderIndex = int.MaxValue;
 
-    public SignalConstSourceDoubleArray(T[] ys, double period)
+    public SignalConstSource(T[] ys, double period)
     {
         Ys = ys;
         Period = period;
@@ -48,17 +48,8 @@ public class SignalConstSourceDoubleArray<T>
 
     public SignalRangeY GetLimitsY(int firstIndex, int lastIndex)
     {
-        double min = double.PositiveInfinity;
-        double max = double.NegativeInfinity;
-
-        for (int i = firstIndex; i <= lastIndex; i++)
-        {
-            double value = NumericConversion.GenericToDouble(Ys, i);
-            min = Math.Min(min, value);
-            max = Math.Max(max, value);
-        }
-
-        return new SignalRangeY(min, max);
+        SegmentedTree.MinMaxRangeQuery(firstIndex, lastIndex, out double min, out double max);
+        return new(min, max);
     }
 
     public List<PixelColumn> GetPixelColumns(IAxes axes)
