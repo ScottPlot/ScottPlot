@@ -1,5 +1,7 @@
 ## ScottPlot 5.0.35
 * Legend: Added `Plot.ShowLegend()` overload that accepts an `Edge` for quickly adding a legend outside the data area (#3672, #3635)
+* Radar Plot: New plot type (also called a spider charts or star charts) for representing multi-axis data as a 2D shape on a circular axis system (#3457, #3780) @bclehmann
+* Coxcomb Plot: New plot type like a pie graph where the angle of slices is constant but the radii are not (#3457, #3780) @bclehmann
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
