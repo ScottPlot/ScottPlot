@@ -2,7 +2,6 @@
 
 public abstract class PieBase : IPlottable, IHasLine
 {
-
     public IAxes Axes { get; set; } = new Axes();
     public bool IsVisible { get; set; } = true;
 
@@ -20,7 +19,7 @@ public abstract class PieBase : IPlottable, IHasLine
     public double Padding { get; set; } = 0.2;
     public bool ShowSliceLabels { get; set; } = false;
     public double SliceLabelDistance { get; set; } = 1.2;
-    public IList<PieSlice> Slices { get; set; }
+    public IList<PieSlice> Slices { get; set; } = [];
 
     protected static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
     {

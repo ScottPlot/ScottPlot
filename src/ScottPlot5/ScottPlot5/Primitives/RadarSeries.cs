@@ -9,11 +9,12 @@ public class RadarSeries : LabelStyleProperties, IHasLabel, IHasLegendText
     public override Label LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
 
-    public IReadOnlyList<double> Values { get; set; }
+    public IReadOnlyList<double> Values { get; set; } = [];
 
     public RadarSeries()
     {
     }
+
     public RadarSeries(IReadOnlyList<double> values, Color color)
     {
         Values = values;
