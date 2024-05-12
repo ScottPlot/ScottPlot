@@ -2,8 +2,12 @@
 
 public class DateTimeAutomatic : IDateTimeTickGenerator
 {
-    private readonly static List<ITimeUnit> TheseTimeUnits = new()
-    {
+    public Func<DateTime, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
+
+    public ITimeUnit? TimeUnit { get; private set; } = null;
+
+    private readonly static List<ITimeUnit> TheseTimeUnits =
+    [
         new TimeUnits.Millisecond(),
         new TimeUnits.Centisecond(),
         new TimeUnits.Decisecond(),
@@ -13,11 +17,16 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         new TimeUnits.Day(),
         new TimeUnits.Month(),
         new TimeUnits.Year(),
-    };
+    ];
 
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public Tick[] Ticks { get; set; } = [];
 
     public int MaxTickCount { get; set; } = 10_000;
+
+    public static string DefaultLabelFormatter(DateTime dateTime)
+    {
+        return dateTime.ToString(CultureInfo.CurrentCulture);
+    }
 
     private ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
     {
@@ -88,13 +97,15 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
                 niceIncrement = (int)Math.Ceiling(increment);
             }
 
+            TimeUnit = timeUnit;
+
             // attempt to generate the ticks given these conditions
             (List<Tick>? ticks, PixelSize? largestTickLabelSize) = GenerateTicks(range, timeUnit, niceIncrement.Value, tickLabelBounds, paint, labelStyle);
 
             // if ticks were returned, use them
             if (ticks is not null)
             {
-                Ticks = ticks.ToArray();
+                Ticks = [.. ticks];
                 return;
             }
 
@@ -125,9 +136,8 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         DateTime start = GetLargerTimeUnit(unit).Snap(rangeMin);
 
         start = unit.Next(start, -increment);
-        string dtFormat = unit.GetDateTimeFormatString();
 
-        List<Tick> ticks = new();
+        List<Tick> ticks = [];
 
         const int maxTickCount = 1000;
         for (DateTime dt = start; dt <= rangeMax; dt = unit.Next(dt, increment))
@@ -135,7 +145,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
             if (dt < rangeMin)
                 continue;
 
-            string tickLabel = dt.ToString(dtFormat);
+            string tickLabel = LabelFormatter(dt);
             PixelSize tickLabelSize = labelStyle.Measure(tickLabel, paint).Size;
 
             bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);

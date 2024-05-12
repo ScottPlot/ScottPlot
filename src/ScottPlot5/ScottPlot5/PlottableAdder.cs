@@ -198,6 +198,32 @@ public class PlottableAdder(Plot plot)
         return colorBar;
     }
 
+    public Coxcomb Coxcomb(IList<PieSlice> slices)
+    {
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
+    public Coxcomb Coxcomb(IEnumerable<double> values)
+    {
+        List<PieSlice> slices = new();
+        foreach (double value in values)
+        {
+            PieSlice slice = new()
+            {
+                Value = value,
+                FillColor = Palette.GetColor(slices.Count).WithOpacity(0.5),
+            };
+
+            slices.Add(slice);
+        }
+
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
     public Crosshair Crosshair(double x, double y)
     {
         Crosshair ch = new()
@@ -561,6 +587,27 @@ public class PlottableAdder(Plot plot)
     {
         Coordinates[] coordinates = NumericConversion.GenericToCoordinates(xs, ys);
         return Polygon(coordinates);
+    }
+
+    public Radar Radar(IReadOnlyList<RadarSeries> series)
+    {
+        Radar radar = new(series);
+        Plot.PlottableList.Add(radar);
+        return radar;
+    }
+
+    public Radar Radar(IEnumerable<IEnumerable<double>> series)
+    {
+        List<RadarSeries> radarSeries = new();
+        foreach (var values in series)
+        {
+            var radarSerie = new RadarSeries(values.ToList(), Palette.GetColor(radarSeries.Count).WithOpacity(0.5));
+            radarSeries.Add(radarSerie);
+        }
+
+        Radar radar = new(radarSeries);
+        Plot.PlottableList.Add(radar);
+        return radar;
     }
 
     public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)

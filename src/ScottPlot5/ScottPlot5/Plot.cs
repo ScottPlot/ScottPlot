@@ -535,6 +535,30 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Hide the default legend (inside the data area) and create a new legend panel 
+    /// placed on the edge of the figure outside the data area.
+    /// </summary>
+    /// <returns></returns>
+    public Panels.LegendPanel ShowLegend(Edge edge)
+    {
+        HideLegend();
+
+        Legend.Orientation = edge.IsVertical()
+            ? Orientation.Vertical
+            : Orientation.Horizontal;
+
+        Panels.LegendPanel legendPanel = new(Legend)
+        {
+            Edge = edge,
+            Alignment = Alignment.MiddleCenter,
+        };
+
+        Axes.AddPanel(legendPanel);
+
+        return legendPanel;
+    }
+
+    /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
     public Legend HideLegend()
