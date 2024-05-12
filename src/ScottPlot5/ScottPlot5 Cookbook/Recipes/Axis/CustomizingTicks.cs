@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using ScottPlot.TickGenerators;
+using SkiaSharp;
 
 namespace ScottPlotCookbook.Recipes.Axis;
 
@@ -41,6 +42,39 @@ public class CustomizingTicks : ICategory
 
             // tell an axis to use the custom tick generator
             myPlot.Axes.Bottom.TickGenerator = myTickGenerator;
+        }
+    }
+
+    public class DateTimeAutomaticTickFormatter : RecipeBase
+    {
+        public override string Name => "DateTimeAutomatic Tick Formatters";
+        public override string Description => "Users can customize the logic used to create " +
+                                              "datetime tick labels from tick positions. ";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot data using DateTime values on the horizontal axis
+            DateTime[] xs = Generate.ConsecutiveHours(100);
+            double[] ys = Generate.RandomWalk(100);
+            myPlot.Add.Scatter(xs, ys);
+
+            // setup the bottom axis to use DateTime ticks
+            var axis = myPlot.Axes.DateTimeTicksBottom();
+
+            // create a custom formatter to return a string with
+            // date only when zoomed out and time only when zoomed in
+            static string CustomFormatter(DateTime dt)
+            {
+                bool isMidnight = dt is { Hour: 0, Minute: 0, Second: 0 };
+                return isMidnight
+                    ? DateOnly.FromDateTime(dt).ToString()
+                    : TimeOnly.FromDateTime(dt).ToString();
+            }
+
+            // apply our custom tick formatter
+            DateTimeAutomatic tickGen = (DateTimeAutomatic)axis.TickGenerator;
+            tickGen.LabelFormatter = CustomFormatter;
         }
     }
 

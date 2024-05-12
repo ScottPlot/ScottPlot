@@ -509,6 +509,12 @@ public static class Generate
         return dates;
     }
 
+    public static System.DateTime[] ConsecutiveHours(int count)
+    {
+        var start = new System.DateTime(2023, 01, 01);
+        return ConsecutiveHours(count, start);
+    }
+
     public static System.DateTime[] ConsecutiveHours(int count, System.DateTime start)
     {
         return Consecutive(count, start, TimeSpan.FromHours(1));

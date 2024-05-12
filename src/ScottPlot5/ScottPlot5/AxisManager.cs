@@ -791,4 +791,14 @@ public class AxisManager
         AxisRules.SquareZoomOut rule = new(Bottom, Left);
         Rules.Add(rule);
     }
+
+    /// <summary>
+    /// Disable visibility of all axes and titles so the data area fills the entire figure
+    /// </summary>
+    public void Frameless()
+    {
+        XAxes.ForEach(x => x.IsVisible = false);
+        YAxes.ForEach(x => x.IsVisible = false);
+        Title.IsVisible = false;
+    }
 }
