@@ -3,7 +3,7 @@
 public class DateTimeAutomatic : IDateTimeTickGenerator
 {
     public Func<DateTime, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
-    
+
     public ITimeUnit TimeUnit { get; private set; }
 
     private readonly static List<ITimeUnit> TheseTimeUnits = new()
