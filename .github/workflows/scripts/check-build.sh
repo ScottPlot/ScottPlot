@@ -12,5 +12,5 @@ project_files=(
 for project_file in "${project_files[@]}"; do
     echo "Building: $project_file"
     dotnet restore "$project_file" || { echo 'FAILED!' ; exit 1; }
-    dotnet build "$project_file" --configuration Release || { echo 'FAILED!' ; exit 1; }
+    dotnet build "$project_file" --configuration Release -warnaserror || { echo 'FAILED!' ; exit 1; }
 done
