@@ -1,23 +1,16 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
+public class Pie : PieBase
 {
-    public IList<PieSlice> Slices { get; set; } = slices;
-    public bool IsVisible { get; set; } = true;
     public double ExplodeFraction { get; set; } = 0;
-    public double SliceLabelDistance { get; set; } = 1.2;
-    public bool ShowSliceLabels { get; set; } = false;
-    public double Padding { get; set; } = 0.2;
     public double DonutFraction { get; set; } = 0;
 
-    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
-    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
-    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+    public Pie(IList<PieSlice> slices)
+    {
+        Slices = slices;
+    }
 
-    public IAxes Axes { get; set; } = new Axes();
-
-    public AxisLimits GetAxisLimits()
+    public override AxisLimits GetAxisLimits()
     {
         double radius = ShowSliceLabels
             ? SliceLabelDistance + Padding
@@ -27,14 +20,7 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
 
     }
 
-    public IEnumerable<LegendItem> LegendItems => Slices
-        .Select((Func<PieSlice, LegendItem>)(slice => new LegendItem
-        {
-            LabelText = slice.LegendText,
-            FillStyle = slice.Fill,
-        }));
-
-    public virtual void Render(RenderPack rp)
+    public override void Render(RenderPack rp)
     {
         double total = Slices.Sum(s => s.Value);
         float[] sliceSizeDegrees = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
@@ -122,13 +108,5 @@ public class Pie(IList<PieSlice> slices) : IPlottable, IHasLine
                 Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
             }
         }
-    }
-
-    private static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
-    {
-        double angleInRadians = angleInDegrees * (Math.PI / 180);
-        double x = radius * Math.Cos(angleInRadians);
-        double y = radius * Math.Sin(angleInRadians);
-        return new SKPoint((float)x, (float)y);
     }
 }
