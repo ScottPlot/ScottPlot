@@ -4,10 +4,10 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 {
     public Func<DateTime, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
 
-    public ITimeUnit TimeUnit { get; private set; }
+    public ITimeUnit? TimeUnit { get; private set; } = null;
 
-    private readonly static List<ITimeUnit> TheseTimeUnits = new()
-    {
+    private readonly static List<ITimeUnit> TheseTimeUnits =
+    [
         new TimeUnits.Millisecond(),
         new TimeUnits.Centisecond(),
         new TimeUnits.Decisecond(),
@@ -17,9 +17,9 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         new TimeUnits.Day(),
         new TimeUnits.Month(),
         new TimeUnits.Year(),
-    };
+    ];
 
-    public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
+    public Tick[] Ticks { get; set; } = [];
 
     public int MaxTickCount { get; set; } = 10_000;
 
@@ -105,7 +105,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
             // if ticks were returned, use them
             if (ticks is not null)
             {
-                Ticks = ticks.ToArray();
+                Ticks = [.. ticks];
                 return;
             }
 
@@ -137,7 +137,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
         start = unit.Next(start, -increment);
 
-        List<Tick> ticks = new();
+        List<Tick> ticks = [];
 
         const int maxTickCount = 1000;
         for (DateTime dt = start; dt <= rangeMax; dt = unit.Next(dt, increment))
