@@ -24,4 +24,11 @@ public class DateTimeXAxis : XAxisBase, IXAxis
         TickGenerator is IDateTimeTickGenerator dateTickGenerator
             ? dateTickGenerator.ConvertToCoordinateSpace(dates)
             : throw new InvalidOperationException("Date axis configured with non-date tick generator");
+
+    public void SetTickets(double[] xs, string[] labels)
+    {
+        NumericManual gen = new();
+        gen.SetTickets(xs, labels);
+        TickGenerator = gen;
+    }
 }

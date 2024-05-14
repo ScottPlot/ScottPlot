@@ -8,4 +8,11 @@ public class TopAxis : XAxisBase, IXAxis
     {
         TickGenerator = new TickGenerators.NumericAutomatic();
     }
+
+    public void SetTickets(double[] xs, string[] labels)
+    {
+        TickGenerators.NumericManual gen = new();
+        gen.SetTickets(xs, labels);
+        TickGenerator = gen;
+    }
 }
