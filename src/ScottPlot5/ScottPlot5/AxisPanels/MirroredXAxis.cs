@@ -13,11 +13,4 @@ public sealed class MirroredXAxis : XAxisBase, IXAxis
         _edge = edge ?? axis.Edge;
         TickGenerator = axis.TickGenerator;
     }
-
-    public void SetTickets(double[] xs, string[] labels)
-    {
-        TickGenerators.NumericManual gen = new();
-        gen.SetTickets(xs, labels);
-        TickGenerator = gen;
-    }
 }
