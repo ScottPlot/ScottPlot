@@ -33,6 +33,19 @@ public class NumericManual : ITickGenerator
         Ticks = TickList.Where(x => range.Contains(x.Position)).ToArray();
     }
 
+    public void SetTickets(double[] xs, string[] labels)
+    {
+        if (xs.Length != labels.Length)
+        {
+            throw new ArgumentException($"xs length must be equal to labels length");
+        }
+
+        for (var i = 0; i < xs.Length; i++)
+        {
+            AddMajor(xs[i], labels[i]);
+        }
+    }
+
     public void Add(Tick tick)
     {
         TickList.Add(tick);
