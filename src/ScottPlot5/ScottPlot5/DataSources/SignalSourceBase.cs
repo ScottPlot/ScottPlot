@@ -11,8 +11,9 @@ public abstract class SignalSourceBase
     public int MinRenderIndex => Math.Max(0, MinimumIndex);
     public int MaxRenderIndex => Math.Min(Length - 1, MaximumIndex);
 
-    public double XOffset { get; set; }
-    public double YOffset { get; set; }
+    public double XOffset { get; set; } = 0;
+    public double YOffset { get; set; } = 0;
+    public double YScale { get; set; } = 1;
 
     public int GetIndex(double x, bool visibleDataOnly)
     {
@@ -60,7 +61,7 @@ public abstract class SignalSourceBase
         return new AxisLimits(
             left: XOffset + MinRenderIndex * Period,
             right: XOffset + MaxRenderIndex * Period,
-            bottom: rangeY.Min + YOffset,
-            top: rangeY.Max + YOffset);
+            bottom: rangeY.Min * YScale + YOffset,
+            top: rangeY.Max * YScale + YOffset);
     }
 }

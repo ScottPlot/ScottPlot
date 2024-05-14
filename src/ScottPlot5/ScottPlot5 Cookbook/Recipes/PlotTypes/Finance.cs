@@ -38,6 +38,34 @@ public class Finance : ICategory
         }
     }
 
+    public class FinanceChartBins : RecipeBase
+    {
+        public override string Name => "Finance Chart with Custom Time Bins";
+        public override string Description => "Finance charts can display price " +
+            "range information over arbitrary time scales.";
+
+        [Test]
+        public override void Execute()
+        {
+            DateTime timeOpen = new(1985, 09, 24, 9, 30, 0); // 9:30 AM
+            DateTime timeClose = new(1985, 09, 24, 16, 0, 0); // 4:00 PM
+            TimeSpan timeSpan = TimeSpan.FromMinutes(10); // 10 minute bins
+
+            List<OHLC> prices = new();
+            for (DateTime dt = timeOpen; dt <= timeClose; dt += timeSpan)
+            {
+                double open = Generate.RandomNumber(20, 40) + prices.Count;
+                double close = Generate.RandomNumber(20, 40) + prices.Count;
+                double high = Math.Max(open, close) + Generate.RandomNumber(5);
+                double low = Math.Min(open, close) - Generate.RandomNumber(5);
+                prices.Add(new OHLC(open, high, low, close, dt, timeSpan));
+            }
+
+            myPlot.Add.Candlestick(prices);
+            myPlot.Axes.DateTimeTicksBottom();
+        }
+    }
+
     public class FinanceRightAxis : RecipeBase
     {
         public override string Name => "Price on Right";
@@ -80,7 +108,7 @@ public class Finance : ICategory
             {
                 ScottPlot.Finance.SimpleMovingAverage sma = new(prices, windowSize);
                 var sp = myPlot.Add.Scatter(sma.Dates, sma.Means);
-                sp.Label = $"SMA {windowSize}";
+                sp.LegendText = $"SMA {windowSize}";
                 sp.MarkerSize = 0;
                 sp.LineWidth = 3;
                 sp.Color = Colors.Navy.WithAlpha(1 - windowSize / 30.0);

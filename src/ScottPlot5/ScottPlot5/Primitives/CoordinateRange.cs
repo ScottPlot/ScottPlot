@@ -82,4 +82,14 @@ public readonly record struct CoordinateRange(double Min, double Max)
 
         return new CoordinateRange(min, max);
     }
+
+    /// <summary>
+    /// Return a new range expanded to include the given point
+    /// </summary>
+    public CoordinateRange Expanded(double value)
+    {
+        double min = Math.Min(value, Min);
+        double max = Math.Max(value, Max);
+        return new CoordinateRange(min, max);
+    }
 }

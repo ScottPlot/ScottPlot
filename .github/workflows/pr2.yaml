@@ -1,0 +1,23 @@
+# This workflow is used for detailed analysis of PRs.
+# It builds every project for all platforms, but is very slow.
+
+name: PR2
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+# cancel old runs when new commands are made to the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  autoformat:
+    name: "Autoformat"
+    uses: ./.github/workflows/task-autoformat-check.yaml
+  full:
+    name: "Full Build"
+    uses: ./.github/workflows/task-full.yaml
+    permissions:
+      security-events: write

@@ -62,6 +62,15 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         Top = yRange.Max;
     }
 
+    public AxisLimits(IEnumerable<IPlottable> plottables)
+    {
+        ExpandingAxisLimits limits = new(plottables);
+        Left = limits.Left;
+        Right = limits.Right;
+        Bottom = limits.Bottom;
+        Top = limits.Top;
+    }
+
     public AxisLimits InvertedVertically() => new(Left, Right, Top, Bottom);
     public AxisLimits InvertedHorizontally() => new(Right, Left, Bottom, Top);
 
@@ -90,6 +99,7 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
     }
 
     public static AxisLimits NoLimits => new(double.NaN, double.NaN, double.NaN, double.NaN);
+    public static AxisLimits Unset => new(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity);
 
     public static AxisLimits VerticalOnly(double yMin, double yMax) => new(double.NaN, double.NaN, yMin, yMax);
 

@@ -24,3 +24,23 @@ public interface IColormap
     /// <param name="range">range of values spanned by this colormap</param>
     Color GetColor(double position, Range range);
 }
+
+public static class IColormapExtensions
+{
+    /// <summary>
+    /// Create a 1 by 256 bitmap displaying all values of a heatmap
+    /// </summary>
+    public static SKBitmap GetSKBitmap(this IColormap colormap, bool vertical)
+    {
+        uint[] argbs = Enumerable.Range(0, 256)
+           .Select(i => colormap.GetColor((vertical ? 255 - i : i) / 255f).ARGB)
+           .ToArray();
+
+        int bmpWidth = vertical ? 1 : 256;
+        int bmpHeight = !vertical ? 1 : 256;
+
+        SKBitmap bmp = Drawing.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
+
+        return bmp;
+    }
+}

@@ -331,7 +331,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public Range GetRange() => Range.GetRange(Intensities);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (Bitmap is null)
             Update(); // automatically generate the bitmap on first render if it was not generated manually

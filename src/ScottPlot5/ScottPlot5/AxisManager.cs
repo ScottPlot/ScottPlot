@@ -16,17 +16,17 @@ public class AxisManager
     /// <summary>
     /// Horizontal axes
     /// </summary>
-    internal List<IXAxis> XAxes { get; } = new();
+    internal List<IXAxis> XAxes { get; } = [];
 
     /// <summary>
     /// Vertical axes
     /// </summary>
-    internal List<IYAxis> YAxes { get; } = new();
+    internal List<IYAxis> YAxes { get; } = [];
 
     /// <summary>
-    /// Panels take up spce on one side of the data area (like a colorbar)
+    /// Panels take up space on one side of the data area (like a colorbar)
     /// </summary>
-    internal List<IPanel> Panels { get; } = new();
+    internal List<IPanel> Panels { get; } = [];
 
     /// <summary>
     /// A special panel
@@ -98,6 +98,24 @@ public class AxisManager
     public List<IAxisRule> Rules { get; } = [];
 
     /// <summary>
+    /// If enabled, AutoScale() will be called at the start of each render.
+    /// This can negatively impact performance of plots with an extremely large number of data points.
+    /// </summary>
+    public bool ContinuouslyAutoscale { get; set; } = false;
+
+    /// <summary>
+    /// When <see cref="ContinuouslyAutoscale"/> is true, 
+    /// this action is called before each frame is rendered.
+    /// Users can assign their own static function to customize continuous autoscaling behavior.
+    /// </summary>
+    public Action<RenderPack> ContinuousAutoscaleAction { get; set; } = DefaultContinuousAutoscaleAction;
+
+    public static void DefaultContinuousAutoscaleAction(RenderPack rp)
+    {
+        rp.Plot.Axes.AutoScale();
+    }
+
+    /// <summary>
     /// Contains state and logic for axes
     /// </summary>
     public AxisManager(Plot plot)
@@ -128,6 +146,19 @@ public class AxisManager
         foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
         {
             axis.Color(color);
+        }
+
+        Plot.Axes.Title.Label.ForeColor = color;
+    }
+
+    /// <summary>
+    /// Apply a single color to the label, tick labels, tick marks, and frame of the specified axis
+    /// </summary>
+    public void Color(IAxis axis, Color color)
+    {
+        if (axis is AxisBase ab)
+        {
+            ab.Color(color);
         }
 
         Plot.Axes.Title.Label.ForeColor = color;
@@ -198,6 +229,11 @@ public class AxisManager
         Panels.Remove(panel);
     }
 
+    public void AddPanel(IPanel panel)
+    {
+        Panels.Add(panel);
+    }
+
     /// <summary>
     /// Remove all bottom axes, create a DateTime bottom axis, add it to the plot, and return it.
     /// </summary>
@@ -212,6 +248,9 @@ public class AxisManager
 
         // setup the grid to use the new bottom axis
         Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+
+        // autoscale the new axis to fit data already on the plot
+        AutoScale();
 
         return dateAxis;
     }
@@ -261,7 +300,8 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
-        if (xAxis.Range.HasBeenSet) AutoScaler.InvertedX = left > right ? true : false;
+        if (xAxis.Range.HasBeenSet)
+            AutoScaler.InvertedX = left > right;
     }
 
     public void SetLimitsY(double bottom, double top, IYAxis yAxis)
@@ -269,7 +309,8 @@ public class AxisManager
         yAxis.Min = bottom;
         yAxis.Max = top;
 
-        if (yAxis.Range.HasBeenSet) AutoScaler.InvertedY = bottom > top ? true : false;
+        if (yAxis.Range.HasBeenSet)
+            AutoScaler.InvertedY = bottom > top;
     }
 
     public void SetLimitsX(double left, double right)
@@ -413,11 +454,7 @@ public class AxisManager
     /// </summary>
     public AxisLimits GetLimits()
     {
-        return new AxisLimits(
-            Bottom.Min,
-            Bottom.Max,
-            Left.Min,
-            Left.Max);
+        return GetLimits(Bottom, Left);
     }
 
     /// <summary>
@@ -489,6 +526,26 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Autoscale the given axes to accommodate the data from all plottables that use them
+    /// </summary>
+    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool horizontal = true, bool vertical = true)
+    {
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = AutoScaler.GetAxisLimits(Plot, xAxis, yAxis);
+
+        if (horizontal)
+        {
+            SetLimitsX(limits.Left, limits.Right, xAxis);
+        }
+
+        if (vertical)
+        {
+            SetLimitsY(limits.Bottom, limits.Top, yAxis);
+        }
+    }
+
+    /// <summary>
     /// Automatically expand the default axes to fit the data in all plottables.
     /// </summary>
     public void AutoScaleExpand()
@@ -554,16 +611,25 @@ public class AxisManager
         AutoScaleExpandY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the bottom horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX()
     {
         AutoScaleX(Bottom);
     }
 
+    /// <summary>
+    /// Autoscale the left vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY()
     {
         AutoScaleY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the supplied horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX(IXAxis xAxis)
     {
         ReplaceNullAxesWithDefaults();
@@ -571,6 +637,9 @@ public class AxisManager
         SetLimitsX(limits.Left, limits.Right, xAxis);
     }
 
+    /// <summary>
+    /// Autoscale the supplied vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY(IYAxis yAxis)
     {
         ReplaceNullAxesWithDefaults();
@@ -579,44 +648,66 @@ public class AxisManager
     }
 
     /// <summary>
-    /// Autoscale the given axes to accommodate the data from all plottables that use them
+    /// Autoscale the default (left and bottom) axis limits to fit the data of the supplied plottables
     /// </summary>
-    public void AutoScale(IXAxis xAxis, IYAxis yAxis, bool horizontal = true, bool vertical = true)
+    public void AutoScale(IEnumerable<IPlottable> plottables)
     {
+        if (!plottables.Any())
+            return;
+
         ReplaceNullAxesWithDefaults();
 
-        AxisLimits limits = AutoScaler.GetAxisLimits(Plot, xAxis, yAxis);
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimits(limits);
+    }
 
-        if (horizontal)
-        {
-            SetLimitsX(limits.Left, limits.Right, xAxis);
-        }
+    /// <summary>
+    /// Autoscale the default bottom horizontal axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleX(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
 
-        if (vertical)
-        {
-            SetLimitsY(limits.Bottom, limits.Top, yAxis);
-        }
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsX(limits);
+    }
+
+    /// <summary>
+    /// Autoscale the default left vertical axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleY(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsY(limits);
     }
 
     /// <summary>
     /// Adjust limits all axes to pan by the given distance in coordinate space
     /// </summary>
-    public void Pan(CoordinateSize distance)
+    public void Pan(CoordinateOffset distance)
     {
-        XAxes.ForEach(x => x.Range.Pan(distance.Width));
-        YAxes.ForEach(x => x.Range.Pan(distance.Height));
+        XAxes.ForEach(x => x.Range.Pan(distance.X));
+        YAxes.ForEach(x => x.Range.Pan(distance.Y));
     }
 
     /// <summary>
     /// Adjust limits all axes to pan by the given distance in pixel space
     /// </summary>
-    public void Pan(PixelSize distance)
+    public void Pan(PixelOffset offset)
     {
         if (Plot.RenderManager.LastRender.Count == 0)
             throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Width, Plot.RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(distance.Height, Plot.RenderManager.LastRender.DataRect)));
+        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -627,6 +718,15 @@ public class AxisManager
     {
         XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
         YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
+    }
+
+    /// <summary>
+    /// Modify limits of all axes to apply the given zoom.
+    /// Fractional values >1 zoom in and <1 zoom out.
+    /// </summary>
+    public void ZoomIn(double fracX = 1.0, double fracY = 1.0)
+    {
+        Zoom(fracX, fracY);
     }
 
     /// <summary>
@@ -690,5 +790,15 @@ public class AxisManager
     {
         AxisRules.SquareZoomOut rule = new(Bottom, Left);
         Rules.Add(rule);
+    }
+
+    /// <summary>
+    /// Disable visibility of all axes and titles so the data area fills the entire figure
+    /// </summary>
+    public void Frameless()
+    {
+        XAxes.ForEach(x => x.IsVisible = false);
+        YAxes.ForEach(x => x.IsVisible = false);
+        Title.IsVisible = false;
     }
 }

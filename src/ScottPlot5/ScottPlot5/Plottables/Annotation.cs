@@ -1,27 +1,33 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Annotation : IPlottable
+public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public Label Label { get; set; } = new();
-    public string Text { get => Label.Text; set => Label.Text = value; }
+    public override Label LabelStyle { get; set; } = new() { ShadowColor = Colors.Black.WithAlpha(.2) };
+
+    [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle")]
+    public Label Label { get => LabelStyle; set => LabelStyle = value; }
+
+    public string Text { get => LabelText; set => LabelText = value; }
+
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
     public float OffsetX { get; set; } = 10;
     public float OffsetY { get; set; } = 10;
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
 
-        Pixel px = Label.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY);
-
         using SKPaint paint = new();
-        Label.Render(rp.Canvas, px, paint);
+
+        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY, paint);
+
+        LabelStyle.Render(rp.Canvas, px, paint);
     }
 }

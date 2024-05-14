@@ -21,8 +21,11 @@ public class FillY : ICategory
             double[] ys1 = dataGen.RandomWalk(count, offset: -5);
             double[] ys2 = dataGen.RandomWalk(count, offset: 5);
 
-            var xyy = myPlot.Add.FillY(xs, ys1, ys2);
-            xyy.FillStyle.Color = Colors.Magenta.WithAlpha(100);
+            var fill = myPlot.Add.FillY(xs, ys1, ys2);
+            fill.FillColor = Colors.Blue.WithAlpha(100);
+            fill.LineColor = Colors.Blue;
+            fill.MarkerColor = Colors.Blue;
+            fill.LineWidth = 2;
         }
     }
 
@@ -44,15 +47,20 @@ public class FillY : ICategory
             var scatter1 = myPlot.Add.Scatter(xs, ys1);
             var scatter2 = myPlot.Add.Scatter(xs, ys2);
 
-            var xyy = myPlot.Add.FillY(scatter1, scatter2);
-            xyy.FillStyle.Color = Colors.Blue.WithAlpha(100);
+            var fill = myPlot.Add.FillY(scatter1, scatter2);
+            fill.FillColor = Colors.Blue.WithAlpha(.1);
+            fill.LineWidth = 0;
+
+            // push the fill behind the scatter plots
+            myPlot.MoveToBack(fill);
         }
     }
 
     public class Function : RecipeBase
     {
         public override string Name => "FillY with Custom Type";
-        public override string Description => "FillY plots can be created from data of any type if a conversion function is supplied.";
+        public override string Description => "FillY plots can be created from " +
+            "data of any type if a conversion function is supplied.";
 
         [Test]
         public override void Execute()
@@ -72,7 +80,9 @@ public class FillY : ICategory
             static (double, double, double) MyConverter((int, int, int) s) => (s.Item1, s.Item2, s.Item3);
 
             // create a filled plot from source data using the custom converter
-            myPlot.Add.FillY(data, MyConverter);
+            var fill = myPlot.Add.FillY(data, MyConverter);
+            fill.FillColor = Colors.Blue.WithAlpha(.2);
+            fill.LineColor = Colors.Blue;
         }
     }
 
@@ -91,20 +101,19 @@ public class FillY : ICategory
             double[] ys1 = dataGen.RandomWalk(count, offset: -5);
             double[] ys2 = dataGen.RandomWalk(count, offset: 5);
 
-            var xyy = myPlot.Add.FillY(xs, ys1, ys2);
-            xyy.FillStyle.Color = Colors.OrangeRed.WithAlpha(100);
+            var fill = myPlot.Add.FillY(xs, ys1, ys2);
+            fill.MarkerShape = MarkerShape.FilledDiamond;
+            fill.MarkerSize = 15;
+            fill.MarkerColor = Colors.Blue;
+            fill.LineColor = Colors.Blue;
+            fill.LinePattern = LinePattern.Dotted;
+            fill.LineWidth = 2;
+            fill.FillColor = Colors.Blue.WithAlpha(.2);
+            fill.FillHatch = new ScottPlot.Hatches.Striped(ScottPlot.Hatches.StripeDirection.DiagonalUp);
+            fill.FillHatchColor = Colors.Blue.WithAlpha(.4);
+            fill.LegendText = "Filled Area";
 
-            xyy.MarkerStyle.IsVisible = true;
-            xyy.MarkerStyle.Shape = MarkerShape.OpenSquare;
-            xyy.MarkerStyle.Size = 8;
-
-            xyy.LineStyle.AntiAlias = true;
-            xyy.LineStyle.Color = Colors.DarkBlue;
-            xyy.LineStyle.Pattern = LinePattern.Dotted;
-            xyy.LineStyle.Width = 2;
-            xyy.Label = "xyy";
-
-            myPlot.Legend.IsVisible = true;
+            myPlot.ShowLegend();
         }
     }
 }

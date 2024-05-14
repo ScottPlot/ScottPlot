@@ -2,6 +2,8 @@
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
+using System.Numerics;
+using ScottPlot.Rendering.RenderActions;
 
 namespace ScottPlot;
 
@@ -27,35 +29,44 @@ public class PlottableAdder(Plot plot)
         Annotation an = new()
         {
             Alignment = alignment,
+            Text = text,
+            LabelBackgroundColor = Colors.Yellow.WithAlpha(.75),
+            LabelBorderColor = Colors.Black,
+            LabelPadding = 5,
         };
-
-        an.Label.Text = text;
-        an.Label.BackColor = Colors.Yellow.WithAlpha(.75);
-        an.Label.BorderColor = Colors.Black;
-        an.Label.Padding = 5;
 
         Plot.PlottableList.Add(an);
 
         return an;
     }
 
-    public Arrow Arrow(Coordinates @base, Coordinates tip)
+    public Arrow Arrow(Coordinates arrowBase, Coordinates arrowTip)
     {
-        Arrow ar = new()
+        Color color = GetNextColor();
+
+        Arrow arrow = new()
         {
-            Color = GetNextColor(),
-            Base = @base,
-            Tip = tip,
+            Base = arrowBase,
+            Tip = arrowTip,
+            ArrowLineColor = color,
+            ArrowFillColor = color.WithAlpha(.3),
         };
-        Plot.PlottableList.Add(ar);
-        return ar;
+
+        Plot.PlottableList.Add(arrow);
+
+        return arrow;
     }
 
     public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
     {
-        Coordinates cBase = new(xBase, yBase);
-        Coordinates cTip = new(xTip, yTip);
-        return Arrow(cBase, cTip);
+        Coordinates arrowBase = new(xBase, yBase);
+        Coordinates arrowTip = new(xTip, yTip);
+        return Arrow(arrowBase, arrowTip);
+    }
+
+    public Arrow Arrow(CoordinateLine line)
+    {
+        return Arrow(line.Start, line.End);
     }
 
     public BarPlot Bar(Bar bar)
@@ -131,6 +142,36 @@ public class PlottableAdder(Plot plot)
         return bp;
     }
 
+    public Callout Callout(string text, double textX, double textY, double tipX, double tipY)
+    {
+        Coordinates labelCoordinates = new(textX, textY);
+        Coordinates lineCoordinates = new(tipX, tipY);
+        return Callout(text, labelCoordinates, lineCoordinates);
+    }
+
+    public Callout Callout(string text, Coordinates textLocation, Coordinates tipLocation)
+    {
+        Color color = GetNextColor();
+
+        Callout callout = new()
+        {
+            Text = text,
+            TextCoordinates = textLocation,
+            TipCoordinates = tipLocation,
+            ArrowLineColor = Colors.Transparent,
+            ArrowFillColor = color,
+            TextBackgroundColor = color.Lighten(.5),
+            TextBorderColor = color,
+            TextBorderWidth = 2,
+            TextColor = Colors.Black,
+            FontSize = 14,
+        };
+
+        Plot.PlottableList.Add(callout);
+
+        return callout;
+    }
+
     public CandlestickPlot Candlestick(List<OHLC> ohlcs)
     {
         OHLCSource dataSource = new(ohlcs);
@@ -157,13 +198,41 @@ public class PlottableAdder(Plot plot)
         return colorBar;
     }
 
+    public Coxcomb Coxcomb(IList<PieSlice> slices)
+    {
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
+    public Coxcomb Coxcomb(IEnumerable<double> values)
+    {
+        List<PieSlice> slices = new();
+        foreach (double value in values)
+        {
+            PieSlice slice = new()
+            {
+                Value = value,
+                FillColor = Palette.GetColor(slices.Count).WithOpacity(0.5),
+            };
+
+            slices.Add(slice);
+        }
+
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
     public Crosshair Crosshair(double x, double y)
     {
         Crosshair ch = new()
         {
             Position = new(x, y)
         };
-        ch.LineStyle.Color = GetNextColor();
+        Color color = GetNextColor();
+        ch.LineColor = color;
+        ch.TextColor = color;
         Plot.PlottableList.Add(ch);
         return ch;
     }
@@ -182,7 +251,7 @@ public class PlottableAdder(Plot plot)
 
     public DataStreamer DataStreamer(int points, double period = 1)
     {
-        double[] data = new double[points];
+        double[] data = Generate.NaN(points);
 
         DataStreamer streamer = new(Plot, data)
         {
@@ -197,14 +266,16 @@ public class PlottableAdder(Plot plot)
 
     public Ellipse Ellipse(Coordinates center, double radiusX, double radiusY, float rotation = 0)
     {
-        var ellipse = new Ellipse()
+        Color color = GetNextColor();
+
+        Ellipse ellipse = new()
         {
             Center = center,
             RadiusX = radiusX,
             RadiusY = radiusY,
-            Rotation = rotation
+            Rotation = rotation,
+            LineColor = color,
         };
-        ellipse.LineStyle.Color = GetNextColor();
 
         Plot.PlottableList.Add(ellipse);
         return ellipse;
@@ -301,12 +372,16 @@ public class PlottableAdder(Plot plot)
 
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
-        HorizontalLine line = new();
-        line.LineStyle.Width = width;
-        line.LineStyle.Color = color ?? GetNextColor();
-        line.Label.BackColor = line.LineStyle.Color;
-        line.LineStyle.Pattern = pattern;
-        line.Y = y;
+        Color color2 = color ?? GetNextColor();
+        HorizontalLine line = new()
+        {
+            LineWidth = width,
+            LineColor = color2,
+            LabelBackgroundColor = color2,
+            LabelFontColor = Colors.White,
+            LinePattern = pattern,
+            Y = y
+        };
         Plot.PlottableList.Add(line);
         return line;
     }
@@ -320,6 +395,13 @@ public class PlottableAdder(Plot plot)
         return span;
     }
 
+    public Legend Legend()
+    {
+        Legend legend = new(Plot) { IsVisible = true };
+        Plot.PlottableList.Add(legend);
+        return legend;
+    }
+
     public LinePlot Line(Coordinates start, Coordinates end)
     {
         LinePlot lp = new()
@@ -329,7 +411,7 @@ public class PlottableAdder(Plot plot)
         };
 
         lp.LineStyle.Color = GetNextColor();
-        lp.MarkerStyle.Fill.Color = lp.LineStyle.Color;
+        lp.MarkerStyle.FillColor = lp.LineStyle.Color;
 
         Plot.PlottableList.Add(lp);
 
@@ -348,11 +430,14 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
+
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
     {
-        Plottables.Marker mp = new()
+        Marker mp = new()
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor(),
             Location = new Coordinates(x, y),
         };
 
@@ -372,7 +457,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -386,7 +473,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -400,7 +489,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -414,7 +505,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -428,7 +521,9 @@ public class PlottableAdder(Plot plot)
 
         Plottables.Markers mp = new(ss)
         {
-            MarkerStyle = new MarkerStyle(shape, size, color ?? GetNextColor()),
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
         };
 
         Plot.PlottableList.Add(mp);
@@ -478,7 +573,12 @@ public class PlottableAdder(Plot plot)
 
     public Polygon Polygon(Coordinates[] coordinates)
     {
-        Polygon poly = new(coordinates);
+        Color color = GetNextColor();
+        Polygon poly = new(coordinates)
+        {
+            LineColor = color,
+            FillColor = color.WithAlpha(.5),
+        };
         Plot.PlottableList.Add(poly);
         return poly;
     }
@@ -486,9 +586,28 @@ public class PlottableAdder(Plot plot)
     public Polygon Polygon<TX, TY>(IEnumerable<TX> xs, IEnumerable<TY> ys)
     {
         Coordinates[] coordinates = NumericConversion.GenericToCoordinates(xs, ys);
-        Polygon poly = new(coordinates);
-        Plot.PlottableList.Add(poly);
-        return poly;
+        return Polygon(coordinates);
+    }
+
+    public Radar Radar(IReadOnlyList<RadarSeries> series)
+    {
+        Radar radar = new(series);
+        Plot.PlottableList.Add(radar);
+        return radar;
+    }
+
+    public Radar Radar(IEnumerable<IEnumerable<double>> series)
+    {
+        List<RadarSeries> radarSeries = new();
+        foreach (var values in series)
+        {
+            var radarSerie = new RadarSeries(values.ToList(), Palette.GetColor(radarSeries.Count).WithOpacity(0.5));
+            radarSeries.Add(radarSerie);
+        }
+
+        Radar radar = new(radarSeries);
+        Plot.PlottableList.Add(radar);
+        return radar;
     }
 
     public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)
@@ -508,15 +627,17 @@ public class PlottableAdder(Plot plot)
 
     public Rectangle Rectangle(double left, double right, double bottom, double top)
     {
+        Color color = GetNextColor();
         Rectangle rp = new()
         {
             X1 = left,
             X2 = right,
             Y1 = bottom,
             Y2 = top,
+            LineColor = color,
+            FillColor = color.WithAlpha(.5),
         };
 
-        rp.FillStyle.Color = GetNextColor();
         Plot.PlottableList.Add(rp);
         return rp;
     }
@@ -524,9 +645,12 @@ public class PlottableAdder(Plot plot)
     public Scatter Scatter(IScatterSource source, Color? color = null)
     {
         Color nextColor = color ?? GetNextColor();
-        Scatter scatter = new(source);
-        scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
+        Scatter scatter = new(source)
+        {
+            LineColor = nextColor,
+            MarkerFillColor = nextColor,
+            MarkerLineColor = nextColor,
+        };
         Plot.PlottableList.Add(scatter);
         return scatter;
     }
@@ -570,7 +694,7 @@ public class PlottableAdder(Plot plot)
         ScatterSourceGenericArray<T1, T2> source = new(xs, ys);
         Scatter scatter = new(source);
         scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
+        scatter.MarkerStyle.FillColor = nextColor;
         Plot.PlottableList.Add(scatter);
         return scatter;
     }
@@ -581,7 +705,7 @@ public class PlottableAdder(Plot plot)
         ScatterSourceGenericList<T1, T2> source = new(xs, ys);
         Scatter scatter = new(source);
         scatter.LineStyle.Color = nextColor;
-        scatter.MarkerStyle.Fill.Color = nextColor;
+        scatter.MarkerStyle.FillColor = nextColor;
         Plot.PlottableList.Add(scatter);
         return scatter;
     }
@@ -685,43 +809,19 @@ public class PlottableAdder(Plot plot)
     public Signal Signal(double[] ys, double period = 1, Color? color = null)
     {
         SignalSourceDouble source = new(ys, period);
-
-        Signal sig = new(source)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        return Signal(source, color);
     }
 
     public Signal Signal<T>(T[] ys, double period = 1, Color? color = null)
     {
         SignalSourceGenericArray<T> source = new(ys, period);
-
-        Signal sig = new(source)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        return Signal(source, color);
     }
 
     public Signal Signal<T>(List<T> ys, double period = 1, Color? color = null)
     {
         SignalSourceGenericList<T> source = new(ys, period);
-
-        Signal sig = new(source)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        return Signal(source, color);
     }
 
     public SignalConst<T> SignalConst<T>(T[] ys, double period = 1, Color? color = null)
@@ -737,11 +837,9 @@ public class PlottableAdder(Plot plot)
         return sig;
     }
 
-    public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
+    public SignalXY SignalXY(ISignalXYSource source, Color? color = null)
     {
-        SignalXYSourceDoubleArray dataSource = new(xs, ys);
-
-        SignalXY sig = new(dataSource)
+        SignalXY sig = new(source)
         {
             Color = color ?? GetNextColor()
         };
@@ -751,18 +849,16 @@ public class PlottableAdder(Plot plot)
         return sig;
     }
 
+    public SignalXY SignalXY(double[] xs, double[] ys, Color? color = null)
+    {
+        SignalXYSourceDoubleArray source = new(xs, ys);
+        return SignalXY(source, color);
+    }
+
     public SignalXY SignalXY<TX, TY>(TX[] xs, TY[] ys, Color? color = null)
     {
-        var dataSource = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
-
-        SignalXY sig = new(dataSource)
-        {
-            Color = color ?? GetNextColor()
-        };
-
-        Plot.PlottableList.Add(sig);
-
-        return sig;
+        var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
+        return SignalXY(source, color);
     }
 
     public Text Text(string text, Coordinates location)
@@ -772,23 +868,40 @@ public class PlottableAdder(Plot plot)
 
     public Text Text(string text, double x, double y)
     {
-        Text txt = new();
-        txt.Label.Text = text;
-        txt.Label.BackColor = Colors.Transparent;
-        txt.Label.BorderColor = Colors.Transparent;
-        txt.Location = new(x, y);
+        Text txt = new()
+        {
+            LabelText = text,
+            LabelBackgroundColor = Colors.Transparent,
+            LabelBorderColor = Colors.Transparent,
+            Location = new(x, y)
+        };
+
         Plot.PlottableList.Add(txt);
+
         return txt;
+    }
+
+    public VectorField VectorField(IList<RootedCoordinateVector> vectors, Color? color = null)
+    {
+        VectorFieldDataSourceCoordinatesList vs = new(vectors);
+        VectorField field = new(vs);
+        field.ArrowStyle.LineStyle.Color = color ?? GetNextColor();
+        field.ArrowStyle.LineStyle.Width = 2;
+        Plot.PlottableList.Add(field);
+        return field;
     }
 
     public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
-        VerticalLine line = new();
-        line.LineStyle.Width = width;
-        line.LineStyle.Color = color ?? GetNextColor();
-        line.Label.BackColor = line.LineStyle.Color;
-        line.LineStyle.Pattern = pattern;
-        line.X = x;
+        Color color2 = color ?? GetNextColor();
+        VerticalLine line = new()
+        {
+            LineWidth = width,
+            LineColor = color2,
+            LabelBackgroundColor = color2,
+            LinePattern = pattern,
+            X = x
+        };
         Plot.PlottableList.Add(line);
         return line;
     }

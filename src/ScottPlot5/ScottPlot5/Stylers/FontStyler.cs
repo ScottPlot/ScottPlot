@@ -48,8 +48,5 @@ public class FontStyler(Plot plot)
         }
 
         Plot.Legend.SetBestFontOnEachRender = true;
-
-        // TODO: also modify plotted text by adding an IHasText interface
     }
-
 }

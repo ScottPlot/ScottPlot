@@ -149,10 +149,10 @@ public class ScatterGL : Scatter, IPlottableGL
         MarkerProgram.Use();
         MarkerProgram.SetTransform(CalcTransform());
         MarkerProgram.SetMarkerSize(MarkerStyle.Size);
-        MarkerProgram.SetFillColor(MarkerStyle.Fill.Color.ToTkColor());
+        MarkerProgram.SetFillColor(MarkerStyle.FillColor.ToTkColor());
         MarkerProgram.SetViewPortSize(Axes.DataRect.Width, Axes.DataRect.Height);
-        MarkerProgram.SetOutlineColor(MarkerStyle.Outline.Color.ToTkColor());
-        MarkerProgram.SetOpenFactor(1.0f - (float)MarkerStyle.Outline.Width * 2 / MarkerStyle.Size);
+        MarkerProgram.SetOutlineColor(MarkerStyle.LineColor.ToTkColor());
+        MarkerProgram.SetOpenFactor(1.0f - (float)MarkerStyle.LineWidth * 2 / MarkerStyle.Size);
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.Points, 0, VerticesCount);
     }

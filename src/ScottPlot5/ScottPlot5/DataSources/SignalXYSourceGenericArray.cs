@@ -4,6 +4,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 {
     public TX[] Xs { get; set; }
     public TY[] Ys { get; set; }
+
     public bool Rotated
     {
         get => false;
@@ -12,6 +13,8 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
+    public double YScale { get; set; } = 1;
+
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
 
@@ -78,17 +81,17 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double min = NumericConversion.GenericToDouble(Ys, index1);
         double max = NumericConversion.GenericToDouble(Ys, index1);
 
-        var minindex = Math.Min(index1, index2);
-        var maxindex = Math.Max(index1, index2);
+        var minIndex = Math.Min(index1, index2);
+        var maxIndex = Math.Max(index1, index2);
 
-        for (int i = minindex; i <= maxindex; i++)
+        for (int i = minIndex; i <= maxIndex; i++)
         {
             double value = NumericConversion.GenericToDouble(Ys, i);
             min = Math.Min(value, min);
             max = Math.Max(value, max);
         }
 
-        return new CoordinateRange(min + YOffset, max + YOffset);
+        return new CoordinateRange(min * YScale + YOffset, max * YScale + YOffset);
     }
 
     /// <summary>
@@ -121,6 +124,12 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double unitsPerPixelX = axes.XAxis.Width / rp.DataRect.Width;
         double start = axes.XAxis.Min + unitsPerPixelX * pixelColumnIndex;
         double end = start + unitsPerPixelX;
+
+        // add slight overlap to prevent floating point errors from missing points
+        // https://github.com/ScottPlot/ScottPlot/issues/3665
+        double overlap = unitsPerPixelX * .01;
+        end += overlap;
+
         var (startPosition, startIndex) = SearchIndex(start, rng);
         var (endPosition, endIndex) = SearchIndex(end, rng);
         int pointsInRange = Math.Abs(endPosition - startPosition);
@@ -130,17 +139,17 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             yield break;
         }
 
-        double yStart = NumericConversion.GenericToDouble(Ys, startIndex);
-        yield return new Pixel(xPixel, axes.GetPixelY(yStart + YOffset)); // enter
+        double yStart = NumericConversion.GenericToDouble(Ys, startIndex) * YScale + YOffset;
+        yield return new Pixel(xPixel, axes.GetPixelY(yStart)); // enter
 
         if (pointsInRange > 1)
         {
             int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex + 1;
-            double yEnd = NumericConversion.GenericToDouble(Ys, lastIndex);
+            double yEnd = NumericConversion.GenericToDouble(Ys, lastIndex) * YScale + YOffset;
             CoordinateRange yRange = GetRangeY(startIndex, lastIndex); //YOffset is added in GetRangeY
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Min)); // min
             yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
-            yield return new Pixel(xPixel, axes.GetPixelY(yEnd) + YOffset); // exit
+            yield return new Pixel(xPixel, axes.GetPixelY(yEnd)); // exit
         }
     }
 
@@ -155,7 +164,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         if (firstPointPosition > MinimumIndex)
         {
             double x = NumericConversion.GenericToDouble(Xs, firstPointIndex - 1) + XOffset;
-            double y = NumericConversion.GenericToDouble(Ys, firstPointIndex - 1) + YOffset;
+            double y = NumericConversion.GenericToDouble(Ys, firstPointIndex - 1) * YScale + YOffset;
             float beforeX = axes.GetPixelX(x);
             float beforeY = axes.GetPixelY(y);
             Pixel beforePoint = new(beforeX, beforeY);
@@ -178,7 +187,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         if (lastPointPosition <= MaximumIndex)
         {
             double x = NumericConversion.GenericToDouble(Xs, lastPointIndex) + XOffset;
-            double y = NumericConversion.GenericToDouble(Ys, lastPointIndex) + YOffset;
+            double y = NumericConversion.GenericToDouble(Ys, lastPointIndex) * YScale + YOffset;
             float afterX = axes.GetPixelX(x);
             float afterY = axes.GetPixelY(y);
             Pixel afterPoint = new(afterX, afterY);
@@ -230,14 +239,14 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         for (int i = 0; i < Xs.Length; i++)
         {
             double dX = (NumericConversion.GenericToDouble(Xs, i) + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (NumericConversion.GenericToDouble(Ys, i) + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
+            double dY = (NumericConversion.GenericToDouble(Ys, i) * YScale + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
 
             if (distanceSquared <= closestDistanceSquared)
             {
                 closestDistanceSquared = distanceSquared;
                 closestX = NumericConversion.GenericToDouble(Xs, i) + XOffset;
-                closestY = NumericConversion.GenericToDouble(Ys, i) + YOffset;
+                closestY = NumericConversion.GenericToDouble(Ys, i) * YScale + YOffset;
                 closestIndex = i;
             }
         }

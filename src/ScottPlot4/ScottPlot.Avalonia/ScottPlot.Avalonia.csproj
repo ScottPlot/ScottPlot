@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFrameworks>net462;net472;netcoreapp3.1;net6.0</TargetFrameworks>
+        <TargetFrameworks>net462;net472;net48;net6.0-windows;net8.0</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.73</Version>
-        <AssemblyVersion>4.1.73.0</AssemblyVersion>
-        <FileVersion>4.1.73.0</FileVersion>
+        <Version>4.1.74</Version>
+        <AssemblyVersion>4.1.74.0</AssemblyVersion>
+        <FileVersion>4.1.74.0</FileVersion>
 
         <AssemblyName>ScottPlot.Avalonia</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>

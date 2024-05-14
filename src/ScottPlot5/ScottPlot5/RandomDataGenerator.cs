@@ -15,17 +15,22 @@ public class RandomDataGenerator
     /// <summary>
     /// To select right random number generator
     /// </summary>
-    private readonly Random Rand;
+    private Random Rand;
 
     /// <summary>
     /// Create a random number generator.
-    /// The seed is random by deafult, but could be fixed to the defined value
+    /// The seed is random by default, but could be fixed to the defined value
     /// </summary>
     public RandomDataGenerator(int? seed = null)
     {
         Rand = seed.HasValue
             ? new Random(seed.Value)
             : GlobalRandomThread.Value!;
+    }
+
+    public void Seed(int seed)
+    {
+        Rand = new(seed);
     }
 
     public static RandomDataGenerator Generate { get; private set; } = new(0);
@@ -89,6 +94,14 @@ public class RandomDataGenerator
     public byte RandomByte()
     {
         return (byte)Rand.Next(256);
+    }
+
+    /// <summary>
+    /// Return a random byte between the given values (inclusive)
+    /// </summary>
+    public byte RandomByte(byte min, byte max)
+    {
+        return (byte)Rand.Next(min, max + 1);
     }
 
     /// <summary>
@@ -215,7 +228,7 @@ public class RandomDataGenerator
     /// </summary>
     public List<OHLC> RandomOHLCs(int count, DateTime start)
     {
-        DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count, start);
+        DateTime[] dates = ScottPlot.Generate.ConsecutiveWeekdays(count, start);
         TimeSpan span = TimeSpan.FromDays(1);
 
         double mult = 1;

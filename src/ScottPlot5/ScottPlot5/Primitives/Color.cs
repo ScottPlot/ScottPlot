@@ -41,7 +41,7 @@ public readonly struct Color
 
     public override string ToString()
     {
-        return $"Color R={R}, G={G}, B={B}, A={A}";
+        return $"Color {ToHex()} (R={R}, G={G}, B={B}, A={A})";
     }
 
     public Color(byte red, byte green, byte blue, byte alpha = 255)
@@ -109,6 +109,11 @@ public readonly struct Color
 
     public static Color Gray(byte value) => new(value, value, value);
 
+    public static Color FromARGB(int argb)
+    {
+        return FromARGB(argb);
+    }
+
     public static Color FromARGB(uint argb)
     {
         byte alpha = (byte)(argb >> 24);
@@ -142,6 +147,18 @@ public readonly struct Color
     public static Color[] FromHex(string[] hex)
     {
         return hex.Select(x => FromHex(x)).ToArray();
+    }
+
+    public static Color FromColor(System.Drawing.Color color)
+    {
+        return new Color(color.R, color.G, color.B, color.A);
+    }
+
+    public string ToHex()
+    {
+        return Alpha == 255
+            ? $"#{R:X2}{G:X2}{B:X2}"
+            : $"#{R:X2}{G:X2}{B:X2}{A:X2}";
     }
 
     public static Color FromSKColor(SKColor skcolor)
@@ -333,5 +350,13 @@ public readonly struct Color
                 ((uint)premultipliedGreen << 8) |
                 ((uint)premultipliedBlue << 0);
         }
+    }
+
+    public static Color RandomHue()
+    {
+        float hue = (float)Generate.RandomNumber();
+        float saturation = 1;
+        float luminosity = 0.5f;
+        return Color.FromHSL(hue, saturation, luminosity);
     }
 }

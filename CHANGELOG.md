@@ -1,4 +1,137 @@
+## ScottPlot 5.0.35
+* Legend: Added `Plot.ShowLegend()` overload that accepts an `Edge` for quickly adding a legend outside the data area (#3672, #3635)
+* Radar Plot: New plot type (also called a spider charts or star charts) for representing multi-axis data as a 2D shape on a circular axis system (#3457, #3780) @bclehmann
+* Coxcomb Plot: New plot type like a pie graph where the angle of slices is constant but the radii are not (#3457, #3780) @bclehmann
+* Axes: Added `LabelFormatter` property to `DateTimeAutomatic` for custom formatting of DateTime tick labels (#3783) @loyvsc
+* Rendering: Improve how backgrounds are drawn on on plots using a custom `ScaleFactor` (#3818) @MCF
+* Plot: Added `Plot.Clear<T>()` as an alias for `Plot.Remove<T>()` to remove all plottables of the given type (#3820, #3804) @CoderPM2011
+
+## ScottPlot 5.0.34
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
+* Axes: Added `AutoScale()` overloads that accept user-defined lists of plottables (#3776) @levipara
+* SignalConst: Properly implement range search to achieve extreme performance improvements for large datasets (#3778) @StendProg @bclehmann @Cardroid
+* Ticks: Added options for minor ticks when using DateTime axes (#3779, #3408) @EricEzaM
+* Label: Improved support for measurement of labels with null strings (#3736) @Or8e4m4n
+
+## ScottPlot 5.0.33
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-04_
+* Markers: Reduced memory allocations and improved performance during rendering (#3767) @drolevar
+* Axes: Prevent exceptions for conditions where tick generation produces no ticks (#3768) @drolevar @bclehmann
+* Signal: Added an experimental signal source that uses caching of binned ranges to improve performance of large datasets (#3718) @Cardroid
+* Label: Added `Measure()` overloads to facilitate label size evaluation without requiring `SKPaint` (#3761) @aespitia
+* Signal: Fix rendering artifacts for `List<T>` data sources introduced in version 5.0.31 (#3765, #3747) @Limula-PMA
+* Crosshair: Added options for a marker to be rendered at the intersection if `MarkerShape` is defined
+* Label: Added `FontFile` and `SetTypeface()` to allow users to apply custom fonts (#3722) @kebox7
+* SignalXY: Added `ConnectStyle` property to mimic scatter plots and allow for step display style (#3764) @kareem469
+
+## ScottPlot 5.0.32
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-01_
+* Image: Added support support conversion to/from pixel value arrays to facilitate differential image analysis and testing (#3748, #3727)
+* Layout: Improve measurement of vertical axis tick labels (#3736) @ebarnard
+* Annotation: Improved positioning of annotations containing many lines (#3749, #3700) @LerkLin
+* Label: Significantly improved precision of single and multi-line text measurement and alignment (#3700)
+* Axis Line: Set default line width to 1 which also improved default appearance of crosshair (#3752) @fdesordi
+* Rendering: Copy the plottable list inside the render loop to facilitate plottable list modification mid-render (#3753) @ZSYMAX
+* Controls: Exposed `ZoomRectangle.LineStyle` setter to support advanced customization of middle-click-drag zoom rectangle (#3754) @Graat
+* Markers: Separate `LineColor`, `LineWidth`, etc. from `OutlineColor`, `OutlineWidth`, etc. to allow separate customization of line-based vs. fill-based marker shapes (#3755, #3716) @CD-SailingPerf
+* Legend: Added `TightHorizontalWrapping` flag to allow items in horizontally oriented legends to wrap without aligning to columns (#3758) @MCF
+
+## ScottPlot 5.0.31
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-27_
+* Arrow: Refactored the arrow system to support multiple arrow types including user-provided ones (#3745, #3697)
+* Color: Colors can be created from System.Drawing colors with `ScottPlot.Color.FromColor(System.Drawing.Color.Blue)` (#3745)
+* Signal and SignalXY: Added `YScale` parameter to display data vertically scaled by the specified fraction (#3711, #3708) @feichti92
+* Generate: Added `ConsecutiveHours()`, `ConsecutiveDays()`, `ConsecutiveWeekdays()`, to replace `Generate.DateTime` methods (#3721)
+
+## ScottPlot 5.0.30
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
+* Bar: Set default line width to 1 so error bars are visible without requiring line customization (#3741) @Kareltje1980
+* Controls: Added a `Interaction.ChangeOpposingAxesTogether` flag to enable mouse actions to one axis to be applied to all axes with the same orientation (#3729) @rubenslkirchner
+* DataLogger: Remove requirement for new data points to contain ascending X values (#3737) @TenebrosFR
+* RandomWalk2D: Created `ScottPlot.DataGenerators.RandomWalk2D` for easily generating 2D random data with randomly changing velocity
+* Ticks: Improve tick distribution by using the `TickLabelStyle` font size to evaluate maximum tick label size (#3736) @ebarnard
+
+
+## ScottPlot 5.0.29
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-26_
+* Axes: Added a `Plot.Axes.ContinuouslyAutoscale` flag useful for plots containing continuously updating data (#3732) @rubenslkirchner
+* DataStreamer: Improved axis limit management behavior (#3732) @rubenslkirchner
+* Plot: Improved `CoordinateRect()` support for inverted axes (#3731) @Fokatu
+* Grid: Improved behavior of `MajorLineWidth` property
+* Cookbook: Demonstrate grid alignment with non-standard axes (#3714) @MichaelKuelshammer
+* Demo: Improved strategy for axis limit copying in the shared axis demo (#3729) @rubenslkirchner
+
+## ScottPlot 5.0.28
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-25_
+* Marker: Refactored marker system to support improved styling and the ability to use custom markers (#3716, #3141)
+* Interpolation: Improved control points for the first and last points of an interpolated cubic Bézier spline (#3717) @drolevar
+* FillY: Improved default line style (#3726, #3723) @SebastianDirks @Fruchtzwerg94
+* Plot: Added `MoveToFront()` and `MoveToBack()` to control the order plottables are rendered
+* Scatter: Disable marker outline visibility by default (#3720)
+* Markers: Disable rendering of lines when `LineWidth` is `0` (#3720)
+* Scatter: Added support for filling above and below the curve (#3318, #3380) @xichaoqiang @Diddlik @slotinvo
+* DataStreamer: Added `ContinuouslyAutoscale` flag to allow the vertical range to always tightly fit the data (#3561) @hazenjaqdx3 @zhhding @Xhichn
+* Markers: Added `FillOutline` flag to make drawing lines on filled markers an opt-in feature
+
+## ScottPlot 5.0.27
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-23_
+* Signal: Corrected floating point error that caused points to be dropped in rare conditions (#3665) @mjazd
+* DataStreamer: Added an optional argument to `ViewWipeRight()` that sets the fraction of oldest data to hide (#3668) @mloppnow
+* Label: Refactored plottables to use consistently named properties. Properties such as `plottable.Label.FontColor` are now `plottable.Label.FontColor`, or `plottable.LabelStyle.FontColor`. Referencing obsolete property names yield build errors with messages that indicate names of the new properties to use. (#3658, #3666)
+* Plottables: Styling objects `LabelStyle`, `LineStyle`, `MarkerStyle`, etc. are now readonly. Their contents may be set, and most plottables expose shortcuts to their properties. (#3658, #3666)
+* Plot: Added `RenderInMemory()` (alias for `GetImage()`) so users can force a render as part of their startup process (#3674) Boris
+* Ticks: improve appearance of rotated multiline tick labels (#3673) @aespitia
+* Demo: Add an example window where the legend is displayed outside the plot control (#3672, #3635) @mikeKuester @Graat
+* Demo: Fix mouse tracking logic to improve behavior of the multi-series mouseover demo (#3680, #3684) @jamaa @Graat
+* Ticks: Refined tick label measurement for improved tick spacing (#3689)
+* Legend: Added many additional customization options and support for multiple shapes (#3689)
+* Legend: Text appearing in the legend for many plot types has been renamed from `Label` to `LegendText` (#3689)
+* Rendering: Added `Plot.GetSvgXml()` so plots can create SVG images in memory without saving to disk (#3694) @aespitia
+* Bar: Improved alignment of value labels on horizontal bar charts (#3698) @aespitia
+* Legend: Created a `LegendPanel` to allow legends to be displayed outside the data area (#3672, #3635) @Graat @mikeKuester
+* Axis: Prevent left axis from appearing if no plottables use it (#3637) @jpgarza93
+* Label: Added `BorderRadius` to support backgrounds and outlines with rounded edges (#3659)
+* Axis Rules: Changed behavior of axis rules to reduce reliance on previous renders (#3674, #1966, #3547)
+* Blazor: Numerous improvements to the Blazor cookbook (#3667) @KroMignon
+* Finance: Improve support for DateTime candlesticks before 1900 where OADate is negative (#3678)
+* Label: Added ability to separately control background vs. text Anti-Aliasing (#3686)
+* Ticks: Use system `CultureInfo` to generate numeric tick labels (#3688, #3687) @xantiva @mikeKuester
+* Plottables: Made all `Render()` methods `virtual void` to facilitate advanced customization (#3693) @sdhongjun
+* Function: Improve function plot performance by only calculating visible range (#3703) @Matthew-Chidlow
+
+## ScottPlot 5.0.26
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
+* Function: Improved autoscaling behavior and respect for user-defined horizontal ranges (#3618) @Matthew-Chidlow  
+* Function: Exposed `MinX` and `MaxX` to allow users to restrict display to a horizontal range (#3595, #3603) @Matthew-Chidlow @Dibyanshuaman
+* Axis Lines: Added `ExcludeFromLegend` so text can be added to axis line labels without appearing in the legend (#3612) @MCF
+* WPF: Added `GetPlotPixelPosition()` for getting mouse position relative to the figure (#3622) @KroMignon
+* Scatter: Upgraded the default smooth behavior to use cubic spline interpolation and exposed `SmoothTension` (#3623, #3606, #3274, #3566, #3629) @drolevar
+* Vector Field: Added a new plot type to display a collection of rooted vectors (#3625, #3626, #3632, #3630, #3631) @bclehmann
+* AxisLine: Improve appearance in of the key displayed in the legend (#3627, #3613) @MCF
+* Crosshair: Expose `VerticalLine` and `HorizontalLine` for to allow axis-specific customization (#3638) @Fruchtzwerg94 @heartacker
+* AxisLine: Added properties for faster styling including an optional `TextAlignment` setting (#3640, #3624) @MCF
+* Axes: Improved autoscaling support behavior for plots where nonstandard axes are in use (#3641, #3637) @KroMignon @jpgarza93
+* WinUI: Added automatic display scaling detection and correction (#3642) @PZidlik
+* Bar: Added a `CenterLabel` flag to cause value labels to be displayed centered within a bar (#3391) @tibormarchynzoom
+* FormsPlot: Allow plots to persist through `Show()` and `Close()` events (#3643, #3589) @CodeBehemoth @bwedding @Kruno313
+* Callout: New plot type that displays text with an arrow that points to a location on the plot (#3650, #3654) @NicolasLairNET
+* Cookbook: Simplified function recipes to use static methods (#3656, #3655) @abdul-muyeed
+* Demo: Created a WPF demo application to document WPF-specific topics like display scaling (#3585, #3622) @KroMignon @MagicFawkes
+* Blazor: Fixed issue causing the `ScottPlot.Blazor` package to install the SkiaSharp WinForms control (#3621) @angelofb
+
+## ScottPlot 4.1.74
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-14_
+* Security: Use System.Drawing.Common version 4.7.2 to address [CVE-2021-26701](https://github.com/advisories/GHSA-ghhp-997w-qr28)
+* Package: Target supported versions of .NET Framework (4.6.2, 4.7.2, and 4.8) and .NET (6.0 and 8.0)
+
+## ScottPlot 5.0.25
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-08_
+* NuGet: Use snupkg format to include debug symbols (#3496)
+* Scatter: Fixed indexing error affecting `GetNearest()` (#3616, #3461) @Matthew-Chidlow @SongPing @sunshuaize @mikeKuester
+* Generate: Exposed a static `RandomWalker` instance for easily generating random walk datasets
+
 ## ScottPlot 5.0.24
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-04-07_
 * Ticks: Modified `NumericFixedInterval` to add support for inverted axes (#3567) @Alexander-png
 * Bar plot: Improved support for labels on horizontally oriented bar plots (#3546, #3520) @aespitia @yui1227
 * Axis: Added new axis rules for edge locking, center locking, and tick snapping (#3547) @BrianAtZetica
@@ -19,9 +152,14 @@
 * Signal: Added support for inverted horizontal axes (#3594) @Excustic
 * Axes: New helper methods `Plot.Axes.InvertX()`, `Plot.Axes.RectifyX()`, and similar for Y (#3594)
 * Rendering: Improved performance for plot types with many lines (#3601) @drolevar
-* Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman
+* Function Plot: Improve support for functions with limited X ranges (#3595, #3603) @Dibyanshuaman @Matthew-Chidlow
 * Controls: All controls now include `Reset()` overloads for resetting or replacing the `Plot` (#3604, #3353) @aniketkumar7 @jon-rizzo
 * Scatter: The `Smooth` property now allows points to be connected with smooth lines (#3606, #3274, #3566) @bjschwarz @ja1234567 @bwedding @CBrauer
+* Layout: Added logic to reduce the size of axes which are visible but not used by any plottable (#3608)
+* Colorbar: Improved positioning and support for adding multiple colorbars to plots (#3294, #3560, #3586) @NateEbling @mawbydp @hnMel
+* Colorbar: Added a `Label` which users can customize to display an optional title (#3611) @mawbydp
+* SignalXY: Added support for markers and marker styling (#3602, #3609) @Giviruk
+* Scatter: Added support for `MinRenderIndex` and `MaxRenderIndex` to limit display to a portion of the data (#3614, #3308) @wellsw
 
 ## ScottPlot 5.0.23
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-03-24_
@@ -670,7 +808,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-08-11_
 * Palette: `ScottPlot.Palette` has been refactored to replace `ScottPlot.Drawing.Palette` and `ScottPlot.Drawing.Colorset` (#2024)
 * Palette: Palettes now implement `IEnumerable` and colors can be retrieved using `foreach` (#2028)
 * Render: Improved thread safety of the render lock system (#2030) @anprevost
-* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878)Michael99
+* Scatter: Exposed `SmoothTension` to customize behavior when `Smooth` is enabled (#1878) @Michael99
 
 ## ScottPlot 4.1.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-07-09_
@@ -858,7 +996,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2022-01-01_
 * MarkerPlot: Improved data area clipping (#1423, #1459) @PremekTill, @lucabat, and @AndXaf
 * MarkerPlot: Improved key in legend (#1459, #1454) @PremekTill and @Logicman111
 * Style: Plottables that implement `IStylable` are now styled when `Plot.Style()` is called. Styles are now improved for `ScaleBar` and `Colorbar` plot types. (#1451, #1447) @diluculo
-* Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) Thanks @Syntaxrabbit
+* Population plot: Population plots `DataFormat` now have a `DataFormat` member that displays individual data points on top of a bar graph representing their mean and variance (#1440) @Syntaxrabbit
 * SignalXY: Fixed bug affecting filled plots with zero area (#1476, #1477) @chenxuuu
 * Cookbook: Added example showing how to place markers colored according to a colormap displayed in a colorbar (#1461) @obnews
 * Ticks: Added option to invert tick mark direction (#1489, #1475) @wangyexiang

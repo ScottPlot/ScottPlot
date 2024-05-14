@@ -1,5 +1,5 @@
-﻿using SkiaSharp;
-using System.ComponentModel;
+﻿using ScottPlot.TickGenerators;
+using SkiaSharp;
 
 namespace ScottPlotCookbook.Recipes.Axis;
 
@@ -42,6 +42,39 @@ public class CustomizingTicks : ICategory
 
             // tell an axis to use the custom tick generator
             myPlot.Axes.Bottom.TickGenerator = myTickGenerator;
+        }
+    }
+
+    public class DateTimeAutomaticTickFormatter : RecipeBase
+    {
+        public override string Name => "DateTimeAutomatic Tick Formatters";
+        public override string Description => "Users can customize the logic used to create " +
+                                              "datetime tick labels from tick positions. ";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot data using DateTime values on the horizontal axis
+            DateTime[] xs = Generate.ConsecutiveHours(100);
+            double[] ys = Generate.RandomWalk(100);
+            myPlot.Add.Scatter(xs, ys);
+
+            // setup the bottom axis to use DateTime ticks
+            var axis = myPlot.Axes.DateTimeTicksBottom();
+
+            // create a custom formatter to return a string with
+            // date only when zoomed out and time only when zoomed in
+            static string CustomFormatter(DateTime dt)
+            {
+                bool isMidnight = dt is { Hour: 0, Minute: 0, Second: 0 };
+                return isMidnight
+                    ? DateOnly.FromDateTime(dt).ToString()
+                    : TimeOnly.FromDateTime(dt).ToString();
+            }
+
+            // apply our custom tick formatter
+            DateTimeAutomatic tickGen = (DateTimeAutomatic)axis.TickGenerator;
+            tickGen.LabelFormatter = CustomFormatter;
         }
     }
 
@@ -93,7 +126,7 @@ public class CustomizingTicks : ICategory
             ticks.AddMinor(42);
             ticks.AddMinor(45);
 
-            // tell the horizontal axis to use the custom tick genrator
+            // tell the horizontal axis to use the custom tick generator
             myPlot.Axes.Bottom.TickGenerator = ticks;
         }
     }
@@ -110,7 +143,6 @@ public class CustomizingTicks : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
-            myPlot.Axes.Bottom.TickLabelStyle.OffsetY = -8;
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
         }
     }
@@ -145,9 +177,10 @@ public class CustomizingTicks : ICategory
 
             // determine the width of the largest tick label
             float largestLabelWidth = 0;
+            using SKPaint paint = new();
             foreach (Tick tick in ticks)
             {
-                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label);
+                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label, paint).Size;
                 largestLabelWidth = Math.Max(largestLabelWidth, size.Width);
             }
 
@@ -276,7 +309,7 @@ public class CustomizingTicks : ICategory
     {
         public override string Name => "Log Scale Tick Marks";
         public override string Description =>
-            "The apperance of logarithmic scaling can be achieved by log-scaling " +
+            "The appearance of logarithmic scaling can be achieved by log-scaling " +
             "the data to be displayed then customizing the minor ticks and grid.";
 
         [Test]
@@ -289,7 +322,7 @@ public class CustomizingTicks : ICategory
             // log-scale the data and account for negative values
             double[] logYs = ys.Select(Math.Log10).ToArray();
 
-            // add log-scaled data to th eplot
+            // add log-scaled data to the plot
             var sp = myPlot.Add.Scatter(xs, logYs);
             sp.LineWidth = 0;
 

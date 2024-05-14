@@ -3,9 +3,12 @@
 /// <summary>
 /// Holds a collection of individually styled bars
 /// </summary>
-public class BarPlot : IPlottable
+public class BarPlot : IPlottable, IHasLegendText
 {
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
@@ -67,7 +70,7 @@ public class BarPlot : IPlottable
 
             LegendItem item = new()
             {
-                Label = Label,
+                LabelText = LegendText,
                 FillColor = Bars.First().FillColor,
             };
 
@@ -87,7 +90,7 @@ public class BarPlot : IPlottable
         return limits.AxisLimits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 

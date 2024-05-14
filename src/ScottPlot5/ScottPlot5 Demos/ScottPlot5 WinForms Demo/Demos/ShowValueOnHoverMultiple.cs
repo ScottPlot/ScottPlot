@@ -1,6 +1,4 @@
 ﻿using ScottPlot;
-using ScottPlot.Plottables;
-using ScottPlotCookbook.Recipes.PlotTypes;
 
 namespace WinForms_Demo.Demos;
 
@@ -26,7 +24,7 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
             double[] xs = Generate.RandomSample(30);
             double[] ys = Generate.RandomSample(30);
             ScottPlot.Plottables.Scatter scatter = formsPlot1.Plot.Add.ScatterPoints(xs, ys);
-            scatter.Label = $"Scatter {i}";
+            scatter.LegendText = $"Scatter {i}";
             scatter.MarkerStyle.Size = 10;
             MyScatters.Add(scatter);
         }
@@ -41,8 +39,8 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
         // Create a text label to place near the highlighted value
         MyHighlightText = formsPlot1.Plot.Add.Text("", 0, 0);
-        MyHighlightText.Label.Alignment = Alignment.LowerLeft;
-        MyHighlightText.Bold = true;
+        MyHighlightText.LabelAlignment = Alignment.LowerLeft;
+        MyHighlightText.LabelBold = true;
         MyHighlightText.OffsetX = 7;
         MyHighlightText.OffsetY = -7;
 
@@ -80,6 +78,8 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
                         // store the index
                         scatterIndex = i;
                         pointSelected = true;
+                        // update the smallest distance
+                        smallestDistance = distance;
                     }
                 }
             }
@@ -92,19 +92,19 @@ public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 
                 MyCrosshair.IsVisible = true;
                 MyCrosshair.Position = point.Coordinates;
-                MyCrosshair.LineStyle.Color = scatter.MarkerStyle.Fill.Color;
+                MyCrosshair.LineColor = scatter.MarkerStyle.FillColor;
 
                 MyHighlightMarker.IsVisible = true;
                 MyHighlightMarker.Location = point.Coordinates;
-                MyHighlightMarker.MarkerStyle.Outline.Color = scatter.MarkerStyle.Fill.Color;
+                MyHighlightMarker.MarkerStyle.LineColor = scatter.MarkerStyle.FillColor;
 
                 MyHighlightText.IsVisible = true;
                 MyHighlightText.Location = point.Coordinates;
                 MyHighlightText.LabelText = $"{point.X:0.##}, {point.Y:0.##}";
-                MyHighlightText.Color = scatter.MarkerStyle.Fill.Color;
+                MyHighlightText.LabelFontColor = scatter.MarkerStyle.FillColor;
 
                 formsPlot1.Refresh();
-                base.Text = $"Selected Scatter={scatter.Label}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";
+                base.Text = $"Selected Scatter={scatter.LegendText}, Index={point.Index}, X={point.X:0.##}, Y={point.Y:0.##}";
             }
 
             // hide the crosshair, marker and text when no point is selected

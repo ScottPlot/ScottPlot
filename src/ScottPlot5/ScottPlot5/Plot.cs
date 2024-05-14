@@ -1,11 +1,9 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Control;
 using ScottPlot.Grids;
-using ScottPlot.Legends;
-using ScottPlot.Primitives;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
-using static System.Net.Mime.MediaTypeNames;
+using System.ComponentModel;
 
 namespace ScottPlot;
 
@@ -20,16 +18,14 @@ public class Plot : IDisposable
     public BackgroundStyle FigureBackground = new() { Color = Colors.White };
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
-    public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
+    public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
     internal float ScaleFactorF = 1.0f;
 
     public AxisManager Axes { get; }
-
     public PlotStyler Style { get; }
     public FontStyler Font { get; }
-
-    public Legend Legend { get; set; }
+    public Legend Legend { get; }
 
     public DefaultGrid Grid => Axes.DefaultGrid;
 
@@ -51,6 +47,7 @@ public class Plot : IDisposable
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
+        ZoomRectangle = new StandardZoomRectangle(this);
     }
 
     public void Dispose()
@@ -131,10 +128,18 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
-        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
-        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
-        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+        double x1 = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double x2 = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double y1 = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double y2 = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+
+        // rectify rectangles for inverted axes
+        // https://github.com/ScottPlot/ScottPlot/issues/3731
+        double left = Math.Min(x1, x2);
+        double right = Math.Max(x1, x2);
+        double bottom = Math.Min(y1, y2);
+        double top = Math.Max(y1, y2);
+
         return new CoordinateRect(left, right, bottom, top);
     }
 
@@ -214,15 +219,21 @@ public class Plot : IDisposable
 
     #region Rendering and Image Creation
 
-    [Obsolete("Call GetImage() to create a new image, or Render() to render onto an existing canvas.", true)]
+    [Obsolete("Call GetImage() to create a new image, " +
+        "RenderInMemory() to force a render for layout purposes, " +
+        "or Render() to render onto an existing SkiaSharp surface or canvas.", true)]
     public void Render(int width = 400, int height = 300) { }
+
+    /// <summary>
+    /// Create a new image of the given dimensions, render the plot onto it, and return it.
+    /// </summary>
+    public void RenderInMemory(int width = 400, int height = 300) => GetImage(width, height);
 
     /// <summary>
     /// Render onto an existing canvas
     /// </summary>
     public void Render(SKCanvas canvas, int width, int height)
     {
-        // TODO: obsolete this
         PixelRect rect = new(0, width, height, 0);
         Render(canvas, rect);
     }
@@ -303,6 +314,13 @@ public class Plot : IDisposable
         using SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, width, height), fs);
         Render(canvas, width, height);
         return new SavedImageInfo(filePath, (int)fs.Length).WithRenderDetails(RenderManager.LastRender);
+    }
+
+    public string GetSvgXml(int width, int height)
+    {
+        using SvgImage svg = new(width, height);
+        Render(svg.Canvas, width, height);
+        return svg.GetXml();
     }
 
     public SavedImageInfo Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
@@ -419,6 +437,44 @@ public class Plot : IDisposable
         toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
+    [Obsolete("use MoveToFront()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToTop(IPlottable plottable) => MoveToFront(plottable);
+
+    [Obsolete("use MoveToBack()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToBottom(IPlottable plottable) => MoveToBack(plottable);
+
+    /// <summary>
+    /// Move the indicated plottable to the end of the list so it is rendered last
+    /// </summary>
+    public void MoveToFront(IPlottable plottable)
+    {
+        // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
+        int index = PlottableList.IndexOf(plottable);
+
+        if (index < 0)
+            return;
+
+        PlottableList.RemoveAt(index);
+        PlottableList.Add(plottable);
+    }
+
+    /// <summary>
+    /// Move the indicated plottable to the start of the list so it is rendered first
+    /// </summary>
+    public void MoveToBack(IPlottable plottable)
+    {
+        // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
+        int index = PlottableList.IndexOf(plottable);
+
+        if (index < 0)
+            return;
+
+        PlottableList.RemoveAt(index);
+        PlottableList.Insert(0, plottable);
+    }
+
     /// <summary>
     /// Disable visibility for all grids
     /// </summary>
@@ -438,43 +494,92 @@ public class Plot : IDisposable
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void ShowLegend()
+    public Legend ShowLegend()
     {
         Legend.IsVisible = true;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// and setting <see cref="Legend.Location"/> to the provided one.
     /// </summary>
-    public void ShowLegend(Alignment location)
+    public Legend ShowLegend(Alignment alignment)
     {
         Legend.IsVisible = true;
-        Legend.Location = location;
+        Legend.Alignment = alignment;
+        return Legend;
+    }
+
+    /// <summary>
+    /// Helper method for setting the Legend's IsVisible, Alignment, and Orientation
+    /// properties all at once.
+    /// </summary>
+    public Legend ShowLegend(Alignment alignment, Orientation orientation)
+    {
+        Legend.IsVisible = true;
+        Legend.Alignment = alignment;
+        Legend.Orientation = orientation;
+        return Legend;
     }
 
     /// <summary>
     /// Helper method for displaying specific items in the legend
     /// </summary>
-    public void ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
+    public Legend ShowLegend(IEnumerable<LegendItem> items, Alignment location = Alignment.LowerRight)
     {
         ShowLegend(location);
         Legend.ManualItems.Clear();
         Legend.ManualItems.AddRange(items);
+        return Legend;
+    }
+
+    /// <summary>
+    /// Hide the default legend (inside the data area) and create a new legend panel 
+    /// placed on the edge of the figure outside the data area.
+    /// </summary>
+    /// <returns></returns>
+    public Panels.LegendPanel ShowLegend(Edge edge)
+    {
+        HideLegend();
+
+        Legend.Orientation = edge.IsVertical()
+            ? Orientation.Vertical
+            : Orientation.Horizontal;
+
+        Panels.LegendPanel legendPanel = new(Legend)
+        {
+            Edge = edge,
+            Alignment = Alignment.MiddleCenter,
+        };
+
+        Axes.AddPanel(legendPanel);
+
+        return legendPanel;
     }
 
     /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
-    public void HideLegend()
+    public Legend HideLegend()
     {
         Legend.IsVisible = false;
+        return Legend;
     }
 
     /// <summary>
     /// Clears the <see cref="PlottableList"/> list
     /// </summary>
     public void Clear() => PlottableList.Clear();
+
+    /// <summary>
+    /// Clear a all instances of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be cleared</typeparam>
+    public void Clear<T>() where T : IPlottable
+    {
+        Remove<T>();
+    }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.

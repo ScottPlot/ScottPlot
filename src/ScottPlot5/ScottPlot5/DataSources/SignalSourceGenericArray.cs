@@ -51,14 +51,18 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource
         float xUnitsPerPixel = (float)(axes.XAxis.Width / axes.DataRect.Width);
         double xRangeMax = xRangeMin + xUnitsPerPixel;
 
+        // add slight overlap to prevent floating point errors from missing points
+        // https://github.com/ScottPlot/ScottPlot/issues/3665
+        xRangeMax += xUnitsPerPixel * .01;
+
         if (RangeContainsSignal(xRangeMin, xRangeMax) == false)
             return PixelColumn.WithoutData(xPixel);
 
         // determine column limits horizontally
         int i1 = GetIndex(xRangeMin, true);
         int i2 = GetIndex(xRangeMax, true);
-        float yEnter = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i1) + YOffset);
-        float yExit = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i2) + YOffset);
+        float yEnter = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i1) * YScale + YOffset);
+        float yExit = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i2) * YScale + YOffset);
 
         // determine column span vertically
         double yMin = double.PositiveInfinity;
@@ -69,8 +73,8 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource
             yMin = Math.Min(yMin, value);
             yMax = Math.Max(yMax, value);
         }
-        yMin += YOffset;
-        yMax += YOffset;
+        yMin = yMin * YScale + YOffset;
+        yMax = yMax * YScale + YOffset;
 
         float yBottom = axes.GetPixelY(yMin);
         float yTop = axes.GetPixelY(yMax);

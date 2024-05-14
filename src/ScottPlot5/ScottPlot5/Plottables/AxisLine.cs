@@ -1,26 +1,58 @@
 ﻿namespace ScottPlot.Plottables;
 
-public abstract class AxisLine : IPlottable, IRenderLast
+public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
-
     public IAxes Axes { get; set; } = new Axes();
 
-    public readonly Label Label = new();
-    public float FontSize { get => Label.FontSize; set => Label.FontSize = value; }
-    public bool FontBold { get => Label.Bold; set => Label.Bold = value; }
-    public string FontName { get => Label.FontName; set => Label.FontName = value; }
-    public Color FontColor { get => Label.ForeColor; set => Label.ForeColor = value; }
-    public string Text { get => Label.Text; set => Label.Text = value; }
-
-    public LineStyle LineStyle { get; set; } = new();
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public bool LabelOppositeAxis { get; set; } = false;
+    public override Label LabelStyle { get; set; } = new();
+    public string Text { get => LabelText; set => LabelText = value; }
+    public string LegendText { get => LabelText; set => LabelText = value; }
 
+    public Alignment? ManualLabelAlignment { get; set; } = null;
+
+    #region obsolete
+
+    [Obsolete("Use ManualLabelAlignment")]
+    public Alignment? TextAlignment { get => ManualLabelAlignment; set => ManualLabelAlignment = value; }
+
+    [Obsolete("Set LabelFontSize, LabelBold, LabelFontColor, or properties of the LabelStyle object.")]
+    public Label Label { get => LabelStyle; set => LabelStyle = value; }
+
+    [Obsolete("Use LabelFontSize")]
+    public float FontSize { get => LabelFontSize; set => LabelFontSize = value; }
+
+    [Obsolete("Use LabelBold")]
+    public bool FontBold { get => LabelBold; set => LabelBold = value; }
+
+    [Obsolete("Use LabelFontName")]
+    public string FontName { get => LabelFontName; set => LabelFontName = value; }
+
+    [Obsolete("Use LabelFontColor")]
+    public Color FontColor { get => LabelFontColor; set => LabelFontColor = value; }
+
+    [Obsolete("Use LabelFontColor")]
+    public Color TextColor { get => LabelFontColor; set => LabelFontColor = value; }
+
+    [Obsolete("Use LabelFontColor")]
+    public Color TextBackgroundColor { get => LabelFontColor; set => LabelFontColor = value; }
+
+    [Obsolete("Use LabelRotation")]
+    public float TextRotation { get => LabelRotation; set => LabelRotation = value; }
+
+    [Obsolete("Use LabelFontSize")]
+    public float TextSize { get => LabelFontSize; set => LabelFontSize = value; }
+
+    #endregion
+
+    public bool LabelOppositeAxis { get; set; } = false;
     public bool IsDraggable { get; set; } = false;
+    public bool ExcludeFromLegend { get; set; } = false;
 
     public Color Color
     {
@@ -28,7 +60,7 @@ public abstract class AxisLine : IPlottable, IRenderLast
         set
         {
             LineStyle.Color = value;
-            Label.BackColor = value;
+            LabelStyle.BackgroundColor = value;
         }
     }
 
@@ -40,8 +72,9 @@ public abstract class AxisLine : IPlottable, IRenderLast
         {
             return LegendItem.Single(new LegendItem()
             {
-                Label = Label.Text,
-                Line = LineStyle,
+                LabelText = ExcludeFromLegend ? string.Empty : LabelStyle.Text,
+                LineStyle = LineStyle,
+                MarkerStyle = MarkerStyle.None,
             });
         }
     }

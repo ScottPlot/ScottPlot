@@ -58,8 +58,50 @@ public class Heatmap : ICategory
             var hm1 = myPlot.Add.Heatmap(data);
             hm1.Colormap = new ScottPlot.Colormaps.Turbo();
 
-            // TODO: this isn't working quite right yet...
             myPlot.Add.ColorBar(hm1);
+        }
+    }
+
+    public class HeatmapMultipleColorbar : RecipeBase
+    {
+        public override string Name => "Multiple Colorbars";
+        public override string Description => "Multiple colorbars may be added to plots.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm1 = myPlot.Add.Heatmap(data);
+            hm1.Extent = new(0, 1, 0, 1);
+            hm1.Colormap = new ScottPlot.Colormaps.Turbo();
+            myPlot.Add.ColorBar(hm1);
+
+            var hm2 = myPlot.Add.Heatmap(data);
+            hm2.Extent = new(1.5, 2.5, 0, 1);
+            hm2.Colormap = new ScottPlot.Colormaps.Viridis();
+            myPlot.Add.ColorBar(hm2);
+        }
+    }
+
+    public class ColorbarTitle : RecipeBase
+    {
+        public override string Name => "Colorbar Title";
+        public override string Description => "A colorbar displays a colormap " +
+            "on an edge of the plot, and it has an optional label which can " +
+            "be customized to display a title.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Colormap = new ScottPlot.Colormaps.Turbo();
+
+            var cb = myPlot.Add.ColorBar(hm);
+            cb.Label = "Intensity";
+            cb.LabelStyle.FontSize = 24;
         }
     }
 

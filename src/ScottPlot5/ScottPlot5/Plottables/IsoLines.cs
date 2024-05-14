@@ -1,9 +1,6 @@
-﻿using ScottPlot.DataSources;
-using System.Runtime.CompilerServices;
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class IsoLines : IPlottable
+public class IsoLines : IPlottable, IHasLine
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -23,13 +20,16 @@ public class IsoLines : IPlottable
         Color = Colors.Black.WithAlpha(.2),
         Pattern = LinePattern.DenselyDashed,
     };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public static string DefaultTickFormatter(double yIntercept)
     {
         return Math.Round(yIntercept, 3).ToString();
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         List<PixelLine> lines = ManualPositions.Any()
             ? GetLinesManual(rp)
@@ -52,7 +52,7 @@ public class IsoLines : IPlottable
     private void RenderLines(RenderPack rp, SKPaint paint, List<PixelLine> lines)
     {
         LineStyle.ApplyToPaint(paint);
-        lines.ForEach(line => LineStyle.Render(rp.Canvas, paint, line));
+        lines.ForEach(line => LineStyle.Render(rp.Canvas, line, paint));
     }
 
     private void RenderLabelsFixed(RenderPack rp, SKPaint paint, List<PixelLine> lines)

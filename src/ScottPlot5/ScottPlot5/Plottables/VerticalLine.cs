@@ -13,10 +13,10 @@ public class VerticalLine : AxisLine
 
     public VerticalLine()
     {
-        Label.ForeColor = Colors.White;
-        Label.FontSize = 14;
-        Label.Bold = true;
-        Label.Padding = 5;
+        LabelStyle.ForeColor = Colors.White;
+        LabelStyle.FontSize = 14;
+        LabelStyle.Bold = true;
+        LabelStyle.Padding = 5;
     }
 
     public override bool IsUnderMouse(CoordinateRect rect) => IsDraggable && rect.ContainsX(X);
@@ -44,12 +44,12 @@ public class VerticalLine : AxisLine
         PixelLine line = new(x, y1, x, y2);
 
         using SKPaint paint = new();
-        LineStyle.Render(rp.Canvas, paint, line);
+        LineStyle.Render(rp.Canvas, line, paint);
     }
 
     public override void RenderLast(RenderPack rp)
     {
-        if (Label.IsVisible == false || string.IsNullOrEmpty(Label.Text))
+        if (LabelStyle.IsVisible == false || string.IsNullOrEmpty(LabelStyle.Text))
             return;
 
         // determine location
@@ -60,17 +60,19 @@ public class VerticalLine : AxisLine
             return;
 
         float y = LabelOppositeAxis
-            ? rp.DataRect.Top - Label.Padding
-            : rp.DataRect.Bottom + Label.Padding;
+            ? rp.DataRect.Top - LabelStyle.PixelPadding.Top
+            : rp.DataRect.Bottom + LabelStyle.PixelPadding.Bottom;
 
-        Label.Alignment = LabelOppositeAxis
+        Alignment defaultAlignment = LabelOppositeAxis
             ? Alignment.LowerCenter
             : Alignment.UpperCenter;
+
+        LabelStyle.Alignment = ManualLabelAlignment ?? defaultAlignment;
 
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
 
         using SKPaint paint = new();
-        Label.Render(rp.Canvas, x, y, paint);
+        LabelStyle.Render(rp.Canvas, new Pixel(x, y), paint);
     }
 }

@@ -1,0 +1,24 @@
+﻿@page "/"
+@page "/quickstart"
+@inject IRecipesService RecipeService
+
+<div class="container">
+    <h3>ScottPlot Blazor Quickstart</h3>
+    <div><a href="https://scottplot.net/quickstart/blazor/">https://scottplot.net/quickstart/blazor/</a></div>
+
+    <BlazorPlot @ref="BlazorPlot" Style="width: 600px; height: 400px;" />
+</div>
+
+@code {
+    BlazorPlot BlazorPlot = new();
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BlazorPlot.Plot.Add.Signal(Generate.Sin());
+            BlazorPlot.Plot.Add.Signal(Generate.Cos());
+        }
+        base.OnAfterRender(firstRender);
+    }
+}
