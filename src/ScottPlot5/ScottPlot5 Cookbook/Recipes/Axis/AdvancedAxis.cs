@@ -62,4 +62,33 @@ public class AdvancedAxis : ICategory
             myPlot.Axes.SetLimits(-10, 10, -20, 20);
         }
     }
+    
+    public class ExperimentalAxisWithSubtitle : RecipeBase
+    {
+        public override string Name => "Axis with Subtitle";
+
+        public override string Description => "Users can create their own fully custom " +
+            "axes to replace the default ones (as demonstrated in the demo app). " +
+            "Some experimental axes are available for users who may be interested in " +
+            "alternative axis display styles.";
+
+        [Test]
+        public override void Execute()
+        {
+            // Plot some sample data
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // Instantiate a custom axis and customize it as desired
+            ScottPlot.AxisPanels.Experimental.LeftAxisWithSubtitle customAxisY = new()
+            {
+                LabelText = "My Custom Y Axis",
+                SubLabelText = "It comes with a subtitle for the axis"
+            };
+
+            // Remove the default Y axis and add the custom one to the plot
+            myPlot.Axes.Remove(myPlot.Axes.Left);
+            myPlot.Axes.AddLeftAxis(customAxisY);
+        }
+    }
 }
