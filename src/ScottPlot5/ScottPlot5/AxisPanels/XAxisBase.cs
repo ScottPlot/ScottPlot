@@ -1,6 +1,4 @@
-﻿using ScottPlot.TickGenerators;
-
-namespace ScottPlot.AxisPanels;
+﻿namespace ScottPlot.AxisPanels;
 
 public abstract class XAxisBase : AxisBase, IXAxis
 {
@@ -119,12 +117,5 @@ public abstract class XAxisBase : AxisBase, IXAxis
         using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
         TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
-    }
-    
-    public void SetTickets(double[] xs, string[] labels)
-    {
-        NumericManual gen = new();
-        gen.SetTickets(xs, labels);
-        TickGenerator = gen;
     }
 }

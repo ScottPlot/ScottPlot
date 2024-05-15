@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.AxisPanels;
+﻿using ScottPlot.TickGenerators;
+
+namespace ScottPlot.AxisPanels;
 
 public abstract class AxisBase : LabelStyleProperties
 {
@@ -172,5 +174,12 @@ public abstract class AxisBase : LabelStyleProperties
             DrawTicksVerticalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
         else
             DrawTicksHorizontalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
+    }
+    
+    public void SetTickets(double[] xs, string[] labels)
+    {
+        NumericManual gen = new();
+        gen.SetTickets(xs, labels);
+        TickGenerator = gen;
     }
 }
