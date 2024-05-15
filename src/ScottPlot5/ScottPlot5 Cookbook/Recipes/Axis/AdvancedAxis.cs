@@ -62,7 +62,7 @@ public class AdvancedAxis : ICategory
             myPlot.Axes.SetLimits(-10, 10, -20, 20);
         }
     }
-    
+
     public class ExperimentalAxisWithSubtitle : RecipeBase
     {
         public override string Name => "Axis with Subtitle";
