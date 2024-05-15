@@ -255,6 +255,16 @@ public class AxisManager
         return dateAxis;
     }
 
+    public void AddYAxis(IYAxis axis)
+    {
+        YAxes.Add(axis);
+    }
+
+    public void AddXAxis(IXAxis axis)
+    {
+        XAxes.Add(axis);
+    }
+
     /// <summary>
     /// Crete a new axis, add it to the plot, and return it
     /// </summary>
@@ -263,6 +273,14 @@ public class AxisManager
         LeftAxis axis = new();
         YAxes.Add(axis);
         return axis;
+    }
+
+    public void AddLeftAxis(IYAxis axis)
+    {
+        if (axis.Edge != Edge.Left)
+            throw new InvalidOperationException("The given axis is not a Left axis");
+
+        YAxes.Add(axis);
     }
 
     /// <summary>
@@ -275,6 +293,14 @@ public class AxisManager
         return axis;
     }
 
+    public void AddRightAxis(IYAxis axis)
+    {
+        if (axis.Edge != Edge.Right)
+            throw new InvalidOperationException("The given axis is not a Right axis");
+
+        YAxes.Add(axis);
+    }
+
     /// <summary>
     /// Crete a new axis, add it to the plot, and return it
     /// </summary>
@@ -283,6 +309,14 @@ public class AxisManager
         BottomAxis axis = new();
         XAxes.Add(axis);
         return axis;
+    }
+
+    public void AddBottomAxis(IXAxis axis)
+    {
+        if (axis.Edge != Edge.Bottom)
+            throw new InvalidOperationException("The given axis is not a Bottom axis");
+
+        XAxes.Add(axis);
     }
 
     /// <summary>
@@ -295,6 +329,13 @@ public class AxisManager
         return axis;
     }
 
+    public void AddTopAxis(IXAxis axis)
+    {
+        if (axis.Edge != Edge.Top)
+            throw new InvalidOperationException("The given axis is not a Top axis");
+
+        XAxes.Add(axis);
+    }
 
     public void SetLimitsX(double left, double right, IXAxis xAxis)
     {
