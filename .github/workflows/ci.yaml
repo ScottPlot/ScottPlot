@@ -43,7 +43,7 @@ jobs:
     needs: [full]
     uses: ./.github/workflows/task-publish-changelog.yaml
     secrets:
-      gh-token: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   publish-metrics:
     name: "Publish"
