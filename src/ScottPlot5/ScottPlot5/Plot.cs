@@ -535,6 +535,30 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Hide the default legend (inside the data area) and create a new legend panel 
+    /// placed on the edge of the figure outside the data area.
+    /// </summary>
+    /// <returns></returns>
+    public Panels.LegendPanel ShowLegend(Edge edge)
+    {
+        HideLegend();
+
+        Legend.Orientation = edge.IsVertical()
+            ? Orientation.Vertical
+            : Orientation.Horizontal;
+
+        Panels.LegendPanel legendPanel = new(Legend)
+        {
+            Edge = edge,
+            Alignment = Alignment.MiddleCenter,
+        };
+
+        Axes.AddPanel(legendPanel);
+
+        return legendPanel;
+    }
+
+    /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
     public Legend HideLegend()
@@ -547,6 +571,15 @@ public class Plot : IDisposable
     /// Clears the <see cref="PlottableList"/> list
     /// </summary>
     public void Clear() => PlottableList.Clear();
+
+    /// <summary>
+    /// Clear a all instances of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be cleared</typeparam>
+    public void Clear<T>() where T : IPlottable
+    {
+        Remove<T>();
+    }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
