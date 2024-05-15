@@ -27,7 +27,7 @@ public partial class CustomAxis : Form, IDemoWindow
 
         // Remove the default Y axis and add our custom axis
         formsPlot1.Plot.Axes.Remove(formsPlot1.Plot.Axes.Left);
-        formsPlot1.Plot.Axes.AddYAxis(customLeftAxis);
+        formsPlot1.Plot.Axes.AddLeftAxis(customLeftAxis);
     }
 
     /// <summary>

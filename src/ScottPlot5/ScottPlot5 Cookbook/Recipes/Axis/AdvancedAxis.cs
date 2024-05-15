@@ -1,8 +1,4 @@
-﻿using ScottPlot.AxisPanels;
-using ScottPlot.TickGenerators;
-using SkiaSharp;
-
-namespace ScottPlotCookbook.Recipes.Axis;
+﻿namespace ScottPlotCookbook.Recipes.Axis;
 
 public class AdvancedAxis : ICategory
 {
@@ -88,7 +84,7 @@ public class AdvancedAxis : ICategory
 
             // Remove the default Y axis and add the custom one to the plot
             myPlot.Axes.Remove(myPlot.Axes.Left);
-            myPlot.Axes.AddYAxis(customAxisY);
+            myPlot.Axes.AddLeftAxis(customAxisY);
         }
     }
 }
