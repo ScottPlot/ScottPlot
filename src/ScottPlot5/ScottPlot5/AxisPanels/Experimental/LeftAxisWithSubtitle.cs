@@ -6,7 +6,7 @@
 /// so be wary of heavy code that will slow down the rendering if you are using the chart in a user interface
 /// where there is zooming, panning, etc.
 /// </summary>
-internal class LeftAxisWithSubtitle : YAxisBase
+public class LeftAxisWithSubtitle : YAxisBase
 {
     public string SubLabelText { get => SubLabelStyle.Text; set => SubLabelStyle.Text = value; }
 

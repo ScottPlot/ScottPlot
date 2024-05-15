@@ -63,31 +63,32 @@ public class AdvancedAxis : ICategory
         }
     }
 
-    public class CustomAxis : RecipeBase
+    public class ExperimentalAxisWithSubtitle : RecipeBase
     {
-        public override string Name => "Custom Axis";
+        public override string Name => "Axis with Subtitle";
 
-        public override string Description => "Implement a custom axis class and have complete control over size" +
-            "and rendering. For advanced use cases where the provided axes do not have the desired look or functionality.";
+        public override string Description => "Users can create their own fully custom " +
+            "axes to replace the default ones (as demonstrated in the demo app). " +
+            "Some experimental axes are available for users who may be interested in " +
+            "alternative axis display styles.";
 
         [Test]
         public override void Execute()
         {
-            // Remove the existing Y axis.
-            myPlot.Axes.Remove(myPlot.Axes.Left);
+            // Plot some sample data
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
 
-            // Add our custom axis.
-            // View the source code of this recipe to see the code for the custom Y axis implementation. (it cannot be shown in this code snippet)
-            // You can also view the implementations for the included axes to see how they were done. 
-            var ax = new LeftAxisWithSubtitle
+            // Instantiate a custom axis and customize it as desired
+            ScottPlot.AxisPanels.Experimental.LeftAxisWithSubtitle customAxisY = new()
             {
-                LabelText = "My Custom Y Axis", 
+                LabelText = "My Custom Y Axis",
                 SubLabelText = "It comes with a subtitle for the axis"
             };
 
-            myPlot.Axes.AddYAxis(ax);
-            
-            myPlot.Add.Signal(Generate.Sin());
+            // Remove the default Y axis and add the custom one to the plot
+            myPlot.Axes.Remove(myPlot.Axes.Left);
+            myPlot.Axes.AddYAxis(customAxisY);
         }
     }
 }
