@@ -16,6 +16,9 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
+    public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
+    public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
+
     public MarkerStyle MarkerStyle { get; set; } = new()
     {
         LineWidth = 1,

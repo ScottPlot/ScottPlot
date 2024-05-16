@@ -13,6 +13,7 @@
 * Cookbook: Demonstrate `Heatmap.CellAlignment` to achieve heatmaps that do not extend past their boundaries (#3806) @FengQingYangDad
 * Signal: Improve support for datasets with no elements (#3797)
 * Scatter: Improved line clipping when fill mode is enabled (#3792) @BendRocks @CoderPM2011
+* Signal and Scatter: Added `MinRenderIndex` and `MaxRenderIndex` properties as shortcuts to those in the `Data` property (#3798)
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
