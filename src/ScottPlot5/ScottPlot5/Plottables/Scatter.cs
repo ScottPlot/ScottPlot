@@ -135,6 +135,8 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         {
             FillStyle fs = new() { IsVisible = true };
 
+            PixelRect dataPxRect = new(markerPixels);
+
             PixelRect rect = new(linePixels);
             float yValuePixel = Axes.YAxis.GetPixel(FillYValue, rp.DataRect);
 
@@ -142,19 +144,29 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             fillPath.LineTo(rect.Right, yValuePixel);
             fillPath.LineTo(rect.Left, yValuePixel);
 
-            PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
-            rp.CanvasState.Save();
-            rp.CanvasState.Clip(rectAbove);
-            fs.Color = FillYAboveColor;
-            Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
-            rp.CanvasState.Restore();
+            bool midWay = yValuePixel < dataPxRect.Bottom && yValuePixel > dataPxRect.Top;
+            bool belowOnly = yValuePixel <= dataPxRect.Top;
+            bool aboveOnly = yValuePixel >= dataPxRect.Bottom;
 
-            PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
-            rp.CanvasState.Save();
-            rp.CanvasState.Clip(rectBelow);
-            fs.Color = FillYBelowColor;
-            Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
-            rp.CanvasState.Restore();
+            if (midWay || aboveOnly)
+            {
+                PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
+                rp.CanvasState.Save();
+                rp.CanvasState.Clip(rectAbove);
+                fs.Color = FillYAboveColor;
+                Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
+                rp.CanvasState.Restore();
+            }
+
+            if (midWay || belowOnly)
+            {
+                PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
+                rp.CanvasState.Save();
+                rp.CanvasState.Clip(rectBelow);
+                fs.Color = FillYBelowColor;
+                Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
+                rp.CanvasState.Restore();
+            }
         }
 
         Drawing.DrawLines(rp.Canvas, paint, path, LineStyle);
