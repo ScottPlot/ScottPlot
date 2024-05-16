@@ -116,7 +116,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
-        if (!markerPixels.Any())
+        if (markerPixels.Length == 0)
             return;
 
         Pixel[] linePixels = ConnectStyle switch
@@ -142,12 +142,14 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             fillPath.LineTo(rect.Left, yValuePixel);
 
             PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
+            rp.CanvasState.Save();
             rp.CanvasState.Clip(rectAbove);
             fs.Color = FillYAboveColor;
             Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
             rp.CanvasState.Restore();
 
             PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
+            rp.CanvasState.Save();
             rp.CanvasState.Clip(rectBelow);
             fs.Color = FillYBelowColor;
             Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
