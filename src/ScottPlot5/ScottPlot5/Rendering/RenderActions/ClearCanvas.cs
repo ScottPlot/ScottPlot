@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
-internal class ClearCanvas : IRenderAction
+public class ClearCanvas : IRenderAction
 {
     public void Render(RenderPack rp)
     {

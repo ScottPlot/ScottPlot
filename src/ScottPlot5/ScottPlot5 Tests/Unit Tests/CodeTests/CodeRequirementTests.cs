@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ScottPlotTests.CodeTests;
 
@@ -61,6 +62,24 @@ internal class CodeRequirementTests
                 {
                     Assert.Fail($"{type.Namespace}.{type.Name}.Render() must be virtual void");
                 }
+            }
+        }
+    }
+
+    [Test]
+    public void Test_RenderActions_ArePublic()
+    {
+        var actionTypes = Assembly.GetAssembly(typeof(ScottPlot.Plot))!
+            .GetTypes()
+            .Where(x => x.IsAssignableTo(typeof(ScottPlot.IRenderAction)))
+            .Where(x => x.IsClass);
+
+        foreach (Type type in actionTypes)
+        {
+            TypeInfo classInfo = type.GetTypeInfo();
+            if (!classInfo.IsVisible)
+            {
+                throw new InvalidOperationException($"{type.Namespace}.{type.Name} should be public");
             }
         }
     }
