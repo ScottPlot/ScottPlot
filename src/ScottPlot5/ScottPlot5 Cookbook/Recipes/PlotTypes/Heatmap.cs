@@ -259,9 +259,9 @@ public class Heatmap : ICategory
         [Test]
         public override void Execute()
         {
-            double[,] data = { 
-                { 1, 2, 3 }, 
-                { 4, 5, 6 }, 
+            double[,] data = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
                 { 7, 8, 9 },
             };
 
