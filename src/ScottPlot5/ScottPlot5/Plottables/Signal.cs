@@ -62,6 +62,11 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
 
     public virtual void Render(RenderPack rp)
     {
+        if (!Data.GetYs().Any())
+        {
+            return;
+        }
+
         if (PointsPerPixel() < 1)
         {
             RenderLowDensity(rp);
