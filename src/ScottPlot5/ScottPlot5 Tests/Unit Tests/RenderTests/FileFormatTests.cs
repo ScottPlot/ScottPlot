@@ -65,6 +65,23 @@ internal class FileFormatTests
         plt.Add.Signal(Generate.Sin(51));
         plt.Add.Signal(Generate.Cos(51));
         var svgXml = plt.GetSvgXml(400, 300);
-        Assert.IsTrue(!string.IsNullOrEmpty(svgXml));
+        Assert.That(!string.IsNullOrEmpty(svgXml), Is.True);
+    }
+
+    [Test]
+    public void Test_Svg_EmptyRect()
+    {
+        // Empty rectangles have outlines in some browsers
+        // https://github.com/ScottPlot/ScottPlot/issues/3709
+
+        Plot plt = new();
+        string xml1 = plt.GetSvgXml(600, 400);
+        xml1.Should().Contain("""<rect width="600" height="400"/>""");
+
+        plt.RenderManager.Remove<ScottPlot.Rendering.RenderActions.ClearCanvas>();
+        string xml2 = plt.GetSvgXml(600, 400);
+        xml2.Should().NotContain("""<rect width="600" height="400"/>""");
+
+        Console.WriteLine(xml2);
     }
 }
