@@ -9,6 +9,7 @@
 * Rendering: Added `Plot.RenderManager.RemoveAction<T>()` for easily removing specific actions from the render sequence
 * SVG: Fixed issue where plots would have a black outline in some browsers (#3709) @sproott @KennyTK @aespitia
 * Controls: Add "open in new window" to right-click menu for WinForms and WPF controls (#3730)
+* Cookbook: Demonstrated how to achieve a frameless heatmap (#3828) @itsmygam3
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_

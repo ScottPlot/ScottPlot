@@ -249,4 +249,30 @@ public class Heatmap : ICategory
             hm.AlphaMap = alphaMap;
         }
     }
+
+    public class FramelessHeatmap : RecipeBase
+    {
+        public override string Name => "Frameless Heatmap";
+        public override string Description => "A frameless heatmap can be achieved by disabling " +
+            "axis labels and ticks, then setting the margins to 0 so the data area tightly fits the data.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = { 
+                { 1, 2, 3 }, 
+                { 4, 5, 6 }, 
+                { 7, 8, 9 },
+            };
+
+            // add a heatmap to the plot
+            myPlot.Add.Heatmap(data);
+
+            // hide axes on all edges of the figure
+            myPlot.Layout.Frameless();
+
+            // disable padding around the heatmap data
+            myPlot.Axes.Margins(0, 0);
+        }
+    }
 }
