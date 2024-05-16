@@ -75,13 +75,6 @@ internal class FileFormatTests
         // https://github.com/ScottPlot/ScottPlot/issues/3709
 
         Plot plt = new();
-        string xml1 = plt.GetSvgXml(600, 400);
-        xml1.Should().Contain("""<rect width="600" height="400"/>""");
-
-        plt.RenderManager.Remove<ScottPlot.Rendering.RenderActions.ClearCanvas>();
-        string xml2 = plt.GetSvgXml(600, 400);
-        xml2.Should().NotContain("""<rect width="600" height="400"/>""");
-
-        Console.WriteLine(xml2);
+        plt.GetSvgXml(600, 400).Should().NotContain("""<rect width="600" height="400"/>""");
     }
 }

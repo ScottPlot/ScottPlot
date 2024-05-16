@@ -310,16 +310,18 @@ public class Plot : IDisposable
 
     public SavedImageInfo SaveSvg(string filePath, int width, int height)
     {
-        using FileStream fs = new(filePath, FileMode.Create);
-        using SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, width, height), fs);
-        Render(canvas, width, height);
-        return new SavedImageInfo(filePath, (int)fs.Length).WithRenderDetails(RenderManager.LastRender);
+        string xml = GetSvgXml(width, height);
+        File.WriteAllText(filePath, xml);
+        return new SavedImageInfo(filePath, xml.Length).WithRenderDetails(RenderManager.LastRender);
     }
 
     public string GetSvgXml(int width, int height)
     {
         using SvgImage svg = new(width, height);
+        bool originalClearState = RenderManager.ClearCanvasBeforeEachRender;
+        RenderManager.ClearCanvasBeforeEachRender = false;
         Render(svg.Canvas, width, height);
+        RenderManager.ClearCanvasBeforeEachRender = originalClearState;
         return svg.GetXml();
     }
 

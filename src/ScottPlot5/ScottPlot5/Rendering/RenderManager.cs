@@ -80,6 +80,8 @@ public class RenderManager(Plot plot)
 
     public bool EnableEvents { get; set; } = true;
 
+    public bool ClearCanvasBeforeEachRender { get; set; } = true;
+
     private Plot Plot { get; } = plot;
 
     /// <summary>

@@ -4,6 +4,9 @@ public class ClearCanvas : IRenderAction
 {
     public void Render(RenderPack rp)
     {
-        rp.Canvas.Clear();
+        if (rp.Plot.RenderManager.ClearCanvasBeforeEachRender)
+        {
+            rp.Canvas.Clear();
+        }
     }
 }
