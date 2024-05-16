@@ -33,8 +33,6 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     public IScatterSource Data { get; } = data;
-    public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
-    public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
 
     public bool FillY { get; set; } = false;
     public bool FillYBelow { get; set; } = true;
