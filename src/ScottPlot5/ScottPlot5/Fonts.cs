@@ -6,6 +6,31 @@
 public static class Fonts
 {
     /// <summary>
+    /// Gets or sets the global font resolver
+    /// </summary>
+    private static IFontResolver? _fontResolver;
+    public static IFontResolver? FontResolver
+    {
+        get => _fontResolver;
+        set
+        {
+            // Cannot remove font resolver
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            // Ignore multiple setting of same object
+            if (ReferenceEquals(value, _fontResolver))
+            {
+                return;
+            }
+
+            _fontResolver = value;
+        }
+    }
+
+    /// <summary>
     /// This font is used for almost all text rendering.
     /// </summary>
     public static string Default { get; set; } = InstalledSansFont();
@@ -35,28 +60,28 @@ public static class Fonts
     /// </summary>
     public static bool Exists(string fontName)
     {
-        return GetInstalledFonts().Contains(fontName);
+        return (FontResolver is { } && FontResolver.Exists(fontName)) || GetInstalledFonts().Contains(fontName);
     }
 
     /// <summary>
-    /// Returns a new instance to a typeface that most closely matches the requested family name and style.
+    /// Returns a new instance to a typeface that most closely matches the requested family name and style
     /// </summary>
     public static SKTypeface CreateTypeface(string fontName, bool bold, bool italic)
     {
+        if (FontResolver is { })
+        {
+            var typeface = FontResolver.CreateTypeface(fontName, bold, italic);
+            if (typeface is { })
+            {
+                return typeface;
+            }
+        }
+
         SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
         SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
         SKFontStyle style = new(weight, width, slant);
         return SKTypeface.FromFamilyName(fontName, style);
-    }
-
-    /// <summary>
-    /// Returns a new typeface given a file
-    /// </summary>
-    public static SKTypeface CreateTypeface(string fileName)
-    {
-        string path = Path.GetFullPath(fileName);
-        return SKTypeface.FromFile(path) ?? throw new FileNotFoundException(path);
     }
     #region PRIVATE
 

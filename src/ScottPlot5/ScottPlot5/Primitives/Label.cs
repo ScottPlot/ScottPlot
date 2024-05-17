@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System.Xml.Linq;
+
+namespace ScottPlot;
 
 public class Label
 {
@@ -35,19 +37,7 @@ public class Label
     // TODO: use a class for cached typeface management
 
     private SKTypeface? CachedTypeface = null;
-    private SKTypeface Typeface
-    {
-        get
-        {
-            if (CachedTypeface is not null)
-                return CachedTypeface;
-
-            if (FontFile is not null)
-                return Fonts.CreateTypeface(FontFile);
-
-            return Fonts.CreateTypeface(FontName, Bold, Italic);
-        }
-    }
+    private SKTypeface Typeface => CachedTypeface ??= Fonts.CreateTypeface(FontName, Bold, Italic);
 
     public void SetTypeface(SKTypeface typeface)
     {
@@ -59,13 +49,6 @@ public class Label
     {
         get => _FontName;
         set { _FontName = value; ClearCachedTypeface(); }
-    }
-
-    private string? _FontFile = null;
-    public string? FontFile
-    {
-        get => _FontFile;
-        set { _FontFile = value; ClearCachedTypeface(); }
     }
 
     private float _FontSize = 12;
