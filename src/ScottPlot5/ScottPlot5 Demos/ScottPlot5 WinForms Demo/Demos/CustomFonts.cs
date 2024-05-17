@@ -1,6 +1,36 @@
 ﻿using ScottPlot;
+using SkiaSharp;
 
 namespace WinForms_Demo.Demos;
+
+public class CustomFontResolver : IFontResolver
+{
+    private const string FontName = "Alumni Sans";
+    private const string FontPath = "Fonts/AlumniSans/AlumniSans";
+
+    public bool Exists(string fontName)
+    {
+        return FontName == fontName;
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
+    {
+        if (FontName != fontName)
+        {
+            return null;
+        }
+
+        string fileName = (bold, italic) switch
+        {
+            (true, false) => $"{FontPath}-Bold.ttf",
+            (false, true) => $"{FontPath}-Italic.ttf",
+            (true, true) => $"{FontPath}-BoldItalic.ttf",
+            _ => $"{FontPath}-Regular.ttf"
+        };
+
+        return SKTypeface.FromFile(Path.GetFullPath(fileName));
+    }
+}
 
 public partial class CustomFonts : Form, IDemoWindow
 {
@@ -13,25 +43,28 @@ public partial class CustomFonts : Form, IDemoWindow
     {
         InitializeComponent();
 
+        Fonts.FontResolver = new CustomFontResolver();
+
         formsPlot1.Plot.Add.Signal(Generate.Sin());
         formsPlot1.Plot.Add.Signal(Generate.Cos());
 
-        //string fontPath = "Fonts/ShadowsIntoLight/ShadowsIntoLight-Regular.ttf";
+        formsPlot1.Plot.Font.Set("Alumni Sans");
 
-        formsPlot1.Plot.Title("Plot Using Custom Fonts");
-        // formsPlot1.Plot.Axes.Title.Label.FontFile = fontPath;
+        formsPlot1.Plot.Title("Plot Using Custom Fonts [Bold Italic]");
+        formsPlot1.Plot.Axes.Title.Label.Bold = true;
+        formsPlot1.Plot.Axes.Title.Label.Italic = true;
         formsPlot1.Plot.Axes.Title.Label.FontSize = 36;
 
-        formsPlot1.Plot.XLabel("Horizontal Axis");
-        // formsPlot1.Plot.Axes.Bottom.Label.FontFile = fontPath;
+        formsPlot1.Plot.XLabel("Horizontal Axis [Italic]");
+        formsPlot1.Plot.Axes.Bottom.Label.Bold = false;
+        formsPlot1.Plot.Axes.Bottom.Label.Italic = true;
         formsPlot1.Plot.Axes.Bottom.Label.FontSize = 24;
-        // formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontFile = fontPath;
         formsPlot1.Plot.Axes.Bottom.TickLabelStyle.FontSize = 18;
 
-        formsPlot1.Plot.YLabel("Vertical Axis");
-        // formsPlot1.Plot.Axes.Left.Label.FontFile = fontPath;
+        formsPlot1.Plot.YLabel("Vertical Axis [Bold]");
+        formsPlot1.Plot.Axes.Left.Label.Bold = true;
+        formsPlot1.Plot.Axes.Left.Label.Italic = false;
         formsPlot1.Plot.Axes.Left.Label.FontSize = 24;
-        // formsPlot1.Plot.Axes.Left.TickLabelStyle.FontFile = fontPath;
         formsPlot1.Plot.Axes.Left.TickLabelStyle.FontSize = 18;
     }
 }
