@@ -38,6 +38,26 @@ public static class Fonts
         return GetInstalledFonts().Contains(fontName);
     }
 
+    /// <summary>
+    /// Returns a new instance to a typeface that most closely matches the requested family name and style.
+    /// </summary>
+    public static SKTypeface CreateTypeface(string fontName, bool bold, bool italic)
+    {
+        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        SKFontStyle style = new(weight, width, slant);
+        return SKTypeface.FromFamilyName(fontName, style);
+    }
+
+    /// <summary>
+    /// Returns a new typeface given a file
+    /// </summary>
+    public static SKTypeface CreateTypeface(string fileName)
+    {
+        string path = Path.GetFullPath(fileName);
+        return SKTypeface.FromFile(path) ?? throw new FileNotFoundException(path);
+    }
     #region PRIVATE
 
     private static HashSet<string> GetInstalledFonts()

@@ -43,9 +43,9 @@ public class Label
                 return CachedTypeface;
 
             if (FontFile is not null)
-                return FontStyle.CreateTypefaceFromFile(FontFile);
+                return Fonts.CreateTypeface(FontFile);
 
-            return FontStyle.CreateTypefaceFromName(FontName, Bold, Italic);
+            return Fonts.CreateTypeface(FontName, Bold, Italic);
         }
     }
 

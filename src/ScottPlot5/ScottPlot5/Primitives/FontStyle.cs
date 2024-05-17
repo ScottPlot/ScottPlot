@@ -16,7 +16,7 @@ public class FontStyle
     private SKTypeface? CachedTypeface = null;
 
     // TODO: use a class for cached typeface management
-    public SKTypeface Typeface => CachedTypeface ??= CreateTypefaceFromName(Name, Bold, Italic);
+    public SKTypeface Typeface => CachedTypeface ??= Fonts.CreateTypeface(Name, Bold, Italic);
 
     private string _name = Fonts.Default;
     public string Name
@@ -76,23 +76,6 @@ public class FontStyle
     private void ClearCachedTypeface()
     {
         CachedTypeface = null;
-    }
-
-    public static SKTypeface CreateTypefaceFromName(string font, bool bold, bool italic)
-    {
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle style = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(font, style);
-    }
-
-    public static SKTypeface CreateTypefaceFromFile(string path)
-    {
-        path = Path.GetFullPath(path);
-        if (!File.Exists(path))
-            throw new FileNotFoundException(path);
-        return SKTypeface.FromFile(path);
     }
 
     /// <summary>
