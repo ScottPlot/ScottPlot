@@ -5,6 +5,12 @@
 /// </summary>
 public static class Fonts
 {
+    /* Typefaces are cached to improve performance.
+     * https://github.com/ScottPlot/ScottPlot/issues/2833
+     * https://github.com/ScottPlot/ScottPlot/pull/2848
+     */
+    private static readonly Dictionary<int, SKTypeface> TypefaceCache = new();
+
     /// <summary>
     /// Gets or sets the global font resolver
     /// </summary>
@@ -64,25 +70,41 @@ public static class Fonts
     }
 
     /// <summary>
-    /// Returns a new instance to a typeface that most closely matches the requested family name and style
+    /// Returns a cached typeface (if one exists in the cache) or
+    /// a new instance to a typeface that most closely matches the requested family name and style
     /// </summary>
-    public static SKTypeface CreateTypeface(string fontName, bool bold, bool italic)
+    public static SKTypeface GetTypeface(string fontName, bool bold, bool italic)
     {
-        if (FontResolver is { })
+        int hashCode = GetTypefaceHashCode(fontName, bold, italic);
+        if (TypefaceCache.TryGetValue(hashCode, out var typeface))
         {
-            var typeface = FontResolver.CreateTypeface(fontName, bold, italic);
-            if (typeface is { })
+            return typeface;
+        }
+
+        if (FontResolver is null)
+        {
+            typeface = CreateInstalledTypeface(fontName, bold, italic);
+        }
+        else
+        {
+            typeface = FontResolver.CreateTypeface(fontName, bold, italic);
+            if (typeface is null)
             {
-                return typeface;
+                fontName = InstalledSansFont();
+                hashCode = GetTypefaceHashCode(fontName, bold, italic);
+                if (TypefaceCache.TryGetValue(hashCode, out typeface))
+                {
+                    return typeface;
+                }
+                typeface = CreateInstalledTypeface(fontName, bold, italic);
             }
         }
 
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle style = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(fontName, style);
+        //Debug.WriteLine($"{hashCode}: {fontName}, {bold}, {italic}");
+        TypefaceCache.Add(hashCode, typeface);
+        return typeface;
     }
+
     #region PRIVATE
 
     private static HashSet<string> GetInstalledFonts()
@@ -138,6 +160,29 @@ public static class Fonts
         return SKTypeface.Default.FamilyName;
     }
 
+    /// <summary>
+    /// https://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-overriding-gethashcode
+    /// </summary>
+    private static int GetTypefaceHashCode(string fontName, bool bold, bool italic)
+    {
+        unchecked
+        {
+            int hash = 17;
+            hash = hash * 23 + fontName.GetHashCode();
+            hash = hash * 23 + bold.GetHashCode();
+            hash = hash * 23 + italic.GetHashCode();
+            return hash;
+        }
+    }
+
+    private static SKTypeface CreateInstalledTypeface(string fontName, bool bold, bool italic)
+    {
+        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        SKFontStyle style = new(weight, width, slant);
+        return SKTypeface.FromFamilyName(fontName, style);
+    }
     #endregion
 
     #region Font Detection

@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 public class Label
 {
@@ -34,36 +32,9 @@ public class Label
     public bool AntiAliasBackground { get; set; } = true;
     public bool AntiAliasText { get; set; } = true;
 
-    // TODO: use a class for cached typeface management
-
-    private SKTypeface? CachedTypeface = null;
-    private SKTypeface Typeface => CachedTypeface ??= Fonts.CreateTypeface(FontName, Bold, Italic);
-
-    public void SetTypeface(SKTypeface typeface)
-    {
-        CachedTypeface = typeface;
-    }
-
-    private string _FontName = Fonts.Default;
-    public string FontName
-    {
-        get => _FontName;
-        set { _FontName = value; ClearCachedTypeface(); }
-    }
-
-    private float _FontSize = 12;
-    public float FontSize
-    {
-        get => _FontSize;
-        set { _FontSize = value; ClearCachedTypeface(); }
-    }
-
-    private bool _Bold = false;
-    public bool Bold
-    {
-        get => _Bold;
-        set { _Bold = value; ClearCachedTypeface(); }
-    }
+    public string FontName { get; set; } = Fonts.Default;
+    public float FontSize { get; set; } = 12;
+    public bool Bold { get; set; } = false;
 
     /// <summary>
     /// Manually defined line height in pixels.
@@ -106,10 +77,6 @@ public class Label
         FontName = Fonts.Detect(Text);
     }
 
-    public void ClearCachedTypeface()
-    {
-        CachedTypeface = null;
-    }
 
     private void ApplyPointPaint(SKPaint paint)
     {
@@ -149,7 +116,7 @@ public class Label
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
-        paint.Typeface = Typeface;
+        paint.Typeface = Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;

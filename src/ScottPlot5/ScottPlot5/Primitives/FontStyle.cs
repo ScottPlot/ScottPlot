@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
@@ -8,60 +6,11 @@ namespace ScottPlot;
 /// </summary>
 public class FontStyle
 {
-    /* Typefaces are cached to improve performance.
-     * https://github.com/ScottPlot/ScottPlot/issues/2833
-     * https://github.com/ScottPlot/ScottPlot/pull/2848
-     */
+    public SKTypeface Typeface => Fonts.GetTypeface(Name, Bold, Italic);
 
-    private SKTypeface? CachedTypeface = null;
-
-    // TODO: use a class for cached typeface management
-    public SKTypeface Typeface => CachedTypeface ??= Fonts.CreateTypeface(Name, Bold, Italic);
-
-    private string _name = Fonts.Default;
-    public string Name
-    {
-        get => _name;
-        set
-        {
-            bool fieldChanged = string.Compare(_name, value, StringComparison.InvariantCultureIgnoreCase) != 0;
-
-            if (fieldChanged)
-                ClearCachedTypeface();
-
-            _name = value;
-        }
-    }
-
-    private bool _bold = false;
-    public bool Bold
-    {
-        get => _bold;
-        set
-        {
-            bool fieldChanged = _bold != value;
-
-            if (fieldChanged)
-                ClearCachedTypeface();
-
-            _bold = value;
-        }
-    }
-
-    private bool _italic = false;
-    public bool Italic
-    {
-        get => _italic;
-        set
-        {
-            bool fieldChanged = (_italic != value);
-
-            if (fieldChanged)
-                ClearCachedTypeface();
-
-            _italic = value;
-        }
-    }
+    public string Name { get; set; } = Fonts.Default;
+    public bool Bold { get; set; } = false;
+    public bool Italic { get; set; } = false;
 
     // TODO: consider whether color really belongs here...
     public Color Color { get; set; } = Colors.Black;
@@ -71,11 +20,6 @@ public class FontStyle
     public override string ToString()
     {
         return $"{Name}, Size {Size}, {Color}";
-    }
-
-    private void ClearCachedTypeface()
-    {
-        CachedTypeface = null;
     }
 
     /// <summary>
