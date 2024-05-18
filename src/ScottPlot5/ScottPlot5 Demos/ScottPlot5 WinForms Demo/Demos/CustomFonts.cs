@@ -15,7 +15,7 @@ public class CustomFontResolver : IFontResolver
 
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
-        if (FontName != fontName)
+        if (!Exists(fontName))
         {
             return null;
         }

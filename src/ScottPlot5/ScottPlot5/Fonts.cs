@@ -165,6 +165,9 @@ public static class Fonts
     /// </summary>
     private static int GetTypefaceHashCode(string fontName, bool bold, bool italic)
     {
+#if NET6_0_OR_GREATER
+        return HashCode.Combine(fontName, bold, italic);
+#else
         unchecked
         {
             int hash = 17;
@@ -173,6 +176,7 @@ public static class Fonts
             hash = hash * 23 + italic.GetHashCode();
             return hash;
         }
+#endif
     }
 
     private static SKTypeface CreateInstalledTypeface(string fontName, bool bold, bool italic)
