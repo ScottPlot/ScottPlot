@@ -32,6 +32,12 @@ public class Label
     public bool AntiAliasBackground { get; set; } = true;
     public bool AntiAliasText { get; set; } = true;
 
+    /// <summary>
+    /// To make use of ClearType text, you must also set the  SKSurfaceProperties 
+    /// of your SKSurface to be something other than SKPixelGeometry.Unknown
+    /// </summary>
+    public bool SubPixelAntiAliasText { get; set; }
+
     // TODO: use a class for cached typeface management
 
     private SKTypeface? CachedTypeface = null;
@@ -170,6 +176,7 @@ public class Label
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
+        paint.LcdRenderText = SubPixelAntiAliasText;
         paint.Shader = null;
     }
 
