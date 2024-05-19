@@ -81,28 +81,30 @@ public static class Fonts
             return typeface;
         }
 
-        if (FontResolver is null)
-        {
-            typeface = CreateInstalledTypeface(fontName, bold, italic);
-        }
-        else
+        //Debug.WriteLine($"{hashCode}: {fontName}, {bold}, {italic}");
+
+        if (FontResolver is { })
         {
             typeface = FontResolver.CreateTypeface(fontName, bold, italic);
-            if (typeface is null)
+            if (typeface is { })
             {
-                fontName = InstalledSansFont();
-                hashCode = GetTypefaceHashCode(fontName, bold, italic);
-                if (TypefaceCache.TryGetValue(hashCode, out typeface))
-                {
-                    return typeface;
-                }
-                typeface = CreateInstalledTypeface(fontName, bold, italic);
+                TypefaceCache.Add(hashCode, typeface);
+                return typeface;
             }
         }
 
-        //Debug.WriteLine($"{hashCode}: {fontName}, {bold}, {italic}");
-        TypefaceCache.Add(hashCode, typeface);
-        return typeface;
+        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        SKFontStyle style = new(weight, width, slant);
+        typeface = SKTypeface.FromFamilyName(fontName, style);
+        if (typeface is { })
+        {
+            TypefaceCache.Add(hashCode, typeface);
+            return typeface;
+        }
+
+        throw new NullReferenceException(nameof(typeface));
     }
 
     #region PRIVATE
@@ -179,21 +181,13 @@ public static class Fonts
 #endif
     }
 
-    private static SKTypeface CreateInstalledTypeface(string fontName, bool bold, bool italic)
-    {
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle style = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(fontName, style);
-    }
     #endregion
 
     #region Font Detection
 
     /// <summary>
-    /// Use the characters in the string to detetermine an installed system font 
-    /// most likely to support this character set. 
+    /// Use the characters in the string to detetermine an installed system font
+    /// most likely to support this character set.
     /// Returns the system <see cref="Default"/> font if an ideal font cannot be determined.
     /// </summary>
     public static string Detect(string text)
