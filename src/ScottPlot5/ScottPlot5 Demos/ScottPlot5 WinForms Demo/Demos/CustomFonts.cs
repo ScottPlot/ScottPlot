@@ -67,4 +67,10 @@ public partial class CustomFonts : Form, IDemoWindow
         formsPlot1.Plot.Axes.Left.Label.FontSize = 24;
         formsPlot1.Plot.Axes.Left.TickLabelStyle.FontSize = 18;
     }
+
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+        formsPlot1.Plot.Font.Set(Fonts.Sans);
+        base.OnFormClosed(e);
+    }
 }
