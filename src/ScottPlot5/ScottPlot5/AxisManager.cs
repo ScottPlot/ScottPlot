@@ -507,10 +507,10 @@ public class AxisManager
         foreach (var plottable in Plot.PlottableList)
         {
             if (plottable.Axes.XAxis is null)
-                plottable.Axes.XAxis = XAxes.Where(x => x.Edge == Edge.Bottom).First();
+                plottable.Axes.XAxis = Bottom;
 
             if (plottable.Axes.YAxis is null)
-                plottable.Axes.YAxis = YAxes.Where(x => x.Edge == Edge.Left).First();
+                plottable.Axes.YAxis = Left;
         }
     }
 

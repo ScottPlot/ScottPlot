@@ -23,8 +23,6 @@ public class TitlePanel : IPanel
         Alignment = Alignment.LowerCenter,
     };
 
-    public string LabelText { get => Label.Text; set => Label.Text = value; }
-
     /// <summary>
     /// Extra space to add above the title text so the title does not touch the edge of the image
     /// </summary>

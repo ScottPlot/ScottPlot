@@ -16,7 +16,7 @@ public class Internationalization : ICategory
         public override void Execute()
         {
             string chinese = "测试";
-            myPlot.Axes.Title.LabelText = chinese;
+            myPlot.Axes.Title.Label.Text = chinese;
             myPlot.Axes.Title.Label.FontName = Fonts.Detect(chinese);
 
             string japanese = "試験";

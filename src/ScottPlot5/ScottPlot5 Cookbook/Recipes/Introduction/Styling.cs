@@ -45,7 +45,7 @@ public class Styling : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.Axes.Title.LabelText = "Plot Title";
+            myPlot.Axes.Title.Label.Text = "Plot Title";
             myPlot.Axes.Title.Label.ForeColor = Colors.RebeccaPurple;
             myPlot.Axes.Title.Label.FontSize = 32;
             myPlot.Axes.Title.Label.FontName = Fonts.Serif;

@@ -587,7 +587,7 @@ public class Plot : IDisposable
     /// </summary>
     public void Title(string text, float? size = null)
     {
-        Axes.Title.LabelText = text;
+        Axes.Title.Label.Text = text;
         Axes.Title.IsVisible = !string.IsNullOrWhiteSpace(text);
         if (size.HasValue)
             Axes.Title.Label.FontSize = size.Value;
