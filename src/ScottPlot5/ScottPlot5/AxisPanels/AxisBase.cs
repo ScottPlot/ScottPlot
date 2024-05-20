@@ -35,7 +35,7 @@ public abstract class AxisBase : LabelStyleProperties
 
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
-    [Obsolete("use LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", true)]
+    [Obsolete("use LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", false)]
     public Label Label => LabelStyle;
 
     public override Label LabelStyle { get; set; } = new()
@@ -175,11 +175,22 @@ public abstract class AxisBase : LabelStyleProperties
         else
             DrawTicksHorizontalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
     }
-    
-    public void SetTickets(double[] xs, string[] labels)
+
+    /// <summary>
+    /// Replace the <see cref="TickGenerator"/> with a <see cref="NumericManual"/> pre-loaded with the given ticks.
+    /// </summary>
+    public void SetTicks(double[] xs, string[] labels)
     {
-        NumericManual gen = new();
-        gen.SetTickets(xs, labels);
-        TickGenerator = gen;
+        if (xs.Length != labels.Length)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(labels)} must have equal length");
+
+        NumericManual manualTickGen = new();
+
+        for (int i = 0; i < xs.Length; i++)
+        {
+            manualTickGen.AddMajor(xs[i], labels[i]);
+        }
+
+        TickGenerator = manualTickGen;
     }
 }

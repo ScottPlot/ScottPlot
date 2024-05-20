@@ -52,22 +52,22 @@ public class AxisManager
     /// <summary>
     /// The primary horizontal axis above the plot
     /// </summary>
-    public IXAxis Top => XAxes.First(x => x.Edge == Edge.Top);
+    public TopAxis Top => XAxes.OfType<TopAxis>().First();
 
     /// <summary>
     /// The primary horizontal axis below the plot
     /// </summary>
-    public IXAxis Bottom => XAxes.First(x => x.Edge == Edge.Bottom);
+    public BottomAxis Bottom => XAxes.OfType<BottomAxis>().First();
 
     /// <summary>
     /// The primary vertical axis to the left of the plot
     /// </summary>
-    public IYAxis Left => YAxes.First(x => x.Edge == Edge.Left);
+    public LeftAxis Left => YAxes.OfType<LeftAxis>().First();
 
     /// <summary>
     /// The primary vertical axis to the right of the plot
     /// </summary>
-    public IYAxis Right => YAxes.First(x => x.Edge == Edge.Right);
+    public RightAxis Right => YAxes.OfType<RightAxis>().First();
 
     /// <summary>
     /// Indicates whether the axis limits have been set (manually or by autoscale)

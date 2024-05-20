@@ -52,8 +52,6 @@ public interface IAxis : IPanel
     /// </summary>
     public void RegenerateTicks(PixelLength size);
     
-    public void SetTickets(double[] xs, string[] labels);
-
     /// <summary>
     /// The label is the text displayed distal to the ticks
     /// </summary>
