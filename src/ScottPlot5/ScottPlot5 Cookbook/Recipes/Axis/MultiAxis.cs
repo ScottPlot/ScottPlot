@@ -25,10 +25,10 @@ public class MultiAxis : ICategory
             sig2.Axes.YAxis = myPlot.Axes.Right;
 
             // add additional styling options to each axis
-            myPlot.Axes.Left.Label.Text = "Left Axis";
-            myPlot.Axes.Right.Label.Text = "Right Axis";
-            myPlot.Axes.Left.Label.ForeColor = sig1.Color;
-            myPlot.Axes.Right.Label.ForeColor = sig2.Color;
+            myPlot.Axes.Left.LabelText = "Left Axis";
+            myPlot.Axes.Right.LabelText = "Right Axis";
+            myPlot.Axes.Left.LabelFontColor = sig1.Color;
+            myPlot.Axes.Right.LabelFontColor = sig2.Color;
         }
     }
 
@@ -46,7 +46,7 @@ public class MultiAxis : ICategory
             var sig1 = myPlot.Add.Signal(ScottPlot.Generate.Sin(51, mult: 0.01));
             sig1.Axes.XAxis = myPlot.Axes.Bottom; // standard X axis
             sig1.Axes.YAxis = myPlot.Axes.Left; // standard Y axis
-            myPlot.Axes.Left.Label.Text = "Primary Y Axis";
+            myPlot.Axes.Left.LabelText = "Primary Y Axis";
 
             // create a second axis and add it to the plot
             var yAxis2 = myPlot.Axes.AddLeftAxis();

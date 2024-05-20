@@ -35,7 +35,7 @@ public abstract class AxisBase : LabelStyleProperties
 
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
-    [Obsolete("use LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", false)]
+    [Obsolete("use LabelText, LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", false)]
     public Label Label => LabelStyle;
 
     public override Label LabelStyle { get; set; } = new()
