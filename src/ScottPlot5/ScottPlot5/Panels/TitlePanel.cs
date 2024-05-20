@@ -12,13 +12,10 @@ public class TitlePanel : IPanel
 
     public TitlePanel()
     {
-        LabelStyle.Rotation = 0;
+        Label.Rotation = 0;
     }
 
-    [Obsolete("Reference LabelStyle")]
-    public Label Label => LabelStyle;
-
-    public Label LabelStyle { get; } = new()
+    public Label Label { get; } = new()
     {
         Text = string.Empty,
         FontSize = 16,
@@ -26,7 +23,7 @@ public class TitlePanel : IPanel
         Alignment = Alignment.LowerCenter,
     };
 
-    public string LabelText { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+    public string LabelText { get => Label.Text; set => Label.Text = value; }
 
     /// <summary>
     /// Extra space to add above the title text so the title does not touch the edge of the image
@@ -47,12 +44,12 @@ public class TitlePanel : IPanel
         if (!IsVisible)
             return 0;
 
-        if (string.IsNullOrWhiteSpace(LabelStyle.Text))
+        if (string.IsNullOrWhiteSpace(Label.Text))
             return 0;
 
         using SKPaint paint = new();
 
-        return LabelStyle.Measure(LabelStyle.Text, paint).Height + VerticalPadding;
+        return Label.Measure(Label.Text, paint).Height + VerticalPadding;
     }
 
     public void Render(RenderPack rp, float size, float offset)
@@ -68,9 +65,9 @@ public class TitlePanel : IPanel
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelStyle.ForeColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
         }
 
-        LabelStyle.Render(rp.Canvas, labelPoint, paint);
+        Label.Render(rp.Canvas, labelPoint, paint);
     }
 }

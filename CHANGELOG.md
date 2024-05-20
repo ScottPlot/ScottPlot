@@ -5,8 +5,7 @@
 * Axes: Added `LabelFormatter` property to `DateTimeAutomatic` for custom formatting of DateTime tick labels (#3783) @loyvsc
 * Rendering: Improve how backgrounds are drawn on on plots using a custom `ScaleFactor` (#3818) @MCF
 * Plot: Added `Plot.Clear<T>()` as an alias for `Plot.Remove<T>()` to remove all plottables of the given type (#3820, #3804) @CoderPM2011
-* Axes: `Plot.Axes.Bottom`, `Left`, etc. now returns a strongly typed default axis (instead of `IXAxis` or `IYAxis`). This may raise a compile warning for existing code, requiring users to reference the `LabelStyle` property instead of the `Label` property, improving naming consistency with similar changes to plottables implemented in version 5.0.27
-* Axes: Default axes now have a `SetTicks()` method for quickly switching to a manual tick generator pre-loaded with the given tick positions and labels (#3831) @Giviruk
+* Axes: Added `SetTicks()` shortcut for quickly switching to a manual tick generator pre-loaded with the given tick positions and labels (#3831) @Giviruk
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_

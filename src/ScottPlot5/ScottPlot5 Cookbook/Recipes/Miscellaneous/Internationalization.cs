@@ -17,15 +17,15 @@ public class Internationalization : ICategory
         {
             string chinese = "测试";
             myPlot.Axes.Title.LabelText = chinese;
-            myPlot.Axes.Title.LabelStyle.FontName = Fonts.Detect(chinese);
+            myPlot.Axes.Title.Label.FontName = Fonts.Detect(chinese);
 
             string japanese = "試験";
-            myPlot.Axes.Left.LabelText = japanese;
-            myPlot.Axes.Left.LabelStyle.FontName = Fonts.Detect(japanese);
+            myPlot.Axes.Left.Label.Text = japanese;
+            myPlot.Axes.Left.Label.FontName = Fonts.Detect(japanese);
 
             string korean = "테스트";
-            myPlot.Axes.Bottom.LabelText = korean;
-            myPlot.Axes.Bottom.LabelStyle.FontName = Fonts.Detect(korean);
+            myPlot.Axes.Bottom.Label.Text = korean;
+            myPlot.Axes.Bottom.Label.FontName = Fonts.Detect(korean);
         }
     }
 

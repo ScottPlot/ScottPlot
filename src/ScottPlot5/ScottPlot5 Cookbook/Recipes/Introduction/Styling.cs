@@ -20,9 +20,9 @@ public class Styling : ICategory
             myPlot.Add.Signal(Generate.Cos(51));
 
             // visible items have public properties that can be customized
-            myPlot.Axes.Bottom.LabelText = "Horizontal Axis";
-            myPlot.Axes.Left.LabelText = "Vertical Axis";
-            myPlot.Axes.Title.LabelText = "Plot Title";
+            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
+            myPlot.Axes.Left.Label.Text = "Vertical Axis";
+            myPlot.Axes.Title.Label.Text = "Plot Title";
 
             // some items must be styled directly
             myPlot.Grid.MajorLineColor = Color.FromHex("#0e3d54");
@@ -46,19 +46,19 @@ public class Styling : ICategory
             myPlot.Add.Signal(Generate.Cos(51));
 
             myPlot.Axes.Title.LabelText = "Plot Title";
-            myPlot.Axes.Title.LabelStyle.ForeColor = Colors.RebeccaPurple;
-            myPlot.Axes.Title.LabelStyle.FontSize = 32;
-            myPlot.Axes.Title.LabelStyle.FontName = Fonts.Serif;
-            myPlot.Axes.Title.LabelStyle.Rotation = -5;
-            myPlot.Axes.Title.LabelStyle.Bold = false;
+            myPlot.Axes.Title.Label.ForeColor = Colors.RebeccaPurple;
+            myPlot.Axes.Title.Label.FontSize = 32;
+            myPlot.Axes.Title.Label.FontName = Fonts.Serif;
+            myPlot.Axes.Title.Label.Rotation = -5;
+            myPlot.Axes.Title.Label.Bold = false;
 
-            myPlot.Axes.Left.LabelText = "Vertical Axis";
-            myPlot.Axes.Left.LabelStyle.ForeColor = Colors.Magenta;
-            myPlot.Axes.Left.LabelStyle.Italic = true;
+            myPlot.Axes.Left.Label.Text = "Vertical Axis";
+            myPlot.Axes.Left.Label.ForeColor = Colors.Magenta;
+            myPlot.Axes.Left.Label.Italic = true;
 
-            myPlot.Axes.Bottom.LabelStyle.Text = "Horizontal Axis";
-            myPlot.Axes.Bottom.LabelStyle.Bold = false;
-            myPlot.Axes.Bottom.LabelStyle.FontName = Fonts.Monospace;
+            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
+            myPlot.Axes.Bottom.Label.Bold = false;
+            myPlot.Axes.Bottom.Label.FontName = Fonts.Monospace;
 
             myPlot.Axes.Bottom.MajorTickStyle.Length = 10;
             myPlot.Axes.Bottom.MajorTickStyle.Width = 3;

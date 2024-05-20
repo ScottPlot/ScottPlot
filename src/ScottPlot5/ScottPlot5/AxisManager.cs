@@ -52,22 +52,22 @@ public class AxisManager
     /// <summary>
     /// The primary horizontal axis above the plot
     /// </summary>
-    public TopAxis Top => XAxes.OfType<TopAxis>().First();
+    public IXAxis Top => XAxes.First(x => x.Edge == Edge.Top);
 
     /// <summary>
     /// The primary horizontal axis below the plot
     /// </summary>
-    public BottomAxis Bottom => XAxes.OfType<BottomAxis>().First();
+    public IXAxis Bottom => XAxes.First(x => x.Edge == Edge.Bottom);
 
     /// <summary>
     /// The primary vertical axis to the left of the plot
     /// </summary>
-    public LeftAxis Left => YAxes.OfType<LeftAxis>().First();
+    public IYAxis Left => YAxes.First(x => x.Edge == Edge.Left);
 
     /// <summary>
     /// The primary vertical axis to the right of the plot
     /// </summary>
-    public RightAxis Right => YAxes.OfType<RightAxis>().First();
+    public IYAxis Right => YAxes.First(x => x.Edge == Edge.Right);
 
     /// <summary>
     /// Indicates whether the axis limits have been set (manually or by autoscale)
@@ -247,7 +247,7 @@ public class AxisManager
         Plot.Axes.XAxes.Add(dateAxis);
 
         // setup the grid to use the new bottom axis
-        Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+        Plot.Axes.DefaultGrid.XAxis = dateAxis;
 
         // autoscale the new axis to fit data already on the plot
         AutoScale();
@@ -507,10 +507,10 @@ public class AxisManager
         foreach (var plottable in Plot.PlottableList)
         {
             if (plottable.Axes.XAxis is null)
-                plottable.Axes.XAxis = Bottom;
+                plottable.Axes.XAxis = XAxes.Where(x => x.Edge == Edge.Bottom).First();
 
             if (plottable.Axes.YAxis is null)
-                plottable.Axes.YAxis = Left;
+                plottable.Axes.YAxis = YAxes.Where(x => x.Edge == Edge.Left).First();
         }
     }
 

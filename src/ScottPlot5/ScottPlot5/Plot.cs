@@ -590,7 +590,7 @@ public class Plot : IDisposable
         Axes.Title.LabelText = text;
         Axes.Title.IsVisible = !string.IsNullOrWhiteSpace(text);
         if (size.HasValue)
-            Axes.Title.LabelStyle.FontSize = size.Value;
+            Axes.Title.Label.FontSize = size.Value;
     }
 
     /// <summary>
@@ -599,9 +599,9 @@ public class Plot : IDisposable
     /// </summary>
     public void XLabel(string label, float? size = null)
     {
-        Axes.Bottom.LabelText = label;
+        Axes.Bottom.Label.Text = label;
         if (size.HasValue)
-            Axes.Bottom.LabelFontSize = size.Value;
+            Axes.Bottom.Label.FontSize = size.Value;
     }
 
     /// <summary>
@@ -610,9 +610,9 @@ public class Plot : IDisposable
     /// </summary>
     public void YLabel(string label, float? size = null)
     {
-        Axes.Left.LabelText = label;
+        Axes.Left.Label.Text = label;
         if (size.HasValue)
-            Axes.Left.LabelFontSize = size.Value;
+            Axes.Left.Label.FontSize = size.Value;
     }
 
     [Obsolete("This method is deprecated. Access Plot.Grid instead.", true)]
