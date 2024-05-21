@@ -9,32 +9,12 @@ public static class Fonts
      * https://github.com/ScottPlot/ScottPlot/issues/2833
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
-    private static readonly Dictionary<(string ,bool, bool), SKTypeface> TypefaceCache = new();
+    private static readonly Dictionary<(string, bool, bool), SKTypeface> TypefaceCache = [];
 
     /// <summary>
-    /// Gets or sets the global font resolver
+    /// If set, this font resolver is used for creating all typefaces
     /// </summary>
-    private static IFontResolver? _fontResolver;
-    public static IFontResolver? FontResolver
-    {
-        get => _fontResolver;
-        set
-        {
-            // Cannot remove font resolver
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            // Ignore multiple setting of same object
-            if (ReferenceEquals(value, _fontResolver))
-            {
-                return;
-            }
-
-            _fontResolver = value;
-        }
-    }
+    public static IFontResolver? FontResolver { get; set; } = null;
 
     /// <summary>
     /// This font is used for almost all text rendering.
@@ -62,32 +42,37 @@ public static class Fonts
     public static string System { get; } = SKTypeface.Default.FamilyName;
 
     /// <summary>
-    /// Returns true if the given font is present on the system
+    /// Returns true if the given font is present on the system or is available via a custom font resolver
     /// </summary>
     public static bool Exists(string fontName)
     {
-        return (FontResolver is { } && FontResolver.Exists(fontName)) || GetInstalledFonts().Contains(fontName);
+        bool fontResolverExists = FontResolver is object && FontResolver.Exists(fontName);
+        bool fontIsInstalled = GetInstalledFonts().Contains(fontName);
+        return fontResolverExists || fontIsInstalled;
     }
 
     /// <summary>
-    /// Returns a cached typeface (if one exists in the cache) or
-    /// a new instance to a typeface that most closely matches the requested family name and style
+    /// Returns a typeface for the requested font name and style.
+    /// A cached typeface will be used if it exists, 
+    /// otherwise one will be created, cached, and returned.
     /// </summary>
     public static SKTypeface GetTypeface(string fontName, bool bold, bool italic)
     {
         var typefaceCacheKey = (fontName, bold, italic);
-        if (TypefaceCache.TryGetValue(typefaceCacheKey, out var typeface))
+
+        if (TypefaceCache.TryGetValue(typefaceCacheKey, out SKTypeface? cachedTypeface))
         {
-            return typeface;
+            if (cachedTypeface is not null)
+                return cachedTypeface;
         }
 
-        if (FontResolver is { })
+        if (FontResolver is not null)
         {
-            typeface = FontResolver.CreateTypeface(fontName, bold, italic);
-            if (typeface is { })
+            SKTypeface? resolvedTypeface = FontResolver.CreateTypeface(fontName, bold, italic);
+            if (resolvedTypeface is not null)
             {
-                TypefaceCache.Add(typefaceCacheKey, typeface);
-                return typeface;
+                TypefaceCache.Add(typefaceCacheKey, resolvedTypeface);
+                return resolvedTypeface;
             }
         }
 
@@ -95,14 +80,14 @@ public static class Fonts
         SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
         SKFontStyleWidth width = SKFontStyleWidth.Normal;
         SKFontStyle style = new(weight, width, slant);
-        typeface = SKTypeface.FromFamilyName(fontName, style);
-        if (typeface is { })
+        SKTypeface? newTypeface = SKTypeface.FromFamilyName(fontName, style);
+        if (newTypeface is not null)
         {
-            TypefaceCache.Add(typefaceCacheKey, typeface);
-            return typeface;
+            TypefaceCache.Add(typefaceCacheKey, newTypeface);
+            return newTypeface;
         }
 
-        throw new NullReferenceException(nameof(typeface));
+        throw new InvalidOperationException($"The typeface {fontName} with style {style} could not be created");
     }
 
     #region PRIVATE
@@ -132,7 +117,7 @@ public static class Fonts
     {
         var installedFonts = GetInstalledFonts();
 
-        string[] preferredFonts = { "Roboto Mono", "Consolas", "DejaVu Sans Mono", "Courier" };
+        string[] preferredFonts = ["Roboto Mono", "Consolas", "DejaVu Sans Mono", "Courier"];
         foreach (string preferredFont in preferredFonts)
         {
             if (installedFonts.Contains(preferredFont))
@@ -148,7 +133,7 @@ public static class Fonts
     {
         var installedFonts = GetInstalledFonts();
 
-        string[] preferredFonts = { "Times New Roman", "DejaVu Serif", "Times" };
+        string[] preferredFonts = ["Times New Roman", "DejaVu Serif", "Times"];
         foreach (string preferredFont in preferredFonts)
         {
             if (installedFonts.Contains(preferredFont))
@@ -165,7 +150,7 @@ public static class Fonts
     #region Font Detection
 
     /// <summary>
-    /// Use the characters in the string to detetermine an installed system font
+    /// Use the characters in the string to determine an installed system font
     /// most likely to support this character set.
     /// Returns the system <see cref="Default"/> font if an ideal font cannot be determined.
     /// </summary>
@@ -225,7 +210,6 @@ public static class Fonts
                 candidateFontNames.Add(typeface.FamilyName);
 
             var ch = char.ConvertFromUtf32(standaloneCodePoint);
-            Debug.WriteLine($"Input codepoint '{standaloneCodePoint}', char '{ch}': Typeface = {typeface?.FamilyName}");
         }
 
         return candidateFontNames.ToList();
