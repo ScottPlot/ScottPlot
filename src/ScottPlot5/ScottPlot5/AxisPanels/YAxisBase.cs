@@ -20,7 +20,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         return Min - unitsFromMinValue;
     }
 
-    public float Measure()
+    public virtual float Measure()
     {
         if (!IsVisible)
             return 0;
@@ -67,7 +67,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
             : GetPanelRectangleRight(dataRect, size, offset);
     }
 
-    public void Render(RenderPack rp, float size, float offset)
+    public virtual void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;

@@ -5,6 +5,16 @@
 * Axes: Added `LabelFormatter` property to `DateTimeAutomatic` for custom formatting of DateTime tick labels (#3783) @loyvsc
 * Rendering: Improve how backgrounds are drawn on on plots using a custom `ScaleFactor` (#3818) @MCF
 * Plot: Added `Plot.Clear<T>()` as an alias for `Plot.Remove<T>()` to remove all plottables of the given type (#3820, #3804) @CoderPM2011
+* Axes: Added `ScottPlot.AxisPanels.Experimental` namespace with examples in the demo app and cookbook (#3823) @EricEzaM
+* Rendering: Added `Plot.RenderManager.RemoveAction<T>()` for easily removing specific actions from the render sequence
+* SVG: Fixed issue where plots would have a black outline in some browsers (#3709) @sproott @KennyTK @aespitia
+* Controls: Add "open in new window" to right-click menu for WinForms and WPF controls (#3730)
+* Cookbook: Demonstrate how to achieve a frameless heatmap (#3828) @itsmygam3
+* Cookbook: Demonstrate `Heatmap.CellAlignment` to achieve heatmaps that do not extend past their boundaries (#3806) @FengQingYangDad
+* Signal: Improve support for datasets with no elements (#3797)
+* Scatter: Improved line clipping when fill mode is enabled (#3792) @BendRocks @CoderPM2011
+* Signal and Scatter: Added `MinRenderIndex` and `MaxRenderIndex` properties as shortcuts to those in the `Data` property (#3798)
+* Scatter: Improve appearance when `FillY` is enabled and all data is on one side of `FillYValue` (#3791) @BendRocks
 * Axes: Added `SetTicks()` shortcut for quickly switching to a manual tick generator pre-loaded with the given tick positions and labels (#3831) @Giviruk
 
 ## ScottPlot 5.0.34

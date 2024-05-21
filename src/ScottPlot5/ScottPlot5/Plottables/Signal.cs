@@ -24,6 +24,9 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
+    public int MinRenderIndex { get => Data.MinimumIndex; set => Data.MinimumIndex = value; }
+    public int MaxRenderIndex { get => Data.MaximumIndex; set => Data.MaximumIndex = value; }
+
     /// <summary>
     /// Maximum size of the marker (in pixels) to display
     /// at each data point when the plot is zoomed far in.
@@ -62,6 +65,11 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
 
     public virtual void Render(RenderPack rp)
     {
+        if (!Data.GetYs().Any())
+        {
+            return;
+        }
+
         if (PointsPerPixel() < 1)
         {
             RenderLowDensity(rp);

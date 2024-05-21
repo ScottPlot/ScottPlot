@@ -5,6 +5,9 @@ name: Update Changelog Webpage
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
 
 jobs:
   publish-changelog:

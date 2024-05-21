@@ -24,6 +24,9 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
     public string Label { get => LegendText; set => LegendText = value; }
     public string LegendText { get; set; } = string.Empty;
 
+    public int MinRenderIndex { get => Data.MinRenderIndex; set => Data.MinRenderIndex = value; }
+    public int MaxRenderIndex { get => Data.MaxRenderIndex; set => Data.MaxRenderIndex = value; }
+
     public Color Color
     {
         get => LineStyle.Color;

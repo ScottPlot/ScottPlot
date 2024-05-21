@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
-internal class ContinuouslyAutoscale : IRenderAction
+public class ContinuouslyAutoscale : IRenderAction
 {
     public void Render(RenderPack rp)
     {
