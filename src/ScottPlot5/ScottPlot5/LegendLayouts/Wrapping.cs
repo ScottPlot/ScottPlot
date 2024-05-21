@@ -6,6 +6,7 @@ public class Wrapping : ILegendLayout
     {
         using SKPaint paint = new();
         PixelSize maxSizeAfterPadding = maxSize.Contracted(legend.Padding);
+        PixelRect maxRectAfterPadding = new(0, maxSizeAfterPadding.Width, maxSizeAfterPadding.Height, 0);
         PixelSize[] labelSizes = items.Select(x => x.LabelStyle.Measure(x.LabelText, paint).Size).ToArray();
         float maxLabelWidth = labelSizes.Select(x => x.Width).Max();
         float maxLabelHeight = labelSizes.Select(x => x.Height).Max();
@@ -40,6 +41,8 @@ public class Wrapping : ILegendLayout
 
             // create rectangles for the item using the current position
             PixelRect itemRect = new(nextPixel, new PixelSize(itemWidth, maxItemHeight));
+            itemRect = itemRect.Intersect(maxRectAfterPadding);
+
             symbolRects[i] = new(itemRect.Left, itemRect.Left + legend.SymbolWidth, itemRect.Bottom, itemRect.Top);
             labelRects[i] = new(
                 left: itemRect.Left + legend.SymbolWidth + legend.SymbolPadding,
@@ -59,8 +62,8 @@ public class Wrapping : ILegendLayout
             }
         }
 
-        float tightWidth = labelRects.Select(x => x.Right).Max();
-        float tightHeight = labelRects.Select(x => x.Bottom).Max();
+        float tightWidth = Math.Min(labelRects.Select(x => x.Right).Max(), maxSizeAfterPadding.Width);
+        float tightHeight = Math.Min(labelRects.Select(x => x.Bottom).Max(), maxSizeAfterPadding.Height);
         PixelRect legendRect = new(0, tightWidth + legend.Padding.Horizontal, tightHeight + legend.Padding.Vertical, 0);
         PixelOffset paddingOffset = new(legend.Padding.Left, legend.Padding.Top);
 
