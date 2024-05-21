@@ -22,6 +22,18 @@ public class FontStyle
         return $"{Name}, Size {Size}, {Color}";
     }
 
+    [Obsolete("This method is deprecated. Use Fonts.GetTypeface(font, bold, italic) instead.", true)]
+    public static SKTypeface CreateTypefaceFromName(string font, bool bold, bool italic)
+    {
+        throw new NotImplementedException();
+    }
+
+    [Obsolete("This method is deprecated. Use Fonts.GetTypeface(font, bold, italic) instead.", true)]
+    public static SKTypeface CreateTypefaceFromFile(string path)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Use the characters in <paramref name="text"/> to determine an installed 
     /// system font most likely to support this character set.
