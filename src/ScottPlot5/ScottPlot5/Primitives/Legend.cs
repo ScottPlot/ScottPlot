@@ -260,6 +260,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFillStyle);
         Drawing.DrawRectangle(canvas, layout.LegendRect, paint, OutlineStyle);
 
+        CanvasState canvasState = new(canvas);
+        canvasState.Save();
+
+        PixelRect clipRect = layout.LegendRect.Contract(Padding).Expand(1.0f);
+
+        canvasState.Clip(clipRect);
+
         // render items inside the legend
         for (int i = 0; i < layout.LegendItems.Length; i++)
         {
@@ -284,5 +291,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);
         }
+
+        canvasState.Restore();
     }
 }

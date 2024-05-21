@@ -86,8 +86,8 @@ public class Interaction(IPlotControl control) : IPlotInteraction
 
     protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimitManager start)
     {
-        bool lockY = Inputs.ShouldLockY(keys);
-        bool lockX = Inputs.ShouldLockX(keys);
+        bool lockY = Inputs.ShouldLockY(keys, button);
+        bool lockX = Inputs.ShouldLockX(keys, button);
         LockedAxes locks = new(lockX, lockY);
 
         MouseDrag drag = new(start, from, to);
@@ -103,7 +103,6 @@ public class Interaction(IPlotControl control) : IPlotInteraction
         }
         else if (button == Inputs.DragZoomButton)
         {
-
             Actions.DragZoom(PlotControl, drag, locks);
         }
     }
