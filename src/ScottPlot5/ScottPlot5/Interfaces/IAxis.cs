@@ -48,6 +48,11 @@ public interface IAxis : IPanel
     ITickGenerator TickGenerator { get; set; } // TODO: never call TickGenerator.Generate() externally
 
     /// <summary>
+    /// Replace the <see cref="TickGenerator"/> with a <see cref="NumericManual"/> pre-loaded with the given ticks.
+    /// </summary>
+    public void SetTicks(double[] xs, string[] labels);
+
+    /// <summary>
     /// Use the <see cref="TickLabelStyle"/> to generate ticks with ideal spacing.
     /// </summary>
     public void RegenerateTicks(PixelLength size);
