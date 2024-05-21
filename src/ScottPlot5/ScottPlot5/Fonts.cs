@@ -9,7 +9,7 @@ public static class Fonts
      * https://github.com/ScottPlot/ScottPlot/issues/2833
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
-    private static readonly Dictionary<int, SKTypeface> TypefaceCache = new();
+    private static readonly Dictionary<(string ,bool, bool), SKTypeface> TypefaceCache = new();
 
     /// <summary>
     /// Gets or sets the global font resolver
@@ -75,20 +75,18 @@ public static class Fonts
     /// </summary>
     public static SKTypeface GetTypeface(string fontName, bool bold, bool italic)
     {
-        int hashCode = GetTypefaceHashCode(fontName, bold, italic);
-        if (TypefaceCache.TryGetValue(hashCode, out var typeface))
+        var typefaceCacheKey = (fontName, bold, italic);
+        if (TypefaceCache.TryGetValue(typefaceCacheKey, out var typeface))
         {
             return typeface;
         }
-
-        //Debug.WriteLine($"{hashCode}: {fontName}, {bold}, {italic}");
 
         if (FontResolver is { })
         {
             typeface = FontResolver.CreateTypeface(fontName, bold, italic);
             if (typeface is { })
             {
-                TypefaceCache.Add(hashCode, typeface);
+                TypefaceCache.Add(typefaceCacheKey, typeface);
                 return typeface;
             }
         }
@@ -100,7 +98,7 @@ public static class Fonts
         typeface = SKTypeface.FromFamilyName(fontName, style);
         if (typeface is { })
         {
-            TypefaceCache.Add(hashCode, typeface);
+            TypefaceCache.Add(typefaceCacheKey, typeface);
             return typeface;
         }
 
@@ -160,25 +158,6 @@ public static class Fonts
         }
 
         return SKTypeface.Default.FamilyName;
-    }
-
-    /// <summary>
-    /// https://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-overriding-gethashcode
-    /// </summary>
-    private static int GetTypefaceHashCode(string fontName, bool bold, bool italic)
-    {
-#if NET6_0_OR_GREATER
-        return HashCode.Combine(fontName, bold, italic);
-#else
-        unchecked
-        {
-            int hash = 17;
-            hash = hash * 23 + fontName.GetHashCode();
-            hash = hash * 23 + bold.GetHashCode();
-            hash = hash * 23 + italic.GetHashCode();
-            return hash;
-        }
-#endif
     }
 
     #endregion
