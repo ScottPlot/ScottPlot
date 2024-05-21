@@ -2,7 +2,10 @@
 
 public class DateTimeAutomatic : IDateTimeTickGenerator
 {
-    public Func<DateTime, string> LabelFormatter { get; set; } = DefaultLabelFormatter;
+    /// <summary>
+    /// If assigned, this function will be used to create tick labels
+    /// </summary>
+    public Func<DateTime, string>? LabelFormatter { get; set; } = null;
 
     public ITimeUnit? TimeUnit { get; private set; } = null;
 
@@ -22,11 +25,6 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
     public Tick[] Ticks { get; set; } = [];
 
     public int MaxTickCount { get; set; } = 10_000;
-
-    public static string DefaultLabelFormatter(DateTime dateTime)
-    {
-        return dateTime.ToString(CultureInfo.CurrentCulture);
-    }
 
     private ITimeUnit GetAppropriateTimeUnit(TimeSpan timeSpan, int targetTickCount = 10)
     {
@@ -145,7 +143,10 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
             if (dt < rangeMin)
                 continue;
 
-            string tickLabel = LabelFormatter(dt);
+            string tickLabel = LabelFormatter is null
+                ? dt.ToString(unit.GetDateTimeFormatString())
+                : LabelFormatter(dt);
+
             PixelSize tickLabelSize = labelStyle.Measure(tickLabel, paint).Size;
 
             bool tickLabelIsTooLarge = !tickLabelBounds.Contains(tickLabelSize);
