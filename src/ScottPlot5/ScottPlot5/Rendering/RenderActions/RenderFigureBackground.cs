@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
-internal class RenderFigureBackground : IRenderAction
+public class RenderFigureBackground : IRenderAction
 {
     public void Render(RenderPack rp)
     {

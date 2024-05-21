@@ -80,12 +80,22 @@ public class RenderManager(Plot plot)
 
     public bool EnableEvents { get; set; } = true;
 
+    public bool ClearCanvasBeforeEachRender { get; set; } = true;
+
     private Plot Plot { get; } = plot;
 
     /// <summary>
     /// Total number of renders completed
     /// </summary>
     public int RenderCount { get; private set; } = 0;
+
+    /// <summary>
+    /// Remove all render actions of the given type
+    /// </summary>
+    public void Remove<T>() where T : IRenderAction
+    {
+        RenderActions.RemoveAll(x => x is T);
+    }
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {

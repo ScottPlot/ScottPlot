@@ -29,46 +29,19 @@ partial class MainMenuForm
     private void InitializeComponent()
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenuForm));
-        tableLayoutPanel1 = new TableLayoutPanel();
-        panel1 = new Panel();
         pictureBox1 = new PictureBox();
         label2 = new Label();
         label1 = new Label();
-        tableLayoutPanel1.SuspendLayout();
-        panel1.SuspendLayout();
+        tbSearch = new TextBox();
+        label3 = new Label();
+        demoWindowScrollList1 = new DemoWindowScrollList();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
         SuspendLayout();
-        // 
-        // tableLayoutPanel1
-        // 
-        tableLayoutPanel1.AutoScroll = true;
-        tableLayoutPanel1.AutoSize = true;
-        tableLayoutPanel1.ColumnCount = 1;
-        tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        tableLayoutPanel1.Controls.Add(panel1, 0, 0);
-        tableLayoutPanel1.Dock = DockStyle.Fill;
-        tableLayoutPanel1.Location = new Point(0, 0);
-        tableLayoutPanel1.Name = "tableLayoutPanel1";
-        tableLayoutPanel1.RowCount = 1;
-        tableLayoutPanel1.RowStyles.Add(new RowStyle());
-        tableLayoutPanel1.Size = new Size(568, 645);
-        tableLayoutPanel1.TabIndex = 3;
-        // 
-        // panel1
-        // 
-        panel1.BackColor = SystemColors.Control;
-        panel1.Controls.Add(pictureBox1);
-        panel1.Controls.Add(label2);
-        panel1.Controls.Add(label1);
-        panel1.Location = new Point(3, 3);
-        panel1.Name = "panel1";
-        panel1.Size = new Size(507, 81);
-        panel1.TabIndex = 0;
         // 
         // pictureBox1
         // 
         pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-        pictureBox1.Location = new Point(8, 8);
+        pictureBox1.Location = new Point(12, 12);
         pictureBox1.Name = "pictureBox1";
         pictureBox1.Size = new Size(64, 64);
         pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -79,7 +52,7 @@ partial class MainMenuForm
         // 
         label2.AutoSize = true;
         label2.Font = new Font("Segoe UI Semilight", 12F, FontStyle.Regular, GraphicsUnit.Point);
-        label2.Location = new Point(80, 41);
+        label2.Location = new Point(86, 49);
         label2.Name = "label2";
         label2.Size = new Size(181, 21);
         label2.TabIndex = 2;
@@ -89,36 +62,66 @@ partial class MainMenuForm
         // 
         label1.AutoSize = true;
         label1.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
-        label1.Location = new Point(78, 9);
+        label1.Location = new Point(82, 12);
         label1.Name = "label1";
         label1.Size = new Size(203, 37);
         label1.TabIndex = 1;
         label1.Text = "ScottPlot Demo";
+        // 
+        // tbSearch
+        // 
+        tbSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        tbSearch.BackColor = SystemColors.Control;
+        tbSearch.Location = new Point(391, 47);
+        tbSearch.Name = "tbSearch";
+        tbSearch.Size = new Size(167, 23);
+        tbSearch.TabIndex = 3;
+        // 
+        // label3
+        // 
+        label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        label3.AutoSize = true;
+        label3.Location = new Point(340, 50);
+        label3.Name = "label3";
+        label3.Size = new Size(45, 15);
+        label3.TabIndex = 4;
+        label3.Text = "Search:";
+        // 
+        // demoWindowScrollList1
+        // 
+        demoWindowScrollList1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        demoWindowScrollList1.BackColor = SystemColors.Control;
+        demoWindowScrollList1.Location = new Point(0, 83);
+        demoWindowScrollList1.Name = "demoWindowScrollList1";
+        demoWindowScrollList1.Size = new Size(601, 560);
+        demoWindowScrollList1.TabIndex = 5;
         // 
         // MainMenuForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         AutoScroll = true;
-        ClientSize = new Size(568, 645);
-        Controls.Add(tableLayoutPanel1);
+        ClientSize = new Size(603, 645);
+        Controls.Add(demoWindowScrollList1);
+        Controls.Add(label3);
+        Controls.Add(tbSearch);
+        Controls.Add(label2);
+        Controls.Add(pictureBox1);
+        Controls.Add(label1);
         Icon = (Icon)resources.GetObject("$this.Icon");
         Name = "MainMenuForm";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "ScottPlot Demo";
-        tableLayoutPanel1.ResumeLayout(false);
-        panel1.ResumeLayout(false);
-        panel1.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
 
     #endregion
-
-    private TableLayoutPanel tableLayoutPanel1;
-    private Panel panel1;
     private PictureBox pictureBox1;
     private Label label2;
     private Label label1;
+    private TextBox tbSearch;
+    private Label label3;
+    private DemoWindowScrollList demoWindowScrollList1;
 }

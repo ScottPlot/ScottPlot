@@ -46,6 +46,7 @@ public class TitlePanel : IPanel
             return 0;
 
         using SKPaint paint = new();
+
         return Label.Measure(Label.Text, paint).Height + VerticalPadding;
     }
 
