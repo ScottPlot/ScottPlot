@@ -125,6 +125,9 @@ public partial class CollectionCompareForm : Form
             FolderResults.Analyze(i);
             Application.DoEvents();
 
+            if (checkHideUnchanged.Checked && FolderResults.Summaries[i] == "unchanged")
+                continue;
+
             DataRow row = table.NewRow();
             row.SetField(0, FolderResults.Filenames[i]);
             row.SetField(1, FolderResults.Summaries[i]);
@@ -132,9 +135,10 @@ public partial class CollectionCompareForm : Form
             row.SetField(3, FolderResults.ImageDiffs[i]?.MaxDifference);
 
             table.Rows.Add(row);
-            Recolor(dataGridView1.Rows[i]);
+            Recolor(dataGridView1.Rows[table.Rows.Count - 1]);
             dataGridView1.AutoResizeColumns();
-            if (i == 0)
+
+            if (table.Rows.Count == 1)
                 dataGridView1.Rows[0].Selected = true;
         }
 

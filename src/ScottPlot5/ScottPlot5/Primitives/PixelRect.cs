@@ -177,6 +177,28 @@ public readonly struct PixelRect : IEquatable<PixelRect>
         return new PixelRect(left, right, bottom, top);
     }
 
+    /// <summary>
+    /// Returns the intersection with another rectangle
+    /// </summary>
+    /// <param name="other">Other rectangle</param>
+    /// <returns>Intersection rectangle</returns>
+    public PixelRect Intersect(PixelRect other)
+    {
+        float left = Math.Max(Left, other.Left);
+        float right = Math.Min(Right, other.Right);
+
+        if (left > right)
+            return NaN;
+
+        float bottom = Math.Min(Bottom, other.Bottom);
+        float top = Math.Max(Top, other.Top);
+
+        if (top > bottom)
+            return NaN;
+
+        return new PixelRect(left, right, bottom, top);
+    }
+
     public PixelRect Expand(PixelPadding pad)
     {
         float left = Left - pad.Left;

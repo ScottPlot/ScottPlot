@@ -40,6 +40,7 @@ partial class CollectionCompareForm
         btn1 = new Button();
         splitContainer1 = new SplitContainer();
         btnHelp = new Button();
+        checkHideUnchanged = new CheckBox();
         ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
         splitContainer1.Panel1.SuspendLayout();
@@ -77,7 +78,7 @@ partial class CollectionCompareForm
         progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         progressBar1.Location = new Point(111, 70);
         progressBar1.Name = "progressBar1";
-        progressBar1.Size = new Size(557, 23);
+        progressBar1.Size = new Size(436, 23);
         progressBar1.TabIndex = 5;
         // 
         // dataGridView1
@@ -165,11 +166,25 @@ partial class CollectionCompareForm
         btnHelp.Text = "Help";
         btnHelp.UseVisualStyleBackColor = true;
         // 
+        // checkHideUnchanged
+        // 
+        checkHideUnchanged.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        checkHideUnchanged.AutoSize = true;
+        checkHideUnchanged.Checked = true;
+        checkHideUnchanged.CheckState = CheckState.Checked;
+        checkHideUnchanged.Location = new Point(553, 73);
+        checkHideUnchanged.Name = "checkHideUnchanged";
+        checkHideUnchanged.Size = new Size(115, 19);
+        checkHideUnchanged.TabIndex = 2;
+        checkHideUnchanged.Text = "Hide Unchanged";
+        checkHideUnchanged.UseVisualStyleBackColor = true;
+        // 
         // CollectionCompareForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(815, 700);
+        Controls.Add(checkHideUnchanged);
         Controls.Add(btnHelp);
         Controls.Add(splitContainer1);
         Controls.Add(btn1);
@@ -206,4 +221,5 @@ partial class CollectionCompareForm
     private GraphicalTestRunner.ImageComparer imageComparer1;
     private SplitContainer splitContainer1;
     private Button btnHelp;
+    private CheckBox checkHideUnchanged;
 }

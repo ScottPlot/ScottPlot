@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Rendering.RenderActions;
 
-internal class ExecutePlottableAxisManagers : IRenderAction
+public class ExecutePlottableAxisManagers : IRenderAction
 {
     public void Render(RenderPack rp)
     {

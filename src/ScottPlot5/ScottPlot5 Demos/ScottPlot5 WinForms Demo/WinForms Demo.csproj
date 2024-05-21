@@ -49,6 +49,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="eto.platform.wpf" Version="2.8.2" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Update="Fonts\ShadowsIntoLight\OFL.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

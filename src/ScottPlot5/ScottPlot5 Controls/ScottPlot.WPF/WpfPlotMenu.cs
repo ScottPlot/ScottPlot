@@ -35,7 +35,18 @@ public class WpfPlotMenu : IPlotMenu
             OnInvoke = CopyImageToClipboard
         };
 
-        return new ContextMenuItem[] { saveImage, copyImage };
+        ContextMenuItem newWindow = new()
+        {
+            Label = "Open in New Window",
+            OnInvoke = OpenInNewWindow,
+        };
+
+        return new ContextMenuItem[]
+        {
+            saveImage,
+            copyImage,
+            newWindow,
+        };
     }
 
     public ContextMenu GetContextMenu()
@@ -122,6 +133,12 @@ public class WpfPlotMenu : IPlotMenu
         bmpImage.StreamSource = ms;
         bmpImage.EndInit();
         Clipboard.SetImage(bmpImage);
+    }
+
+    public void OpenInNewWindow(IPlotControl plotControl)
+    {
+        WpfPlotViewer.Launch(plotControl.Plot, "Interactive Plot");
+        plotControl.Refresh();
     }
 
     public void Reset()

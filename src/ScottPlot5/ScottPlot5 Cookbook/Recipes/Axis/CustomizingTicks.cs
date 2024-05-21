@@ -98,10 +98,32 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class SetTicks : RecipeBase
+    {
+        public override string Name => "SetTicks Shortcut";
+        public override string Description => "The default axes have a SetTicks() helper method which replaces " +
+            "the default tick generator with a manual tick generator pre-loaded with the provided ticks.";
+
+        [Test]
+        public override void Execute()
+        {
+            // display sample data
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // use manually defined ticks
+            double[] tickPositions = { 10, 25, 40 };
+            string[] tickLabels = { "Alpha", "Beta", "Gamma" };
+            myPlot.Axes.Bottom.SetTicks(tickPositions, tickLabels);
+        }
+    }
+
     public class CustomTicks : RecipeBase
     {
         public override string Name => "Custom Tick Positions";
-        public override string Description => "Users can define ticks to be placed at specific locations.";
+        public override string Description => "Users desiring more control over major and minor " +
+            "tick positions and labels can instantiate a manual tick generator, set it up as desired, " +
+            "then assign it to the axis being customized";
 
         [Test]
         public override void Execute()

@@ -1,6 +1,5 @@
 ﻿using ScottPlot.Control;
 using SkiaSharp;
-using SkiaSharp.Views.Desktop;
 using System;
 using System.Diagnostics;
 using System.Drawing;

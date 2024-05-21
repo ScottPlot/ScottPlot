@@ -247,7 +247,7 @@ public class AxisManager
         Plot.Axes.XAxes.Add(dateAxis);
 
         // setup the grid to use the new bottom axis
-        Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+        Plot.Axes.DefaultGrid.XAxis = dateAxis;
 
         // autoscale the new axis to fit data already on the plot
         AutoScale();

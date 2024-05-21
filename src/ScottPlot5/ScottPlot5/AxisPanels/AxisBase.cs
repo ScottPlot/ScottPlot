@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.AxisPanels;
+﻿using ScottPlot.TickGenerators;
+
+namespace ScottPlot.AxisPanels;
 
 public abstract class AxisBase : LabelStyleProperties
 {
@@ -33,7 +35,7 @@ public abstract class AxisBase : LabelStyleProperties
 
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
-    [Obsolete("use LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", true)]
+    [Obsolete("use LabelText, LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", false)]
     public Label Label => LabelStyle;
 
     public override Label LabelStyle { get; set; } = new()
@@ -172,5 +174,23 @@ public abstract class AxisBase : LabelStyleProperties
             DrawTicksVerticalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
         else
             DrawTicksHorizontalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
+    }
+
+    /// <summary>
+    /// Replace the <see cref="TickGenerator"/> with a <see cref="NumericManual"/> pre-loaded with the given ticks.
+    /// </summary>
+    public void SetTicks(double[] xs, string[] labels)
+    {
+        if (xs.Length != labels.Length)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(labels)} must have equal length");
+
+        NumericManual manualTickGen = new();
+
+        for (int i = 0; i < xs.Length; i++)
+        {
+            manualTickGen.AddMajor(xs[i], labels[i]);
+        }
+
+        TickGenerator = manualTickGen;
     }
 }

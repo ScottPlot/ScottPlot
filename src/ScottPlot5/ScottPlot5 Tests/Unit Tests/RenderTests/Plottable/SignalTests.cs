@@ -126,4 +126,34 @@ internal class SignalTests
         plt.Axes.InvertX();
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Signal_Empty_DoubleArray()
+    {
+        double[] values = [];
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(values);
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Signal_Empty_GenericArray()
+    {
+        int[] values = [];
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(values);
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Signal_Empty_GenericList()
+    {
+        List<double> values = [];
+
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(values);
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
 }
