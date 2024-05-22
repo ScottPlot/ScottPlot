@@ -12,26 +12,19 @@ public class FileFontResolver(string name, string path, bool bold, bool italic) 
     private bool Bold { get; } = bold;
     private bool Italic { get; } = italic;
 
-    public bool Exists(string fontName)
-    {
-        return FontName == fontName;
-    }
-
     /// <summary>
     /// Attempt to create the typeface using the given settings.
     /// Returns null if this resolver does not match the requested font.
     /// </summary>
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
-        if (FontName != fontName)
-            return null;
+        return (FontName == fontName) && (Bold == bold) && (Italic == italic)
+            ? SKTypeface.FromFile(FontPath)
+            : null;
+    }
 
-        if (Bold != bold)
-            return null;
-
-        if (Italic != bold)
-            return null;
-
-        return SKTypeface.FromFile(FontPath);
+    public override string ToString()
+    {
+        return $"File font resolver: name='{FontName}', bold={Bold}, italic={Italic}";
     }
 }

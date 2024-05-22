@@ -1,4 +1,7 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.FontResolvers;
+using System.Runtime.Serialization;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Cross-platform tools for working with fonts
@@ -12,9 +15,9 @@ public static class Fonts
     private static readonly Dictionary<(string, bool, bool), SKTypeface> TypefaceCache = [];
 
     /// <summary>
-    /// If set, this font resolver is used for creating all typefaces
+    /// Collection of font resolvers that return typefaces from font names and style information
     /// </summary>
-    public static List<IFontResolver> FontResolvers { get; } = [];
+    public static List<IFontResolver> FontResolvers { get; } = [new SystemFontResolver()];
 
     /// <summary>
     /// Add a font resolver that creates a typeface from a TTF file
@@ -28,50 +31,38 @@ public static class Fonts
     /// <summary>
     /// This font is used for almost all text rendering.
     /// </summary>
-    public static string Default { get; set; } = InstalledSansFont();
+    public static string Default { get; set; } = SystemFontResolver.InstalledSansFont();
 
     /// <summary>
     /// Name of a sans-serif font present on the system
     /// </summary>
-    public static string Sans { get; set; } = InstalledSansFont();
+    public static string Sans { get; set; } = SystemFontResolver.InstalledSansFont();
 
     /// <summary>
     /// Name of a serif font present on the system
     /// </summary>
-    public static string Serif { get; set; } = InstalledSerifFont();
+    public static string Serif { get; set; } = SystemFontResolver.InstalledSerifFont();
 
     /// <summary>
     /// Name of a monospace font present on the system
     /// </summary>
-    public static string Monospace { get; set; } = InstalledMonospaceFont();
+    public static string Monospace { get; set; } = SystemFontResolver.InstalledMonospaceFont();
 
     /// <summary>
     /// The default font on the system
     /// </summary>
     public static string System { get; } = SKTypeface.Default.FamilyName;
 
-    /// <summary>
-    /// Returns true if the given font NAME is present on the system or is available via a custom font resolver.
-    /// This method does not account for custom styling like bold or italic.
-    /// </summary>
+    [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
+    public static bool Exists(string fontName)
+    {
+        throw new NotFiniteNumberException();
+    }
+
+    [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
     public static bool Exists(string fontName, bool bold, bool italic)
     {
-        foreach (var resolver in FontResolvers)
-        {
-            SKTypeface? typeface = resolver.CreateTypeface(fontName, bold, italic);
-            if (typeface is not null)
-            {
-                typeface.Dispose(); // TODO: return it instead?
-                return true;
-            }
-        }
-
-        if (GetInstalledFonts().Contains(fontName))
-        {
-            return true;
-        }
-
-        return false;
+        throw new NotFiniteNumberException();
     }
 
     /// <summary>
@@ -89,7 +80,7 @@ public static class Fonts
                 return cachedTypeface;
         }
 
-        foreach (var resolver in FontResolvers)
+        foreach (IFontResolver resolver in FontResolvers)
         {
             SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, bold, italic);
             if (resolvedTypeface is not null)
@@ -99,76 +90,10 @@ public static class Fonts
             }
         }
 
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle style = new(weight, width, slant);
-        SKTypeface? newTypeface = SKTypeface.FromFamilyName(fontName, style);
-        if (newTypeface is not null)
-        {
-            TypefaceCache.Add(typefaceCacheKey, newTypeface);
-            return newTypeface;
-        }
-
-        throw new InvalidOperationException($"The typeface {fontName} with style {style} could not be created");
+        // TODO: create a FontStyle primitive instead of passing around pairs of bools
+        throw new InvalidOperationException($"The typeface '{fontName}' (bold={bold}, italic={italic}) " +
+            $"was unable to be found in the cache, font resolvers, or on the system.");
     }
-
-    #region PRIVATE
-
-    private static HashSet<string> GetInstalledFonts()
-    {
-        return new(SKFontManager.Default.FontFamilies, StringComparer.InvariantCultureIgnoreCase);
-    }
-
-    private static string InstalledSansFont()
-    {
-        // Prefer the the system default because it is probably the best for international users
-        // https://github.com/ScottPlot/ScottPlot/issues/2746
-        string font = SKTypeface.Default.FamilyName;
-
-        // Favor "Open Sans" over "Segoe UI" because better anti-aliasing
-        var installedFonts = GetInstalledFonts();
-        if (font == "Segoe UI" && installedFonts.Contains("Open Sans"))
-        {
-            font = "Open Sans";
-        }
-
-        return font;
-    }
-
-    private static string InstalledMonospaceFont()
-    {
-        var installedFonts = GetInstalledFonts();
-
-        string[] preferredFonts = ["Roboto Mono", "Consolas", "DejaVu Sans Mono", "Courier"];
-        foreach (string preferredFont in preferredFonts)
-        {
-            if (installedFonts.Contains(preferredFont))
-            {
-                return SKTypeface.FromFamilyName(preferredFont).FamilyName;
-            }
-        }
-
-        return SKTypeface.Default.FamilyName;
-    }
-
-    private static string InstalledSerifFont()
-    {
-        var installedFonts = GetInstalledFonts();
-
-        string[] preferredFonts = ["Times New Roman", "DejaVu Serif", "Times"];
-        foreach (string preferredFont in preferredFonts)
-        {
-            if (installedFonts.Contains(preferredFont))
-            {
-                return SKTypeface.FromFamilyName(preferredFont).FamilyName;
-            }
-        }
-
-        return SKTypeface.Default.FamilyName;
-    }
-
-    #endregion
 
     #region Font Detection
 
@@ -285,7 +210,6 @@ public static class Fonts
 
         return resultList;
     }
-
 
     /// <summary>
     /// Take a single text element ("grapheme cluster") as input,

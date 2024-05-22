@@ -14,7 +14,8 @@ public class FontStyler(Plot plot)
     public void Set(string fontName)
     {
         // do nothing if the font can't be located
-        if (!Fonts.Exists(fontName, bold: false, italic: false))
+        using SKTypeface? testTypeface = Fonts.GetTypeface(fontName, bold: false, italic: false);
+        if (testTypeface is null)
             return;
 
         // set default font so future added objects will use it
