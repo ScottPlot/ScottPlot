@@ -28,9 +28,9 @@ internal class Rectangle3D : IPlottable3D
         Point3D[] points =
         [
             Location,
-            Location.WithPan(Size.Width,0,0),
-            Location.WithPan(Size.Width,Size.Length,0),
-            Location.WithPan(0,Size.Length,0),
+            Location.WithPan(Size.Width, 0, 0),
+            Location.WithPan(Size.Width, Size.Length, 0),
+            Location.WithPan(0, Size.Length, 0),
             Location,
         ];
 
@@ -97,11 +97,11 @@ internal class Rectangle3D : IPlottable3D
     {
         Point3D[] points =
         [
-            Location.WithPan(0,0,Size.Height),
-            Location.WithPan(Size.Width,0,Size.Height),
-            Location.WithPan(Size.Width,Size.Length,Size.Height),
-            Location.WithPan(0,Size.Length,Size.Height),
-            Location.WithPan(0,0,Size.Height),
+            Location.WithPan(0, 0, Size.Height),
+            Location.WithPan(Size.Width, 0, Size.Height),
+            Location.WithPan(Size.Width, Size.Length, Size.Height),
+            Location.WithPan(0, Size.Length, Size.Height),
+            Location.WithPan(0, 0, Size.Height),
         ];
 
         return new Surface3D(points);

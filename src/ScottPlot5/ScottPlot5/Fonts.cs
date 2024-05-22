@@ -1,105 +1,103 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.FontResolvers;
+using System.Runtime.Serialization;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Cross-platform tools for working with fonts
 /// </summary>
 public static class Fonts
 {
+    /* Typefaces are cached to improve performance.
+     * https://github.com/ScottPlot/ScottPlot/issues/2833
+     * https://github.com/ScottPlot/ScottPlot/pull/2848
+     */
+    private static readonly Dictionary<(string, bool, bool), SKTypeface> TypefaceCache = [];
+
+    /// <summary>
+    /// Collection of font resolvers that return typefaces from font names and style information
+    /// </summary>
+    public static List<IFontResolver> FontResolvers { get; } = [new SystemFontResolver()];
+
+    /// <summary>
+    /// Add a font resolver that creates a typeface from a TTF file
+    /// </summary>
+    public static void AddFontFile(string name, string path, bool bold, bool italic)
+    {
+        FontResolvers.FileFontResolver resolver = new(name, path, bold, italic);
+        FontResolvers.Add(resolver);
+    }
+
     /// <summary>
     /// This font is used for almost all text rendering.
     /// </summary>
-    public static string Default { get; set; } = InstalledSansFont();
+    public static string Default { get; set; } = SystemFontResolver.InstalledSansFont();
 
     /// <summary>
     /// Name of a sans-serif font present on the system
     /// </summary>
-    public static string Sans { get; set; } = InstalledSansFont();
+    public static string Sans { get; set; } = SystemFontResolver.InstalledSansFont();
 
     /// <summary>
     /// Name of a serif font present on the system
     /// </summary>
-    public static string Serif { get; set; } = InstalledSerifFont();
+    public static string Serif { get; set; } = SystemFontResolver.InstalledSerifFont();
 
     /// <summary>
     /// Name of a monospace font present on the system
     /// </summary>
-    public static string Monospace { get; set; } = InstalledMonospaceFont();
+    public static string Monospace { get; set; } = SystemFontResolver.InstalledMonospaceFont();
 
     /// <summary>
-    /// The default font on the system
+    /// Default system font name
     /// </summary>
-    public static string System { get; } = SKTypeface.Default.FamilyName;
+    public static string System => SystemFontResolver.DefaultSystemFont();
 
-    /// <summary>
-    /// Returns true if the given font is present on the system
-    /// </summary>
+    [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
     public static bool Exists(string fontName)
     {
-        return GetInstalledFonts().Contains(fontName);
+        throw new NotFiniteNumberException();
     }
 
-    #region PRIVATE
-
-    private static HashSet<string> GetInstalledFonts()
+    [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
+    public static bool Exists(string fontName, bool bold, bool italic)
     {
-        return new(SKFontManager.Default.FontFamilies, StringComparer.InvariantCultureIgnoreCase);
+        throw new NotFiniteNumberException();
     }
 
-    private static string InstalledSansFont()
+    /// <summary>
+    /// Returns a typeface for the requested font name and style.
+    /// A cached typeface will be used if it exists, 
+    /// otherwise one will be created, cached, and returned.
+    /// </summary>
+    public static SKTypeface GetTypeface(string fontName, bool bold, bool italic)
     {
-        // Prefer the the system default because it is probably the best for international users
-        // https://github.com/ScottPlot/ScottPlot/issues/2746
-        string font = SKTypeface.Default.FamilyName;
+        var typefaceCacheKey = (fontName, bold, italic);
 
-        // Favor "Open Sans" over "Segoe UI" because better anti-aliasing
-        var installedFonts = GetInstalledFonts();
-        if (font == "Segoe UI" && installedFonts.Contains("Open Sans"))
+        if (TypefaceCache.TryGetValue(typefaceCacheKey, out SKTypeface? cachedTypeface))
         {
-            font = "Open Sans";
+            if (cachedTypeface is not null)
+                return cachedTypeface;
         }
 
-        return font;
-    }
-
-    private static string InstalledMonospaceFont()
-    {
-        var installedFonts = GetInstalledFonts();
-
-        string[] preferredFonts = { "Roboto Mono", "Consolas", "DejaVu Sans Mono", "Courier" };
-        foreach (string preferredFont in preferredFonts)
+        foreach (IFontResolver resolver in FontResolvers)
         {
-            if (installedFonts.Contains(preferredFont))
+            SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, bold, italic);
+            if (resolvedTypeface is not null)
             {
-                return SKTypeface.FromFamilyName(preferredFont).FamilyName;
+                TypefaceCache.Add(typefaceCacheKey, resolvedTypeface);
+                return resolvedTypeface;
             }
         }
 
-        return SKTypeface.Default.FamilyName;
+        return SystemFontResolver.CreateDefaultTypeface();
     }
-
-    private static string InstalledSerifFont()
-    {
-        var installedFonts = GetInstalledFonts();
-
-        string[] preferredFonts = { "Times New Roman", "DejaVu Serif", "Times" };
-        foreach (string preferredFont in preferredFonts)
-        {
-            if (installedFonts.Contains(preferredFont))
-            {
-                return SKTypeface.FromFamilyName(preferredFont).FamilyName;
-            }
-        }
-
-        return SKTypeface.Default.FamilyName;
-    }
-
-    #endregion
 
     #region Font Detection
 
     /// <summary>
-    /// Use the characters in the string to detetermine an installed system font 
-    /// most likely to support this character set. 
+    /// Use the characters in the string to determine an installed system font
+    /// most likely to support this character set.
     /// Returns the system <see cref="Default"/> font if an ideal font cannot be determined.
     /// </summary>
     public static string Detect(string text)
@@ -158,7 +156,6 @@ public static class Fonts
                 candidateFontNames.Add(typeface.FamilyName);
 
             var ch = char.ConvertFromUtf32(standaloneCodePoint);
-            Debug.WriteLine($"Input codepoint '{standaloneCodePoint}', char '{ch}': Typeface = {typeface?.FamilyName}");
         }
 
         return candidateFontNames.ToList();
@@ -211,7 +208,6 @@ public static class Fonts
 
         return resultList;
     }
-
 
     /// <summary>
     /// Take a single text element ("grapheme cluster") as input,

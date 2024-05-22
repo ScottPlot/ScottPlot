@@ -18,6 +18,7 @@
 * Axes: Added `SetTicks()` shortcut for quickly switching to a manual tick generator pre-loaded with the given tick positions and labels (#3831) @Giviruk
 * Legend: Clip the legend area so it does not flow outside the data area on extremely small plots (#3833) @drolevar
 * Controls: Made axis locking methods `virtual` inside `InputBindings` to facilitate custom behavior (#3838) @JinjieZhao
+* Fonts: Improved support for true-type font files and custom typefaces (#3841) @kebox7 @bclehmann
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
