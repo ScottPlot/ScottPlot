@@ -56,6 +56,20 @@ public class SystemFontResolver : IFontResolver
         return SKTypeface.Default.FamilyName;
     }
 
+    public static string DefaultSystemFont()
+    {
+        return SKTypeface.Default.FamilyName;
+    }
+
+    public static SKTypeface CreateDefaultTypeface()
+    {
+        string fontName = DefaultSystemFont();
+        SKTypeface? typeface = SKTypeface.FromFamilyName(fontName);
+        return typeface is null
+            ? throw new InvalidOperationException($"Unable to create typeface using the default system font ({fontName})")
+            : typeface;
+    }
+
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
         if (!GetInstalledFonts().Contains(fontName))

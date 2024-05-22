@@ -159,7 +159,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         using SKPaint paint = new();
-        string[] fonts = { "Times New Roman", "Consolas", "Impact", "Arial Narrow" };
+        string[] fonts = ["Times New Roman", "Consolas", "Impact", "Arial Narrow", "MiSsInG fOnT"];
 
         float yOffset = 20;
         foreach (string font in fonts)

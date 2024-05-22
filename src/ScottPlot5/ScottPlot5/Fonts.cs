@@ -49,9 +49,9 @@ public static class Fonts
     public static string Monospace { get; set; } = SystemFontResolver.InstalledMonospaceFont();
 
     /// <summary>
-    /// The default font on the system
+    /// Default system font name
     /// </summary>
-    public static string System { get; } = SKTypeface.Default.FamilyName;
+    public static string System => SystemFontResolver.DefaultSystemFont();
 
     [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
     public static bool Exists(string fontName)
@@ -90,9 +90,7 @@ public static class Fonts
             }
         }
 
-        // TODO: create a FontStyle primitive instead of passing around pairs of bools
-        throw new InvalidOperationException($"The typeface '{fontName}' (bold={bold}, italic={italic}) " +
-            $"was unable to be found in the cache, font resolvers, or on the system.");
+        return SystemFontResolver.CreateDefaultTypeface();
     }
 
     #region Font Detection
