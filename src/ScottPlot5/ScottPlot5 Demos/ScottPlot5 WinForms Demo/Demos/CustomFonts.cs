@@ -3,35 +3,6 @@ using SkiaSharp;
 
 namespace WinForms_Demo.Demos;
 
-public class CustomFontResolver : IFontResolver
-{
-    private const string FontName = "Alumni Sans";
-    private const string FontPath = "Fonts/AlumniSans/AlumniSans";
-
-    public bool Exists(string fontName)
-    {
-        return FontName == fontName;
-    }
-
-    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
-    {
-        if (!Exists(fontName))
-        {
-            return null;
-        }
-
-        string fileName = (bold, italic) switch
-        {
-            (true, false) => $"{FontPath}-Bold.ttf",
-            (false, true) => $"{FontPath}-Italic.ttf",
-            (true, true) => $"{FontPath}-BoldItalic.ttf",
-            _ => $"{FontPath}-Regular.ttf"
-        };
-
-        return SKTypeface.FromFile(Path.GetFullPath(fileName));
-    }
-}
-
 public partial class CustomFonts : Form, IDemoWindow
 {
     public string Title => "Custom Fonts";
@@ -43,7 +14,7 @@ public partial class CustomFonts : Form, IDemoWindow
     {
         InitializeComponent();
 
-        Fonts.FontResolver = new CustomFontResolver();
+        Fonts.FontResolver = new ScottPlot.FontResolvers.FileFontResolver("Alumni Sans", "Fonts/AlumniSans/AlumniSans");
 
         formsPlot1.Plot.Add.Signal(Generate.Sin());
         formsPlot1.Plot.Add.Signal(Generate.Cos());
