@@ -13,7 +13,9 @@ public class FontStyler(Plot plot)
     /// </summary>
     public void Set(string fontName)
     {
-        fontName = Fonts.Exists(fontName) ? fontName : Fonts.Default;
+        // do nothing if the font can't be located
+        if (!Fonts.Exists(fontName, bold: false, italic: false))
+            return;
 
         // set default font so future added objects will use it
         Fonts.Default = fontName;

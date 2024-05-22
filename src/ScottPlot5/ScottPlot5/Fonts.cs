@@ -14,7 +14,16 @@ public static class Fonts
     /// <summary>
     /// If set, this font resolver is used for creating all typefaces
     /// </summary>
-    public static IFontResolver? FontResolver { get; set; } = null;
+    public static List<IFontResolver> FontResolvers { get; } = [];
+
+    /// <summary>
+    /// Add a font resolver that creates a typeface from a TTF file
+    /// </summary>
+    public static void AddFontFile(string name, string path, bool bold, bool italic)
+    {
+        FontResolvers.FileFontResolver resolver = new(name, path, bold, italic);
+        FontResolvers.Add(resolver);
+    }
 
     /// <summary>
     /// This font is used for almost all text rendering.
@@ -42,13 +51,27 @@ public static class Fonts
     public static string System { get; } = SKTypeface.Default.FamilyName;
 
     /// <summary>
-    /// Returns true if the given font is present on the system or is available via a custom font resolver
+    /// Returns true if the given font NAME is present on the system or is available via a custom font resolver.
+    /// This method does not account for custom styling like bold or italic.
     /// </summary>
-    public static bool Exists(string fontName)
+    public static bool Exists(string fontName, bool bold, bool italic)
     {
-        bool fontResolverExists = FontResolver is object && FontResolver.Exists(fontName);
-        bool fontIsInstalled = GetInstalledFonts().Contains(fontName);
-        return fontResolverExists || fontIsInstalled;
+        foreach (var resolver in FontResolvers)
+        {
+            SKTypeface? typeface = resolver.CreateTypeface(fontName, bold, italic);
+            if (typeface is not null)
+            {
+                typeface.Dispose(); // TODO: return it instead?
+                return true;
+            }
+        }
+
+        if (GetInstalledFonts().Contains(fontName))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -66,9 +89,9 @@ public static class Fonts
                 return cachedTypeface;
         }
 
-        if (FontResolver is not null)
+        foreach (var resolver in FontResolvers)
         {
-            SKTypeface? resolvedTypeface = FontResolver.CreateTypeface(fontName, bold, italic);
+            SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, bold, italic);
             if (resolvedTypeface is not null)
             {
                 TypefaceCache.Add(typefaceCacheKey, resolvedTypeface);

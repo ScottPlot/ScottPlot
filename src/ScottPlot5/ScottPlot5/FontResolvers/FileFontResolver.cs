@@ -1,36 +1,37 @@
 ﻿namespace ScottPlot.FontResolvers;
 
 /// <summary>
-/// Font resolver that looks for ttf files in the given folder.
+/// Font resolver that creates a typeface from a specified TTF file
 /// </summary>
-/// <param name="name">Name of the typeface which may include spaces and special characters</param>
-/// <param name="pathBase">Path to .ttf files minus the style name and file extension (e.g., '-Regular.ttf')</param>
-public class FileFontResolver(string name, string pathBase) : IFontResolver
+public class FileFontResolver(string name, string path, bool bold, bool italic) : IFontResolver
 {
     private string FontName { get; } = name;
-    private string FontPath { get; } = pathBase;
+    private string FontPath { get; } = File.Exists(path)
+        ? Path.GetFullPath(path)
+        : throw new FileNotFoundException(path);
+    private bool Bold { get; } = bold;
+    private bool Italic { get; } = italic;
 
     public bool Exists(string fontName)
     {
-        // TODO: confirm the path exists too?
         return FontName == fontName;
     }
 
+    /// <summary>
+    /// Attempt to create the typeface using the given settings.
+    /// Returns null if this resolver does not match the requested font.
+    /// </summary>
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
-        if (!Exists(fontName))
-        {
+        if (FontName != fontName)
             return null;
-        }
 
-        string fileName = (bold, italic) switch
-        {
-            (true, false) => $"{FontPath}-Bold.ttf",
-            (false, true) => $"{FontPath}-Italic.ttf",
-            (true, true) => $"{FontPath}-BoldItalic.ttf",
-            _ => $"{FontPath}-Regular.ttf"
-        };
+        if (Bold != bold)
+            return null;
 
-        return SKTypeface.FromFile(Path.GetFullPath(fileName));
+        if (Italic != bold)
+            return null;
+
+        return SKTypeface.FromFile(FontPath);
     }
 }
