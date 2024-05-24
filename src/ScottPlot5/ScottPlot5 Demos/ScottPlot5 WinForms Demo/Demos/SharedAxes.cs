@@ -46,8 +46,6 @@ public partial class SharedAxes : Form, IDemoWindow
         formsPlot2.Refresh();
     }
 
-    private (IPlotControl from, IPlotControl to)? PlotsToCopy = null;
-
     private void EventSubscribe()
     {
         EventStartupTimer.Stop();
