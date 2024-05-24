@@ -1,4 +1,5 @@
-﻿namespace ScottPlot;
+﻿
+namespace ScottPlot;
 
 /// <summary>
 /// This interface describes a 1D axis (horizontal or vertical).
@@ -11,7 +12,7 @@ public interface IAxis : IPanel
     /// <summary>
     /// Min/Max range currently displayed by this axis
     /// </summary>
-    CoordinateRangeMutable Range { get; } // TODO: don't expose this
+    CoordinateRangeMutableSilent Range { get; } // TODO: don't expose this
 
     double Min { get; set; }
     double Max { get; set; }

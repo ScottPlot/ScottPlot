@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Details about a completed render
@@ -97,7 +95,9 @@ public readonly struct RenderDetails
         AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange);
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
-        AxisLimitsChanged = AxisLimitsChangedChecker();
+        AxisLimitsChanged = rp.Plot.Axes.GetAxes().Any(x => x.Range.WasChanges);
+        foreach (var axis in rp.Plot.Axes.GetAxes())
+            axis.Range.WasChanges = false;
         SizeChanged = !DataRect.Equals(lastRender.DataRect);
     }
 

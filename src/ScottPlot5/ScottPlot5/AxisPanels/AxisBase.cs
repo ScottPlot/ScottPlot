@@ -8,7 +8,7 @@ public abstract class AxisBase : LabelStyleProperties
 
     public abstract Edge Edge { get; }
 
-    public virtual CoordinateRangeMutable Range { get; private set; } = CoordinateRangeMutable.NotSet;
+    public virtual CoordinateRangeMutableSilent Range { get; private set; } = CoordinateRangeMutableSilent.NotSet;
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
     public float SizeWhenNoData { get; set; } = 15;

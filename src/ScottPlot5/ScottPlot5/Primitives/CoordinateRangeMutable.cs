@@ -7,8 +7,8 @@
 /// </summary>
 public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO: rename to MutableCoordinateRange or something
 {
-    public double Min { get; set; }
-    public double Max { get; set; }
+    public virtual double Min { get; set; }
+    public virtual double Max { get; set; }
     public double Center => (Min + Max) / 2;
     public double Span => Max - Min;
 

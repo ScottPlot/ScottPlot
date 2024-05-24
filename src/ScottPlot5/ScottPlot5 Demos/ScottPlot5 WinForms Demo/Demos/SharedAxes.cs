@@ -8,7 +8,7 @@ public partial class SharedAxes : Form, IDemoWindow
 
     public string Description => "Connect two controls together so they share an axis and have aligned layouts";
 
-    readonly System.Windows.Forms.Timer LayoutCheckTimer = new() { Interval = 10 };
+    readonly System.Windows.Forms.Timer EventStartupTimer = new() { Interval = 10 };
 
     public SharedAxes()
     {
@@ -36,13 +36,10 @@ public partial class SharedAxes : Form, IDemoWindow
         formsPlot2.Plot.Axes.Left.MinimumSize = leftAxisSize;
         formsPlot2.Plot.Axes.Left.MaximumSize = leftAxisSize;
 
-        // when one plot changes update the other plot
-        formsPlot1.Plot.RenderManager.AxisLimitsChanged += (s, e) => PlotsToCopy = (formsPlot1, formsPlot2);
-        formsPlot2.Plot.RenderManager.AxisLimitsChanged += (s, e) => PlotsToCopy = (formsPlot2, formsPlot1);
 
         // setup a timer to check when limits should be copied
-        LayoutCheckTimer.Tick += (s, e) => CopyLimits();
-        LayoutCheckTimer.Start();
+        EventStartupTimer.Tick += (s, e) => EventSubscribe();
+        EventStartupTimer.Start();
 
         // initial render
         formsPlot1.Refresh();
@@ -51,13 +48,18 @@ public partial class SharedAxes : Form, IDemoWindow
 
     private (IPlotControl from, IPlotControl to)? PlotsToCopy = null;
 
-    private void CopyLimits()
+    private void EventSubscribe()
     {
-        if (PlotsToCopy is null)
-            return;
-        (IPlotControl source, IPlotControl target) = PlotsToCopy.Value;
-        AxisLimits sourceLimits = source.Plot.Axes.GetLimits();
-        target.Plot.Axes.SetLimitsX(sourceLimits);
-        target.Refresh();
+        EventStartupTimer.Stop();
+        formsPlot1.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
+        {
+            formsPlot2.Plot.Axes.Bottom.Range.SetSilent(formsPlot1.Plot.Axes.Bottom.Range.Min, formsPlot1.Plot.Axes.Bottom.Range.Max);
+            formsPlot2.Refresh();
+        };
+        formsPlot2.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
+        {
+            formsPlot1.Plot.Axes.Bottom.Range.SetSilent(formsPlot2.Plot.Axes.Bottom.Range.Min, formsPlot2.Plot.Axes.Bottom.Range.Max);
+            formsPlot1.Refresh();
+        };
     }
 }
