@@ -77,6 +77,19 @@ public class Label
         FontName = Fonts.Detect(Text);
     }
 
+    private SKTypeface? CachedTypeface = null;
+
+    private SKTypeface Typeface
+    {
+        get
+        {
+            if (CachedTypeface is null)
+            {
+                CachedTypeface = Fonts.GetTypeface(FontName, Bold, Italic);
+            }
+            return CachedTypeface;
+        }
+    }
 
     private void ApplyPointPaint(SKPaint paint)
     {
