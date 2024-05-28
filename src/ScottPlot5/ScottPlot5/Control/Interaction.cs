@@ -59,7 +59,9 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     /// </summary>
     public void Enable()
     {
-        Actions = ActionsWhenDisabled;
+        if (Disabled)
+            Actions = ActionsWhenDisabled;
+
         Disabled = false;
     }
 
