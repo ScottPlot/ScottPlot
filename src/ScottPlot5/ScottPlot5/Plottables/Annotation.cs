@@ -19,14 +19,15 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
 
-        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY);
-
         using SKPaint paint = new();
+
+        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY, paint);
+
         LabelStyle.Render(rp.Canvas, px, paint);
     }
 }

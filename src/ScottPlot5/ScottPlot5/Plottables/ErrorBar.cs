@@ -62,7 +62,7 @@
             return limits.AxisLimits;
         }
 
-        public void Render(RenderPack rp)
+        public virtual void Render(RenderPack rp)
         {
             RenderErrorBars(rp.Canvas, Xs, Ys, YErrorPositive, YErrorNegative);
             RenderErrorBars(rp.Canvas, Ys, Xs, XErrorPositive, XErrorNegative, true);

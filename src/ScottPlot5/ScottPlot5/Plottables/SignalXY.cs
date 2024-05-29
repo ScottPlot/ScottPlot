@@ -18,9 +18,17 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
+
+    /// <summary>
+    /// The style of lines to use when connecting points.
+    /// </summary>
+    public ConnectStyle ConnectStyle { get; set; } = ConnectStyle.Straight;
+
+    public int MinRenderIndex { get => Data.MinimumIndex; set => Data.MaximumIndex = value; }
+    public int MaxRenderIndex { get => Data.MinimumIndex; set => Data.MaximumIndex = value; }
 
     public Color Color
     {
@@ -29,7 +37,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
         {
             LineStyle.Color = value;
             MarkerStyle.FillColor = value;
-            MarkerStyle.OutlineColor = value;
+            MarkerStyle.LineColor = value;
         }
     }
 
@@ -44,12 +52,20 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
         Data.GetNearest(location, renderInfo, maxDistance);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
-        Pixel[] pixels = Data.GetPixelsToDraw(rp, Axes);
+        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes);
+
+        Pixel[] linePixels = ConnectStyle switch
+        {
+            ConnectStyle.Straight => markerPixels,
+            ConnectStyle.StepHorizontal => Scatter.GetStepDisplayPixels(markerPixels, true),
+            ConnectStyle.StepVertical => Scatter.GetStepDisplayPixels(markerPixels, false),
+            _ => throw new NotImplementedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
+        };
 
         using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
+        Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
     }
 }

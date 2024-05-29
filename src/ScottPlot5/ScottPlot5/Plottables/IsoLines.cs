@@ -29,7 +29,7 @@ public class IsoLines : IPlottable, IHasLine
         return Math.Round(yIntercept, 3).ToString();
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         List<PixelLine> lines = ManualPositions.Any()
             ? GetLinesManual(rp)

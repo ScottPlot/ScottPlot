@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Control;
-using ScottPlot.Extensions;
 using SkiaSharp;
 using System;
 using System.Diagnostics;
@@ -38,14 +37,14 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         {
             base.BackColor = value;
             if (Plot is not null)
-                Plot.FigureBackground.Color = value.ToColor();
+                Plot.FigureBackground.Color = Color.FromColor(value);
         }
     }
 
     public void Reset()
     {
         Plot plot = new();
-        plot.FigureBackground.Color = this.BackColor.ToColor();
+        plot.FigureBackground.Color = Color.FromColor(BackColor);
         plot.DataBackground.Color = Colors.White;
         Reset(plot);
     }

@@ -45,13 +45,17 @@ public class TitlePanel : IPanel
         if (string.IsNullOrWhiteSpace(Label.Text))
             return 0;
 
-        return Label.Measure().Height + VerticalPadding;
+        using SKPaint paint = new();
+
+        return Label.Measure(Label.Text, paint).Height + VerticalPadding;
     }
 
     public void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;
+
+        using SKPaint paint = new();
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
@@ -62,6 +66,6 @@ public class TitlePanel : IPanel
             Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
         }
 
-        Label.Render(rp.Canvas, labelPoint);
+        Label.Render(rp.Canvas, labelPoint, paint);
     }
 }

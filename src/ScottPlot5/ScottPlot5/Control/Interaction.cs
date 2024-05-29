@@ -6,9 +6,9 @@
 /// To customize behavior of actions, replace properties of <see cref="Actions"/> with custom delegates.
 /// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
-public class Interaction : IPlotInteraction
+public class Interaction(IPlotControl control) : IPlotInteraction
 {
-    public IPlotControl PlotControl { get; private set; }
+    public IPlotControl PlotControl { get; private set; } = control;
 
     /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
@@ -17,7 +17,7 @@ public class Interaction : IPlotInteraction
     public InputBindings Inputs = InputBindings.Standard();
 
     /// <summary>
-    /// Stores the <see cref="Actions"/> that were preseent when <see cref="Disable"/> was called.
+    /// Stores the <see cref="Actions"/> that were present when <see cref="Disable"/> was called.
     /// </summary>
     private PlotActions ActionsWhenDisabled = PlotActions.Standard();
 
@@ -34,11 +34,7 @@ public class Interaction : IPlotInteraction
     protected bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
     protected bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
     protected bool IsZoomingRectangle = false;
-
-    public Interaction(IPlotControl control)
-    {
-        PlotControl = control;
-    }
+    public bool ChangeOpposingAxesTogether { get; set; } = false;
 
     /// <summary>
     /// Disable all mouse interactivity
@@ -90,8 +86,8 @@ public class Interaction : IPlotInteraction
 
     protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimitManager start)
     {
-        bool lockY = Inputs.ShouldLockY(keys);
-        bool lockX = Inputs.ShouldLockX(keys);
+        bool lockY = Inputs.ShouldLockY(keys, button);
+        bool lockX = Inputs.ShouldLockX(keys, button);
         LockedAxes locks = new(lockX, lockY);
 
         MouseDrag drag = new(start, from, to);
@@ -107,7 +103,6 @@ public class Interaction : IPlotInteraction
         }
         else if (button == Inputs.DragZoomButton)
         {
-
             Actions.DragZoom(PlotControl, drag, locks);
         }
     }

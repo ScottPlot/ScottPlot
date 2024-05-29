@@ -60,7 +60,7 @@ public partial class DraggableCallout : Form, IDemoWindow
             Callout? calloutUnderMouse = GetCalloutUnderMouse(e.X, e.Y);
             Cursor = calloutUnderMouse is null ? Cursors.Arrow : Cursors.Hand;
             if (calloutUnderMouse is not null)
-                formsPlot1.Plot.MoveToTop(calloutUnderMouse);
+                formsPlot1.Plot.MoveToFront(calloutUnderMouse);
         }
         else
         {

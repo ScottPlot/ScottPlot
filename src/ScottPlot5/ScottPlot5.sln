@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot5\ScottPlot.csproj", "{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Tests", "ScottPlot5 Tests\ScottPlot Tests.csproj", "{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{957BAA80-422B-4231-BEC1-D03FD89425A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WinForms", "ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{7533069F-CC26-4B2F-8F23-4D5451C75538}"
@@ -49,11 +47,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Blazor.WebAssembly"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.ConsoleFramework", "ScottPlot5 Sandbox\Sandbox.ConsoleFramework\Sandbox.ConsoleFramework.csproj", "{2B8FEF6F-F79F-4008-B01F-8AB1C4487591}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Benchmarks", "ScottPlot5 Benchmarks\ScottPlot Benchmarks.csproj", "{57FEA5F7-EC45-4664-AF34-E8F840C97E45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmark", "ScottPlot5 Benchmarks\Benchmark.csproj", "{57FEA5F7-EC45-4664-AF34-E8F840C97E45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WPFFramework", "ScottPlot5 Sandbox\Sandbox.WPFFramework\Sandbox.WPFFramework.csproj", "{0A738D46-7654-4C7D-99BF-C420602965F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF Demo", "ScottPlot5 Demos\ScottPlot5 WPF Demo\WPF Demo.csproj", "{68FECF4F-9557-4B01-9C87-CCD6FE50CDEF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Advanced Tests", "Advanced Tests", "{B0708928-FFD3-4062-A3AD-3BA9D7CD8A55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphical Test Runner", "ScottPlot5 Tests\Graphical Test Runner\Graphical Test Runner.csproj", "{AA39141A-E248-43FB-ABF4-92D7E94F6190}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Unit Tests", "ScottPlot5 Tests\Unit Tests\ScottPlot Unit Tests.csproj", "{6CED419A-A9F9-4200-80A7-A38AE1295F0A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms3D", "ScottPlot5 Sandbox\Sandbox.WinForms3D\Sandbox.WinForms3D.csproj", "{0AE452FC-1D87-45C5-9B09-E645A759FCD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +71,6 @@ Global
 		{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7958F5B-AEBF-45B4-B5C6-268117E44D2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7533069F-CC26-4B2F-8F23-4D5451C75538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7533069F-CC26-4B2F-8F23-4D5451C75538}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7533069F-CC26-4B2F-8F23-4D5451C75538}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -153,6 +155,18 @@ Global
 		{68FECF4F-9557-4B01-9C87-CCD6FE50CDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68FECF4F-9557-4B01-9C87-CCD6FE50CDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68FECF4F-9557-4B01-9C87-CCD6FE50CDEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA39141A-E248-43FB-ABF4-92D7E94F6190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CED419A-A9F9-4200-80A7-A38AE1295F0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,8 +189,11 @@ Global
 		{A770F9E3-1DD9-49A4-A7AE-7EA578A9E888} = {957BAA80-422B-4231-BEC1-D03FD89425A2}
 		{9015EA2E-D20E-4200-8015-153F3B348DD0} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{2B8FEF6F-F79F-4008-B01F-8AB1C4487591} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
+		{57FEA5F7-EC45-4664-AF34-E8F840C97E45} = {B0708928-FFD3-4062-A3AD-3BA9D7CD8A55}
 		{0A738D46-7654-4C7D-99BF-C420602965F7} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{68FECF4F-9557-4B01-9C87-CCD6FE50CDEF} = {6500EB02-9E5D-4FDF-AAEC-84B831B4E396}
+		{AA39141A-E248-43FB-ABF4-92D7E94F6190} = {B0708928-FFD3-4062-A3AD-3BA9D7CD8A55}
+		{0AE452FC-1D87-45C5-9B09-E645A759FCD5} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}

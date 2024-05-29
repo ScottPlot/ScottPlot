@@ -90,7 +90,7 @@ public class BarPlot : IPlottable, IHasLegendText
         return limits.AxisLimits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 

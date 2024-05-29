@@ -1,4 +1,7 @@
-﻿namespace ScottPlotCookbook.Recipes.Axis;
+﻿using ScottPlot.TickGenerators;
+using SkiaSharp;
+
+namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingTicks : ICategory
 {
@@ -42,6 +45,39 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class DateTimeAutomaticTickFormatter : RecipeBase
+    {
+        public override string Name => "DateTimeAutomatic Tick Formatters";
+        public override string Description => "Users can customize the logic used to create " +
+                                              "datetime tick labels from tick positions. ";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot data using DateTime values on the horizontal axis
+            DateTime[] xs = Generate.ConsecutiveHours(100);
+            double[] ys = Generate.RandomWalk(100);
+            myPlot.Add.Scatter(xs, ys);
+
+            // setup the bottom axis to use DateTime ticks
+            var axis = myPlot.Axes.DateTimeTicksBottom();
+
+            // create a custom formatter to return a string with
+            // date only when zoomed out and time only when zoomed in
+            static string CustomFormatter(DateTime dt)
+            {
+                bool isMidnight = dt is { Hour: 0, Minute: 0, Second: 0 };
+                return isMidnight
+                    ? DateOnly.FromDateTime(dt).ToString()
+                    : TimeOnly.FromDateTime(dt).ToString();
+            }
+
+            // apply our custom tick formatter
+            DateTimeAutomatic tickGen = (DateTimeAutomatic)axis.TickGenerator;
+            tickGen.LabelFormatter = CustomFormatter;
+        }
+    }
+
     public class AltTickGen : RecipeBase
     {
         public override string Name => "Custom Tick Generators";
@@ -62,10 +98,32 @@ public class CustomizingTicks : ICategory
         }
     }
 
+    public class SetTicks : RecipeBase
+    {
+        public override string Name => "SetTicks Shortcut";
+        public override string Description => "The default axes have a SetTicks() helper method which replaces " +
+            "the default tick generator with a manual tick generator pre-loaded with the provided ticks.";
+
+        [Test]
+        public override void Execute()
+        {
+            // display sample data
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // use manually defined ticks
+            double[] tickPositions = { 10, 25, 40 };
+            string[] tickLabels = { "Alpha", "Beta", "Gamma" };
+            myPlot.Axes.Bottom.SetTicks(tickPositions, tickLabels);
+        }
+    }
+
     public class CustomTicks : RecipeBase
     {
         public override string Name => "Custom Tick Positions";
-        public override string Description => "Users can define ticks to be placed at specific locations.";
+        public override string Description => "Users desiring more control over major and minor " +
+            "tick positions and labels can instantiate a manual tick generator, set it up as desired, " +
+            "then assign it to the axis being customized";
 
         [Test]
         public override void Execute()
@@ -107,7 +165,6 @@ public class CustomizingTicks : ICategory
             myPlot.Add.Signal(Generate.Cos());
 
             myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
-            myPlot.Axes.Bottom.TickLabelStyle.OffsetY = -8;
             myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
         }
     }
@@ -142,9 +199,10 @@ public class CustomizingTicks : ICategory
 
             // determine the width of the largest tick label
             float largestLabelWidth = 0;
+            using SKPaint paint = new();
             foreach (Tick tick in ticks)
             {
-                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label);
+                PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label, paint).Size;
                 largestLabelWidth = Math.Max(largestLabelWidth, size.Width);
             }
 

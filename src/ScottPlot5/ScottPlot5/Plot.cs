@@ -3,6 +3,7 @@ using ScottPlot.Control;
 using ScottPlot.Grids;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
+using System.ComponentModel;
 
 namespace ScottPlot;
 
@@ -17,7 +18,7 @@ public class Plot : IDisposable
     public BackgroundStyle FigureBackground = new() { Color = Colors.White };
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
-    public IZoomRectangle ZoomRectangle { get; set; } = new StandardZoomRectangle();
+    public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
     internal float ScaleFactorF = 1.0f;
 
@@ -46,6 +47,7 @@ public class Plot : IDisposable
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
+        ZoomRectangle = new StandardZoomRectangle(this);
     }
 
     public void Dispose()
@@ -126,10 +128,18 @@ public class Plot : IDisposable
         }
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
-        double left = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
-        double right = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
-        double top = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
-        double bottom = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+        double x1 = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
+        double x2 = (xAxis ?? Axes.Bottom).GetCoordinate(rightPx, dataRect);
+        double y1 = (yAxis ?? Axes.Left).GetCoordinate(topPx, dataRect);
+        double y2 = (yAxis ?? Axes.Left).GetCoordinate(bottomPx, dataRect);
+
+        // rectify rectangles for inverted axes
+        // https://github.com/ScottPlot/ScottPlot/issues/3731
+        double left = Math.Min(x1, x2);
+        double right = Math.Max(x1, x2);
+        double bottom = Math.Min(y1, y2);
+        double top = Math.Max(y1, y2);
+
         return new CoordinateRect(left, right, bottom, top);
     }
 
@@ -300,16 +310,18 @@ public class Plot : IDisposable
 
     public SavedImageInfo SaveSvg(string filePath, int width, int height)
     {
-        using FileStream fs = new(filePath, FileMode.Create);
-        using SKCanvas canvas = SKSvgCanvas.Create(new SKRect(0, 0, width, height), fs);
-        Render(canvas, width, height);
-        return new SavedImageInfo(filePath, (int)fs.Length).WithRenderDetails(RenderManager.LastRender);
+        string xml = GetSvgXml(width, height);
+        File.WriteAllText(filePath, xml);
+        return new SavedImageInfo(filePath, xml.Length).WithRenderDetails(RenderManager.LastRender);
     }
 
     public string GetSvgXml(int width, int height)
     {
         using SvgImage svg = new(width, height);
+        bool originalClearState = RenderManager.ClearCanvasBeforeEachRender;
+        RenderManager.ClearCanvasBeforeEachRender = false;
         Render(svg.Canvas, width, height);
+        RenderManager.ClearCanvasBeforeEachRender = originalClearState;
         return svg.GetXml();
     }
 
@@ -427,11 +439,18 @@ public class Plot : IDisposable
         toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
+    [Obsolete("use MoveToFront()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToTop(IPlottable plottable) => MoveToFront(plottable);
+
+    [Obsolete("use MoveToBack()")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public void MoveToBottom(IPlottable plottable) => MoveToBack(plottable);
+
     /// <summary>
     /// Move the indicated plottable to the end of the list so it is rendered last
     /// </summary>
-    /// <param name="plottable"></param>
-    public void MoveToTop(IPlottable plottable)
+    public void MoveToFront(IPlottable plottable)
     {
         // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
         int index = PlottableList.IndexOf(plottable);
@@ -441,6 +460,21 @@ public class Plot : IDisposable
 
         PlottableList.RemoveAt(index);
         PlottableList.Add(plottable);
+    }
+
+    /// <summary>
+    /// Move the indicated plottable to the start of the list so it is rendered first
+    /// </summary>
+    public void MoveToBack(IPlottable plottable)
+    {
+        // TODO: https://github.com/ScottPlot/ScottPlot/issues/3660
+        int index = PlottableList.IndexOf(plottable);
+
+        if (index < 0)
+            return;
+
+        PlottableList.RemoveAt(index);
+        PlottableList.Insert(0, plottable);
     }
 
     /// <summary>
@@ -503,6 +537,30 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Hide the default legend (inside the data area) and create a new legend panel 
+    /// placed on the edge of the figure outside the data area.
+    /// </summary>
+    /// <returns></returns>
+    public Panels.LegendPanel ShowLegend(Edge edge)
+    {
+        HideLegend();
+
+        Legend.Orientation = edge.IsVertical()
+            ? Orientation.Vertical
+            : Orientation.Horizontal;
+
+        Panels.LegendPanel legendPanel = new(Legend)
+        {
+            Edge = edge,
+            Alignment = Alignment.MiddleCenter,
+        };
+
+        Axes.AddPanel(legendPanel);
+
+        return legendPanel;
+    }
+
+    /// <summary>
     /// Helper method for setting visibility of the <see cref="Legend"/>
     /// </summary>
     public Legend HideLegend()
@@ -515,6 +573,15 @@ public class Plot : IDisposable
     /// Clears the <see cref="PlottableList"/> list
     /// </summary>
     public void Clear() => PlottableList.Clear();
+
+    /// <summary>
+    /// Clear a all instances of a specific type from the <see cref="PlottableList"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of <see cref="IPlottable"/> to be cleared</typeparam>
+    public void Clear<T>() where T : IPlottable
+    {
+        Remove<T>();
+    }
 
     /// <summary>
     /// Shortcut to set text of the <see cref="TitlePanel"/> Label.

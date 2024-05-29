@@ -5,11 +5,13 @@
 /// and is passed throughout the render system to provide
 /// screen and canvas information to methods performing rendering.
 /// </summary>
-public class RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas)
+public class RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas) : IDisposable
 {
     public SKCanvas Canvas { get; } = canvas;
     public CanvasState CanvasState { get; } = new(canvas);
+    public SKPaint Paint { get; } = new();
     public PixelRect FigureRect { get; } = figureRect;
+    public PixelRect ScaledFigureRect { get; private set; }
     public PixelRect DataRect { get; private set; }
     public Layout Layout { get; private set; }
     public Plot Plot { get; } = plot;
@@ -25,13 +27,18 @@ public class RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas)
         if (DataRect.HasArea)
             throw new InvalidOperationException("CalculateLayout() must only be called once per render");
 
-        PixelRect scaledFigureRect = new(
+        ScaledFigureRect = new(
             left: FigureRect.Left / Plot.ScaleFactorF,
             right: FigureRect.Right / Plot.ScaleFactorF,
             bottom: FigureRect.Bottom / Plot.ScaleFactorF,
             top: FigureRect.Top / Plot.ScaleFactorF);
 
-        Layout = Plot.Layout.LayoutEngine.GetLayout(scaledFigureRect, Plot);
+        Layout = Plot.Layout.LayoutEngine.GetLayout(ScaledFigureRect, Plot);
         DataRect = Layout.DataRect;
+    }
+
+    public void Dispose()
+    {
+        Paint.Dispose();
     }
 }

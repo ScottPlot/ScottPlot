@@ -40,23 +40,33 @@ public class PlottableAdder(Plot plot)
         return an;
     }
 
-    public Arrow Arrow(Coordinates @base, Coordinates tip)
+    public Arrow Arrow(Coordinates arrowBase, Coordinates arrowTip)
     {
-        Arrow ar = new()
+        Color color = GetNextColor();
+
+        Arrow arrow = new()
         {
-            Color = GetNextColor(),
-            Base = @base,
-            Tip = tip,
+            Base = arrowBase,
+            Tip = arrowTip,
+            ArrowLineColor = color,
+            ArrowFillColor = color.WithAlpha(.3),
         };
-        Plot.PlottableList.Add(ar);
-        return ar;
+
+        Plot.PlottableList.Add(arrow);
+
+        return arrow;
     }
 
     public Arrow Arrow(double xBase, double yBase, double xTip, double yTip)
     {
-        Coordinates cBase = new(xBase, yBase);
-        Coordinates cTip = new(xTip, yTip);
-        return Arrow(cBase, cTip);
+        Coordinates arrowBase = new(xBase, yBase);
+        Coordinates arrowTip = new(xTip, yTip);
+        return Arrow(arrowBase, arrowTip);
+    }
+
+    public Arrow Arrow(CoordinateLine line)
+    {
+        return Arrow(line.Start, line.End);
     }
 
     public BarPlot Bar(Bar bar)
@@ -148,7 +158,8 @@ public class PlottableAdder(Plot plot)
             Text = text,
             TextCoordinates = textLocation,
             TipCoordinates = tipLocation,
-            ArrowColor = color,
+            ArrowLineColor = Colors.Transparent,
+            ArrowFillColor = color,
             TextBackgroundColor = color.Lighten(.5),
             TextBorderColor = color,
             TextBorderWidth = 2,
@@ -187,6 +198,32 @@ public class PlottableAdder(Plot plot)
         return colorBar;
     }
 
+    public Coxcomb Coxcomb(IList<PieSlice> slices)
+    {
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
+    public Coxcomb Coxcomb(IEnumerable<double> values)
+    {
+        List<PieSlice> slices = new();
+        foreach (double value in values)
+        {
+            PieSlice slice = new()
+            {
+                Value = value,
+                FillColor = Palette.GetColor(slices.Count).WithOpacity(0.5),
+            };
+
+            slices.Add(slice);
+        }
+
+        Coxcomb coxcomb = new(slices);
+        Plot.PlottableList.Add(coxcomb);
+        return coxcomb;
+    }
+
     public Crosshair Crosshair(double x, double y)
     {
         Crosshair ch = new()
@@ -214,7 +251,7 @@ public class PlottableAdder(Plot plot)
 
     public DataStreamer DataStreamer(int points, double period = 1)
     {
-        double[] data = new double[points];
+        double[] data = Generate.NaN(points);
 
         DataStreamer streamer = new(Plot, data)
         {
@@ -550,6 +587,27 @@ public class PlottableAdder(Plot plot)
     {
         Coordinates[] coordinates = NumericConversion.GenericToCoordinates(xs, ys);
         return Polygon(coordinates);
+    }
+
+    public Radar Radar(IReadOnlyList<RadarSeries> series)
+    {
+        Radar radar = new(series);
+        Plot.PlottableList.Add(radar);
+        return radar;
+    }
+
+    public Radar Radar(IEnumerable<IEnumerable<double>> series)
+    {
+        List<RadarSeries> radarSeries = new();
+        foreach (var values in series)
+        {
+            var radarSerie = new RadarSeries(values.ToList(), Palette.GetColor(radarSeries.Count).WithOpacity(0.5));
+            radarSeries.Add(radarSerie);
+        }
+
+        Radar radar = new(radarSeries);
+        Plot.PlottableList.Add(radar);
+        return radar;
     }
 
     public RadialGaugePlot RadialGaugePlot(IEnumerable<double> values)

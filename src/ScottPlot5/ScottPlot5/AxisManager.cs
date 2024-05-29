@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -95,6 +96,24 @@ public class AxisManager
     /// Rules that are applied before each render
     /// </summary>
     public List<IAxisRule> Rules { get; } = [];
+
+    /// <summary>
+    /// If enabled, AutoScale() will be called at the start of each render.
+    /// This can negatively impact performance of plots with an extremely large number of data points.
+    /// </summary>
+    public bool ContinuouslyAutoscale { get; set; } = false;
+
+    /// <summary>
+    /// When <see cref="ContinuouslyAutoscale"/> is true, 
+    /// this action is called before each frame is rendered.
+    /// Users can assign their own static function to customize continuous autoscaling behavior.
+    /// </summary>
+    public Action<RenderPack> ContinuousAutoscaleAction { get; set; } = DefaultContinuousAutoscaleAction;
+
+    public static void DefaultContinuousAutoscaleAction(RenderPack rp)
+    {
+        rp.Plot.Axes.AutoScale();
+    }
 
     /// <summary>
     /// Contains state and logic for axes
@@ -228,12 +247,22 @@ public class AxisManager
         Plot.Axes.XAxes.Add(dateAxis);
 
         // setup the grid to use the new bottom axis
-        Plot.Axes.DefaultGrid.XAxis = Plot.Axes.Bottom;
+        Plot.Axes.DefaultGrid.XAxis = dateAxis;
 
         // autoscale the new axis to fit data already on the plot
         AutoScale();
 
         return dateAxis;
+    }
+
+    public void AddYAxis(IYAxis axis)
+    {
+        YAxes.Add(axis);
+    }
+
+    public void AddXAxis(IXAxis axis)
+    {
+        XAxes.Add(axis);
     }
 
     /// <summary>
@@ -246,6 +275,14 @@ public class AxisManager
         return axis;
     }
 
+    public void AddLeftAxis(IYAxis axis)
+    {
+        if (axis.Edge != Edge.Left)
+            throw new InvalidOperationException("The given axis is not a Left axis");
+
+        YAxes.Add(axis);
+    }
+
     /// <summary>
     /// Crete a new axis, add it to the plot, and return it
     /// </summary>
@@ -254,6 +291,14 @@ public class AxisManager
         RightAxis axis = new();
         YAxes.Add(axis);
         return axis;
+    }
+
+    public void AddRightAxis(IYAxis axis)
+    {
+        if (axis.Edge != Edge.Right)
+            throw new InvalidOperationException("The given axis is not a Right axis");
+
+        YAxes.Add(axis);
     }
 
     /// <summary>
@@ -266,6 +311,14 @@ public class AxisManager
         return axis;
     }
 
+    public void AddBottomAxis(IXAxis axis)
+    {
+        if (axis.Edge != Edge.Bottom)
+            throw new InvalidOperationException("The given axis is not a Bottom axis");
+
+        XAxes.Add(axis);
+    }
+
     /// <summary>
     /// Crete a new axis, add it to the plot, and return it
     /// </summary>
@@ -276,6 +329,13 @@ public class AxisManager
         return axis;
     }
 
+    public void AddTopAxis(IXAxis axis)
+    {
+        if (axis.Edge != Edge.Top)
+            throw new InvalidOperationException("The given axis is not a Top axis");
+
+        XAxes.Add(axis);
+    }
 
     public void SetLimitsX(double left, double right, IXAxis xAxis)
     {
@@ -592,16 +652,25 @@ public class AxisManager
         AutoScaleExpandY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the bottom horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX()
     {
         AutoScaleX(Bottom);
     }
 
+    /// <summary>
+    /// Autoscale the left vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY()
     {
         AutoScaleY(Left);
     }
 
+    /// <summary>
+    /// Autoscale the supplied horizontal axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleX(IXAxis xAxis)
     {
         ReplaceNullAxesWithDefaults();
@@ -609,11 +678,56 @@ public class AxisManager
         SetLimitsX(limits.Left, limits.Right, xAxis);
     }
 
+    /// <summary>
+    /// Autoscale the supplied vertical axis limits to fit the data of all plotted objects
+    /// </summary>
     public void AutoScaleY(IYAxis yAxis)
     {
         ReplaceNullAxesWithDefaults();
         AxisLimits limits = AutoScaler.GetAxisLimits(Plot, Bottom, yAxis);
         SetLimitsY(limits.Bottom, limits.Top, yAxis);
+    }
+
+    /// <summary>
+    /// Autoscale the default (left and bottom) axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScale(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimits(limits);
+    }
+
+    /// <summary>
+    /// Autoscale the default bottom horizontal axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleX(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsX(limits);
+    }
+
+    /// <summary>
+    /// Autoscale the default left vertical axis limits to fit the data of the supplied plottables
+    /// </summary>
+    public void AutoScaleY(IEnumerable<IPlottable> plottables)
+    {
+        if (!plottables.Any())
+            return;
+
+        ReplaceNullAxesWithDefaults();
+
+        AxisLimits limits = new(plottables.Where(Plot.PlottableList.Contains));
+        SetLimitsY(limits);
     }
 
     /// <summary>
@@ -717,5 +831,15 @@ public class AxisManager
     {
         AxisRules.SquareZoomOut rule = new(Bottom, Left);
         Rules.Add(rule);
+    }
+
+    /// <summary>
+    /// Disable visibility of all axes and titles so the data area fills the entire figure
+    /// </summary>
+    public void Frameless()
+    {
+        XAxes.ForEach(x => x.IsVisible = false);
+        YAxes.ForEach(x => x.IsVisible = false);
+        Title.IsVisible = false;
     }
 }

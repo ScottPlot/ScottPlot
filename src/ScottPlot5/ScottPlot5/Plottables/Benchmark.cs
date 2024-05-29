@@ -20,7 +20,7 @@ public class Benchmark : LabelStyleProperties, IPlottable
         BorderColor = Colors.Black,
     };
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
@@ -30,6 +30,6 @@ public class Benchmark : LabelStyleProperties, IPlottable
             $"({1e3 / rp.Elapsed.TotalMilliseconds:N0} FPS)";
 
         using SKPaint paint = new();
-        LabelStyle.Render(rp.Canvas, rp.DataRect.BottomLeft.WithOffset(10, -13));
+        LabelStyle.Render(rp.Canvas, rp.DataRect.BottomLeft.WithOffset(10, -13), paint);
     }
 }

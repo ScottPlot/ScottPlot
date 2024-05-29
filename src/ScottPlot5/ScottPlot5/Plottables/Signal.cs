@@ -15,14 +15,17 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
+    public int MinRenderIndex { get => Data.MinimumIndex; set => Data.MinimumIndex = value; }
+    public int MaxRenderIndex { get => Data.MaximumIndex; set => Data.MaximumIndex = value; }
 
     /// <summary>
     /// Maximum size of the marker (in pixels) to display
@@ -60,8 +63,13 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         return GetVisibleXRange(Axes.DataRect).Span / Axes.DataRect.Width / Data.Period;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
+        if (!Data.GetYs().Any())
+        {
+            return;
+        }
+
         if (PointsPerPixel() < 1)
         {
             RenderLowDensity(rp);
@@ -87,7 +95,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         for (int i = i1; i <= i2; i++)
         {
             float x = Axes.GetPixelX(Data.GetX(i));
-            float y = Axes.GetPixelY(Data.GetY(i) + Data.YOffset);
+            float y = Axes.GetPixelY(Data.GetY(i) * Data.YScale + Data.YOffset);
             Pixel px = new(x, y);
             points.Add(px);
         }

@@ -8,9 +8,11 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(Generate.Sin());
-        formsPlot1.Plot.Add.Signal(Generate.Cos());
-        formsPlot1.Plot.Axes.Rules.Add(new ScottPlot.AxisRules.SnapToTicksX(formsPlot1.Plot.Axes.Bottom));
-        formsPlot1.Plot.Axes.Rules.Add(new ScottPlot.AxisRules.SnapToTicksY(formsPlot1.Plot.Axes.Left));
+        var mrk = formsPlot1.Plot.Add.Marker(5, 5);
+        mrk.Size = 100;
+        mrk.Color = Colors.Black.WithAlpha(0.5f);
+        mrk.MarkerLineWidth = 2;
+        mrk.MarkerLineColor = Colors.Black;
+        mrk.Shape = MarkerShape.FilledCircle;
     }
 }

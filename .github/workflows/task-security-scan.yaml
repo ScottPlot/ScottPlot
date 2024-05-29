@@ -9,7 +9,7 @@ on:
 
 jobs:
   security-scan:
-    name: Code Scan
+    name: CodeQL Code Scan
     runs-on: ubuntu-latest
     permissions:
       security-events: write
