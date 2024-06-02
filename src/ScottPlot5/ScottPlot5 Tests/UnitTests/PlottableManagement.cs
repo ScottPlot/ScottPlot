@@ -154,4 +154,13 @@ internal class PlottableManagement
         myPlot.GetPlottables<ScottPlot.Plottables.Scatter>().Count().Should().Be(3);
         myPlot.GetPlottables<ScottPlot.Plottables.Signal>().Count().Should().Be(2);
     }
+
+    [Test]
+    public void NullTextTest() 
+    { 
+        Plot myPlot = new Plot();
+        myPlot.Add.Text(null, new Coordinates());
+        myPlot.RenderManager.Render(new SkiaSharp.SKCanvas(new SkiaSharp.SKBitmap()), new PixelRect());
+        Assert.Pass();
+    }
 }

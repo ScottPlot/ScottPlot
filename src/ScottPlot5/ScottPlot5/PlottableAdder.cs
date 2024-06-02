@@ -756,7 +756,7 @@ public class PlottableAdder(Plot plot)
     public Text Text(string text, double x, double y)
     {
         Text txt = new();
-        txt.Label.Text = text;
+        txt.Label.Text = text ?? string.Empty;
         txt.Label.BackColor = Colors.Transparent;
         txt.Label.BorderColor = Colors.Transparent;
         txt.Location = new(x, y);
