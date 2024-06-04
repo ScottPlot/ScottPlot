@@ -29,6 +29,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
         Menu = new AvaPlotMenu(this);
+        Focusable = true; // Required for keyboard events
         Refresh();
     }
 
