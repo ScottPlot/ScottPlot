@@ -2,8 +2,6 @@
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
-using System.Numerics;
-using ScottPlot.Rendering.RenderActions;
 
 namespace ScottPlot;
 
@@ -529,6 +527,15 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(mp);
 
         return mp;
+    }
+
+    public ImageMarker ImageMarker(Coordinates location, Image referenceImage, float scale = 1)
+    {
+        ImageMarker marker = new ImageMarker(location, referenceImage, scale);
+
+        Plot.PlottableList.Add(marker);
+
+        return marker;
     }
 
     public OhlcPlot OHLC(List<OHLC> ohlcs)
