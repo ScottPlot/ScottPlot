@@ -1,9 +1,14 @@
-SET DemoFolder=..\..\src\ScottPlot5\ScottPlot5 Demos\ScottPlot5 WinForms Demo
+SET RecipesJsonFile=..\..\dev\www\cookbook\5.0\recipes.json
+del "%RecipesJsonFile%"
 
-rmdir /q/s "%DemoFolder%\bin"
+SET CookbookProjectFolder=..\..\src\ScottPlot5\ScottPlot5 Cookbook\ScottPlot Cookbook.csproj
+dotnet test "%CookbookProjectFolder%"
 
-dotnet build "%DemoFolder%" --configuration Release
+SET DemoProjectFolder=..\..\src\ScottPlot5\ScottPlot5 Demos\ScottPlot5 WinForms Demo
+rmdir /q/s "%DemoProjectFolder%\bin"
+dotnet build "%DemoProjectFolder%" --configuration Release
 
-explorer "%DemoFolder%\bin"
+copy "%RecipesJsonFile%" "%DemoProjectFolder%\bin\Release\recipes.json"
 
+explorer "%DemoProjectFolder%\bin\Release"
 pause

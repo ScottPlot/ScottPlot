@@ -1,5 +1,11 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Markers;
 
+namespace ScottPlot;
+
+/// <summary>
+/// Standard markers supported by ScottPlot.
+/// See demo app for information about creating custom marker shapes.
+/// </summary>
 public enum MarkerShape
 {
     None,
@@ -25,24 +31,32 @@ public enum MarkerShape
 
 public static class MarkerShapeExtensions
 {
-    public static IMarker GetRenderer(this MarkerShape shape)
+    /// <summary>
+    /// Get the marker object for a standard marker shape
+    /// </summary>
+    public static IMarker GetMarker(this MarkerShape shape)
     {
         return shape switch
         {
-            MarkerShape.FilledCircle or MarkerShape.OpenCircle => new Markers.Circle(),
-            MarkerShape.FilledSquare or MarkerShape.OpenSquare => new Markers.Square(),
-            MarkerShape.FilledTriangleUp or MarkerShape.OpenTriangleUp => new Markers.TriangleUp(),
-            MarkerShape.FilledTriangleDown or MarkerShape.OpenTriangleDown => new Markers.TriangleDown(),
-            MarkerShape.FilledDiamond or MarkerShape.OpenDiamond => new Markers.Diamond(),
-            MarkerShape.Eks => new Markers.Eks(),
-            MarkerShape.Cross => new Markers.Cross(),
-            MarkerShape.VerticalBar => new Markers.VerticalBar(),
-            MarkerShape.HorizontalBar => new Markers.HorizontalBar(),
-            MarkerShape.TriUp => new Markers.TriUp(),
-            MarkerShape.TriDown => new Markers.TriDown(),
-            MarkerShape.Asterisk => new Markers.Asterisk(),
-            MarkerShape.HashTag => new Markers.HashTag(),
-            MarkerShape.None => new Markers.None(),
+            MarkerShape.FilledCircle => new FilledCircle(),
+            MarkerShape.OpenCircle => new OpenCircle(),
+            MarkerShape.FilledSquare => new FilledSquare(),
+            MarkerShape.OpenSquare => new OpenSquare(),
+            MarkerShape.FilledTriangleUp => new FilledTriangleUp(),
+            MarkerShape.OpenTriangleUp => new OpenTriangleUp(),
+            MarkerShape.FilledTriangleDown => new FilledTriangleDown(),
+            MarkerShape.OpenTriangleDown => new OpenTriangleDown(),
+            MarkerShape.FilledDiamond => new FilledDiamond(),
+            MarkerShape.OpenDiamond => new OpenDiamond(),
+            MarkerShape.Eks => new Eks(),
+            MarkerShape.Cross => new Cross(),
+            MarkerShape.VerticalBar => new VerticalBar(),
+            MarkerShape.HorizontalBar => new HorizontalBar(),
+            MarkerShape.TriUp => new TriUp(),
+            MarkerShape.TriDown => new TriDown(),
+            MarkerShape.Asterisk => new Asterisk(),
+            MarkerShape.HashTag => new HashTag(),
+            MarkerShape.None => new None(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }

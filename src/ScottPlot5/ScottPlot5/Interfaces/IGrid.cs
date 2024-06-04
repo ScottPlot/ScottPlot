@@ -7,7 +7,9 @@ public interface IGrid
 {
     bool IsVisible { get; set; }
     bool IsBeneathPlottables { get; set; }
+    IXAxis XAxis { get; set; }
+    IYAxis YAxis { get; set; }
+    GridStyle XAxisStyle { get; set; }
+    GridStyle YAxisStyle { get; set; }
     void Render(RenderPack rp);
-    void Replace(IXAxis xAxis); // TODO: remove this
-    void Replace(IYAxis yAxis); // TODO: remove this
 }

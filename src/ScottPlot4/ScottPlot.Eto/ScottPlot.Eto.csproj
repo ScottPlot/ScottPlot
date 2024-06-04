@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>net462;net472;net48;net8.0</TargetFrameworks>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
 
-        <Version>4.1.71</Version>
-        <AssemblyVersion>4.1.71.0</AssemblyVersion>
-        <FileVersion>4.1.71.0</FileVersion>
+        <Version>4.1.74</Version>
+        <AssemblyVersion>4.1.74.0</AssemblyVersion>
+        <FileVersion>4.1.74.0</FileVersion>
 
         <AssemblyName>ScottPlot.Eto</AssemblyName>
         <RootNamespace>ScottPlot</RootNamespace>

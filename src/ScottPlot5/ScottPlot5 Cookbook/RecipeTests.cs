@@ -1,4 +1,7 @@
-﻿using ScottPlotCookbook.Website;
+﻿using NUnit.Framework.Internal;
+using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Website;
+using System.Reflection;
 
 namespace ScottPlotCookbook;
 
@@ -79,6 +82,43 @@ internal class RecipeTests
         foreach (string chapter in recipeChapterNames)
         {
             orderedChapterNames.Should().Contain(chapter);
+        }
+    }
+
+    [Test]
+    public static void Test_Recipes_HaveTestAttribute()
+    {
+        var recipeTypes = Assembly.GetAssembly(typeof(IRecipe))!
+            .GetTypes()
+            .Where(x => x.IsAssignableTo(typeof(RecipeBase)))
+            .Where(x => !x.IsAbstract);
+
+        foreach (Type recipeType in recipeTypes)
+        {
+            bool hasTestAttribute = recipeType.Methods()
+                .Where(x => x.Name == "Execute")
+                .Where(x => !x.IsAbstract)
+                .Single()
+                .GetCustomAttributes<TestAttribute>(inherit: false)
+                .Any();
+
+            if (!hasTestAttribute)
+                Assert.Fail($"{recipeType.Name}'s Execute() method is missing the [Test] attribute");
+        }
+    }
+
+    [Test]
+    public static void Test_Recipes_ArePublic()
+    {
+        var recipeTypes = Assembly.GetAssembly(typeof(IRecipe))!
+            .GetTypes()
+            .Where(x => x.IsAssignableTo(typeof(RecipeBase)))
+            .Where(x => !x.IsAbstract);
+
+        foreach (Type recipeType in recipeTypes)
+        {
+            TypeInfo recipeClassInfo = recipeType.GetTypeInfo();
+            recipeClassInfo.IsVisible.Should().BeTrue($"{recipeClassInfo.Namespace}.{recipeClassInfo.Name} should be public");
         }
     }
 }

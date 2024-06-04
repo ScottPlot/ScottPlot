@@ -26,8 +26,9 @@ public partial class SignalPerformance : Form, IDemoWindow
         Application.DoEvents();
 
         int pointCount = 1_000_000;
-        double[] ys = ScottPlot.Generate.NoisySin(new Random(), pointCount);
         double[] xs = ScottPlot.Generate.Consecutive(pointCount);
+        double[] ys = ScottPlot.Generate.Sin(pointCount);
+        Generate.AddNoiseInPlace(ys);
 
         if (rbSignal.Checked)
         {
@@ -37,9 +38,8 @@ public partial class SignalPerformance : Form, IDemoWindow
         }
         else if (rbScatter.Checked)
         {
-            var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
+            var sp = formsPlot1.Plot.Add.ScatterLine(xs, ys);
             formsPlot1.Plot.Axes.Title.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
-            sp.MarkerStyle = MarkerStyle.None;
             label1.Text = "Traditional Scatter plots are not performant for large datasets";
         }
 

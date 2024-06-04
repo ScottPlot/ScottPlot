@@ -10,8 +10,8 @@ public class Styling : ICategory
     {
         public override string Name => "Style Helper Functions";
         public override string Description => "Plots contain many objects which can be customized individually " +
-            "by assigining to their public properties, but helper methods exist in the Plot's Style object " +
-            "that make it easier to customzie many items at once using a simpler API.";
+            "by assigning to their public properties, but helper methods exist in the Plot's Style object " +
+            "that make it easier to customize many items at once using a simpler API.";
 
         [Test]
         public override void Execute()
@@ -24,10 +24,13 @@ public class Styling : ICategory
             myPlot.Axes.Left.Label.Text = "Vertical Axis";
             myPlot.Axes.Title.Label.Text = "Plot Title";
 
-            // the Style object contains helper methods to easily style many items at once
-            myPlot.Style.Background(figure: Color.FromHex("#07263b"), data: Color.FromHex("#0b3049"));
-            myPlot.Style.ColorAxes(Color.FromHex("#a0acb5"));
-            myPlot.Style.ColorGrids(Color.FromHex("#0e3d54"));
+            // some items must be styled directly
+            myPlot.Grid.MajorLineColor = Color.FromHex("#0e3d54");
+            myPlot.FigureBackground.Color = Color.FromHex("#07263b");
+            myPlot.DataBackground.Color = Color.FromHex("#0b3049");
+
+            // the Style object contains helper methods to style many items at once
+            myPlot.Axes.Color(Color.FromHex("#a0acb5"));
         }
     }
 
@@ -63,7 +66,10 @@ public class Styling : ICategory
             myPlot.Axes.Bottom.MinorTickStyle.Length = 5;
             myPlot.Axes.Bottom.MinorTickStyle.Width = 0.5f;
             myPlot.Axes.Bottom.MinorTickStyle.Color = Colors.Green;
-            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.LightBlue;
+            myPlot.Axes.Bottom.FrameLineStyle.Color = Colors.Blue;
+            myPlot.Axes.Bottom.FrameLineStyle.Width = 3;
+
+            myPlot.Axes.Right.FrameLineStyle.Width = 0;
         }
     }
 
@@ -89,50 +95,31 @@ public class Styling : ICategory
         }
     }
 
-    public class Markers : RecipeBase
+    public class ArrowShapeNames : RecipeBase
     {
-        public override string Name => "Markers";
-        public override string Description => "Many plot types have a MarkerStyle which can be customized.";
+        public override string Name => "Arrow Shapes";
+        public override string Description => "Many standard arrow shapes are available";
 
         [Test]
         public override void Execute()
         {
-            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+            ArrowShape[] arrowShapes = Enum.GetValues<ArrowShape>().ToArray();
 
-            for (int i = 0; i < markerShapes.Length; i++)
+            for (int i = 0; i < arrowShapes.Length; i++)
             {
-                double[] xs = Generate.Consecutive(20);
-                double[] ys = Generate.Sin(20, offset: markerShapes.Length - i);
-                var scatter = myPlot.Add.Scatter(xs, ys);
-                scatter.MarkerStyle.Shape = markerShapes[i];
-                scatter.MarkerStyle.Size = 10;
-            }
-        }
-    }
+                Coordinates arrowTip = new(0, -i);
+                Coordinates arrowBase = arrowTip.WithDelta(1, 0);
 
-    public class MarkerNames : RecipeBase
-    {
-        public override string Name => "Marker Names";
-        public override string Description => "Markers can be referred to by their name.";
+                var arrow = myPlot.Add.Arrow(arrowBase, arrowTip);
+                arrow.ArrowShape = arrowShapes[i].GetShape();
 
-        [Test]
-        public override void Execute()
-        {
-            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
-
-            for (int i = 0; i < markerShapes.Length; i++)
-            {
-                var mp = myPlot.Add.Marker(x: i, y: 0);
-                mp.MarkerStyle.Shape = markerShapes[i];
-                mp.MarkerStyle.Size = 10;
-
-                var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
-                txt.Label.Rotation = -90;
-                txt.Label.Alignment = Alignment.MiddleLeft;
+                var txt = myPlot.Add.Text(arrowShapes[i].ToString(), arrowBase.WithDelta(.1, 0));
+                txt.LabelFontColor = arrow.ArrowLineColor;
+                txt.LabelAlignment = Alignment.MiddleLeft;
+                txt.LabelFontSize = 18;
             }
 
-            myPlot.Title("Marker Names");
-            myPlot.Axes.SetLimits(-1, markerShapes.Length, -1, 4);
+            myPlot.Axes.SetLimits(-1, 3, -arrowShapes.Length, 1);
             myPlot.HideGrid();
         }
     }
@@ -157,10 +144,10 @@ public class Styling : ICategory
                 line.Color = Colors.Black;
 
                 var txt = myPlot.Add.Text(pattern.ToString(), 1.1, -i);
-                txt.Size = 18;
-                txt.Bold = true;
-                txt.Color = Colors.Black;
-                txt.Label.Alignment = Alignment.MiddleLeft;
+                txt.LabelFontSize = 18;
+                txt.LabelBold = true;
+                txt.LabelFontColor = Colors.Black;
+                txt.LabelAlignment = Alignment.MiddleLeft;
             }
 
             myPlot.Axes.Margins(right: 1);
@@ -204,7 +191,7 @@ public class Styling : ICategory
             {
                 var sig = myPlot.Add.Signal(Generate.Sin(51, phase: -.05 * i));
                 sig.LineWidth = 3;
-                sig.Label = $"Line {i + 1}";
+                sig.LegendText = $"Line {i + 1}";
             }
             myPlot.XLabel("Horizontal Axis");
             myPlot.YLabel("Vertical Axis");
@@ -212,15 +199,19 @@ public class Styling : ICategory
             myPlot.ShowLegend();
 
             // change figure colors
-            myPlot.Style.ColorAxes(Color.FromHex("#d7d7d7"));
-            myPlot.Style.ColorGrids(Color.FromHex("#404040"));
-            myPlot.Style.Background(
-                figure: Color.FromHex("#181818"),
-                data: Color.FromHex("#1f1f1f"));
-            myPlot.Style.ColorLegend(
-                background: Color.FromHex("#404040"),
-                foreground: Color.FromHex("#d7d7d7"),
-                border: Color.FromHex("#d7d7d7"));
+            myPlot.FigureBackground.Color = Color.FromHex("#181818");
+            myPlot.DataBackground.Color = Color.FromHex("#1f1f1f");
+
+            // change axis and grid colors
+            myPlot.Axes.Color(Color.FromHex("#d7d7d7"));
+            myPlot.Grid.MajorLineColor = Color.FromHex("#404040");
+
+            // change legend colors
+            myPlot.Legend.BackgroundColor = Color.FromHex("#404040");
+            myPlot.Legend.FontColor = Color.FromHex("#d7d7d7");
+            myPlot.Legend.OutlineColor = Color.FromHex("#d7d7d7");
         }
     }
+
+
 }

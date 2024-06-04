@@ -1,0 +1,60 @@
+name: Full Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  SP5_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
+  SP4_SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
+
+jobs:
+  full:
+    name: Full Build
+    runs-on: windows-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          build-mode: manual
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "microsoft"
+          java-version: "17"
+      - name: Install Workloads
+        run: |
+          dotnet workload install maui-android maui-ios maccatalyst wasm-tools
+          dotnet workload restore "${{ env.SP5_SOLUTION }}"
+          dotnet workload restore "${{ env.SP4_SOLUTION }}"
+      - name: Build ScottPlot5
+        run: |
+          dotnet restore "${{ env.SP5_SOLUTION }}"
+          dotnet build "${{ env.SP5_SOLUTION }}" --configuration Release
+      - name: Test ScottPlot5
+        run: dotnet test "${{ env.SP5_SOLUTION }}" --configuration Release --no-build --verbosity minimal
+      - name: Build ScottPlot4
+        run: |
+          dotnet restore "${{ env.SP4_SOLUTION }}"
+          dotnet build "${{ env.SP4_SOLUTION }}" --configuration Release
+      - name: Test ScottPlot4
+        run: dotnet test "${{ env.SP4_SOLUTION }}" --configuration Release --no-build --verbosity minimal
+      - name: SP4 vulnerable package check
+        working-directory: src/ScottPlot4
+        run: dotnet list package --vulnerable
+      - name: SP5 vulnerable package check
+        working-directory: src/ScottPlot5
+        run: dotnet list package --vulnerable
+      - name: Security Scan
+        uses: github/codeql-action/analyze@v3

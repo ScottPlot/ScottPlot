@@ -2,15 +2,14 @@
 
 internal class VerticalBar : IMarker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float offset = size / 2;
 
-        var path = new SKPath();
+        SKPath path = new();
         path.MoveTo(center.X, center.Y + offset);
         path.LineTo(center.X, center.Y - offset);
 
-        outline.ApplyToPaint(paint);
-        canvas.DrawPath(path, paint);
+        Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
 }

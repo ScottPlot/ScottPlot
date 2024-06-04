@@ -55,7 +55,7 @@ public class MultiAxis : ICategory
             var sig2 = myPlot.Add.Signal(ScottPlot.Generate.Cos(51, mult: 100));
             sig2.Axes.XAxis = myPlot.Axes.Bottom; // standard X axis
             sig2.Axes.YAxis = yAxis2; // custom Y axis
-            yAxis2.Label.Text = "Secondary Y Axis";
+            yAxis2.LabelText = "Secondary Y Axis";
         }
     }
 }

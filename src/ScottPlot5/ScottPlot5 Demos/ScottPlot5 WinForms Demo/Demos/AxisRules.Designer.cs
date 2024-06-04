@@ -43,6 +43,8 @@ partial class AxisRules
         groupBox4 = new GroupBox();
         btnLockHorizontal = new Button();
         btnLockVertical = new Button();
+        cbInvertX = new CheckBox();
+        cbInvertY = new CheckBox();
         groupBox1.SuspendLayout();
         groupBox2.SuspendLayout();
         groupBox3.SuspendLayout();
@@ -55,7 +57,7 @@ partial class AxisRules
         formsPlot1.DisplayScale = 1F;
         formsPlot1.Location = new Point(12, 93);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(1101, 521);
+        formsPlot1.Size = new Size(1180, 521);
         formsPlot1.TabIndex = 0;
         // 
         // btnBoundaryMin
@@ -134,7 +136,7 @@ partial class AxisRules
         // btnReset
         // 
         btnReset.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        btnReset.Location = new Point(1005, 34);
+        btnReset.Location = new Point(1074, 34);
         btnReset.Name = "btnReset";
         btnReset.Size = new Size(96, 43);
         btnReset.TabIndex = 10;
@@ -204,11 +206,33 @@ partial class AxisRules
         btnLockVertical.UseVisualStyleBackColor = true;
         btnLockVertical.Click += btnLockVertical_Click;
         // 
+        // cbInvertX
+        // 
+        cbInvertX.AutoSize = true;
+        cbInvertX.Location = new Point(981, 34);
+        cbInvertX.Name = "cbInvertX";
+        cbInvertX.Size = new Size(79, 19);
+        cbInvertX.TabIndex = 13;
+        cbInvertX.Text = "Inverted X";
+        cbInvertX.UseVisualStyleBackColor = true;
+        // 
+        // cbInvertY
+        // 
+        cbInvertY.AutoSize = true;
+        cbInvertY.Location = new Point(981, 59);
+        cbInvertY.Name = "cbInvertY";
+        cbInvertY.Size = new Size(79, 19);
+        cbInvertY.TabIndex = 14;
+        cbInvertY.Text = "Inverted Y";
+        cbInvertY.UseVisualStyleBackColor = true;
+        // 
         // AxisRules
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1125, 626);
+        ClientSize = new Size(1204, 626);
+        Controls.Add(cbInvertY);
+        Controls.Add(cbInvertX);
         Controls.Add(groupBox4);
         Controls.Add(groupBox3);
         Controls.Add(btnReset);
@@ -222,6 +246,7 @@ partial class AxisRules
         groupBox3.ResumeLayout(false);
         groupBox4.ResumeLayout(false);
         ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion
@@ -241,4 +266,6 @@ partial class AxisRules
     private GroupBox groupBox4;
     private Button btnLockHorizontal;
     private Button btnLockVertical;
+    private CheckBox cbInvertX;
+    private CheckBox cbInvertY;
 }

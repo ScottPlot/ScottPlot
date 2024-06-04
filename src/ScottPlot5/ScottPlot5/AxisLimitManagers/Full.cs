@@ -1,8 +1,8 @@
-﻿namespace ScottPlot.AxisLimitCalculators;
+﻿namespace ScottPlot.AxisLimitManagers;
 
 /// <summary>
 /// Show the entire range of data, changing the axis limits only
-/// when the data extends otuside the current view.
+/// when the data extends outside the current view.
 /// </summary>
 public class Full : IAxisLimitManager
 {

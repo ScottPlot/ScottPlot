@@ -39,6 +39,11 @@ public readonly struct Color
         }
     }
 
+    public override string ToString()
+    {
+        return $"Color {ToHex()} (R={R}, G={G}, B={B}, A={A})";
+    }
+
     public Color(byte red, byte green, byte blue, byte alpha = 255)
     {
         Red = red;
@@ -104,6 +109,11 @@ public readonly struct Color
 
     public static Color Gray(byte value) => new(value, value, value);
 
+    public static Color FromARGB(int argb)
+    {
+        return FromARGB(argb);
+    }
+
     public static Color FromARGB(uint argb)
     {
         byte alpha = (byte)(argb >> 24);
@@ -137,6 +147,18 @@ public readonly struct Color
     public static Color[] FromHex(string[] hex)
     {
         return hex.Select(x => FromHex(x)).ToArray();
+    }
+
+    public static Color FromColor(System.Drawing.Color color)
+    {
+        return new Color(color.R, color.G, color.B, color.A);
+    }
+
+    public string ToHex()
+    {
+        return Alpha == 255
+            ? $"#{R:X2}{G:X2}{B:X2}"
+            : $"#{R:X2}{G:X2}{B:X2}{A:X2}";
     }
 
     public static Color FromSKColor(SKColor skcolor)
@@ -198,7 +220,7 @@ public readonly struct Color
         return (h, s, l);
     }
 
-    public static Color FromHSL(float hue, float saturation, float luminosity)
+    public static Color FromHSL(float hue, float saturation, float luminosity, float alpha = 1)
     {
         // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)
 
@@ -232,7 +254,7 @@ public readonly struct Color
                 clr[i] = temp1;
         }
 
-        return new Color(clr[0], clr[1], clr[2]);
+        return new Color(clr[0], clr[1], clr[2], alpha);
     }
 
     public Color WithLightness(float lightness = .5f)
@@ -263,5 +285,78 @@ public readonly struct Color
             return Lighten(-fraction);
         fraction = Math.Max(0f, 1f - fraction);
         return new Color(R.Darken(fraction), G.Darken(fraction), B.Darken(fraction), Alpha);
+    }
+
+    /// <summary>
+    /// Return this color mixed with another color.
+    /// </summary>
+    /// <param name="otherColor">Color to mix with this color</param>
+    /// <param name="fraction">Fraction of <paramref name="otherColor"/> to use</param>
+    /// <returns></returns>
+    public Color MixedWith(Color otherColor, double fraction)
+    {
+        return InterpolateRgb(otherColor, fraction);
+    }
+
+    public Color InterpolateRgb(Color c1, double factor)
+    {
+        return InterpolateRgb(this, c1, factor);
+    }
+
+    public Color[] InterpolateArrayRgb(Color c1, int steps)
+    {
+        return InterpolateRgbArray(this, c1, steps);
+    }
+
+    static byte InterpolateRgb(byte b1, byte b2, double factor)
+    {
+        if (b1 < b2)
+            return Math.Min(Math.Max((byte)(b1 + (b2 - b1) * factor), (byte)0), (byte)255);
+        else
+            return Math.Min(Math.Max((byte)(b2 + (b1 - b2) * (1 - factor)), (byte)0), (byte)255);
+    }
+
+    static public Color InterpolateRgb(Color c1, Color c2, double factor)
+    {
+        return new Color(
+            InterpolateRgb(c1.R, c2.R, factor),
+            InterpolateRgb(c1.G, c2.G, factor),
+            InterpolateRgb(c1.B, c2.B, factor),
+            InterpolateRgb(c1.A, c2.A, factor)
+            );
+    }
+
+    static public Color[] InterpolateRgbArray(Color c1, Color c2, int steps)
+    {
+        var stepFactor = 1.0 / (steps - 1);
+        var array = new Color[steps];
+        for (var i = 0; i < steps; ++i)
+        {
+            array[i] = InterpolateRgb(c1, c2, stepFactor * i);
+        }
+        return array;
+    }
+
+    public uint PremultipliedARGB
+    {
+        get
+        {
+            byte premultipliedRed = (byte)((Red * Alpha) / 255);
+            byte premultipliedGreen = (byte)((Green * Alpha) / 255);
+            byte premultipliedBlue = (byte)((Blue * Alpha) / 255);
+            return
+                ((uint)Alpha << 24) |
+                ((uint)premultipliedRed << 16) |
+                ((uint)premultipliedGreen << 8) |
+                ((uint)premultipliedBlue << 0);
+        }
+    }
+
+    public static Color RandomHue()
+    {
+        float hue = (float)Generate.RandomNumber();
+        float saturation = 1;
+        float luminosity = 0.5f;
+        return Color.FromHSL(hue, saturation, luminosity);
     }
 }
