@@ -393,6 +393,15 @@ public class PlottableAdder(Plot plot)
         return span;
     }
 
+    public ImageMarker ImageMarker(Coordinates location, Image referenceImage, float scale = 1)
+    {
+        ImageMarker marker = new(location, referenceImage, scale);
+
+        Plot.PlottableList.Add(marker);
+
+        return marker;
+    }
+
     public Legend Legend()
     {
         Legend legend = new(Plot) { IsVisible = true };
@@ -527,15 +536,6 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(mp);
 
         return mp;
-    }
-
-    public ImageMarker ImageMarker(Coordinates location, Image referenceImage, float scale = 1)
-    {
-        ImageMarker marker = new ImageMarker(location, referenceImage, scale);
-
-        Plot.PlottableList.Add(marker);
-
-        return marker;
     }
 
     public OhlcPlot OHLC(List<OHLC> ohlcs)
