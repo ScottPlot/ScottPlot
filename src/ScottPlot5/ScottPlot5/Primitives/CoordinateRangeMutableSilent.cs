@@ -23,10 +23,20 @@ public class CoordinateRangeMutableSilent(double min, double max) : CoordinateRa
         }
     }
 
-    public void SetSilent(double min, double max)
+    public void Set(double min, double max, bool silent = true)
     {
         base.Min = min;
         base.Max = max;
+
+        if (silent == false)
+        {
+            WasChanged = true;
+        }
+    }
+
+    public void Set(IAxis otherAxis, bool silent = true)
+    {
+        Set(otherAxis.Min, otherAxis.Max, silent);
     }
 
     public static new CoordinateRangeMutableSilent NotSet => new(double.PositiveInfinity, double.NegativeInfinity);

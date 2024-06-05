@@ -34,10 +34,10 @@ public partial class SharedAxes : Form, IDemoWindow
             return;
 
         if (checkShareX.Checked)
-            target.Plot.Axes.Bottom.Range.SetSilent(source.Plot.Axes.Bottom.Range.Min, source.Plot.Axes.Bottom.Range.Max);
+            target.Plot.Axes.Bottom.Range.Set(source.Plot.Axes.Bottom);
 
         if (checkShareY.Checked)
-            target.Plot.Axes.Left.Range.SetSilent(source.Plot.Axes.Left.Range.Min, source.Plot.Axes.Left.Range.Max);
+            target.Plot.Axes.Left.Range.Set(source.Plot.Axes.Left);
 
         target.Refresh();
     }
