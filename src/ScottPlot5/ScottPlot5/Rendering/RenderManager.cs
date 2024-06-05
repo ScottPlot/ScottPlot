@@ -69,6 +69,11 @@ public class RenderManager(Plot plot)
     public EventHandler<RenderDetails> AxisLimitsChanged { get; set; } = delegate { };
 
     /// <summary>
+    /// Prevents <see cref="AxisLimitsChanged"/> from being invoked in situations that may cause infinite loops
+    /// </summary>
+    public bool DisableAxisLimitsChangedEventOnNextRender { get; set; } = false;
+
+    /// <summary>
     /// Indicates whether this plot is in the process of executing a render
     /// </summary>
     public bool IsRendering { get; private set; } = false;
@@ -135,12 +140,13 @@ public class RenderManager(Plot plot)
                 SizeChanged.Invoke(Plot, LastRender);
             }
 
-            if (LastRender.AxisLimitsChanged)
+            if (!DisableAxisLimitsChangedEventOnNextRender && LastRender.AxisLimitsChanged)
             {
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
         }
 
+        DisableAxisLimitsChangedEventOnNextRender = false;
 
         // TODO: event for when layout changes
     }

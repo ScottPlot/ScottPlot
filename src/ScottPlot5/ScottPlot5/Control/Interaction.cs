@@ -11,6 +11,11 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     public IPlotControl PlotControl { get; private set; } = control;
 
     /// <summary>
+    /// Indicates whether interactions have been disabled.
+    /// </summary>
+    public bool Disabled { get; private set; } = false;
+
+    /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
     /// (e.g., make left-click-drag zoom instead of pan)
     /// </summary>
@@ -41,6 +46,10 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     /// </summary>
     public void Disable()
     {
+        if (Disabled)
+            return;
+
+        Disabled = true;
         ActionsWhenDisabled = Actions;
         Actions = PlotActions.NonInteractive();
     }
@@ -50,7 +59,10 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     /// </summary>
     public void Enable()
     {
-        Actions = ActionsWhenDisabled;
+        if (Disabled)
+            Actions = ActionsWhenDisabled;
+
+        Disabled = false;
     }
 
     /// <summary>
@@ -59,6 +71,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     public void Enable(PlotActions customActions)
     {
         Actions = customActions;
+        Disabled = false;
     }
 
     /// <summary>
@@ -92,7 +105,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
 
         MouseDrag drag = new(start, from, to);
 
-        if (Inputs.ShouldZoomRectangle(button, keys))
+        if (Inputs.ShouldZoomRectangle(button, keys) || IsZoomingRectangle)
         {
             Actions.DragZoomRectangle(PlotControl, drag, locks);
             IsZoomingRectangle = true;
@@ -125,11 +138,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     public virtual void MouseUp(Pixel position, MouseButton button)
     {
         bool isDragging = Mouse.IsDragging(position);
-
-        bool droppedZoomRectangle =
-            isDragging &&
-            Inputs.ShouldZoomRectangle(button, Keyboard.PressedKeys) &&
-            IsZoomingRectangle;
+        bool droppedZoomRectangle = isDragging && IsZoomingRectangle;
 
         if (droppedZoomRectangle)
         {
