@@ -2,8 +2,6 @@
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
 using ScottPlot.Plottable;
-using System.Numerics;
-using ScottPlot.Rendering.RenderActions;
 
 namespace ScottPlot;
 
@@ -393,6 +391,20 @@ public class PlottableAdder(Plot plot)
         span.LineStyle.Color = span.FillStyle.Color.WithAlpha(.5);
         Plot.PlottableList.Add(span);
         return span;
+    }
+
+    public ImageMarker ImageMarker(Coordinates location, Image image, float scale = 1)
+    {
+        ImageMarker marker = new()
+        {
+            Location = location,
+            Image = image,
+            Scale = scale,
+        };
+
+        Plot.PlottableList.Add(marker);
+
+        return marker;
     }
 
     public Legend Legend()
