@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Details about a completed render
