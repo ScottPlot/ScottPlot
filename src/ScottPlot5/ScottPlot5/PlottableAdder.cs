@@ -393,9 +393,14 @@ public class PlottableAdder(Plot plot)
         return span;
     }
 
-    public ImageMarker ImageMarker(Coordinates location, Image referenceImage, float scale = 1)
+    public ImageMarker ImageMarker(Coordinates location, Image image, float scale = 1)
     {
-        ImageMarker marker = new(location, referenceImage, scale);
+        ImageMarker marker = new()
+        {
+            Location = location,
+            Image = image,
+            Scale = scale,
+        };
 
         Plot.PlottableList.Add(marker);
 
