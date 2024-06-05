@@ -1,4 +1,5 @@
 ## ScottPlot 5.0.35
+_Not yet on NuGet..._
 * Legend: Added `Plot.ShowLegend()` overload that accepts an `Edge` for quickly adding a legend outside the data area (#3672, #3635)
 * Radar Plot: New plot type (also called a spider charts or star charts) for representing multi-axis data as a 2D shape on a circular axis system (#3457, #3780) @bclehmann
 * Coxcomb Plot: New plot type like a pie graph where the angle of slices is constant but the radii are not (#3457, #3780) @bclehmann
@@ -19,6 +20,7 @@
 * Legend: Clip the legend area so it does not flow outside the data area on extremely small plots (#3833) @drolevar
 * Controls: Made axis locking methods `virtual` inside `InputBindings` to facilitate custom behavior (#3838) @JinjieZhao
 * Fonts: Improved support for true-type font files and custom typefaces (#3841) @kebox7 @bclehmann
+* Axis: Simplified strategy for achieving shared axis limits between multiple controls as seen in the demo application (#3873) @StendProg
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
