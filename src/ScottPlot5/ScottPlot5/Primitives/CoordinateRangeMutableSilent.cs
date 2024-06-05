@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot;
 
-public class CoordinateRangeMutableSilent : CoordinateRangeMutable
+public class CoordinateRangeMutableSilent(double min, double max) : CoordinateRangeMutable(min, max)
 {
-    public bool WasChanges = false;
+    public bool WasChanged = false;
 
     public override double Min
     {
@@ -10,7 +10,7 @@ public class CoordinateRangeMutableSilent : CoordinateRangeMutable
         set
         {
             base.Min = value;
-            WasChanges = true;
+            WasChanged = true;
         }
     }
     public override double Max
@@ -19,7 +19,7 @@ public class CoordinateRangeMutableSilent : CoordinateRangeMutable
         set
         {
             base.Max = value;
-            WasChanges = true;
+            WasChanged = true;
         }
     }
 
@@ -30,8 +30,4 @@ public class CoordinateRangeMutableSilent : CoordinateRangeMutable
     }
 
     public static new CoordinateRangeMutableSilent NotSet => new(double.PositiveInfinity, double.NegativeInfinity);
-
-    public CoordinateRangeMutableSilent(double min, double max) : base(min, max)
-    {
-    }
 }
