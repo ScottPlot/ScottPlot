@@ -95,9 +95,7 @@ public readonly struct RenderDetails
         AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange);
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
-        AxisLimitsChanged = rp.Plot.Axes.GetAxes().Any(x => x.Range.WasChanged);
-        foreach (var axis in rp.Plot.Axes.GetAxes())
-            axis.Range.WasChanged = false;
+        AxisLimitsChanged = AxisLimitsChangedChecker();
         SizeChanged = !DataRect.Equals(lastRender.DataRect);
     }
 

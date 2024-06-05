@@ -104,6 +104,12 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         Max = range.Max;
     }
 
+    public void Set(IAxis otherAxis)
+    {
+        Min = otherAxis.Min;
+        Max = otherAxis.Max;
+    }
+
     public void Pan(double delta)
     {
         Min += delta;

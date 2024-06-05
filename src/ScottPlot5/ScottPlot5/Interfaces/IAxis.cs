@@ -12,7 +12,7 @@ public interface IAxis : IPanel
     /// <summary>
     /// Min/Max range currently displayed by this axis
     /// </summary>
-    CoordinateRangeMutableSilent Range { get; } // TODO: don't expose this
+    CoordinateRangeMutable Range { get; } // TODO: don't expose this
 
     double Min { get; set; }
     double Max { get; set; }

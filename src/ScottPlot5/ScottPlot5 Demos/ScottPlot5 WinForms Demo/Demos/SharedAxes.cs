@@ -37,6 +37,7 @@ public partial class SharedAxes : Form, IDemoWindow
         if (checkShareY.Checked)
             target.Plot.Axes.SetLimitsY(sourceLimits.Bottom, sourceLimits.Top);
 
+        // prevent infinite loop
         target.Plot.RenderManager.DisableAxisLimitsChangedEventOnNextRender = true;
 
         target.Refresh();
