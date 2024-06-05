@@ -29,9 +29,6 @@ public partial class SharedAxes : Form, IDemoWindow
 
     private void CopyLimits(IPlotControl source, IPlotControl target)
     {
-        if (target.Plot.RenderManager.RenderCount == 0)
-            return;
-
         AxisLimits sourceLimits = source.Plot.Axes.GetLimits();
 
         if (checkShareX.Checked)
