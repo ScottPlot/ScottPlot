@@ -1,5 +1,4 @@
-﻿
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This interface describes a 1D axis (horizontal or vertical).
