@@ -23,6 +23,7 @@ _Not yet on NuGet..._
 * Axis: Simplified strategy for achieving shared axis limits between multiple controls as seen in the demo application (#3873) @StendProg
 * Controls: Improved `Plot.Interactions.Disable()` behavior so interactivity can be restored with `Plot.Interactions.Enable()` (#3879) @StendProg @KroMignon
 * Controls: Improved mouse zoom behavior for plots with custom scale factors (#3887, #3886) @BrianAtZetica
+* Text: Improve support for text objects containing null strings (#3892, #3861) @sdpenner
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
