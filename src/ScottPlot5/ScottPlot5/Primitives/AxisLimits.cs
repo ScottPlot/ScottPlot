@@ -86,6 +86,11 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         return new AxisLimits(x, x, y, y);
     }
 
+    public static AxisLimits FromPoint(Coordinates c)
+    {
+        return new AxisLimits(c.X, c.X, c.Y, c.Y);
+    }
+
     public override string ToString()
     {
         return $"AxisLimits: X=[{Rect.Left}, {Rect.Right}], Y=[{Rect.Bottom}, {Rect.Top}]";
