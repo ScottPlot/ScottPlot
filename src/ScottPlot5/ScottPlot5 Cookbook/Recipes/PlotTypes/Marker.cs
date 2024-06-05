@@ -102,4 +102,33 @@ public class Marker : ICategory
             myPlot.Add.Markers(xs, cos, MarkerShape.FilledDiamond, 10, Colors.Magenta);
         }
     }
+
+    public class ImageMarkerQuickstart : RecipeBase
+    {
+        public override string Name => "Image Marker";
+        public override string Description => "An ImageMarker can be placed on the plot " +
+            "to display an image centered at a location in coordinate space.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // An image can be loaded from a file or created dynamically
+            ScottPlot.Image image = SampleImages.ScottPlotLogo(48, 48);
+
+            Coordinates location1 = new(5, .5);
+            Coordinates location2 = new(25, .5);
+
+            myPlot.Add.ImageMarker(location1, image);
+            myPlot.Add.ImageMarker(location2, image, scale: 2);
+
+            var m1 = myPlot.Add.Marker(location1);
+            var m2 = myPlot.Add.Marker(location2);
+            m1.Color = Colors.Orange;
+            m2.Color = Colors.Orange;
+        }
+    }
+
 }
