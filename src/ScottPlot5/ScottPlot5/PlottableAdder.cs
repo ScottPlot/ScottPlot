@@ -877,12 +877,11 @@ public class PlottableAdder(Plot plot)
     {
         Text txt = new()
         {
-            LabelText = text,
+            LabelText = text ?? string.Empty,
             LabelBackgroundColor = Colors.Transparent,
             LabelBorderColor = Colors.Transparent,
             Location = new(x, y)
         };
-
         Plot.PlottableList.Add(txt);
 
         return txt;

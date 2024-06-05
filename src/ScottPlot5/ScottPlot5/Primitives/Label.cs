@@ -261,8 +261,8 @@ public class Label
         }
         else
         {
-            float xPx = textRect.Left + OffsetX;
-            float yPx = textRect.Bottom + OffsetY + dV;
+            float xPx = textRect.Left;
+            float yPx = textRect.Bottom + dV;
             canvas.DrawText(Text, xPx, yPx, paint);
         }
     }
