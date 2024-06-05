@@ -26,6 +26,7 @@ _Not yet on NuGet..._
 * Text: Improve support for text objects containing null strings (#3892, #3861) @sdpenner
 * Controls: Improve behavior of Alt + Left-Click-Drag zoom rectangle (#3896, #3845) @MCF
 * Label: Improve support for text positioning when custom offsets are in use (#3898, #3865, #3836) @ValeraTychov, @bclehmann, @VibrationAnalystCN
+* Avalonia: Enable `Focusable` to improve support for passing keyboard events (#3899) @bclehmann
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
