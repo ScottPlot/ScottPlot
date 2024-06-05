@@ -105,7 +105,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
 
         MouseDrag drag = new(start, from, to);
 
-        if (Inputs.ShouldZoomRectangle(button, keys))
+        if (Inputs.ShouldZoomRectangle(button, keys) || IsZoomingRectangle)
         {
             Actions.DragZoomRectangle(PlotControl, drag, locks);
             IsZoomingRectangle = true;
@@ -138,11 +138,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     public virtual void MouseUp(Pixel position, MouseButton button)
     {
         bool isDragging = Mouse.IsDragging(position);
-
-        bool droppedZoomRectangle =
-            isDragging &&
-            Inputs.ShouldZoomRectangle(button, Keyboard.PressedKeys) &&
-            IsZoomingRectangle;
+        bool droppedZoomRectangle = isDragging && IsZoomingRectangle;
 
         if (droppedZoomRectangle)
         {
