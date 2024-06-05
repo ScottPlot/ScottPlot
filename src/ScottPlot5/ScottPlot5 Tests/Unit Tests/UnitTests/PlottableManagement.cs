@@ -156,8 +156,8 @@ internal class PlottableManagement
     }
 
     [Test]
-    public void NullTextTest() 
-    { 
+    public void NullTextTest()
+    {
         Plot myPlot = new Plot();
         myPlot.Add.Text(null!, new Coordinates());
         myPlot.RenderManager.Render(new SkiaSharp.SKCanvas(new SkiaSharp.SKBitmap()), new PixelRect());
