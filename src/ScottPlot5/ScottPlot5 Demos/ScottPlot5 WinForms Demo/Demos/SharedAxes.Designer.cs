@@ -31,22 +31,24 @@ partial class SharedAxes
         tableLayoutPanel1 = new TableLayoutPanel();
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
         formsPlot2 = new ScottPlot.WinForms.FormsPlot();
+        checkShareX = new CheckBox();
+        checkShareY = new CheckBox();
         tableLayoutPanel1.SuspendLayout();
         SuspendLayout();
         // 
         // tableLayoutPanel1
         // 
+        tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         tableLayoutPanel1.ColumnCount = 1;
         tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
         tableLayoutPanel1.Controls.Add(formsPlot1, 0, 0);
         tableLayoutPanel1.Controls.Add(formsPlot2, 0, 1);
-        tableLayoutPanel1.Dock = DockStyle.Fill;
-        tableLayoutPanel1.Location = new Point(0, 0);
+        tableLayoutPanel1.Location = new Point(0, 37);
         tableLayoutPanel1.Name = "tableLayoutPanel1";
         tableLayoutPanel1.RowCount = 2;
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanel1.Size = new Size(800, 450);
+        tableLayoutPanel1.Size = new Size(800, 616);
         tableLayoutPanel1.TabIndex = 0;
         // 
         // formsPlot1
@@ -55,28 +57,55 @@ partial class SharedAxes
         formsPlot1.Dock = DockStyle.Fill;
         formsPlot1.Location = new Point(3, 3);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(794, 219);
+        formsPlot1.Size = new Size(794, 302);
         formsPlot1.TabIndex = 0;
         // 
         // formsPlot2
         // 
         formsPlot2.DisplayScale = 1F;
         formsPlot2.Dock = DockStyle.Fill;
-        formsPlot2.Location = new Point(3, 228);
+        formsPlot2.Location = new Point(3, 311);
         formsPlot2.Name = "formsPlot2";
-        formsPlot2.Size = new Size(794, 219);
+        formsPlot2.Size = new Size(794, 302);
         formsPlot2.TabIndex = 1;
         // 
-        // MatchedLayout
+        // checkShareX
+        // 
+        checkShareX.AutoSize = true;
+        checkShareX.Checked = true;
+        checkShareX.CheckState = CheckState.Checked;
+        checkShareX.Location = new Point(12, 12);
+        checkShareX.Name = "checkShareX";
+        checkShareX.Size = new Size(65, 19);
+        checkShareX.TabIndex = 1;
+        checkShareX.Text = "Share X";
+        checkShareX.UseVisualStyleBackColor = true;
+        // 
+        // checkShareY
+        // 
+        checkShareY.AutoSize = true;
+        checkShareY.Checked = true;
+        checkShareY.CheckState = CheckState.Checked;
+        checkShareY.Location = new Point(83, 12);
+        checkShareY.Name = "checkShareY";
+        checkShareY.Size = new Size(65, 19);
+        checkShareY.TabIndex = 2;
+        checkShareY.Text = "Share Y";
+        checkShareY.UseVisualStyleBackColor = true;
+        // 
+        // SharedAxes
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(800, 450);
+        ClientSize = new Size(800, 653);
+        Controls.Add(checkShareY);
+        Controls.Add(checkShareX);
         Controls.Add(tableLayoutPanel1);
-        Name = "MatchedLayout";
-        Text = "MatchedLayout";
+        Name = "SharedAxes";
+        Text = "Shared Axes";
         tableLayoutPanel1.ResumeLayout(false);
         ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion
@@ -84,4 +113,6 @@ partial class SharedAxes
     private TableLayoutPanel tableLayoutPanel1;
     private ScottPlot.WinForms.FormsPlot formsPlot1;
     private ScottPlot.WinForms.FormsPlot formsPlot2;
+    private CheckBox checkShareX;
+    private CheckBox checkShareY;
 }
