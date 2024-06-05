@@ -79,7 +79,7 @@ public class ImageMarker : IPlottable
         return new Image(scaledBitmap);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
