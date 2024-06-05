@@ -16,6 +16,8 @@ namespace ScottPlot.Plottables
             _markerScale = scale;
 
             _referenceImage = referenceImage;
+            _displayImage = referenceImage;
+
             _UpdateDisplayImage();
         }
 
