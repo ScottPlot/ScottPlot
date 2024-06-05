@@ -1,111 +1,96 @@
-﻿
-namespace ScottPlot.Plottables
+﻿namespace ScottPlot.Plottables;
+
+/// <summary>
+/// It is recommended to use images that are correctly dimensioned during creation.
+/// A scaling property is available for convenience, but produces undesirable results on scaling up.
+/// This object retains the initial reference image used and is restored when resetting the scale if
+/// the displayed marker becomes distorted.
+/// </summary>
+public class ImageMarker : IPlottable
 {
-    /// <summary>
-    /// It is recommended to use images that are correctly dimensioned during creation.
-    /// A scaling property is available for conveniance, but produces undesirable results on scaling up.
-    /// This object retains the intial reference image used and is restored when reseting the scale if
-    /// the displayed marker becomes distorted.
-    /// </summary>
-    public class ImageMarker : IPlottable
+    public bool IsVisible { get; set; } = true;
+    public IAxes Axes { get; set; } = new Axes();
+
+    private ScottPlot.Image _referenceImage;
+
+    private ScottPlot.Image _displayImage;
+
+    private Coordinates _location;
+    public Coordinates Location
     {
-        public ImageMarker(Coordinates location, Image referenceImage, float scale)
+        get { return _location; }
+        set
         {
-            _location = location;
-
-            _markerScale = scale;
-
-            _referenceImage = referenceImage;
-            _UpdateDisplayImage();
+            _location = value;
+            _displayImage = GetDisplayImage();
         }
+    }
 
-        private ScottPlot.Image _referenceImage;
-        private ScottPlot.Image _displayImage;
-        public void SetReferenceImage(ScottPlot.Image image)
+    private float _markerScale = 0.0f;
+    public float MarkerScale
+    {
+        get { return _markerScale; }
+        set
         {
-            _referenceImage = image;
-            _UpdateDisplayImage();
-        }
-
-        private float _markerScale = 0.0f;
-        public float MarkerScale
-        {
-            get { return _markerScale; }
-            set 
+            if (value > 0.0f)
             {
-                if (value > 0.0f)
-                {
-                    _markerScale = value;
-                    _UpdateDisplayImage();
-                }
+                _markerScale = value;
+                _displayImage = GetDisplayImage();
             }
         }
+    }
 
-        private Coordinates _location;
-        public Coordinates Location
-        {
-            get { return _location; }
-            set 
-            { 
-                _location = value;
-                _UpdateDisplayImage();
-            }
-        }
+    public bool AntiAlias { get; set; } = true;
 
-        public void ResetScale()
-        {
-            MarkerScale = 1.0f;
-        }
+    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-        private void _UpdateDisplayImage()
-        {
-            if(MarkerScale != 1.0f)
-            {
-                int scaledWidth = (int)(_referenceImage.Width * MarkerScale) == 0 ? 1 : (int)(_referenceImage.Width * MarkerScale);
-                int scaledHeight = (int)(_referenceImage.Height * MarkerScale) == 0 ? 1 : (int)(_referenceImage.Height * MarkerScale);
+    public AxisLimits GetAxisLimits() => new(_location);
 
-                using (SKBitmap scaledBitmap = new SKBitmap(scaledWidth, scaledHeight))
-                {
-                    using (SKCanvas canvas = new SKCanvas(scaledBitmap))
-                    {
-                        canvas.Clear(SKColors.Transparent);
+    public ImageMarker(Coordinates location, Image referenceImage, float scale)
+    {
+        _location = location;
+        _markerScale = scale;
+        _referenceImage = referenceImage;
+        _displayImage = GetDisplayImage();
+    }
 
-                        SKRect sourceRect = new SKRect(0, 0, _referenceImage.Width, _referenceImage.Height);
-                        SKRect destRect = new SKRect(0, 0, scaledWidth, scaledHeight);
+    public void SetReferenceImage(ScottPlot.Image image)
+    {
+        _referenceImage = image;
+        _displayImage = GetDisplayImage();
+    }
 
-                        canvas.DrawImage(_referenceImage.SKImageInternal, sourceRect, destRect);
+    private ScottPlot.Image GetDisplayImage()
+    {
+        if (MarkerScale == 1.0f)
+            return _referenceImage;
 
-                        _displayImage = new Image(scaledBitmap);
-                    }
-                }
-            }
-            else
-                _displayImage = _referenceImage;
-        }
+        int scaledWidth = Math.Max(1, (int)(_referenceImage.Width * MarkerScale));
+        int scaledHeight = Math.Max(1, (int)(_referenceImage.Height * MarkerScale));
 
-        public void Render(RenderPack rp)
-        {
-            if (!_isVisible)
-                return;
+        using SKBitmap scaledBitmap = new(scaledWidth, scaledHeight);
+        using SKCanvas canvas = new(scaledBitmap);
+        canvas.Clear(SKColors.Transparent);
 
-            //TODO fix this assumption
-            //Align to center of draw location. Assumes a square image.
-            PixelRect drawRect = new PixelRect(Axes.GetPixel(_location), _displayImage.Width / 2.0f); 
-            
-            using SKPaint paint = new();
+        SKRect sourceRect = new(0, 0, _referenceImage.Width, _referenceImage.Height);
+        SKRect destRect = new(0, 0, scaledWidth, scaledHeight);
+        canvas.DrawImage(_referenceImage.SKImageInternal, sourceRect, destRect);
 
-            Drawing.DrawImage(rp.Canvas, _displayImage, drawRect, paint);
-        }
+        return new Image(scaledBitmap);
+    }
 
-        //TODO not implemented
-        public IEnumerable<LegendItem> LegendItems => LegendItem.Single(new LegendItem());
+    public void Render(RenderPack rp)
+    {
+        if (!IsVisible)
+            return;
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(_location);
+        //TODO: Fix the assumption that images are square
+        PixelRect drawRect = new(
+            center: Axes.GetPixel(_location),
+            radius: _displayImage.Width / 2);
 
-        private IAxes _axes = new Axes();
-        public IAxes Axes { get { return _axes; } set { _axes = value; } }
+        using SKPaint paint = new();
 
-        private bool _isVisible = true;
-        public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
+        _displayImage.Render(rp.Canvas, drawRect, paint, AntiAlias);
     }
 }
