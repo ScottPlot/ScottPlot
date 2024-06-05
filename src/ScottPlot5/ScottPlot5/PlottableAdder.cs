@@ -875,7 +875,6 @@ public class PlottableAdder(Plot plot)
             LabelBorderColor = Colors.Transparent,
             Location = new(x, y)
         };
-        
         Plot.PlottableList.Add(txt);
 
         return txt;
