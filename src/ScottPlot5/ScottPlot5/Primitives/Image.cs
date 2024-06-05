@@ -14,8 +14,6 @@ public class Image : IDisposable
     public int Height => SKImage.Height;
     public PixelSize Size => new(Width, Height);
 
-    internal SKImage SKImageInternal => SKImage;
-
     [Obsolete("Use initializer that accepts a SKSurface", true)]
     public Image(SKImage image)
     {
