@@ -286,4 +286,57 @@ internal class LabelTests
 
         bmp.SaveTestImage();
     }
+
+
+    [Test]
+    public void Test_Label_Offset()
+    {
+        SKBitmap bmp = new(500, 500);
+        Test_Label_Offset(bmp, "X:{0}, Y:{1}");
+        bmp.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_Label_MultiLineOffset()
+    {
+        SKBitmap bmp = new(500, 500);
+        Test_Label_Offset(bmp, "X:{0}\nY:{1}");
+        bmp.SaveTestImage();
+    }
+
+    private static void Test_Label_Offset(SKBitmap bmp, string format)
+    {
+        using SKCanvas canvas = new(bmp);
+        canvas.Clear(SKColors.Navy);
+
+        using SKPaint paint = new();
+
+        Pixel center = new(bmp.Width / 2, bmp.Height / 2);
+        float offset = 150f;
+
+        for (int y = -1; y < 2; y++)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                float offsetX = offset * x;
+                float offsetY = offset * y;
+
+                Label lbl = new()
+                {
+                    Text = string.Format(format, offsetX, offsetY),
+                    Alignment = Alignment.MiddleCenter,
+                    FontSize = 24,
+                    ForeColor = Colors.White.WithOpacity(.5),
+                    PointSize = 5,
+                    BorderColor = Colors.Yellow,
+                    PointColor = Colors.White,
+                    BorderWidth = 1,
+                    OffsetX = offsetX,
+                    OffsetY = offsetY,
+                };
+
+                lbl.Render(canvas, center, paint);
+            }
+        }
+    }
 }
