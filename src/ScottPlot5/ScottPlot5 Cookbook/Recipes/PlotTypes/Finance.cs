@@ -38,6 +38,34 @@ public class Finance : ICategory
         }
     }
 
+    public class FinanceChartBins : RecipeBase
+    {
+        public override string Name => "Finance Chart with Custom Time Bins";
+        public override string Description => "Finance charts can display price " +
+            "range information over arbitrary time scales.";
+
+        [Test]
+        public override void Execute()
+        {
+            DateTime timeOpen = new(1985, 09, 24, 9, 30, 0); // 9:30 AM
+            DateTime timeClose = new(1985, 09, 24, 16, 0, 0); // 4:00 PM
+            TimeSpan timeSpan = TimeSpan.FromMinutes(10); // 10 minute bins
+
+            List<OHLC> prices = new();
+            for (DateTime dt = timeOpen; dt <= timeClose; dt += timeSpan)
+            {
+                double open = Generate.RandomNumber(20, 40) + prices.Count;
+                double close = Generate.RandomNumber(20, 40) + prices.Count;
+                double high = Math.Max(open, close) + Generate.RandomNumber(5);
+                double low = Math.Min(open, close) - Generate.RandomNumber(5);
+                prices.Add(new OHLC(open, high, low, close, dt, timeSpan));
+            }
+
+            myPlot.Add.Candlestick(prices);
+            myPlot.Axes.DateTimeTicksBottom();
+        }
+    }
+
     public class FinanceRightAxis : RecipeBase
     {
         public override string Name => "Price on Right";
@@ -80,7 +108,7 @@ public class Finance : ICategory
             {
                 ScottPlot.Finance.SimpleMovingAverage sma = new(prices, windowSize);
                 var sp = myPlot.Add.Scatter(sma.Dates, sma.Means);
-                sp.Label = $"SMA {windowSize}";
+                sp.LegendText = $"SMA {windowSize}";
                 sp.MarkerSize = 0;
                 sp.LineWidth = 3;
                 sp.Color = Colors.Navy.WithAlpha(1 - windowSize / 30.0);
@@ -128,13 +156,13 @@ public class Finance : ICategory
 
     public class FinancialPlotWithoutGaps : RecipeBase
     {
-        public override string Name => "Financial Plot Without Gaps";
+        public override string Name => "Candlestick Chart Without Gaps";
         public override string Description => "When the DateTimes stored in OHLC objects " +
             "are used to determine the horizontal position of candlesticks, periods without data " +
             "like weekends and holidays appear as gaps in the plot. Enabling sequential mode causes " +
             "the plot to ignore the OHLC DateTimes and display candles at integer positions starting " +
-            "from zero. Since this is not a true DateTime axis, users enabling this mode must customize " +
-            "the tick labels themselves.";
+            "from zero. Users can customize the tick generator to display dates instead of numbers " +
+            "on the horizontal axis if desired.";
 
         [Test]
         public override void Execute()
@@ -154,7 +182,45 @@ public class Finance : ICategory
                 .Select(x => x.DateTime)
                 .ToArray();
 
-            // use a manual tick generator for the horizontal axis
+            // By default, horizontal tick labels will be numbers (1, 2, 3...)
+            // We can use a manual tick generator to display dates on the horizontal axis
+            double[] tickPositions = Generate.Consecutive(tickDates.Length, tickDelta);
+            string[] tickLabels = tickDates.Select(x => x.ToString("MM/dd")).ToArray();
+            ScottPlot.TickGenerators.NumericManual tickGen = new(tickPositions, tickLabels);
+            myPlot.Axes.Bottom.TickGenerator = tickGen;
+        }
+    }
+
+    public class FinancialPlotWithoutGapsOhlc : RecipeBase
+    {
+        public override string Name => "OHLC Chart Without Gaps";
+        public override string Description => "When the DateTimes stored in OHLC objects " +
+            "are used to determine the horizontal position, periods without data " +
+            "like weekends and holidays appear as gaps in the plot. Enabling sequential mode causes " +
+            "the plot to ignore the OHLC DateTimes and place OHLCs at integer positions starting " +
+            "from zero. Users can customize the tick generator to display dates instead of numbers " +
+            "on the horizontal axis if desired.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create a OHLC plot
+            var prices = Generate.RandomOHLCs(31);
+            var ohlcPlot = myPlot.Add.OHLC(prices);
+
+            // enable sequential mode to place OHLCs at X = 0, 1, 2, ...
+            ohlcPlot.Sequential = true;
+
+            // determine a few OHLCs to display ticks for
+            int tickCount = 5;
+            int tickDelta = prices.Count / tickCount;
+            DateTime[] tickDates = prices
+                .Where((x, i) => i % tickDelta == 0)
+                .Select(x => x.DateTime)
+                .ToArray();
+
+            // By default, horizontal tick labels will be numbers (1, 2, 3...)
+            // We can use a manual tick generator to display dates on the horizontal axis
             double[] tickPositions = Generate.Consecutive(tickDates.Length, tickDelta);
             string[] tickLabels = tickDates.Select(x => x.ToString("MM/dd")).ToArray();
             ScottPlot.TickGenerators.NumericManual tickGen = new(tickPositions, tickLabels);

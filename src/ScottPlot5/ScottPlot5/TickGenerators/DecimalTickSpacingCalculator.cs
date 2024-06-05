@@ -34,7 +34,6 @@ public class DecimalTickSpacingCalculator
     private double GetIdealTickSpacing(CoordinateRange range, PixelLength axisLength, PixelLength maxLabelLength)
     {
         var AbsSpan = Math.Abs(range.Span);
-        double unitsPerPx = AbsSpan / axisLength.Length;
 
         int targetTickCount = (int)(axisLength.Length / maxLabelLength.Length) + 1;
 
@@ -68,17 +67,17 @@ public class DecimalTickSpacingCalculator
             double thisTickSpacing = tickSpacings[tickSpacings.Count - 1 - i];
             double thisTickCount = AbsSpan / thisTickSpacing;
             double spacePerTick = axisLength.Length / thisTickCount;
-            double neededSpcePerTick = maxLabelLength.Length;
+            double neededSpacePerTick = maxLabelLength.Length;
 
             // add more space between small labels
-            if (neededSpcePerTick < 10)
-                neededSpcePerTick *= 2;
-            else if (neededSpcePerTick < 25)
-                neededSpcePerTick *= 1.5;
+            if (neededSpacePerTick < 10)
+                neededSpacePerTick *= 2;
+            else if (neededSpacePerTick < 25)
+                neededSpacePerTick *= 1.5;
             else
-                neededSpcePerTick *= 1.2;
+                neededSpacePerTick *= 1.2;
 
-            if (spacePerTick > neededSpcePerTick)
+            if (spacePerTick > neededSpacePerTick)
             {
                 return thisTickSpacing;
             }

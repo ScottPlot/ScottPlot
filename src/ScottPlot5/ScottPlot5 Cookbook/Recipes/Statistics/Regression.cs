@@ -19,7 +19,7 @@ public class Regression : ICategory
 
             // plot original data as a scatter plot
             var sp = myPlot.Add.Scatter(xs, ys);
-            sp.LineStyle = LineStyle.None;
+            sp.LineWidth = 0;
             sp.MarkerSize = 10;
 
             // calculate the regression line

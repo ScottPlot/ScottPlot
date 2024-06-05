@@ -3,13 +3,21 @@
 /// <summary>
 /// Holds a collection of individually styled bars
 /// </summary>
-public class BarPlot : IPlottable
+public class BarPlot : IPlottable, IHasLegendText
 {
-    public string Label { get; set; } = string.Empty;
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
     public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
+
+    public Label ValueLabelStyle { get; set; } = new()
+    {
+        Alignment = Alignment.LowerCenter,
+    };
 
     /// <summary>
     /// Apply a fill color to all bars
@@ -62,7 +70,7 @@ public class BarPlot : IPlottable
 
             LegendItem item = new()
             {
-                Label = Label,
+                LabelText = LegendText,
                 FillColor = Bars.First().FillColor,
             };
 
@@ -82,13 +90,14 @@ public class BarPlot : IPlottable
         return limits.AxisLimits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
-        using var paint = new SKPaint();
+        using SKPaint paint = new();
 
         foreach (Bar bar in Bars)
         {
-            bar.Render(rp, Axes, paint);
+            ValueLabelStyle.Text = bar.Label;
+            bar.Render(rp, Axes, paint, ValueLabelStyle);
         }
     }
 }

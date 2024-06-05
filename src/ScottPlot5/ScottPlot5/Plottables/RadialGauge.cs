@@ -112,7 +112,7 @@ internal class RadialGauge
     /// Render the gauge onto an existing Bitmap
     /// </summary>
     /// <param name="gfx">active graphics object</param>
-    public void Render(RenderPack rp, float radius)
+    public virtual void Render(RenderPack rp, float radius)
     {
         RenderBackground(rp, radius);
         RenderGaugeForeground(rp, radius);

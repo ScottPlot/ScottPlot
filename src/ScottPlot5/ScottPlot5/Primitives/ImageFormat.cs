@@ -23,6 +23,18 @@ public static class ImageFormatExtensions
             _ => throw new ArgumentException($"unknown image format: '{format}'")
         };
     }
+
+    public static SKEncodedImageFormat ToSKFormat(this ImageFormat fmt)
+    {
+        return fmt switch
+        {
+            ImageFormat.Jpeg => SKEncodedImageFormat.Jpeg,
+            ImageFormat.Png => SKEncodedImageFormat.Png,
+            ImageFormat.Bmp => SKEncodedImageFormat.Bmp,
+            ImageFormat.Webp => SKEncodedImageFormat.Webp,
+            _ => throw new NotImplementedException($"unsupported format: {fmt}")
+        };
+    }
 }
 
 public static class ImageFormatLookup

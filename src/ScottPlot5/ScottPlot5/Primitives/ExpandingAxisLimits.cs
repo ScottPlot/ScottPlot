@@ -33,6 +33,14 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         Expand(initialLimits);
     }
 
+    public ExpandingAxisLimits(IEnumerable<IPlottable> plottables)
+    {
+        foreach (IPlottable plottable in plottables)
+        {
+            Expand(plottable.GetAxisLimits());
+        }
+    }
+
     public override string ToString()
     {
         return $"Expanding Limits: X=[{Left}, {Right}] Y=[{Bottom}, {Top}]";
@@ -59,6 +67,12 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     {
         ExpandX(x);
         ExpandY(y);
+    }
+
+    public void Expand(IPlottable plottable)
+    {
+        AxisLimits limits = plottable.GetAxisLimits();
+        Expand(limits);
     }
 
     /// <summary>
@@ -112,7 +126,7 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
     /// <summary>
     /// Expanded limits to include the given <paramref name="coordinates"/>.
     /// </summary>
-    public void Expand(IReadOnlyList<Coordinates> coordinates)
+    public void Expand(IEnumerable<Coordinates> coordinates)
     {
         foreach (Coordinates coordinate in coordinates)
         {

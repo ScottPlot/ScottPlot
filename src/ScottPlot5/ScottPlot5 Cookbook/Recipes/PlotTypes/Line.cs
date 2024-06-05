@@ -45,7 +45,7 @@ public class LinePlot : ICategory
                 line.LinePattern = Generate.RandomLinePattern();
 
                 // customize markers
-                line.MarkerColor = line.LineStyle.Color;
+                line.MarkerLineColor = line.LineStyle.Color;
                 line.MarkerShape = Generate.RandomMarkerShape();
                 line.MarkerSize = Generate.RandomInteger(5, 15);
             }
@@ -61,15 +61,15 @@ public class LinePlot : ICategory
         public override void Execute()
         {
             var sin = myPlot.Add.Signal(Generate.Sin());
-            sin.Label = "Sine";
+            sin.LegendText = "Sine";
 
             var cos = myPlot.Add.Signal(Generate.Cos());
-            cos.Label = "Cosine";
+            cos.LegendText = "Cosine";
 
             var line = myPlot.Add.Line(1, 12, 12, 0);
             line.LineWidth = 3;
             line.MarkerSize = 10;
-            line.Label = "Line Plot";
+            line.LegendText = "Line Plot";
 
             myPlot.ShowLegend(Alignment.UpperRight);
         }

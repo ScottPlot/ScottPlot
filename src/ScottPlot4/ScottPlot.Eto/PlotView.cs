@@ -151,8 +151,8 @@ namespace ScottPlot.Eto
         private void OnBitmapUpdated(object? sender, EventArgs e) => UpdatePlotBitmap(Backend.GetLatestBitmap());
         private void OnCursorChanged(object? sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object? sender, EventArgs e) => RightClicked?.Invoke(this, e);
-        private void OnLeftClicked(object sender, EventArgs e) => LeftClicked?.Invoke(this, e);
-        private void OnLeftClickedPlottable(object sender, EventArgs e) => LeftClickedPlottable?.Invoke(sender, e);
+        private void OnLeftClicked(object? sender, EventArgs e) => LeftClicked?.Invoke(this, e);
+        private void OnLeftClickedPlottable(object? sender, EventArgs e) => LeftClickedPlottable?.Invoke(sender, e);
         private void OnPlottableDragged(object? sender, EventArgs e) => PlottableDragged?.Invoke(sender, e);
         private void OnPlottableDropped(object? sender, EventArgs e) => PlottableDropped?.Invoke(sender, e);
         private void OnAxesChanged(object? sender, EventArgs e) => AxesChanged?.Invoke(this, e);

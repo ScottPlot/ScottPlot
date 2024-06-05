@@ -28,6 +28,15 @@ namespace ScottPlot
         /// </summary>
         public static IStyle[] GetStyles()
         {
+#if NET5_0_OR_GREATER
+            return Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(x => x.IsClass)
+                .Where(x => !x.IsAbstract)
+                .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
+                .Select(x => (IStyle)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(x))
+                .ToArray();
+#else
             return Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(x => x.IsClass)
@@ -35,6 +44,7 @@ namespace ScottPlot
                 .Where(x => x.GetInterfaces().Contains(typeof(IStyle)))
                 .Select(x => (IStyle)FormatterServices.GetUninitializedObject(x))
                 .ToArray();
+#endif
         }
     }
 

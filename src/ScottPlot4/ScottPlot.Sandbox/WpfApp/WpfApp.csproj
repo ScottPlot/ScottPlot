@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+        <TargetFrameworks>net8.0-windows</TargetFrameworks>
         <UseWPF>true</UseWPF>
-        <NoWarn>MC3071</NoWarn> <!-- WpfPlot does not exist in assembly -->
+        <NoWarn>MC3071</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

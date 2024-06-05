@@ -15,17 +15,22 @@ public class RandomDataGenerator
     /// <summary>
     /// To select right random number generator
     /// </summary>
-    private readonly Random Rand;
+    private Random Rand;
 
     /// <summary>
     /// Create a random number generator.
-    /// The seed is random by deafult, but could be fixed to the defined value
+    /// The seed is random by default, but could be fixed to the defined value
     /// </summary>
     public RandomDataGenerator(int? seed = null)
     {
         Rand = seed.HasValue
             ? new Random(seed.Value)
             : GlobalRandomThread.Value!;
+    }
+
+    public void Seed(int seed)
+    {
+        Rand = new(seed);
     }
 
     public static RandomDataGenerator Generate { get; private set; } = new(0);
@@ -92,6 +97,14 @@ public class RandomDataGenerator
     }
 
     /// <summary>
+    /// Return a random byte between the given values (inclusive)
+    /// </summary>
+    public byte RandomByte(byte min, byte max)
+    {
+        return (byte)Rand.Next(min, max + 1);
+    }
+
+    /// <summary>
     /// Return a random integer between zero (inclusive) and <paramref name="max"/> (exclusive)
     /// </summary>
     public int RandomInteger(int max)
@@ -120,6 +133,29 @@ public class RandomDataGenerator
     }
 
     #endregion
+
+    /// <summary>
+    /// Mutate the given array by adding noise (± magnitude) and return it
+    /// </summary>
+    public void AddNoiseInPlace(double[] values, double magnitude)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
+            double noise = (2 * RandomNumber() - .5) * magnitude;
+            values[i] = values[i] + noise;
+        }
+    }
+
+    /// <summary>
+    /// Return a copy of the given data with random noise added (± magnitude)
+    /// </summary>
+    public double[] AddNoise(double[] input, double magnitude)
+    {
+        double[] output = new double[input.Length];
+        Array.Copy(input, output, input.Length);
+        AddNoiseInPlace(output, magnitude);
+        return output;
+    }
 
     /// <summary>
     /// Uniformly distributed random numbers between 0 and 1
@@ -192,7 +228,7 @@ public class RandomDataGenerator
     /// </summary>
     public List<OHLC> RandomOHLCs(int count, DateTime start)
     {
-        DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count, start);
+        DateTime[] dates = ScottPlot.Generate.ConsecutiveWeekdays(count, start);
         TimeSpan span = TimeSpan.FromDays(1);
 
         double mult = 1;

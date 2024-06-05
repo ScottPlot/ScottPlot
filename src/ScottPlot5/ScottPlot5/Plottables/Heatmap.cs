@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Heatmap : IPlottable, IHasColorAxis
+public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -35,7 +35,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// Note that the actual heatmap area is 1 cell larger than this rectangle.
     /// </summary>
     private CoordinateRect? _extent;
-    public CoordinateRect? Extent
+    public CoordinateRect? Extent // TODO: obsolete this
     {
         get { return _extent; }
         set
@@ -44,6 +44,12 @@ public class Heatmap : IPlottable, IHasColorAxis
             Update();
         }
     }
+
+    /// <summary>
+    /// If defined, the this rectangle sets the axis boundaries of heatmap data.
+    /// Note that the actual heatmap area is 1 cell larger than this rectangle.
+    /// </summary>
+    public CoordinateRect? Position { get => Extent; set => Extent = value; }
 
     /// <summary>
     /// This variable controls whether row 0 of the 2D source array is the top or bottom of the heatmap.
@@ -155,7 +161,59 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// After editing contents users must call <see cref="Update"/> before changes
     /// appear on the heatmap.
     /// </summary>
-    public readonly double[,] Intensities;
+    public readonly double[,] Intensities = intensities;
+
+    /// <summary>
+    /// Defines what color will be used to fill cells containing NaN.
+    /// </summary>
+    public Color NaNCellColor
+    {
+        get => _NaNCellColor;
+        set
+        {
+            _NaNCellColor = value;
+            Update();
+        }
+    }
+    private Color _NaNCellColor = Colors.Transparent;
+
+    private byte[,]? _alphaMap;
+
+    /// <summary>
+    /// If present, this array defines transparency for each cell in the heatmap.
+    /// Values range from 0 (transparent) through 255 (opaque).
+    /// </summary>
+    public byte[,]? AlphaMap
+    {
+        get => _alphaMap;
+        set
+        {
+            if (value?.GetLength(0) != Height)
+                throw new Exception("AlphaMap height must match the height of the Intensity map.");
+
+            if (value?.GetLength(1) != Width)
+                throw new Exception("AlphaMap width must match the width of the Intensity map.");
+
+            _alphaMap = value;
+
+            Update();
+        }
+    }
+
+    private double _Opacity = 1;
+
+    /// <summary>
+    /// Controls the opacity of the entire heatmap from 0 (transparent) to 1 (opaque)
+    /// </summary>
+    public double Opacity
+    {
+        get => _Opacity;
+        set
+        {
+            _Opacity = NumericConversion.Clamp(value, 0, 1);
+            Update();
+        }
+    }
 
     /// <summary>
     /// Height of the heatmap data (rows)
@@ -171,11 +229,6 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
     private SKBitmap? Bitmap = null;
-
-    public Heatmap(double[,] intensities)
-    {
-        Intensities = intensities;
-    }
 
     ~Heatmap()
     {
@@ -196,13 +249,31 @@ public class Heatmap : IPlottable, IHasColorAxis
         bool FlipY = FlipVertically ^ ExtentOrDefault.IsInvertedY;
         bool FlipX = FlipHorizontally ^ ExtentOrDefault.IsInvertedX;
 
+        uint nanCellArgb = NaNCellColor.PremultipliedARGB;
+
         for (int y = 0; y < Height; y++)
         {
             int rowOffset = FlipY ? (Height - 1 - y) * Width : y * Width;
             for (int x = 0; x < Width; x++)
             {
                 int xIndex = FlipX ? (Width - 1 - x) : x;
-                argb[rowOffset + x] = Colormap.GetColor(Intensities[y, xIndex], range).ARGB;
+
+                // Make NaN cells transparent
+                if (double.IsNaN(Intensities[y, xIndex]))
+                {
+                    argb[rowOffset + x] = nanCellArgb;
+                    continue;
+                }
+
+                Color cellColor = Colormap.GetColor(Intensities[y, xIndex], range);
+
+                if (AlphaMap is not null)
+                    cellColor = cellColor.WithAlpha(AlphaMap[y, xIndex]);
+
+                if (Opacity != 1)
+                    cellColor = cellColor.WithAlpha((byte)(cellColor.Alpha * Opacity));
+
+                argb[rowOffset + x] = cellColor.PremultipliedARGB;
             }
         }
 
@@ -260,7 +331,7 @@ public class Heatmap : IPlottable, IHasColorAxis
 
     public Range GetRange() => Range.GetRange(Intensities);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (Bitmap is null)
             Update(); // automatically generate the bitmap on first render if it was not generated manually

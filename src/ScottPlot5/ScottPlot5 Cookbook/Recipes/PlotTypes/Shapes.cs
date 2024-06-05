@@ -122,30 +122,23 @@ public class Shapes : ICategory
             };
 
             var poly = myPlot.Add.Polygon(points);
-
-            poly.FillStyle = new FillStyle
+            poly.FillColor = Colors.Green;
+            poly.FillHatchColor = Colors.Blue;
+            poly.FillHatch = new Gradient()
             {
-                Color = Colors.Green,
-                HatchColor = Colors.Blue,
-                Hatch = new Gradient()
-                {
-                    GradientType = GradientType.Linear,
-                    AlignmentStart = Alignment.UpperRight,
-                    AlignmentEnd = Alignment.LowerLeft,
-                }
+                GradientType = GradientType.Linear,
+                AlignmentStart = Alignment.UpperRight,
+                AlignmentEnd = Alignment.LowerLeft,
             };
 
-            poly.LineStyle = new LineStyle
-            {
-                AntiAlias = true,
-                Color = Colors.Black,
-                Pattern = LinePattern.Dashed,
-                Width = 2
-            };
+            poly.LineColor = Colors.Black;
+            poly.LinePattern = LinePattern.Dashed;
+            poly.LineWidth = 2;
 
-            poly.MarkerStyle = new MarkerStyle(MarkerShape.OpenCircle, 8);
-            poly.MarkerStyle.Fill.Color = Colors.Gold;
-            poly.MarkerStyle.Outline.Color = Colors.Brown;
+            poly.MarkerShape = MarkerShape.OpenCircle;
+            poly.MarkerSize = 8;
+            poly.MarkerFillColor = Colors.Gold;
+            poly.MarkerLineColor = Colors.Brown;
         }
     }
 }
