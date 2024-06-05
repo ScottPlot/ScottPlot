@@ -29,15 +29,18 @@ public partial class SharedAxes : Form, IDemoWindow
 
     private void CopyLimits(IPlotControl source, IPlotControl target)
     {
-        // prevent infinite loop at startup
         if (target.Plot.RenderManager.RenderCount == 0)
             return;
 
+        AxisLimits sourceLimits = source.Plot.Axes.GetLimits();
+
         if (checkShareX.Checked)
-            target.Plot.Axes.Bottom.Range.Set(source.Plot.Axes.Bottom);
+            target.Plot.Axes.SetLimitsX(sourceLimits.Left, sourceLimits.Right);
 
         if (checkShareY.Checked)
-            target.Plot.Axes.Left.Range.Set(source.Plot.Axes.Left);
+            target.Plot.Axes.SetLimitsY(sourceLimits.Bottom, sourceLimits.Top);
+
+        target.Plot.RenderManager.DisableAxisLimitsChangedEventOnNextRender = true;
 
         target.Refresh();
     }
