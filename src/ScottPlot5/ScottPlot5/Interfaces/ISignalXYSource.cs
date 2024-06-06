@@ -48,4 +48,10 @@ public interface ISignalXYSource
     /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
     /// </summary>
     DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
+
+    /// <summary>
+    /// Return the point nearest a specific X location given the X/Y pixel scaling information from a previous render.
+    /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
+    /// </summary>
+    DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
 }
