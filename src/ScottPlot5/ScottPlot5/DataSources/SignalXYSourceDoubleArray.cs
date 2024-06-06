@@ -358,4 +358,13 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             ? new DataPoint(closestX, closestY, closestIndex)
             : DataPoint.None;
     }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        int i = GetIndex(mouseLocation.X); // TODO: check the index after too?
+        double distance = (Xs[i] + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
+        return distance <= maxDistance
+            ? new DataPoint(Xs[i], Ys[i], i)
+            : DataPoint.None;
+    }
 }

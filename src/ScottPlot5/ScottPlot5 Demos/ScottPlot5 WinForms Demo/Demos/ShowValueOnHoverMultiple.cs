@@ -4,7 +4,7 @@ namespace WinForms_Demo.Demos;
 
 public partial class ShowValueOnHoverMultiple : Form, IDemoWindow
 {
-    public string Title => "Show Value Under Mouse, Multiple Series";
+    public string Title => "Show Value Under Mouse, Multiple Scatter";
 
     public string Description => "How to sense where the mouse is in coordinate space " +
         "and retrieve information about the plottable and data the cursor is hovering over";

@@ -28,6 +28,8 @@ _Not yet on NuGet..._
 * Label: Improve support for text positioning when custom offsets are in use (#3898, #3865, #3836) @ValeraTychov, @bclehmann, @VibrationAnalystCN
 * Avalonia: Enable `Focusable` to improve support for passing keyboard events (#3899) @bclehmann
 * ImageMarker: New plot type for displaying an image at a point (#3904) @levipara
+* SignalXY: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @cataclism
+* Scatter: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @MatKinPro
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_

@@ -64,4 +64,31 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
             ? new DataPoint(closestX, closestY, closestIndex)
             : DataPoint.None;
     }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        double closestDistance = double.PositiveInfinity;
+
+        int closestIndex = 0;
+        double closestX = double.PositiveInfinity;
+        double closestY = double.PositiveInfinity;
+
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
+        {
+            int i = MinRenderIndex + i2;
+            double dX = Math.Abs(Xs[i] - mouseLocation.X) * renderInfo.PxPerUnitX;
+
+            if (dX <= closestDistance)
+            {
+                closestDistance = dX;
+                closestX = Xs[i];
+                closestY = Ys[i];
+                closestIndex = i;
+            }
+        }
+
+        return closestDistance <= maxDistance
+            ? new DataPoint(closestX, closestY, closestIndex)
+            : DataPoint.None;
+    }
 }
