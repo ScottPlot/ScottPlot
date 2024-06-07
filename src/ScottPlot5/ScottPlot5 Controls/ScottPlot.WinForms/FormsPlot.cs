@@ -9,7 +9,7 @@ namespace ScottPlot.WinForms;
 [ToolboxItem(true)]
 public class FormsPlot : FormsPlotBase
 {
-    public SKControl? SKControl;
+    public SKControl? SKControl { get; private set; }
 
     public override GRContext GRContext => null!;
 
