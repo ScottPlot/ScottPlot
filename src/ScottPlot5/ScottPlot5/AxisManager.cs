@@ -757,6 +757,9 @@ public class AxisManager
     /// </summary>
     public void Zoom(double fracX = 1.0, double fracY = 1.0)
     {
+        if (fracX <= 0 || fracY <= 0)
+            throw new ArgumentException("zoom fraction must be >= 0");
+
         XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
         YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
     }
@@ -767,6 +770,9 @@ public class AxisManager
     /// </summary>
     public void ZoomIn(double fracX = 1.0, double fracY = 1.0)
     {
+        if (fracX <= 0 || fracY <= 0)
+            throw new ArgumentException("zoom fraction must be >= 0");
+
         Zoom(fracX, fracY);
     }
 
@@ -775,6 +781,9 @@ public class AxisManager
     /// </summary>
     public void ZoomOut(double x = 1.0, double y = 1.0)
     {
+        if (x <= 0 || y <= 0)
+            throw new ArgumentException("zoom fraction must be >= 0");
+
         XAxes.ForEach(xAxis => xAxis.Range.ZoomOut(x));
         YAxes.ForEach(yAxis => yAxis.Range.ZoomOut(y));
     }
@@ -784,6 +793,9 @@ public class AxisManager
     /// </summary>
     public void ZoomOutX(double x = 1.0)
     {
+        if (x <= 0)
+            throw new ArgumentException("zoom fraction must be >= 0");
+
         ZoomOut(x, 1);
     }
 
@@ -792,6 +804,9 @@ public class AxisManager
     /// </summary>
     public void ZoomOutY(double y = 1.0)
     {
+        if (y <= 0)
+            throw new ArgumentException("zoom fraction must be >= 0");
+
         ZoomOut(1, y);
     }
 
