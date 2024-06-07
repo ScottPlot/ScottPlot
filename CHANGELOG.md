@@ -30,6 +30,7 @@ _Not yet on NuGet..._
 * ImageMarker: New plot type for displaying an image at a point (#3904) @levipara
 * SignalXY: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @cataclism
 * Scatter: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @MatKinPro
+* Controls: Disable middle-click-drag zooming on axes which have no data (#3810, #3897) @MCF
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_

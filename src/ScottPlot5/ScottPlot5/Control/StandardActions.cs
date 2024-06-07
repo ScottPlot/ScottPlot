@@ -238,6 +238,14 @@ public static class StandardActions
             IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From);
             if (axisUnderMouse is not null)
             {
+                // Do not respond if the axis under the mouse has no data
+                // https://github.com/ScottPlot/ScottPlot/issues/3810
+                var xAxes = control.Plot.GetPlottables().Select(x => (IAxis)x.Axes.XAxis);
+                var yAxes = control.Plot.GetPlottables().Select(x => (IAxis)x.Axes.YAxis);
+                bool axesIsUsedByPlottables = xAxes.Contains(axisUnderMouse) || yAxes.Contains(axisUnderMouse);
+                if (!axesIsUsedByPlottables)
+                    return;
+
                 // NOTE: this function only changes shape of the rectangle.
                 // It doesn't modify axis limits, so no action is required on the opposite axis.
                 control.Plot.ZoomRectangle.VerticalSpan = axisUnderMouse.IsHorizontal();

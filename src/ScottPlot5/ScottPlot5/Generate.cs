@@ -479,6 +479,11 @@ public static class Generate
         return dates;
     }
 
+    public static System.DateTime[] ConsecutiveDateTimes(int count, System.DateTime start, TimeSpan timeSpan)
+    {
+        return Consecutive(count, start, timeSpan);
+    }
+
     public static System.DateTime[] ConsecutiveDays(int count, int year = 2023, int month = 1, int day = 1)
     {
         return Consecutive(count, new(year, month, day), TimeSpan.FromDays(1));
