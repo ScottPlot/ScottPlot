@@ -35,6 +35,7 @@ _Not yet on NuGet..._
 * SignalXY: Ensure the final point is always drawn in high density mode (#3812)
 * Axes: Improved exception messages when calling `Zoom()` methods with invalid scale factors (#3813) @KennyTK
 * WinForms: Exposed `SKControl` so users may bind to its events (#3819) @CD-SailingPerf
+* Scatter: Added support for `Scale` and `Offset` properties (#3835) @bukkideme
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_

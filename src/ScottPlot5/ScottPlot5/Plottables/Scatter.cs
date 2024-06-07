@@ -42,6 +42,11 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public Color FillYBelowColor { get; set; } = Colors.Blue.WithAlpha(.2);
     public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
+    public double OffsetX { get; set; } = 0;
+    public double OffsetY { get; set; } = 0;
+    public double ScaleX { get; set; } = 1;
+    public double ScaleY { get; set; } = 1;
+
     /// <summary>
     /// The style of lines to use when connecting points.
     /// </summary>
@@ -107,15 +112,27 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         if (FillY)
             limits.ExpandY(FillYValue);
 
-        return limits.AxisLimits;
+        return new AxisLimits(
+            left: limits.Left * ScaleX + OffsetX,
+            right: limits.Right * ScaleX + OffsetX,
+            bottom: limits.Bottom * ScaleY + OffsetY,
+            top: limits.Top * ScaleY + OffsetY);
     }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
 
     public virtual void Render(RenderPack rp)
     {
-        // TODO: can this be more efficient by moving this logic into the DataSource to avoid copying?
-        Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
+        // TODO: can this be done with an iterator to avoid copying?
+        var coordinates = Data.GetScatterPoints();
+
+        Pixel[] markerPixels = new Pixel[coordinates.Count];
+        for (int i = 0; i < coordinates.Count; i++)
+        {
+            double x = coordinates[i].X * ScaleX + OffsetX;
+            double y = coordinates[i].Y * ScaleY + OffsetY;
+            markerPixels[i] = Axes.GetPixel(new(x, y));
+        }
 
         if (markerPixels.Length == 0)
             return;

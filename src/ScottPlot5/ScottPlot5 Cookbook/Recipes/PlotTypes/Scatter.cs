@@ -421,4 +421,23 @@ public class Scatter : ICategory
             sp.FillYBelowColor = Colors.Red.WithAlpha(.2);
         }
     }
+
+    public class ScatterScaleAndOffset : RecipeBase
+    {
+        public override string Name => "Scatter Scale and Offset";
+        public override string Description => "Scatter plot points can be multiplied by custom X and Y scale factors, " +
+            "or shifted horizontally or vertically using X and Y offset values.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.ScaleX = 100;
+            sp.ScaleY = 10;
+            sp.OffsetX = 500;
+            sp.OffsetY = 5;
+        }
+    }
 }
