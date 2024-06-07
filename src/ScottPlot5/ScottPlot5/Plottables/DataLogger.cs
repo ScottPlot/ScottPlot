@@ -56,9 +56,34 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
         Data.Add(x, y);
     }
 
+    public void Add(double[] xs, double[] ys)
+    {
+        if (xs is null || ys is null)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must not be null");
+
+        if (xs.Length != ys.Length)
+            throw new ArgumentException($"{nameof(xs).Length} and {nameof(ys).Length} must have equal length");
+
+        for (int i = 0; i < xs.Length; i++)
+        {
+            Data.Add(xs[i], ys[i]);
+        }
+    }
+
     public void Add(Coordinates coordinates)
     {
         Data.Add(coordinates);
+    }
+
+    public void Add(Coordinates[] coordinates)
+    {
+        if (coordinates is null)
+            throw new ArgumentException($"{coordinates} must not be null");
+
+        for (int i = 0; i < coordinates.Length; i++)
+        {
+            Data.Add(coordinates[i]);
+        }
     }
 
     public void Add(IEnumerable<double> ys)

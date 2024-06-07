@@ -71,6 +71,17 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
         Data.Add(value);
     }
 
+    public void Add(double[] ys)
+    {
+        if (ys is null)
+            throw new ArgumentException($"{nameof(ys)} must not be null");
+
+        for (int i = 0; i < ys.Length; i++)
+        {
+            Data.Add(ys[i]);
+        }
+    }
+
     /// <summary>
     /// Shift in a collection of new Y values
     /// </summary>

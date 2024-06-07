@@ -31,6 +31,7 @@ _Not yet on NuGet..._
 * SignalXY: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @cataclism
 * Scatter: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @MatKinPro
 * Controls: Disable middle-click-drag zooming on axes which have no data (#3810, #3897) @MCF
+* DataLogger: Create `Add()` overloads which accept fixed-length arrays (#3555) @h25019871990
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
