@@ -64,8 +64,12 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             rightOutsidePoint = PointBefore;
         }
 
+        // duplicate the last point to ensure it is always rendered
+        // https://github.com/ScottPlot/ScottPlot/issues/3812
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Xs[dataIndexLast], Ys[dataIndexLast]));
+
         // combine with one extra point before and after
-        Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint];
+        Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint, lastPoint];
 
         // use interpolation at the edges to prevent points from going way off the screen
         if (leftOutsidePoint.Length > 0)
@@ -96,8 +100,12 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             topOutsidePoint = PointBefore;
         }
 
+        // duplicate the last point to ensure it is always rendered
+        // https://github.com/ScottPlot/ScottPlot/issues/3812
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Xs[dataIndexLast], Ys[dataIndexLast]));
+
         // combine with one extra point before and after
-        Pixel[] points = [.. bottomOutsidePoint, .. VisiblePoints, .. topOutsidePoint];
+        Pixel[] points = [.. bottomOutsidePoint, .. VisiblePoints, .. topOutsidePoint, lastPoint];
 
         // use interpolation at the edges to prevent points from going way off the screen
         if (bottomOutsidePoint.Length > 0)
