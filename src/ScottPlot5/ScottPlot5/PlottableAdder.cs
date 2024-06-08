@@ -407,6 +407,19 @@ public class PlottableAdder(Plot plot)
         return marker;
     }
 
+    public ImageRect ImageRect(Image image, CoordinateRect rect)
+    {
+        ImageRect marker = new()
+        {
+            Image = image,
+            Rect = rect,
+        };
+
+        Plot.PlottableList.Add(marker);
+
+        return marker;
+    }
+
     public Legend Legend()
     {
         Legend legend = new(Plot) { IsVisible = true };
