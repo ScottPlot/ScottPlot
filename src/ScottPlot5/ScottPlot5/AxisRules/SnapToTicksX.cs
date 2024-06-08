@@ -60,7 +60,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         // establish which type of axis change occurred
         bool zoomedInRight = Math.Abs(newRight - oldLeft) < Math.Abs(oldRight - oldLeft);
         bool zoomedInLeft = Math.Abs(newLeft - oldRight) < Math.Abs(oldLeft - oldRight);
-        bool isPanning = zoomedInLeft ^ zoomedInRight;
+        bool isPanning = (zoomedInLeft ^ zoomedInRight) & (newLeft != oldLeft) & (newRight != oldRight);
 
         // Find the ticks for the curtrent axis so we can snap to these
         XAxis.RegenerateTicks(new PixelLength(rp.DataRect.Width));
