@@ -56,8 +56,8 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         }
 
         // establish which type of axis change occurred
-        bool zoomedInTop = Math.Abs(newTop-oldBottom) < Math.Abs(oldTop- oldBottom);
-        bool zoomedInBottom = Math.Abs(newBottom-oldTop) < Math.Abs(oldBottom-oldTop);
+        bool zoomedInTop = Math.Abs(newTop - oldBottom) < Math.Abs(oldTop - oldBottom);
+        bool zoomedInBottom = Math.Abs(newBottom - oldTop) < Math.Abs(oldBottom - oldTop);
         bool isPanning = zoomedInBottom ^ zoomedInTop;
 
 
@@ -72,7 +72,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
 
         if (zoomedInTop)
         {
-            while (Math.Abs(newTop-oldBottom) >= Math.Abs(oldTop-oldBottom))
+            while (Math.Abs(newTop - oldBottom) >= Math.Abs(oldTop - oldBottom))
             {
                 newTop += inverted ? tickDelta : -tickDelta;
             }
@@ -80,7 +80,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
 
         if (zoomedInBottom)
         {
-            while (Math.Abs(newBottom-oldTop) >= Math.Abs(oldBottom-oldTop))
+            while (Math.Abs(newBottom - oldTop) >= Math.Abs(oldBottom - oldTop))
             {
                 newBottom += inverted ? -tickDelta : tickDelta;
             }
@@ -115,18 +115,19 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         if (newTickDelta != tickDelta)
         {//tick interval has changed
 
-            if (newTop != (inverted ? ticks.Min() : ticks.Max())  & !topIsLocked)
+            if (newTop != (inverted ? ticks.Min() : ticks.Max()) & !topIsLocked)
             {// Top limit is no longer on a tick because the tick interval has changed
-                if(zoomedInTop)
+                if (zoomedInTop)
                 {
                     newTop = inverted ? ticks.Min() : ticks.Max();
-                }else
+                }
+                else
                 {
                     newTop = inverted ? ticks.Min() - newTickDelta : ticks.Max() + newTickDelta;
                 }
             }
 
-            if (newBottom != (inverted? ticks.Max() : ticks.Min())  & !bottomIsLocked)
+            if (newBottom != (inverted ? ticks.Max() : ticks.Min()) & !bottomIsLocked)
             {// Top limit is no longer on a tick because the tick interval has changed
                 if (zoomedInBottom)
                 {
