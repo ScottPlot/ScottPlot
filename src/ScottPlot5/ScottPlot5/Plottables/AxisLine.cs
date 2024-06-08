@@ -12,7 +12,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
 
     public override Label LabelStyle { get; set; } = new();
     public string Text { get => LabelText; set => LabelText = value; }
-    public string LegendText { get => LabelText; set => LabelText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public Alignment? ManualLabelAlignment { get; set; } = null;
 
@@ -72,7 +72,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
         {
             return LegendItem.Single(new LegendItem()
             {
-                LabelText = ExcludeFromLegend ? string.Empty : LabelStyle.Text,
+                LabelText = ExcludeFromLegend ? string.Empty : LegendText,
                 LineStyle = LineStyle,
                 MarkerStyle = MarkerStyle.None,
             });
