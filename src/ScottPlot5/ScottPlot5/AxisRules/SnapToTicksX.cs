@@ -11,6 +11,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         if (beforeLayout)
             return;
 
+        var inverted = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].IsInverted;
         var oldRight = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
         var oldLeft = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
         var newLimits = XAxis.Range;
@@ -57,8 +58,8 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         }
 
         // establish which type of axis change occurred
-        bool zoomedInRight = newRight < oldRight;
-        bool zoomedInLeft = newLeft > oldLeft;
+        bool zoomedInRight = Math.Abs(newRight - oldLeft) < Math.Abs(oldRight - oldLeft);
+        bool zoomedInLeft = Math.Abs(newLeft - oldRight) < Math.Abs(oldLeft - oldRight);
         bool isPanning = zoomedInLeft ^ zoomedInRight;
 
         // Find the ticks for the curtrent axis so we can snap to these
@@ -68,22 +69,22 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         var tickDelta = ticks.Skip(1).First() - ticks.First();
 
         // As a default we'll snap outwards, then check if we should have snapped inward
-        newRight = ticks.Max() + tickDelta;
-        newLeft = ticks.Min() - tickDelta;
+        newRight = inverted ? ticks.Min() - tickDelta : ticks.Max() + tickDelta;
+        newLeft = inverted ? ticks.Max() + tickDelta : ticks.Min() - tickDelta;
 
         if (zoomedInRight)
         {
-            while (newRight >= oldRight)
+            while (Math.Abs(newRight - oldLeft) >= Math.Abs(oldRight - oldLeft))
             {
-                newRight -= tickDelta;
+                newRight += inverted ? tickDelta : -tickDelta;
             }
         }
 
         if (zoomedInLeft)
         {
-            while (newLeft <= oldLeft)
+            while (Math.Abs(newLeft - oldRight) >= Math.Abs(oldLeft - oldRight))
             {
-                newLeft += tickDelta;
+                newLeft += inverted ? -tickDelta : tickDelta;
             }
         }
 
@@ -116,14 +117,28 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         if (newTickDelta != tickDelta)
         {//tick interval has changed
 
-            if (ticks.Max() != newRight & !rightIsLocked)
-            {// right limit is no longer on a tick because the tick interval has changed
-                newRight = zoomedInRight ? ticks.Max() : ticks.Max() + newTickDelta;
+            if (newRight != (inverted ? ticks.Min() : ticks.Max()) & !rightIsLocked)
+            {// Top limit is no longer on a tick because the tick interval has changed
+                if (zoomedInRight)
+                {
+                    newRight = inverted ? ticks.Min() : ticks.Max();
+                }
+                else
+                {
+                    newRight = inverted ? ticks.Min() - newTickDelta : ticks.Max() + newTickDelta;
+                }
             }
 
-            if (ticks.Min() != newLeft & !leftIsLocked)
-            {// right limit is no longer on a tick because the tick interval has changed
-                newLeft = zoomedInLeft ? ticks.Min() : ticks.Min() - newTickDelta;
+            if (newLeft != (inverted ? ticks.Max() : ticks.Min()) & !leftIsLocked)
+            {// Top limit is no longer on a tick because the tick interval has changed
+                if (zoomedInLeft)
+                {
+                    newLeft = inverted ? ticks.Max() : ticks.Min();
+                }
+                else
+                {
+                    newLeft = inverted ? ticks.Max() + newTickDelta : ticks.Min() - newTickDelta;
+                }
             }
 
             // Finally, we need to reset the limits

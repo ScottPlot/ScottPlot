@@ -9,6 +9,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         if (beforeLayout)
             return;
 
+        var inverted = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].IsInverted;
         var oldTop = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Max;
         var oldBottom = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Min;
         var newLimits = YAxis.Range;
@@ -55,8 +56,8 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         }
 
         // establish which type of axis change occurred
-        bool zoomedInTop = newTop < oldTop;
-        bool zoomedInBottom = newBottom > oldBottom;
+        bool zoomedInTop = Math.Abs(newTop-oldBottom) < Math.Abs(oldTop- oldBottom);
+        bool zoomedInBottom = Math.Abs(newBottom-oldTop) < Math.Abs(oldBottom-oldTop);
         bool isPanning = zoomedInBottom ^ zoomedInTop;
 
 
@@ -66,22 +67,22 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         double tickDelta = ticks.Skip(1).First() - ticks.First();
 
         // As a default we'll snap outwards, then check if we should have snapped inward
-        newTop = ticks.Max() + tickDelta;
-        newBottom = ticks.Min() - tickDelta;
+        newTop = inverted ? ticks.Min() - tickDelta : ticks.Max() + tickDelta;
+        newBottom = inverted ? ticks.Max() + tickDelta : ticks.Min() - tickDelta;
 
         if (zoomedInTop)
         {
-            while (newTop >= oldTop)
+            while (Math.Abs(newTop-oldBottom) >= Math.Abs(oldTop-oldBottom))
             {
-                newTop -= tickDelta;
+                newTop += inverted ? tickDelta : -tickDelta;
             }
         }
 
         if (zoomedInBottom)
         {
-            while (newBottom <= oldBottom)
+            while (Math.Abs(newBottom-oldTop) >= Math.Abs(oldBottom-oldTop))
             {
-                newBottom += tickDelta;
+                newBottom += inverted ? -tickDelta : tickDelta;
             }
         }
 
@@ -114,14 +115,27 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         if (newTickDelta != tickDelta)
         {//tick interval has changed
 
-            if (ticks.Max() != newTop & !topIsLocked)
+            if (newTop != (inverted ? ticks.Min() : ticks.Max())  & !topIsLocked)
             {// Top limit is no longer on a tick because the tick interval has changed
-                newTop = zoomedInTop ? ticks.Max() : ticks.Max() + newTickDelta;
+                if(zoomedInTop)
+                {
+                    newTop = inverted ? ticks.Min() : ticks.Max();
+                }else
+                {
+                    newTop = inverted ? ticks.Min() - newTickDelta : ticks.Max() + newTickDelta;
+                }
             }
 
-            if (ticks.Min() != newBottom & !bottomIsLocked)
+            if (newBottom != (inverted? ticks.Max() : ticks.Min())  & !bottomIsLocked)
             {// Top limit is no longer on a tick because the tick interval has changed
-                newBottom = zoomedInBottom ? ticks.Min() : ticks.Min() - newTickDelta;
+                if (zoomedInBottom)
+                {
+                    newBottom = inverted ? ticks.Max() : ticks.Min();
+                }
+                else
+                {
+                    newBottom = inverted ? ticks.Max() + newTickDelta : ticks.Min() - newTickDelta;
+                }
             }
 
             // Finally, we need to reset the limits
