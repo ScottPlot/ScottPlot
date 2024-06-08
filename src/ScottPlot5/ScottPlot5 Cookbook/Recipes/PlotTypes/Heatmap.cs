@@ -297,4 +297,26 @@ public class Heatmap : ICategory
             hm.CellAlignment = Alignment.LowerLeft;
         }
     }
+
+    public class HeatmapCellSize : RecipeBase
+    {
+        public override string Name => "Heatmap Cell Size";
+        public override string Description => "Dimensions of a heatmap may be set by specifying how " +
+            "large a cell should be in pixel units.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 },
+            };
+
+            var hm = myPlot.Add.Heatmap(data);
+            hm.CellAlignment = Alignment.LowerLeft;
+            hm.CellWidth = 100;
+            hm.CellHeight = 10;
+        }
+    }
 }

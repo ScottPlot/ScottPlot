@@ -149,12 +149,40 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// <summary>
     /// Width of a single cell from the heatmap (in coordinate units)
     /// </summary>
-    private double CellWidth => ExtentOrDefault.Width / Intensities.GetLength(1);
+    public double CellWidth
+    {
+        get
+        {
+            return ExtentOrDefault.Width / Intensities.GetLength(1);
+        }
+        set
+        {
+            double left = ExtentOrDefault.Left;
+            double right = ExtentOrDefault.Left + value * Intensities.GetLength(1);
+            double bottom = ExtentOrDefault.Bottom;
+            double top = ExtentOrDefault.Top;
+            Extent = new(left, right, bottom, top);
+        }
+    }
 
     /// <summary>
     /// Height of a single cell from the heatmap (in coordinate units)
     /// </summary>
-    private double CellHeight => ExtentOrDefault.Height / Intensities.GetLength(0);
+    public double CellHeight
+    {
+        get
+        {
+            return ExtentOrDefault.Height / Intensities.GetLength(0);
+        }
+        set
+        {
+            double left = ExtentOrDefault.Left;
+            double right = ExtentOrDefault.Right;
+            double bottom = ExtentOrDefault.Bottom;
+            double top = ExtentOrDefault.Bottom + value * Intensities.GetLength(0);
+            Extent = new(left, right, bottom, top);
+        }
+    }
 
     /// <summary>
     /// This object holds data values for the heatmap.
