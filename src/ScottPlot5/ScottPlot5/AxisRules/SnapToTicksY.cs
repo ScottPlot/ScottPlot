@@ -8,6 +8,8 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
     {
         if (beforeLayout)
             return;
+        if (rp.Plot.LastRender.Count == 0)
+            return;
 
         var inverted = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].IsInverted;
         var oldTop = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Max;

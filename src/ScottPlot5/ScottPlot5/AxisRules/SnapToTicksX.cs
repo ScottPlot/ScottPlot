@@ -10,6 +10,8 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
     {
         if (beforeLayout)
             return;
+        if (rp.Plot.LastRender.Count == 0)
+            return;
 
         var inverted = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].IsInverted;
         var oldRight = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
