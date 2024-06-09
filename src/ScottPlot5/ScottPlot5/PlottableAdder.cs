@@ -282,6 +282,13 @@ public class PlottableAdder(Plot plot)
         return heatmap;
     }
 
+    public Heatmap Heatmap(double[,] intensities, Range forcedRange)
+    {
+        Heatmap heatmap = new(intensities, forcedRange);
+        Plot.PlottableList.Add(heatmap);
+        return heatmap;
+    }
+
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
         HorizontalLine line = new();

@@ -177,6 +177,17 @@ public class Heatmap : IPlottable, IHasColorAxis
         Intensities = intensities;
     }
 
+    /// <summary>
+    /// When range is provided, the heatmap will be colored according to this range vs the data range.
+    /// </summary>
+    /// <param name="intensities"></param>
+    /// <param name="forcedRange"></param>
+    public Heatmap(double[,] intensities, Range forcedRange) : this(intensities)
+    {
+        ForcedRange = forcedRange;
+        UseForcedRange = true;
+    }
+
     ~Heatmap()
     {
         Bitmap?.Dispose();
@@ -258,7 +269,23 @@ public class Heatmap : IPlottable, IHasColorAxis
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-    public Range GetRange() => Range.GetRange(Intensities);
+    public Range GetRange()
+    {
+        if (UseForcedRange)
+        {
+            return ForcedRange;
+        }
+        if (IntensityRange == default(Range))
+        {
+            // Needs update.  Get the range from intensities.
+            return Range.GetRange(Intensities); 
+        }
+        return IntensityRange;
+    }
+
+    public Range IntensityRange { get; private set; }
+    public Range ForcedRange { get; set; }
+    public bool UseForcedRange { get; set; }
 
     public void Render(RenderPack rp)
     {
