@@ -102,7 +102,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         // duplicate the last point to ensure it is always rendered
         // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(new Coordinates(Xs[dataIndexLast], Ys[dataIndexLast]));
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Ys[dataIndexLast], Xs[dataIndexLast]));
 
         // combine with one extra point before and after
         Pixel[] points = [.. bottomOutsidePoint, .. VisiblePoints, .. topOutsidePoint, lastPoint];
