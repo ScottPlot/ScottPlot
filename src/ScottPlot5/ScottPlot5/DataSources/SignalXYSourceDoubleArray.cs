@@ -57,16 +57,17 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             .Select(pxColumn => GetColumnPixelsX(pxColumn, visibileRange, rp, axes))
             .SelectMany(x => x);
 
+        // duplicate the last point to ensure it is always rendered
+        // https://github.com/ScottPlot/ScottPlot/issues/3812
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Xs[dataIndexLast], Ys[dataIndexLast]));
+
         Pixel[] leftOutsidePoint = PointBefore, rightOutsidePoint = PointAfter;
         if (axes.XAxis.Range.Span < 0)
         {
             leftOutsidePoint = PointAfter;
             rightOutsidePoint = PointBefore;
+            lastPoint = axes.GetPixel(new Coordinates(Xs[dataIndexFirst], Ys[dataIndexFirst]));
         }
-
-        // duplicate the last point to ensure it is always rendered
-        // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(new Coordinates(Xs[dataIndexLast], Ys[dataIndexLast]));
 
         // combine with one extra point before and after
         Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint, lastPoint];
@@ -93,16 +94,18 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             .Select(pxRow => GetColumnPixelsY(pxRow, visibleRange, rp, axes))
             .SelectMany(x => x);
 
+        // duplicate the last point to ensure it is always rendered
+        // https://github.com/ScottPlot/ScottPlot/issues/3812
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Ys[dataIndexLast], Xs[dataIndexLast]));
+
         Pixel[] bottomOutsidePoint = PointBefore, topOutsidePoint = PointAfter;
         if (axes.YAxis.Range.Span < 0)
         {
             bottomOutsidePoint = PointAfter;
             topOutsidePoint = PointBefore;
+            lastPoint = axes.GetPixel(new Coordinates(Ys[dataIndexFirst], Xs[dataIndexFirst]));
         }
 
-        // duplicate the last point to ensure it is always rendered
-        // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(new Coordinates(Ys[dataIndexLast], Xs[dataIndexLast]));
 
         // combine with one extra point before and after
         Pixel[] points = [.. bottomOutsidePoint, .. VisiblePoints, .. topOutsidePoint, lastPoint];
@@ -182,7 +185,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             yield break;
         }
 
-        yield return new Pixel(xPixel, axes.GetPixelY(Ys[startIndex] * YScale + YOffset)); // enter
+        yield return new Pixel(xPixel, axes.GetPixelY(Ys[Math.Min(startIndex, endIndex)] * YScale + YOffset)); // enter
 
         if (pointsInRange > 1)
         {
@@ -215,7 +218,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             yield break;
         }
 
-        yield return new Pixel(axes.GetPixelX(Ys[startIndex] + XOffset), yPixel); // enter
+        yield return new Pixel(axes.GetPixelX(Ys[Math.Min(startIndex,endIndex)] + XOffset), yPixel); // enter
 
         if (pointsInRange > 1)
         {
