@@ -258,8 +258,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (firstPointPosition > MinimumIndex)
         {
-            float beforeX = axes.GetPixelX(Xs[firstPointIndex - 1] + XOffset);
-            float beforeY = axes.GetPixelY(Ys[firstPointIndex - 1] * YScale + YOffset);
+            float beforeY = axes.GetPixelY(Xs[firstPointIndex - 1] + XOffset);
+            float beforeX = axes.GetPixelX(Ys[firstPointIndex - 1] * YScale + YOffset);
             Pixel beforePoint = new(beforeX, beforeY);
             return ([beforePoint], firstPointIndex);
         }
@@ -300,8 +300,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (lastPointPosition <= MaximumIndex)
         {
-            float afterX = axes.GetPixelX(Xs[lastPointIndex] + XOffset);
-            float afterY = axes.GetPixelY(Ys[lastPointIndex] * YScale + YOffset);
+            float afterY = axes.GetPixelY(Xs[lastPointIndex] + XOffset);
+            float afterX = axes.GetPixelX(Ys[lastPointIndex] * YScale + YOffset);
             Pixel afterPoint = new(afterX, afterY);
             return ([afterPoint], lastPointIndex);
         }
