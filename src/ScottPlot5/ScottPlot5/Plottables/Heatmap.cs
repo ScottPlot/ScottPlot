@@ -313,6 +313,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     public void Update()
     {
+        DataRange = Range.GetRange(Intensities);
         uint[] argbs = GetArgbValues();
         Bitmap?.Dispose();
         Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
@@ -357,7 +358,28 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-    public Range GetRange() => Range.GetRange(Intensities);
+    public Range GetRange() => ManualRange ?? DataRange;
+
+    /// <summary>
+    /// Range of values spanned by the data the last time it was updated
+    /// </summary>
+    public Range DataRange { get; private set; }
+
+
+    private Range? _ManualRange;
+
+    /// <summary>
+    /// If supplied, the colormap will span this range of values
+    /// </summary>
+    public Range? ManualRange
+    {
+        get => _ManualRange;
+        set
+        {
+            _ManualRange = value;
+            Update();
+        }
+    }
 
     public virtual void Render(RenderPack rp)
     {
