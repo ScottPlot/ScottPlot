@@ -177,17 +177,6 @@ public class Heatmap : IPlottable, IHasColorAxis
         Intensities = intensities;
     }
 
-    /// <summary>
-    /// When range is provided, the heatmap will be colored according to this range vs the data range.
-    /// </summary>
-    /// <param name="intensities"></param>
-    /// <param name="forcedRange"></param>
-    public Heatmap(double[,] intensities, Range forcedRange) : this(intensities)
-    {
-        ForcedRange = forcedRange;
-        UseForcedRange = true;
-    }
-
     ~Heatmap()
     {
         Bitmap?.Dispose();
@@ -201,6 +190,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     private uint[] GetArgbValues()
     {
         Range range = GetRange();
+
         uint[] argb = new uint[Intensities.Length];
 
         // the XOR here disables flipping when the flip property and the extent is inverted.
@@ -225,6 +215,7 @@ public class Heatmap : IPlottable, IHasColorAxis
     /// </summary>
     public void Update()
     {
+        DataRange = Range.GetRange(Intensities);
         uint[] argbs = GetArgbValues();
         Bitmap?.Dispose();
         Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
@@ -269,23 +260,28 @@ public class Heatmap : IPlottable, IHasColorAxis
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-    public Range GetRange()
-    {
-        if (UseForcedRange)
-        {
-            return ForcedRange;
-        }
-        if (IntensityRange == default(Range))
-        {
-            // Needs update.  Get the range from intensities.
-            return Range.GetRange(Intensities); 
-        }
-        return IntensityRange;
-    }
+    public Range GetRange() => ManualRange ?? DataRange;
 
-    public Range IntensityRange { get; private set; }
-    public Range ForcedRange { get; set; }
-    public bool UseForcedRange { get; set; }
+    /// <summary>
+    /// Range of values spanned by the data the last time it was updated
+    /// </summary>
+    public Range DataRange { get; private set; }
+
+
+    private Range? _ManualRange;
+
+    /// <summary>
+    /// If supplied, the colormap will span this range of values
+    /// </summary>
+    public Range? ManualRange
+    {
+        get => _ManualRange;
+        set
+        {
+            _ManualRange = value;
+            Update();
+        }
+    }
 
     public void Render(RenderPack rp)
     {
