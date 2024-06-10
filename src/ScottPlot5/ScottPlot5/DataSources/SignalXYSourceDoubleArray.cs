@@ -10,6 +10,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
     public double YScale { get; set; } = 1;
+    // TODO: add XScale
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
@@ -38,23 +39,23 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             : new AxisLimits(xRange, yRange);
     }
 
-    public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes)
+    public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         return Rotated
-            ? GetPixelsToDrawVertically(rp, axes)
-            : GetPixelsToDrawHorizontally(rp, axes);
+            ? GetPixelsToDrawVertically(rp, axes, connectStyle)
+            : GetPixelsToDrawHorizontally(rp, axes, connectStyle);
     }
 
-    private Pixel[] GetPixelsToDrawHorizontally(RenderPack rp, IAxes axes)
+    private Pixel[] GetPixelsToDrawHorizontally(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointX(axes);
-        IndexRange visibileRange = new(dataIndexFirst, dataIndexLast);
+        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
         // get all points in view
         IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
-            .Select(pxColumn => GetColumnPixelsX(pxColumn, visibileRange, rp, axes))
+            .Select(pxColumn => GetColumnPixelsX(pxColumn, visibleRange, rp, axes))
             .SelectMany(x => x);
 
         // duplicate the last point to ensure it is always rendered
@@ -74,15 +75,15 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         // use interpolation at the edges to prevent points from going way off the screen
         if (leftOutsidePoint.Length > 0)
-            SignalInterpolation.InterpolateBeforeX(rp, points);
+            SignalInterpolation.InterpolateBeforeX(rp, points, connectStyle);
 
         if (rightOutsidePoint.Length > 0)
-            SignalInterpolation.InterpolateAfterX(rp, points);
+            SignalInterpolation.InterpolateAfterX(rp, points, connectStyle);
 
         return points;
     }
 
-    private Pixel[] GetPixelsToDrawVertically(RenderPack rp, IAxes axes)
+    private Pixel[] GetPixelsToDrawVertically(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointY(axes);
@@ -112,10 +113,10 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         // use interpolation at the edges to prevent points from going way off the screen
         if (bottomOutsidePoint.Length > 0)
-            SignalInterpolation.InterpolateBeforeY(rp, points);
+            SignalInterpolation.InterpolateBeforeY(rp, points, connectStyle);
 
         if (topOutsidePoint.Length > 0)
-            SignalInterpolation.InterpolateAfterY(rp, points);
+            SignalInterpolation.InterpolateAfterY(rp, points, connectStyle);
 
         return points;
     }
@@ -137,7 +138,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             max = Math.Max(Ys[i], max);
         }
 
-        return new CoordinateRange(min * YScale + YOffset, max * YScale + YOffset);
+        return new CoordinateRange(min * +YOffset, max * YScale + YOffset);
     }
 
     /// <summary>

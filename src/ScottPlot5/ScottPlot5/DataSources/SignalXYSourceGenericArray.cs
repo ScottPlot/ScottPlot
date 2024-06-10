@@ -41,7 +41,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             : new AxisLimits(xRange, yRange);
     }
 
-    public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes)
+    public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPoint(axes);
@@ -71,10 +71,10 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         // use interpolation at the edges to prevent points from going way off the screen
         if (leftOutsidePoint.Length > 0)
-            SignalInterpolation.InterpolateBeforeX(rp, points);
+            SignalInterpolation.InterpolateBeforeX(rp, points, connectStyle);
 
         if (rightOutsidePoint.Length > 0)
-            SignalInterpolation.InterpolateAfterX(rp, points);
+            SignalInterpolation.InterpolateAfterX(rp, points, connectStyle);
 
         return points;
     }

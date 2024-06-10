@@ -54,7 +54,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
 
     public virtual void Render(RenderPack rp)
     {
-        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes);
+        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes, ConnectStyle);
 
         Pixel[] linePixels = ConnectStyle switch
         {

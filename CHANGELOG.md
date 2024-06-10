@@ -45,6 +45,7 @@ _Not yet on NuGet..._
 * Color: Fix infinite loop in the `Color.FromARGB()` overload that accepts an `int` argument (#3924) @r-j-s
 * Heatmap: Added cookbook recipe demonstrating how to use custom tick formatter (#3844) @mawbydp
 * DataLogger: Improved automatic axis management for loggers with empty datasets (#3880) @TenebrosFR
+* SignalXY: improve interpolation of edge points when step mode is enabled (#3894) @seishinkouki @StendProg
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
