@@ -133,7 +133,7 @@ public class Heatmap : ICategory
                 LabelFormatter = CustomFormatter
             };
 
-           // tell the colorbar to use the custom tick generator
+            // tell the colorbar to use the custom tick generator
             cb.Axis.TickGenerator = myTickGenerator;
         }
     }
