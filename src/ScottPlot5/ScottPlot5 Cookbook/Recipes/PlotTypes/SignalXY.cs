@@ -212,6 +212,7 @@ public class SignalXY : ICategory
 
             var sig = myPlot.Add.SignalXY(xs, ys);
             sig.MarkerStyle.Shape = MarkerShape.FilledCircle;
+            sig.MarkerStyle.Size = 5;
         }
     }
 }
