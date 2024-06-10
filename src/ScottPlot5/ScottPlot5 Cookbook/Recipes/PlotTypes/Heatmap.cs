@@ -319,4 +319,27 @@ public class Heatmap : ICategory
             hm.CellHeight = 10;
         }
     }
+
+    public class HeatmapManualRange : RecipeBase
+    {
+        public override string Name => "Heatmap with Manual Color Range";
+        public override string Description => "The user can define the range of values " +
+            "to represent with colors in the colormap. Values outside that range will be clipped " +
+            "to the nearest color in the colormap.";
+
+        [Test]
+        public override void Execute()
+        {
+            // sample data values range from 0-255
+            double[,] data = SampleData.MonaLisa();
+
+            // add a heatmap and colorbar to the plot
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Colormap = new ScottPlot.Colormaps.Turbo();
+            myPlot.Add.ColorBar(hm);
+
+            // force the colormap to span a manual range of values
+            hm.ManualRange = new(50, 150);
+        }
+    }
 }
