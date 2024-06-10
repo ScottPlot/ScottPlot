@@ -138,7 +138,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             max = Math.Max(Ys[i], max);
         }
 
-        return new CoordinateRange(min * +YOffset, max * YScale + YOffset);
+        return new CoordinateRange(min * YScale + YOffset, max * YScale + YOffset);
     }
 
     /// <summary>
