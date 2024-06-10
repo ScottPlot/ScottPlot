@@ -39,6 +39,7 @@ _Not yet on NuGet..._
 * Axis Lines: Separated `LegendText` from `LabelText` so items may be configured separately
 * Heatmap: Exposed `CellWidth` and `CellHeight` as an alternative sizing strategy to setting `Extent` (#3869) @alexisvrignaud
 * ImageRect: New plot type that places an image inside a defined rectangle on the plot (#3870) @sdpenner
+* Axis Rules: Improved behavior of snapping rules and improve smoothness of panning rules (#3919, #3547, #3701) @BrianAtZetica
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
