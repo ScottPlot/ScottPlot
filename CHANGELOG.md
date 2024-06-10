@@ -43,6 +43,7 @@ _Not yet on NuGet..._
 * SignalXY: Improved appearance of rotated plots when low density mode is in use (#3921) @BrianAtZetica
 * Heatmap: Added `ManualRange` so users can specify a range spanned by the colormap (#3922) @sdpenner
 * Color: Fix infinite loop in the `Color.FromARGB()` overload that accepts an `int` argument (#3924) @r-j-s
+* Heatmap: Added cookbook recipe demonstrating how to use custom tick formatter (#3844) @mawbydp
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_

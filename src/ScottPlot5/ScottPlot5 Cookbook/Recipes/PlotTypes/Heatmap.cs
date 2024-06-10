@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿using System;
+
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Heatmap : ICategory
 {
@@ -102,6 +104,37 @@ public class Heatmap : ICategory
             var cb = myPlot.Add.ColorBar(hm);
             cb.Label = "Intensity";
             cb.LabelStyle.FontSize = 24;
+        }
+    }
+
+    public class ColorbarTickFormatter : RecipeBase
+    {
+        public override string Name => "Colorbar Tick Formatter";
+        public override string Description => "Colorbars have an optional custom tick " +
+            "formatter that allows users to control the string format of tick labels.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm = myPlot.Add.Heatmap(data);
+            var cb = myPlot.Add.ColorBar(hm);
+
+            // create a static function containing the string formatting logic
+            static string CustomFormatter(double position)
+            {
+                return $"{Math.Round(position / 2.55)} %";
+            }
+
+            // create a custom tick generator using your custom label formatter
+            ScottPlot.TickGenerators.NumericAutomatic myTickGenerator = new()
+            {
+                LabelFormatter = CustomFormatter
+            };
+
+           // tell the colorbar to use the custom tick generator
+            cb.Axis.TickGenerator = myTickGenerator;
         }
     }
 
