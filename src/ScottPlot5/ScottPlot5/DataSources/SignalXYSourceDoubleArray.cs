@@ -218,7 +218,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             yield break;
         }
 
-        yield return new Pixel(axes.GetPixelX(Ys[Math.Min(startIndex,endIndex)] + XOffset), yPixel); // enter
+        yield return new Pixel(axes.GetPixelX(Ys[Math.Min(startIndex, endIndex)] + XOffset), yPixel); // enter
 
         if (pointsInRange > 1)
         {
