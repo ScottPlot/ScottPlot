@@ -158,6 +158,9 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
 
     public void UpdateAxisLimits(Plot plot)
     {
+        if (Data.CountTotal == 0)
+            return;
+
         AxisLimits limits = Plot.Axes.GetLimits(Axes);
         AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);

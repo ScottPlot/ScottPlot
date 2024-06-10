@@ -33,6 +33,9 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
 
     public void UpdateAxisLimits(Plot plot)
     {
+        if (Data.CountTotal == 0)
+            return;
+
         bool firstTimeRenderingData = Data.CountOnLastRender < 1 && Data.CountTotal > 0;
 
         AxisLimits dataLimits = GetAxisLimits();

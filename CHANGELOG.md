@@ -44,6 +44,7 @@ _Not yet on NuGet..._
 * Heatmap: Added `ManualRange` so users can specify a range spanned by the colormap (#3922) @sdpenner
 * Color: Fix infinite loop in the `Color.FromARGB()` overload that accepts an `int` argument (#3924) @r-j-s
 * Heatmap: Added cookbook recipe demonstrating how to use custom tick formatter (#3844) @mawbydp
+* DataLogger: Improved automatic axis management for loggers with empty datasets (#3880) @TenebrosFR
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
