@@ -32,13 +32,14 @@ _Not yet on NuGet..._
 * Scatter: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @MatKinPro
 * Controls: Disable middle-click-drag zooming on axes which have no data (#3810, #3897) @MCF
 * DataLogger: Create `Add()` overloads which accept fixed-length arrays (#3555) @h25019871990
-* SignalXY: Ensure the final point is always drawn in high density mode (#3812)
+* SignalXY: Ensure the final point is always drawn in high density mode (#3812, #3812)
 * Axes: Improved exception messages when calling `Zoom()` methods with invalid scale factors (#3813) @KennyTK
 * WinForms: Exposed `SKControl` so users may bind to its events (#3819) @CD-SailingPerf
 * Scatter: Added support for `Scale` and `Offset` properties (#3835) @bukkideme
 * Axis Lines: Separated `LegendText` from `LabelText` so items may be configured separately
 * Heatmap: Exposed `CellWidth` and `CellHeight` as an alternative sizing strategy to setting `Extent` (#3869) @alexisvrignaud
 * ImageRect: New plot type that places an image inside a defined rectangle on the plot (#3870) @sdpenner
+* SignalXY: Improved appearance of rotated plots when low density mode is in use (#3921) @BrianAtZetica
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
