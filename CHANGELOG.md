@@ -41,6 +41,7 @@ _Not yet on NuGet..._
 * ImageRect: New plot type that places an image inside a defined rectangle on the plot (#3870) @sdpenner
 * Axis Rules: Improved behavior of snapping rules and improve smoothness of panning rules (#3919, #3547, #3701) @BrianAtZetica
 * SignalXY: Improved appearance of rotated plots when low density mode is in use (#3921) @BrianAtZetica
+* Heatmap: Added `ManualRange` so users can specify a range spanned by the colormap (#3922) @sdpenner
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
