@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 ///<summary>
 ///Represents a range between any two finite values (inclusive)
 ///</summary>
-public readonly struct Range
+public readonly struct Range // TODO: evaluate if this can be replaced with more task-specific primitives
 {
     public double Min { get; }
     public double Max { get; }
