@@ -5,7 +5,7 @@ namespace ScottPlot;
 ///<summary>
 ///Represents a range between any two finite values (inclusive)
 ///</summary>
-public readonly struct Range : IEquatable<Range> // TODO: evaluate if this can be replaced with more task-specific primitives
+public readonly struct Range
 {
     public double Min { get; }
     public double Max { get; }
@@ -88,16 +88,4 @@ public readonly struct Range : IEquatable<Range> // TODO: evaluate if this can b
 
         return new(min, max);
     }
-
-    #region IEquatable implementation
-    public override bool Equals(object? obj) => obj is Range other && this.Equals(other);
-
-    public bool Equals(Range r) => Min == r.Min && Max == r.Max;
-
-    public override int GetHashCode() => (Min, Max).GetHashCode();
-
-    public static bool operator ==(Range lhs, Range rhs) => lhs.Equals(rhs);
-
-    public static bool operator !=(Range lhs, Range rhs) => !(lhs == rhs);
-    #endregion
 }
