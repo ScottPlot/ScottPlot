@@ -1,12 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using ScottPlot.Control;
 
 namespace ScottPlot.WinForms;
 
-internal static class FormsPlotExtensions
+public static class FormsPlotExtensions
 {
     internal static Pixel Pixel(this MouseEventArgs e)
     {
@@ -41,5 +40,11 @@ internal static class FormsPlotExtensions
         using MemoryStream ms = new(bytes);
         System.Drawing.Bitmap bmp = new(ms);
         return bmp;
+    }
+
+    public static Bitmap GetBitmap(this Image img)
+    {
+        using MemoryStream ms = new(img.GetImageBytes(ImageFormat.Bmp));
+        return new Bitmap(ms);
     }
 }

@@ -1,24 +1,25 @@
-﻿using ScottPlot.Extensions;
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class Ellipse : IPlottable
+public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(Label, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
 
-    public LineStyle LineStyle { get; set; } = new() { Color = Colors.Black, Width = 2 };
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.Transparent };
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    /// <summary>
-    /// Label to appear in the legend
-    /// </summary>
-    public string Label { get; set; } = string.Empty;
+
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
 
     public Coordinates Center = Coordinates.Origin;
 
@@ -54,6 +55,7 @@ public class Ellipse : IPlottable
             _rotation = value % 360;
         }
     }
+
     private double _rotation = 0;
 
     public AxisLimits GetAxisLimits()
@@ -65,7 +67,7 @@ public class Ellipse : IPlottable
 
         // https://math.stackexchange.com/a/91304
 
-        var rad = Rotation.ToRadians();
+        var rad = (float)(Rotation / 180.0 * Math.PI);
         var cos2 = Math.Pow(Math.Cos(rad), 2);
         var sin2 = Math.Pow(Math.Sin(rad), 2);
 
@@ -78,9 +80,13 @@ public class Ellipse : IPlottable
         return new(Center.ToRect(x, y));
     }
 
-    public void Render(RenderPack rp)
+    private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
+    private bool RadiusIsNotFinite => !IsFinite(RadiusX) || !IsFinite(RadiusY);
+
+    public virtual void Render(RenderPack rp)
     {
-        if (!IsVisible || RadiusX.IsInfiniteOrNaN() || RadiusY.IsInfiniteOrNaN()) { return; }
+        if (!IsVisible || RadiusIsNotFinite)
+            return;
 
         using var paint = new SKPaint();
 
@@ -93,7 +99,5 @@ public class Ellipse : IPlottable
         PixelRect rect = new(-rx, rx, ry, -ry);
         Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
         Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
-
-        rp.Canvas.Restore();
     }
 }

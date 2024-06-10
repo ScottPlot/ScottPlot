@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot.Testing;
 
 /// <summary>
-/// Helper class to detect for dupliate items in complex collections
+/// Helper class to detect for duplicate items in complex collections
 /// and display helpful error messages to the console the facilitate debugging.
 /// </summary>
 public class DuplicateIdentifier<T>(string title)

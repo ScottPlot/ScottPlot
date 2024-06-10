@@ -30,6 +30,7 @@ public class Box : ICategory
             myPlot.Axes.SetLimits(0, 10, 70, 110);
         }
     }
+
     public class BoxPlotGroups : RecipeBase
     {
         public override string Name => "Box Plot Groups";
@@ -54,10 +55,10 @@ public class Box : ICategory
             };
 
             var bp1 = myPlot.Add.Boxes(boxes1);
-            bp1.Label = "Group 1";
+            bp1.LegendText = "Group 1";
 
             var bp2 = myPlot.Add.Boxes(boxes2);
-            bp2.Label = "Group 2";
+            bp2.LegendText = "Group 2";
 
             myPlot.ShowLegend(Alignment.UpperRight);
         }

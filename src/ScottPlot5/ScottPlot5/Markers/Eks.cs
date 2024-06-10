@@ -2,25 +2,17 @@
 
 internal class Eks : IMarker
 {
-    public bool Fill { get; set; } = false;
-    public float LineWidth { get; set; } = 1;
-
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, FillStyle fill, LineStyle outline)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
-        if (LineWidth == 0)
-            return;
+        float radius = size / 2;
 
-        float offset = size / 2;
+        SKPath path = new();
+        path.MoveTo(center.X + radius, center.Y + radius);
+        path.LineTo(center.X - radius, center.Y - radius);
+        path.MoveTo(center.X - radius, center.Y + radius);
+        path.LineTo(center.X + radius, center.Y - radius);
 
-        var path = new SKPath();
-        path.MoveTo(center.X + offset, center.Y + offset);
-        path.LineTo(center.X - offset, center.Y - offset);
-        path.MoveTo(center.X - offset, center.Y + offset);
-        path.LineTo(center.X + offset, center.Y - offset);
-
-        outline.ApplyToPaint(paint);
-        paint.StrokeWidth = LineWidth;
-        canvas.DrawPath(path, paint);
+        Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
 }
 

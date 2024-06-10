@@ -1,4 +1,6 @@
-﻿namespace Sandbox.WinForms;
+﻿using ScottPlot;
+
+namespace Sandbox.WinForms;
 
 public partial class Form1 : Form
 {
@@ -6,7 +8,11 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
-        formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
+        var mrk = formsPlot1.Plot.Add.Marker(5, 5);
+        mrk.Size = 100;
+        mrk.Color = Colors.Black.WithAlpha(0.5f);
+        mrk.MarkerLineWidth = 2;
+        mrk.MarkerLineColor = Colors.Black;
+        mrk.Shape = MarkerShape.FilledCircle;
     }
 }

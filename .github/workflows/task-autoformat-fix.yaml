@@ -1,0 +1,42 @@
+name: Autoformat Fix
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
+
+env:
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  sp4-autoformat:
+    name: Fix
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+      - name: 🛒 Checkout Manual
+        uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: ✒️ Run Autoformatter
+        run: bash  .github/workflows/scripts/autoformat.sh
+      - name: 🧐 Inspect Changes
+        id: verify_diff
+        run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+      - name: ✅ Commit Changes
+        if: steps.verify_diff.outputs.changed == 'true'
+        run: |
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git pull
+          git commit -am "CI: autoformat"
+          git push

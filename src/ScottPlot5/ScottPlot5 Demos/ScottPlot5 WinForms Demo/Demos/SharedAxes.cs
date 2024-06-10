@@ -1,5 +1,4 @@
 ﻿using ScottPlot;
-using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;
 
@@ -13,46 +12,42 @@ public partial class SharedAxes : Form, IDemoWindow
     {
         InitializeComponent();
 
-        // plot sample data
-        formsPlot1.Plot.Add.Signal(Generate.Sin(51, mult: 1));
-        formsPlot2.Plot.Add.Signal(Generate.Sin(51, mult: 100_000));
+        var sig1 = formsPlot1.Plot.Add.Signal(Generate.Sin());
+        sig1.Color = Colors.C0;
+        sig1.LineWidth = 2;
 
-        // add labels
-        formsPlot1.Plot.Axes.Left.Label.Text = "Vertical Axis";
-        formsPlot2.Plot.Axes.Left.Label.Text = "Vertical Axis";
-        formsPlot1.Plot.Axes.Bottom.Label.Text = "Horizontal Axis";
-        formsPlot2.Plot.Axes.Bottom.Label.Text = "Horizontal Axis";
+        var sig2 = formsPlot2.Plot.Add.Signal(Generate.Cos());
+        sig2.Color = Colors.C1;
+        sig2.LineWidth = 2;
 
-        // use a fixed size for the left axis panel to ensure it's always aligned
-        float leftAxisSize = 90;
-        formsPlot1.Plot.Axes.Left.MinimumSize = leftAxisSize;
-        formsPlot1.Plot.Axes.Left.MaximumSize = leftAxisSize;
-        formsPlot2.Plot.Axes.Left.MinimumSize = leftAxisSize;
-        formsPlot2.Plot.Axes.Left.MaximumSize = leftAxisSize;
+        checkShareX.CheckedChanged += (s, e) => AutoscaleAllAxes();
+        checkShareY.CheckedChanged += (s, e) => AutoscaleAllAxes();
 
-        // when one plot changes update the other plot
-        formsPlot1.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
-        {
-            ApplyLayoutToOtherPlot(formsPlot1, formsPlot2);
-        };
-        formsPlot2.Plot.RenderManager.AxisLimitsChanged += (s, e) =>
-        {
-            ApplyLayoutToOtherPlot(formsPlot2, formsPlot1);
-        };
-
-        // initial render
-        formsPlot1.Refresh();
-        formsPlot2.Refresh();
+        formsPlot1.Plot.RenderManager.AxisLimitsChanged += (s, e) => CopyLimits(formsPlot1, formsPlot2);
+        formsPlot2.Plot.RenderManager.AxisLimitsChanged += (s, e) => CopyLimits(formsPlot2, formsPlot1);
     }
 
-    private void ApplyLayoutToOtherPlot(IPlotControl source, IPlotControl dest)
+    private void CopyLimits(IPlotControl source, IPlotControl target)
     {
-        AxisLimits axesBefore = dest.Plot.Axes.GetLimits();
-        dest.Plot.Axes.SetLimitsX(source.Plot.Axes.GetLimits());
-        AxisLimits axesAfter = dest.Plot.Axes.GetLimits();
-        if (axesBefore != axesAfter)
-        {
-            dest.Refresh();
-        }
+        AxisLimits sourceLimits = source.Plot.Axes.GetLimits();
+
+        if (checkShareX.Checked)
+            target.Plot.Axes.SetLimitsX(sourceLimits.Left, sourceLimits.Right);
+
+        if (checkShareY.Checked)
+            target.Plot.Axes.SetLimitsY(sourceLimits.Bottom, sourceLimits.Top);
+
+        // prevent infinite loop
+        target.Plot.RenderManager.DisableAxisLimitsChangedEventOnNextRender = true;
+
+        target.Refresh();
+    }
+
+    private void AutoscaleAllAxes()
+    {
+        formsPlot1.Plot.Axes.AutoScale();
+        formsPlot1.Refresh();
+        formsPlot2.Plot.Axes.AutoScale();
+        formsPlot2.Refresh();
     }
 }

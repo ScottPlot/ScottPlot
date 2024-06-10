@@ -1,0 +1,151 @@
+﻿@inject IRecipesService RecipeService
+@inject NavigationManager NavManager
+@implements IDisposable
+
+<div class="@NavMenuTopCssClass d-flex align-items-center justify-content-between p-2">
+
+    <div class="burger">
+        <div title="Navigation menu" @onclick="ToggleIconMenu">
+            @if (IsMenuCollapsed)
+            {
+                <svg width="36px" height="36px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            }
+            else
+            {
+                <svg class="border border-light rounded"
+                     width="36px" height="36px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 18L20 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 12L20 12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 6L20 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            }
+        </div>
+    </div>
+
+    @if (!IsMenuCollapsed)
+    {
+        <div class="text-light fs-5">ScottPlot Blazor Demo</div>
+        <img src="favicon.svg" height="36px" class="" />
+    }
+
+</div>
+
+@if (!IsMenuCollapsed)
+{
+    <div class="@NavMenuCssClass nav-scrollable">
+        <h2 class="mt-4 fs-6 ps-3 fw-bold">Getting Started</h2>
+        <div class="sidebar-button">
+            <a href="/quickstart" class="sidebar-button">Quickstart</a>
+        </div>
+        <div class="sidebar-button">
+            <a href="/signal" class="sidebar-button">Performance Test</a>
+        </div>
+        <hr />
+
+        <h1 class="mt-4 fs-3 ps-3">ScottPlot Cookbook</h1>
+        <div class="px-3">
+            <input class="form-control w-100" @bind-value="SearchTerm" placeholder="Search..." @bind-value:event="oninput" />
+        </div>
+
+        <nav class="flex-column px-2">
+            @foreach (string chapter in GetFilteredRecipeChapters())
+            {
+                <h1 class="mt-4 fs-4 ps-2">@chapter</h1>
+
+                @foreach (ICategory category in GetFilteredRecipeCategories(chapter))
+                {
+                    <h2 class="mt-4 fs-6 ps-2 fw-bold">@category.CategoryName</h2>
+
+                    @foreach (IRecipe recipe in GetFilteredRecipes(category))
+                    {
+                        @if (RecipeService.IsSelected(recipe))
+                        {
+                            <div class="sidebar-selected">
+                                <a>@recipe.Name</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="sidebar-button" @onclick="() => ShowRecipe(recipe)">
+                                <a>@recipe.Name</a>
+                            </div>
+                        }
+                    }
+                }
+            }
+        </nav>
+    </div>
+}
+
+@code {
+    string _SearchTerm = string.Empty;
+    string SearchTerm { get => _SearchTerm; set { _SearchTerm = value; UpdateFilter(); } }
+
+    private bool IsMenuCollapsed { get; set; } = false;
+    private string? NavMenuCssClass => IsMenuCollapsed ? "collapse" : null;
+    private string? NavMenuTopCssClass => IsMenuCollapsed ? "top-row-hide" : "top-row-show";
+    private string BurgerIconColor => IsMenuCollapsed ? "#000000" : "#FFFFFF";
+
+    //EventCallback for sending bool to MainLayout
+    [Parameter]
+    public EventCallback<bool> ShowIconMenu { get; set; }
+
+    protected override void OnInitialized()
+    {
+        UpdateFilter();
+        RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
+    }
+
+    public void Dispose()
+    {
+        RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
+    }
+
+    private async Task ToggleIconMenu()
+    {
+        IsMenuCollapsed = !IsMenuCollapsed;
+        await ShowIconMenu.InvokeAsync(IsMenuCollapsed);
+    }
+
+    private void UpdateFilter()
+    {
+        if (string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            FilteredRecipes = AllRecipes;
+            return;
+        }
+
+        string term = SearchTerm.Trim();
+
+        List<Query.RecipeInfo> hits = [];
+        foreach (Query.RecipeInfo info in AllRecipes)
+        {
+            bool hit = false;
+            hit |= info.Category.CategoryName.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            hit |= info.Category.CategoryDescription.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            hit |= info.Recipe.Name.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            hit |= info.Recipe.Description.Contains(term, StringComparison.InvariantCultureIgnoreCase);
+            if (hit)
+                hits.Add(info);
+        }
+
+        FilteredRecipes = hits;
+    }
+
+    private IEnumerable<Query.RecipeInfo> AllRecipes = Query.GetRecipes();
+    private IEnumerable<Query.RecipeInfo> FilteredRecipes = [];
+    private IEnumerable<string> GetFilteredRecipeChapters() => FilteredRecipes.Select(x => x.Chapter).Distinct();
+    private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter == chapter).Select(x => x.Category).Distinct();
+    private IEnumerable<IRecipe> GetFilteredRecipes(ICategory category) => FilteredRecipes.Where(x => x.Category.CategoryName == category.CategoryName).Select(x => x.Recipe);
+
+    protected void ShowRecipe(IRecipe recipe)
+    {
+        string recipeUrlName = recipe.GetType().Name;
+        NavManager.NavigateTo($"recipe/{recipeUrlName}", replace: true);
+        RecipeService.Recipe = recipe;
+    }
+}

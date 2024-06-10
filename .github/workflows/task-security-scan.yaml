@@ -1,0 +1,24 @@
+# This workflow evaluates security for code in this repository
+# that lives outside the ScottPlot source folder.
+# ScottPlot binaries are evaluated in workflows that build and test them.
+name: "Security Analysis"
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  security-scan:
+    name: CodeQL Code Scan
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@v4
+      - name: ⚙️ Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python, javascript-typescript
+      - name: 🕵️ Analyze
+        uses: github/codeql-action/analyze@v3

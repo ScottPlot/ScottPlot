@@ -1,24 +1,34 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class FillY : IPlottable
+public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
 {
-    public string? Label { get; set; }
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
-    public IEnumerable<LegendItem> LegendItems => EnumerableExtensions.One<LegendItem>(
-        new LegendItem
-        {
-            Label = Label,
-            Marker = MarkerStyle,
-            Line = new LineStyle() { Width = 10, Color = FillStyle.Color },
-        });
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle, LineStyle);
 
     private Polygon Poly { get; set; } = Polygon.Empty;
 
-    public FillStyle FillStyle { get => Poly.FillStyle; }
-    public LineStyle LineStyle { get => Poly.LineStyle; }
-    public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; }
+    public FillStyle FillStyle { get => Poly.FillStyle; set => Poly.FillStyle = value; }
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+
+    public LineStyle LineStyle { get => Poly.LineStyle; set => Poly.LineStyle = value; }
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
+    public MarkerStyle MarkerStyle { get => Poly.MarkerStyle; set => Poly.MarkerStyle = value; }
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
+    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     /// <summary>
     /// Creates an empty RangePlot plot, call SetDataSource() to set the coordinates.
@@ -59,7 +69,7 @@ public class FillY : IPlottable
             i++;
         }
 
-        Poly = new Polygon(all);
+        Poly.UpdateCoordinates(all);
     }
 
     public void SetDataSource<T>(ICollection<T> items, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
@@ -80,7 +90,7 @@ public class FillY : IPlottable
             i++;
         }
 
-        Poly = new Polygon(all);
+        Poly.UpdateCoordinates(all);
     }
 
     public AxisLimits GetAxisLimits()
@@ -91,7 +101,7 @@ public class FillY : IPlottable
         return Poly.GetAxisLimits();
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Poly.Render(rp);
     }

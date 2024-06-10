@@ -66,9 +66,9 @@ public partial class SelectPoints : Form, IDemoWindow
             var newMarker = formsPlot1.Plot.Add.Marker(selectedPoint);
             newMarker.MarkerStyle.Shape = MarkerShape.OpenCircle;
             newMarker.MarkerStyle.Size = 10;
-            newMarker.MarkerStyle.Fill.Color = Colors.Red.WithAlpha(.2);
-            newMarker.MarkerStyle.Outline.Color = Colors.Red;
-            newMarker.MarkerStyle.Outline.Width = 1;
+            newMarker.MarkerStyle.FillColor = Colors.Red.WithAlpha(.2);
+            newMarker.MarkerStyle.LineColor = Colors.Red;
+            newMarker.MarkerStyle.LineWidth = 1;
         }
 
         // reset the mouse positions

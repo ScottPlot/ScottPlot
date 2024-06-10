@@ -30,7 +30,6 @@ partial class DataLogger
     {
         btnJump = new Button();
         btnFull = new Button();
-        cbManageLimits = new CheckBox();
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
         btnSlide = new Button();
         SuspendLayout();
@@ -52,18 +51,6 @@ partial class DataLogger
         btnFull.TabIndex = 8;
         btnFull.Text = "Full";
         btnFull.UseVisualStyleBackColor = true;
-        // 
-        // cbManageLimits
-        // 
-        cbManageLimits.AutoSize = true;
-        cbManageLimits.Checked = true;
-        cbManageLimits.CheckState = CheckState.Checked;
-        cbManageLimits.Location = new Point(306, 21);
-        cbManageLimits.Name = "cbManageLimits";
-        cbManageLimits.Size = new Size(129, 19);
-        cbManageLimits.TabIndex = 7;
-        cbManageLimits.Text = "Manage Axis Limits";
-        cbManageLimits.UseVisualStyleBackColor = true;
         // 
         // formsPlot1
         // 
@@ -91,19 +78,16 @@ partial class DataLogger
         Controls.Add(btnSlide);
         Controls.Add(btnJump);
         Controls.Add(btnFull);
-        Controls.Add(cbManageLimits);
         Controls.Add(formsPlot1);
         Name = "DataLogger";
         Text = "DataLogger";
         ResumeLayout(false);
-        PerformLayout();
     }
 
     #endregion
 
     private Button btnJump;
     private Button btnFull;
-    private CheckBox cbManageLimits;
     private ScottPlot.WinForms.FormsPlot formsPlot1;
     private Button btnSlide;
 }

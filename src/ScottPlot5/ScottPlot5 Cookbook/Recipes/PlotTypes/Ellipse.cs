@@ -68,8 +68,7 @@ public class Ellipse : ICategory
             }
 
             // force pixels to have a 1:1 scale ratio
-            ScottPlot.AxisRules.SquareZoomOut rule = new(myPlot.Axes.Bottom, myPlot.Axes.Left);
-            myPlot.Axes.Rules.Add(rule);
+            myPlot.Axes.SquareUnits();
         }
     }
 

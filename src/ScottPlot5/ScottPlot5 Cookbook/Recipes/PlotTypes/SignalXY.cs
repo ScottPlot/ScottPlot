@@ -74,21 +74,21 @@ public class SignalXY : ICategory
             double[] ys = Generate.RandomWalk(1000);
 
             var sigAll = myPlot.Add.SignalXY(xs, ys);
-            sigAll.Label = "Full";
+            sigAll.LegendText = "Full";
             sigAll.Data.YOffset = 80;
 
             var sigLeft = myPlot.Add.SignalXY(xs, ys);
-            sigLeft.Label = "Left";
+            sigLeft.LegendText = "Left";
             sigLeft.Data.YOffset = 60;
             sigLeft.Data.MaximumIndex = 700;
 
             var sigRight = myPlot.Add.SignalXY(xs, ys);
-            sigRight.Label = "Right";
+            sigRight.LegendText = "Right";
             sigRight.Data.YOffset = 40;
             sigRight.Data.MinimumIndex = 300;
 
             var sigMid = myPlot.Add.SignalXY(xs, ys);
-            sigMid.Label = "Mid";
+            sigMid.LegendText = "Mid";
             sigMid.Data.YOffset = 20;
             sigMid.Data.MinimumIndex = 300;
             sigMid.Data.MaximumIndex = 700;
@@ -114,6 +114,24 @@ public class SignalXY : ICategory
             var sig2 = myPlot.Add.SignalXY(xs, ys);
             sig2.Data.XOffset = 250;
             sig2.Data.YOffset = .5;
+        }
+    }
+
+    public class SignalXYOffsetScaleY : RecipeBase
+    {
+        public override string Name => "SignalXY Scaling";
+        public override string Description => "SignalXY plots can be scaled vertically according to a user-defined amount.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot values between -1 and 1
+            double[] values = ScottPlot.Generate.Sin(51);
+            double[] xs = ScottPlot.Generate.Consecutive(51);
+            var signalXY = myPlot.Add.SignalXY(xs, values);
+
+            // increase the vertical scaling
+            signalXY.Data.YScale = 500;
         }
     }
 
@@ -177,6 +195,23 @@ public class SignalXY : ICategory
 
             // invert the vertical axis
             myPlot.Axes.SetLimitsY(5000, 0);
+        }
+    }
+
+    public class SignalXYMarkers : RecipeBase
+    {
+        public override string Name => "SignalXY with Markers";
+        public override string Description => "Users can enable a marker to be displayed" +
+            "at each data point. However, this can reduce performance for extremely large datasets.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sig = myPlot.Add.SignalXY(xs, ys);
+            sig.MarkerStyle.Shape = MarkerShape.FilledCircle;
         }
     }
 }

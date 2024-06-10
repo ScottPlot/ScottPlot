@@ -1,11 +1,9 @@
-﻿using ScottPlot.Extensions;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// Holds values for drawing a box-and-whisker symbol
 /// </summary>
-public class Box
+public class Box : IHasFill, IHasLine
 {
     public double Position { get; set; }
 
@@ -18,9 +16,26 @@ public class Box
 
     public double Width { get; set; } = 0.8;
     public double CapSize { get; set; } = 0.3;
-    public FillStyle Fill { get; set; } = new();
-    public LineStyle Stroke { get; set; } = new();
+
     public Orientation Orientation { get; set; } = Orientation.Vertical;
+
+
+    public FillStyle FillStyle { get; set; } = new();
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+
+
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
+    [Obsolete("use FillColor or FillStyle")]
+    public FillStyle Fill { get => FillStyle; set => FillStyle = value; }
+
+    [Obsolete("use LineWidth, LineColor, or LineStyle")]
+    public LineStyle Stroke { get => LineStyle; set => LineStyle = value; }
 
     public AxisLimits GetAxisLimits()
     {
@@ -40,12 +55,10 @@ public class Box
         // body fill
         CoordinateRect bodyRect = new(Position - Width / 2, Position + Width / 2, BoxMin, BoxMax);
         PixelRect bodyRectPx = axes.GetPixelRect(bodyRect);
-        Fill.ApplyToPaint(paint, bodyRectPx);
-        Drawing.Fillectangle(rp.Canvas, bodyRectPx, paint);
+        Drawing.FillRectangle(rp.Canvas, bodyRectPx, paint, FillStyle);
 
         // body stroke
-        Stroke.ApplyToPaint(paint);
-        Drawing.DrawRectangle(rp.Canvas, bodyRectPx, paint);
+        Drawing.DrawRectangle(rp.Canvas, bodyRectPx, paint, LineStyle);
 
         if (BoxMiddle.HasValue)
         {

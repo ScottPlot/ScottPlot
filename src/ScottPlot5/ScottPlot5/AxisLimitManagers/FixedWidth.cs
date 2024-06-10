@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisLimitCalculators;
+﻿namespace ScottPlot.AxisLimitManagers;
 
 public class FixedWidth : IAxisLimitManager
 {

@@ -8,7 +8,7 @@ public class Wipe : IDataStreamerView
 
     public DataStreamer Streamer { get; }
 
-    //TODO: Add a BlankFraction property that adds a gap between old and new data
+    public double BlankFraction { get; set; } = 0;
 
     public Wipe(DataStreamer streamer, bool wipeRight)
     {
@@ -40,6 +40,21 @@ public class Wipe : IDataStreamerView
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
             float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i + newestCount] + Streamer.Data.OffsetY);
             oldest[i] = new(x, y);
+        }
+
+        if (BlankFraction > 0)
+        {
+            int blankPoints = (int)(BlankFraction * Streamer.Data.Length);
+
+            if (blankPoints <= oldest.Length)
+            {
+                oldest = oldest.Skip(blankPoints).ToArray();
+            }
+            else
+            {
+                oldest = [];
+                newest = newest.Skip(blankPoints - oldest.Length).ToArray();
+            }
         }
 
         using SKPaint paint = new();
