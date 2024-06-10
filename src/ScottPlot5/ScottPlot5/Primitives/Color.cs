@@ -111,7 +111,7 @@ public readonly struct Color
 
     public static Color FromARGB(int argb)
     {
-        return FromARGB(argb);
+        return FromARGB((uint)argb);
     }
 
     public static Color FromARGB(uint argb)
