@@ -156,4 +156,42 @@ internal class SignalTests
         plt.Add.Signal(values);
         plt.Should().RenderInMemoryWithoutThrowing();
     }
+
+    [Test]
+    public void Test_SignalXY_SinglePoint_OffScreen()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/3926
+
+        ScottPlot.Plot plt = new();
+
+        // single plot with single point
+        for (int i = 1; i <= 4; i++)
+        {
+            double[] xs = Generate.Consecutive(i);
+            double[] ys = Generate.Sin(i);
+            plt.Add.SignalXY(xs, ys);
+
+            // signal plot is outside the data area
+            plt.Axes.SetLimits(1, 2, 1, 2);
+
+            plt.Should().RenderInMemoryWithoutThrowing();
+        }
+    }
+
+    [Test]
+    public void Test_Signal_SinglePoint_OffScreen()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/3926
+
+        ScottPlot.Plot plt = new();
+
+        // single plot with single point
+        double[] ys = [0];
+        plt.Add.Signal(ys);
+
+        // signal plot is outside the data area
+        plt.Axes.SetLimits(1, 2, 1, 2);
+
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
 }

@@ -237,6 +237,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointX(IAxes axes)
     {
+        if (Xs.Length == 1)
+            return ([], MinimumIndex);
+
         var (firstPointPosition, firstPointIndex) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
         if (firstPointPosition > MinimumIndex)
@@ -258,6 +261,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointY(IAxes axes)
     {
+        if (Xs.Length == 1)
+            return ([], MinimumIndex);
+
         var (firstPointPosition, firstPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Min : axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
 
         if (firstPointPosition > MinimumIndex)
@@ -279,6 +285,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsAfter, int lastIndex) GetLastPointX(IAxes axes)
     {
+        if (Xs.Length == 1)
+            return ([], MaximumIndex);
+
         var (lastPointPosition, lastPointIndex) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
         if (lastPointPosition <= MaximumIndex)
@@ -300,6 +309,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (Pixel[] pointsAfter, int lastIndex) GetLastPointY(IAxes axes)
     {
+        if (Xs.Length == 1)
+            return ([], MaximumIndex);
+
         var (lastPointPosition, lastPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
 
         if (lastPointPosition <= MaximumIndex)
