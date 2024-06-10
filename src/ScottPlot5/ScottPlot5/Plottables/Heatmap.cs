@@ -258,22 +258,6 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     private SKBitmap? Bitmap = null;
 
-    public Heatmap(double[,] intensities)
-    {
-        Intensities = intensities;
-    }
-
-    /// <summary>
-    /// When range is provided, the heatmap will be colored according to this range vs the data range.
-    /// </summary>
-    /// <param name="intensities"></param>
-    /// <param name="forcedRange"></param>
-    public Heatmap(double[,] intensities, Range forcedRange) : this(intensities)
-    {
-        ForcedRange = forcedRange;
-        UseForcedRange = true;
-    }
-
     ~Heatmap()
     {
         Bitmap?.Dispose();
@@ -287,7 +271,6 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     private uint[] GetArgbValues()
     {
         Range range = GetRange();
-
         uint[] argb = new uint[Intensities.Length];
 
         // the XOR here disables flipping when the flip property and the extent is inverted.
