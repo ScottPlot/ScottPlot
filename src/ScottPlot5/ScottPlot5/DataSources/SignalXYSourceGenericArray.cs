@@ -62,8 +62,8 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
         // duplicate the last point to ensure it is always rendered
         // https://github.com/ScottPlot/ScottPlot/issues/3812
-        double lastX = NumericConversion.GenericToDouble(Xs, dataIndexLast);
-        double lastY = NumericConversion.GenericToDouble(Ys, dataIndexLast);
+        double lastX = NumericConversion.GenericToDouble(Xs, dataIndexLast) + XOffset;
+        double lastY = NumericConversion.GenericToDouble(Ys, dataIndexLast) * YScale + XOffset;
         Pixel lastPoint = axes.GetPixel(new Coordinates(lastX, lastY));
 
         // combine with one extra point before and after

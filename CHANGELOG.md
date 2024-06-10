@@ -32,7 +32,7 @@ _Not yet on NuGet..._
 * Scatter: Added `GetNearestX()` to the data source to help locate the point closest to the cursor's X position (#3807) @MatKinPro
 * Controls: Disable middle-click-drag zooming on axes which have no data (#3810, #3897) @MCF
 * DataLogger: Create `Add()` overloads which accept fixed-length arrays (#3555) @h25019871990
-* SignalXY: Ensure the final point is always drawn in high density mode (#3812, #3812)
+* SignalXY: Ensure the final point is always drawn in high density mode (#3812, #3918, #3921)
 * Axes: Improved exception messages when calling `Zoom()` methods with invalid scale factors (#3813) @KennyTK
 * WinForms: Exposed `SKControl` so users may bind to its events (#3819) @CD-SailingPerf
 * Scatter: Added support for `Scale` and `Offset` properties (#3835) @bukkideme
