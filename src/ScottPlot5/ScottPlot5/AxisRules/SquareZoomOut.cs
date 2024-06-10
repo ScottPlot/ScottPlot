@@ -1,19 +1,13 @@
 ﻿namespace ScottPlot.AxisRules;
 
-public class SquareZoomOut : IAxisRule
+public class SquareZoomOut(IXAxis xAxis, IYAxis yAxis) : IAxisRule
 {
-    readonly IXAxis XAxis;
-    readonly IYAxis YAxis;
-
-    public SquareZoomOut(IXAxis xAxis, IYAxis yAxis)
-    {
-        XAxis = xAxis;
-        YAxis = yAxis;
-    }
+    readonly IXAxis XAxis = xAxis;
+    readonly IYAxis YAxis = yAxis;
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        // rules that refer to the datarect must wait for the layout to occur
+        // rules that refer to the DataRect must wait for the layout to occur
         if (beforeLayout)
             return;
 
@@ -24,11 +18,21 @@ public class SquareZoomOut : IAxisRule
         double halfHeight = rp.DataRect.Height / 2 * maxUnitsPerPx;
         double yMin = YAxis.Range.Center - halfHeight;
         double yMax = YAxis.Range.Center + halfHeight;
-        YAxis.Range.Set(yMin, yMax);
+
+        var invertedY = YAxis.Min > YAxis.Max;
+        if (invertedY)
+            YAxis.Range.Set(yMax, yMin);
+        else
+            YAxis.Range.Set(yMin, yMax);
 
         double halfWidth = rp.DataRect.Width / 2 * maxUnitsPerPx;
         double xMin = XAxis.Range.Center - halfWidth;
         double xMax = XAxis.Range.Center + halfWidth;
-        XAxis.Range.Set(xMin, xMax);
+
+        var invertedX = XAxis.Min > XAxis.Max;
+        if (invertedX)
+            XAxis.Range.Set(xMax, xMin);
+        else
+            XAxis.Range.Set(xMin, xMax);
     }
 }

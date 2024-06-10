@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
@@ -8,77 +6,65 @@ namespace ScottPlot;
 /// </summary>
 public class FontStyle
 {
-    /* Typefaces are cached to improve performance.
-     * https://github.com/ScottPlot/ScottPlot/issues/2833
-     * https://github.com/ScottPlot/ScottPlot/pull/2848
-     */
+    public SKTypeface Typeface => Fonts.GetTypeface(Name, Bold, Italic);
 
-    private SKTypeface? CachedTypeface = null;
-
-    // TODO: use a class for cached typeface management
-    public SKTypeface Typeface => CachedTypeface ??= CreateTypeface(Name, Bold, Italic);
-
-    private string _name = Fonts.Default;
-    public string Name
-    {
-        get => _name;
-        set
-        {
-            bool fieldChanged = string.Compare(_name, value, StringComparison.InvariantCultureIgnoreCase) != 0;
-
-            if (fieldChanged)
-                ClearCachedTypeface();
-
-            _name = value;
-        }
-    }
-
-    private bool _bold = false;
-    public bool Bold
-    {
-        get => _bold;
-        set
-        {
-            bool fieldChanged = _bold != value;
-
-            if (fieldChanged)
-                ClearCachedTypeface();
-
-            _bold = value;
-        }
-    }
-
-    private bool _italic = false;
-    public bool Italic
-    {
-        get => _italic;
-        set
-        {
-            bool fieldChanged = (_italic != value);
-
-            if (fieldChanged)
-                ClearCachedTypeface();
-
-            _italic = value;
-        }
-    }
+    public string Name { get; set; } = Fonts.Default;
+    public bool Bold { get; set; } = false;
+    public bool Italic { get; set; } = false;
 
     // TODO: consider whether color really belongs here...
     public Color Color { get; set; } = Colors.Black;
     public float Size { get; set; } = 12;
     public bool AntiAlias { get; set; } = true;
 
-    private void ClearCachedTypeface()
+    public override string ToString()
     {
-        CachedTypeface = null;
+        return $"{Name}, Size {Size}, {Color}";
     }
 
-    public static SKTypeface CreateTypeface(string font, bool bold, bool italic)
+    [Obsolete("This method is deprecated. Use Fonts.GetTypeface(font, bold, italic) instead.", true)]
+    public static SKTypeface CreateTypefaceFromName(string font, bool bold, bool italic)
     {
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle skfs = new(weight, width, slant);
-        return SKTypeface.FromFamilyName(font, skfs);
+        throw new NotImplementedException();
     }
+
+    [Obsolete("This method is deprecated. Use Fonts.GetTypeface(font, bold, italic) instead.", true)]
+    public static SKTypeface CreateTypefaceFromFile(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Use the characters in <paramref name="text"/> to determine an installed 
+    /// system font most likely to support this character set.
+    /// </summary>
+    public void SetBestFont(string text)
+    {
+        Name = Fonts.Detect(text);
+    }
+
+    public FontStyle Clone()
+    {
+        return new FontStyle()
+        {
+            Name = Name,
+            Bold = Bold,
+            Italic = Italic,
+            Color = Color,
+            Size = Size,
+            AntiAlias = AntiAlias,
+        };
+    }
+
+    public void ApplyToPaint(SKPaint paint)
+    {
+        paint.Shader = null;
+        paint.IsStroke = false;
+        paint.Typeface = Typeface;
+        paint.TextSize = Size;
+        paint.Color = Color.ToSKColor();
+        paint.IsAntialias = AntiAlias;
+        paint.FakeBoldText = Bold;
+    }
+
 }

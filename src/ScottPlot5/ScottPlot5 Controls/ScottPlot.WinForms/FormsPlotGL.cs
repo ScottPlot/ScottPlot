@@ -8,7 +8,7 @@ namespace ScottPlot.WinForms;
 [ToolboxItem(false)]
 public class FormsPlotGL : FormsPlotBase
 {
-    readonly SKGLControl SKElement;
+    public SKGLControl SKElement { get; }
 
     public override GRContext GRContext => SKElement.GRContext;
 

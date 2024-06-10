@@ -4,7 +4,7 @@ namespace WinForms_Demo.Demos;
 
 public partial class ShowValueOnHover : Form, IDemoWindow
 {
-    public string Title => "Show Value Under Mouse";
+    public string Title => "Show Value Under Mouse, Scatter";
 
     public string Description => "How to sense where the mouse is in coordinate space " +
         "and retrieve information about the plotted data the cursor is hovering over";
@@ -18,18 +18,23 @@ public partial class ShowValueOnHover : Form, IDemoWindow
 
         double[] xs = Generate.RandomSample(100);
         double[] ys = Generate.RandomSample(100);
+
         MyScatter = formsPlot1.Plot.Add.Scatter(xs, ys);
-        MyScatter.LineStyle = LineStyle.None;
+        MyScatter.LineWidth = 0;
+
         MyCrosshair = formsPlot1.Plot.Add.Crosshair(0, 0);
-        formsPlot1.Plot.Axes.AutoScale();
-        formsPlot1.Refresh();
+        MyCrosshair.IsVisible = false;
+        MyCrosshair.MarkerShape = MarkerShape.OpenCircle;
+        MyCrosshair.MarkerSize = 15;
 
         formsPlot1.MouseMove += (s, e) =>
         {
             // determine where the mouse is and get the nearest point
             Pixel mousePixel = new(e.Location.X, e.Location.Y);
             Coordinates mouseLocation = formsPlot1.Plot.GetCoordinates(mousePixel);
-            DataPoint nearest = MyScatter.Data.GetNearest(mouseLocation, formsPlot1.Plot.LastRender);
+            DataPoint nearest = rbNearestXY.Checked
+                ? MyScatter.Data.GetNearest(mouseLocation, formsPlot1.Plot.LastRender)
+                : MyScatter.Data.GetNearestX(mouseLocation, formsPlot1.Plot.LastRender);
 
             // place the crosshair over the highlighted point
             if (nearest.IsReal)

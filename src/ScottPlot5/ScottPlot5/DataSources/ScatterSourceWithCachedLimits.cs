@@ -1,17 +1,24 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class CacheScatterLimitsDecorator : IScatterSource
+public class CacheScatterLimitsDecorator(IScatterSource source) : IScatterSource
 {
-    private readonly IScatterSource _source;
+    private readonly IScatterSource _source = source;
+
+    public int MinRenderIndex
+    {
+        get => _source.MinRenderIndex;
+        set => _source.MinRenderIndex = value;
+    }
+
+    public int MaxRenderIndex
+    {
+        get => _source.MaxRenderIndex;
+        set => _source.MaxRenderIndex = value;
+    }
 
     private AxisLimits? _axisLimits = null;
     private CoordinateRange _limitsX = CoordinateRange.NotSet;
     private CoordinateRange _limitsY = CoordinateRange.NotSet;
-
-    public CacheScatterLimitsDecorator(IScatterSource source)
-    {
-        _source = source;
-    }
 
     public AxisLimits GetLimits()
     {
@@ -45,5 +52,14 @@ public class CacheScatterLimitsDecorator : IScatterSource
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
         return _source.GetScatterPoints();
+    }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        // TODO: Implement GetNearestX() in this DataSource
+        // Code can be copied from ScatterSourceDoubleArray.GetNearestX() and modified as needed
+        // Contributions are welcome!
+        // https://github.com/ScottPlot/ScottPlot/issues/3807
+        throw new NotImplementedException();
     }
 }

@@ -17,7 +17,7 @@ public class LayoutManager
     }
 
     /// <summary>
-    /// Automatically resize the layout on each render to acheive the best fit
+    /// Automatically resize the layout on each render to achieve the best fit
     /// </summary>
     public void Default()
     {
@@ -46,8 +46,6 @@ public class LayoutManager
     /// </summary>
     public void Frameless()
     {
-        Plot.Axes.XAxes.ForEach(x => x.IsVisible = false);
-        Plot.Axes.YAxes.ForEach(x => x.IsVisible = false);
-        Plot.Axes.Title.IsVisible = false;
+        Plot.Axes.Frameless();
     }
 }

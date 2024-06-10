@@ -1,0 +1,66 @@
+﻿@inherits LayoutComponentBase
+
+@inject IResizeService ResizeService
+@inject ResizeObserverService ResizeObserver
+@implements IAsyncDisposable
+
+<div class="page">
+    <div class="sidebar" style="@IconMenuCssClass">
+        <NavMenu ShowIconMenu="ToggleIconMenu" />
+    </div>
+
+    <main @ref=mainElement style="width: 100%;" class="content px-4">
+        @Body
+    </main>
+</div>
+
+@code
+{
+    private ElementReference? mainElement { get; set; } = null;
+    private ResizeTask? taskReference = null;
+    private bool _iconMenuActive { get; set; }
+    private string? IconMenuCssClass => _iconMenuActive ? "width: auto; background-color: transparent;" : null;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (mainElement is null)
+        {
+            if (taskReference is not null)
+            {
+                await ResizeObserver.DeregisterObserver(taskReference);
+                taskReference = null;
+            }
+        }
+        else
+        {
+            if (mainElement is not null)
+                taskReference = await ResizeObserver.RegisterObserver(
+                    UpdateDisplayField,
+                    new ElementReference?[] { mainElement }
+                    .OfType<ElementReference>()
+                    .ToArray());
+        }
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (taskReference is not null)
+            await ResizeObserver.DeregisterObserver(taskReference);
+    }
+
+    private void UpdateDisplayField(JsResizeObserverEntry[] entries)
+    {
+        foreach (var entry in entries)
+        {
+            if (!entry.TargetElement.HasValue) continue;
+
+            if (entry.TargetElement.Value.Equals(mainElement))
+            {
+                ResizeService.SetSize(Convert.ToSingle(entry.ContentRect.Width), Convert.ToSingle(entry.ContentRect.Height));
+            }
+        }
+    }
+    protected void ToggleIconMenu(bool iconMenuActive)
+    {
+        _iconMenuActive = iconMenuActive;
+    }
+}

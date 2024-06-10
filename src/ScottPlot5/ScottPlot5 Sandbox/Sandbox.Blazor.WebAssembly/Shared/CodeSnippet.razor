@@ -1,0 +1,46 @@
+﻿<pre class="code"><code class="@Language" id="@DisplayId">@FinalCode</code></pre>
+<div style="display:none" id="@HideId">@ChildContent</div>
+
+@code {
+    string DisplayId { get; } = Guid.NewGuid().ToString();
+    string HideId { get; } = Guid.NewGuid().ToString();
+    string FinalCode { get; set; } = string.Empty;
+    private bool _isFirstRenderDone = false;
+
+#pragma warning disable CS8618
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string Language { get; set; } = "csharp";
+    [Parameter]
+    public string Code { get; set; } = string.Empty;
+
+#pragma warning restore CS8618
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_isFirstRenderDone && !string.IsNullOrEmpty(Code))
+        {
+            FinalCode = Code;
+            await JSRuntime.InvokeVoidAsync("setInnerHtml", DisplayId, FinalCode);
+            await JSRuntime.InvokeVoidAsync("highlightElementById", DisplayId);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (string.IsNullOrEmpty(Code))
+                FinalCode = await JSRuntime.InvokeAsync<string>("getInnterText", HideId) ?? string.Empty;
+            else
+                FinalCode = Code ?? string.Empty;
+            await JSRuntime.InvokeVoidAsync("setInnerHtml", DisplayId, FinalCode);
+            await JSRuntime.InvokeVoidAsync("highlightElementById", DisplayId);
+            _isFirstRenderDone = true;
+        }
+    }
+}

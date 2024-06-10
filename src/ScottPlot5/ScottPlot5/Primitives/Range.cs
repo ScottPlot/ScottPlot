@@ -12,10 +12,10 @@ public readonly struct Range : IEquatable<Range> // TODO: evaluate if this can b
 
     public Range(double min, double max)
     {
-        if (min.IsInfiniteOrNaN())
+        if (double.IsInfinity(min) || double.IsNaN(min))
             throw new ArgumentException($"{nameof(min)} must be a real number");
 
-        if (max.IsInfiniteOrNaN())
+        if (double.IsInfinity(max) || double.IsNaN(max))
             throw new ArgumentException($"{nameof(max)} must be a real number");
 
         if (min > max)
@@ -25,6 +25,11 @@ public readonly struct Range : IEquatable<Range> // TODO: evaluate if this can b
 
         Min = min;
         Max = max;
+    }
+
+    public override string ToString()
+    {
+        return $"Range: [{Min}, {Max}]";
     }
 
     /// <summary>

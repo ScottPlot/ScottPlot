@@ -1,5 +1,6 @@
 ﻿using ScottPlot;
 using System.Data;
+using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;
 
@@ -14,18 +15,8 @@ public partial class AxisRules : Form, IDemoWindow
     {
         InitializeComponent();
         UnlockButtons();
-
-        Coordinates[] coordinates = Generate.RandomCoordinates(1000);
-        var sp = formsPlot1.Plot.Add.Scatter(coordinates);
-        sp.LineWidth = 0;
-        sp.MarkerStyle.Size = 5;
-        sp.Color = Colors.Magenta;
-
-        var rect = formsPlot1.Plot.Add.Rectangle(0, 1, 0, 1);
-        rect.FillStyle.Color = Colors.Transparent;
-        rect.LineStyle.Color = Colors.Green;
-        rect.LineStyle.Width = 3;
-        rect.LineStyle.IsVisible = true;
+        cbInvertX.CheckedChanged += (s, e) => btnReset_Click(this, EventArgs.Empty);
+        cbInvertY.CheckedChanged += (s, e) => btnReset_Click(this, EventArgs.Empty);
 
         btnReset_Click(this, EventArgs.Empty);
     }
@@ -147,7 +138,8 @@ public partial class AxisRules : Form, IDemoWindow
 
     private void btnLockHorizontal_Click(object sender, EventArgs e)
     {
-        ScottPlot.AxisRules.LockedHorizontal rule = new(formsPlot1.Plot.Axes.Bottom);
+        AxisLimits limits = formsPlot1.Plot.Axes.GetLimits();
+        ScottPlot.AxisRules.LockedHorizontal rule = new(formsPlot1.Plot.Axes.Bottom, limits.Left, limits.Right);
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
@@ -158,7 +150,8 @@ public partial class AxisRules : Form, IDemoWindow
 
     private void btnLockVertical_Click(object sender, EventArgs e)
     {
-        ScottPlot.AxisRules.LockedVertical rule = new(formsPlot1.Plot.Axes.Left);
+        AxisLimits limits = formsPlot1.Plot.Axes.GetLimits();
+        ScottPlot.AxisRules.LockedVertical rule = new(formsPlot1.Plot.Axes.Left, limits.Bottom, limits.Top);
 
         formsPlot1.Plot.Axes.Rules.Clear();
         formsPlot1.Plot.Axes.Rules.Add(rule);
@@ -170,9 +163,32 @@ public partial class AxisRules : Form, IDemoWindow
     private void btnReset_Click(object sender, EventArgs e)
     {
         formsPlot1.Plot.Axes.Rules.Clear();
-        formsPlot1.Plot.Axes.AutoScale();
+        PlotRandomData();
+        formsPlot1.Plot.Axes.AutoScale(invertX: cbInvertX.Checked, invertY: cbInvertY.Checked);
         formsPlot1.Plot.Title("No axis rules are in effect");
         formsPlot1.Refresh();
         UnlockButtons();
+    }
+
+    private void PlotRandomData()
+    {
+        formsPlot1.Plot.Clear();
+
+        // generate data that fits between (0, 0) and (1, 1)
+        int pointCount = 500;
+        double[] xs = Generate.Consecutive(pointCount, delta: 1.0 / pointCount);
+        double[] ys = Generate.Sin(pointCount, oscillations: 0.37);
+        Generate.AddNoiseInPlace(ys, 0.1);
+
+        var sp = formsPlot1.Plot.Add.Scatter(xs, ys);
+        sp.LineWidth = 0;
+        sp.MarkerStyle.Size = 5;
+        sp.Color = Colors.Magenta;
+
+        var rect = formsPlot1.Plot.Add.Rectangle(0, 1, 0, 1);
+        rect.FillStyle.Color = Colors.Transparent;
+        rect.LineStyle.Color = Colors.Green;
+        rect.LineStyle.Width = 3;
+        rect.LineStyle.IsVisible = true;
     }
 }

@@ -10,8 +10,8 @@ public partial class DraggablePoints : Form, IDemoWindow
         "drawn on the plot. This example shows how to achieve drag-and-drop behavior " +
         "for points of a scatter plot. Extra code may be added to limit how far points may be moved.";
 
-    readonly double[] Xs = Generate.RandomSample(25);
-    readonly double[] Ys = Generate.RandomSample(25);
+    readonly double[] Xs = Generate.RandomAscending(10);
+    readonly double[] Ys = Generate.RandomSample(10);
     readonly ScottPlot.Plottables.Scatter Scatter;
     int? IndexBeingDragged = null;
 
@@ -20,8 +20,9 @@ public partial class DraggablePoints : Form, IDemoWindow
         InitializeComponent();
 
         Scatter = formsPlot1.Plot.Add.Scatter(Xs, Ys);
-        Scatter.LineWidth = 0;
+        Scatter.LineWidth = 2;
         Scatter.MarkerSize = 10;
+        Scatter.Smooth = true;
 
         formsPlot1.MouseMove += FormsPlot1_MouseMove;
         formsPlot1.MouseDown += FormsPlot1_MouseDown;

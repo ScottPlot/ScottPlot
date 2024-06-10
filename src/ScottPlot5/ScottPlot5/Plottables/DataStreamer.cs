@@ -1,18 +1,29 @@
-﻿using ScottPlot.AxisLimitCalculators;
+﻿using ScottPlot.AxisLimitManagers;
 using ScottPlot.DataSources;
+using System.Runtime.CompilerServices;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable, IManagesAxisLimits
+public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
 
-    public readonly LineStyle LineStyle = new();
+    [Obsolete("use LegendText")]
+    public string Label { get => LegendText; set => LegendText = value; }
+    public string LegendText { get; set; } = string.Empty;
+
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
+    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
+    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
+    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
     public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
 
     public DataStreamerSource Data { get; set; }
+    public int Count => Data.Length;
+    public int CountTotal => Data.CountTotal;
 
     public double Period { get => Data.SamplePeriod; set => Data.SamplePeriod = value; }
 
@@ -25,6 +36,9 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     /// If enabled, axis limits will be adjusted automatically if new data runs off the screen.
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
+
+    [Obsolete("set Plot.Axes.ContinuouslyAutoscale", true)]
+    public bool ContinuouslyAutoscale { get; set; } = false;
 
     /// <summary>
     /// Contains logic for automatically adjusting axis limits if new data runs off the screen.
@@ -57,6 +71,17 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
         Data.Add(value);
     }
 
+    public void Add(double[] ys)
+    {
+        if (ys is null)
+            throw new ArgumentException($"{nameof(ys)} must not be null");
+
+        for (int i = 0; i < ys.Length; i++)
+        {
+            Data.Add(ys[i]);
+        }
+    }
+
     /// <summary>
     /// Shift in a collection of new Y values
     /// </summary>
@@ -74,15 +99,15 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
     }
 
     /// <summary>
-    /// Display the data using a view where new data overlapps old data from left to right.
+    /// Display the data using a view where new data overlaps old data from left to right.
     /// </summary>
-    public void ViewWipeRight()
+    public void ViewWipeRight(double blankFraction = 0)
     {
-        Renderer = new DataViews.Wipe(this, true);
+        Renderer = new DataViews.Wipe(this, true) { BlankFraction = blankFraction };
     }
 
     /// <summary>
-    /// Display the data using a view where new data overlapps old data from right to left.
+    /// Display the data using a view where new data overlaps old data from right to left.
     /// </summary>
     public void ViewWipeLeft()
     {
@@ -131,15 +156,15 @@ public class DataStreamer : IPlottable, IManagesAxisLimits
         return Data.GetAxisLimits();
     }
 
-    public void UpdateAxisLimits(Plot plot, bool force = false)
+    public void UpdateAxisLimits(Plot plot)
     {
         AxisLimits limits = Plot.Axes.GetLimits(Axes);
-        AxisLimits dataLimits = Data.GetAxisLimits();
+        AxisLimits dataLimits = GetAxisLimits();
         AxisLimits newLimits = AxisManager.GetAxisLimits(limits, dataLimits);
         Plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Renderer.Render(rp);
         Data.CountTotalOnLastRender = Data.CountTotal;

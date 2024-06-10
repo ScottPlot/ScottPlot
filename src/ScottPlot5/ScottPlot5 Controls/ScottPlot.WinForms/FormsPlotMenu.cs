@@ -33,9 +33,17 @@ public class FormsPlotMenu : IPlotMenu
             OnInvoke = CopyImageToClipboard
         };
 
-        return new List<ContextMenuItem>() {
+        ContextMenuItem newWindow = new()
+        {
+            Label = "Open in New Window",
+            OnInvoke = OpenInNewWindow,
+        };
+
+        return new List<ContextMenuItem>()
+        {
             saveImage,
             copyImage,
+            newWindow,
         };
     }
 
@@ -44,6 +52,12 @@ public class FormsPlotMenu : IPlotMenu
         PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
         Bitmap bmp = plotControl.Plot.GetBitmap((int)lastRenderSize.Width, (int)lastRenderSize.Height);
         Clipboard.SetImage(bmp);
+    }
+
+    public void OpenInNewWindow(IPlotControl plotControl)
+    {
+        FormsPlotViewer.Launch(plotControl.Plot, "Interactive Plot");
+        plotControl.Refresh();
     }
 
     public ContextMenuStrip GetContextMenu()

@@ -8,7 +8,7 @@ public interface IScatterSource
     /// <summary>
     /// Return a copy of the data in <see cref="Coordinates"/> format.
     /// </summary>
-    IReadOnlyList<Coordinates> GetScatterPoints(); // TODO: obsolete this
+    IReadOnlyList<Coordinates> GetScatterPoints();
 
     /// <summary>
     /// Return the point nearest a specific location given the X/Y pixel scaling information from a previous render.
@@ -16,9 +16,16 @@ public interface IScatterSource
     /// </summary>
     DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
 
-    public CoordinateRange GetLimitsX(); // TODO: struct
+    /// <summary>
+    /// Return the point nearest a specific X location given the X/Y pixel scaling information from a previous render.
+    /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
+    /// </summary>
+    DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
 
-    public CoordinateRange GetLimitsY(); // TODO: struct
+    public CoordinateRange GetLimitsX();
+    public CoordinateRange GetLimitsY();
 
     AxisLimits GetLimits();
+    public int MinRenderIndex { get; set; }
+    public int MaxRenderIndex { get; set; }
 }

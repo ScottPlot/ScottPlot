@@ -1,17 +1,10 @@
 ﻿namespace ScottPlot.AxisRules;
 
-public class MaximumBoundary : IAxisRule
+public class MaximumBoundary(IXAxis xAxis, IYAxis yAxis, AxisLimits limits) : IAxisRule
 {
-    readonly IXAxis XAxis;
-    readonly IYAxis YAxis;
-    public AxisLimits Limits { get; set; }
-
-    public MaximumBoundary(IXAxis xAxis, IYAxis yAxis, AxisLimits limits)
-    {
-        XAxis = xAxis;
-        YAxis = yAxis;
-        Limits = limits;
-    }
+    readonly IXAxis XAxis = xAxis;
+    readonly IYAxis YAxis = yAxis;
+    public AxisLimits Limits { get; set; } = limits;
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {

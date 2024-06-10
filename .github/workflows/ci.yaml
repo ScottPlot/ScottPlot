@@ -9,60 +9,45 @@ on:
       - main
     paths:
       - src/**
+      - .github/workflows/ci.yaml
 
 # cancel running versions of this workflow when this one starts
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 
-env:
-  SLN_SP5_FULL: "src/ScottPlot5/ScottPlot5.sln"
-  DOTNET_VERSION: "8.0.x"
-
 jobs:
-  # these fail fast on code errors
-  sp4-pr:
-    uses: ./.github/workflows/ScottPlot4-PR.yaml
-  sp5-pr:
-    uses: ./.github/workflows/ScottPlot5-PR.yaml
+  # Run the autoformatter in parallel too.
+  # If it makes a change it will commit it and restart this workflow.
+  autoformat:
+    name: "Autoformat"
+    uses: ./.github/workflows/task-autoformat-fix.yaml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-  # these take a long time to run and may commit back to main
-  sp5-full:
-    needs: [sp5-pr]
-    uses: ./.github/workflows/ScottPlot5-Full.yaml
+  # This security analysis evaluates non-compiled code
+  security:
+    name: "Security"
+    uses: ./.github/workflows/task-security-scan.yaml
+    permissions:
+      security-events: write
 
-  #TODO make this its own action and call it
-  changelog:
-    needs: [sp4-pr, sp5-full]
-    runs-on: ubuntu-latest
-    name: Update Changelog Webpage
-    steps:
-      - name: 🚀 Trigger Remote Workflow
-        run: |
-          curl -L \
-            -X POST \
-            -H "Accept: application/json" \
-            -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
-            -d "{\"ref\":\"main\"}" \
-            https://api.github.com/repos/ScottPlot/ScottPlot.NET/actions/workflows/changelog.yaml/dispatches
+  full:
+    name: "Full Build"
+    uses: ./.github/workflows/task-full.yaml
+    permissions:
+      security-events: write
 
-  #TODO make this its own action and call it
-  code-analysis:
-    needs: [sp4-pr, sp5-full]
-    runs-on: ubuntu-latest
-    name: Update Code Metrics Webpage
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Setup .NET
-        uses: actions/setup-dotnet@v3
-      - name: 🧪 Run Code Analysis
-        run: dotnet run dotnet run --project dev/CodeAnalysis
-      - name: 🔐 Create Key File
-        run: install -m 600 -D /dev/null ~/.ssh/id_rsa
-      - name: 🔑 Populate Key
-        run: echo "${{ secrets.PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
-      - name: 🚀 Deploy Webpage
-        run: rsync -e 'ssh -p 18765 -o StrictHostKeyChecking=no' 'dev/www/metrics/index.html' 'scottplot.net@ssh.scottplot.net:/home/customer/www/scottplot.net/public_html/metrics/index.html'
-      - name: 🧹 Clear Cache
-        run: ssh scottplot.net@ssh.scottplot.net -p 18765 "site-tools-client domain update id=1 flush_cache=1"
+  publish-changelog:
+    name: "Publish"
+    needs: [full]
+    uses: ./.github/workflows/task-publish-changelog.yaml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  publish-metrics:
+    name: "Publish"
+    needs: [full]
+    uses: ./.github/workflows/task-code-metrics.yaml
+    secrets:
+      private-ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}

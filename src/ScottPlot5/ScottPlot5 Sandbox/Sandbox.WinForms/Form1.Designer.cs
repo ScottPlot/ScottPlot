@@ -33,11 +33,11 @@ partial class Form1
         // 
         // formsPlot1
         // 
+        formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         formsPlot1.DisplayScale = 1F;
-        formsPlot1.Dock = DockStyle.Fill;
-        formsPlot1.Location = new Point(0, 0);
+        formsPlot1.Location = new Point(12, 12);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(800, 450);
+        formsPlot1.Size = new Size(776, 426);
         formsPlot1.TabIndex = 0;
         // 
         // Form1
