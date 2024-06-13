@@ -48,6 +48,7 @@ _Not yet on NuGet..._
 * SignalXY: Improved interpolation of edge points when step mode is enabled (#3894) @seishinkouki @StendProg
 * SignalXY: Improve behavior of off-screen single-point signals (#3926) @githubkau
 * SignalXY: Improved cookbook recipe demonstrating SignalXY plots with markers at each point
+* Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
