@@ -26,7 +26,7 @@ namespace ScottPlot.TickGenerators
 
         /// <summary>
         /// An optional function to override where the intervals for ticks start. The DateTime argument provided is
-        /// the start range of the axis (i.e. <see cref="IAxis.Min"/>). 
+        /// the start range of the axis (i.e. <see cref="IAxis.Min"/>).
         /// </summary>
         /// <remarks>
         /// If omitted, the ticks will start from <see cref="IAxis.Min"/>. This may have undesirable effects when zooming
@@ -44,6 +44,11 @@ namespace ScottPlot.TickGenerators
         /// </code>
         /// </example>
         public Func<DateTime, DateTime>? GetIntervalStartFunc { get; set; }
+
+        /// <summary>
+        /// If assigned, this function will be used to create tick labels
+        /// </summary>
+        public Func<DateTime, string>? LabelFormatter { get; set; } = null;
 
         /// <summary>
         /// Creates a new <see cref="DateTimeFixedInterval"/> generator.
@@ -86,7 +91,11 @@ namespace ScottPlot.TickGenerators
             DateTime end = Interval.Next(NumericConversion.ToDateTime(range.Max));
             for (DateTime dt = start; dt <= end; dt = Interval.Next(dt, IntervalsPerTick))
             {
-                ticks.Add(new Tick(NumericConversion.ToNumber(dt), dt.ToString(Interval.GetDateTimeFormatString()), true));
+                string tickLabel = LabelFormatter is null
+                    ? dt.ToString(Interval.GetDateTimeFormatString())
+                    : LabelFormatter(dt);
+
+                ticks.Add(new Tick(NumericConversion.ToNumber(dt), tickLabel, true));
                 timesWithTicks.Add(dt);
             }
 

@@ -1,5 +1,10 @@
-## ScottPlot 5.0.35
+## ScottPlot 5.0.36
 _Not yet on NuGet..._
+* Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250
+* Ticks: Added a custom `LabelFormatter` to DateTime axes which use fixed intervals (#3936) @Fruchtzwerg94
+
+## ScottPlot 5.0.35
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
 * Legend: Added `Plot.ShowLegend()` overload that accepts an `Edge` for quickly adding a legend outside the data area (#3672, #3635)
 * Radar Plot: New plot type (also called a spider charts or star charts) for representing multi-axis data as a 2D shape on a circular axis system (#3457, #3780) @bclehmann
 * Coxcomb Plot: New plot type like a pie graph where the angle of slices is constant but the radii are not (#3457, #3780) @bclehmann
@@ -48,7 +53,6 @@ _Not yet on NuGet..._
 * SignalXY: Improved interpolation of edge points when step mode is enabled (#3894) @seishinkouki @StendProg
 * SignalXY: Improve behavior of off-screen single-point signals (#3926) @githubkau
 * SignalXY: Improved cookbook recipe demonstrating SignalXY plots with markers at each point
-* Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250
 
 ## ScottPlot 5.0.34
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-05-05_
