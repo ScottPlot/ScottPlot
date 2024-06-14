@@ -16,6 +16,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Demos\DataLogger.Designer2.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Content Include="scottplot-icon-rounded-border.ico" />
     </ItemGroup>
 
