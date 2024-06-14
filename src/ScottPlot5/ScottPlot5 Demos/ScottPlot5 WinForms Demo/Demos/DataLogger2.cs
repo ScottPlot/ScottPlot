@@ -1,4 +1,6 @@
-﻿using ScottPlot.AxisPanels;
+﻿using ScottPlot;
+using ScottPlot.AxisPanels;
+using ScottPlot.Collections;
 using ScottPlot.DataSources;
 
 namespace WinForms_Demo.Demos;
@@ -25,9 +27,9 @@ public partial class DataLogger2 : Form, IDemoWindow
         formsPlot1.Interaction.Disable();
 
         // create two loggers and add them to the plot
-        var data1 = new DataLogger2Source();
+        var data1 = new DataLogger2Source(new CircularBuffer<Coordinates>(5000));
         Logger1 = formsPlot1.Plot.Add.DataLogger2(data1);
-        var data2 = new DataLogger2Source();
+        var data2 = new DataLogger2Source(new CircularBuffer<Coordinates>(5000));
         Logger2 = formsPlot1.Plot.Add.DataLogger2(data2);
 
         // use the right axis (already there by default) for the first logger

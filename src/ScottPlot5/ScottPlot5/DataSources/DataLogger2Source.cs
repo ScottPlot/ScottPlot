@@ -1,12 +1,19 @@
-﻿namespace ScottPlot.DataSources;
+﻿using ScottPlot.Collections;
+
+namespace ScottPlot.DataSources;
 
 public class DataLogger2Source : IDataLogger2Source
 {
     private static readonly CoordinatesXComparer XComparer = new();
-    private readonly List<Coordinates> Coordinates = new();
+    private readonly IList<Coordinates> Coordinates;
 
     private volatile bool HasNewData;
     private volatile bool WasRendered;
+
+    public DataLogger2Source(IList<Coordinates> coordinates)
+    {
+        Coordinates = coordinates;
+    }
 
     // TODO : Can we support rotated?
     public bool Rotated { get; set; } = false;
@@ -408,5 +415,23 @@ internal class CoordinatesXComparer : IComparer<Coordinates>
     public int Compare(Coordinates a, Coordinates b)
     {
         return a.X.CompareTo(b.X);
+    }
+}
+
+internal static class IListBinarySearchExtensions
+{
+    public static int BinarySearch<T>(this IList<T> list, int index, int count, T value, IComparer<T> comparer)
+    {
+        switch (list)
+        {
+            case List<T> listT:
+                return listT.BinarySearch(index, count, value, comparer);
+            case T[] arrayT:
+                return Array.BinarySearch(arrayT, index, count, value, comparer);
+            case CircularBuffer<T> circularBufferT:
+                return circularBufferT.BinarySearch(index, count, value, comparer);
+            default:
+                throw new NotImplementedException($"unsupported {nameof(IList<T>)}: {list.GetType().Name}");
+        }
     }
 }
