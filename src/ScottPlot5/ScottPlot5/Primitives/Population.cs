@@ -19,7 +19,7 @@ public class Population
         SortedValues = [.. Values.OrderBy(x => x)];
         Count = values.Length;
         Min = values.Min();
-        Max = values.Min();
+        Max = values.Max();
         Mean = Statistics.Descriptive.Mean(values);
         Variance = Statistics.Descriptive.Variance(values);
         StandardDeviation = Statistics.Descriptive.StandardDeviation(values);
