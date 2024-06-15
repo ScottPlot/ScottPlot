@@ -21,12 +21,12 @@ public class PopulationSymbol(Population population) : IPlottable
     /// <summary>
     /// Fraction of the available width to use
     /// </summary>
-    public double WidthFraction { get; set; } = 0.75;
+    public double WidthFraction { get; set; } = 0.9;
 
     /// <summary>
     /// Fraction of the available width to use
     /// </summary>
-    public double BarWidthFraction { get; set; } = 0.75;
+    public double SymbolWidthFraction { get; set; } = 0.75;
 
     /// <summary>
     /// Fraction of the available width to use
@@ -37,6 +37,7 @@ public class PopulationSymbol(Population population) : IPlottable
     /// Fraction of the available width to use
     /// </summary>
     public double MarkerWidthFraction { get; set; } = 0.75;
+    public double BarBase { get; set; } = 0;
 
     public PopulationMarkerAlignment MarkerAlignment { get; set; } = PopulationMarkerAlignment.MarkersOnLeft;
     public enum PopulationMarkerAlignment
@@ -55,15 +56,30 @@ public class PopulationSymbol(Population population) : IPlottable
         HalfBox,
     }
 
-    public MarkerStyle MarkerStyle { get; set; } = new()
+    public MarkerStyle DataMarkerStyle { get; set; } = new()
     {
-        Size = 5,
+        Size = 7,
         IsVisible = true,
         OutlineColor = Colors.Black,
         Shape = MarkerShape.OpenCircle
     };
 
-    public LineStyle LineStyle { get; set; } = new()
+    public MarkerStyle MeanMarkerStyle { get; set; } = new()
+    {
+        Size = 7,
+        IsVisible = false,
+        FillColor = Colors.Black,
+        Shape = MarkerShape.FilledCircle
+    };
+
+    public LineStyle WhiskerLineStyle { get; set; } = new()
+    {
+        IsVisible = true,
+        Width = 1,
+        Color = Colors.Black,
+    };
+
+    public LineStyle BarLineStyle { get; set; } = new()
     {
         IsVisible = true,
         Width = 1,
@@ -98,11 +114,13 @@ public class PopulationSymbol(Population population) : IPlottable
     {
         CoordinateRect rect = GetRect();
 
+        double pad = (1 - MarkerWidthFraction) * rect.Width / 2;
+
         (double left, double right) = MarkerAlignment switch
         {
-            PopulationMarkerAlignment.MarkersOnLeft => (rect.Left, rect.HorizontalCenter),
-            PopulationMarkerAlignment.MarkersOnRight => (rect.HorizontalCenter, rect.Right),
-            PopulationMarkerAlignment.MarkersOverlap => (rect.Left, rect.Right),
+            PopulationMarkerAlignment.MarkersOnLeft => (rect.Left + pad, rect.HorizontalCenter - pad),
+            PopulationMarkerAlignment.MarkersOnRight => (rect.HorizontalCenter + pad, rect.Right - pad),
+            PopulationMarkerAlignment.MarkersOverlap => (rect.Left + pad, rect.Right - pad),
             _ => throw new NotImplementedException(),
         };
 
@@ -113,25 +131,27 @@ public class PopulationSymbol(Population population) : IPlottable
     {
         CoordinateRect rect = GetRect();
 
+        double pad = (1 - SymbolWidthFraction) * rect.Width / 2;
+
         (double left, double right) = MarkerAlignment switch
         {
-            PopulationMarkerAlignment.MarkersOnLeft => (rect.HorizontalCenter, rect.Right),
-            PopulationMarkerAlignment.MarkersOnRight => (rect.Left, rect.HorizontalCenter),
-            PopulationMarkerAlignment.MarkersOverlap => (rect.Left, rect.Right),
+            PopulationMarkerAlignment.MarkersOnLeft => (rect.HorizontalCenter + pad, rect.Right - pad),
+            PopulationMarkerAlignment.MarkersOnRight => (rect.Left + pad, rect.HorizontalCenter - pad),
+            PopulationMarkerAlignment.MarkersOverlap => (rect.Left + pad, rect.Right - pad),
             _ => throw new NotImplementedException(),
         };
 
         return new CoordinateRect(left, right, rect.Bottom, rect.Top);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
-        RenderMarkers(rp, GetMarkerRect(), paint);
+        RenderDataMarkers(rp, GetMarkerRect(), paint);
         RenderSymbol(rp, GetSymbolRect(), paint);
     }
 
-    private void RenderMarkers(RenderPack rp, CoordinateRect rect, SKPaint paint)
+    private void RenderDataMarkers(RenderPack rp, CoordinateRect rect, SKPaint paint)
     {
         double pad = (1 - MarkerWidthFraction) * rect.Width / 2;
         double[] xs = Generate.RandomSample(Population.Count, rect.Left + pad, rect.Right - pad);
@@ -140,32 +160,40 @@ public class PopulationSymbol(Population population) : IPlottable
             Coordinates location = new(xs[i], Population.Values[i]);
             Pixel px = Axes.GetPixel(location);
             Console.WriteLine(px);
-            Drawing.DrawMarker(rp.Canvas, paint, px, MarkerStyle);
+            Drawing.DrawMarker(rp.Canvas, paint, px, DataMarkerStyle);
         }
     }
 
-    public double BarBase { get; set; } = 0;
     private void RenderSymbol(RenderPack rp, CoordinateRect rect, SKPaint paint)
     {
-        double pad = (1 - BarWidthFraction) * rect.Width / 2;
-        CoordinateRect barRect = new(rect.Left + pad, rect.Right - pad, 0, Population.Mean);
-
-        PixelRect pxRect = Axes.GetPixelRect(barRect);
-        FillStyle.Render(rp.Canvas, pxRect, paint);
-        LineStyle.Render(rp.Canvas, pxRect, paint);
-        DrawWhisker(rp, pxRect.Left, pxRect.Right, Population.Mean, Population.Mean + Population.StandardError, paint);
-        DrawWhisker(rp, pxRect.Left, pxRect.Right, Population.Mean, Population.Mean - Population.StandardError, paint);
+        DrawBar(rp, rect, paint);
+        DrawWhiskers(rp, rect, paint);
+        MeanMarkerStyle.Render(rp.Canvas, Axes.GetPixel(new(rect.HorizontalCenter, Population.Mean)), paint);
     }
 
-    private void DrawWhisker(RenderPack rp, float x1, float x2, double yBase, double yTip, SKPaint paint)
+    private void DrawBar(RenderPack rp, CoordinateRect rect, SKPaint paint)
     {
-        float xMid = (x1 + x2) / 2;
-        float originalWidth = xMid - x1;
-        x1 = xMid - originalWidth * (float)WhiskerWidthFraction;
-        x2 = xMid + originalWidth * (float)WhiskerWidthFraction;
-        PixelLine verticalLine = new(xMid, Axes.GetPixelY(yBase), xMid, Axes.GetPixelY(yTip));
-        PixelLine horizontalLine = new(x1, verticalLine.Y2, x2, verticalLine.Y2);
-        LineStyle.Render(rp.Canvas, verticalLine, paint);
-        LineStyle.Render(rp.Canvas, horizontalLine, paint);
+        CoordinateRect barRect = new(rect.Left, rect.Right, 0, Population.Mean);
+        PixelRect pxRect = Axes.GetPixelRect(barRect);
+        FillStyle.Render(rp.Canvas, pxRect, paint);
+        BarLineStyle.Render(rp.Canvas, pxRect, paint);
+    }
+
+    private void DrawWhiskers(RenderPack rp, CoordinateRect rect, SKPaint paint)
+    {
+        double left = rect.HorizontalCenter - rect.Width * WhiskerWidthFraction / 2;
+        double right = rect.HorizontalCenter + rect.Width * WhiskerWidthFraction / 2;
+        double bottom = Population.Mean - Population.StandardError;
+        double top = Population.Mean + Population.StandardError;
+        CoordinateRect whiskerRect = new(left, right, bottom, top);
+        PixelRect whiskerPxRect = Axes.GetPixelRect(whiskerRect);
+
+        PixelLine verticalLine = new(whiskerPxRect.HorizontalCenter, whiskerPxRect.Bottom, whiskerPxRect.HorizontalCenter, whiskerPxRect.Top);
+        PixelLine horizontalLineTop = new(whiskerPxRect.Left, whiskerPxRect.Top, whiskerPxRect.Right, whiskerPxRect.Top);
+        PixelLine horizontalLineBottom = new(whiskerPxRect.Left, whiskerPxRect.Bottom, whiskerPxRect.Right, whiskerPxRect.Bottom);
+
+        WhiskerLineStyle.Render(rp.Canvas, verticalLine, paint);
+        WhiskerLineStyle.Render(rp.Canvas, horizontalLineTop, paint);
+        WhiskerLineStyle.Render(rp.Canvas, horizontalLineBottom, paint);
     }
 }

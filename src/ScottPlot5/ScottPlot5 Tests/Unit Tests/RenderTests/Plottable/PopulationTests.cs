@@ -24,7 +24,9 @@ public class PopulationTests
             tickLabels.Add($"Group {i + 1}");
         }
 
+        plot.Axes.Bottom.MajorTickStyle.Length = 0;
         plot.Axes.Margins(bottom: 0);
+        plot.HideGrid();
 
         plot.Axes.Bottom.SetTicks(tickPositions.ToArray(), tickLabels.ToArray());
 
