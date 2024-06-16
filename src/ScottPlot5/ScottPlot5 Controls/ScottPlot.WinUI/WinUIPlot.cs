@@ -57,8 +57,8 @@ public partial class WinUIPlot : UserControl, IPlotControl
     {
         return new SKXamlCanvas
         {
-            VerticalAlignment = VerticalAlignment.Stretch,
-            HorizontalAlignment = HorizontalAlignment.Stretch,
+            VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Stretch,
+            HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Stretch,
             Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent)
         };
     }
