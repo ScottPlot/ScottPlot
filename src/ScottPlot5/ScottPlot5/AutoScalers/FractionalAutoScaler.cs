@@ -104,11 +104,23 @@ public class FractionalAutoScaler : IAutoScaler
         if (limits.Left == limits.Right)
         {
             limits.SetX(limits.Left - 1, limits.Right + 1);
+
+            if (limits.Left == limits.Right)
+            {
+                limits.Left = NumericConversion.DecrementLargeDouble(limits.Left);
+                limits.Right = NumericConversion.IncrementLargeDouble(limits.Right);
+            }
         }
 
         if (limits.Bottom == limits.Top)
         {
             limits.SetY(limits.Bottom - 1, limits.Top + 1);
+
+            if (limits.Bottom == limits.Top)
+            {
+                limits.Bottom = NumericConversion.DecrementLargeDouble(limits.Bottom);
+                limits.Top = NumericConversion.IncrementLargeDouble(limits.Top);
+            }
         }
 
         AxisLimits newLimits = new(
