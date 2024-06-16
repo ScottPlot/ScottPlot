@@ -620,9 +620,10 @@ public class PlottableAdder(Plot plot)
         Population pop = new(values);
         PopulationSymbol sym = new(pop);
         sym.X = x;
-        sym.FillStyle.Color = color;
-        sym.DataMarkerStyle.LineColor = color;
-        sym.DataMarkerStyle.FillColor = color;
+        sym.Bar.FillColor = color;
+        sym.Box.FillColor = Colors.Black.WithLightness(.8f);
+        sym.Marker.MarkerLineColor = color;
+        sym.Marker.MarkerFillColor = color;
         Plot.PlottableList.Add(sym);
         return sym;
     }
