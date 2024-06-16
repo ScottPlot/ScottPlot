@@ -15,7 +15,9 @@ public class Box : IHasFill, IHasLine
     public double? WhiskerMax { get; set; }
 
     public double Width { get; set; } = 0.8;
-    public double CapSize { get; set; } = 0.3;
+
+    public double WhiskerSizeFraction { get; set; } = 0.5;
+    public double WhiskerSize => Width * WhiskerSizeFraction;
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
     public bool IsVisible { get; set; } = true;
@@ -77,7 +79,7 @@ public class Box : IHasFill, IHasLine
             PixelLine lineMaxPx = axes.GetPixelLine(lineMax);
             Drawing.DrawLine(rp.Canvas, paint, lineMaxPx);
 
-            CoordinateLine lineMaxAcross = new(Position - CapSize / 2, WhiskerMax.Value, Position + CapSize / 2, WhiskerMax.Value);
+            CoordinateLine lineMaxAcross = new(Position - WhiskerSize / 2, WhiskerMax.Value, Position + WhiskerSize / 2, WhiskerMax.Value);
             PixelLine lineMaxAcrossPx = axes.GetPixelLine(lineMaxAcross);
             Drawing.DrawLine(rp.Canvas, paint, lineMaxAcrossPx);
         }
@@ -88,7 +90,7 @@ public class Box : IHasFill, IHasLine
             PixelLine lineMinPx = axes.GetPixelLine(lineMin);
             Drawing.DrawLine(rp.Canvas, paint, lineMinPx);
 
-            CoordinateLine lineMinAcross = new(Position - CapSize / 2, WhiskerMin.Value, Position + CapSize / 2, WhiskerMin.Value);
+            CoordinateLine lineMinAcross = new(Position - WhiskerSize / 2, WhiskerMin.Value, Position + WhiskerSize / 2, WhiskerMin.Value);
             PixelLine lineMinAcrossPx = axes.GetPixelLine(lineMinAcross);
             Drawing.DrawLine(rp.Canvas, paint, lineMinAcrossPx);
         }
