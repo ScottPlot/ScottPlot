@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Fonts: Enabled sub-pixel text positioning for improved character placement (#3937) @bforlgreen
 * Axes: Improved automatic axis limit expansion for extremely large numbers (#3930) @CodeDevAM
 * Statistics: Added `ScottPlot.Statistics.Descriptive` methods `Median()` and `Percentile()`
+* Population: Added a new Population plot type for displaying collections of values (#3944, #3676)
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
