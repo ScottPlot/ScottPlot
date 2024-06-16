@@ -18,6 +18,7 @@ public class Box : IHasFill, IHasLine
     public double CapSize { get; set; } = 0.3;
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
+    public bool IsVisible { get; set; } = true;
 
 
     public FillStyle FillStyle { get; set; } = new();
@@ -48,6 +49,9 @@ public class Box : IHasFill, IHasLine
 
     public void Render(RenderPack rp, SKPaint paint, IAxes axes)
     {
+        if (!IsVisible)
+            return;
+
         // TODO: support horizontal boxes
         if (Orientation != Orientation.Vertical)
             throw new NotImplementedException();
