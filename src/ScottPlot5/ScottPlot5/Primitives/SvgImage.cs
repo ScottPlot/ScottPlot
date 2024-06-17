@@ -17,7 +17,7 @@ internal class SvgImage : IDisposable
         Height = height;
         SKRect rect = new(0, 0, width, height);
         Stream = new MemoryStream();
-        Canvas = SKSvgCanvas.Create(rect, Stream);        
+        Canvas = SKSvgCanvas.Create(rect, Stream);
     }
 
     public string GetXml(bool isUtf = false)
@@ -29,7 +29,8 @@ internal class SvgImage : IDisposable
             var xmlString = Encoding.UTF8.GetString(Stream.ToArray()) + "</svg>";
             return xmlString;
         }
-        else {
+        else
+        {
             var xmlString = Encoding.ASCII.GetString(Stream.ToArray()) + "</svg>";
             return xmlString;
         }

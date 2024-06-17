@@ -81,7 +81,7 @@ public class ScottPlotQuickstart : ICategory
 
             myPlot.XLabel("Horizonal Axis");
             myPlot.YLabel("Vertical Axis");
-            myPlot.Title("Plot Title");            
+            myPlot.Title("Plot Title");
         }
     }
 
