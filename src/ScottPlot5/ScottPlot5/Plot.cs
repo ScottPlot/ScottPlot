@@ -308,21 +308,21 @@ public class Plot : IDisposable
         return image.SaveWebp(filePath, quality).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public SavedImageInfo SaveSvg(string filePath, int width, int height)
+    public SavedImageInfo SaveSvg(string filePath, int width, int height, bool isUtf = false)
     {
-        string xml = GetSvgXml(width, height);
+        string xml = GetSvgXml(width, height, isUtf);
         File.WriteAllText(filePath, xml);
         return new SavedImageInfo(filePath, xml.Length).WithRenderDetails(RenderManager.LastRender);
     }
 
-    public string GetSvgXml(int width, int height)
+    public string GetSvgXml(int width, int height, bool renderUtf = false)
     {
         using SvgImage svg = new(width, height);
         bool originalClearState = RenderManager.ClearCanvasBeforeEachRender;
         RenderManager.ClearCanvasBeforeEachRender = false;
         Render(svg.Canvas, width, height);
         RenderManager.ClearCanvasBeforeEachRender = originalClearState;
-        return svg.GetXml();
+        return svg.GetXml(renderUtf);
     }
 
     public SavedImageInfo Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
@@ -356,7 +356,7 @@ public class Plot : IDisposable
     /// <summary>
     /// Returns the content of the legend as SVG (vector) image
     /// </summary>
-    public string GetLegendSvgXml() => Legend.GetSvgXml();
+    public string GetLegendSvgXml(bool isUtf = false) => Legend.GetSvgXml(isUtf);
 
     #endregion
 

@@ -182,7 +182,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// Return contents of a SVG image containing just the legend
     /// </summary>
     /// <returns></returns>
-    public string GetSvgXml()
+    public string GetSvgXml(bool isUtf = false)
     {
         LegendItem[] items = GetItems();
 
@@ -194,7 +194,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         int height = (int)Math.Ceiling(lp.LegendRect.Height);
         using SvgImage svg = new(width, height);
         RenderLayout(svg.Canvas, lp);
-        return svg.GetXml();
+        return svg.GetXml(isUtf);
     }
 
     /// <summary>

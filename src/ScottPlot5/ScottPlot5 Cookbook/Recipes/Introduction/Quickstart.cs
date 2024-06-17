@@ -79,10 +79,9 @@ public class ScottPlotQuickstart : ICategory
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
 
-            myPlot.XLabel("Horizonal Axis²");
-            myPlot.YLabel("Vertical Axis⁰");
-            myPlot.Title("Plot Title⁹");
-            myPlot.SaveSvg("c:\\temp\\quickstart_scatter.svg", 300, 400);
+            myPlot.XLabel("Horizonal Axis");
+            myPlot.YLabel("Vertical Axis");
+            myPlot.Title("Plot Title");            
         }
     }
 
