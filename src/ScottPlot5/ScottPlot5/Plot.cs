@@ -246,7 +246,12 @@ public class Plot : IDisposable
         lock (Sync)
         {
             RenderManager.Render(canvas, rect);
-            if (RenderManager.NeedsAnotherRender) RenderManager.Render(canvas, rect);
+            int counter = 0;
+            while (RenderManager.NeedsAnotherRender & counter < 5)
+            {
+                RenderManager.Render(canvas, rect);
+                counter++;
+            }
         }
     }
 
