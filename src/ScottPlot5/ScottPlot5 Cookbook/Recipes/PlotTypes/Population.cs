@@ -33,6 +33,7 @@ public class Population : ICategory
 
             // refine appearance of the plot
             myPlot.Axes.Bottom.MajorTickStyle.Length = 0;
+            myPlot.Axes.Margins(bottom: 0);
             myPlot.HideGrid();
         }
     }
@@ -56,6 +57,9 @@ public class Population : ICategory
                 // enable visibility of the box symbol
                 pop.Box.IsVisible = true;
             }
+
+            // refine appearance of the plot
+            myPlot.HideGrid();
         }
     }
 
@@ -77,6 +81,9 @@ public class Population : ICategory
 
                 pop.BoxValueConfig = PopulationSymbol.BoxValueConfigurator_MeanStdErrStDev;
             }
+
+            // refine appearance of the plot
+            myPlot.HideGrid();
         }
     }
 
@@ -99,7 +106,9 @@ public class Population : ICategory
                 pop.Bar.ErrorNegative = false;
             }
 
+            // refine appearance of the plot
             myPlot.Axes.Margins(bottom: 0);
+            myPlot.HideGrid();
         }
     }
 
@@ -120,6 +129,9 @@ public class Population : ICategory
                 pop.Box.LineWidth = 2;
                 pop.Box.FillColor = pop.Marker.MarkerLineColor.WithAlpha(.5);
             }
+
+            // refine appearance of the plot
+            myPlot.HideGrid();
         }
     }
 
@@ -141,7 +153,9 @@ public class Population : ICategory
                 pop.Marker.Shape = MarkerShape.OpenTriangleUp;
             }
 
+            // refine appearance of the plot
             myPlot.Axes.Margins(bottom: 0);
+            myPlot.HideGrid();
         }
     }
 
@@ -169,7 +183,66 @@ public class Population : ICategory
                 pop.Width = 0.5;
             }
 
+            // refine appearance of the plot
             myPlot.Axes.Margins(bottom: 0);
+            myPlot.HideGrid();
+        }
+    }
+
+    public class PopulationGroups : RecipeBase
+    {
+        public override string Name => "Population Groups";
+        public override string Description => "Groups of populations can be achieved by " +
+            "customizing position, color, axis labels, and legend items.";
+
+        [Test]
+        public override void Execute()
+        {
+            // define the groups
+            string[] groupNames = { "Gen X", "Gen Y", "Gen Z" };
+            string[] categoryNames = { "Python", "C#", "Rust" };
+            Color[] categoryColors = { Colors.C0, Colors.C1, Colors.C2 };
+
+            // add random data to the plot
+            for (int groupIndex = 0; groupIndex < groupNames.Length; groupIndex++)
+            {
+                for (int categoryIndex = 0; categoryIndex < categoryNames.Length; categoryIndex++)
+                {
+                    double[] values = Generate.RandomNormal(10, mean: 2 + groupIndex * 2);
+                    double x = groupIndex * (categoryNames.Length + 1) + categoryIndex;
+                    var pop = myPlot.Add.Population(values, x);
+                    pop.Marker.MarkerLineColor = categoryColors[categoryIndex].WithAlpha(.75);
+                    pop.Marker.Size = 7;
+                    pop.Marker.LineWidth = 1.5f;
+                    pop.Bar.FillColor = categoryColors[categoryIndex];
+                }
+            }
+
+            // apply group names to horizontal tick labels
+            double tickDelta = categoryNames.Length + 1;
+            double[] tickPositions = Enumerable.Range(0, groupNames.Length)
+                .Select(x => x * tickDelta + tickDelta / 2 - 1)
+                .ToArray();
+            myPlot.Axes.Bottom.SetTicks(tickPositions, groupNames);
+            myPlot.Axes.Bottom.MajorTickStyle.Length = 0;
+
+            // show category colors in the legend
+            for (int i = 0; i < categoryNames.Length; i++)
+            {
+                LegendItem item = new()
+                {
+                    FillColor = categoryColors[i],
+                    LabelText = categoryNames[i]
+                };
+                myPlot.Legend.ManualItems.Add(item);
+            }
+            myPlot.Legend.Orientation = Orientation.Horizontal;
+            myPlot.Legend.Alignment = Alignment.UpperLeft;
+
+            // refine appearance of the plot
+            myPlot.Axes.Margins(bottom: 0, top: 0.3);
+            myPlot.YLabel("Bugs per Hour");
+            myPlot.HideGrid();
         }
     }
 }
