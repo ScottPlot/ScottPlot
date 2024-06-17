@@ -132,7 +132,7 @@ public class RenderManager(Plot plot)
         RenderCount += 1;
         IsRendering = false;
 
-        if (EnableEvents & !NeedsAnotherRender)
+        if (EnableEvents)
         {
             RenderFinished.Invoke(Plot, LastRender);
 
