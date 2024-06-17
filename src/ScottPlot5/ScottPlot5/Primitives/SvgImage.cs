@@ -27,7 +27,7 @@ internal class SvgImage : IDisposable
     }
 
 
-    public string GetXml()
+    public string GetXml(bool renderUtf = false)
     {
         MemoryStream destinationStream = new MemoryStream();
 
@@ -54,13 +54,18 @@ internal class SvgImage : IDisposable
                 // Note: The actual writing to the memory stream happens when the writer is disposed
             }
         }
-    }
 
 
+        if (renderUtf)
+        {
+            var xmlString = Encoding.UTF8.GetString(destinationStream.ToArray()) + "</svg>";
+            return xmlString;
+        }
+        else {
+            var xmlString = Encoding.ASCII.GetString(destinationStream.ToArray()) + "</svg>";
+            return xmlString;
 
-
-    var xmlString = Encoding.ASCII.GetString(destinationStream.ToArray()) + "</svg>";
-        return xmlString;
+        }
     }
 
     public void Dispose()
