@@ -87,6 +87,7 @@ public class RenderManager(Plot plot)
 
     public bool ClearCanvasBeforeEachRender { get; set; } = true;
 
+    public bool NeedsAnotherRender { get; set; } = false;
     private Plot Plot { get; } = plot;
 
     /// <summary>
@@ -131,7 +132,7 @@ public class RenderManager(Plot plot)
         RenderCount += 1;
         IsRendering = false;
 
-        if (EnableEvents)
+        if (EnableEvents & !NeedsAnotherRender)
         {
             RenderFinished.Invoke(Plot, LastRender);
 
@@ -146,8 +147,25 @@ public class RenderManager(Plot plot)
             }
         }
 
+        NeedsAnotherRender = CheckAxesChangedByEvents();
         DisableAxisLimitsChangedEventOnNextRender = false;
 
         // TODO: event for when layout changes
     }
+
+    private bool CheckAxesChangedByEvents()
+    {
+        foreach (IAxis axis in LastRender.AxisLimitsByAxis.Keys)
+        {
+            if (axis is null)
+                continue;
+
+            CoordinateRangeMutable rangeNow = axis.Range;
+            CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
+            if (rangeNow.Min != rangeBefore.Min | rangeNow.Max != rangeBefore.Max)
+                return true;
+        }
+        return false;
+    }
+
 }
