@@ -10,6 +10,7 @@ public class Bar
     public double ValueBase { get; set; } = 0;
     public double Error { get; set; } = 0;
 
+    public bool IsVisible { get; set; } = true;
     public Color FillColor { get; set; } = Colors.Gray;
     public Color BorderColor { get; set; } = Colors.Black;
     public Color ErrorColor { get; set; } = Colors.Black;
@@ -90,6 +91,9 @@ public class Bar
 
     public void Render(RenderPack rp, IAxes axes, SKPaint paint, Label labelStyle)
     {
+        if (!IsVisible)
+            return;
+
         PixelRect rect = axes.GetPixelRect(Rect);
         Drawing.FillRectangle(rp.Canvas, rect, FillColor);
         Drawing.DrawRectangle(rp.Canvas, rect, BorderColor, BorderLineWidth);
