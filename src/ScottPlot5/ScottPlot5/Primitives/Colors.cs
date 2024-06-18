@@ -220,4 +220,9 @@ public struct Colors
 
         return colors;
     }
+
+    static ScottPlot.Color ConvertColor(System.Drawing.Color color)
+    {
+        return ScottPlot.Color.FromHex($"#{color.R:X2}{color.G:X2}{color.B:X2}");
+    }
 }
