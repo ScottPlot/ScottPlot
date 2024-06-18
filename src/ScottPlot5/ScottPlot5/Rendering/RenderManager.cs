@@ -87,7 +87,11 @@ public class RenderManager(Plot plot)
 
     public bool ClearCanvasBeforeEachRender { get; set; } = true;
 
-    public bool NeedsAnotherRender { get; set; } = false;
+    /// <summary>
+    /// If changes to axis limits are detected following invoked events, this will be set to true to indicate another render is required to update the plot
+    /// </summary>
+    public bool NeedsAnotherRender { get; private set; } = false;
+
     private Plot Plot { get; } = plot;
 
     /// <summary>
@@ -162,7 +166,7 @@ public class RenderManager(Plot plot)
 
             CoordinateRangeMutable rangeNow = axis.Range;
             CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
-            if (rangeNow.Min != rangeBefore.Min | rangeNow.Max != rangeBefore.Max)
+            if (rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max)
                 return true;
         }
         return false;

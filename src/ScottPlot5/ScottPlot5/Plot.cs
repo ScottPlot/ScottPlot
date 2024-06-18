@@ -247,7 +247,7 @@ public class Plot : IDisposable
         {
             RenderManager.Render(canvas, rect);
             int counter = 0;
-            while (RenderManager.NeedsAnotherRender & counter < 5)
+            while (RenderManager.NeedsAnotherRender && counter < 5)
             {
                 RenderManager.Render(canvas, rect);
                 counter++;
