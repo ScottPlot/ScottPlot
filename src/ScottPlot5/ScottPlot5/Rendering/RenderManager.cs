@@ -149,9 +149,10 @@ public class RenderManager(Plot plot)
             {
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
+            
+            NeedsAnotherRender = CheckAxesChangedByEvents();
         }
 
-        NeedsAnotherRender = CheckAxesChangedByEvents();
         DisableAxisLimitsChangedEventOnNextRender = false;
 
         // TODO: event for when layout changes
