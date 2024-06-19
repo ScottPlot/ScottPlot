@@ -165,6 +165,9 @@ public class RenderManager(Plot plot)
             if (axis is null)
                 continue;
 
+            if (Double.IsNaN(axis.Range.Span))
+                continue;
+
             CoordinateRangeMutable rangeNow = axis.Range;
             CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
             if (rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max)
