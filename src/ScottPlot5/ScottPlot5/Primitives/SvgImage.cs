@@ -20,20 +20,9 @@ internal class SvgImage : IDisposable
         Canvas = SKSvgCanvas.Create(rect, Stream);
     }
 
-    public string GetXml(bool isUtf = false)
+    public string GetXml()
     {
-        Canvas.Flush();
-
-        if (isUtf)
-        {
-            var xmlString = Encoding.UTF8.GetString(Stream.ToArray()) + "</svg>";
-            return xmlString;
-        }
-        else
-        {
-            var xmlString = Encoding.ASCII.GetString(Stream.ToArray()) + "</svg>";
-            return xmlString;
-        }
+        return Encoding.UTF8.GetString(Stream.ToArray()) + "</svg>";
     }
 
     public void Dispose()
