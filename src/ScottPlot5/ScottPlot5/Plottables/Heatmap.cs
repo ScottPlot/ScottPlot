@@ -338,7 +338,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                 // Because this is only intended to be used for the isomap we can do simplistic edge detection
                 // If we ever extend it we likely need something like Canny detection
                 if (self != left || self != up)
+                {
                     edges[i, j] = true;
+                }
             }
         }
 
@@ -364,11 +366,14 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                         leftPredecessorList.AddLast((i, j));
 
                         var last = leftPredecessorList.Last;
-                        while (last is not null && !abovePredecessorList.Contains(last.Value))
+                        while (last is not null && leftPredecessorList.Contains((i, j)))
                         {
                             // Need to copy the values out, since the BCL disallows having a LinkedListNode in multiple LinkedLists
                             abovePredecessorList.AddFirst(last.Value);
+
                             last = last.Previous;
+                            if (last is not null)
+                                leftPredecessorList.Remove(last);
                         }
 
                         paths.Remove(leftPredecessorList); // Avoid dupes
@@ -376,7 +381,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                     else if (leftPredecessorList is not null)
                         leftPredecessorList.AddLast((i, j));
                     else if (abovePredecessorList is not null)
-                        abovePredecessorList.AddFirst((i, j));
+                        abovePredecessorList.AddLast((i, j));
                     else
                         paths.Add(new([(i, j)]));
                 }
@@ -426,7 +431,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         CoordinateRect rect = AlignedExtent;
 
         double xCoord = rect.Left + x * CellWidth;
-        double yCood = rect.Top + y * CellHeight;
+        double yCood = rect.Top - y * CellHeight;
 
         return new(xCoord, yCood);
     }
@@ -486,10 +491,26 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
         rp.Canvas.DrawBitmap(Bitmap, rect, paint);
 
+        var argbs = GetArgbValues();
+
+        var edges = GetEdgePoints(argbs);
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (edges[i, j])
+                {
+                    var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
+                    //rp.Canvas.DrawCircle(pt, 3, paint);
+
+                }
+            }
+        }
+
 
         if (IsoMap && EdgePaths is not null)
         {
-            LineStyle style = new LineStyle() { };
+            LineStyle style = new LineStyle() { Width = 3 };
             style.ApplyToPaint(paint);
 
             foreach (var pathPoints in EdgePaths)
@@ -497,7 +518,8 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                 using SKPath path = new();
                 foreach (var (i, j) in pathPoints)
                 {
-                    var pt = Axes.GetPixel(GetCoordinates(i, j)).ToSKPoint();
+                    var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
+                    //System.Diagnostics.Debug.WriteLine($"({j}, {i}), {GetCoordinates(j, i)}");
 
                     if (path.PointCount == 0)
                         path.MoveTo(pt);
