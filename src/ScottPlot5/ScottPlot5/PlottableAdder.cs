@@ -849,6 +849,12 @@ public class PlottableAdder(Plot plot)
         return Signal(source, color);
     }
 
+    public Signal Signal<T>(IReadOnlyList<T> ys, double period = 1, Color? color = null)
+    {
+        SignalSourceGenericList<T> source = new(ys.ToList(), period);
+        return Signal(source, color);
+    }
+
     public SignalConst<T> SignalConst<T>(T[] ys, double period = 1, Color? color = null)
         where T : struct, IComparable
     {
