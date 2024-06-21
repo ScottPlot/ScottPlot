@@ -1,7 +1,4 @@
-﻿using SkiaSharp;
-using System.IO;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 internal class SvgImage : IDisposable
 {
