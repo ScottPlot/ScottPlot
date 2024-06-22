@@ -24,6 +24,22 @@ public readonly struct LinearRegression
     }
 
     /// <summary>
+    /// Calculate the linear regression from a collection of X/Y coordinates
+    /// Accepts a List of Coordinates.
+    /// </summary>     
+    public LinearRegression(List<Coordinates> coordinates)
+    {
+        if (coordinates == null || coordinates.Count < 2)
+        {
+            throw new ArgumentException($"{nameof(coordinates)} must have at least 2 points");
+        }
+
+        double[] xs = coordinates.Select(c => c.X).ToArray();
+        double[] ys = coordinates.Select(c => c.Y).ToArray();
+        (Slope, Offset, Rsquared) = GetCoefficients(xs, ys);
+    }
+    
+    /// <summary>
     /// Calculate the linear regression a paired collection of X and Y points
     /// </summary>
     public LinearRegression(double[] xs, double[] ys)
