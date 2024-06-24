@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * IAxisLimitManager: Separated `GetAxisLimits()` into `GetRangeX()` and `GetRangeY()` for improved customization and performance (#3946) @drolevar
 * Experimental: Added `Plottables.Experimental.DataStreamer2` plot type for displaying streaming data in a circular buffer (#3946) @drolevar
 * Rendering: Automatically re-render if a render invokes an event that requests it (#3952) @BrianAtZetica
+* SVG: File encoding now supports text containing UTF8 characters (#3956, #3957) @aespitia
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
