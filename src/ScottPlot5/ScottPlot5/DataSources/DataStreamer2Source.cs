@@ -15,8 +15,11 @@ public class DataStreamer2Source : IDataLogger2Source
         Coordinates = coordinates;
     }
 
-    // TODO : Can we support rotated?
-    public bool Rotated { get; set; } = false;
+    public bool Rotated
+    {
+        get => false;
+        set => throw new NotImplementedException("Rotation for this data source is not yet supported. See GitHub issue #3946.");
+    }
 
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
@@ -31,7 +34,7 @@ public class DataStreamer2Source : IDataLogger2Source
         {
             throw new ArgumentException("X coordinates must be in ascending order", nameof(coordinates));
         }
-        
+
         Coordinates.Add(coordinates);
 
         HasNewData = true;
@@ -81,13 +84,13 @@ public class DataStreamer2Source : IDataLogger2Source
         if (Coordinates.Count == 0)
             return [];
 
-        return Rotated                                  
+        return Rotated
             ? GetPixelsToDrawVertically(rp, axes, connectStyle)
             : GetPixelsToDrawHorizontally(rp, axes, connectStyle);
     }
 
     private Pixel[] GetPixelsToDrawHorizontally(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
-    {                                                                                           
+    {
         // determine the range of data in view
         (Pixel[] pointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] pointAfter, int dataIndexLast) = GetLastPointX(axes);
