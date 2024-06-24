@@ -87,11 +87,6 @@ public class RenderManager(Plot plot)
 
     public bool ClearCanvasBeforeEachRender { get; set; } = true;
 
-    /// <summary>
-    /// If changes to axis limits are detected following invoked events, this will be set to true to indicate another render is required to update the plot
-    /// </summary>
-    public bool NeedsAnotherRender { get; private set; } = false;
-
     private Plot Plot { get; } = plot;
 
     /// <summary>
@@ -108,6 +103,18 @@ public class RenderManager(Plot plot)
     }
 
     public void Render(SKCanvas canvas, PixelRect rect)
+    {
+        int maxRenderCount = 5;
+        for (int i = 0; i < maxRenderCount; i++)
+        {
+            RenderOnce(canvas, rect);
+            if (!AxisLimitsChangedSinceLastRender())
+                return;
+            //Debug.WriteLine($"Re-Render required! #{i}");
+        }
+    }
+
+    private void RenderOnce(SKCanvas canvas, PixelRect rect)
     {
         if (EnableRendering == false)
             return;
@@ -149,8 +156,6 @@ public class RenderManager(Plot plot)
             {
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
-            
-            NeedsAnotherRender = CheckAxesChangedByEvents();
         }
 
         DisableAxisLimitsChangedEventOnNextRender = false;
@@ -158,21 +163,23 @@ public class RenderManager(Plot plot)
         // TODO: event for when layout changes
     }
 
-    private bool CheckAxesChangedByEvents()
+    private bool AxisLimitsChangedSinceLastRender()
     {
         foreach (IAxis axis in LastRender.AxisLimitsByAxis.Keys)
         {
             if (axis is null)
                 continue;
 
-            if (Double.IsNaN(axis.Range.Span))
+            if (double.IsNaN(axis.Range.Span))
                 continue;
 
             CoordinateRangeMutable rangeNow = axis.Range;
             CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
-            if (rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max)
+            bool axisLimitsChanged = rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max;
+            if (axisLimitsChanged)
                 return true;
         }
+
         return false;
     }
 
