@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * Population: Added a new Population plot type for displaying collections of values (#3944, #3676)
 * IAxisLimitManager: Separated `GetAxisLimits()` into `GetRangeX()` and `GetRangeY()` for improved customization and performance (#3946) @drolevar
 * Experimental: Added `Plottables.Experimental.DataStreamer2` plot type for displaying streaming data in a circular buffer (#3946) @drolevar
+* Rendering: Automatically re-render if a render invokes an event that requests it (#3952) @BrianAtZetica
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
