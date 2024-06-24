@@ -5,6 +5,9 @@
 /// </summary>
 public interface IAutoScaler
 {
+    // TODO: Add this so auto-scalers can provide scaling information without requiring plottable collections
+    //AxisLimits GetRecommendedLimits(AxisLimits originalLimits);
+
     /// <summary>
     /// Return the recommended axis limits for the plottables that use the given axes
     /// </summary>

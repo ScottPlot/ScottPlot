@@ -53,6 +53,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public List<LegendItem> ManualItems { get; set; } = [];
 
     /// <summary>
+    /// If enabled, items in horizontal oriented legends will not
+    /// be aligned in columns but instead resized tightly to fit their contents
+    /// </summary>
+    public bool TightHorizontalWrapping { get; set; } = false;
+
+    public bool ShowItemRectangles_DEBUG { get; set; } = false;
+
+    /// <summary>
     /// Enabling this allows multi-language text in the figure legend,
     /// but may slow down the render loop.
     /// </summary>
@@ -74,7 +82,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public Color? FontColor { get; set; } = null;
 
     [Obsolete("Assign FontSize, FontName, or FontColor to control appearance of all legend items", true)]
-    public FillStyle Font { get; set; }
+    public FillStyle Font { get; set; } = new();
 
     [Obsolete("Multiline is now enabled by default.", true)]
     public bool AllowMultiline { get; set; }
@@ -82,7 +90,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public ILegendLayout Layout { get; set; } = new LegendLayouts.Wrapping();
     public PixelSize LastRenderSize { get; private set; } = PixelSize.NaN;
 
-    public LineStyle OutlineStyle { get; set; } = new();
+    public LineStyle OutlineStyle { get; set; } = new() { Width = 1, Color = Colors.Black, };
     public float OutlineWidth { get => OutlineStyle.Width; set => OutlineStyle.Width = value; }
     public LinePattern OutlinePattern { get => OutlineStyle.Pattern; set => OutlineStyle.Pattern = value; }
     public Color OutlineColor { get => OutlineStyle.Color; set => OutlineStyle.Color = value; }
@@ -192,7 +200,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// <summary>
     /// This is called automatically by the render manager
     /// </summary>
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
@@ -252,6 +260,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFillStyle);
         Drawing.DrawRectangle(canvas, layout.LegendRect, paint, OutlineStyle);
 
+        CanvasState canvasState = new(canvas);
+        canvasState.Save();
+
+        PixelRect clipRect = layout.LegendRect.Contract(Padding).Expand(1.0f);
+
+        canvasState.Clip(clipRect);
+
         // render items inside the legend
         for (int i = 0; i < layout.LegendItems.Length; i++)
         {
@@ -262,10 +277,9 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint);
+            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
-            bool SHOW_DEBUG_RECTANGLES = false;
-            if (SHOW_DEBUG_RECTANGLES)
+            if (ShowItemRectangles_DEBUG)
             {
                 Drawing.DrawRectangle(canvas, symbolRect, Colors.Magenta.WithAlpha(.2));
                 Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
@@ -277,5 +291,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);
         }
+
+        canvasState.Restore();
     }
 }

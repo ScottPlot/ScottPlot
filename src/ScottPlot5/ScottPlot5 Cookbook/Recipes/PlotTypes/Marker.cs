@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Marker : ICategory
 {
@@ -29,22 +27,41 @@ public class Marker : ICategory
     public class MarkerShapes : RecipeBase
     {
         public override string Name => "Marker Shapes";
-        public override string Description => "Many marker shapes are available.";
+        public override string Description => "Standard marker shapes are provided, " +
+            "but advanced users are able to create their own as well.";
 
         [Test]
         public override void Execute()
         {
-            ScottPlot.Colormaps.Turbo colormap = new();
+            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
+            ScottPlot.Palettes.Category20 palette = new();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < markerShapes.Length; i++)
             {
-                MarkerShape shape = Generate.RandomMarkerShape();
-                Coordinates location = Generate.RandomCoordinates();
-                float size = Generate.RandomInteger(5, 10);
-                Color color = Generate.RandomColor(colormap);
+                var mp = myPlot.Add.Marker(x: i, y: 0);
+                mp.MarkerStyle.Shape = markerShapes[i];
+                mp.MarkerStyle.Size = 10;
 
-                myPlot.Add.Marker(location, shape, size, color);
+                // markers made from filled shapes have can be customized
+                mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
+
+                // markers made from filled shapes have optional outlines
+                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
+                mp.MarkerStyle.OutlineWidth = 2;
+
+                // markers created from lines can be customized
+                mp.MarkerStyle.LineWidth = 2f;
+                mp.MarkerStyle.LineColor = palette.GetColor(i);
+
+                var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
+                txt.LabelRotation = -90;
+                txt.LabelAlignment = Alignment.MiddleLeft;
+                txt.LabelFontColor = Colors.Black;
             }
+
+            myPlot.Title("Marker Names");
+            myPlot.Axes.SetLimits(-1, markerShapes.Length, -1, 4);
+            myPlot.HideGrid();
         }
     }
 
@@ -85,4 +102,33 @@ public class Marker : ICategory
             myPlot.Add.Markers(xs, cos, MarkerShape.FilledDiamond, 10, Colors.Magenta);
         }
     }
+
+    public class ImageMarkerQuickstart : RecipeBase
+    {
+        public override string Name => "Image Marker";
+        public override string Description => "An ImageMarker can be placed on the plot " +
+            "to display an image centered at a location in coordinate space.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // An image can be loaded from a file or created dynamically
+            ScottPlot.Image image = SampleImages.ScottPlotLogo(48, 48);
+
+            Coordinates location1 = new(5, .5);
+            Coordinates location2 = new(25, .5);
+
+            myPlot.Add.ImageMarker(location1, image);
+            myPlot.Add.ImageMarker(location2, image, scale: 2);
+
+            var m1 = myPlot.Add.Marker(location1);
+            var m2 = myPlot.Add.Marker(location2);
+            m1.Color = Colors.Orange;
+            m2.Color = Colors.Orange;
+        }
+    }
+
 }

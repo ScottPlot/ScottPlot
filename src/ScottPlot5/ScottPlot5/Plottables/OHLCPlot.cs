@@ -43,11 +43,19 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         }
         else
         {
-            return Data.GetLimits();
+            var limits = Data.GetLimits();
+            List<OHLC> ohlcs = Data.GetOHLCs();
+            if (ohlcs.Count == 0)
+                return limits;
+
+            double left = ohlcs.First().DateTime.ToOADate() - ohlcs.First().TimeSpan.TotalDays / 2;
+            double right = ohlcs.Last().DateTime.ToOADate() + ohlcs.Last().TimeSpan.TotalDays / 2;
+
+            return new(left, right, limits.Bottom, limits.Top);
         }
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
         using SKPath risingPath = new();
@@ -67,12 +75,11 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
 
             if (Sequential == false)
             {
-                center = Axes.GetPixelX(ohlc.DateTime.ToNumber());
-                TimeSpan halfWidth = new((long)(ohlc.TimeSpan.Ticks * SymbolWidth / 2));
-                DateTime leftTime = ohlc.DateTime - halfWidth;
-                DateTime rightTime = ohlc.DateTime + halfWidth;
-                left = Axes.GetPixelX(leftTime.ToNumber());
-                right = Axes.GetPixelX(rightTime.ToNumber());
+                double centerNumber = NumericConversion.ToNumber(ohlc.DateTime);
+                center = Axes.GetPixelX(centerNumber);
+                double halfWidthNumber = ohlc.TimeSpan.TotalDays / 2 * SymbolWidth;
+                left = Axes.GetPixelX(centerNumber - halfWidthNumber);
+                right = Axes.GetPixelX(centerNumber + halfWidthNumber);
             }
             else
             {

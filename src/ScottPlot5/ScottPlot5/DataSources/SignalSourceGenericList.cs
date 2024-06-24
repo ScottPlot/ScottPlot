@@ -64,8 +64,8 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
         // determine column limits horizontally
         int i1 = GetIndex(xRangeMin, true);
         int i2 = GetIndex(xRangeMax, true);
-        float yEnter = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i1) + YOffset);
-        float yExit = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i2) + YOffset);
+        float yEnter = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i1) * YScale + YOffset);
+        float yExit = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i2) * YScale + YOffset);
 
         // determine column span vertically
         double yMin = double.PositiveInfinity;
@@ -76,8 +76,8 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
             yMin = Math.Min(yMin, value);
             yMax = Math.Max(yMax, value);
         }
-        yMin += YOffset;
-        yMax += YOffset;
+        yMin = yMin * YScale + YOffset;
+        yMax = yMax * YScale + YOffset;
 
         float yBottom = axes.GetPixelY(yMin);
         float yTop = axes.GetPixelY(yMax);

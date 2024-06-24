@@ -6,9 +6,14 @@
 /// To customize behavior of actions, replace properties of <see cref="Actions"/> with custom delegates.
 /// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
-public class Interaction : IPlotInteraction
+public class Interaction(IPlotControl control) : IPlotInteraction
 {
-    public IPlotControl PlotControl { get; private set; }
+    public IPlotControl PlotControl { get; private set; } = control;
+
+    /// <summary>
+    /// Indicates whether interactions have been disabled.
+    /// </summary>
+    public bool Disabled { get; private set; } = false;
 
     /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
@@ -17,7 +22,7 @@ public class Interaction : IPlotInteraction
     public InputBindings Inputs = InputBindings.Standard();
 
     /// <summary>
-    /// Stores the <see cref="Actions"/> that were preseent when <see cref="Disable"/> was called.
+    /// Stores the <see cref="Actions"/> that were present when <see cref="Disable"/> was called.
     /// </summary>
     private PlotActions ActionsWhenDisabled = PlotActions.Standard();
 
@@ -34,17 +39,17 @@ public class Interaction : IPlotInteraction
     protected bool LockX => Inputs.ShouldLockX(Keyboard.PressedKeys);
     protected bool LockY => Inputs.ShouldLockY(Keyboard.PressedKeys);
     protected bool IsZoomingRectangle = false;
-
-    public Interaction(IPlotControl control)
-    {
-        PlotControl = control;
-    }
+    public bool ChangeOpposingAxesTogether { get; set; } = false;
 
     /// <summary>
     /// Disable all mouse interactivity
     /// </summary>
     public void Disable()
     {
+        if (Disabled)
+            return;
+
+        Disabled = true;
         ActionsWhenDisabled = Actions;
         Actions = PlotActions.NonInteractive();
     }
@@ -54,7 +59,10 @@ public class Interaction : IPlotInteraction
     /// </summary>
     public void Enable()
     {
-        Actions = ActionsWhenDisabled;
+        if (Disabled)
+            Actions = ActionsWhenDisabled;
+
+        Disabled = false;
     }
 
     /// <summary>
@@ -63,6 +71,7 @@ public class Interaction : IPlotInteraction
     public void Enable(PlotActions customActions)
     {
         Actions = customActions;
+        Disabled = false;
     }
 
     /// <summary>
@@ -90,13 +99,13 @@ public class Interaction : IPlotInteraction
 
     protected virtual void MouseDrag(Pixel from, Pixel to, MouseButton button, IEnumerable<Key> keys, MultiAxisLimitManager start)
     {
-        bool lockY = Inputs.ShouldLockY(keys);
-        bool lockX = Inputs.ShouldLockX(keys);
+        bool lockY = Inputs.ShouldLockY(keys, button);
+        bool lockX = Inputs.ShouldLockX(keys, button);
         LockedAxes locks = new(lockX, lockY);
 
         MouseDrag drag = new(start, from, to);
 
-        if (Inputs.ShouldZoomRectangle(button, keys))
+        if (Inputs.ShouldZoomRectangle(button, keys) || IsZoomingRectangle)
         {
             Actions.DragZoomRectangle(PlotControl, drag, locks);
             IsZoomingRectangle = true;
@@ -107,7 +116,6 @@ public class Interaction : IPlotInteraction
         }
         else if (button == Inputs.DragZoomButton)
         {
-
             Actions.DragZoom(PlotControl, drag, locks);
         }
     }
@@ -130,11 +138,7 @@ public class Interaction : IPlotInteraction
     public virtual void MouseUp(Pixel position, MouseButton button)
     {
         bool isDragging = Mouse.IsDragging(position);
-
-        bool droppedZoomRectangle =
-            isDragging &&
-            Inputs.ShouldZoomRectangle(button, Keyboard.PressedKeys) &&
-            IsZoomingRectangle;
+        bool droppedZoomRectangle = isDragging && IsZoomingRectangle;
 
         if (droppedZoomRectangle)
         {

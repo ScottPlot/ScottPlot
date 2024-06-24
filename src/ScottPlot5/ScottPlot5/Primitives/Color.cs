@@ -109,6 +109,11 @@ public readonly struct Color
 
     public static Color Gray(byte value) => new(value, value, value);
 
+    public static Color FromARGB(int argb)
+    {
+        return FromARGB((uint)argb);
+    }
+
     public static Color FromARGB(uint argb)
     {
         byte alpha = (byte)(argb >> 24);
@@ -142,6 +147,11 @@ public readonly struct Color
     public static Color[] FromHex(string[] hex)
     {
         return hex.Select(x => FromHex(x)).ToArray();
+    }
+
+    public static Color FromColor(System.Drawing.Color color)
+    {
+        return new Color(color.R, color.G, color.B, color.A);
     }
 
     public string ToHex()

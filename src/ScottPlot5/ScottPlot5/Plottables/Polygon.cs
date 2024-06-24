@@ -33,9 +33,9 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
 
     public int PointCount { get => Coordinates.Length; }
@@ -102,7 +102,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
         return limits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (IsEmpty)
             return;

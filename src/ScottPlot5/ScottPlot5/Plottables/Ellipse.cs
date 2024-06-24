@@ -67,7 +67,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
 
         // https://math.stackexchange.com/a/91304
 
-        var rad = Rotation.ToRadians();
+        var rad = (float)(Rotation / 180.0 * Math.PI);
         var cos2 = Math.Pow(Math.Cos(rad), 2);
         var sin2 = Math.Pow(Math.Sin(rad), 2);
 
@@ -80,9 +80,13 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         return new(Center.ToRect(x, y));
     }
 
-    public void Render(RenderPack rp)
+    private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
+    private bool RadiusIsNotFinite => !IsFinite(RadiusX) || !IsFinite(RadiusY);
+
+    public virtual void Render(RenderPack rp)
     {
-        if (!IsVisible || RadiusX.IsInfiniteOrNaN() || RadiusY.IsInfiniteOrNaN()) { return; }
+        if (!IsVisible || RadiusIsNotFinite)
+            return;
 
         using var paint = new SKPaint();
 

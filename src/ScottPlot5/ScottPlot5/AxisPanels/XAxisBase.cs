@@ -6,10 +6,10 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
     public XAxisBase()
     {
-        Label.Rotation = 0;
+        LabelRotation = 0;
     }
 
-    public float Measure()
+    public virtual float Measure()
     {
         if (!IsVisible)
             return 0;
@@ -21,21 +21,17 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         float tickHeight = MajorTickStyle.Length;
 
-        TickLabelStyle.ApplyToPaint(paint);
-        float lineHeight = paint.FontSpacing;
-        int numberOfLines = TickGenerator.Ticks.Select(x => x.Label).Select(x => x.Split('\n').Length).FirstOrDefault();
-        float tickLabelHeight = lineHeight * numberOfLines;
+        float maxTickLabelHeight = TickGenerator.Ticks.Length > 0
+            ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Height).Max()
+            : 0;
 
-        float axisLabelHeight = 0;
-        if (Label.IsVisible && !string.IsNullOrWhiteSpace(Label.Text))
-        {
-            Label.ApplyToPaint(paint);
-            axisLabelHeight = paint.FontSpacing;
-        }
+        float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text)
+            ? EmptyLabelPadding.Vertical
+            : LabelStyle.Measure(LabelText, paint).LineHeight
+                + PaddingBetweenTickAndAxisLabels.Vertical
+                + PaddingOutsideAxisLabels.Vertical;
 
-        float spaceBetweenTicksAndAxisLabel = 10;
-
-        return tickHeight + tickLabelHeight + spaceBetweenTicksAndAxisLabel + axisLabelHeight;
+        return tickHeight + maxTickLabelHeight + axisLabelHeight;
     }
 
     public float GetPixel(double position, PixelRect dataArea)
@@ -79,23 +75,28 @@ public abstract class XAxisBase : AxisBase, IXAxis
             : GetPanelRectangleTop(dataRect, size, offset);
     }
 
-    public void Render(RenderPack rp, float size, float offset)
+    public virtual void Render(RenderPack rp, float size, float offset)
     {
         if (!IsVisible)
             return;
 
+        using SKPaint paint = new();
+
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
-        float textDistanceFromEdge = 10;
-        Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom - textDistanceFromEdge);
+        float y = Edge == Edge.Bottom
+            ? panelRect.Bottom - PaddingOutsideAxisLabels.Vertical
+            : panelRect.Top + PaddingOutsideAxisLabels.Vertical;
+
+        Pixel labelPoint = new(panelRect.HorizontalCenter, y);
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
         }
 
-        Label.Alignment = Alignment.LowerCenter;
-        Label.Render(rp.Canvas, labelPoint);
+        LabelAlignment = Alignment.LowerCenter;
+        LabelStyle.Render(rp.Canvas, labelPoint, paint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
@@ -115,6 +116,6 @@ public abstract class XAxisBase : AxisBase, IXAxis
     {
         using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
-        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, Label);
+        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
     }
 }

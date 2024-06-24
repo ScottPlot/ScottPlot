@@ -203,7 +203,7 @@ public class Scatter : ICategory
         [Test]
         public override void Execute()
         {
-            DateTime[] xs = Generate.DateTime.Days(100);
+            DateTime[] xs = Generate.ConsecutiveDays(100);
             double[] ys = Generate.RandomWalk(xs.Length);
 
             myPlot.Add.Scatter(xs, ys);
@@ -364,6 +364,80 @@ public class Scatter : ICategory
             var sp = myPlot.Add.Scatter(xs, ys);
             sp.MinRenderIndex = 10;
             sp.MaxRenderIndex = 40;
+        }
+    }
+
+    public class ScatterFill : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Fill";
+        public override string Description => "The area beneath a scatter plot can be filled.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.FillY = true;
+            sp.FillYColor = sp.Color.WithAlpha(.2);
+        }
+    }
+
+    public class ScatterFillValue : RecipeBase
+    {
+        public override string Name => "Scatter Plot Filled to a Value";
+        public override string Description => "The base of the fill can be defined.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.FillY = true;
+            sp.FillYColor = sp.Color.WithAlpha(.2);
+            sp.FillYValue = 0.6;
+        }
+    }
+
+    public class ScatterFillAboveBelow : RecipeBase
+    {
+        public override string Name => "Scatter Plot Filled Above and Below";
+        public override string Description => "Filled areas above and " +
+            "below the FillY value can be individually customized";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.FillY = true;
+            sp.FillYValue = 0;
+            sp.FillYAboveColor = Colors.Green.WithAlpha(.2);
+            sp.FillYBelowColor = Colors.Red.WithAlpha(.2);
+        }
+    }
+
+    public class ScatterScaleAndOffset : RecipeBase
+    {
+        public override string Name => "Scatter Scale and Offset";
+        public override string Description => "Scatter plot points can be multiplied by custom X and Y scale factors, " +
+            "or shifted horizontally or vertically using X and Y offset values.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+            var sp = myPlot.Add.Scatter(xs, ys);
+            sp.ScaleX = 100;
+            sp.ScaleY = 10;
+            sp.OffsetX = 500;
+            sp.OffsetY = 5;
         }
     }
 }

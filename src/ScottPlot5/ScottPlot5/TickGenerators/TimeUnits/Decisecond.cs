@@ -13,7 +13,8 @@ public class Decisecond : ITimeUnit
 
     public string GetDateTimeFormatString()
     {
-        string hourSpecifier = CultureInfo.CurrentCulture.Uses24HourClock() ? "HH" : "hh";
+        bool clockHas24Hours = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern.Contains("H");
+        string hourSpecifier = clockHas24Hours ? "HH" : "hh";
         return $"{CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern}\n{hourSpecifier}:mm:ss.f"; // TODO: This assumes colons as the separators, but consider (some) French-language locales use 12h30 rather than 12:30
     }
 

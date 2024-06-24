@@ -10,6 +10,7 @@ public class Bar
     public double ValueBase { get; set; } = 0;
     public double Error { get; set; } = 0;
 
+    public bool IsVisible { get; set; } = true;
     public Color FillColor { get; set; } = Colors.Gray;
     public Color BorderColor { get; set; } = Colors.Black;
     public Color ErrorColor { get; set; } = Colors.Black;
@@ -90,6 +91,9 @@ public class Bar
 
     public void Render(RenderPack rp, IAxes axes, SKPaint paint, Label labelStyle)
     {
+        if (!IsVisible)
+            return;
+
         PixelRect rect = axes.GetPixelRect(Rect);
         Drawing.FillRectangle(rp.Canvas, rect, FillColor);
         Drawing.DrawRectangle(rp.Canvas, rect, BorderColor, BorderLineWidth);
@@ -110,23 +114,24 @@ public class Bar
             float yPx = CenterLabel ? rect.VerticalCenter : rect.Top;
             labelStyle.Alignment = CenterLabel ? Alignment.MiddleCenter : Alignment.LowerCenter;
             Pixel labelPixel = new(xPx, yPx - LabelOffset);
-            labelStyle.Render(rp.Canvas, labelPixel);
+            labelStyle.Render(rp.Canvas, labelPixel, paint);
         }
         else
         {
+            MeasuredText measured = labelStyle.Measure(labelStyle.Text, paint);
             if (Value < 0)
             {
-                float xPx = rect.LeftCenter.X - (LabelOffset + labelStyle.Measure().Width / 2);
-                float yPx = rect.LeftCenter.Y + (labelStyle.Measure().Height / 2);
+                float xPx = rect.LeftCenter.X - (LabelOffset + measured.Width / 2);
+                float yPx = rect.LeftCenter.Y + (measured.Height / 2);
                 Pixel labelPixel = new(xPx, yPx);
-                labelStyle.Render(rp.Canvas, labelPixel);
+                labelStyle.Render(rp.Canvas, labelPixel, paint);
             }
             else
             {
-                float xPx = rect.RightCenter.X + (LabelOffset + labelStyle.Measure().Width / 2);
-                float yPx = rect.RightCenter.Y + (labelStyle.Measure().Height / 2);
+                float xPx = rect.RightCenter.X + (LabelOffset + measured.Width / 2);
+                float yPx = rect.RightCenter.Y + (measured.Height / 2);
                 Pixel labelPixel = new(xPx, yPx);
-                labelStyle.Render(rp.Canvas, labelPixel);
+                labelStyle.Render(rp.Canvas, labelPixel, paint);
             }
         }
 

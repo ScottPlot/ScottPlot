@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="scottplot-icon-rounded-border.ico" />
+        <Content Include="scottplot-icon-rounded-border.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,7 +28,7 @@
 
     <ItemGroup>
         <Compile Update="Demos\ShowValueOnHoverMultiple.cs">
-          <SubType>Form</SubType>
+            <SubType>Form</SubType>
         </Compile>
         <Compile Update="Properties\Resources.Designer.cs">
             <DesignTime>True</DesignTime>
@@ -42,6 +42,50 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Fonts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="eto.platform.wpf" Version="2.8.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Fonts\AlumniSans\AlumniSans-Bold.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\AlumniSans\AlumniSans-BoldItalic.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\AlumniSans\AlumniSans-Italic.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\AlumniSans\AlumniSans-Regular.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\AlumniSans\OFL.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NotoSerifDisplay\NotoSerifDisplay-Bold.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NotoSerifDisplay\NotoSerifDisplay-BoldItalic.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NotoSerifDisplay\NotoSerifDisplay-Italic.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NotoSerifDisplay\NotoSerifDisplay-Light.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NotoSerifDisplay\NotoSerifDisplay-Regular.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NotoSerifDisplay\OFL.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

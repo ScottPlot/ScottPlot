@@ -228,7 +228,7 @@ public class RandomDataGenerator
     /// </summary>
     public List<OHLC> RandomOHLCs(int count, DateTime start)
     {
-        DateTime[] dates = ScottPlot.Generate.DateTime.Weekdays(count, start);
+        DateTime[] dates = ScottPlot.Generate.ConsecutiveWeekdays(count, start);
         TimeSpan span = TimeSpan.FromDays(1);
 
         double mult = 1;

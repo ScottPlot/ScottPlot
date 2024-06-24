@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Crosshair : IPlottable, IRenderLast
+public class Crosshair : IPlottable, IRenderLast, IHasMarker
 {
     public HorizontalLine HorizontalLine { get; } = new();
     public VerticalLine VerticalLine { get; } = new();
@@ -19,9 +19,19 @@ public class Crosshair : IPlottable, IRenderLast
     public float LineWidth { set { HorizontalLine.LineWidth = value; VerticalLine.LineWidth = value; } }
     public LinePattern LinePattern { set { HorizontalLine.LinePattern = value; VerticalLine.LinePattern = value; } }
 
-    [Obsolete("Assign values to Color, LineWidth, or LinePattern properties to set style for both lines. " +
-        "HorizontalLine.LineStyle and VerticalLine.LineStyle are individually available as well.", true)]
+    public MarkerStyle MarkerStyle { get; set; } = new() { LineWidth = 1 };
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
+    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
+
+
+    [Obsolete("Assign values to LineColor, LineWidth, or LinePattern properties to set style for both lines. " +
+        "HorizontalLine and VerticalLine have properties that can be set individually as well.", true)]
     public LineStyle LineStyle { get; set; } = new();
+
     [Obsolete("Use TextColor and TextBackgroundColor instead", true)]
     public Color FontColor;
 
@@ -30,7 +40,7 @@ public class Crosshair : IPlottable, IRenderLast
     public IEnumerable<LegendItem> LegendItems => HorizontalLine.LegendItems.Concat(VerticalLine.LegendItems);
     public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
@@ -52,5 +62,9 @@ public class Crosshair : IPlottable, IRenderLast
 
         VerticalLine.Axes = Axes;
         VerticalLine.RenderLast(rp);
+
+        using SKPaint paint = new();
+        Pixel px = Axes.GetPixel(new Coordinates(X, Y));
+        MarkerStyle.Render(rp.Canvas, px, paint);
     }
 }

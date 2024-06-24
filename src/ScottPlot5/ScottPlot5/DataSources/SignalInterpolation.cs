@@ -6,7 +6,7 @@ public static class SignalInterpolation
     /// If the point to the left of the graph is extremely far outside the data area, 
     /// modify it using interpolation so it's closer to the data area to prevent render artifacts.
     /// </summary>
-    public static void InterpolateBeforeX(RenderPack rp, Pixel[] pixels)
+    public static void InterpolateBeforeX(RenderPack rp, Pixel[] pixels, ConnectStyle connectStyle)
     {
         if (pixels.Length <= 2)
             return;
@@ -20,7 +20,25 @@ public static class SignalInterpolation
         float yDelta = lastOutsidePoint.Y - firstInsidePoint.Y;
         float xDelta1 = x - firstInsidePoint.X;
         float xDelta2 = lastOutsidePoint.X - firstInsidePoint.X;
-        float y = firstInsidePoint.Y + yDelta * xDelta1 / xDelta2;
+
+        float y;
+        if (connectStyle == ConnectStyle.Straight)
+        {
+            y = firstInsidePoint.Y + yDelta * xDelta1 / xDelta2;
+        }
+        else if (connectStyle == ConnectStyle.StepHorizontal)
+        {
+            y = lastOutsidePoint.Y;
+        }
+        else if (connectStyle == ConnectStyle.StepVertical)
+        {
+            y = firstInsidePoint.Y;
+        }
+        else
+        {
+            throw new NotImplementedException(connectStyle.ToString());
+        }
+
         pixels[0] = new Pixel(x, y);
     }
 
@@ -28,7 +46,7 @@ public static class SignalInterpolation
     /// If the point to the bottom of the graph is extremely far outside the data area, 
     /// modify it using interpolation so it's closer to the data area to prevent render artifacts.
     /// </summary>
-    public static void InterpolateBeforeY(RenderPack rp, Pixel[] pixels)
+    public static void InterpolateBeforeY(RenderPack rp, Pixel[] pixels, ConnectStyle connectStyle)
     {
         if (pixels.Length <= 2)
             return;
@@ -50,7 +68,7 @@ public static class SignalInterpolation
     /// If the point to the right of the graph is extremely far outside the data area, 
     /// modify it using interpolation so it's closer to the data area to prevent render artifacts.
     /// </summary>
-    public static void InterpolateAfterX(RenderPack rp, Pixel[] pixels)
+    public static void InterpolateAfterX(RenderPack rp, Pixel[] pixels, ConnectStyle connectStyle)
     {
         if (pixels.Length <= 2)
             return;
@@ -64,7 +82,25 @@ public static class SignalInterpolation
         float yDelta = firstOutsidePoint.Y - lastInsidePoint.Y;
         float xDelta1 = x - lastInsidePoint.X;
         float xDelta2 = firstOutsidePoint.X - lastInsidePoint.X;
-        float y = lastInsidePoint.Y + yDelta * xDelta1 / xDelta2;
+
+        float y;
+        if (connectStyle == ConnectStyle.Straight)
+        {
+            y = lastInsidePoint.Y + yDelta * xDelta1 / xDelta2;
+        }
+        else if (connectStyle == ConnectStyle.StepHorizontal)
+        {
+            y = lastInsidePoint.Y;
+        }
+        else if (connectStyle == ConnectStyle.StepVertical)
+        {
+            y = firstOutsidePoint.Y;
+        }
+        else
+        {
+            throw new NotImplementedException(connectStyle.ToString());
+        }
+
         pixels[pixels.Length - 1] = new Pixel(x, y);
     }
 
@@ -72,7 +108,7 @@ public static class SignalInterpolation
     /// If the point to the top of the graph is extremely far outside the data area, 
     /// modify it using interpolation so it's closer to the data area to prevent render artifacts.
     /// </summary>
-    public static void InterpolateAfterY(RenderPack rp, Pixel[] pixels)
+    public static void InterpolateAfterY(RenderPack rp, Pixel[] pixels, ConnectStyle connectStyle)
     {
         if (pixels.Length <= 2)
             return;

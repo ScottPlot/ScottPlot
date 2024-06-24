@@ -1,5 +1,4 @@
-﻿using ScottPlot.Extensions;
-using SkiaSharp;
+﻿using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,23 +7,25 @@ using System.Windows.Forms;
 namespace ScottPlot.WinForms;
 
 [ToolboxItem(true)]
-#if NETFRAMEWORK
-[DesignTimeVisible(false)]
-#else
-[DesignTimeVisible(true)]
-#endif
 public class FormsPlot : FormsPlotBase
 {
-    private SKControl? SKControl;
+    public SKControl? SKControl { get; private set; }
 
     public override GRContext GRContext => null!;
 
     public FormsPlot()
     {
+
+#if NETFRAMEWORK
+        // do not attempt renders inside visual studio at design time
+        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            return;
+#endif
+
         HandleCreated += (s, e) => SetupSKControl();
         HandleDestroyed += (s, e) => TeardownSKControl();
         SetupSKControl();
-        Plot.FigureBackground.Color = SystemColors.Control.ToColor();
+        Plot.FigureBackground.Color = Color.FromColor(SystemColors.Control);
         Plot.DataBackground.Color = Colors.White;
     }
 

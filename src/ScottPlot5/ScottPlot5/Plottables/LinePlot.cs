@@ -9,9 +9,9 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -41,7 +41,7 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
         return new AxisLimits(boundingRect);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         CoordinateLine line = new(Start, End);
         PixelLine pxLine = Axes.GetPixelLine(line);

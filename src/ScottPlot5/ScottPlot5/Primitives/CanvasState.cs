@@ -70,5 +70,28 @@ public class CanvasState(SKCanvas canvas)
         Canvas.ClipRect(rect.ToSKRect());
     }
 
-    // TODO: manage translation and rotation too
+    public void Translate(Pixel px)
+    {
+        Canvas.Translate(px.X, px.Y);
+    }
+
+    public void RotateDegrees(double degrees)
+    {
+        Canvas.RotateDegrees((float)degrees, 0, 0);
+    }
+
+    public void RotateDegrees(double degrees, Pixel px)
+    {
+        Canvas.RotateDegrees((float)degrees, px.X, px.Y);
+    }
+
+    public void RotateRadians(double radians)
+    {
+        Canvas.RotateRadians((float)radians, 0, 0);
+    }
+
+    public void RotateRadians(double radians, Pixel px)
+    {
+        Canvas.RotateRadians((float)radians, px.X, px.Y);
+    }
 }

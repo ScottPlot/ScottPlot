@@ -273,6 +273,21 @@ public static class Generate
             .ToArray();
     }
 
+    /// <summary>
+    /// Sequence of ascending numbers with random spacing between values.
+    /// </summary>
+    public static double[] RandomAscending(int count, double minDelta = 0, double maxDelta = 1)
+    {
+        double[] values = RandomSample(count, minDelta, maxDelta);
+
+        for (int i = 1; i < count; i++)
+        {
+            values[i] += values[i - 1];
+        }
+
+        return values;
+    }
+
     public static double[] RandomNormal(int count, double mean = 0, double stdDev = 1)
     {
         return Enumerable.Range(0, count)
@@ -451,9 +466,81 @@ public static class Generate
 
     #region DateTime
 
-    /// <summary>
-    /// Contains methods for generating DateTime sequences
-    /// </summary>
+    public static System.DateTime[] Consecutive(int count, System.DateTime start, TimeSpan timeSpan)
+    {
+        System.DateTime[] dates = new System.DateTime[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            dates[i] = start;
+            start += timeSpan;
+        }
+
+        return dates;
+    }
+
+    public static System.DateTime[] ConsecutiveDateTimes(int count, System.DateTime start, TimeSpan timeSpan)
+    {
+        return Consecutive(count, start, timeSpan);
+    }
+
+    public static System.DateTime[] ConsecutiveDays(int count, int year = 2023, int month = 1, int day = 1)
+    {
+        return Consecutive(count, new(year, month, day), TimeSpan.FromDays(1));
+    }
+
+    public static System.DateTime[] ConsecutiveDays(int count, System.DateTime start)
+    {
+        return Consecutive(count, start, TimeSpan.FromDays(1));
+    }
+
+    public static System.DateTime[] ConsecutiveWeekdays(int count, int year = 2023, int month = 1, int day = 1)
+    {
+        return ConsecutiveWeekdays(count, new(year, month, day));
+    }
+
+    public static System.DateTime[] ConsecutiveWeekdays(int count, System.DateTime start)
+    {
+        System.DateTime[] dates = new System.DateTime[count];
+        TimeSpan step = TimeSpan.FromDays(1);
+        int i = 0;
+        while (i < count)
+        {
+            while (start.DayOfWeek == DayOfWeek.Saturday || start.DayOfWeek == DayOfWeek.Sunday)
+                start += step;
+            dates[i++] = start;
+            start += step;
+        }
+        return dates;
+    }
+
+    public static System.DateTime[] ConsecutiveHours(int count)
+    {
+        var start = new System.DateTime(2023, 01, 01);
+        return ConsecutiveHours(count, start);
+    }
+
+    public static System.DateTime[] ConsecutiveHours(int count, System.DateTime start)
+    {
+        return Consecutive(count, start, TimeSpan.FromHours(1));
+    }
+
+    public static System.DateTime[] ConsecutiveQuarterHours(int count, System.DateTime start)
+    {
+        return Consecutive(count, start, TimeSpan.FromMinutes(15));
+    }
+
+    public static System.DateTime[] ConsecutiveMinutes(int count, System.DateTime start)
+    {
+        return Consecutive(count, start, TimeSpan.FromMinutes(1));
+    }
+
+    public static System.DateTime[] ConsecutiveSeconds(int count, System.DateTime start)
+    {
+        return Consecutive(count, start, TimeSpan.FromSeconds(1));
+    }
+
+    [Obsolete("use ConsecutiveDays(), ConsecutiveHours(), ConsecutiveMinutes(), etc.", true)]
     public static class DateTime
     {
         /// <summary>

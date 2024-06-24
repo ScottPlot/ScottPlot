@@ -31,16 +31,22 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public void UpdateAxisLimits(Plot plot, bool force = false)
+    public void UpdateAxisLimits(Plot plot)
     {
-        AxisLimits viewLimits = force ? AxisLimits.NoLimits : plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
+        if (Data.CountTotal == 0)
+            return;
+
+        bool firstTimeRenderingData = Data.CountOnLastRender < 1 && Data.CountTotal > 0;
+
         AxisLimits dataLimits = GetAxisLimits();
+
+        AxisLimits viewLimits = firstTimeRenderingData
+            ? dataLimits
+            : plot.Axes.GetLimits(Axes.XAxis, Axes.YAxis);
+
         AxisLimits newLimits = AxisManager.GetAxisLimits(viewLimits, dataLimits);
 
         plot.Axes.SetLimits(newLimits, Axes.XAxis, Axes.YAxis);
-
-        if (force)
-            UpdateAxisLimits(plot);
     }
 
     public void Add(double y)
@@ -53,9 +59,34 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
         Data.Add(x, y);
     }
 
+    public void Add(double[] xs, double[] ys)
+    {
+        if (xs is null || ys is null)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must not be null");
+
+        if (xs.Length != ys.Length)
+            throw new ArgumentException($"{nameof(xs).Length} and {nameof(ys).Length} must have equal length");
+
+        for (int i = 0; i < xs.Length; i++)
+        {
+            Data.Add(xs[i], ys[i]);
+        }
+    }
+
     public void Add(Coordinates coordinates)
     {
         Data.Add(coordinates);
+    }
+
+    public void Add(Coordinates[] coordinates)
+    {
+        if (coordinates is null)
+            throw new ArgumentException($"{coordinates} must not be null");
+
+        for (int i = 0; i < coordinates.Length; i++)
+        {
+            Data.Add(coordinates[i]);
+        }
     }
 
     public void Add(IEnumerable<double> ys)
@@ -87,7 +118,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
         }
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         IEnumerable<Pixel> points = Data.Coordinates.Select(Axes.GetPixel);
 
@@ -114,11 +145,13 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendTe
     public void ViewJump(double width = 1000, double paddingFraction = .5)
     {
         ManageAxisLimits = true;
+
         AxisManager = new Slide()
         {
             Width = width,
             PaddingFractionX = paddingFraction,
         };
+
         Data.CountOnLastRender = -1;
     }
 

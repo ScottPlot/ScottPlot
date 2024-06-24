@@ -20,4 +20,20 @@ public class FillStyle
 
         Drawing.FillRectangle(canvas, rect, paint, this);
     }
+
+    public void ApplyToPaint(SKPaint paint, PixelRect rect)
+    {
+        paint.Color = Color.ToSKColor();
+        paint.IsStroke = false;
+        paint.IsAntialias = AntiAlias;
+
+        if (Hatch is not null)
+        {
+            paint.Shader = Hatch.GetShader(Color, HatchColor, rect);
+        }
+        else
+        {
+            paint.Shader = null;
+        }
+    }
 }

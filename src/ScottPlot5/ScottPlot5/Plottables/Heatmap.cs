@@ -149,12 +149,40 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// <summary>
     /// Width of a single cell from the heatmap (in coordinate units)
     /// </summary>
-    private double CellWidth => ExtentOrDefault.Width / Intensities.GetLength(1);
+    public double CellWidth
+    {
+        get
+        {
+            return ExtentOrDefault.Width / Intensities.GetLength(1);
+        }
+        set
+        {
+            double left = ExtentOrDefault.Left;
+            double right = ExtentOrDefault.Left + value * Intensities.GetLength(1);
+            double bottom = ExtentOrDefault.Bottom;
+            double top = ExtentOrDefault.Top;
+            Extent = new(left, right, bottom, top);
+        }
+    }
 
     /// <summary>
     /// Height of a single cell from the heatmap (in coordinate units)
     /// </summary>
-    private double CellHeight => ExtentOrDefault.Height / Intensities.GetLength(0);
+    public double CellHeight
+    {
+        get
+        {
+            return ExtentOrDefault.Height / Intensities.GetLength(0);
+        }
+        set
+        {
+            double left = ExtentOrDefault.Left;
+            double right = ExtentOrDefault.Right;
+            double bottom = ExtentOrDefault.Bottom;
+            double top = ExtentOrDefault.Bottom + value * Intensities.GetLength(0);
+            Extent = new(left, right, bottom, top);
+        }
+    }
 
     /// <summary>
     /// This object holds data values for the heatmap.
@@ -285,6 +313,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     public void Update()
     {
+        DataRange = Range.GetRange(Intensities);
         uint[] argbs = GetArgbValues();
         Bitmap?.Dispose();
         Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
@@ -329,9 +358,30 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
-    public Range GetRange() => Range.GetRange(Intensities);
+    public Range GetRange() => ManualRange ?? DataRange;
 
-    public void Render(RenderPack rp)
+    /// <summary>
+    /// Range of values spanned by the data the last time it was updated
+    /// </summary>
+    public Range DataRange { get; private set; }
+
+
+    private Range? _ManualRange;
+
+    /// <summary>
+    /// If supplied, the colormap will span this range of values
+    /// </summary>
+    public Range? ManualRange
+    {
+        get => _ManualRange;
+        set
+        {
+            _ManualRange = value;
+            Update();
+        }
+    }
+
+    public virtual void Render(RenderPack rp)
     {
         if (Bitmap is null)
             Update(); // automatically generate the bitmap on first render if it was not generated manually

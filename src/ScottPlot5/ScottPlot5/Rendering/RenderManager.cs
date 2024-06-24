@@ -11,12 +11,13 @@ public class RenderManager(Plot plot)
     public List<IRenderAction> RenderActions { get; } = [
         new RenderActions.PreRenderLock(),
         new RenderActions.ClearCanvas(),
-        new RenderActions.RenderFigureBackground(),
         new RenderActions.ReplaceNullAxesWithDefaults(),
         new RenderActions.AutoScaleUnsetAxes(),
+        new RenderActions.ContinuouslyAutoscale(),
         new RenderActions.ExecutePlottableAxisManagers(),
         new RenderActions.ApplyAxisRulesBeforeLayout(),
         new RenderActions.CalculateLayout(),
+        new RenderActions.RenderFigureBackground(),
         new RenderActions.ApplyAxisRulesAfterLayout(),
         new RenderActions.RegenerateTicks(),
         new RenderActions.RenderStartingEvent(),
@@ -68,6 +69,11 @@ public class RenderManager(Plot plot)
     public EventHandler<RenderDetails> AxisLimitsChanged { get; set; } = delegate { };
 
     /// <summary>
+    /// Prevents <see cref="AxisLimitsChanged"/> from being invoked in situations that may cause infinite loops
+    /// </summary>
+    public bool DisableAxisLimitsChangedEventOnNextRender { get; set; } = false;
+
+    /// <summary>
     /// Indicates whether this plot is in the process of executing a render
     /// </summary>
     public bool IsRendering { get; private set; } = false;
@@ -79,12 +85,22 @@ public class RenderManager(Plot plot)
 
     public bool EnableEvents { get; set; } = true;
 
+    public bool ClearCanvasBeforeEachRender { get; set; } = true;
+
     private Plot Plot { get; } = plot;
 
     /// <summary>
     /// Total number of renders completed
     /// </summary>
     public int RenderCount { get; private set; } = 0;
+
+    /// <summary>
+    /// Remove all render actions of the given type
+    /// </summary>
+    public void Remove<T>() where T : IRenderAction
+    {
+        RenderActions.RemoveAll(x => x is T);
+    }
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
@@ -124,12 +140,13 @@ public class RenderManager(Plot plot)
                 SizeChanged.Invoke(Plot, LastRender);
             }
 
-            if (LastRender.AxisLimitsChanged)
+            if (!DisableAxisLimitsChangedEventOnNextRender && LastRender.AxisLimitsChanged)
             {
                 AxisLimitsChanged.Invoke(Plot, LastRender);
             }
         }
 
+        DisableAxisLimitsChangedEventOnNextRender = false;
 
         // TODO: event for when layout changes
     }

@@ -32,7 +32,8 @@ namespace Sandbox.Blazor.WebAssembly.Services
         public ResizeService()
         {
             _refresgDelay = new(TimeSpan.FromMilliseconds(50));
-            _refresgDelay.Elapsed += (o, e) => { 
+            _refresgDelay.Elapsed += (o, e) =>
+            {
                 _refresgDelay.Enabled = false;
                 Resize?.Invoke(new SizeF(PixelWidth, PixelHeight));
             };

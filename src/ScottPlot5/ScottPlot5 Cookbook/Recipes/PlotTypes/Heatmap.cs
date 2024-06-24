@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿using System;
+
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Heatmap : ICategory
 {
@@ -102,6 +104,37 @@ public class Heatmap : ICategory
             var cb = myPlot.Add.ColorBar(hm);
             cb.Label = "Intensity";
             cb.LabelStyle.FontSize = 24;
+        }
+    }
+
+    public class ColorbarTickFormatter : RecipeBase
+    {
+        public override string Name => "Colorbar Tick Formatter";
+        public override string Description => "Colorbars have an optional custom tick " +
+            "formatter that allows users to control the string format of tick labels.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+
+            var hm = myPlot.Add.Heatmap(data);
+            var cb = myPlot.Add.ColorBar(hm);
+
+            // create a static function containing the string formatting logic
+            static string CustomFormatter(double position)
+            {
+                return $"{Math.Round(position / 2.55)} %";
+            }
+
+            // create a custom tick generator using your custom label formatter
+            ScottPlot.TickGenerators.NumericAutomatic myTickGenerator = new()
+            {
+                LabelFormatter = CustomFormatter
+            };
+
+            // tell the colorbar to use the custom tick generator
+            cb.Axis.TickGenerator = myTickGenerator;
         }
     }
 
@@ -247,6 +280,99 @@ public class Heatmap : ICategory
             var hm = myPlot.Add.Heatmap(data);
             hm.Position = new(10, 35, -1.5, .5);
             hm.AlphaMap = alphaMap;
+        }
+    }
+
+    public class FramelessHeatmap : RecipeBase
+    {
+        public override string Name => "Frameless Heatmap";
+        public override string Description => "A frameless heatmap can be achieved by disabling " +
+            "axis labels and ticks, then setting the margins to 0 so the data area tightly fits the data.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 },
+            };
+
+            // add a heatmap to the plot
+            myPlot.Add.Heatmap(data);
+
+            // hide axes on all edges of the figure
+            myPlot.Layout.Frameless();
+
+            // disable padding around the heatmap data
+            myPlot.Axes.Margins(0, 0);
+        }
+    }
+
+    public class HeatmapCellAlignment : RecipeBase
+    {
+        public override string Name => "HeatmapCellAlignment";
+        public override string Description => "Heatmap cells are aligned in their centers by default. " +
+            "This means that the bottom left cell will be centered at (0, 0), and its lower left corner will be " +
+            "to the lower left of the origin. Setting sell alignment to lower left causes the lower left of the " +
+            "heatmap to be exactly at (0, 0).";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 },
+            };
+
+            var hm = myPlot.Add.Heatmap(data);
+            hm.CellAlignment = Alignment.LowerLeft;
+        }
+    }
+
+    public class HeatmapCellSize : RecipeBase
+    {
+        public override string Name => "Heatmap Cell Size";
+        public override string Description => "Dimensions of a heatmap may be set by specifying how " +
+            "large a cell should be in pixel units.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 },
+            };
+
+            var hm = myPlot.Add.Heatmap(data);
+            hm.CellAlignment = Alignment.LowerLeft;
+            hm.CellWidth = 100;
+            hm.CellHeight = 10;
+        }
+    }
+
+    public class HeatmapManualRange : RecipeBase
+    {
+        public override string Name => "Heatmap with Manual Color Range";
+        public override string Description => "The user can define the range of values " +
+            "to represent with colors in the colormap. Values outside that range will be clipped " +
+            "to the nearest color in the colormap.";
+
+        [Test]
+        public override void Execute()
+        {
+            // sample data values range from 0-255
+            double[,] data = SampleData.MonaLisa();
+
+            // add a heatmap and colorbar to the plot
+            var hm = myPlot.Add.Heatmap(data);
+            hm.Colormap = new ScottPlot.Colormaps.Turbo();
+            myPlot.Add.ColorBar(hm);
+
+            // force the colormap to span a manual range of values
+            hm.ManualRange = new(50, 150);
         }
     }
 }

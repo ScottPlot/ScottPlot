@@ -17,7 +17,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
-    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
+    public LineStyle LineStyle { get => Poly.LineStyle; set => Poly.LineStyle = value; }
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -26,9 +26,9 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.OutlineColor; set => MarkerStyle.OutlineColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.OutlineWidth; set => MarkerStyle.OutlineWidth = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     /// <summary>
     /// Creates an empty RangePlot plot, call SetDataSource() to set the coordinates.
@@ -69,7 +69,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
             i++;
         }
 
-        Poly = new Polygon(all);
+        Poly.UpdateCoordinates(all);
     }
 
     public void SetDataSource<T>(ICollection<T> items, Func<T, (double X, double Top, double Bottom)> coordinateSolver)
@@ -90,7 +90,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
             i++;
         }
 
-        Poly = new Polygon(all);
+        Poly.UpdateCoordinates(all);
     }
 
     public AxisLimits GetAxisLimits()
@@ -101,7 +101,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
         return Poly.GetAxisLimits();
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Poly.Render(rp);
     }

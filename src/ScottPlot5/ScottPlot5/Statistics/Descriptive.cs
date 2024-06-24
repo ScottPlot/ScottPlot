@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Statistics;
+﻿using System.Collections.Generic;
+
+namespace ScottPlot.Statistics;
 
 public static class Descriptive
 {
@@ -46,6 +48,57 @@ public static class Descriptive
             throw new ArgumentException($"{nameof(values)} cannot be empty");
 
         return Sum(values) / values.Length;
+    }
+
+    /// <summary>
+    /// Return the sample median.
+    /// </summary>
+    public static double Median(double[] values)
+    {
+        if (values.Length == 0)
+        {
+            throw new ArgumentException($"{nameof(values)} cannot be empty");
+        }
+
+        double[] sorted = [.. values.OrderBy(x => x)];
+
+        return SortedMedian(sorted);
+    }
+
+    /// <summary>
+    /// Return the median of a sorted sample.
+    /// </summary>
+    public static double SortedMedian(IReadOnlyList<double> sortedValues)
+    {
+        if (sortedValues.Count % 2 == 1)
+        {
+            return sortedValues[sortedValues.Count / 2];
+        }
+        else
+        {
+            double left = sortedValues[sortedValues.Count / 2 - 1];
+            double right = sortedValues[sortedValues.Count / 2];
+            return (left + right) / 2;
+        }
+    }
+
+    /// <summary>
+    /// Return the percentile of a sorted sample.
+    /// </summary>
+    public static double SortedPercentile(IReadOnlyList<double> sortedValues, double percentile)
+    {
+        int index = (int)(percentile * sortedValues.Count / 100);
+        index = Math.Max(0, index);
+        index = Math.Min(sortedValues.Count - 1, index);
+        return sortedValues[index];
+    }
+
+    /// <summary>
+    /// Return the percentile of a sample.
+    /// </summary>
+    public static double Percentile(IReadOnlyList<double> values, double percentile)
+    {
+        return SortedPercentile([.. values.OrderBy(x => x)], percentile);
     }
 
     /// <summary>

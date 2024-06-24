@@ -95,67 +95,31 @@ public class Styling : ICategory
         }
     }
 
-    public class Markers : RecipeBase
+    public class ArrowShapeNames : RecipeBase
     {
-        public override string Name => "Markers";
-        public override string Description => "Many plot types have a MarkerStyle which can be customized.";
+        public override string Name => "Arrow Shapes";
+        public override string Description => "Many standard arrow shapes are available";
 
         [Test]
         public override void Execute()
         {
-            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
-            ScottPlot.Palettes.Category10 palette = new();
+            ArrowShape[] arrowShapes = Enum.GetValues<ArrowShape>().ToArray();
 
-            for (int i = 0; i < markerShapes.Length; i++)
+            for (int i = 0; i < arrowShapes.Length; i++)
             {
-                double[] xs = Generate.Consecutive(10);
-                double[] ys = Generate.Sin(10, offset: markerShapes.Length - i);
-                Color color = palette.GetColor(i);
+                Coordinates arrowTip = new(0, -i);
+                Coordinates arrowBase = arrowTip.WithDelta(1, 0);
 
-                var scatter = myPlot.Add.Scatter(xs, ys);
-                scatter.MarkerStyle.Shape = markerShapes[i];
-                scatter.MarkerStyle.Size = 10;
-                scatter.LineColor = color.WithAlpha(.2);
-                scatter.MarkerFillColor = color;
-                scatter.MarkerLineColor = color;
+                var arrow = myPlot.Add.Arrow(arrowBase, arrowTip);
+                arrow.ArrowShape = arrowShapes[i].GetShape();
 
-                var txt = myPlot.Add.Text(markerShapes[i].ToString(), 10, ys.Last());
+                var txt = myPlot.Add.Text(arrowShapes[i].ToString(), arrowBase.WithDelta(.1, 0));
+                txt.LabelFontColor = arrow.ArrowLineColor;
                 txt.LabelAlignment = Alignment.MiddleLeft;
-                txt.LabelFontColor = color;
+                txt.LabelFontSize = 18;
             }
 
-            myPlot.Axes.SetLimitsX(-2, 20);
-            myPlot.HideGrid();
-        }
-    }
-
-    public class MarkerNames : RecipeBase
-    {
-        public override string Name => "Marker Names";
-        public override string Description => "Markers can be referred to by their name.";
-
-        [Test]
-        public override void Execute()
-        {
-            MarkerShape[] markerShapes = Enum.GetValues<MarkerShape>().ToArray();
-            ScottPlot.Palettes.Category20 palette = new();
-
-            for (int i = 0; i < markerShapes.Length; i++)
-            {
-                var mp = myPlot.Add.Marker(x: i, y: 0);
-                mp.MarkerStyle.Shape = markerShapes[i];
-                mp.MarkerStyle.Size = 10;
-                mp.MarkerStyle.OutlineWidth = 1.5f;
-                mp.MarkerStyle.OutlineColor = palette.GetColor(i);
-                mp.MarkerStyle.FillColor = palette.GetColor(i).WithAlpha(.5);
-
-                var txt = myPlot.Add.Text(markerShapes[i].ToString(), i, 0.15);
-                txt.LabelRotation = -90;
-                txt.LabelAlignment = Alignment.MiddleLeft;
-            }
-
-            myPlot.Title("Marker Names");
-            myPlot.Axes.SetLimits(-1, markerShapes.Length, -1, 4);
+            myPlot.Axes.SetLimits(-1, 3, -arrowShapes.Length, 1);
             myPlot.HideGrid();
         }
     }
@@ -248,4 +212,6 @@ public class Styling : ICategory
             myPlot.Legend.OutlineColor = Color.FromHex("#d7d7d7");
         }
     }
+
+
 }

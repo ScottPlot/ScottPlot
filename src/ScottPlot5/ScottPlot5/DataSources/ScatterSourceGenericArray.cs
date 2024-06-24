@@ -77,4 +77,13 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
             ? new DataPoint(closestX, closestY, closestIndex)
             : DataPoint.None;
     }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        // TODO: Implement GetNearestX() in this DataSource
+        // Code can be copied from ScatterSourceDoubleArray.GetNearestX() and modified as needed
+        // Contributions are welcome!
+        // https://github.com/ScottPlot/ScottPlot/issues/3807
+        throw new NotImplementedException();
+    }
 }

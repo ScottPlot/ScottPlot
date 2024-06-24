@@ -64,11 +64,13 @@ public class Text : LabelStyleProperties, IPlottable
         return new AxisLimits(Location);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Pixel pixelLocation = Axes.GetPixel(Location);
         pixelLocation.X += OffsetX;
         pixelLocation.Y += OffsetY;
-        LabelStyle.Render(rp.Canvas, pixelLocation);
+
+        using SKPaint paint = new();
+        LabelStyle.Render(rp.Canvas, pixelLocation, paint);
     }
 }
