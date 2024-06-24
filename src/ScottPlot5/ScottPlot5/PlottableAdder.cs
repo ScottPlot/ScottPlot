@@ -626,6 +626,20 @@ public class PlottableAdder(Plot plot)
         return Polygon(coordinates);
     }
 
+    public PopulationSymbol Population(double[] values, double x = 0)
+    {
+        Color color = GetNextColor();
+        Population pop = new(values);
+        PopulationSymbol sym = new(pop);
+        sym.X = x;
+        sym.Bar.FillColor = color;
+        sym.Box.FillColor = Colors.Black.WithLightness(.8f);
+        sym.Marker.MarkerLineColor = color;
+        sym.Marker.MarkerFillColor = color;
+        Plot.PlottableList.Add(sym);
+        return sym;
+    }
+
     public Radar Radar(IReadOnlyList<RadarSeries> series)
     {
         Radar radar = new(series);
