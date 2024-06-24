@@ -145,4 +145,22 @@ internal class AutoScaleTests
         plot.Axes.GetLimits().Bottom.Should().BeApproximately(199, .1);
         plot.Axes.GetLimits().Top.Should().BeApproximately(201, .1);
     }
+
+    [Test]
+    public void Test_Autoscale_ExtremelyLarge()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/3930
+
+        Plot plot = new();
+        plot.Add.Marker(1e100, 1e100);
+        plot.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Autoscale_ExtremelySmall()
+    {
+        Plot plot = new();
+        plot.Add.Marker(1e-100, 1e-100);
+        plot.Should().RenderInMemoryWithoutThrowing();
+    }
 }
