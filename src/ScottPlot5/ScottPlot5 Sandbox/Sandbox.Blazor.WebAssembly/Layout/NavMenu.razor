@@ -1,9 +1,15 @@
 ﻿@inject IRecipesService RecipeService
+@inject IResizeService ResizeService
 @inject NavigationManager NavManager
 @implements IDisposable
 
 <div class="@NavMenuTopCssClass d-flex align-items-center justify-content-between p-2">
 
+    @if (!IsMenuCollapsed)
+    {
+        <img src="favicon.svg" height="36px" class="" />
+        <div class="text-light fs-5">ScottPlot Blazor Demo</div>
+    }
     <div class="burger">
         <div title="Navigation menu" @onclick="ToggleIconMenu">
             @if (IsMenuCollapsed)
@@ -25,12 +31,6 @@
             }
         </div>
     </div>
-
-    @if (!IsMenuCollapsed)
-    {
-        <div class="text-light fs-5">ScottPlot Blazor Demo</div>
-        <img src="favicon.svg" height="36px" class="" />
-    }
 
 </div>
 
@@ -85,10 +85,11 @@
     string _SearchTerm = string.Empty;
     string SearchTerm { get => _SearchTerm; set { _SearchTerm = value; UpdateFilter(); } }
 
+    private bool? _wasLargeScreen = null;
     /// <summary>
     /// For "small device" to show/hide drop-down menu
     /// </summary>
-    private bool IsMenuCollapsed { get; set; } = true;
+    private bool IsMenuCollapsed { get; set; }
     private string? NavMenuCssClass => IsMenuCollapsed ? "collapse" : null;
     private string? NavMenuTopCssClass => IsMenuCollapsed ? "top-row-hide" : "top-row-show";
     private string BurgerIconColor => IsMenuCollapsed ? "#000000" : "#FFFFFF";
@@ -104,11 +105,14 @@
     {
         UpdateFilter();
         RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
+        ResizeService.Resize += this.OnSizeChanged;
+        OnSizeChanged(new System.Drawing.SizeF());
     }
 
     public void Dispose()
     {
         RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
+        ResizeService.Resize -= this.OnSizeChanged;
     }
 
     /// <summary>
@@ -121,6 +125,19 @@
         await ShowIconMenu.InvokeAsync(IsMenuCollapsed);
     }
 
+    private void OnSizeChanged(System.Drawing.SizeF newSize)
+    {
+        InvokeAsync(async () =>
+        {
+            // add little delay to ensure BlazorPlot is visible to ensure refresh works!
+            await Task.Delay(1);
+            if (_wasLargeScreen != ResizeService.IsLargeScreen)
+            {
+                _wasLargeScreen = ResizeService.IsLargeScreen;
+                IsMenuCollapsed = _wasLargeScreen == false;
+            }
+        });
+    }
     private void UpdateFilter()
     {
         if (string.IsNullOrWhiteSpace(SearchTerm))
@@ -160,7 +177,7 @@
     protected void NavigateTo(string uri, bool replace = false)
     {
         // for small devies, to collapse the dropdown menu
-        IsMenuCollapsed = true;
+        IsMenuCollapsed = _wasLargeScreen == false;
         NavManager.NavigateTo(uri, replace: replace);
     }
 
@@ -171,7 +188,7 @@
     protected void ShowRecipe(IRecipe recipe)
     {
         // for small devies, to collapse the dropdown menu
-        IsMenuCollapsed = true;
+        IsMenuCollapsed = _wasLargeScreen == false;
         NavigateTo($"recipe/{recipe.GetType().Name}", true);
         RecipeService.Recipe = recipe;
     }

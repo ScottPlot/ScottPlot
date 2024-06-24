@@ -11,6 +11,9 @@
         <div>@RecipeService.RecipeDescription</div>
     </div>
 
+    <div class="p-2">
+        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
+    </div>
     @if (RecipeService.ShowOpenGL)
     {
         <BlazorPlotGL @ref=BlazorPlotGL Style="@plotSize" />
@@ -31,10 +34,6 @@
                 <p>Loading...</p>
             }
         </div>
-    </div>
-
-    <div class="my-5 p-3">
-        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
     </div>
 }
 
@@ -110,7 +109,7 @@
     }
     protected void ResizePlot(System.Drawing.SizeF newSize)
     {
-        plotSize = $"width: min(100%, {newSize.Width:F0}px); height: 600px;";
+        plotSize = $"width: min(100%, {newSize.Width:F0}px); height: {Math.Max(newSize.Height * 0.5, 240):F0}px;";
         RefreshWithPlot();
     }
 }

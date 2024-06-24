@@ -18,10 +18,11 @@
 {
     private ElementReference? mainElement { get; set; } = null;
     private ResizeTask? taskReference = null;
+    private bool? wasLargeScreen = null;
     /// <summary>
     /// True when side bar is minimized
     /// </summary>
-    private bool _iconMenuActive { get; set; }
+    private bool _iconMenuActive { get; set; } = false;
     private string? IconMenuCssClass => _iconMenuActive ? "width: auto; background-color: transparent;" : null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -59,6 +60,12 @@
             if (entry.TargetElement.Value.Equals(mainElement))
             {
                 ResizeService.SetSize(Convert.ToSingle(entry.ContentRect.Width), Convert.ToSingle(entry.ContentRect.Height));
+                // Clear Icon mode on screen size changes
+                if (ResizeService.IsLargeScreen != wasLargeScreen)
+                {
+                    wasLargeScreen = ResizeService.IsLargeScreen;
+                    _iconMenuActive = false;
+                }
             }
         }
     }
