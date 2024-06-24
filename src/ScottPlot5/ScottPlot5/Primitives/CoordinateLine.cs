@@ -36,6 +36,18 @@ public readonly struct CoordinateLine
         Y2 = pt2.Y;
     }
 
+    private static CoordinateLine GetCoordinateLine(double x, double y, double slope)
+    {
+        Coordinates pt1 = new(x, y);
+        return GetCoordinateLine(pt1, slope);
+    }
+
+    private static CoordinateLine GetCoordinateLine(Coordinates point, double slope)
+    {
+        Coordinates pt2 = new(point.X + 1, point.Y + slope);
+        return new CoordinateLine(point, pt2);
+    }
+
     public override string ToString()
     {
         return $"CoordinateLine from ({X1}, {Y1}) to ({X2}, {Y2})";
