@@ -1,31 +1,40 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => GetSampleImage());
-
-app.Run();
-
-
-string GetSampleImage()
+app.MapGet("/", async context =>
 {
+    string html = "<html><body><img src='random.png'></body></html>";
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(html);
+});
 
-
+app.MapGet("/random.png", async context =>
+{
+    // create a plot and fill it with sample data
     ScottPlot.Plot myPlot = new();
-
-    double[] dataX = { 1, 2, 3, 4, 5 };
-    double[] dataY = { 1, 4, 9, 16, 25 };
+    double[] dataX = ScottPlot.Generate.Consecutive(100);
+    double[] dataY = ScottPlot.Generate.RandomWalk(100);
     myPlot.Add.Scatter(dataX, dataY);
 
+    // render the plot as an image and serve it
+    byte[] imageBytes = myPlot.GetImageBytes(600, 400, ScottPlot.ImageFormat.Png);
+    context.Response.ContentType = "image/png";
+    await context.Response.Body.WriteAsync(imageBytes, 0, imageBytes.Length);
+});
 
-    var imgBytes = myPlot.GetImageBytes(400, 300, ScottPlot.ImageFormat.Png);
+app.MapGet("/svg", async context =>
+{
+    // create a plot and fill it with sample data
+    ScottPlot.Plot myPlot = new();
+    double[] dataX = ScottPlot.Generate.Consecutive(100);
+    double[] dataY = ScottPlot.Generate.RandomWalk(100);
+    myPlot.Add.Scatter(dataX, dataY);
 
-    var base64String = Convert.ToBase64String(imgBytes);
-    //return base64String;
+    // render the plot as a SVG string and serve it inside HTML
+    string svg = myPlot.GetSvgXml(600, 400);
+    string html = $"<html><body>{svg}</body></html>";
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(html);
+});
 
-    //If trying to create a data URI, you can do something like this:
-    var dataUri = $"data:image/png;base64,{base64String}";
-
-    //you can use this in an img tag in html like this:
-    // <img src="data:image/png;base64,base64String" alt="ScottPlot Image" />        
-    return dataUri;
-}
+app.Run();
