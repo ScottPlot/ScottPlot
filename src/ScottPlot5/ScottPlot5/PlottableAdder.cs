@@ -247,18 +247,6 @@ public class PlottableAdder(Plot plot)
         return logger;
     }
 
-    public DataLogger2 DataLogger2(IDataLogger2Source source)
-    {
-        DataLogger2 logger = new(source)
-        {
-            Color = GetNextColor(),
-        };
-
-        Plot.PlottableList.Add(logger);
-
-        return logger;
-    }
-
     public DataStreamer DataStreamer(int points, double period = 1)
     {
         double[] data = Generate.NaN(points);

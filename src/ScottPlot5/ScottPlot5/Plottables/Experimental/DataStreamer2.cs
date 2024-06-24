@@ -1,8 +1,8 @@
 ﻿using ScottPlot.AxisLimitManagers;
 
-namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables.Experimental;
 
-public class DataLogger2(IDataLogger2Source dataSource) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
+public class DataStreamer2(IDataLogger2Source dataSource) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
 {
     public IDataLogger2Source Data { get; set; } = dataSource;
 

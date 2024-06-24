@@ -7,14 +7,14 @@ namespace WinForms_Demo.Demos;
 
 public partial class DataLogger2 : Form, IDemoWindow
 {
-    public string Title => "Data Logger 2.0";
-    public string Description => "Plots live streaming data as a growing line plot.";
+    public string Title => "Data Streamer (Experimental)";
+    public string Description => "Experimental data streamer that uses a circular buffer for improved performance.";
 
     readonly System.Windows.Forms.Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
 
-    readonly ScottPlot.Plottables.DataLogger2 Logger1;
-    readonly ScottPlot.Plottables.DataLogger2 Logger2;
+    readonly ScottPlot.Plottables.Experimental.DataStreamer2 Logger1;
+    readonly ScottPlot.Plottables.Experimental.DataStreamer2 Logger2;
 
     readonly ScottPlot.DataGenerators.RandomWalker Walker1 = new(0, multiplier: 0.01);
     readonly ScottPlot.DataGenerators.RandomWalker Walker2 = new(1, multiplier: 1000);
@@ -27,10 +27,15 @@ public partial class DataLogger2 : Form, IDemoWindow
         formsPlot1.Interaction.Disable();
 
         // create two loggers and add them to the plot
-        var data1 = new DataLogger2Source(new CircularBuffer<Coordinates>(5000));
-        Logger1 = formsPlot1.Plot.Add.DataLogger2(data1);
-        var data2 = new DataLogger2Source(new CircularBuffer<Coordinates>(5000));
-        Logger2 = formsPlot1.Plot.Add.DataLogger2(data2);
+        var data1 = new DataLogger2Source(new CircularBuffer<Coordinates>(1000));
+        Logger1 = new ScottPlot.Plottables.Experimental.DataStreamer2(data1);
+        Logger1.Color = Colors.C0;
+        formsPlot1.Plot.Add.Plottable(Logger1);
+
+        var data2 = new DataLogger2Source(new CircularBuffer<Coordinates>(1000));
+        Logger2 = new ScottPlot.Plottables.Experimental.DataStreamer2(data2);
+        Logger2.Color = Colors.C1;
+        formsPlot1.Plot.Add.Plottable(Logger2);
 
         // use the right axis (already there by default) for the first logger
         RightAxis axis1 = (RightAxis)formsPlot1.Plot.Axes.Right;
