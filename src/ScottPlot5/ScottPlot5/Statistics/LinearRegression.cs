@@ -11,9 +11,14 @@ public readonly struct LinearRegression
     /// <summary>
     /// Calculate the linear regression from a collection of X/Y coordinates
     /// </summary>
-    public LinearRegression(Coordinates[] coordinates)
+    public LinearRegression(IEnumerable<Coordinates> coordinates)
     {
-        if (coordinates.Length < 2)
+        if (coordinates == null)
+        {
+            throw new ArgumentNullException(nameof(coordinates), $"{nameof(coordinates)} cannot be null");
+        }
+
+        if (coordinates.Count() < 2)
         {
             throw new ArgumentException($"{nameof(coordinates)} must have at least 2 points");
         }
