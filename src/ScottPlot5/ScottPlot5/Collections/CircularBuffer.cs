@@ -231,7 +231,7 @@ public sealed class CircularBuffer<T> : IList<T>, ICollection<T>, IEnumerable<T>
 
         int lo = index;
         int hi = index + count - 1;
-        
+
         while (lo <= hi)
         {
             int i = lo + ((hi - lo) >> 1);
