@@ -27,12 +27,12 @@ public partial class DataLogger2 : Form, IDemoWindow
         formsPlot1.Interaction.Disable();
 
         // create two loggers and add them to the plot
-        var data1 = new DataLogger2Source(new CircularBuffer<Coordinates>(1000));
+        var data1 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
         Logger1 = new ScottPlot.Plottables.Experimental.DataStreamer2(data1);
         Logger1.Color = Colors.C0;
         formsPlot1.Plot.Add.Plottable(Logger1);
 
-        var data2 = new DataLogger2Source(new CircularBuffer<Coordinates>(1000));
+        var data2 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
         Logger2 = new ScottPlot.Plottables.Experimental.DataStreamer2(data2);
         Logger2.Color = Colors.C1;
         formsPlot1.Plot.Add.Plottable(Logger2);
