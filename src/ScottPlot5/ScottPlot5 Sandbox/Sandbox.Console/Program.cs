@@ -6,5 +6,4 @@ plt.Add.Signal(Generate.Cos());
 
 plt.SavePng("test.png", 600, 300).LaunchFile();
 plt.SavePng("test.png", 600, 300).LaunchInBrowser();
-plt.SavePng("test.png", 600, 300).ConsoleWriteFilename();
-
+plt.SavePng("test.png", 600, 300).ConsoleWritePath();
