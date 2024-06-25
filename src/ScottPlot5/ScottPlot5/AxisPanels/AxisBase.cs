@@ -102,6 +102,14 @@ public abstract class AxisBase : LabelStyleProperties
             _ => throw new NotImplementedException(edge.ToString()),
         };
 
+        if (edge == Edge.Top && !lineStyle.AntiAlias)
+        {
+            // move the top frame line slightly down so the vertical pixel snaps
+            // to the same level as the top of the left and right frame lines
+            // https://github.com/ScottPlot/ScottPlot/pull/3976
+            pxLine = pxLine.WithDelta(0, .1f);
+        }
+
         using SKPaint paint = new();
         Drawing.DrawLine(rp.Canvas, paint, pxLine, lineStyle);
     }
