@@ -15,6 +15,7 @@ _Not yet on NuGet..._
 * Console: Saved image path can be displayed by calling `myPlot.SavePng('demo.png', 600, 400).ConsoleWritePath()` (#3965, #3943) @aespitia
 * Rendering: Improved sharpness of axis frames, tick marks, and grid lines by disabling anti-aliasing by default and added `Plot.Axes.AntiAlias()` so users can customize this behavior (#3976) @bforlgreen
 * Signal: Added support for generic data sources in read-only lists (#3978, #3942) @sdpenner
+* LinearRegression: Added overload that accepts `IEnumerable<Coordinates>` (#3982, #3981) @ANGADJEET @CoderPM2011
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
