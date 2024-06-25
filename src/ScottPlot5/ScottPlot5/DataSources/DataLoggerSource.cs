@@ -48,14 +48,18 @@ public class DataLoggerSource
         }
     }
 
-    public void Clear()
+    public void ResetMinAndMaxValues()
     {
-        Coordinates.Clear();
-
         YMin = double.NaN;
         YMax = double.NaN;
         XMin = double.NaN;
         XMax = double.NaN;
+    }
+
+    public void Clear()
+    {
+        Coordinates.Clear();
+        ResetMinAndMaxValues();
     }
 
     public AxisLimits GetAxisLimits()
