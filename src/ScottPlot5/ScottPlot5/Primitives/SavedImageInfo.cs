@@ -21,7 +21,7 @@ public class SavedImageInfo
 
     public void LaunchFile() => Platform.LaunchFile(Path);
 
-    public void ConsoleWriteFilename() => Console.WriteLine(Path);
+    public void ConsoleWritePath() => Console.WriteLine(Path);
 
     public void LaunchInBrowser(double refresh = 3)
     {
