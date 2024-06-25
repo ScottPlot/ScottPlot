@@ -42,6 +42,14 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public Color FillYBelowColor { get; set; } = Colors.Blue.WithAlpha(.2);
     public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
+    public float[]? FillXPoints { get; set; } = null;
+    public Color[]? FillXColors { get; set; } = null;
+
+    public bool HasFillX =>
+        FillXPoints is not null &&
+        FillXColors is not null &&
+        FillXPoints.Length == FillXColors.Length;
+
     public double OffsetX { get; set; } = 0;
     public double OffsetY { get; set; } = 0;
     public double ScaleX { get; set; } = 1;
@@ -121,6 +129,72 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
 
+    private Gradient CreateXAxisGradient(
+        RenderPack rp, float[] specificValues, Color[] specificColors)
+    {
+        float xMin = (float)Axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect);
+        float xMax = (float)Axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect);
+
+        Color interpolate(float val)
+        {
+            if (Array.TrueForAll(specificValues, i => val < i))
+            {
+                return specificColors[0];
+            }
+            if (Array.TrueForAll(specificValues, i => val > i))
+            {
+                return specificColors[^1];
+            }
+
+            int lIdx = -1;
+            int rIdx = -1;
+            for (int i = 0; i < specificValues.Length; i++)
+            {
+                if (specificValues[i] <= val &&
+                    (lIdx < 0 || specificValues[i] > specificValues[lIdx]))
+                {
+                    lIdx = i;
+                }
+
+                if (specificValues[i] >= val &&
+                    (rIdx < 0 || specificValues[i] < specificValues[rIdx]))
+                {
+                    rIdx = i;
+                }
+            }
+
+            if (lIdx == rIdx)
+            {
+                return specificColors[lIdx];
+            }
+
+            double factor = (val - specificValues[lIdx]) / (specificValues[rIdx] - specificValues[lIdx]);
+            return specificColors[lIdx].InterpolateRgb(specificColors[rIdx], factor);
+        }
+
+        float normXColorPosition(float xPos)
+        {
+            return (Axes.GetPixelX(xPos) - Axes.DataRect.Left)
+                / (Axes.DataRect.Right - Axes.DataRect.Left);
+        }
+
+        IOrderedEnumerable<float> visibleValues = specificValues
+            .Concat([xMin, xMax])
+            .Where(i => i >= xMin && i <= xMax)
+            .OrderBy(i => i);
+
+        IEnumerable<Color> visibleColors = visibleValues.Select(interpolate);
+
+        return new Gradient()
+        {
+            GradientType = GradientType.Linear,
+            AlignmentStart = Alignment.MiddleLeft,
+            AlignmentEnd = Alignment.MiddleRight,
+            ColorPositions = visibleValues.Select(normXColorPosition).ToArray(),
+            Colors = visibleColors.ToArray(),
+        };
+    }
+
     public virtual void Render(RenderPack rp)
     {
         // TODO: can this be done with an iterator to avoid copying?
@@ -150,7 +224,15 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         if (FillY)
         {
-            FillStyle fs = new() { IsVisible = true };
+            FillStyle fs = new()
+            {
+                IsVisible = true,
+            };
+
+            if (HasFillX)
+            {
+                fs.Hatch = CreateXAxisGradient(rp, FillXPoints!, FillXColors!);
+            }
 
             PixelRect dataPxRect = new(markerPixels);
 
@@ -170,7 +252,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
                 PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
                 rp.CanvasState.Save();
                 rp.CanvasState.Clip(rectAbove);
-                fs.Color = FillYAboveColor;
+                fs.Color = HasFillX ? Colors.Black : FillYAboveColor;
                 Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
                 rp.CanvasState.Restore();
             }
@@ -180,7 +262,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
                 PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
                 rp.CanvasState.Save();
                 rp.CanvasState.Clip(rectBelow);
-                fs.Color = FillYBelowColor;
+                fs.Color = HasFillX ? Colors.Black : FillYBelowColor;
                 Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
                 rp.CanvasState.Restore();
             }
