@@ -857,4 +857,27 @@ public class AxisManager
         YAxes.ForEach(x => x.IsVisible = false);
         Title.IsVisible = false;
     }
+
+    /// <summary>
+    /// Set anti-aliasing for axis frames, tick marks, and grid lines
+    /// </summary>
+    /// <param name="enable"></param>
+    public void AntiAlias(bool enable)
+    {
+        foreach (AxisBase axis in GetAxes().OfType<AxisBase>())
+        {
+            // frames
+            axis.FrameLineStyle.AntiAlias = enable;
+
+            // tick marks
+            axis.MajorTickStyle.AntiAlias = enable;
+            axis.MinorTickStyle.AntiAlias = enable;
+        }
+
+        // grid lines
+        Plot.Grid.XAxisStyle.MajorLineStyle.AntiAlias = enable;
+        Plot.Grid.XAxisStyle.MinorLineStyle.AntiAlias = enable;
+        Plot.Grid.YAxisStyle.MajorLineStyle.AntiAlias = enable;
+        Plot.Grid.YAxisStyle.MinorLineStyle.AntiAlias = enable;
+    }
 }
