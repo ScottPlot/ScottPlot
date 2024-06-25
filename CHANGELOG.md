@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Color: Added `ToColor()` and `FromColor()` to simplify conversion between `ScottPlot.Color` and `System.Drawing.Color` (#3964, ##3953) @aespitia
 * Console: Saved image path can be displayed by calling `myPlot.SavePng('demo.png', 600, 400).ConsoleWritePath()` (#3965, #3943) @aespitia
 * Rendering: Improved sharpness of axis frames, tick marks, and grid lines by disabling anti-aliasing by default and added `Plot.Axes.AntiAlias()` so users can customize this behavior (#3976) @bforlgreen
+* Signal: Added support for generic data sources in read-only lists (#3978, #3942) @sdpenner
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
