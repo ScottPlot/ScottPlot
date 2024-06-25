@@ -70,3 +70,8 @@ public interface IAxis : IPanel
 
     LineStyle FrameLineStyle { get; }
 }
+
+public static class IAxisExtensions
+{
+    public static CoordinateRange GetRange(this IAxis axis) => new(axis.Min, axis.Max);
+}

@@ -104,6 +104,18 @@ public class RenderManager(Plot plot)
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
+        int maxRenderCount = 5;
+        for (int i = 0; i < maxRenderCount; i++)
+        {
+            RenderOnce(canvas, rect);
+            if (!AxisLimitsChangedSinceLastRender())
+                return;
+            //Debug.WriteLine($"Re-Render required! #{i}");
+        }
+    }
+
+    private void RenderOnce(SKCanvas canvas, PixelRect rect)
+    {
         if (EnableRendering == false)
             return;
 
@@ -150,4 +162,25 @@ public class RenderManager(Plot plot)
 
         // TODO: event for when layout changes
     }
+
+    private bool AxisLimitsChangedSinceLastRender()
+    {
+        foreach (IAxis axis in LastRender.AxisLimitsByAxis.Keys)
+        {
+            if (axis is null)
+                continue;
+
+            if (double.IsNaN(axis.Range.Span))
+                continue;
+
+            CoordinateRangeMutable rangeNow = axis.Range;
+            CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
+            bool axisLimitsChanged = rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max;
+            if (axisLimitsChanged)
+                return true;
+        }
+
+        return false;
+    }
+
 }

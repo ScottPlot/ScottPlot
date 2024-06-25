@@ -213,5 +213,32 @@ public class Styling : ICategory
         }
     }
 
+    public class ColormapColorSteps : RecipeBase
+    {
+        public override string Name => "Colormap Steps";
+        public override string Description => "Colormaps can be used to generate " +
+            "a collection of discrete colors that can be applied to plottable objects.";
 
+        [Test]
+        public override void Execute()
+        {
+            IColormap colormap = new ScottPlot.Colormaps.Turbo();
+
+            for (int count = 1; count < 10; count++)
+            {
+                double[] xs = Generate.Consecutive(count);
+                double[] ys = Generate.Repeating(count, count);
+                Color[] colors = colormap.GetColors(count);
+
+                for (int i = 0; i < count; i++)
+                {
+                    var circle = myPlot.Add.Circle(xs[i], ys[i], 0.45);
+                    circle.FillColor = colors[i];
+                    circle.LineWidth = 0;
+                }
+            }
+
+            myPlot.YLabel("number of colors");
+        }
+    }
 }

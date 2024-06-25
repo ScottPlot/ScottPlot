@@ -7,16 +7,15 @@ public class FixedWidth : IAxisLimitManager
     /// </summary>
     public double ExpandFractionY = 0.5;
 
-    public AxisLimits GetAxisLimits(AxisLimits viewLimits, AxisLimits dataLimits)
+    public CoordinateRange GetRangeX(CoordinateRange viewRangeX, CoordinateRange dataRangeX) => dataRangeX;
+
+    public CoordinateRange GetRangeY(CoordinateRange viewRangeY, CoordinateRange dataRangeY)
     {
-        double xMin = dataLimits.Left;
-        double xMax = dataLimits.Right;
+        double expandY = ExpandFractionY * dataRangeY.Span;
 
-        double expandY = ExpandFractionY * dataLimits.VerticalSpan;
+        double yMin = (dataRangeY.Min < viewRangeY.Min) ? dataRangeY.Min - expandY : viewRangeY.Min;
+        double yMax = (dataRangeY.Max > viewRangeY.Max) ? dataRangeY.Max + expandY : viewRangeY.Max;
 
-        double yMin = (dataLimits.Bottom < viewLimits.Bottom) ? dataLimits.Bottom - expandY : viewLimits.Bottom;
-        double yMax = (dataLimits.Top > viewLimits.Top) ? dataLimits.Top + expandY : viewLimits.Top;
-
-        return new AxisLimits(xMin, xMax, yMin, yMax);
+        return new CoordinateRange(yMin, yMax);
     }
 }

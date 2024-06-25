@@ -2,10 +2,10 @@
 
 public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
 {
-    private readonly List<T> Ys;
+    private readonly IReadOnlyList<T> Ys;
     public override int Length => Ys.Count;
 
-    public SignalSourceGenericList(List<T> ys, double period)
+    public SignalSourceGenericList(IReadOnlyList<T> ys, double period)
     {
         Ys = ys;
         Period = period;

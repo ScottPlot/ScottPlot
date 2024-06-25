@@ -47,4 +47,10 @@ public static class FormsPlotExtensions
         using MemoryStream ms = new(img.GetImageBytes(ImageFormat.Bmp));
         return new Bitmap(ms);
     }
+
+    public static void CopyToClipboard(this SavedImageInfo info)
+    {
+        System.Drawing.Bitmap bmp = new(info.Path);
+        Clipboard.SetImage(bmp);
+    }
 }
