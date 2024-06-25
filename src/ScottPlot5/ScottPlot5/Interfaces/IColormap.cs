@@ -45,63 +45,37 @@ public static class IColormapExtensions
     }
 
     /// <summary>
-    /// Returns a collection of colors in the specified range on this colormap according to the given range and quantity.
+    /// Returns an array of colors evenly spaced along the colormap
     /// </summary>
     /// <param name="count">The number of colors to get from the colormap.</param>
-    /// <param name="start">The starting point in the colormap range from which to begin extracting colors (normalized to [0, 1]).</param>
-    /// <param name="end">The ending point in the colormap range at which to stop extracting colors (normalized to [0, 1]).</param>
-    /// <returns>An <see cref="IEnumerable{Color}"/> collection of colors within the specified range.</returns>
-    /// <remarks>
-    /// If the <paramref name="count"/> is greater than the number of distinct colors in the range,
-    /// duplicate colors may be included in the returned collection,
-    /// depending on the implementation of <see cref="IColormap.GetColor(double)"/>.
-    /// </remarks>
-    /// <seealso cref="IColormap"/>
-    public static IEnumerable<Color> GetColors(
-        this IColormap colormap, int count, double start = 0, double end = 1)
+    /// <param name="minFraction">The starting fraction in the colormap range from which to begin extracting colors (normalized to [0, 1]).</param>
+    /// <param name="maxFraction">The ending fraction in the colormap range at which to stop extracting colors (normalized to [0, 1]).</param>
+    public static Color[] GetColors(
+        this IColormap colormap, int count, double minFraction = 0, double maxFraction = 1)
     {
-        #region Assert
-
-        if (count < 2)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(count), $"Argument ${nameof(count)} must be greater than or equal to 2.");
-        }
-
-        if (double.IsInfinity(start) || double.IsNaN(start))
+        if (double.IsInfinity(minFraction) || double.IsNaN(minFraction))
         {
             throw new ArgumentException(
-                $"{nameof(start)} must be a real number", nameof(start));
+                $"{nameof(minFraction)} must be a real number", nameof(minFraction));
         }
 
-        if (double.IsInfinity(end) || double.IsNaN(end))
+        if (double.IsInfinity(maxFraction) || double.IsNaN(maxFraction))
         {
             throw new ArgumentException(
-                $"{nameof(end)} must be a real number", nameof(end));
+                $"{nameof(maxFraction)} must be a real number", nameof(maxFraction));
         }
 
-        if (start < 0 || start > 1)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(start), $"{nameof(start)} must be within the range of 0 to 1.");
-        }
+        if (count == 0)
+            return [];
 
-        if (end < 0 || end > 1)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(start), $"{nameof(end)} must be within the range of 0 to 1.");
-        }
+        if (count == 1)
+            return [colormap.GetColor(0)];
 
-        if (start > end)
-        {
-            throw new ArgumentException(
-                $"Argument ${nameof(start)} must be less than or equal to ${nameof(end)}.");
-        }
-
-        #endregion // Assert
-
-        double step = (end - start) / (count - 1);
+        maxFraction = NumericConversion.Clamp(maxFraction, 0, 1);
+        minFraction = NumericConversion.Clamp(minFraction, 0, maxFraction);
+        double fractionStep = (maxFraction - minFraction) / (count - 1);
         return Enumerable.Range(0, count)
-            .Select(i => colormap.GetColor(i * step + start));
+            .Select(i => colormap.GetColor(i * fractionStep + minFraction))
+            .ToArray();
     }
 }
