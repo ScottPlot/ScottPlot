@@ -18,6 +18,7 @@ _Not yet on NuGet..._
 * LinearRegression: Added overload that accepts `IEnumerable<Coordinates>` (#3982, #3981) @ANGADJEET @CoderPM2011
 * Colormap: Added `GetColors()` for generating a given number of colors evenly spaced along a colormap (#3983, #3947) @CoderPM2011
 * CoordinateLine: Added additional constructors for creating lines given a point and slope (#3987, #3986) @aalgrou
+* DataLogger: Added `Clear()` and `ResetMinAndMaxValues()` to the data logger source class (#3993, #3969) @jpgarza93
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
