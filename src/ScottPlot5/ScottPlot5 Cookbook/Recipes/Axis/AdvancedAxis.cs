@@ -91,4 +91,22 @@ public class AdvancedAxis : ICategory
             myPlot.Axes.AddLeftAxis(customAxisY);
         }
     }
+
+    public class AxisAntiAliasing : RecipeBase
+    {
+        public override string Name => "Axis AntiAliasing";
+        public override string Description => "To improve crispness of straight vertical and horizontal lines, " +
+            "Anti-aliasing is disabled by default for axis frames, tick marks, and grid lines. Anti-aliasing " +
+            "can be enabled for all these objects by calling the AntiAlias helper method.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] dataX = { 1, 2, 3, 4, 5 };
+            double[] dataY = { 1, 4, 9, 16, 25 };
+            myPlot.Add.Scatter(dataX, dataY);
+
+            myPlot.Axes.AntiAlias(true);
+        }
+    }
 }
