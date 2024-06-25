@@ -235,7 +235,9 @@ public static class StandardActions
             control.Plot.ZoomRectangle.VerticalSpan = locked.X;
             control.Plot.ZoomRectangle.HorizontalSpan = locked.Y;
 
-            IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From);
+            float scaleFactor = control.Plot.ScaleFactorF;
+
+            IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From.Divide(scaleFactor));
             if (axisUnderMouse is not null)
             {
                 // Do not respond if the axis under the mouse has no data
@@ -252,9 +254,8 @@ public static class StandardActions
                 control.Plot.ZoomRectangle.HorizontalSpan = axisUnderMouse.IsVertical();
             }
 
-            double scaleFactor = control.Plot.ScaleFactor;
-            control.Plot.ZoomRectangle.MouseDown = new(drag.From.X / scaleFactor, drag.From.Y / scaleFactor);
-            control.Plot.ZoomRectangle.MouseUp = new(drag.To.X / scaleFactor, drag.To.Y / scaleFactor);
+            control.Plot.ZoomRectangle.MouseDown = drag.From.Divide(scaleFactor);
+            control.Plot.ZoomRectangle.MouseUp = drag.To.Divide(scaleFactor);
             control.Plot.ZoomRectangle.IsVisible = true;
             control.Refresh();
         }
@@ -318,7 +319,7 @@ public static class StandardActions
 
     private static void MouseZoom(Plot plot, double fracX, double fracY, Pixel pixel, bool ChangeOpposingAxesTogether)
     {
-        Pixel scaledPixel = new(pixel.X / plot.ScaleFactorF, pixel.Y / plot.ScaleFactorF);
+        Pixel scaledPixel = pixel.Divide(plot.ScaleFactorF);
         MultiAxisLimitManager originalLimits = new(plot);
         PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
 
