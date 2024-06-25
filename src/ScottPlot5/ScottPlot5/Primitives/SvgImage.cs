@@ -19,7 +19,7 @@ internal class SvgImage : IDisposable
 
     public string GetXml()
     {
-        return Encoding.ASCII.GetString(Stream.ToArray()) + "</svg>";
+        return Encoding.UTF8.GetString(Stream.ToArray()) + "</svg>";
     }
 
     public void Dispose()
