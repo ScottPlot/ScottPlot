@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System.Drawing;
+
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a straight line in coordinate space
@@ -36,16 +38,20 @@ public readonly struct CoordinateLine
         Y2 = pt2.Y;
     }
 
-    private static CoordinateLine GetCoordinateLine(double x, double y, double slope)
+    public CoordinateLine(double x, double y, double slope)
     {
-        Coordinates pt1 = new(x, y);
-        return GetCoordinateLine(pt1, slope);
+        X1 = x;
+        Y1 = y;
+        X2 = x + 1;
+        Y2 = y + slope;
     }
 
-    private static CoordinateLine GetCoordinateLine(Coordinates point, double slope)
+    public CoordinateLine(Coordinates point, double slope)
     {
-        Coordinates pt2 = new(point.X + 1, point.Y + slope);
-        return new CoordinateLine(point, pt2);
+        X1 = point.X;
+        Y1 = point.Y;
+        X2 = point.X + 1;
+        Y2 = point.Y + slope;
     }
 
     public override string ToString()
