@@ -359,4 +359,9 @@ public readonly struct Color
         float luminosity = 0.5f;
         return Color.FromHSL(hue, saturation, luminosity);
     }
+
+    public static System.Drawing.Color ToColor(ScottPlot.Color color)
+    {
+        return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+    }
 }

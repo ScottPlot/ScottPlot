@@ -11,6 +11,7 @@ _Not yet on NuGet..._
 * Rendering: Automatically re-render if a render invokes an event that requests it (#3952) @BrianAtZetica
 * SVG: File encoding now supports text containing UTF8 characters (#3956, #3957) @aespitia
 * Documentation: Added a sandbox .NET API project and quickstart section to the website (#3959, #3824) @aespitia
+* Color: Added `ToColor()` and `FromColor()` to simplify conversion between `ScottPlot.Color` and `System.Drawing.Color` (#3964, ##3953) @aespitia
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
