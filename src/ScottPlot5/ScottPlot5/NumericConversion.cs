@@ -270,4 +270,18 @@ public static class NumericConversion
 
         return value.ToOADate();
     }
+
+    public static double IncrementLargeDouble(double value)
+    {
+        long bits = BitConverter.DoubleToInt64Bits(value);
+        long nextBits = bits + 1;
+        return BitConverter.Int64BitsToDouble(nextBits);
+    }
+
+    public static double DecrementLargeDouble(double value)
+    {
+        long bits = BitConverter.DoubleToInt64Bits(value);
+        long nextBits = bits - 1;
+        return BitConverter.Int64BitsToDouble(nextBits);
+    }
 }

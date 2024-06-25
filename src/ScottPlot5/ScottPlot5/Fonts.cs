@@ -1,4 +1,5 @@
 ﻿using ScottPlot.FontResolvers;
+using System.Collections.Concurrent;
 using System.Runtime.Serialization;
 
 namespace ScottPlot;
@@ -12,7 +13,7 @@ public static class Fonts
      * https://github.com/ScottPlot/ScottPlot/issues/2833
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
-    private static readonly Dictionary<(string, bool, bool), SKTypeface> TypefaceCache = [];
+    private static readonly ConcurrentDictionary<(string, bool, bool), SKTypeface> TypefaceCache = [];
 
     /// <summary>
     /// Collection of font resolvers that return typefaces from font names and style information
@@ -85,7 +86,7 @@ public static class Fonts
             SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, bold, italic);
             if (resolvedTypeface is not null)
             {
-                TypefaceCache.Add(typefaceCacheKey, resolvedTypeface);
+                TypefaceCache.TryAdd(typefaceCacheKey, resolvedTypeface);
                 return resolvedTypeface;
             }
         }

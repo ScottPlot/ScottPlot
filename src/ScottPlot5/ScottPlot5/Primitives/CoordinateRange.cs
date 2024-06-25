@@ -6,6 +6,7 @@ public readonly record struct CoordinateRange(double Min, double Max)
     public double Center => (Min + Max) / 2;
     public static CoordinateRange Infinity => new(double.NegativeInfinity, double.PositiveInfinity);
     public static CoordinateRange NotSet => new(double.PositiveInfinity, double.NegativeInfinity);
+    public static CoordinateRange NoLimits => new(double.NaN, double.NaN);
     public bool IsReal => NumericConversion.IsReal(Max) && NumericConversion.IsReal(Min);
 
     // TODO: ranges could be inverted, so min/max should be renamed start/stop

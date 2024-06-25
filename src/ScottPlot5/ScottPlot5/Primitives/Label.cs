@@ -31,6 +31,7 @@ public class Label
 
     public bool AntiAliasBackground { get; set; } = true;
     public bool AntiAliasText { get; set; } = true;
+    public bool SubpixelText { get; set; } = true;
 
     public string FontName { get; set; } = Fonts.Default;
     public float FontSize { get; set; } = 12;
@@ -120,6 +121,7 @@ public class Label
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
+        paint.SubpixelText = SubpixelText;
         paint.Shader = null;
     }
 
