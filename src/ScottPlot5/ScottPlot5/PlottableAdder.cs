@@ -857,15 +857,9 @@ public class PlottableAdder(Plot plot)
         return Signal(source, color);
     }
 
-    public Signal Signal<T>(List<T> ys, double period = 1, Color? color = null)
-    {
-        SignalSourceGenericList<T> source = new(ys, period);
-        return Signal(source, color);
-    }
-
     public Signal Signal<T>(IReadOnlyList<T> ys, double period = 1, Color? color = null)
     {
-        SignalSourceGenericList<T> source = new(ys.ToList(), period);
+        SignalSourceGenericList<T> source = new(ys, period);
         return Signal(source, color);
     }
 

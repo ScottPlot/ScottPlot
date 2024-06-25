@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests.Plottable;
+﻿using ScottPlot.DataSources;
+
+namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class SignalTests
 {
@@ -187,6 +189,23 @@ internal class SignalTests
 
         // single plot with single point
         double[] ys = [0];
+        plt.Add.Signal(ys);
+
+        // signal plot is outside the data area
+        plt.Axes.SetLimits(1, 2, 1, 2);
+
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void Test_Signal_ReadOnlyList()
+    {
+        // https://github.com/ScottPlot/ScottPlot/pull/3978
+
+        ScottPlot.Plot plt = new();
+
+        // single plot with single point
+        IReadOnlyList<float> ys = [1, 4, 9];
         plt.Add.Signal(ys);
 
         // signal plot is outside the data area
