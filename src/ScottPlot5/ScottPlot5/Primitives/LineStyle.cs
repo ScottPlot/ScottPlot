@@ -13,6 +13,14 @@ public class LineStyle
     public bool IsVisible { get; set; } = true;
     public bool AntiAlias { get; set; } = true;
 
+    /// <summary>
+    /// When true and the Width is 0, this will instruct skia to render a 1px width line,
+    /// no matter what the scaling is on the target machine. 
+    /// </summary>
+    public bool Hairline { get; set; } = false;
+
+    public bool IsWidthVisible => Width > 0 || Hairline;
+
     public bool Rounded
     {
         get => StrokeCap == SKStrokeCap.Round;
