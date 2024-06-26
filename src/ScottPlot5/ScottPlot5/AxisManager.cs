@@ -882,28 +882,19 @@ public class AxisManager
     }
 
     /// <summary>
-    /// Set hairline for axis frames, tick marks, and grid lines
-    /// You only need to do this if <see cref="Plot.ScaleFactor"/> is more than 1
+    /// Hairline mode causes lines to always render exactly 1 pixel wide regardless of <see cref="Plot.ScaleFactor"/>.
+    /// This function controls hairline behavior for all axis frames. tick marks, and grid lines.
     /// </summary>
-    /// <param name="enable">Whether to enable or disable hairline</param>
-    /// <param name="width">The width to use when hair line is NOT enabled</param>
-    public void Hairline(bool enable, float width = 0)
+    public void Hairline(bool enable)
     {
-        if (enable && width != 0)
-            throw new InvalidOperationException("If enabling hairline, the width should be 0!");
-
         foreach (AxisBase axis in GetAxes().OfType<AxisBase>())
         {
             // frames
             axis.FrameLineStyle.Hairline = enable;
-            axis.FrameLineStyle.Width = width;
 
             // tick marks
             axis.MajorTickStyle.Hairline = enable;
             axis.MinorTickStyle.Hairline = enable;
-
-            axis.MajorTickStyle.Width = width;
-            axis.MinorTickStyle.Width = width;
         }
 
         // grid lines
@@ -911,10 +902,5 @@ public class AxisManager
         Plot.Grid.XAxisStyle.MinorLineStyle.Hairline = enable;
         Plot.Grid.YAxisStyle.MajorLineStyle.Hairline = enable;
         Plot.Grid.YAxisStyle.MinorLineStyle.Hairline = enable;
-
-        Plot.Grid.XAxisStyle.MajorLineStyle.Width = width;
-        Plot.Grid.XAxisStyle.MinorLineStyle.Width = width;
-        Plot.Grid.YAxisStyle.MajorLineStyle.Width = width;
-        Plot.Grid.YAxisStyle.MinorLineStyle.Width = width;
     }
 }

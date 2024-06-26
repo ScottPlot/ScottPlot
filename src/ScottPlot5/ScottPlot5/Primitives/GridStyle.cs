@@ -27,7 +27,7 @@ public class GridStyle
         if (!IsVisible)
             return;
 
-        if (MinorLineStyle.IsVisible && MinorLineStyle.IsWidthVisible)
+        if (MinorLineStyle.IsVisible && MinorLineStyle.RenderedLineHasWidth)
         {
             float[] xTicksMinor = ticks
                 .Where(x => !x.IsMajor)
@@ -38,7 +38,7 @@ public class GridStyle
             RenderGridLines(rp, xTicksMinor, axis.Edge, MinorLineStyle);
         }
 
-        if (MajorLineStyle.IsVisible && MajorLineStyle.IsWidthVisible)
+        if (MajorLineStyle.IsVisible && MajorLineStyle.RenderedLineHasWidth)
         {
             float[] xTicksMajor = ticks
                 .Where(x => x.IsMajor)
@@ -68,6 +68,7 @@ public class GridStyle
                 : new Pixel(rp.DataRect.Right, px);
         }
 
-        Drawing.DrawLines(rp.Canvas, starts, ends, lineStyle.Color, lineStyle.Width, lineStyle.AntiAlias, lineStyle.Hairline, lineStyle.Pattern);
+        using SKPaint paint = new();
+        lineStyle.Render(rp.Canvas, starts, ends, paint);
     }
 }

@@ -70,29 +70,29 @@ public class Box : IHasFill, IHasLine
         {
             CoordinateLine lineMid = new(bodyRect.Left, BoxMiddle.Value, bodyRect.Right, BoxMiddle.Value);
             PixelLine lineMidPx = axes.GetPixelLine(lineMid);
-            Drawing.DrawLine(rp.Canvas, paint, lineMidPx, LineStyle.Hairline);
+            LineStyle.Render(rp.Canvas, lineMidPx, paint);
         }
 
         if (WhiskerMax.HasValue)
         {
             CoordinateLine lineMax = new(Position, BoxMax, Position, WhiskerMax.Value);
             PixelLine lineMaxPx = axes.GetPixelLine(lineMax);
-            Drawing.DrawLine(rp.Canvas, paint, lineMaxPx, LineStyle.Hairline);
+            LineStyle.Render(rp.Canvas, lineMaxPx, paint);
 
             CoordinateLine lineMaxAcross = new(Position - WhiskerSize / 2, WhiskerMax.Value, Position + WhiskerSize / 2, WhiskerMax.Value);
             PixelLine lineMaxAcrossPx = axes.GetPixelLine(lineMaxAcross);
-            Drawing.DrawLine(rp.Canvas, paint, lineMaxAcrossPx, LineStyle.Hairline);
+            LineStyle.Render(rp.Canvas, lineMaxAcrossPx, paint);
         }
 
         if (WhiskerMin.HasValue)
         {
             CoordinateLine lineMin = new(Position, BoxMin, Position, WhiskerMin.Value);
             PixelLine lineMinPx = axes.GetPixelLine(lineMin);
-            Drawing.DrawLine(rp.Canvas, paint, lineMinPx, LineStyle.Hairline);
+            LineStyle.Render(rp.Canvas, lineMinPx, paint);
 
             CoordinateLine lineMinAcross = new(Position - WhiskerSize / 2, WhiskerMin.Value, Position + WhiskerSize / 2, WhiskerMin.Value);
             PixelLine lineMinAcrossPx = axes.GetPixelLine(lineMinAcross);
-            Drawing.DrawLine(rp.Canvas, paint, lineMinAcrossPx, LineStyle.Hairline);
+            LineStyle.Render(rp.Canvas, lineMinAcrossPx, paint);
         }
     }
 }
