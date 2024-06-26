@@ -74,13 +74,7 @@ public class Plot : IDisposable
         float xPixel = xAxis.GetPixel(coordinates.X, RenderManager.LastRender.DataRect);
         float yPixel = yAxis.GetPixel(coordinates.Y, RenderManager.LastRender.DataRect);
 
-        if (ScaleFactor != 1)
-        {
-            xPixel *= ScaleFactorF;
-            yPixel *= ScaleFactorF;
-        }
-
-        return new Pixel(xPixel, yPixel);
+        return new Pixel(xPixel, yPixel).Multiply(ScaleFactorF);
     }
 
     /// <summary>
@@ -88,7 +82,7 @@ public class Plot : IDisposable
     /// </summary>
     public Coordinates GetCoordinates(Pixel pixel, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        Pixel scaledPx = new(pixel.X / ScaleFactor, pixel.Y / ScaleFactor);
+        Pixel scaledPx = pixel.Divide(ScaleFactorF);
         PixelRect dataRect = RenderManager.LastRender.DataRect;
         double x = (xAxis ?? Axes.Bottom).GetCoordinate(scaledPx.X, dataRect);
         double y = (yAxis ?? Axes.Left).GetCoordinate(scaledPx.Y, dataRect);
@@ -114,18 +108,10 @@ public class Plot : IDisposable
     /// </summary>
     public CoordinateRect GetCoordinateRect(float x, float y, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        float leftPx = (x - radius);
-        float rightPx = (x + radius);
-        float topPx = (y - radius);
-        float bottomPx = (y + radius);
-
-        if (ScaleFactor != 1)
-        {
-            leftPx /= ScaleFactorF;
-            rightPx /= ScaleFactorF;
-            topPx /= ScaleFactorF;
-            bottomPx /= ScaleFactorF;
-        }
+        float leftPx = (x - radius) / ScaleFactorF;
+        float rightPx = (x + radius) / ScaleFactorF;
+        float topPx = (y - radius) / ScaleFactorF;
+        float bottomPx = (y + radius) / ScaleFactorF;
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
         double x1 = (xAxis ?? Axes.Bottom).GetCoordinate(leftPx, dataRect);
@@ -165,10 +151,7 @@ public class Plot : IDisposable
     /// </summary>
     public CoordinateRect GetCoordinateRect(Coordinates coordinates, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
-        if (ScaleFactor != 1)
-        {
-            radius /= ScaleFactorF;
-        }
+        radius /= ScaleFactorF;
 
         PixelRect dataRect = RenderManager.LastRender.DataRect;
         double radiusX = (xAxis ?? Axes.Bottom).GetCoordinateDistance(radius, dataRect);
