@@ -43,4 +43,39 @@ public static class IColormapExtensions
 
         return bmp;
     }
+
+    /// <summary>
+    /// Returns an array of colors evenly spaced along the colormap
+    /// </summary>
+    /// <param name="count">The number of colors to get from the colormap.</param>
+    /// <param name="minFraction">The starting fraction in the colormap range from which to begin extracting colors (normalized to [0, 1]).</param>
+    /// <param name="maxFraction">The ending fraction in the colormap range at which to stop extracting colors (normalized to [0, 1]).</param>
+    public static Color[] GetColors(
+        this IColormap colormap, int count, double minFraction = 0, double maxFraction = 1)
+    {
+        if (double.IsInfinity(minFraction) || double.IsNaN(minFraction))
+        {
+            throw new ArgumentException(
+                $"{nameof(minFraction)} must be a real number", nameof(minFraction));
+        }
+
+        if (double.IsInfinity(maxFraction) || double.IsNaN(maxFraction))
+        {
+            throw new ArgumentException(
+                $"{nameof(maxFraction)} must be a real number", nameof(maxFraction));
+        }
+
+        if (count == 0)
+            return [];
+
+        if (count == 1)
+            return [colormap.GetColor(0)];
+
+        maxFraction = NumericConversion.Clamp(maxFraction, 0, 1);
+        minFraction = NumericConversion.Clamp(minFraction, 0, maxFraction);
+        double fractionStep = (maxFraction - minFraction) / (count - 1);
+        return Enumerable.Range(0, count)
+            .Select(i => colormap.GetColor(i * fractionStep + minFraction))
+            .ToArray();
+    }
 }

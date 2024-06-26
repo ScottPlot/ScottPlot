@@ -13,29 +13,34 @@ public class Full : IAxisLimitManager
     /// </summary>
     public double ExpansionRatio { get; set; } = .25;
 
-    public AxisLimits GetAxisLimits(AxisLimits viewLimits, AxisLimits dataLimits)
+    public CoordinateRange GetRangeX(CoordinateRange viewRangeX, CoordinateRange dataRangeX)
     {
-        bool rightEdgeIsTooClose = viewLimits.Right < dataLimits.Right;
-        bool rightEdgeIsTooFar = viewLimits.Right > dataLimits.Right + dataLimits.HorizontalSpan;
+        bool rightEdgeIsTooClose = viewRangeX.Max < dataRangeX.Max;
+        bool rightEdgeIsTooFar = viewRangeX.Max > dataRangeX.Max + dataRangeX.Span;
         bool replaceRight = rightEdgeIsTooClose || rightEdgeIsTooFar;
         double xMax = replaceRight
-            ? dataLimits.Right + dataLimits.HorizontalSpan * ExpansionRatio
-            : viewLimits.Right;
+            ? dataRangeX.Max + dataRangeX.Span * ExpansionRatio
+            : viewRangeX.Max;
 
-        bool topEdgeIsTooClose = viewLimits.Top < dataLimits.Top;
-        bool topEdgeIsTooFar = viewLimits.Top < dataLimits.Top + dataLimits.VerticalSpan;
-        bool replaceTop = topEdgeIsTooClose || topEdgeIsTooFar;
-        double yMax = replaceTop
-            ? dataLimits.Top + dataLimits.VerticalSpan * ExpansionRatio
-            : viewLimits.Top;
+        return dataRangeX with { Max = xMax };
+    }
 
-        bool bottomEdgeIsTooClose = viewLimits.Bottom > dataLimits.Bottom;
-        bool bottomEdgeIsTooFar = viewLimits.Bottom > dataLimits.Bottom - dataLimits.VerticalSpan;
-        bool replaceBottom = bottomEdgeIsTooClose || bottomEdgeIsTooFar;
-        double yMin = replaceBottom
-            ? dataLimits.Bottom - dataLimits.VerticalSpan * ExpansionRatio
-            : viewLimits.Bottom;
+    public CoordinateRange GetRangeY(CoordinateRange viewRangeY, CoordinateRange dataRangeY)
+    {
+        bool topEdgeIsTooClose = viewRangeY.Max < dataRangeY.Max;
+        bool topEdgeIsTooFar = viewRangeY.Max < dataRangeY.Max + dataRangeY.Span;
+        bool replaceMax = topEdgeIsTooClose || topEdgeIsTooFar;
+        double yMax = replaceMax
+            ? dataRangeY.Max + dataRangeY.Span * ExpansionRatio
+            : viewRangeY.Max;
 
-        return new AxisLimits(dataLimits.Left, xMax, yMin, yMax);
+        bool bottomEdgeIsTooClose = viewRangeY.Min > dataRangeY.Min;
+        bool bottomEdgeIsTooFar = viewRangeY.Min > dataRangeY.Min - dataRangeY.Span;
+        bool replaceMin = bottomEdgeIsTooClose || bottomEdgeIsTooFar;
+        double yMin = replaceMin
+            ? dataRangeY.Min - dataRangeY.Span * ExpansionRatio
+            : viewRangeY.Min;
+
+        return new CoordinateRange(yMin, yMax);
     }
 }

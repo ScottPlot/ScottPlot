@@ -48,20 +48,27 @@ public abstract class AxisBase : LabelStyleProperties
 
     public bool ShowDebugInformation { get; set; } = false;
 
-    public LineStyle FrameLineStyle { get; } = new() { Width = 1 };
+    public LineStyle FrameLineStyle { get; } = new()
+    {
+        Width = 1,
+        Color = Colors.Black,
+        AntiAlias = false,
+    };
 
     public TickMarkStyle MajorTickStyle { get; set; } = new()
     {
         Length = 4,
         Width = 1,
-        Color = Colors.Black
+        Color = Colors.Black,
+        AntiAlias = false,
     };
 
     public TickMarkStyle MinorTickStyle { get; set; } = new()
     {
         Length = 2,
         Width = 1,
-        Color = Colors.Black
+        Color = Colors.Black,
+        AntiAlias = false,
     };
 
     public Label TickLabelStyle { get; set; } = new()
@@ -95,6 +102,14 @@ public abstract class AxisBase : LabelStyleProperties
             _ => throw new NotImplementedException(edge.ToString()),
         };
 
+        if (edge == Edge.Top && !lineStyle.AntiAlias)
+        {
+            // move the top frame line slightly down so the vertical pixel snaps
+            // to the same level as the top of the left and right frame lines
+            // https://github.com/ScottPlot/ScottPlot/pull/3976
+            pxLine = pxLine.WithDelta(0, .1f);
+        }
+
         using SKPaint paint = new();
         Drawing.DrawLine(rp.Canvas, paint, pxLine, lineStyle);
     }
@@ -113,6 +128,7 @@ public abstract class AxisBase : LabelStyleProperties
             // draw tick
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
+            paint.IsAntialias = tick.IsMajor ? majorStyle.AntiAlias : minorStyle.AntiAlias;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
             float xPx = axis.GetPixel(tick.Position, panelRect);
             float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
@@ -148,6 +164,7 @@ public abstract class AxisBase : LabelStyleProperties
             // draw tick
             paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
+            paint.IsAntialias = tick.IsMajor ? majorStyle.AntiAlias : minorStyle.AntiAlias;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
             float yPx = axis.GetPixel(tick.Position, panelRect);
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;

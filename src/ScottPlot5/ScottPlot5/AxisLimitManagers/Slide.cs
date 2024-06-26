@@ -24,19 +24,25 @@ public class Slide : IAxisLimitManager
     /// </summary>
     public double PaddingFractionY = .5;
 
-    public AxisLimits GetAxisLimits(AxisLimits viewLimits, AxisLimits dataLimits)
+    public CoordinateRange GetRangeX(CoordinateRange viewRangeX, CoordinateRange dataRangeX)
     {
         double padHorizontal = Width * PaddingFractionX;
-        double padVertical = viewLimits.VerticalSpan * PaddingFractionY;
 
-        bool xOverflow = dataLimits.Right > viewLimits.Right || dataLimits.Right < viewLimits.Left;
-        double xMax = xOverflow ? dataLimits.Right + padHorizontal : viewLimits.Right;
-        double xMin = xOverflow ? xMax - Width : viewLimits.Left;
+        bool xOverflow = dataRangeX.Max > viewRangeX.Max || dataRangeX.Max < viewRangeX.Min;
+        double xMax = xOverflow ? dataRangeX.Max + padHorizontal : viewRangeX.Max;
+        double xMin = xOverflow ? xMax - Width : viewRangeX.Min;
 
-        bool yOverflow = dataLimits.Bottom < viewLimits.Bottom || dataLimits.Top > viewLimits.Top;
-        double yMin = yOverflow ? dataLimits.Bottom - padVertical : viewLimits.Bottom;
-        double yMax = yOverflow ? dataLimits.Top + padVertical : viewLimits.Top;
+        return new CoordinateRange(xMin, xMax);
+    }
 
-        return new AxisLimits(xMin, xMax, yMin, yMax);
+    public CoordinateRange GetRangeY(CoordinateRange viewRangeY, CoordinateRange dataRangeY)
+    {
+        double padVertical = viewRangeY.Span * PaddingFractionY;
+
+        bool yOverflow = dataRangeY.Min < viewRangeY.Min || dataRangeY.Max > viewRangeY.Max;
+        double yMin = yOverflow ? dataRangeY.Min - padVertical : viewRangeY.Min;
+        double yMax = yOverflow ? dataRangeY.Max + padVertical : viewRangeY.Max;
+
+        return new CoordinateRange(yMin, yMax);
     }
 }

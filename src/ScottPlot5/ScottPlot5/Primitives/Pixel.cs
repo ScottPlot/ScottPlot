@@ -124,4 +124,10 @@ public struct Pixel : IEquatable<Pixel>
     {
         return new Pixel(X + offset.X, Y + offset.Y);
     }
+
+    public readonly Pixel Divide(float v) => new Pixel(X / v, Y / v);
+    public readonly Pixel Divide(float x, float y) => new Pixel(X / x, Y / y);
+
+    public readonly Pixel Multiply(float v) => new Pixel(X * v, Y * v);
+    public readonly Pixel Multiply(float x, float y) => new Pixel(X * x, Y * y);
 }

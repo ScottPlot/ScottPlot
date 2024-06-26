@@ -6,6 +6,20 @@ _Not yet on NuGet..._
 * Axes: Improved automatic axis limit expansion for extremely large numbers (#3930) @CodeDevAM
 * Statistics: Added `ScottPlot.Statistics.Descriptive` methods `Median()` and `Percentile()`
 * Population: Added a new Population plot type for displaying collections of values (#3944, #3676)
+* IAxisLimitManager: Separated `GetAxisLimits()` into `GetRangeX()` and `GetRangeY()` for improved customization and performance (#3946) @drolevar
+* Experimental: Added `Plottables.Experimental.DataStreamer2` plot type for displaying streaming data in a circular buffer (#3946) @drolevar
+* Rendering: Automatically re-render if a render invokes an event that requests it (#3952) @BrianAtZetica
+* SVG: File encoding now supports text containing UTF8 characters (#3956, #3957) @aespitia
+* Documentation: Added a sandbox .NET API project and quickstart section to the website (#3959, #3824) @aespitia
+* Color: Added `ToColor()` and `FromColor()` to simplify conversion between `ScottPlot.Color` and `System.Drawing.Color` (#3964, ##3953) @aespitia
+* Console: Saved image path can be displayed by calling `myPlot.SavePng('demo.png', 600, 400).ConsoleWritePath()` (#3965, #3943) @aespitia
+* Rendering: Improved sharpness of axis frames, tick marks, and grid lines by disabling anti-aliasing by default and added `Plot.Axes.AntiAlias()` so users can customize this behavior (#3976) @bforlgreen
+* Signal: Added support for generic data sources in read-only lists (#3978, #3942) @sdpenner
+* LinearRegression: Added overload that accepts `IEnumerable<Coordinates>` (#3982, #3981) @ANGADJEET @CoderPM2011
+* Colormap: Added `GetColors()` for generating a given number of colors evenly spaced along a colormap (#3983, #3947) @CoderPM2011
+* CoordinateLine: Added additional constructors for creating lines given a point and slope (#3987, #3986) @aalgrou
+* DataLogger: Added `Clear()` and `ResetMinAndMaxValues()` to the data logger source class (#3993, #3969) @jpgarza93
+* Controls: Improved behavior of middle-click-drag zooming over axis panels for plots using DPI scaling (#3994) @bforlgreen
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_

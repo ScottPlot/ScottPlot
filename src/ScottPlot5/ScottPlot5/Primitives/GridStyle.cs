@@ -7,13 +7,15 @@ public class GridStyle
     public LineStyle MajorLineStyle { get; set; } = new()
     {
         Width = 1,
-        Color = Colors.Black.WithOpacity(.1)
+        Color = Colors.Black.WithOpacity(.1),
+        AntiAlias = false,
     };
 
     public LineStyle MinorLineStyle { get; set; } = new()
     {
         Width = 0,
-        Color = Colors.Black.WithOpacity(.05)
+        Color = Colors.Black.WithOpacity(.05),
+        AntiAlias = false,
     };
 
     public int MaximumNumberOfGridLines { get; set; } = 1_000;
@@ -65,6 +67,6 @@ public class GridStyle
                 : new Pixel(rp.DataRect.Right, px);
         }
 
-        Drawing.DrawLines(rp.Canvas, starts, ends, lineStyle.Color, lineStyle.Width, antiAlias: true, lineStyle.Pattern);
+        Drawing.DrawLines(rp.Canvas, starts, ends, lineStyle.Color, lineStyle.Width, lineStyle.AntiAlias, lineStyle.Pattern);
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace ScottPlot;
+﻿
+namespace ScottPlot;
 
 public class SavedImageInfo
 {
@@ -19,6 +20,8 @@ public class SavedImageInfo
     }
 
     public void LaunchFile() => Platform.LaunchFile(Path);
+
+    public void ConsoleWritePath() => Console.WriteLine(Path);
 
     public void LaunchInBrowser(double refresh = 3)
     {
