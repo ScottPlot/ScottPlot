@@ -4,6 +4,8 @@ namespace ScottPlot;
 
 // TODO: obsolete methods in this class that create paints. Pass paints in to minimize allocations at render time.
 
+// TODO: obsolete methods that don't take Style objects
+
 /// <summary>
 /// Common operations using the default rendering system.
 /// </summary>
@@ -16,9 +18,6 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2)
     {
-        if (paint.StrokeWidth == 0)
-            return;
-
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
@@ -37,10 +36,16 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.Color.Alpha == 0 || lineStyle.IsVisible == false || lineStyle.Color == Colors.Transparent)
+        if (lineStyle.IsVisible == false) return;
+        if (lineStyle.Color.Alpha == 0) return;
+        if (lineStyle.Color == Colors.Transparent) return;
+        if (lineStyle.Width == 0 & lineStyle.Hairline == false)
             return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
@@ -54,55 +59,13 @@ public static class Drawing
         paint.IsAntialias = antiAlias;
         paint.StrokeWidth = width;
         paint.PathEffect = pattern.GetPathEffect();
-        if (paint.StrokeWidth == 0)
-            return;
+
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
-    }
-
-    public static void DrawLines(SKCanvas canvas, Pixel[] starts, Pixel[] ends, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
-    {
-        if (width == 0)
-            return;
-
-        if (starts.Length != ends.Length)
-            throw new ArgumentException($"{nameof(starts)} and {nameof(ends)} must have same length");
-
-        using SKPaint paint = new()
-        {
-            Color = color.ToSKColor(),
-            IsStroke = true,
-            IsAntialias = antiAlias,
-            StrokeWidth = width,
-            PathEffect = pattern.GetPathEffect(),
-        };
-
-        using SKPath path = new();
-
-        for (int i = 0; i < starts.Length; i++)
-        {
-            path.MoveTo(starts[i].X, starts[i].Y);
-            path.LineTo(ends[i].X, ends[i].Y);
-        }
-
-        canvas.DrawPath(path, paint);
-    }
-
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
-    {
-        LineStyle ls = new()
-        {
-            Color = color,
-            AntiAlias = antiAlias,
-            Width = width,
-            Pattern = pattern,
-        };
-
-        DrawLines(canvas, paint, pixels, ls);
     }
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.IsVisible == false || lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+        if (!lineStyle.IsVisible || !lineStyle.RenderedLineHasWidth || lineStyle.Color == Colors.Transparent)
             return;
 
         using SKPath path = new();
@@ -141,10 +104,13 @@ public static class Drawing
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
     {
-        if (lineStyle.IsVisible == false || lineStyle.Width == 0 || lineStyle.Color == Colors.Transparent)
+        if (!lineStyle.IsVisible || !lineStyle.RenderedLineHasWidth || lineStyle.Color == Colors.Transparent)
             return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
         canvas.DrawPath(path, paint);
     }
 
@@ -161,10 +127,12 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
+        if (!lineStyle.RenderedLineHasWidth || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
             return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
         using SKPath path = StraightLineStrategy.GetPath(pixels);
         canvas.DrawPath(path, paint);
@@ -172,10 +140,13 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
     {
-        if (lineStyle.Width == 0 || lineStyle.IsVisible == false)
+        if (!lineStyle.RenderedLineHasWidth || lineStyle.IsVisible == false)
             return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
         canvas.DrawPath(path, paint);
     }
 
@@ -208,10 +179,13 @@ public static class Drawing
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, LineStyle lineStyle)
     {
         if (!lineStyle.IsVisible) return;
-        if (lineStyle.Width == 0) return;
+        if (!lineStyle.RenderedLineHasWidth) return;
         if (lineStyle.Color == Colors.Transparent) return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
@@ -272,10 +246,13 @@ public static class Drawing
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
     {
         if (!lineStyle.IsVisible) return;
-        if (lineStyle.Width == 0) return;
+        if (!lineStyle.RenderedLineHasWidth) return;
         if (lineStyle.Color == Colors.Transparent) return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
@@ -292,10 +269,13 @@ public static class Drawing
     public static void DrawOval(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect)
     {
         if (!lineStyle.IsVisible) return;
-        if (lineStyle.Width == 0) return;
+        if (!lineStyle.RenderedLineHasWidth) return;
         if (lineStyle.Color == Colors.Transparent) return;
 
         lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
 

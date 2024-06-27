@@ -20,6 +20,7 @@ _Not yet on NuGet..._
 * CoordinateLine: Added additional constructors for creating lines given a point and slope (#3987, #3986) @aalgrou
 * DataLogger: Added `Clear()` and `ResetMinAndMaxValues()` to the data logger source class (#3993, #3969) @jpgarza93
 * Controls: Improved behavior of middle-click-drag zooming over axis panels for plots using DPI scaling (#3994) @bforlgreen
+* Style: Added `Plot.Axes.Hairline()` to enable axis frames, tick marks, and grid lines to render 1px wide regardless of scale factor (#3995) @bforlgreen
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_

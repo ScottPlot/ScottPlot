@@ -20,7 +20,7 @@ public class Plot : IDisposable
 
     public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
-    internal float ScaleFactorF = 1.0f;
+    internal float ScaleFactorF { get; private set; } = 1.0f;
 
     public AxisManager Axes { get; }
     public PlotStyler Style { get; }

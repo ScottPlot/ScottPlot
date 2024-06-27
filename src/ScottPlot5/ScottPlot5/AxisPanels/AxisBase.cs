@@ -134,7 +134,8 @@ public abstract class AxisBase : LabelStyleProperties
             float y = axis.Edge == Edge.Bottom ? panelRect.Top : panelRect.Bottom;
             float yEdge = axis.Edge == Edge.Bottom ? y + tickLength : y - tickLength;
             PixelLine pxLine = new(xPx, y, xPx, yEdge);
-            Drawing.DrawLine(rp.Canvas, paint, pxLine);
+            var lineStyle = tick.IsMajor ? majorStyle : minorStyle;
+            lineStyle.Render(rp.Canvas, paint, pxLine);
 
             // draw label
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
@@ -170,7 +171,8 @@ public abstract class AxisBase : LabelStyleProperties
             float x = axis.Edge == Edge.Left ? panelRect.Right : panelRect.Left;
             float xEdge = axis.Edge == Edge.Left ? x - tickLength : x + tickLength;
             PixelLine pxLine = new(x, yPx, xEdge, yPx);
-            Drawing.DrawLine(rp.Canvas, paint, pxLine);
+            var lineStyle = tick.IsMajor ? majorStyle : minorStyle;
+            lineStyle.Render(rp.Canvas, paint, pxLine);
 
             // draw label
             if (string.IsNullOrWhiteSpace(tick.Label) || !label.IsVisible)
