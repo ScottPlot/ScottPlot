@@ -22,6 +22,7 @@ _Not yet on NuGet..._
 * Controls: Improved behavior of middle-click-drag zooming over axis panels for plots using DPI scaling (#3994) @bforlgreen
 * Style: Added `Plot.Axes.Hairline()` to enable axis frames, tick marks, and grid lines to render 1px wide regardless of scale factor (#3995) @bforlgreen
 * Axes: Display no ticks instead of throwing an exception if automatic DateTime ticks are used with invalid ranges (#4001) @githubkau
+* SignalXY: Improve support for data sources containing zero-length arrays (#4000) @githubkau
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
