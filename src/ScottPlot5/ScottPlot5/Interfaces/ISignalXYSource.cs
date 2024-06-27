@@ -3,6 +3,11 @@
 public interface ISignalXYSource
 {
     /// <summary>
+    /// Number of values in the data source
+    /// </summary>
+    int Count { get; }
+
+    /// <summary>
     /// X position of the first data point
     /// </summary>
     double XOffset { get; set; }
