@@ -45,6 +45,10 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         Top = yRange.Max;
     }
 
+    public CoordinateRect(IAxes axes) : this(axes.XAxis.Range, axes.YAxis.Range)
+    {
+    }
+
     public CoordinateRect(Coordinates pt1, Coordinates pt2)
     {
         Left = Math.Min(pt1.X, pt2.X);
