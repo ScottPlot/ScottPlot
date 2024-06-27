@@ -440,4 +440,44 @@ public class Scatter : ICategory
             sp.OffsetY = 5;
         }
     }
+
+    public class StackedFilledLinePlot : RecipeBase
+    {
+        public override string Name => "Stacked Filled Line Plot";
+        public override string Description => "A stacked filled line plot effect can be achieved by overlapping ScatterLines that fill area.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create sample data
+            double[] xs = { 1, 2, 3, 4 };
+            double[] ys1 = { 1, 3, 1, 2 };
+            double[] ys2 = { 3, 7, 3, 1 };
+            double[] ys3 = { 5, 2, 5, 6 };
+
+            // manually stack plots
+            ys2 = Enumerable.Range(0, ys2.Length).Select(x => ys2[x] + ys1[x]).ToArray();
+            ys3 = Enumerable.Range(0, ys2.Length).Select(x => ys3[x] + ys2[x]).ToArray();
+
+            // plot the padded data points as ScatterLine
+            var sp3 = myPlot.Add.ScatterLine(xs, ys3, Colors.Black);
+            var sp2 = myPlot.Add.ScatterLine(xs, ys2, Colors.Black);
+            var sp1 = myPlot.Add.ScatterLine(xs, ys1, Colors.Black);
+
+            // set plot style
+            sp1.LineWidth = 2;
+            sp2.LineWidth = 2;
+            sp3.LineWidth = 2;
+            sp1.FillY = true;
+            sp2.FillY = true;
+            sp3.FillY = true;
+            sp1.FillYColor = Colors.Green;
+            sp2.FillYColor = Colors.Orange;
+            sp3.FillYColor = Colors.Blue;
+
+            // use tight margins so we don't see the edges of ScatterLines
+            myPlot.Axes.SetLimitsX(xs.Min(), xs.Max());
+            myPlot.Axes.SetLimitsY(ys1.Min(), ys3.Max());
+        }
+    }
 }
