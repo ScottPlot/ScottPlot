@@ -25,6 +25,7 @@ _Not yet on NuGet..._
 * SignalXY: Improve support for data sources containing zero-length arrays (#4000) @githubkau
 * CoordinateRect: Added constructor that accepts `IAxes` (#4008, #3985) @CoderPM2011
 * CoordinateRect: Fixed an issue that caused `BottomRight` to return incorrect coordinates (#4009, #3996) @CoderPM2011
+* Cookbook: Added a demonstration of stacked filled line plots (#4010, #3967) @CoderPM2011 @MarkG008
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
