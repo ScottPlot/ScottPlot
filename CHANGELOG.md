@@ -29,6 +29,7 @@ _Not yet on NuGet..._
 * Benchmark: Improved text default alignment of double-click benchmark (#4014) @banncan
 * SignalXY: Improved behavior of `MinRenderIndex` and `MaxRenderIndex` (#4011) @StendProg
 * Project: Cut dependency on `System.Runtime.InteropServices.RuntimeInformation` (#3911) @swaitvor @chhh
+* Legend: Added `IsVisible` property to `LegendItem` to customize visibility of items in manual legends (#3931) @cataclism
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_

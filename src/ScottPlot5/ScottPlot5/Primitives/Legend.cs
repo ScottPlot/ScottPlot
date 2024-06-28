@@ -132,6 +132,8 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
         items.AddRange(ManualItems);
 
+        items = items.Where(x => x.IsVisible).ToList();
+
         if (SetBestFontOnEachRender)
         {
             foreach (LegendItem item in items)
