@@ -15,7 +15,7 @@ public class Benchmark : LabelStyleProperties, IPlottable
         FontName = Fonts.Monospace,
         Alignment = Alignment.LowerLeft,
         BackgroundColor = Colors.Yellow,
-        PixelPadding = new(3, 3, 6, 0),
+        PixelPadding = new(3, 3, 3, 3),
         BorderWidth = 1,
         BorderColor = Colors.Black,
     };
