@@ -160,7 +160,7 @@ public class Styling : ICategory
 
     public class Scaling : RecipeBase
     {
-        public override string Name => "Scaling";
+        public override string Name => "Scale Factor";
         public override string Description => "All components of an image can be scaled up or down in size " +
             "by adjusting the ScaleFactor property. This is very useful for creating images that look nice " +
             "on high DPI displays with display scaling enabled.";
@@ -171,6 +171,24 @@ public class Styling : ICategory
             myPlot.ScaleFactor = 2;
             myPlot.Add.Signal(Generate.Sin());
             myPlot.Add.Signal(Generate.Cos());
+        }
+    }
+
+    public class Hairline : RecipeBase
+    {
+        public override string Name => "Hairline Mode";
+        public override string Description => "Hairline mode allows axis frames, tick marks, and grid lines " +
+            "to always be rendered a single pixel wide regardless of scale factor. Enable hairline mode to allow " +
+            "interactive plots to feel smoother when a large scale factor is in use.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.ScaleFactor = 2;
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            myPlot.Axes.Hairline(true);
         }
     }
 

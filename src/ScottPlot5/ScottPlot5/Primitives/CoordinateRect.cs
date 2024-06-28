@@ -17,7 +17,7 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
     public Coordinates TopLeft => new(Left, Top);
     public Coordinates TopRight => new(Right, Top);
     public Coordinates BottomLeft => new(Left, Bottom);
-    public Coordinates BottomRight => new(Bottom, Right);
+    public Coordinates BottomRight => new(Right, Bottom);
 
     public CoordinateRange XRange => new(Left, Right);
     public CoordinateRange YRange => new(Bottom, Top);
@@ -43,6 +43,10 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         Right = xRange.Max;
         Bottom = yRange.Min;
         Top = yRange.Max;
+    }
+
+    public CoordinateRect(IAxes axes) : this(axes.XAxis.Range, axes.YAxis.Range)
+    {
     }
 
     public CoordinateRect(Coordinates pt1, Coordinates pt2)

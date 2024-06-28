@@ -65,7 +65,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
     {
-        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span))
+        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span) || double.IsInfinity(range.Span))
         {
             // cases of extreme zoom (10,000 years)
             Ticks = [];

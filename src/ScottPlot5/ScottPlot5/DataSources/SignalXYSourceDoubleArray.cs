@@ -4,6 +4,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 {
     readonly double[] Xs;
     readonly double[] Ys;
+    public int Count => Xs.Length;
 
     public bool Rotated { get; set; } = false;
 
@@ -29,6 +30,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
     public AxisLimits GetAxisLimits()
     {
+        if (Xs.Length == 0)
+            return AxisLimits.NoLimits;
+
         double xMin = Xs[MinimumIndex] + XOffset;
         double xMax = Xs[MaximumIndex] + XOffset;
 

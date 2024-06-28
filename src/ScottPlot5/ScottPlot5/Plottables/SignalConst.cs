@@ -47,6 +47,9 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
 
     public virtual void Render(RenderPack rp)
     {
+        if (!IsVisible)
+            return;
+
         using SKPaint paint = new();
         LineStyle.ApplyToPaint(paint);
 

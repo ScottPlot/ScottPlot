@@ -4,6 +4,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 {
     public TX[] Xs { get; set; }
     public TY[] Ys { get; set; }
+    public int Count => Xs.Length;
 
     public bool Rotated
     {
@@ -32,6 +33,9 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
 
     public AxisLimits GetAxisLimits()
     {
+        if (Xs.Length == 0)
+            return AxisLimits.NoLimits;
+
         double xMin = NumericConversion.GenericToDouble(Xs, MinimumIndex) + XOffset;
         double xMax = NumericConversion.GenericToDouble(Xs, MaximumIndex) + XOffset;
         CoordinateRange xRange = new(xMin, xMax);

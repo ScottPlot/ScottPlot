@@ -880,4 +880,27 @@ public class AxisManager
         Plot.Grid.YAxisStyle.MajorLineStyle.AntiAlias = enable;
         Plot.Grid.YAxisStyle.MinorLineStyle.AntiAlias = enable;
     }
+
+    /// <summary>
+    /// Hairline mode causes lines to always render exactly 1 pixel wide regardless of <see cref="Plot.ScaleFactor"/>.
+    /// This function controls hairline behavior for all axis frames. tick marks, and grid lines.
+    /// </summary>
+    public void Hairline(bool enable)
+    {
+        foreach (AxisBase axis in GetAxes().OfType<AxisBase>())
+        {
+            // frames
+            axis.FrameLineStyle.Hairline = enable;
+
+            // tick marks
+            axis.MajorTickStyle.Hairline = enable;
+            axis.MinorTickStyle.Hairline = enable;
+        }
+
+        // grid lines
+        Plot.Grid.XAxisStyle.MajorLineStyle.Hairline = enable;
+        Plot.Grid.XAxisStyle.MinorLineStyle.Hairline = enable;
+        Plot.Grid.YAxisStyle.MajorLineStyle.Hairline = enable;
+        Plot.Grid.YAxisStyle.MinorLineStyle.Hairline = enable;
+    }
 }
