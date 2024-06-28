@@ -2,6 +2,12 @@
 
 public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
+    /// <summary>
+    /// Data values for the heatmap.
+    /// <see cref="Update"/> must be called after changing this array or editing its values.
+    /// </summary>
+    public double[,] Intensities { get; set; } = intensities;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     private IColormap _colormap { get; set; } = new Colormaps.Viridis();
@@ -183,13 +189,6 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             Extent = new(left, right, bottom, top);
         }
     }
-
-    /// <summary>
-    /// This object holds data values for the heatmap.
-    /// After editing contents users must call <see cref="Update"/> before changes
-    /// appear on the heatmap.
-    /// </summary>
-    public readonly double[,] Intensities = intensities;
 
     /// <summary>
     /// Defines what color will be used to fill cells containing NaN.

@@ -31,6 +31,7 @@ _Not yet on NuGet..._
 * Project: Cut dependency on `System.Runtime.InteropServices.RuntimeInformation` (#3911) @swaitvor @chhh
 * Legend: Added `IsVisible` property to `LegendItem` to customize visibility of items in manual legends (#3931) @cataclism
 * Signal: Exposed `Data` property setter so users can replace the `ISignalSource` without resetting the plottable (#3932) @danieljfarrell @bclehmann
+* Heatmap: Exposed `Intensities` setter to allow users to replace heatmap data with a 2D array of a different size (#3941) @sdpenner
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
