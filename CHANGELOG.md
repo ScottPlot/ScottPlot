@@ -30,6 +30,7 @@ _Not yet on NuGet..._
 * SignalXY: Improved behavior of `MinRenderIndex` and `MaxRenderIndex` (#4011) @StendProg
 * Project: Cut dependency on `System.Runtime.InteropServices.RuntimeInformation` (#3911) @swaitvor @chhh
 * Legend: Added `IsVisible` property to `LegendItem` to customize visibility of items in manual legends (#3931) @cataclism
+* Signal: Exposed `Data` property setter so users can replace the `ISignalSource` without resetting the plottable (#3932) @danieljfarrell @bclehmann
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
