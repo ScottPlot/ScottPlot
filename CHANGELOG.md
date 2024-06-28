@@ -28,6 +28,7 @@ _Not yet on NuGet..._
 * Cookbook: Added a demonstration of stacked filled line plots (#4010, #3967) @CoderPM2011 @MarkG008
 * Benchmark: Improved text default alignment of double-click benchmark (#4014) @banncan
 * SignalXY: Improved behavior of `MinRenderIndex` and `MaxRenderIndex` (#4011) @StendProg
+* Project: Cut dependency on `System.Runtime.InteropServices.RuntimeInformation` (#3911) @swaitvor @chhh
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
