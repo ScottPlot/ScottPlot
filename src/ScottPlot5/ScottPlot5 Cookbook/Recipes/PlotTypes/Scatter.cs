@@ -455,7 +455,7 @@ public class Scatter : ICategory
             double[] ys2 = { 3, 7, 3, 1 };
             double[] ys3 = { 5, 2, 5, 6 };
 
-            // manually stack plots
+            // shift each plot vertically by the sum of all plots before it
             ys2 = Enumerable.Range(0, ys2.Length).Select(x => ys2[x] + ys1[x]).ToArray();
             ys3 = Enumerable.Range(0, ys2.Length).Select(x => ys3[x] + ys2[x]).ToArray();
 
@@ -475,9 +475,8 @@ public class Scatter : ICategory
             sp2.FillYColor = Colors.Orange;
             sp3.FillYColor = Colors.Blue;
 
-            // use tight margins so we don't see the edges of ScatterLines
-            myPlot.Axes.SetLimitsX(xs.Min(), xs.Max());
-            myPlot.Axes.SetLimitsY(ys1.Min(), ys3.Max());
+            // use tight margins so data goes to the edge of the plot
+            myPlot.Axes.Margins(0, 0, 0, 0.1);
         }
     }
 }
