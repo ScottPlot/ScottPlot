@@ -56,6 +56,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         Plot oldPlot = Plot;
         Plot = plot;
         oldPlot?.Dispose();
+        Plot.PlotControl = this;
     }
 
     public virtual void Refresh() { }

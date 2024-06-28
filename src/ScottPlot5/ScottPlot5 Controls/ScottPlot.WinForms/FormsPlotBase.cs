@@ -11,7 +11,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 {
     public abstract GRContext GRContext { get; }
 
-    public Plot Plot { get; internal set; } = new();
+    public Plot Plot { get; internal set; }
 
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
@@ -20,6 +20,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public FormsPlotBase()
     {
+        Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
         Menu = new FormsPlotMenu(this);
@@ -54,6 +55,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         Plot oldPlot = Plot;
         Plot = plot;
         oldPlot?.Dispose();
+        Plot.PlotControl = this;
     }
 
     public void ShowContextMenu(Pixel position)
