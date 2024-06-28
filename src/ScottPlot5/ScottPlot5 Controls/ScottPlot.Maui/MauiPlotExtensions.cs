@@ -1,12 +1,14 @@
-﻿using TouchTracking;
-
-namespace ScottPlot.Maui;
+﻿namespace ScottPlot.Maui;
 
 internal static class MauiPlotExtensions
 {
     internal static Pixel Pixel(this TappedEventArgs e, MauiPlot plot)
     {
         Point? position = e.GetPosition(null);
+
+        if (position is null)
+            return new(double.NaN, double.NaN);
+
         Point tmpPos = new Point(
                 position.Value.X * plot.DisplayScale,
                 position.Value.X * plot.DisplayScale

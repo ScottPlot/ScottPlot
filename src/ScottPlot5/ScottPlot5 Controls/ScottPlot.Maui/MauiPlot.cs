@@ -1,7 +1,5 @@
-﻿using Microsoft.Maui.Graphics;
-using ScottPlot.Control;
+﻿using ScottPlot.Control;
 using SkiaSharp;
-using SkiaSharp.Views;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 
@@ -129,8 +127,6 @@ public partial class MauiPlot : ContentPage, IPlotControl
     {
         Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
     }
-
-
 
     public float DetectDisplayScale()
     {

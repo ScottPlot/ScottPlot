@@ -62,4 +62,8 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Maui\ScottPlot.Maui.csproj" />
+	</ItemGroup>
+
 </Project>
