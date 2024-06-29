@@ -62,6 +62,9 @@ public class MultiAxisLimitManager
     {
         foreach (IAxis axis in plot.Axes.GetAxes())
         {
+            if (!RememberedLimits.ContainsKey(axis))
+                continue;
+
             axis.Range.Min = RememberedLimits[axis].Min;
             axis.Range.Max = RememberedLimits[axis].Max;
         }
