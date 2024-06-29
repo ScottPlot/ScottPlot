@@ -272,7 +272,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         double x = NumericConversion.GenericToDouble(Xs, i);
         double y = NumericConversion.GenericToDouble(Ys, i);
         double distance = (x + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-        return distance <= maxDistance
+        return Math.Abs(distance) <= maxDistance
             ? new DataPoint(x, y, i)
             : DataPoint.None;
     }
