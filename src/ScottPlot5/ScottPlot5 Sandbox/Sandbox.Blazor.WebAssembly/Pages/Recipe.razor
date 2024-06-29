@@ -76,37 +76,32 @@
             }
         }
     }
+
     protected void RefreshWithPlot()
     {
         StateHasChanged();
         UpdatePlot();
     }
+
     protected void UpdatePlot()
     {
         InvokeAsync(async () =>
         {
-            // add little delay to ensure BlazorPlot is visible to ensure refresh works!
             await Task.Delay(1);
-
-            if (RecipeService.ShowOpenGL)
-            {
-                BlazorPlotGL.Reset();
-                RecipeService.Recipe?.Execute(BlazorPlotGL.Plot);
-                BlazorPlotGL.Refresh();
-            }
-            else
-            {
-                BlazorPlot.Reset();
-                RecipeService.Recipe?.Execute(BlazorPlot.Plot);
-                BlazorPlot.Refresh();
-            }
+            IPlotControl plotControl = RecipeService.ShowOpenGL ? BlazorPlotGL : BlazorPlot;
+            plotControl.Reset();
+            RecipeService.Recipe?.Execute(plotControl.Plot);
+            plotControl.Plot.RenderInMemory();
+            plotControl.Refresh();
         });
     }
+
     protected void ShowRecipe(IRecipe recipe)
     {
         RecipeService.Recipe = recipe;
         UpdatePlot();
     }
+
     protected void ResizePlot(System.Drawing.SizeF newSize)
     {
         plotSize = $"width: min(100%, {newSize.Width:F0}px); height: {Math.Max(newSize.Height * 0.5, 240):F0}px;";
