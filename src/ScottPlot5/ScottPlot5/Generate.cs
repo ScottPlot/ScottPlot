@@ -358,6 +358,15 @@ public static class Generate
     }
 
     /// <summary>
+    /// Return a number normally distributed around the given <paramref name="mean"/> 
+    /// according to the <paramref name="stdDev"/> standard deviation.
+    /// </summary>
+    public static double RandomNormalNumber(double mean = 0, double stdDev = 1)
+    {
+        return RandomData.RandomNormalNumber(mean, stdDev);
+    }
+
+    /// <summary>
     /// Random numbers between zero (inclusive) and <paramref name="max"/> (exclusive)
     /// </summary>
     public static double[] RandomNumbers(int count, double max)

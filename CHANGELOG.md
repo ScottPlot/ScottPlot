@@ -35,6 +35,7 @@ _Not yet on NuGet..._
 * Axes: Added `Plot.Axes.Link()` to simplify sharing axis limits between multiple plots or plot controls (#4003)
 * Blazor: Added automatic resizing options to the in-browser cookbook (#3710, #3664) @KroMignon
 * Axis Spans: Improved visibility of extremely narrow spans (#4017, #3968) @CoderPM2011
+* Generate: Added `RandomNormalNumber()` that returns a single value to compliment `RandomNormal()` which returns a collection (#4018, #3980) @CoderPM2011
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
