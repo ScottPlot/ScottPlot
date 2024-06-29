@@ -11,7 +11,7 @@ namespace ScottPlot.Eto;
 
 public class EtoPlot : Drawable, IPlotControl
 {
-    public Plot Plot { get; internal set; } = new();
+    public Plot Plot { get; internal set; }
 
     public GRContext? GRContext => null;
 
@@ -23,6 +23,7 @@ public class EtoPlot : Drawable, IPlotControl
 
     public EtoPlot()
     {
+        Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
         Menu = new EtoPlotMenu(this);
@@ -39,7 +40,7 @@ public class EtoPlot : Drawable, IPlotControl
 
     public void Reset()
     {
-        Plot plot = new();
+        Plot plot = new() { PlotControl = this };
         Reset(plot);
     }
 

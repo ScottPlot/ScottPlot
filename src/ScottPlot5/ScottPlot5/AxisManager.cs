@@ -98,6 +98,11 @@ public class AxisManager
     public List<IAxisRule> Rules { get; } = [];
 
     /// <summary>
+    /// Rules for updating axes of other plots when this plot's axis limits change
+    /// </summary>
+    private readonly List<LinkedAxisRule> LinkedAxisRules = [];
+
+    /// <summary>
     /// If enabled, AutoScale() will be called at the start of each render.
     /// This can negatively impact performance of plots with an extremely large number of data points.
     /// </summary>
@@ -902,5 +907,96 @@ public class AxisManager
         Plot.Grid.XAxisStyle.MinorLineStyle.Hairline = enable;
         Plot.Grid.YAxisStyle.MajorLineStyle.Hairline = enable;
         Plot.Grid.YAxisStyle.MinorLineStyle.Hairline = enable;
+    }
+
+    /// <summary>
+    /// Add a link to another plot's axis so its limits update when limits of an axis from this plot changes
+    /// </summary>
+    public void Link(IAxis thisPlotAxis, IAxis otherPlotAxis, Plot otherPlot)
+    {
+        if (!GetAxes().Contains(thisPlotAxis))
+            throw new InvalidOperationException($"{nameof(thisPlotAxis)} must be an axis from this plot");
+
+        LinkedAxisRule rule = new(thisPlotAxis, otherPlotAxis, otherPlot);
+        LinkedAxisRules.Add(rule);
+    }
+
+    /// <summary>
+    /// Add a link to the target plot control so its axis limits update when this plot's axis limits change
+    /// </summary>
+    public void Link(IPlotControl target, bool x = true, bool y = true) => Link(target.Plot, x, y);
+
+    /// <summary>
+    /// Add a link to the target plot so its axis limits update when this plot's axis limits change
+    /// </summary>
+    public void Link(Plot target, bool x = true, bool y = true)
+    {
+        if (x) Link(Plot.Axes.Bottom, target.Axes.Bottom, target);
+        if (y) Link(Plot.Axes.Left, target.Axes.Left, target);
+    }
+
+    /// <summary>
+    /// Remove all linked axes rules
+    /// </summary>
+    public void UnlinkAll() => LinkedAxisRules.Clear();
+
+    /// <summary>
+    /// Remove all linked axes rules involving the target plot control
+    /// </summary>
+    public void Unlink(IPlotControl target) => Unlink(target.Plot);
+
+    /// <summary>
+    /// Remove all linked axes rules involving the target plot
+    /// </summary>
+    public void Unlink(Plot target)
+    {
+        LinkedAxisRule[] rulesToRemove = LinkedAxisRules.Where(x => x.TargetPlot == target).Distinct().ToArray();
+        foreach (LinkedAxisRule ruleToRemove in rulesToRemove)
+        {
+            LinkedAxisRules.Remove(ruleToRemove);
+        }
+    }
+
+    /// <summary>
+    /// Remove all linked axes rules involving the given axis
+    /// </summary>
+    public void Unlink(IAxis axis)
+    {
+        LinkedAxisRule[] rulesToRemove = LinkedAxisRules.Where(x => x.SourceAxis == axis || x.TargetAxis == axis).Distinct().ToArray();
+        foreach (LinkedAxisRule ruleToRemove in rulesToRemove)
+        {
+            LinkedAxisRules.Remove(ruleToRemove);
+        }
+    }
+
+    /// <summary>
+    /// This is called in the render system after AxisLimitsChanged has been invoked
+    /// </summary>
+    internal void ApplyLinkedAxisRules()
+    {
+        HashSet<Plot> plotsNeedingUpdates = [];
+
+        foreach (LinkedAxisRule rule in LinkedAxisRules)
+        {
+            if ((rule.TargetAxis.Min == rule.SourceAxis.Min) && (rule.TargetAxis.Max == rule.SourceAxis.Max))
+                continue;
+
+            rule.TargetAxis.Min = rule.SourceAxis.Min;
+            rule.TargetAxis.Max = rule.SourceAxis.Max;
+            rule.TargetPlot.RenderManager.DisableAxisLimitsChangedEventOnNextRender = true;
+            plotsNeedingUpdates.Add(rule.TargetPlot);
+        }
+
+        foreach (Plot plot in plotsNeedingUpdates)
+        {
+            if (plot.PlotControl is null)
+            {
+                plot.RenderInMemory();
+            }
+            else
+            {
+                plot.PlotControl.Refresh();
+            }
+        }
     }
 }

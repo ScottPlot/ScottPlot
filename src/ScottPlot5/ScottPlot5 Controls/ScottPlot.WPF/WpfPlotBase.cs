@@ -14,7 +14,7 @@ namespace ScottPlot.WPF
         public abstract GRContext GRContext { get; }
         public abstract void Refresh();
 
-        public Plot Plot { get; internal set; } = new();
+        public Plot Plot { get; internal set; }
         public IPlotInteraction Interaction { get; set; }
         public float DisplayScale { get; set; }
         public IPlotMenu Menu { get; set; }
@@ -32,6 +32,7 @@ namespace ScottPlot.WPF
 
         public WpfPlotBase()
         {
+            Plot = new Plot() { PlotControl = this };
             DisplayScale = DetectDisplayScale();
             Interaction = new Interaction(this);
             Menu = new WpfPlotMenu(this);
@@ -60,6 +61,7 @@ namespace ScottPlot.WPF
             Plot oldPlot = Plot;
             Plot = newPlot;
             oldPlot?.Dispose();
+            Plot.PlotControl = this;
         }
 
         public void ShowContextMenu(Pixel position)

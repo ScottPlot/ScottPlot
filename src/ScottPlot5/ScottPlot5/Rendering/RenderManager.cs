@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace ScottPlot.Rendering;
 
@@ -155,6 +156,7 @@ public class RenderManager(Plot plot)
             if (!DisableAxisLimitsChangedEventOnNextRender && LastRender.AxisLimitsChanged)
             {
                 AxisLimitsChanged.Invoke(Plot, LastRender);
+                Plot.Axes.ApplyLinkedAxisRules();
             }
         }
 

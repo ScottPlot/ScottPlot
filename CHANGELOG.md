@@ -28,7 +28,12 @@ _Not yet on NuGet..._
 * Cookbook: Added a demonstration of stacked filled line plots (#4010, #3967) @CoderPM2011 @MarkG008
 * Benchmark: Improved text default alignment of double-click benchmark (#4014) @banncan
 * SignalXY: Improved behavior of `MinRenderIndex` and `MaxRenderIndex` (#4011) @StendProg
-* Blazor: Improved the interactive behavior of the in-browser cookbook (#3710, #3664) @KroMignon
+* Project: Cut dependency on `System.Runtime.InteropServices.RuntimeInformation` (#3911) @swaitvor @chhh
+* Legend: Added `IsVisible` property to `LegendItem` to customize visibility of items in manual legends (#3931) @cataclism
+* Signal: Exposed `Data` property setter so users can replace the `ISignalSource` without resetting the plottable (#3932) @danieljfarrell @bclehmann
+* Heatmap: Exposed `Intensities` setter to allow users to replace heatmap data with a 2D array of a different size (#3941) @sdpenner
+* Axes: Added `Plot.Axes.Link()` to simplify sharing axis limits between multiple plots or plot controls (#4003)
+* Blazor: Added automatic resizing options to the in-browser cookbook (#3710, #3664) @KroMignon
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
