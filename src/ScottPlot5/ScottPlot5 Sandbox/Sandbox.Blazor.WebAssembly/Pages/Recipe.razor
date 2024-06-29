@@ -11,13 +11,24 @@
         <div>@RecipeService.RecipeDescription</div>
     </div>
 
+    <div class="d-flex">
+        <div class="p-2">
+            <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL />
+            <label>Use OpenGL</label>
+        </div>
+        <div class="p-2">
+            <InputCheckbox class="mx-2 mt-2" @bind-Value=@EnableAutoResizing />
+            <label>Resize Plot Automatically</label>
+        </div>
+    </div>
+
     @if (RecipeService.ShowOpenGL)
     {
-        <BlazorPlotGL @ref=BlazorPlotGL Style="@plotSize" />
+        <BlazorPlotGL @ref=BlazorPlotGL Style="@PlotSize" />
     }
     else
     {
-        <BlazorPlot @ref=BlazorPlot Style="@plotSize" />
+        <BlazorPlot @ref=BlazorPlot Style="@PlotSize" />
     }
 
     <div class="m-3">
@@ -32,10 +43,6 @@
             }
         </div>
     </div>
-
-    <div class="my-5 p-3">
-        <InputCheckbox class="mx-2 mt-2" @bind-Value=@RecipeService.ShowOpenGL /> <label>use openGL</label>
-    </div>
 }
 
 <div class="text-muted p-4" style="margin-top: 10rem;">
@@ -46,71 +53,90 @@
     [Parameter]
     public string SelectRecipe { get; set; } = string.Empty;
 
-
     BlazorPlot BlazorPlot { get; set; } = new();
     BlazorPlotGL BlazorPlotGL { get; set; } = new();
     string SearchTerm { get; set; } = "";
 
-    string plotSize { get; set; } = "width: min(100%, 800px); height: 600px;";
+    const string DefaultPlotSize = "width: min(100%, 800px); height: 600px;";
+    string PlotSize { get; set; } = DefaultPlotSize;
 
     protected override void OnInitialized()
     {
         RecipeService.RecipeChanged += this.RefreshWithPlot;
         RecipeService.BackendChanged += this.RefreshWithPlot;
-        ResizeService.Resize += this.ResizePlot;
+
+        ResizeService.Enable = false;
+        ResizeService.ResizeAction += this.ResizePlot;
     }
 
     public void Dispose()
     {
         RecipeService.RecipeChanged -= this.RefreshWithPlot;
         RecipeService.BackendChanged -= this.RefreshWithPlot;
-        ResizeService.Resize -= this.ResizePlot;
+        ResizeService.ResizeAction -= this.ResizePlot;
     }
 
     protected override void OnParametersSet()
     {
-        if (!string.IsNullOrEmpty(SelectRecipe))
+        ReloadSelectedRecipe();
+    }
+
+    private void ReloadSelectedRecipe()
+    {
+        if (string.IsNullOrEmpty(SelectRecipe))
+            return;
+
+        if (RecipeService.FindRecipe(SelectRecipe))
         {
-            if (RecipeService.FindRecipe(SelectRecipe))
-            {
-                ShowRecipe(RecipeService.Recipe!);
-            }
+            ShowRecipe(RecipeService.Recipe!);
         }
     }
+
     protected void RefreshWithPlot()
     {
         StateHasChanged();
         UpdatePlot();
     }
+
     protected void UpdatePlot()
     {
         InvokeAsync(async () =>
         {
-            // add little delay to ensure BlazorPlot is visible to ensure refresh works!
             await Task.Delay(1);
-
-            if (RecipeService.ShowOpenGL)
-            {
-                BlazorPlotGL.Reset();
-                RecipeService.Recipe?.Execute(BlazorPlotGL.Plot);
-                BlazorPlotGL.Refresh();
-            }
-            else
-            {
-                BlazorPlot.Reset();
-                RecipeService.Recipe?.Execute(BlazorPlot.Plot);
-                BlazorPlot.Refresh();
-            }
+            IPlotControl plotControl = RecipeService.ShowOpenGL ? BlazorPlotGL : BlazorPlot;
+            plotControl.Reset();
+            RecipeService.Recipe?.Execute(plotControl.Plot);
+            plotControl.Plot.RenderInMemory();
+            plotControl.Refresh();
         });
     }
+
     protected void ShowRecipe(IRecipe recipe)
     {
         RecipeService.Recipe = recipe;
         UpdatePlot();
     }
+
+    private bool EnableAutoResizing
+    {
+        get => ResizeService.Enable;
+        set
+        {
+            ResizeService.Enable = value;
+            PlotSize = DefaultPlotSize;
+        }
+    }
+
+    /// <summary>
+    /// The Layout's OnAfterRenderAsync() method calls UpdateDisplayField()
+    /// which calls the ResizeService's SetSize() method and if the size
+    /// has changed it invokes this action.
+    /// </summary>
     protected void ResizePlot(System.Drawing.SizeF newSize)
     {
-        plotSize = $"width: min(100%, {newSize.Width:F0}px); height: 600px;";
+        double width = newSize.Width;
+        double height = Math.Max(newSize.Height * 0.5, 240);
+        PlotSize = $"width: min(100%, {width:F0}px); height: {height:F0}px;";
         RefreshWithPlot();
     }
 }

@@ -52,6 +52,7 @@ namespace Sandbox.Blazor.WebAssembly.Services
                 BackendChanged?.Invoke();
             }
         }
+
         private void SetRecipe(IRecipe? recipe)
         {
             _recipe = recipe;
@@ -71,6 +72,7 @@ namespace Sandbox.Blazor.WebAssembly.Services
             }
             SourceCode = source;
         }
+
         public bool IsSelected(IRecipe? recipe)
         {
             return recipe?.Name == _recipe?.Name && recipe?.Description == _recipe?.Description;
