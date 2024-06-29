@@ -43,14 +43,14 @@ else
     protected override void OnInitialized()
     {
         RecipeService.BackendChanged += this.RefreshWithPlot;
-        ResizeService.Resize += this.ResizePlot;
+        ResizeService.ResizeAction += this.ResizePlot;
         plotSize = $"width: min(100%, {ResizeService.PixelWidth:F0}px); height: 600px;";
     }
 
     public void Dispose()
     {
         RecipeService.BackendChanged -= this.RefreshWithPlot;
-        ResizeService.Resize -= this.ResizePlot;
+        ResizeService.ResizeAction -= this.ResizePlot;
     }
     private void RefreshWithPlot()
     {

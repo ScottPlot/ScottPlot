@@ -1,4 +1,6 @@
-﻿.burger {
+﻿/* default rules for small screens */
+
+.burger {
     opacity: .3;
 }
 
@@ -103,6 +105,7 @@ a {
     padding-left: .5rem;
 }
 
+/* special rules for large screens */
 @media (min-width: 641px) {
     .navbar-toggler {
         display: none;
