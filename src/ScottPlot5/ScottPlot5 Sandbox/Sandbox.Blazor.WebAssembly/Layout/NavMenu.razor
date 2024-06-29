@@ -105,14 +105,14 @@
     {
         UpdateFilter();
         RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
-        ResizeService.Resize += this.OnSizeChanged;
+        ResizeService.ResizeAction += this.OnSizeChanged;
         OnSizeChanged(new System.Drawing.SizeF());
     }
 
     public void Dispose()
     {
         RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
-        ResizeService.Resize -= this.OnSizeChanged;
+        ResizeService.ResizeAction -= this.OnSizeChanged;
     }
 
     /// <summary>

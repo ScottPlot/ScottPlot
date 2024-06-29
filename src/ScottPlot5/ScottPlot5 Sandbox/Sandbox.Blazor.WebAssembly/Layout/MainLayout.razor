@@ -59,7 +59,10 @@
 
             if (entry.TargetElement.Value.Equals(mainElement))
             {
-                ResizeService.SetSize(Convert.ToSingle(entry.ContentRect.Width), Convert.ToSingle(entry.ContentRect.Height));
+                float width = Convert.ToSingle(entry.ContentRect.Width);
+                float height = Convert.ToSingle(entry.ContentRect.Height);
+                ResizeService.SetSize(width, height);
+
                 // Clear Icon mode on screen size changes
                 if (ResizeService.IsLargeScreen != wasLargeScreen)
                 {
