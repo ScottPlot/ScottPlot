@@ -1,5 +1,8 @@
-## ScottPlot 5.0.36
+## ScottPlot 5.0.37
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.36
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
 * Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250
 * Ticks: Added a custom `LabelFormatter` to DateTime axes which use fixed intervals (#3936) @Fruchtzwerg94
 * Fonts: Enabled sub-pixel text positioning for improved character placement (#3937) @bforlgreen
