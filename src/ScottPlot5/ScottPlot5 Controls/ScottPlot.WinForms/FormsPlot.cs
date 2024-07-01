@@ -27,6 +27,7 @@ public class FormsPlot : FormsPlotBase
         SetupSKControl();
         Plot.FigureBackground.Color = Color.FromColor(SystemColors.Control);
         Plot.DataBackground.Color = Colors.White;
+        Plot.Style.GrabLightSettings();
     }
 
     private void SetupSKControl()
