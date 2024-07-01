@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.37
 * Signal and SignalXY: Improve data source `GetNearestX()` accuracy (#4019) @StendProg
+* Maui: Created a `ScottPlot.Maui.MauiPlot` control to provide interactive plots in .NET Maui applications (#4013) @ByteSore
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_

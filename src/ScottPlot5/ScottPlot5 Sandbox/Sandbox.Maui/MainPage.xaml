@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sp="clr-namespace:ScottPlot.Maui;assembly=ScottPlot.Maui"
+             x:Class="Sandbox.Maui.MainPage"
+             Title="ScottPlot">
+    <Grid
+        HorizontalOptions="FillAndExpand" 
+        VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <sp:MauiPlot x:Name="MauiPlot1" Grid.Row="0" />
+        <Label Text="Label" Grid.Row="1" />
+    </Grid>
+</ContentPage>
