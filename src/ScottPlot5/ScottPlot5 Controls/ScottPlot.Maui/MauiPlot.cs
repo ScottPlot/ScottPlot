@@ -11,7 +11,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
 
     public Plot Plot { get; internal set; } = new();
 
-    private ContentPage XamlRoot;
+    private ContentPage? XamlRoot = null;
 
     public SkiaSharp.GRContext? GRContext => null;
 
@@ -85,12 +85,16 @@ public partial class MauiPlot : ContentPage, IPlotControl
     private Pixel GetMousePos(TappedEventArgs e)
     {
         Point? position = e.GetPosition(null);
+        if (position is null)
+            return Pixel.NaN;
         Point tmpPos = new Point(position.Value.X, position.Value.X);
         return tmpPos.ToPixel();
     }
     private Pixel GetMousePos(PointerEventArgs e)
     {
         Point? position = e.GetPosition(null);
+        if (position is null)
+            return Pixel.NaN;
         Point tmpPos = new Point(position.Value.X, position.Value.X);
         return tmpPos.ToPixel();
     }
