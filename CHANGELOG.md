@@ -1,5 +1,5 @@
 ## ScottPlot 5.0.37
-_Not yet on NuGet..._
+* Signal and SignalXY: Improve data source `GetNearestX()` accuracy (#4019) @StendProg
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
