@@ -2,6 +2,7 @@
 {
     public class PlotColorsSettings
     {
+        public IPalette Palette = new Palettes.Category10();
         public Color Axes;
         public Color GridMajorLine;
         public Color FigureBackground;

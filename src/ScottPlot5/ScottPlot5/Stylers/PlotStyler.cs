@@ -46,6 +46,7 @@ public class PlotStyler(Plot plot)
 
     private PlotColorsSettings _darkColors = new PlotColorsSettings()
     {
+        Palette = new Palettes.Penumbra(),
         Axes = Color.FromHex("#d7d7d7"),
         GridMajorLine = Color.FromHex("#404040"),
         FigureBackground = Color.FromHex("#181818"),
@@ -57,6 +58,7 @@ public class PlotStyler(Plot plot)
 
     private PlotColorsSettings _lightColors = new PlotColorsSettings()
     {
+        Palette = new Palettes.Category10(),
         Axes = Colors.Black,
         GridMajorLine = Colors.Black.WithOpacity(.1),
         FigureBackground = Colors.White,
@@ -70,6 +72,7 @@ public class PlotStyler(Plot plot)
     {
         _lightColors = new PlotColorsSettings()
         {
+            Palette = Plot.Add.Palette,
             Axes = Plot.Axes.Left.TickLabelStyle.ForeColor,
             GridMajorLine = Plot.Grid.MajorLineColor,
             FigureBackground = Plot.FigureBackground.Color,
@@ -82,6 +85,9 @@ public class PlotStyler(Plot plot)
 
     private void ChangeColorModeFromTo(PlotColorsSettings from, PlotColorsSettings to)
     {
+        if (Plot.Add.Palette.Name == from.Palette.Name)
+            Plot.Add.Palette = to.Palette;
+
         foreach (AxisBase axis in Plot.Axes.GetAxes().OfType<AxisBase>())
         {
             if (axis.LabelStyle.ForeColor == from.Axes)
