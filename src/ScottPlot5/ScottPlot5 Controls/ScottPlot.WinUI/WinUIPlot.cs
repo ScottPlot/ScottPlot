@@ -11,7 +11,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 {
     private readonly SKXamlCanvas _canvas = CreateRenderTarget();
 
-    public Plot Plot { get; internal set; } = new();
+    public Plot Plot { get; internal set; }
 
     public SkiaSharp.GRContext? GRContext => null;
 
@@ -24,6 +24,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
 
     public WinUIPlot()
     {
+        Plot = new() { PlotControl = this };
         Interaction = new Interaction(this);
         Menu = new WinUIPlotMenu(this);
 
@@ -71,6 +72,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public void Reset(Plot plot)
     {
         Plot = plot;
+        Plot.PlotControl = this;
     }
 
     public void Refresh()

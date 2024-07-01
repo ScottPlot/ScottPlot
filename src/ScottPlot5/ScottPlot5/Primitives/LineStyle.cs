@@ -16,11 +16,6 @@ public class LineStyle
     /// </summary>
     public bool Hairline { get; set; } = false;
 
-    /// <summary>
-    /// Returns true if <see cref="Width"/> is >0 or <see cref="Hairline"/> is true
-    /// </summary>
-    public bool RenderedLineHasWidth => Width > 0 || Hairline;
-
     public Color Color { get; set; } = Colors.Black;
 
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
@@ -38,6 +33,18 @@ public class LineStyle
     public float StrokeMiter { get; set; } = 4;
 
     public static LineStyle None => new() { Width = 0 };
+
+    public bool CanBeRendered
+    {
+        get
+        {
+            if (IsVisible == false) return false;
+            if (Color.Alpha == 0) return false;
+            if (Color == Colors.Transparent) return false;
+            if (Width == 0 && Hairline == false) return false;
+            return true;
+        }
+    }
 
     public void Render(SKCanvas canvas, Pixel[] starts, Pixel[] ends, SKPaint paint)
     {

@@ -13,8 +13,8 @@ public class GridStyle
 
     public LineStyle MinorLineStyle { get; set; } = new()
     {
-        Width = 1,
-        IsVisible = false,
+        Width = 0,
+        IsVisible = true,
         Color = Colors.Black.WithOpacity(.05),
         AntiAlias = false,
     };
@@ -27,7 +27,7 @@ public class GridStyle
         if (!IsVisible)
             return;
 
-        if (MinorLineStyle.IsVisible && MinorLineStyle.RenderedLineHasWidth)
+        if (MinorLineStyle.CanBeRendered)
         {
             float[] xTicksMinor = ticks
                 .Where(x => !x.IsMajor)
@@ -38,7 +38,7 @@ public class GridStyle
             RenderGridLines(rp, xTicksMinor, axis.Edge, MinorLineStyle);
         }
 
-        if (MajorLineStyle.IsVisible && MajorLineStyle.RenderedLineHasWidth)
+        if (MajorLineStyle.CanBeRendered)
         {
             float[] xTicksMajor = ticks
                 .Where(x => x.IsMajor)

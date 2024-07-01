@@ -10,7 +10,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot</PackageId>
-        <Version>5.0.35</Version>
+        <Version>5.0.36</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -27,7 +27,7 @@
         <IncludeSource>true</IncludeSource>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>NU1701, CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
-        
+
         <!--- SourceLink configuration -->
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <Deterministic>true</Deterministic>
@@ -51,10 +51,9 @@
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.*" />
     </ItemGroup>
 
-    <!-- .NET Framework 4.6.1 requires packages to support C# 7 features -->
+    <!-- Packages allowing modern C# language features to be used in .NET Framework project -->
     <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-        <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     </ItemGroup>
 
 </Project>

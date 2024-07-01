@@ -14,7 +14,7 @@ namespace ScottPlot.Avalonia;
 
 public class AvaPlot : Controls.Control, IPlotControl
 {
-    public Plot Plot { get; internal set; } = new();
+    public Plot Plot { get; internal set; }
 
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
@@ -25,6 +25,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public AvaPlot()
     {
+        Plot = new() { PlotControl = this };
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
@@ -72,7 +73,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public void Reset()
     {
-        Plot plot = new();
+        Plot plot = new() { PlotControl = this };
         Reset(plot);
     }
 

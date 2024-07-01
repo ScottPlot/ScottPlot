@@ -30,6 +30,11 @@ public class HorizontalSpan : AxisSpan, IPlottable
     {
         PixelRangeY vert = new(rp.DataRect.Bottom, rp.DataRect.Top);
         PixelRangeX horiz = new(Axes.GetPixelX(Left), Axes.GetPixelX(Right));
+        if (horiz.Span < 1)
+        {
+            float middle = (horiz.Left + horiz.Right) / 2;
+            horiz = new(middle - 0.5F, middle + 0.5F);
+        }
         PixelRect rect = new(horiz, vert);
         Render(rp, rect);
     }

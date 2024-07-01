@@ -29,6 +29,11 @@ public class VerticalSpan : AxisSpan, IPlottable
     public override void Render(RenderPack rp)
     {
         PixelRangeY vert = new(Axes.GetPixelY(Bottom), Axes.GetPixelY(Top));
+        if (vert.Span < 1)
+        {
+            float middle = (vert.Top + vert.Bottom) / 2;
+            vert = new(middle - 0.5F, middle + 0.5F);
+        }
         PixelRangeX horiz = new(rp.DataRect.Left, rp.DataRect.Right);
         PixelRect rect = new(horiz, vert);
         Render(rp, rect);

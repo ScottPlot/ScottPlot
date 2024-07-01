@@ -5,7 +5,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public readonly ISignalSource Data = data;
+    public ISignalSource Data { get; set; } = data;
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }

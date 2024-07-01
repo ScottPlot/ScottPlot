@@ -38,6 +38,11 @@ public class Plot : IDisposable
     /// </summary>
     public object Sync { get; } = new();
 
+    /// <summary>
+    /// The user control this plot belongs to
+    /// </summary>
+    public IPlotControl? PlotControl { get; set; } = null;
+
     public Plot()
     {
         Axes = new(this);

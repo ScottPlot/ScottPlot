@@ -5,7 +5,7 @@ SET CookbookSource=..\www\cookbook\5.0
 rmdir /q/s "%CookbookSource%"
 
 :: run the ScottPlot test project to generate cookbook images
-dotnet test "..\..\src\ScottPlot5\ScottPlot5 Tests"
+dotnet test "..\..\src\ScottPlot5\ScottPlot5 Tests\Unit Tests"
 
 :: run the Cookbook test project to generate HTML, Markdown, and JSON files
 dotnet test "..\..\src\ScottPlot5\ScottPlot5 Cookbook"

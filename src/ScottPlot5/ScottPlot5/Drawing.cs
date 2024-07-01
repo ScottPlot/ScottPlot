@@ -36,11 +36,7 @@ public static class Drawing
 
     public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
-        if (lineStyle.IsVisible == false) return;
-        if (lineStyle.Color.Alpha == 0) return;
-        if (lineStyle.Color == Colors.Transparent) return;
-        if (lineStyle.Width == 0 & lineStyle.Hairline == false)
-            return;
+        if (!lineStyle.CanBeRendered) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)
@@ -65,8 +61,7 @@ public static class Drawing
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (!lineStyle.IsVisible || !lineStyle.RenderedLineHasWidth || lineStyle.Color == Colors.Transparent)
-            return;
+        if (!lineStyle.CanBeRendered) return;
 
         using SKPath path = new();
         path.MoveTo(pixels.First().ToSKPoint());
@@ -104,8 +99,7 @@ public static class Drawing
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
     {
-        if (!lineStyle.IsVisible || !lineStyle.RenderedLineHasWidth || lineStyle.Color == Colors.Transparent)
-            return;
+        if (!lineStyle.CanBeRendered) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)
@@ -127,8 +121,8 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
-        if (!lineStyle.RenderedLineHasWidth || lineStyle.IsVisible == false || pixels.Take(2).Count() < 2)
-            return;
+        if (!lineStyle.CanBeRendered) return;
+        if (pixels.Take(2).Count() < 2) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)
@@ -140,8 +134,7 @@ public static class Drawing
 
     public static void DrawLines(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
     {
-        if (!lineStyle.RenderedLineHasWidth || lineStyle.IsVisible == false)
-            return;
+        if (!lineStyle.CanBeRendered) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)
@@ -178,9 +171,7 @@ public static class Drawing
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, LineStyle lineStyle)
     {
-        if (!lineStyle.IsVisible) return;
-        if (!lineStyle.RenderedLineHasWidth) return;
-        if (lineStyle.Color == Colors.Transparent) return;
+        if (!lineStyle.CanBeRendered) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)
@@ -245,9 +236,7 @@ public static class Drawing
 
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
     {
-        if (!lineStyle.IsVisible) return;
-        if (!lineStyle.RenderedLineHasWidth) return;
-        if (lineStyle.Color == Colors.Transparent) return;
+        if (!lineStyle.CanBeRendered) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)
@@ -268,9 +257,7 @@ public static class Drawing
 
     public static void DrawOval(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect)
     {
-        if (!lineStyle.IsVisible) return;
-        if (!lineStyle.RenderedLineHasWidth) return;
-        if (lineStyle.Color == Colors.Transparent) return;
+        if (!lineStyle.CanBeRendered) return;
 
         lineStyle.ApplyToPaint(paint);
         if (lineStyle.Hairline)

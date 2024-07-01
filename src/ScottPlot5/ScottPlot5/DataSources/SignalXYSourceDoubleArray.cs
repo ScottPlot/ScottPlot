@@ -391,7 +391,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     {
         int i = GetIndex(mouseLocation.X); // TODO: check the index after too?
         double distance = (Xs[i] + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-        return distance <= maxDistance
+        return Math.Abs(distance) <= maxDistance
             ? new DataPoint(Xs[i], Ys[i], i)
             : DataPoint.None;
     }

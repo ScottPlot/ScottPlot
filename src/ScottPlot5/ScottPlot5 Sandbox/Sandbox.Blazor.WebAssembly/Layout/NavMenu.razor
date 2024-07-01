@@ -1,9 +1,15 @@
 ﻿@inject IRecipesService RecipeService
+@inject IResizeService ResizeService
 @inject NavigationManager NavManager
 @implements IDisposable
 
 <div class="@NavMenuTopCssClass d-flex align-items-center justify-content-between p-2">
 
+    @if (!IsMenuCollapsed)
+    {
+        <img src="favicon.svg" height="36px" class="" />
+        <div class="text-light fs-5">ScottPlot Blazor Demo</div>
+    }
     <div class="burger">
         <div title="Navigation menu" @onclick="ToggleIconMenu">
             @if (IsMenuCollapsed)
@@ -26,23 +32,17 @@
         </div>
     </div>
 
-    @if (!IsMenuCollapsed)
-    {
-        <div class="text-light fs-5">ScottPlot Blazor Demo</div>
-        <img src="favicon.svg" height="36px" class="" />
-    }
-
 </div>
 
 @if (!IsMenuCollapsed)
 {
     <div class="@NavMenuCssClass nav-scrollable">
         <h2 class="mt-4 fs-6 ps-3 fw-bold">Getting Started</h2>
-        <div class="sidebar-button">
-            <a href="/quickstart" class="sidebar-button">Quickstart</a>
+        <div class="sidebar-button" @onclick='() => NavigateTo("quickstart")'>
+            <a class="sidebar-button">Quickstart</a>
         </div>
-        <div class="sidebar-button">
-            <a href="/signal" class="sidebar-button">Performance Test</a>
+        <div class="sidebar-button" @onclick='() => NavigateTo("signal")'>
+            <a class="sidebar-button">Performance Test</a>
         </div>
         <hr />
 
@@ -85,12 +85,19 @@
     string _SearchTerm = string.Empty;
     string SearchTerm { get => _SearchTerm; set { _SearchTerm = value; UpdateFilter(); } }
 
-    private bool IsMenuCollapsed { get; set; } = false;
+    private bool? _wasLargeScreen = null;
+    /// <summary>
+    /// For "small device" to show/hide drop-down menu
+    /// </summary>
+    private bool IsMenuCollapsed { get; set; }
     private string? NavMenuCssClass => IsMenuCollapsed ? "collapse" : null;
     private string? NavMenuTopCssClass => IsMenuCollapsed ? "top-row-hide" : "top-row-show";
     private string BurgerIconColor => IsMenuCollapsed ? "#000000" : "#FFFFFF";
 
-    //EventCallback for sending bool to MainLayout
+    /// <summary>
+    /// EventCallback for sending bool to MainLayout to update side bar width when
+    /// side bar is collapsed (for large screen devices)
+    /// </summary>
     [Parameter]
     public EventCallback<bool> ShowIconMenu { get; set; }
 
@@ -98,19 +105,39 @@
     {
         UpdateFilter();
         RecipeService.RecipeChanged += this.StateHasChanged; // subscribe
+        ResizeService.ResizeAction += this.OnSizeChanged;
+        OnSizeChanged(new System.Drawing.SizeF());
     }
 
     public void Dispose()
     {
         RecipeService.RecipeChanged -= this.StateHasChanged; // unsubscribe
+        ResizeService.ResizeAction -= this.OnSizeChanged;
     }
 
+    /// <summary>
+    /// On "large device" to minimize side menu bar
+    /// </summary>
     private async Task ToggleIconMenu()
     {
         IsMenuCollapsed = !IsMenuCollapsed;
+        // to inform MainLayout about parameter changes
         await ShowIconMenu.InvokeAsync(IsMenuCollapsed);
     }
 
+    private void OnSizeChanged(System.Drawing.SizeF newSize)
+    {
+        InvokeAsync(async () =>
+        {
+            // add little delay to ensure BlazorPlot is visible to ensure refresh works!
+            await Task.Delay(1);
+            if (_wasLargeScreen != ResizeService.IsLargeScreen)
+            {
+                _wasLargeScreen = ResizeService.IsLargeScreen;
+                IsMenuCollapsed = _wasLargeScreen == false;
+            }
+        });
+    }
     private void UpdateFilter()
     {
         if (string.IsNullOrWhiteSpace(SearchTerm))
@@ -142,10 +169,27 @@
     private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter == chapter).Select(x => x.Category).Distinct();
     private IEnumerable<IRecipe> GetFilteredRecipes(ICategory category) => FilteredRecipes.Where(x => x.Category.CategoryName == category.CategoryName).Select(x => x.Recipe);
 
+    /// <summary>
+    /// Navigates to a specified URI
+    /// </summary>
+    /// <param name="uri">The destination URI. This can be absolute, or relative to the base URI</param>
+    /// <param name="replace">If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack.</param>
+    protected void NavigateTo(string uri, bool replace = false)
+    {
+        // for small devies, to collapse the dropdown menu
+        IsMenuCollapsed = _wasLargeScreen == false;
+        NavManager.NavigateTo(uri, replace: replace);
+    }
+
+    /// <summary>
+    /// Navigates to q specified recipe.
+    /// </summary>
+    /// <param name="recipe">Recipe to be dispayed.</param>
     protected void ShowRecipe(IRecipe recipe)
     {
-        string recipeUrlName = recipe.GetType().Name;
-        NavManager.NavigateTo($"recipe/{recipeUrlName}", replace: true);
+        // for small devies, to collapse the dropdown menu
+        IsMenuCollapsed = _wasLargeScreen == false;
+        NavigateTo($"recipe/{recipe.GetType().Name}", true);
         RecipeService.Recipe = recipe;
     }
 }

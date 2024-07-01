@@ -27,8 +27,8 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     /// </summary>
     public ConnectStyle ConnectStyle { get; set; } = ConnectStyle.Straight;
 
-    public int MinRenderIndex { get => Data.MinimumIndex; set => Data.MaximumIndex = value; }
-    public int MaxRenderIndex { get => Data.MinimumIndex; set => Data.MaximumIndex = value; }
+    public int MinRenderIndex { get => Data.MinimumIndex; set => Data.MinimumIndex = value; }
+    public int MaxRenderIndex { get => Data.MaximumIndex; set => Data.MaximumIndex = value; }
 
     public Color Color
     {

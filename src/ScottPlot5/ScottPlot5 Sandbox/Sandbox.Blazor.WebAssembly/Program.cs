@@ -13,14 +13,14 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
 builder.Services.AddScoped(sp => httpClient);
 
-var recipies = new RecipesService(httpClient);
-builder.Services.AddSingleton<IRecipesService>(recipies);
+var recipes = new RecipesService(httpClient);
+builder.Services.AddSingleton<IRecipesService>(recipes);
 
 builder.Services.AddResizeObserverService();
 builder.Services.AddSingleton<IResizeService>(new ResizeService());
 
 
 var app = builder.Build();
-await recipies.GetRecipesAsync();
+await recipes.GetRecipesAsync();
 
 await app.RunAsync();

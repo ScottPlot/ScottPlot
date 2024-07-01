@@ -1,5 +1,8 @@
+## ScottPlot 5.0.37
+* Signal and SignalXY: Improve data source `GetNearestX()` accuracy (#4019) @StendProg
+
 ## ScottPlot 5.0.36
-_Not yet on NuGet..._
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
 * Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250
 * Ticks: Added a custom `LabelFormatter` to DateTime axes which use fixed intervals (#3936) @Fruchtzwerg94
 * Fonts: Enabled sub-pixel text positioning for improved character placement (#3937) @bforlgreen
@@ -23,6 +26,20 @@ _Not yet on NuGet..._
 * Style: Added `Plot.Axes.Hairline()` to enable axis frames, tick marks, and grid lines to render 1px wide regardless of scale factor (#3995) @bforlgreen
 * Axes: Display no ticks instead of throwing an exception if automatic DateTime ticks are used with invalid ranges (#4001) @githubkau
 * SignalXY: Improve support for data sources containing zero-length arrays (#4000) @githubkau
+* CoordinateRect: Added constructor that accepts `IAxes` (#4008, #3985) @CoderPM2011
+* CoordinateRect: Fixed an issue that caused `BottomRight` to return incorrect coordinates (#4009, #3996) @CoderPM2011
+* Cookbook: Added a demonstration of stacked filled line plots (#4010, #3967) @CoderPM2011 @MarkG008
+* Benchmark: Improved text default alignment of double-click benchmark (#4014) @banncan
+* SignalXY: Improved behavior of `MinRenderIndex` and `MaxRenderIndex` (#4011) @StendProg
+* Project: Cut dependency on `System.Runtime.InteropServices.RuntimeInformation` (#3911) @swaitvor @chhh
+* Legend: Added `IsVisible` property to `LegendItem` to customize visibility of items in manual legends (#3931) @cataclism
+* Signal: Exposed `Data` property setter so users can replace the `ISignalSource` without resetting the plottable (#3932) @danieljfarrell @bclehmann
+* Heatmap: Exposed `Intensities` setter to allow users to replace heatmap data with a 2D array of a different size (#3941) @sdpenner
+* Axes: Added `Plot.Axes.Link()` to simplify sharing axis limits between multiple plots or plot controls (#4003)
+* Blazor: Added automatic resizing options to the in-browser cookbook (#3710, #3664) @KroMignon
+* Axis Spans: Improved visibility of extremely narrow spans (#4017, #3968) @CoderPM2011
+* Generate: Added `RandomNormalNumber()` that returns a single value to compliment `RandomNormal()` which returns a collection (#4018, #3980) @CoderPM2011
+* Axis Lines: Offset label according to the panel offset to improve appearance on multi-axis plots (#1766) @fuxinsen @mengfanmin123
 
 ## ScottPlot 5.0.35
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-10_
