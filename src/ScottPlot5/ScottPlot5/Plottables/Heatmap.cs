@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Colormaps;
+
+namespace ScottPlot.Plottables;
 
 public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
@@ -10,6 +12,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public bool IsoMap { get; set; } = false;
     private IColormap _colormap { get; set; } = new Colormaps.Viridis();
     public IColormap Colormap
     {
@@ -256,6 +259,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
     private SKBitmap? Bitmap = null;
+    private List<LinkedList<(int i, int j)>>? EdgePaths = null;
 
     ~Heatmap()
     {
@@ -269,6 +273,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     private uint[] GetArgbValues()
     {
+        // TODO: Allow setting number of buckets (and possibly their size, it's often useful to highlight a narrow range)
+        var quantizedColormap = IsoMap ? new QuantizedColormap(Colormap, 3) : Colormap;
+
         Range range = GetRange();
         uint[] argb = new uint[Intensities.Length];
 
@@ -292,7 +299,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                     continue;
                 }
 
-                Color cellColor = Colormap.GetColor(Intensities[y, xIndex], range);
+                Color cellColor = quantizedColormap.GetColor(Intensities[y, xIndex], range);
 
                 if (AlphaMap is not null)
                     cellColor = cellColor.WithAlpha(AlphaMap[y, xIndex]);
@@ -307,6 +314,82 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         return argb;
     }
 
+    private bool[,] GetEdgePoints(uint[] argbs)
+    {
+        var edges = new bool[Height, Width];
+
+        if (!IsoMap)
+            return edges;
+
+        // We assume here that each bitmap pixel has one and only one intensity value (i.e. the image is not scaled)
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                var self = argbs[i * Width + j];
+
+                // Don't need right and down, they'd just lead to double counting
+                var leftIndex = i * Width + j - 1;
+                var upIndex = (i - 1) * Width + j - 1;
+                var left = leftIndex >= 0 ? argbs[leftIndex] : self;
+                var up = upIndex >= 0 ? argbs[upIndex] : self;
+
+                // Because this is only intended to be used for the isomap we can do simplistic edge detection
+                // If we ever extend it we likely need something like Canny detection
+                if (self != left || self != up)
+                {
+                    edges[i, j] = true;
+                }
+            }
+        }
+
+        return edges;
+    }
+
+    private List<LinkedList<(int i, int j)>> GetEdgePaths(uint[] argbs)
+    {
+        var edges = GetEdgePoints(argbs);
+
+        var paths = new List<LinkedList<(int i, int j)>>();
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (edges[i, j])
+                {
+                    var abovePredecessorList = paths.Find(p => p.Contains((i - 1, j)));
+                    var leftPredecessorList = paths.Find(p => p.Contains((i, j - 1)));
+
+                    if (abovePredecessorList is not null && leftPredecessorList is not null)
+                    {
+                        leftPredecessorList.AddLast((i, j));
+
+                        var last = leftPredecessorList.Last;
+                        while (last is not null && leftPredecessorList.Contains((i, j)))
+                        {
+                            // Need to copy the values out, since the BCL disallows having a LinkedListNode in multiple LinkedLists
+                            abovePredecessorList.AddFirst(last.Value);
+
+                            last = last.Previous;
+                            if (last is not null)
+                                leftPredecessorList.Remove(last);
+                        }
+
+                        paths.Remove(leftPredecessorList); // Avoid dupes
+                    }
+                    else if (leftPredecessorList is not null)
+                        leftPredecessorList.AddLast((i, j));
+                    else if (abovePredecessorList is not null)
+                        abovePredecessorList.AddLast((i, j));
+                    else
+                        paths.Add(new([(i, j)]));
+                }
+            }
+        }
+
+        return paths;
+    }
+
     /// <summary>
     /// Regenerate the image using the present settings and data in <see cref="Intensities"/>
     /// </summary>
@@ -316,6 +399,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         uint[] argbs = GetArgbValues();
         Bitmap?.Dispose();
         Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
+
+        if (IsoMap)
+            EdgePaths = GetEdgePaths(argbs);
     }
 
     public AxisLimits GetAxisLimits()
@@ -337,6 +423,16 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         int yIndex = (int)(distanceFromTop / CellHeight);
 
         return (xIndex, yIndex);
+    }
+
+    public Coordinates GetCoordinates(int x, int y)
+    {
+        CoordinateRect rect = AlignedExtent;
+
+        double xCoord = rect.Left + x * CellWidth;
+        double yCood = rect.Top - y * CellHeight;
+
+        return new(xCoord, yCood);
     }
 
     /// <summary>
@@ -393,5 +489,45 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         SKRect rect = Axes.GetPixelRect(AlignedExtent).ToSKRect();
 
         rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+
+        var argbs = GetArgbValues();
+
+        var edges = GetEdgePoints(argbs);
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (edges[i, j])
+                {
+                    var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
+                    //rp.Canvas.DrawCircle(pt, 3, paint);
+
+                }
+            }
+        }
+
+
+        if (IsoMap && EdgePaths is not null)
+        {
+            LineStyle style = new LineStyle() { Width = 3 };
+            style.ApplyToPaint(paint);
+
+            foreach (var pathPoints in EdgePaths)
+            {
+                using SKPath path = new();
+                foreach (var (i, j) in pathPoints)
+                {
+                    var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
+                    //System.Diagnostics.Debug.WriteLine($"({j}, {i}), {GetCoordinates(j, i)}");
+
+                    if (path.PointCount == 0)
+                        path.MoveTo(pt);
+                    else
+                        path.LineTo(pt);
+                }
+
+                rp.Canvas.DrawPath(path, paint);
+            }
+        }
     }
 }
