@@ -31,6 +31,7 @@ public static class Query
         {
             "Introduction",
             "Axis",
+            "Layout",
             "Plot Types",
             "Statistics",
             "Miscellaneous"
