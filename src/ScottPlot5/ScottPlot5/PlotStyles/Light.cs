@@ -5,12 +5,12 @@ public class Light : PlotStyle
     public Light()
     {
         Palette = new Palettes.Category10();
-        Axes = Colors.Black;
-        GridMajorLine = Colors.Black.WithOpacity(.1);
-        FigureBackground = Colors.White;
-        DataBackGround = Colors.White;
-        LegendBackground = Colors.White;
-        LegendFont = Colors.Black;
-        LegendOutline = Colors.Black;
+        AxisColor = Colors.Black;
+        GridMajorLineColor = Colors.Black.WithOpacity(.1);
+        FigureBackgroundColor = Colors.White;
+        DataBackgroundColor = Colors.White;
+        LegendBackgroundColor = Colors.White;
+        LegendFontColor = Colors.Black;
+        LegendOutlineColor = Colors.Black;
     }
 }

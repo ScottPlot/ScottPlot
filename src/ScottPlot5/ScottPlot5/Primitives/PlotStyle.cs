@@ -9,17 +9,17 @@ public class PlotStyle
 {
     // plot
     public IPalette? Palette { get; set; } = null;
-    public Color? FigureBackground { get; set; } = null;
-    public Color? DataBackGround { get; set; } = null;
+    public Color? FigureBackgroundColor { get; set; } = null;
+    public Color? DataBackgroundColor { get; set; } = null;
 
     // axes and grids
-    public Color? Axes { get; set; } = null;
-    public Color? GridMajorLine { get; set; } = null;
+    public Color? AxisColor { get; set; } = null;
+    public Color? GridMajorLineColor { get; set; } = null;
 
     // legend
-    public Color? LegendBackground { get; set; } = null;
-    public Color? LegendFont { get; set; } = null;
-    public Color? LegendOutline { get; set; } = null;
+    public Color? LegendBackgroundColor { get; set; } = null;
+    public Color? LegendFontColor { get; set; } = null;
+    public Color? LegendOutlineColor { get; set; } = null;
 
     /// <summary>
     /// Apply these style settings to the given plot
@@ -27,18 +27,18 @@ public class PlotStyle
     public void Apply(Plot plot)
     {
         // plot
-        if (FigureBackground.HasValue) plot.FigureBackground.Color = FigureBackground.Value;
-        if (DataBackGround.HasValue) plot.DataBackground.Color = DataBackGround.Value;
+        if (FigureBackgroundColor.HasValue) plot.FigureBackground.Color = FigureBackgroundColor.Value;
+        if (DataBackgroundColor.HasValue) plot.DataBackground.Color = DataBackgroundColor.Value;
         if (Palette is not null) plot.Add.Palette = Palette;
 
         // axes and grids
-        if (Axes.HasValue) plot.Axes.Color(Axes.Value);
-        if (GridMajorLine.HasValue) plot.Grid.MajorLineColor = GridMajorLine.Value;
+        if (AxisColor.HasValue) plot.Axes.Color(AxisColor.Value);
+        if (GridMajorLineColor.HasValue) plot.Grid.MajorLineColor = GridMajorLineColor.Value;
 
         // legend
-        if (LegendBackground.HasValue) plot.Legend.BackgroundColor = LegendBackground.Value;
-        if (LegendFont.HasValue) plot.Legend.FontColor = LegendFont.Value;
-        if (LegendOutline.HasValue) plot.Legend.OutlineColor = LegendOutline.Value;
+        if (LegendBackgroundColor.HasValue) plot.Legend.BackgroundColor = LegendBackgroundColor.Value;
+        if (LegendFontColor.HasValue) plot.Legend.FontColor = LegendFontColor.Value;
+        if (LegendOutlineColor.HasValue) plot.Legend.OutlineColor = LegendOutlineColor.Value;
     }
 
     /// <summary>
@@ -50,17 +50,17 @@ public class PlotStyle
         {
             // plot
             Palette = plot.Add.Palette,
-            FigureBackground = plot.FigureBackground.Color,
-            DataBackGround = plot.DataBackground.Color,
+            FigureBackgroundColor = plot.FigureBackground.Color,
+            DataBackgroundColor = plot.DataBackground.Color,
 
             // axes and grids
-            Axes = plot.Axes.GetAxes().First().FrameLineStyle.Color,
-            GridMajorLine = plot.Grid.MajorLineColor,
+            AxisColor = plot.Axes.GetAxes().First().FrameLineStyle.Color,
+            GridMajorLineColor = plot.Grid.MajorLineColor,
 
             // legend
-            LegendBackground = plot.Legend.BackgroundColor,
-            LegendFont = plot.Legend.FontColor,
-            LegendOutline = plot.Legend.OutlineColor,
+            LegendBackgroundColor = plot.Legend.BackgroundColor,
+            LegendFontColor = plot.Legend.FontColor,
+            LegendOutlineColor = plot.Legend.OutlineColor,
         };
     }
 
@@ -76,17 +76,17 @@ public class PlotStyle
 
             // plot
             Palette = Palette != other.Palette ? Palette : null,
-            FigureBackground = FigureBackground != other.FigureBackground ? FigureBackground : null,
-            DataBackGround = DataBackGround != other.DataBackGround ? DataBackGround : null,
+            FigureBackgroundColor = FigureBackgroundColor != other.FigureBackgroundColor ? FigureBackgroundColor : null,
+            DataBackgroundColor = DataBackgroundColor != other.DataBackgroundColor ? DataBackgroundColor : null,
 
             // axes and grids
-            Axes = Axes != other.Axes ? Axes : null,
-            GridMajorLine = GridMajorLine != other.GridMajorLine ? GridMajorLine : null,
+            AxisColor = AxisColor != other.AxisColor ? AxisColor : null,
+            GridMajorLineColor = GridMajorLineColor != other.GridMajorLineColor ? GridMajorLineColor : null,
 
             // legend
-            LegendBackground = LegendBackground != other.LegendBackground ? LegendBackground : null,
-            LegendFont = LegendFont != other.LegendFont ? LegendFont : null,
-            LegendOutline = LegendOutline != other.LegendOutline ? LegendOutline : null,
+            LegendBackgroundColor = LegendBackgroundColor != other.LegendBackgroundColor ? LegendBackgroundColor : null,
+            LegendFontColor = LegendFontColor != other.LegendFontColor ? LegendFontColor : null,
+            LegendOutlineColor = LegendOutlineColor != other.LegendOutlineColor ? LegendOutlineColor : null,
         };
     }
 }
