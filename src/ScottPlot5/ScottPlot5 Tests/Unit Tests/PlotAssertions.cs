@@ -32,4 +32,17 @@ internal class PlotAssertions(Plot plot)
     {
         Plot.GetImage(width, height);
     }
+
+    public void RenderIdenticallyTo(Plot otherPlot, int width = 400, int height = 300)
+    {
+        byte[] bytes1 = Plot.GetImage(width, height).GetImageBytes();
+        byte[] bytes2 = otherPlot.GetImage(width, height).GetImageBytes();
+        if (bytes1.Length != bytes2.Length)
+            throw new InvalidOperationException("images are not identical");
+        for (int i = 0; i < bytes1.Length; i++)
+        {
+            if (bytes1[i] != bytes2[i])
+                throw new InvalidOperationException("images are not identical");
+        }
+    }
 }
