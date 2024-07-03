@@ -65,11 +65,28 @@ public class PlotStyle
     }
 
     /// <summary>
-    /// Return the styles represented by the given plot,
-    /// excluding styles which have been manually changed from the reference style.
+    /// Return a plot style with all values nulled except those
+    /// that are different than the given style
     /// </summary>
-    public static PlotStyle FromPlot(Plot plot, PlotStyle referenceStyle)
+    public PlotStyle WhereDifferentFrom(PlotStyle other)
     {
-        throw new NotImplementedException();
+        return new PlotStyle()
+        {
+            // TODO: can this be done with reflection?
+
+            // plot
+            Palette = Palette != other.Palette ? Palette : null,
+            FigureBackground = FigureBackground != other.FigureBackground ? FigureBackground : null,
+            DataBackGround = DataBackGround != other.DataBackGround ? DataBackGround : null,
+
+            // axes and grids
+            Axes = Axes != other.Axes ? Axes : null,
+            GridMajorLine = GridMajorLine != other.GridMajorLine ? GridMajorLine : null,
+
+            // legend
+            LegendBackground = LegendBackground != other.LegendBackground ? LegendBackground : null,
+            LegendFont = LegendFont != other.LegendFont ? LegendFont : null,
+            LegendOutline = LegendOutline != other.LegendOutline ? LegendOutline : null,
+        };
     }
 }
