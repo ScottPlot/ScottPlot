@@ -8,7 +8,7 @@ public class Light : PlotStyle
         Axes = Colors.Black;
         GridMajorLine = Colors.Black.WithOpacity(.1);
         FigureBackground = Colors.White;
-        DataBackGround = Colors.Transparent;
+        DataBackGround = Colors.White;
         LegendBackground = Colors.White;
         LegendFont = Colors.Black;
         LegendOutline = Colors.Black;
