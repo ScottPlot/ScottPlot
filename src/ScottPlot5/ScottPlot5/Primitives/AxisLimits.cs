@@ -162,15 +162,15 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public AxisLimits WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
     {
-        var xMin = Left;
-        var xMax = Right;
+        double xMin = Left;
+        double xMax = Right;
         double spanLeft = zoomToX - xMin;
         double spanRight = xMax - zoomToX;
         xMin = zoomToX - spanLeft / fracX;
         xMax = zoomToX + spanRight / fracX;
 
-        var yMin = Bottom;
-        var yMax = Top;
+        double yMin = Bottom;
+        double yMax = Top;
         double spanBottom = zoomToY - yMin;
         double spanTop = yMax - zoomToY;
         yMin = zoomToY - spanBottom / fracY;
