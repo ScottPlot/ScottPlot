@@ -1,4 +1,7 @@
 ﻿using System.Data;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace ScottPlotTests.ApiDocs;
@@ -32,10 +35,44 @@ public class XmlDocsDB
         return docsByMember;
     }
 
-    public string GetSummary(Type type)
+    private static string? XmlToHtml(string? xml)
+    {
+        if (xml is null)
+            return null;
+
+        return xml.Replace("<summary>", "")
+            .Replace("</summary>", "")
+            .Replace("<", "&lt;")
+            .Replace(">", "&gt;")
+            .Trim();
+    }
+
+    public string? GetSummary(Type type)
     {
         string key = $"T:{type.FullName}";
         DocsByKey.TryGetValue(key, out string? value);
-        return value ?? "unknown";
+        return XmlToHtml(value);
+    }
+
+    public string? GetSummary(MethodInfo info)
+    {
+        string key = $"M:{info.DeclaringType!.FullName}.{info.Name}";
+        DocsByKey.TryGetValue(key, out string? value);
+        return XmlToHtml(value);
+    }
+
+    public string? GetSummary(PropertyInfo info)
+    {
+        string key = $"P:{info.DeclaringType!.FullName}.{info.Name}";
+        DocsByKey.TryGetValue(key, out string? value);
+        return XmlToHtml(value);
+    }
+
+    public string? GetSummary(FieldInfo info)
+    {
+        string key = $"F:{info.DeclaringType!.FullName}.{info.Name}";
+        Console.WriteLine(key);
+        DocsByKey.TryGetValue(key, out string? value);
+        return XmlToHtml(value);
     }
 }

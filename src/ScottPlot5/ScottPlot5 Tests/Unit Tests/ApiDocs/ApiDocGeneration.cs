@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.ApiDocs;
+﻿using System.Reflection;
+
+namespace ScottPlotTests.ApiDocs;
 
 internal class ApiDocGeneration
 {
@@ -12,5 +14,15 @@ internal class ApiDocGeneration
         File.WriteAllText(savePath, docs.GetHtml());
         Console.WriteLine(xmlFilePath);
         Console.WriteLine(savePath);
+    }
+
+    [Test]
+    public void Test_Reflect()
+    {
+        foreach(PropertyInfo pi in typeof(ScottPlot.Rendering.RenderManager).GetProperties())
+        {
+            string key = $"P:{pi.DeclaringType!.FullName}.{pi.Name}";
+            Console.WriteLine(key);
+        }
     }
 }

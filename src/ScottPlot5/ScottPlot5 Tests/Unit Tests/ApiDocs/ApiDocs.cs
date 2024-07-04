@@ -1,11 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace ScottPlotTests.ApiDocs;
 
@@ -35,56 +37,97 @@ internal class ApiDocs
             <head>
             <style>
             body {font-family: sans-serif;}
-            blockquote {color: green; }
+            .title{font-family: monospace; font-size: 1.5em; font-weight: 600;}
             .type{color: blue; font-family: monospace;}
             .name{color: black; font-family: monospace;}
+            .docs{color: green; font-family: monospace;}
             </style>
             </head>
             <body>
             """);
 
+        sb.AppendLine($"<h1>ScottPlot {ScottPlot.Version.VersionString} API</h1>");
+        sb.AppendLine($"<div>Generated {DateTime.Now}</div>");
+        sb.AppendLine($"<hr>");
+
+        static string GetTypeName(Type type)
+        {
+            return GetName(type.Name);
+        }
+
+        static string GetParameterTypeName(ParameterInfo pi)
+        {
+            Type? nullableType = Nullable.GetUnderlyingType(pi.ParameterType);
+            if (nullableType is not null)
+            {
+                return GetName(nullableType.Name) + "?";
+            }
+
+            return GetName(pi.Name!);
+        }
+
+        static string GetParameterName(ParameterInfo pi)
+        {
+            return GetName(pi.Name ?? "unknown");
+        }
+
+        static string GetName(string name)
+        {
+            return name switch
+            {
+                "Void" => "void",
+                "Int32" => "int",
+                "Double" => "double",
+                "Float" => "float",
+                "Boolean" => "bool",
+                "String" => "string",
+                "Object" => "object",
+                _ => name.Replace("`1", "&lt;T&gt;"),
+            };
+        }
+
         foreach (Type type in AssemblyTypes)
         {
             // the type itself
-            sb.AppendLine($"<h1>{type}</h1>");
-            sb.AppendLine($"<blockquote>{XmlDocsDB.GetSummary(type)}</blockquote>");
+            sb.AppendLine($"<div style='margin: 2em 0 1em 0;'>");
+            sb.AppendLine($"<div class='title'>{GetTypeName(type)}</div>");
+            sb.AppendLine($"<div class='docs'>{XmlDocsDB.GetSummary(type)}</div>");
+            sb.AppendLine($"</div>");
 
             foreach (PropertyInfo pi in type.GetProperties())
             {
                 sb.AppendLine($"<div>" +
-                    $"<span class='type'>{pi.PropertyType.Name}</span> " +
+                    $"<span class='type'>{GetTypeName(pi.PropertyType)}</span> " +
                     $"<span class='name'>{pi.Name}</span> " +
+                    $"<span class='docs'>{XmlDocsDB.GetSummary(pi)}</span> " +
                     $"</div>");
             }
 
             foreach (FieldInfo fi in type.GetFields())
-            {           
+            {
                 sb.AppendLine($"<div>" +
-                    $"<span class='type'>{fi.FieldType.Name}</span> " +
+                    $"<span class='type'>{GetTypeName(fi.FieldType)}</span> " +
                     $"<span class='name'>{fi.Name}</span> " +
+                    $"<span class='docs'>{XmlDocsDB.GetSummary(fi)}</span> " +
                     $"</div>");
             }
 
             foreach (MethodInfo mi in type.GetMethods())
             {
-                // properties
                 if (mi.Name.StartsWith("get_")) continue;
                 if (mi.Name.StartsWith("set_")) continue;
 
-                // TODO: figure out the generic type
-                string returnTypeName = mi.ReturnType.Name.Replace("`1", "&lt;T&gt;");
-
                 string[] argNames = mi.GetParameters()
-                    .Select(x => x.Name!)
+                    .Select(GetParameterName)
                     .ToArray();
 
                 string[] argTypeNames = mi.GetParameters()
-                    .Select(x => x.ParameterType.Name)
+                    .Select(GetParameterTypeName)
                     .ToArray();
 
                 string[] args = Enumerable
                     .Range(0, argNames.Length)
-                    .Select(x => 
+                    .Select(x =>
                         $"<span class='type'>{argTypeNames[x]}</span> " +
                         $"<span class='name'>{argNames[x]}</span>")
                     .ToArray();
@@ -92,8 +135,9 @@ internal class ApiDocs
                 string argLine = string.Join(", ", args);
 
                 sb.AppendLine($"<div>" +
-                    $"<span class='type'>{returnTypeName}</span> " +
+                    $"<span class='type'>{GetTypeName(mi.ReturnType)}</span> " +
                     $"<span class='name'>{mi.Name}({argLine})</span> " +
+                    $"<span class='docs'>{XmlDocsDB.GetSummary(mi)}</span> " +
                     $"</div>");
             }
         }
