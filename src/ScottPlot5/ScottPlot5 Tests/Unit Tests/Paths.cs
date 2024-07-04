@@ -10,6 +10,15 @@ public static class Paths
         return Path.Combine(TestContext.CurrentContext.TestDirectory, "test-images");
     }
 
+    public static string GetScottPlotXmlFilePath()
+    {
+        string buildFolder = Path.Combine(Paths.RepoFolder, @"src/ScottPlot5/ScottPlot5/bin");
+        string[] files = Directory.GetFiles(buildFolder, "ScottPlot.xml", SearchOption.AllDirectories);
+        return files.Any()
+            ? files.First()
+            : throw new FileNotFoundException("ScottPlot.xml not found in build folder");
+    }
+
     private static string GetRepoFolder()
     {
         string defaultFolder = Path.GetFullPath(TestContext.CurrentContext.TestDirectory); ;

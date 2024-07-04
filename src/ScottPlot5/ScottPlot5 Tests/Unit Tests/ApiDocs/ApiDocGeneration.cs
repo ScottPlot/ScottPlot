@@ -7,7 +7,7 @@ internal class ApiDocGeneration
     [Test]
     public void Test_Docs()
     {
-        string xmlFilePath = Path.Combine(Paths.RepoFolder, @"src/ScottPlot5/ScottPlot5/bin/Debug/net8.0/ScottPlot.xml");
+        string xmlFilePath = Paths.GetScottPlotXmlFilePath();
         ApiDocs docs = new(typeof(Plot), xmlFilePath);
 
         string savePath = Path.GetFullPath("test.html");
