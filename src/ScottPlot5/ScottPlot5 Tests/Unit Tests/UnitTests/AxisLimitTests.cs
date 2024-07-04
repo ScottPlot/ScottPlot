@@ -70,4 +70,26 @@ internal class AxisLimitTests
         limits.Bottom.Should().BeApproximately(-1, .2);
         limits.Top.Should().BeApproximately(1, .2);
     }
+
+    [Test]
+    public void Test_AxisLimits_WithZoom()
+    {
+        AxisLimits limits1 = new(5, 10, 25, 50);
+        AxisLimits limits2 = limits1.WithZoom(0.5, 0.25);
+        limits2.Left.Should().Be(2.5);
+        limits2.Right.Should().Be(12.5);
+        limits2.Bottom.Should().Be(-12.5);
+        limits2.Top.Should().Be(87.5);
+    }
+
+    [Test]
+    public void Test_AxisLimits_WithZoomTo()
+    {
+        AxisLimits limits1 = new(-20, 20, -40, 40);
+        AxisLimits limits2 = limits1.WithZoom(0.5, 0.5, 10, 20);
+        limits2.Left.Should().Be(-50);
+        limits2.Right.Should().Be(30);
+        limits2.Bottom.Should().Be(-100);
+        limits2.Top.Should().Be(60);
+    }
 }
