@@ -71,7 +71,6 @@ public class XmlDocsDB
     public string? GetSummary(FieldInfo info)
     {
         string key = $"F:{info.DeclaringType!.FullName}.{info.Name}";
-        Console.WriteLine(key);
         DocsByKey.TryGetValue(key, out string? value);
         return XmlToHtml(value);
     }

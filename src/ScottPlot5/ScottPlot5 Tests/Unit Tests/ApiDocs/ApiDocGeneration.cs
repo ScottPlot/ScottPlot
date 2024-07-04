@@ -15,14 +15,4 @@ internal class ApiDocGeneration
         Console.WriteLine(xmlFilePath);
         Console.WriteLine(savePath);
     }
-
-    [Test]
-    public void Test_Reflect()
-    {
-        foreach(PropertyInfo pi in typeof(ScottPlot.Rendering.RenderManager).GetProperties())
-        {
-            string key = $"P:{pi.DeclaringType!.FullName}.{pi.Name}";
-            Console.WriteLine(key);
-        }
-    }
 }
