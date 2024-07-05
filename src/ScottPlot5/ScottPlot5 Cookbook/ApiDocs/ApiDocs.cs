@@ -1,8 +1,7 @@
 ﻿using System.Data;
 using System.Reflection;
-using System.Text;
 
-namespace ScottPlotTests.ApiDocs;
+namespace ScottPlotCookbook.ApiDocs;
 
 internal class ApiDocs
 {
@@ -60,12 +59,32 @@ internal class ApiDocs
         };
     }
 
+    public string GetMarkdown()
+    {
+        return
+            $"""
+            ---
+            Title: ScottPlot 5.0 API
+            Description: All classes, fields, properties, and methods provided by the ScottPlot package
+            URL: /api/5.0/
+            Date: {DateTime.Now.Year:0000}-{DateTime.Now.Month:00}-{DateTime.Now.Day:00}
+            ShowEditLink: false
+            ---
+            
+            # ScottPlot {ScottPlot.Version.VersionString} API
+
+            _Generated {DateTime.Now}_
+
+            ---
+
+            {GetHtml()}
+            """;
+    }
+
     public string GetHtml()
     {
         StringBuilder sb = new();
         sb.AppendLine("""
-            <html>
-            <head>
             <style>
             body {font-family: sans-serif;}
             .title{font-family: monospace; font-size: 1.5em; font-weight: 600;}
@@ -75,14 +94,11 @@ internal class ApiDocs
             .docs{color: green; font-family: monospace;}
             a {text-decoration: none;}
             a:hover {text-decoration: underline;}
+            .break-container{width:95vw;position:relative;left:calc(-1 * (95vw - 95%)/2);}
             </style>
-            </head>
-            <body>
             """);
 
-        sb.AppendLine($"<h1>ScottPlot {ScottPlot.Version.VersionString} API</h1>");
-        sb.AppendLine($"<div>Generated {DateTime.Now}</div>");
-        sb.AppendLine($"<hr>");
+        sb.AppendLine("<div class='break-container'>");
 
         foreach (Type type in AssemblyTypes)
         {
@@ -132,7 +148,7 @@ internal class ApiDocs
             }
         }
 
-        sb.AppendLine("</body></html>");
+        sb.AppendLine("</div>");
 
         return sb.ToString();
     }

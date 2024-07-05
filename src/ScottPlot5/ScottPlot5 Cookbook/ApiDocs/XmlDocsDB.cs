@@ -1,10 +1,8 @@
 ﻿using System.Data;
-using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Xml;
 
-namespace ScottPlotTests.ApiDocs;
+namespace ScottPlotCookbook.ApiDocs;
 
 public class XmlDocsDB
 {

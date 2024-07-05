@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ScottPlotTests.ApiDocs;
+namespace ScottPlotCookbook.ApiDocs;
 
 public class PropertyDocs
 {

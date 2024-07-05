@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ScottPlotTests.ApiDocs;
+﻿namespace ScottPlotCookbook.ApiDocs;
 
 internal class ApiDocGeneration
 {
@@ -10,9 +8,8 @@ internal class ApiDocGeneration
         string xmlFilePath = Paths.GetScottPlotXmlFilePath();
         ApiDocs docs = new(typeof(Plot), xmlFilePath);
 
-        string savePath = Path.GetFullPath("test.html");
-        File.WriteAllText(savePath, docs.GetHtml());
-        Console.WriteLine(xmlFilePath);
+        string savePath = Path.Combine(Paths.OutputFolder, "API.md");
+        File.WriteAllText(savePath, docs.GetMarkdown());
         Console.WriteLine(savePath);
     }
 }

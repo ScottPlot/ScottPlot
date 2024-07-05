@@ -25,4 +25,13 @@ internal static class Paths
 
         throw new InvalidOperationException($"repository folder not found in any folder above {defaultFolder}");
     }
+
+    public static string GetScottPlotXmlFilePath()
+    {
+        string buildFolder = Path.Combine(Paths.RepoFolder, @"src/ScottPlot5/ScottPlot5/bin");
+        string[] files = Directory.GetFiles(buildFolder, "ScottPlot.xml", SearchOption.AllDirectories);
+        return files.Any()
+            ? files.First()
+            : throw new FileNotFoundException("ScottPlot.xml not found in build folder");
+    }
 }

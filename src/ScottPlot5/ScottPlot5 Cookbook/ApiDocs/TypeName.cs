@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.ApiDocs;
+﻿namespace ScottPlotCookbook.ApiDocs;
 
 public class TypeName
 {

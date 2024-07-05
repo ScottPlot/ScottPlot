@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace ScottPlotTests.ApiDocs;
+﻿namespace ScottPlotCookbook.ApiDocs;
 
 public class ClassDocs
 {
