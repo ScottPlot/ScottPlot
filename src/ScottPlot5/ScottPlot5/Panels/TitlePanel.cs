@@ -15,7 +15,7 @@ public class TitlePanel : IPanel
         Label.Rotation = 0;
     }
 
-    public Label Label { get; } = new()
+    public LabelStyle Label { get; } = new()
     {
         Text = string.Empty,
         FontSize = 16,

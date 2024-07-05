@@ -2,7 +2,7 @@
 
 interface IHasLabel
 {
-    Label LabelStyle { get; }
+    LabelStyle LabelStyle { get; }
 
     float LabelOffsetX { get; set; }
     float LabelOffsetY { get; set; }

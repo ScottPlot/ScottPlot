@@ -25,7 +25,7 @@ public class PopulationSymbol(Population population) : IPlottable
     public Box Box { get; set; } = new() { IsVisible = false };
     public Marker Marker { get; set; } = new() { Size = 10, Shape = MarkerShape.OpenCircle };
 
-    private Label _EmptyLabel = new() { IsVisible = false };
+    private LabelStyle _EmptyLabel = new() { IsVisible = false };
 
     public Func<Box, Population, Population> BoxValueConfig { get; set; } = BoxValueConfigurator_MedianQuantileExtrema;
 

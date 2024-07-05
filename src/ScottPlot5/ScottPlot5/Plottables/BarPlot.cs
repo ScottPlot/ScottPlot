@@ -14,7 +14,7 @@ public class BarPlot : IPlottable, IHasLegendText
 
     public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
 
-    public Label ValueLabelStyle { get; set; } = new()
+    public LabelStyle ValueLabelStyle { get; set; } = new()
     {
         Alignment = Alignment.LowerCenter,
     };

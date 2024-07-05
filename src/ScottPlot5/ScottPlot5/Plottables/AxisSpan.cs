@@ -7,8 +7,8 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
 
 
     [Obsolete("set LegendText")]
-    public Label Label { get => ObsoleteLabel; set => LegendText = value.Text; }
-    private readonly Label ObsoleteLabel = new();
+    public LabelStyle Label { get => ObsoleteLabel; set => LegendText = value.Text; }
+    private readonly LabelStyle ObsoleteLabel = new();
 
     public string LegendText { get; set; } = string.Empty;
 

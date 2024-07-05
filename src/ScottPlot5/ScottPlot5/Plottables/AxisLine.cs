@@ -10,7 +10,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public override Label LabelStyle { get; set; } = new();
+    public override LabelStyle LabelStyle { get; set; } = new();
     public string Text { get => LabelText; set => LabelText = value; }
     public string LegendText { get; set; } = string.Empty;
 
@@ -22,7 +22,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public Alignment? TextAlignment { get => ManualLabelAlignment; set => ManualLabelAlignment = value; }
 
     [Obsolete("Set LabelFontSize, LabelBold, LabelFontColor, or properties of the LabelStyle object.")]
-    public Label Label { get => LabelStyle; set => LabelStyle = value; }
+    public LabelStyle Label { get => LabelStyle; set => LabelStyle = value; }
 
     [Obsolete("Use LabelFontSize")]
     public float FontSize { get => LabelFontSize; set => LabelFontSize = value; }

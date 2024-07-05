@@ -6,7 +6,7 @@ public class IsoLines : IPlottable, IHasLine
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
-    public Label TickLabelStyle = new();
+    public LabelStyle TickLabelStyle = new();
     public bool RotateLabels { get; set; } = true;
 
     public readonly List<(double, string)> ManualPositions = [];

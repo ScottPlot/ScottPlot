@@ -40,7 +40,7 @@ public partial class CustomAxis : Form, IDemoWindow
     {
         public string SubLabelText { get => SubLabelStyle.Text; set => SubLabelStyle.Text = value; }
 
-        public ScottPlot.Label SubLabelStyle { get; set; } = new() { Rotation = -90, };
+        public ScottPlot.LabelStyle SubLabelStyle { get; set; } = new() { Rotation = -90, };
 
         public override Edge Edge => Edge.Left;
 

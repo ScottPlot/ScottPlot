@@ -6,7 +6,7 @@
 /// </summary>
 public abstract class LabelStyleProperties : IHasLabel
 {
-    public abstract Label LabelStyle { get; set; }
+    public abstract LabelStyle LabelStyle { get; set; }
 
     public float LabelOffsetX { get => LabelStyle.OffsetX; set => LabelStyle.OffsetX = value; }
     public float LabelOffsetY { get => LabelStyle.OffsetY; set => LabelStyle.OffsetY = value; }
