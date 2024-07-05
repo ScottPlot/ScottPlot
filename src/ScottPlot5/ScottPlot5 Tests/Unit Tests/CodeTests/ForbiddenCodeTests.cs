@@ -128,7 +128,7 @@ internal class ForbiddenCodeTests
 
         offences.Should().Be(0,
             $"SKPaint.FontSpacing must never be accessed." +
-            $"Create a Label, style it as desired, use its Measeure() method." +
+            $"Create a Label, style it as desired, use its Measure() method." +
             $"{offences} offences:\n" +
             $"{errorMessages}");
     }
