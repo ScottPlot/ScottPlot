@@ -70,7 +70,7 @@ internal class ForbiddenCodeTests
         StringBuilder errorMessages = new();
         foreach (string filePath in SourceFilePaths)
         {
-            if (Path.GetFileName(filePath) == "Label.cs")
+            if (Path.GetFileName(filePath) == "LabelStyle.cs")
                 continue;
 
             if (Path.GetFileName(filePath) == "MeasuredText.cs")
