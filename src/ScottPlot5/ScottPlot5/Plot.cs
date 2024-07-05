@@ -15,7 +15,14 @@ public class Plot : IDisposable
     public RenderDetails LastRender => RenderManager.LastRender;
     public LayoutManager Layout { get; private set; }
 
+    /// <summary>
+    /// Style for the background of the entire figure
+    /// </summary>
     public BackgroundStyle FigureBackground = new() { Color = Colors.White };
+
+    /// <summary>
+    /// Style for the data area (the area within the axis frames)
+    /// </summary>
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
     public IZoomRectangle ZoomRectangle { get; set; }

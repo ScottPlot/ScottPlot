@@ -3,6 +3,7 @@
 * Maui: Created a `ScottPlot.Maui.MauiPlot` control to provide interactive plots in .NET Maui applications (#4013) @ByteSore
 * Style: Added `Plot.GetStyle()` and `Plot.SetStyle()` for applying and customizing styles in the `ScottPlot.PlotStyles` namespace (#4025, #3955, #4037) @StendProg @kebox7
 * AxisLimits: Improved accuracy and performance of `WithZoom()` (#4041) @idotta
+* Documentation: Added automatically generated API documentation to the website (#4040, #3822)
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
