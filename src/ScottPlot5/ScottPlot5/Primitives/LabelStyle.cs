@@ -159,7 +159,8 @@ public class LabelStyle
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
-        float maxWidth = lines.Length == 0 ? 0 : lines.Select(paint.MeasureText).Max();
+        float[] lineWidths = lines.Select(paint.MeasureText).ToArray();
+        float maxWidth = lineWidths.Length == 0 ? 0 : lineWidths.Max();
         PixelSize size = new(maxWidth, lineHeight * lines.Length);
 
         // https://github.com/ScottPlot/ScottPlot/issues/3700
@@ -169,6 +170,7 @@ public class LabelStyle
         {
             Size = size,
             LineHeight = lineHeight,
+            LineWidths = lineWidths,
             VerticalOffset = verticalOffset,
             Bottom = metrics.Bottom,
         };
@@ -255,8 +257,7 @@ public class LabelStyle
     {
         ApplyTextPaint(paint);
 
-        float dV = bottom ? -measured.Bottom : measured.VerticalOffset;
-
+        float dY = bottom ? -measured.Bottom : measured.VerticalOffset;
         if (Text.Contains('\n'))
         {
             string[] lines = Text.Split('\n');
@@ -264,15 +265,23 @@ public class LabelStyle
 
             for (int i = 0; i < lines.Length; i++)
             {
-                float xPx = textRect.Left;
-                float yPx = textRect.Top + (1 + i) * lineHeight + dV;
+                float dX = Alignment.HorizontalFraction() switch
+                {
+                    0 => 0,
+                    0.5f => textRect.Width / 2 - measured.LineWidths[i] / 2,
+                    1 => textRect.Width - measured.LineWidths[i],
+                    _ => throw new NotImplementedException(paint.TextAlign.ToString()),
+                };
+
+                float xPx = textRect.Left + dX;
+                float yPx = textRect.Top + (1 + i) * lineHeight + dY;
                 canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
             float xPx = textRect.Left;
-            float yPx = textRect.Bottom + dV;
+            float yPx = textRect.Bottom + dY;
             canvas.DrawText(Text, xPx, yPx, paint);
         }
     }
