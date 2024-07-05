@@ -14,17 +14,10 @@ internal class ApiDocs
         // TODO: improve appearance of delegates and List<T>
 
         XmlDocsDB = new(xmlFilePath);
-        AssemblyTypes = [
-            typeof(ScottPlot.Plot),
-            typeof(ScottPlot.PlottableAdder),
-            typeof(ScottPlot.AxisManager),
-            typeof(ScottPlot.RenderPack),
-            typeof(ScottPlot.Rendering.RenderManager),
-        ];
-
         AssemblyTypes = Assembly.GetAssembly(typeInAssembly)!
             .GetTypes()
             .Where(x => x.FullName is not null && x.FullName.StartsWith("ScottPlot."))
+            .Where(x => x.FullName is not null && !x.FullName.StartsWith("ScottPlot.NamedColors."))
             .ToArray();
     }
 
@@ -76,9 +69,12 @@ internal class ApiDocs
             <style>
             body {font-family: sans-serif;}
             .title{font-family: monospace; font-size: 1.5em; font-weight: 600;}
-            .type{color: blue; font-family: monospace;}
+            .otherType{color: blue; font-family: monospace;}
+            .scottPlotType{color: blue; font-family: monospace;}
             .name{color: black; font-family: monospace;}
             .docs{color: green; font-family: monospace;}
+            a {text-decoration: none;}
+            a:hover {text-decoration: underline;}
             </style>
             </head>
             <body>
@@ -93,34 +89,46 @@ internal class ApiDocs
             // the type itself
             ClassDocs classDocs = new(type, XmlDocsDB);
             sb.AppendLine($"<div style='margin-top: 2em'>");
-            sb.AppendLine($"<div class='title'>{classDocs.TypeName.CleanNameHtml}</div>");
+            sb.AppendLine($"<div class='title' id='{classDocs.TypeName.CleanNameHtml}'>" +
+                $"<a style='color: black;' href='#{classDocs.TypeName.CleanNameHtml}'>" +
+                $"{classDocs.TypeName.CleanNameHtml}" +
+                $"</a>" +
+                $"</div>");
             sb.AppendLine($"<div class='docs'>{classDocs.Docs}</div>");
             sb.AppendLine($"</div>");
 
             foreach (PropertyDocs propDocs in classDocs.GetPropertyDocs(XmlDocsDB))
             {
-                sb.AppendLine($"<div>" +
-                    $"<span class='type'>{propDocs.TypeName.CleanNameHtml}</span> " +
-                    $"<span class='name'>{propDocs.Name}</span> " +
-                    $"<span class='docs'>{propDocs.Docs}</span> " +
-                    $"</div>");
+                string typeHtml = propDocs.TypeName.CleanNameHtml.StartsWith("ScottPlot.")
+                    ? $"<a class='scottPlotType' href='#{propDocs.TypeName.CleanNameHtml}'>{propDocs.TypeName.CleanNameHtml}</a>"
+                    : $"<span class='otherType'>{propDocs.TypeName.CleanNameHtml}</span>";
+                string nameHtml = $"<span class='name'>{propDocs.Name}</span>";
+                string docsHtml = $"<span class='docs'>{propDocs.Docs}</span>";
+                sb.AppendLine($"<div>{typeHtml} {nameHtml} {docsHtml}</div>");
             }
 
             foreach (MethodDocs methodDocs in classDocs.GetMethodDocs(XmlDocsDB))
             {
-                string[] args = methodDocs.Parameters
-                    .Select(x =>
-                        $"<span class='type'>{x.TypeName.CleanNameHtml}</span> " +
-                        $"<span class='name'>{x.Name}</span>")
-                    .ToArray();
+                List<string> argsHtml = [];
 
-                string argLine = string.Join(", ", args);
+                foreach (var p in methodDocs.Parameters)
+                {
+                    string typeHtml2 = p.TypeName.CleanNameHtml.StartsWith("ScottPlot.")
+                        ? $"<a class='scottPlotType' href='#{p.TypeName.CleanNameHtml}'>{p.TypeName.CleanNameHtml}</a>"
+                        : $"<span class='otherType'>{p.TypeName.CleanNameHtml}</span>";
+                    string argHtml = $"<span class='name'>{p.Name}</span>";
+                    argsHtml.Add($"{typeHtml2} {argHtml}");
+                }
 
-                sb.AppendLine($"<div>" +
-                    $"<span class='type'>{methodDocs.ReturnTypeName.CleanNameHtml}</span> " +
-                    $"<span class='name'>{methodDocs.Name}({argLine})</span> " +
-                    $"<span class='docs'>{methodDocs.Docs}</span> " +
-                    $"</div>");
+                string argLine = string.Join(", ", argsHtml);
+
+                string typeHtml = methodDocs.ReturnTypeName.CleanNameHtml.StartsWith("ScottPlot.")
+                    ? $"<a class='scottPlotType' href='#{methodDocs.ReturnTypeName.CleanNameHtml}'>{methodDocs.ReturnTypeName.CleanNameHtml}</a>"
+                    : $"<span class='otherType'>{methodDocs.ReturnTypeName.CleanNameHtml}</span>";
+                string nameHtml = $"<span class='name'>{methodDocs.Name}({argLine})</span>";
+                string docsHtml = $"<span class='docs'>{methodDocs.Docs}</span>";
+
+                sb.AppendLine($"<div>{typeHtml} {nameHtml} {docsHtml}</div>");
             }
         }
 
