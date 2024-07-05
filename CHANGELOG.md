@@ -4,6 +4,7 @@
 * Style: Added `Plot.GetStyle()` and `Plot.SetStyle()` for applying and customizing styles in the `ScottPlot.PlotStyles` namespace (#4025, #3955, #4037) @StendProg @kebox7
 * AxisLimits: Improved accuracy and performance of `WithZoom()` (#4041) @idotta
 * Documentation: Added automatically generated API documentation to the website (#4040, #3822)
+* Label: Added nullable `Typeface` which allows users to supply their own typefaces for rendering text in labels and legend items (#3830, #3825) @lasooch
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
