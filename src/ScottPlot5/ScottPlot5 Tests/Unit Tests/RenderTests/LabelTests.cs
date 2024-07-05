@@ -339,4 +339,28 @@ internal class LabelTests
             }
         }
     }
+
+    [Test]
+    public static void Test_Label_MultilineAlignment()
+    {
+        Plot plot = new();
+
+        var txt1 = plot.Add.Text($"aaa\nbbbbbbbbbbb\nccc", 0, 0);
+        txt1.Alignment = Alignment.MiddleLeft;
+        txt1.LabelBackgroundColor = Colors.SkyBlue;
+
+
+        var txt2 = plot.Add.Text($"aaa\nbbbbbbbbbbb\nccc", 1, 1);
+        txt2.Alignment = Alignment.MiddleCenter;
+        txt2.LabelBackgroundColor = Colors.SkyBlue;
+
+
+        var txt3 = plot.Add.Text($"aaa\nbbbbbbbbbbb\nccc", 2, 2);
+        txt3.Alignment = Alignment.MiddleRight;
+        txt3.LabelBackgroundColor = Colors.SkyBlue;
+
+        plot.Axes.SetLimits(-1, 3, -1, 3);
+
+        plot.SaveTestImage();
+    }
 }
