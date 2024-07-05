@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.RenderTests;
+﻿using SkiaSharp;
+
+namespace ScottPlotTests.RenderTests;
 
 internal class LegendTests
 {
@@ -399,5 +401,39 @@ internal class LegendTests
         plt.Axes.AddPanel(pan);
 
         plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_CustomTypeface_InLegend()
+    {
+        string ttfFilePath = Paths.GetTtfFilePaths().First();
+        SKTypeface customTypeface = SKTypeface.FromFile(ttfFilePath);
+
+        // create a plot with data
+        Plot plot = new();
+        var sig = plot.Add.Signal(Generate.Sin());
+        sig.LegendText = "Sine Wave";
+
+        // axis label custom typeface
+        plot.XLabel("Horizontal Axis Label");
+        plot.Axes.Bottom.Label.ForeColor = Colors.Red;
+        plot.Axes.Bottom.Label.FontSize = 26;
+        plot.Axes.Bottom.Label.Typeface = customTypeface;
+
+        // automatic legend items custom typeface (overwrites manual item customizations)
+        //plot.Legend.FontColor = Colors.Green;
+        //plot.Legend.FontSize = 26;
+        //plot.Legend.Typeface = customTypeface;
+
+        // manual legend items custom typeface
+        plot.Legend.ManualItems.Add(new LegendItem()
+        {
+            LabelText = "Manual Item",
+            LabelFontColor = Colors.Blue,
+            LabelFontSize = 26,
+            LabelTypeface = customTypeface,
+        });
+
+        plot.SaveTestImage();
     }
 }
