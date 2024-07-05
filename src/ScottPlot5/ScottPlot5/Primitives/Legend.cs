@@ -79,7 +79,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// <summary>
     /// If set, this overrides the value in the LegendItem's FontStyle
     /// </summary>
-    public SKTypeface Typeface { get; set; } = null;
+    public SKTypeface? Typeface { get; set; } = null;
 
     /// <summary>
     /// If set, this overrides the value in the LegendItem's FontStyle
