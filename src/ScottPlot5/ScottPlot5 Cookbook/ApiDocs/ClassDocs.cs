@@ -26,7 +26,7 @@ public class ClassDocs
 
         return fieldDocs
             .Concat(propertyDocs)
-            .Where(x=> !ignoredNames.Contains(x.Name))
+            .Where(x => !ignoredNames.Contains(x.Name))
             .OrderBy(x => x.Name)
             .ToArray();
     }
