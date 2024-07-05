@@ -22,7 +22,7 @@ public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
     public IReadOnlyList<RadarSeries> Series { get; set; } = series;
     public double Padding { get; set; } = 0.2;
     public double LabelDistance { get; set; } = 1.2;
-    public IReadOnlyList<Label>? Labels { get; set; }
+    public IReadOnlyList<LabelStyle>? Labels { get; set; }
 
     public AxisLimits GetAxisLimits()
     {

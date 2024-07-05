@@ -89,7 +89,7 @@ public class Bar
         }
     }
 
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint, Label labelStyle)
+    public void Render(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
     {
         if (!IsVisible)
             return;

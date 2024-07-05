@@ -3,7 +3,7 @@
 public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, IHasArrow, IHasLabel
 {
     public bool IsVisible { get; set; } = true;
-    public override Label LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
+    public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
 
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }

@@ -10,7 +10,7 @@ public class LeftAxisWithSubtitle : YAxisBase
 {
     public string SubLabelText { get => SubLabelStyle.Text; set => SubLabelStyle.Text = value; }
 
-    public Label SubLabelStyle { get; set; } = new() { Rotation = -90, };
+    public LabelStyle SubLabelStyle { get; set; } = new() { Rotation = -90, };
 
     public override Edge Edge => Edge.Left;
 

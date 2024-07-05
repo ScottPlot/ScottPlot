@@ -28,7 +28,7 @@ public class Radar : ICategory
 
             // customize radar axis labels (5 axes because each RadarSeries has 5 values)
             radar.Labels = new string[] { "Axis 1", "Axis 2", "Axis 3", "Axis 4", "Axis 5" }
-                .Select(s => new Label() { Text = s, Alignment = Alignment.MiddleCenter })
+                .Select(s => new LabelStyle() { Text = s, Alignment = Alignment.MiddleCenter })
                 .ToArray();
 
             myPlot.Axes.Frameless();

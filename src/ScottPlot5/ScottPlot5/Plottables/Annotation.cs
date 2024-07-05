@@ -6,10 +6,10 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
-    public override Label LabelStyle { get; set; } = new() { ShadowColor = Colors.Black.WithAlpha(.2) };
+    public override LabelStyle LabelStyle { get; set; } = new() { ShadowColor = Colors.Black.WithAlpha(.2) };
 
     [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle")]
-    public Label Label { get => LabelStyle; set => LabelStyle = value; }
+    public LabelStyle Label { get => LabelStyle; set => LabelStyle = value; }
 
     public string Text { get => LabelText; set => LabelText = value; }
 

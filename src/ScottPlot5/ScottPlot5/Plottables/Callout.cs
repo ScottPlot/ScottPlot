@@ -4,7 +4,7 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
 {
     public Text LabelPlottable { get; } = new() { LabelPadding = 5 };
     public Arrow ArrowPlottable { get; } = new();
-    public override Label LabelStyle { get => LabelPlottable.LabelStyle; set => LabelPlottable.LabelStyle = value; }
+    public override LabelStyle LabelStyle { get => LabelPlottable.LabelStyle; set => LabelPlottable.LabelStyle = value; }
     public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
 
     public ArrowStyle ArrowStyle { get => ArrowPlottable.ArrowStyle; set => ArrowPlottable.ArrowStyle = value; }

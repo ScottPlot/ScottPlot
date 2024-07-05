@@ -6,7 +6,7 @@ public class RadarSeries : LabelStyleProperties, IHasLabel, IHasLegendText
     public string Label { get => LegendText; set => LegendText = value; }
     public string LegendText { get => LabelStyle.Text; set => LabelStyle.Text = value; }
     public FillStyle Fill { get; set; } = new();
-    public override Label LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
+    public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
 
     public IReadOnlyList<double> Values { get; set; } = [];

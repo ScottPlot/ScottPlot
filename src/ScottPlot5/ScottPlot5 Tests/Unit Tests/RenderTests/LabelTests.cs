@@ -18,7 +18,7 @@ internal class LabelTests
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
-            Label lbl = new()
+            LabelStyle lbl = new()
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
@@ -55,7 +55,7 @@ internal class LabelTests
             float y = (float)Math.Sin(i * Math.PI / 180) * radius;
             Pixel center = new(bmp.Width / 2 + x, bmp.Height / 2 + y);
 
-            Label lbl = new()
+            LabelStyle lbl = new()
             {
                 Text = $"R{i}",
                 FontSize = 32,
@@ -87,7 +87,7 @@ internal class LabelTests
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
         {
             Pixel pixel = new(250, 20 + y);
-            Label lbl = new()
+            LabelStyle lbl = new()
             {
                 Text = alignment.ToString(),
                 Alignment = alignment,
@@ -127,7 +127,7 @@ internal class LabelTests
                 Alignment alignment = alignmentMatrix[y, x];
 
                 Pixel pixel = new(100 + x * 200, 100 + y * 200);
-                Label label = new()
+                LabelStyle label = new()
                 {
                     Text = alignment.ToString()
                         .Replace("Upper", "Upper\n")
@@ -164,7 +164,7 @@ internal class LabelTests
         float yOffset = 20;
         foreach (string font in fonts)
         {
-            Label lbl = new()
+            LabelStyle lbl = new()
             {
                 Text = "Hello, World",
                 FontName = font,
@@ -192,7 +192,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
         using SKPaint paint = new();
 
-        Label lbl = new()
+        LabelStyle lbl = new()
         {
             Text = "One\nTwo",
             ForeColor = Colors.White.WithAlpha(.5),
@@ -220,7 +220,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
         using SKPaint paint = new();
 
-        Label lbl = new()
+        LabelStyle lbl = new()
         {
             Text = $"Hello",
             FontSize = 32,
@@ -245,7 +245,7 @@ internal class LabelTests
         canvas.Clear(SKColors.White);
         using SKPaint paint = new();
 
-        Label lbl1 = new()
+        LabelStyle lbl1 = new()
         {
             Text = $"Default",
             BorderColor = Colors.Black,
@@ -256,7 +256,7 @@ internal class LabelTests
             BackgroundColor = Colors.White,
         };
 
-        Label lbl2 = new()
+        LabelStyle lbl2 = new()
         {
             Text = $"AntiAliasBackground = false",
             BorderColor = Colors.Black,
@@ -268,7 +268,7 @@ internal class LabelTests
             AntiAliasBackground = false,
         };
 
-        Label lbl3 = new()
+        LabelStyle lbl3 = new()
         {
             Text = $"AntiAliasText = false",
             BorderColor = Colors.Black,
@@ -321,7 +321,7 @@ internal class LabelTests
                 float offsetX = offset * x;
                 float offsetY = offset * y;
 
-                Label lbl = new()
+                LabelStyle lbl = new()
                 {
                     Text = string.Format(format, offsetX, offsetY),
                     Alignment = Alignment.MiddleCenter,

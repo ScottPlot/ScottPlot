@@ -39,14 +39,14 @@ public class NumericAutomatic : ITickGenerator
         return label == "-0" ? "0" : label;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, Label labelStyle)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
     {
         Ticks = GenerateTicks(range, edge, size, new PixelLength(12), paint, labelStyle)
             .Where(x => range.Contains(x.Position))
             .ToArray();
     }
 
-    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, Label labelStyle, int depth = 0)
+    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, LabelStyle labelStyle, int depth = 0)
     {
         if (depth > 3)
             Debug.WriteLine($"Warning: Tick recursion depth = {depth}");

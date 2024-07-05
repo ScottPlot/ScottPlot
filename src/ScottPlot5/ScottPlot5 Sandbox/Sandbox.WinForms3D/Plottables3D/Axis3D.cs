@@ -5,7 +5,7 @@ namespace Sandbox.WinForms3D.Plottables3D;
 
 public class Axis3D : IPlottable3D
 {
-    readonly ScottPlot.Label LabelStyle = new()
+    readonly ScottPlot.LabelStyle LabelStyle = new()
     {
         FontSize = 15,
         Bold = true,

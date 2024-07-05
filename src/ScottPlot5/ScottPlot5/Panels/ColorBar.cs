@@ -42,7 +42,7 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
     /// <summary>
     /// Title for the colorbar, displayed outside the ticks.
     /// </summary>
-    public Label LabelStyle => Axis.Label;
+    public LabelStyle LabelStyle => Axis.Label;
 
     public bool ShowDebugInformation { get; set; } = false;
     public float MinimumSize { get; set; } = 0;

@@ -1,8 +1,13 @@
 ﻿namespace ScottPlot;
 
-public class Label // TODO: rename LabelStyle
+[Obsolete("Label has been renamed to LabelStyle", true)]
+public class Label : LabelStyle { }
+
+public class LabelStyle
 {
     public bool IsVisible { get; set; } = true;
+
+    // TODO: deprecate this and pass text into the render method
     public string Text { get; set; } = string.Empty;
 
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
@@ -213,6 +218,7 @@ public class Label // TODO: rename LabelStyle
         return new Pixel(x, y);
     }
 
+    // TODO: deprecate this and require a string to be passed in
     public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
     {
         if (!IsVisible)
