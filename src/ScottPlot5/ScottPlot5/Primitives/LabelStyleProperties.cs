@@ -20,6 +20,7 @@ public abstract class LabelStyleProperties : IHasLabel
 
     public string LabelFontName { get => LabelStyle.FontName; set => LabelStyle.FontName = value; }
     public float LabelFontSize { get => LabelStyle.FontSize; set => LabelStyle.FontSize = value; }
+    public SKTypeface? LabelTypeface { get => LabelStyle.Typeface; set => LabelStyle.Typeface = value; }
     public float? LabelLineSpacing { get => LabelStyle.LineSpacing; set => LabelStyle.LineSpacing = value; }
     public bool LabelItalic { get => LabelStyle.Italic; set => LabelStyle.Italic = value; }
     public bool LabelBold { get => LabelStyle.Bold; set => LabelStyle.Bold = value; }

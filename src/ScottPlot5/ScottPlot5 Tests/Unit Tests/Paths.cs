@@ -37,4 +37,10 @@ public static class Paths
 
         throw new InvalidOperationException($"repository folder not found in any folder above {defaultFolder}");
     }
+
+    public static string[] GetTtfFilePaths()
+    {
+        string ttfFolder = Path.Combine(RepoFolder, @"src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/Fonts");
+        return Directory.GetFiles(ttfFolder, "*.ttf", SearchOption.AllDirectories);
+    }
 }
