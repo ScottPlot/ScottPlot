@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public class Label
+public class Label // TODO: rename LabelStyle
 {
     public bool IsVisible { get; set; } = true;
     public string Text { get; set; } = string.Empty;
@@ -36,6 +36,7 @@ public class Label
     public string FontName { get; set; } = Fonts.Default;
     public float FontSize { get; set; } = 12;
     public bool Bold { get; set; } = false;
+    public SKTypeface? Typeface { get; set; } = null;
 
     /// <summary>
     /// Manually defined line height in pixels.
@@ -75,6 +76,7 @@ public class Label
     /// </summary>
     public void SetBestFont()
     {
+        Typeface = null;
         FontName = Fonts.Detect(Text);
     }
 
@@ -117,7 +119,7 @@ public class Label
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
-        paint.Typeface = Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.Typeface = Typeface ?? Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
