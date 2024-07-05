@@ -75,7 +75,7 @@ internal class ApiDocs
 
             _Generated {DateTime.Now}_
 
-            ---
+            <div class='my-5'>&nbsp;</div>
 
             {GetHtml()}
             """;
