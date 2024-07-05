@@ -44,6 +44,7 @@
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
+        <NoWarn>CS1591</NoWarn>
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->

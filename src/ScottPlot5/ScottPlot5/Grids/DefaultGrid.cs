@@ -11,6 +11,7 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
 
     public Color MajorLineColor
     {
+        get => XAxisStyle.MajorLineStyle.Color;
         set
         {
             XAxisStyle.MajorLineStyle.Color = value;

@@ -162,15 +162,21 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public AxisLimits WithZoom(double fracX, double fracY, double zoomToX, double zoomToY)
     {
-        // TODO: do this without heap allocations
+        double xMin = Left;
+        double xMax = Right;
+        double spanLeft = zoomToX - xMin;
+        double spanRight = xMax - zoomToX;
+        xMin = zoomToX - spanLeft / fracX;
+        xMax = zoomToX + spanRight / fracX;
 
-        CoordinateRangeMutable xRange = new(Rect.Left, Rect.Right);
-        xRange.ZoomFrac(fracX, zoomToX);
+        double yMin = Bottom;
+        double yMax = Top;
+        double spanBottom = zoomToY - yMin;
+        double spanTop = yMax - zoomToY;
+        yMin = zoomToY - spanBottom / fracY;
+        yMax = zoomToY + spanTop / fracY;
 
-        CoordinateRangeMutable yRange = new(Rect.Bottom, Rect.Top);
-        yRange.ZoomFrac(fracY, zoomToY);
-
-        return new(XRange.Min, XRange.Max, yRange.Min, yRange.Max);
+        return new(xMin, xMax, yMin, yMax);
     }
 
     public bool Equals(AxisLimits other)

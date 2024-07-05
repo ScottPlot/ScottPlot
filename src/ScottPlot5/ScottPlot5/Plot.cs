@@ -30,7 +30,10 @@ public class Plot : IDisposable
     internal float ScaleFactorF { get; private set; } = 1.0f;
 
     public AxisManager Axes { get; }
-    public PlotStyler Style { get; }
+
+    [Obsolete("This class is deprecated. Use SetStyle() and GetStyle(). See the ScottPlot Cookbook for details.", true)]
+    public PlotStyler Style { get; } = new();
+
     public FontStyler Font { get; }
     public Legend Legend { get; }
 
@@ -54,7 +57,6 @@ public class Plot : IDisposable
     {
         Axes = new(this);
         Add = new(this);
-        Style = new(this);
         Font = new(this);
         RenderManager = new(this);
         Legend = new(this);
@@ -614,6 +616,21 @@ public class Plot : IDisposable
 
     [Obsolete("This method is deprecated. Access Plot.Grid instead.", true)]
     public static DefaultGrid GetDefaultGrid() => null!;
+
+    /// <summary>
+    /// Return the current style settings for this plot
+    /// </summary>
+    public PlotStyle GetStyle() => PlotStyle.FromPlot(this);
+
+    /// <summary>
+    /// Apply the given style settings to this plot
+    /// </summary>
+    public void SetStyle(PlotStyle style) => style.Apply(this);
+
+    /// <summary>
+    /// Apply the style settings from the given plot to this plot
+    /// </summary>
+    public void SetStyle(Plot otherPlot) => SetStyle(otherPlot.GetStyle());
 
     #endregion
 
