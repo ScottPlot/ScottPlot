@@ -7,6 +7,7 @@
 * Label: Added nullable `Typeface` which allows users to supply their own typefaces for rendering text in labels and legend items (#3830, #3825) @lasooch
 * Label: `ScottPlot.Label` has been renamed to `ScottPlot.LabelStyle` to better signal its purpose is to hold styling information rather than store text
 * Label: Improved support for custom horizontal alignment in multiline strings (#4045, #3958, #3859) @karlipl
+* Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
