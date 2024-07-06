@@ -1,7 +1,7 @@
 ﻿// This plot type was inspired by MicroCharts:
 // https://github.com/dotnet-ad/Microcharts/blob/main/Sources/Microcharts/Charts/RadialGaugeChart.cs
 
-namespace ScottPlot.Plottable;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// A radial gauge chart is a graphical method of displaying scalar data in the form of 

@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
-using ScottPlot.Plottable;
 
 namespace ScottPlot;
 
