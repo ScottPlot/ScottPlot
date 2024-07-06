@@ -4,46 +4,61 @@ namespace WinForms_Demo.Demos;
 
 public partial class SignalPerformance : Form, IDemoWindow
 {
-    public string Title => "Scatter Plot vs. Signal Plot";
+    public string Title => "Scatter Plot, Signal Plot, and SignalConst";
 
-    public string Description => "Demonstrates how Signal plots and " +
-        "OpenGL-accelerated Scatter plots can display " +
-        "millions of points interactively at high framerates";
+    public string Description => "Demonstrates performance of Scatter plots, " +
+        "Signal Plots, and SignalConst on large datasets.";
 
     public SignalPerformance()
     {
         InitializeComponent();
-        Replot();
 
-        rbSignal.CheckedChanged += (s, e) => Replot();
+        cbPointCount.Items.Add("1,000");
+        cbPointCount.Items.Add("100,000");
+        cbPointCount.Items.Add("1,000,000");
+        cbPointCount.Items.Add("10,000,000");
+        cbPointCount.SelectedIndex = 1;
+
         rbScatter.CheckedChanged += (s, e) => Replot();
+        rbSignal.CheckedChanged += (s, e) => Replot();
+        rbSignalConst.CheckedChanged += (s, e) => Replot();
+        cbPointCount.SelectedIndexChanged += (s, e) => Replot();
+
+        Replot();
     }
 
     private void Replot()
     {
         formsPlot1.Plot.Clear();
-        label1.Text = "Generating random data...";
-        Application.DoEvents();
 
-        int pointCount = 1_000_000;
-        double[] xs = ScottPlot.Generate.Consecutive(pointCount);
-        double[] ys = ScottPlot.Generate.Sin(pointCount);
-        Generate.AddNoiseInPlace(ys);
+        (double[] xs, double[] ys) = GetData(int.Parse(cbPointCount.Text.Replace(",", "")));
 
-        if (rbSignal.Checked)
+        if (rbScatter.Checked)
+        {
+            
+            formsPlot1.Plot.Add.ScatterLine(xs, ys);
+            formsPlot1.Plot.Title($"Scatter Plot with {ys.Length:N0} Points");
+        }
+        else if (rbSignal.Checked)
         {
             formsPlot1.Plot.Add.Signal(ys);
-            formsPlot1.Plot.Axes.Title.Label.Text = $"Signal Plot with {ys.Length:N0} Points";
-            label1.Text = "Signal plots are very performant for large datasets";
+            formsPlot1.Plot.Title($"Signal Plot with {ys.Length:N0} Points");
         }
-        else if (rbScatter.Checked)
+        else if (rbSignalConst.Checked)
         {
-            var sp = formsPlot1.Plot.Add.ScatterLine(xs, ys);
-            formsPlot1.Plot.Axes.Title.Label.Text = $"Scatter Plot with {ys.Length:N0} Points";
-            label1.Text = "Traditional Scatter plots are not performant for large datasets";
+            formsPlot1.Plot.Add.SignalConst(ys);
+            formsPlot1.Plot.Title($"SignalConst with {ys.Length:N0} Points");
         }
 
         formsPlot1.Plot.Axes.AutoScale();
         formsPlot1.Refresh();
+    }
+
+    private (double[] xs, double[] ys) GetData(int count = 1_000_000)
+    {
+        double[] xs = Generate.Consecutive(count);
+        double[] ys = Generate.Sin(count);
+        Generate.AddNoiseInPlace(ys);
+        return (xs, ys);
     }
 }
