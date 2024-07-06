@@ -16,6 +16,12 @@ public struct Coordinates : IEquatable<Coordinates>
         Y = y;
     }
 
+    public Coordinates(PolarCoordinates polar) :
+        this(polar.Radial * Math.Cos(Angle.ToRadians(polar.Angular)),
+             polar.Radial * Math.Sin(Angle.ToRadians(polar.Angular)))
+    {
+    }
+
     public double DistanceSquared(Coordinates pt)
     {
         double dX = Math.Abs(X - pt.X);
@@ -47,10 +53,14 @@ public struct Coordinates : IEquatable<Coordinates>
     public override bool Equals(object? obj)
     {
         if (obj is null)
+        {
             return false;
+        }
 
         if (obj is Coordinates other)
+        {
             return Equals(other);
+        }
 
         return false;
     }
@@ -83,5 +93,15 @@ public struct Coordinates : IEquatable<Coordinates>
     public Coordinates WithDelta(double dX, double dY)
     {
         return new(X + dX, Y + dY);
+    }
+
+    public static implicit operator Coordinates(PolarCoordinates polar)
+    {
+        return new Coordinates(polar);
+    }
+
+    public static Coordinates FromPolarCoordinates(double radial, double angular)
+    {
+        return new PolarCoordinates(radial, angular);
     }
 }
