@@ -2,6 +2,17 @@
 
 namespace ScottPlot.Plottables;
 
+[Flags]
+internal enum EdgeDirection
+{
+    None = 0,
+    Up = 0b1,
+    Right = 0b10,
+    Down = 0b100,
+    Left = 0b1000,
+    All = Up | Right | Down | Left,
+}
+
 public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
     public bool IsVisible { get; set; } = true;
@@ -315,12 +326,12 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         return argb;
     }
 
-    private bool[,] GetEdgePoints(uint[] argbs)
+    private EdgeDirection[,] GetEdgePoints(uint[] argbs)
     {
-        var edges = new bool[Height, Width];
+        var differsFrom = new EdgeDirection[Height, Width];
 
         if (!IsoMap)
-            return edges;
+            return differsFrom;
 
         // We assume here that each bitmap pixel has one and only one intensity value (i.e. the image is not scaled)
         for (int i = 0; i < Height; i++)
@@ -329,22 +340,130 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             {
                 var self = argbs[i * Width + j];
 
-                // Don't need right and down, they'd just lead to double counting
                 var leftIndex = i * Width + j - 1;
-                var upIndex = (i - 1) * Width + j - 1;
-                var left = leftIndex >= 0 ? argbs[leftIndex] : self;
+                var rightIndex = i * Width + j + 1;
+                var upIndex = (i - 1) * Width + j;
+                var downIndex = (i + 1) * Width + j;
+
+                var left = leftIndex >= 0 && j > 0 ? argbs[leftIndex] : self;
+                var right = rightIndex < argbs.Length && j + 1 < Width ? argbs[rightIndex] : self;
                 var up = upIndex >= 0 ? argbs[upIndex] : self;
+                var down = downIndex < argbs.Length ? argbs[downIndex] : self;
 
                 // Because this is only intended to be used for the isomap we can do simplistic edge detection
                 // If we ever extend it we likely need something like Canny detection
-                if (self != left || self != up)
-                {
-                    edges[i, j] = true;
-                }
+
+                var edgeDirection = EdgeDirection.None;
+                if (self != left)
+                    edgeDirection |= EdgeDirection.Left;
+
+                if (self != right)
+                    edgeDirection |= EdgeDirection.Right;
+
+                if (self != up)
+                    edgeDirection |= EdgeDirection.Up;
+
+                if (self != down)
+                    edgeDirection |= EdgeDirection.Down;
+
+
+                differsFrom[i, j] = edgeDirection;
             }
         }
 
-        return edges;
+        var edgeDirections = new EdgeDirection[Height, Width];
+
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (differsFrom[i, j] == EdgeDirection.None)
+                    continue;
+
+                if ((differsFrom[i, j] & EdgeDirection.Left) != EdgeDirection.None)
+                {
+                    // i.e. the edge continues above this cell either in the same direction, or 90 degrees different
+                    if (i > 0 && (differsFrom[i - 1, j] & (EdgeDirection.All ^ EdgeDirection.Down)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Up;
+
+                    if (i + 1 < Height && (differsFrom[i + 1, j] & (EdgeDirection.All ^ EdgeDirection.Up)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Down;
+                }
+
+                //if (false && (differsFrom[i, j] & EdgeDirection.Right) != EdgeDirection.None)
+                //{
+                //    if (i > 0 && (differsFrom[i - 1, j] & EdgeDirection.Right) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Up;
+
+                //    if (i + 1 < Height && (differsFrom[i + 1, j] & EdgeDirection.Right) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Down;
+                //}
+
+                if ((differsFrom[i, j] & EdgeDirection.Up) != EdgeDirection.None)
+                {
+                    if (j > 0 && (differsFrom[i, j - 1] & (EdgeDirection.All ^ EdgeDirection.Right)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Left;
+
+                    if (j + 1 < Width && (differsFrom[i, j + 1] & (EdgeDirection.All ^ EdgeDirection.Left)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Right;
+                }
+
+                //if (false && (differsFrom[i, j] & EdgeDirection.Down) != EdgeDirection.None)
+                //{
+                //    if (j > 0 && (differsFrom[i, j - 1] & EdgeDirection.Down) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Left;
+
+                //    if (j + 1 < Width && (differsFrom[i, j + 1] & EdgeDirection.Down) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Right;
+                //}
+            }
+        }
+
+        return edgeDirections;
+    }
+
+    // Prefers upper neighbour and makes its way clockwise
+    private (int i, int j)? GetNeighbour(EdgeDirection[,] edges, (int i, int j) coords)
+    {
+        (int i, int j) = coords;
+        var directions = EdgeDirection.None;
+        try
+        {
+            directions = edges[i, j];
+        }
+        catch (Exception ex)
+        {
+            return null; // lol fix this shit
+        }
+
+        if ((directions & EdgeDirection.Up) != EdgeDirection.None)
+            return (i - 1, j);
+
+        if ((directions & EdgeDirection.Down) != EdgeDirection.None)
+            return (i + 1, j);
+
+        if ((directions & EdgeDirection.Left) != EdgeDirection.None)
+            return (i, j - 1);
+
+        if ((directions & EdgeDirection.Right) != EdgeDirection.None)
+            return (i, j + 1);
+
+        return null;
+    }
+
+    private void AddEdgesWithoutBackTracking(EdgeDirection[,] edges, LinkedList<(int i, int j)> path)
+    {
+        (int i, int j)? neighbour = null;
+        while (path.Last is not null
+            && (neighbour = GetNeighbour(edges, path.Last.Value)).HasValue) {
+
+            var loop = path.Contains(neighbour.Value);
+
+            path.AddLast(neighbour.Value);
+
+            if (loop)
+                break;
+        }
     }
 
     private List<LinkedList<(int i, int j)>> GetEdgePaths(uint[] argbs)
@@ -356,34 +475,15 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         {
             for (int j = 0; j < Width; j++)
             {
-                if (edges[i, j])
+                if (edges[i, j] != EdgeDirection.None)
                 {
-                    var abovePredecessorList = paths.Find(p => p.Contains((i - 1, j)));
-                    var leftPredecessorList = paths.Find(p => p.Contains((i, j - 1)));
+                    if (paths.Find(ll => ll.Contains((i, j))) is not null)
+                         continue;
 
-                    if (abovePredecessorList is not null && leftPredecessorList is not null)
-                    {
-                        leftPredecessorList.AddLast((i, j));
+                    var path = new LinkedList<(int i, int j)>([(i, j)]);
+                    AddEdgesWithoutBackTracking(edges, path);
 
-                        var last = leftPredecessorList.Last;
-                        while (last is not null && leftPredecessorList.Contains((i, j)))
-                        {
-                            // Need to copy the values out, since the BCL disallows having a LinkedListNode in multiple LinkedLists
-                            abovePredecessorList.AddFirst(last.Value);
-
-                            last = last.Previous;
-                            if (last is not null)
-                                leftPredecessorList.Remove(last);
-                        }
-
-                        paths.Remove(leftPredecessorList); // Avoid dupes
-                    }
-                    else if (leftPredecessorList is not null)
-                        leftPredecessorList.AddLast((i, j));
-                    else if (abovePredecessorList is not null)
-                        abovePredecessorList.AddLast((i, j));
-                    else
-                        paths.Add(new([(i, j)]));
+                    paths.Add(path);
                 }
             }
         }
@@ -498,7 +598,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         {
             for (int j = 0; j < Width; j++)
             {
-                if (edges[i, j])
+                if (edges[i, j] != EdgeDirection.None)
                 {
                     var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
                     //rp.Canvas.DrawCircle(pt, 3, paint);
@@ -510,7 +610,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
         if (IsoMap && EdgePaths is not null)
         {
-            LineStyle style = new LineStyle() { Width = 3 };
+            LineStyle style = new LineStyle() { Width = 5 };
             style.ApplyToPaint(paint);
 
             foreach (var pathPoints in EdgePaths)
