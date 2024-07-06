@@ -35,7 +35,7 @@ public partial class SignalPerformance : Form, IDemoWindow
 
         if (rbScatter.Checked)
         {
-            
+
             formsPlot1.Plot.Add.ScatterLine(xs, ys);
             formsPlot1.Plot.Title($"Scatter Plot with {ys.Length:N0} Points");
         }
