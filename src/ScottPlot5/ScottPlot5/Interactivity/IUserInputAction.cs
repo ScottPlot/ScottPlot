@@ -2,5 +2,6 @@
 
 public interface IUserInputAction
 {
-    UserActionResult Execute(Plot plot, UserInputQueue queue);
+    UserActionResult Execute(Plot plot, IUserInput userInput);
+    void Reset();
 }

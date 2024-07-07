@@ -1,28 +1,46 @@
-﻿namespace ScottPlot.Interactivity.UserInputActions;
+﻿using ScottPlot.Control;
+
+namespace ScottPlot.Interactivity.UserInputActions;
 
 public class LeftClickDragPan : IUserInputAction
 {
-    public UserActionResult Execute(Plot plot, UserInputQueue queue)
+    private Pixel MouseDownPixel;
+
+    // TODO: re-implement this being more careful about allocations
+    private MultiAxisLimitManager? RememberedLimits = null;
+
+    public void Reset()
     {
-        if (queue.Events.Last() is DefaultInputs.LeftMouseDown leftDownInput)
+        MouseDownPixel = Pixel.NaN;
+        RememberedLimits = null;
+    }
+
+    public UserActionResult Execute(Plot plot, IUserInput userInput)
+    {
+        if (userInput is DefaultInputs.LeftMouseDown leftDownInput)
         {
-            return new UserActionResult($"left click drag may have started at {leftDownInput.Pixel}", startTrackingMouse: true);
+            MouseDownPixel = leftDownInput.Pixel;
+            RememberedLimits = new(plot);
+            return UserActionResult.Handled($"left click drag pan STARTED");
         }
 
-        if (queue.Events.Last() is DefaultInputs.LeftMouseUp lastLeftMouseUp)
+        if (MouseDownPixel == Pixel.NaN)
+            return UserActionResult.NotRelevant();
+
+        if (userInput is DefaultInputs.MouseMove mouseMoveInput)
         {
-            var leftDownInputs = queue.Events.OfType<DefaultInputs.LeftMouseDown>();
-            if (!leftDownInputs.Any())
-            {
-                return UserActionResult.NoAction;
-            }
-
-            Pixel downPixel = leftDownInputs.Last().Pixel;
-            Pixel upPixel = lastLeftMouseUp.Pixel;
-
-            return new UserActionResult($"left click drag pan completed from {downPixel} to {upPixel}", clearPreviousEvents: true);
+            RememberedLimits?.Apply(plot);
+            plot.Axes.Pan(MouseDownPixel, mouseMoveInput.Pixel);
+            return UserActionResult.Refresh($"left click drag in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}");
         }
 
-        return UserActionResult.NoAction;
+        if (userInput is DefaultInputs.LeftMouseUp leftMouseUpInput)
+        {
+            RememberedLimits?.Apply(plot);
+            plot.Axes.Pan(MouseDownPixel, leftMouseUpInput.Pixel);
+            return UserActionResult.RefreshAndReset($"left click drag pan COMPLETED");
+        }
+
+        return UserActionResult.NotRelevant();
     }
 }

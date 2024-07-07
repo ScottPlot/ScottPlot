@@ -2,16 +2,44 @@
 
 public readonly record struct UserActionResult
 {
-    public string Summary { get; } = string.Empty;
-    public bool ClearPreviousEvents { get; } = false;
-    public bool StartTrackingMouse { get; } = false;
+    public string Summary { get; private init; }
+    public bool RefreshRequired { get; private init; }
+    public bool ResetAllActions { get; private init; }
 
-    public UserActionResult(string summary, bool clearPreviousEvents = false, bool startTrackingMouse = false)
+    public override string ToString()
     {
-        Summary = summary;
-        ClearPreviousEvents = clearPreviousEvents;
-        StartTrackingMouse = startTrackingMouse;
+        string message = Summary;
+        if (RefreshRequired) message += " [REFRESH]";
+        if (ResetAllActions) message += " [RESET]";
+        return message;
     }
 
-    public static UserActionResult NoAction = new(string.Empty);
+    public static UserActionResult NotRelevant() => new() { Summary = string.Empty };
+
+    public static UserActionResult Handled(string summary)
+    {
+        return new()
+        {
+            Summary = summary,
+        };
+    }
+
+    public static UserActionResult Refresh(string summary)
+    {
+        return new()
+        {
+            Summary = summary,
+            RefreshRequired = true,
+        };
+    }
+
+    public static UserActionResult RefreshAndReset(string summary)
+    {
+        return new()
+        {
+            Summary = summary,
+            RefreshRequired = true,
+            ResetAllActions = true,
+        };
+    }
 };

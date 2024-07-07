@@ -2,5 +2,4 @@
 
 public interface IUserInput
 {
-    DateTime DateTime { get; }
 }

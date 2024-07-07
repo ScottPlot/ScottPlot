@@ -736,6 +736,17 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Adjust limits all axes to pan the pixel distance between two points
+    /// </summary>
+    public void Pan(Pixel mouseDown, Pixel mouseUp)
+    {
+        float dX = mouseUp.X - mouseDown.X;
+        float dY = mouseUp.Y - mouseDown.Y;
+        PixelOffset pxOffset = new(-dX, dY);
+        Pan(pxOffset);
+    }
+
+    /// <summary>
     /// Adjust limits all axes to pan by the given distance in coordinate space
     /// </summary>
     public void Pan(CoordinateOffset distance)

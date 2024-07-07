@@ -2,8 +2,12 @@
 
 public class RightClickDragZoom : IUserInputAction
 {
-    public UserActionResult Execute(Plot plot, UserInputQueue queue)
+    public void Reset()
     {
-        return UserActionResult.NoAction;
+    }
+
+    public UserActionResult Execute(Plot plot, IUserInput userInput)
+    {
+        return UserActionResult.NotRelevant();
     }
 }

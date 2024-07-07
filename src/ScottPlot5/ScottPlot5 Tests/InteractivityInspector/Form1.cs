@@ -25,7 +25,7 @@ public partial class Form1 : Form
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
             var userInput = new ScottPlot.Interactivity.DefaultInputs.MouseMove(mousePixel);
             var actionResults = UserInputProcessor.Add(userInput);
-            UpdateProcesserInfo(actionResults);
+            DisplayActionResults(actionResults);
         };
 
         formsPlot1.MouseDown += (s, e) =>
@@ -33,7 +33,7 @@ public partial class Form1 : Form
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
             var userInput = new ScottPlot.Interactivity.DefaultInputs.LeftMouseDown(mousePixel);
             var actionResults = UserInputProcessor.Add(userInput);
-            UpdateProcesserInfo(actionResults);
+            DisplayActionResults(actionResults);
         };
 
         formsPlot1.MouseUp += (s, e) =>
@@ -41,17 +41,15 @@ public partial class Form1 : Form
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
             var userInput = new ScottPlot.Interactivity.DefaultInputs.LeftMouseUp(mousePixel);
             var actionResults = UserInputProcessor.Add(userInput);
-            UpdateProcesserInfo(actionResults);
+            DisplayActionResults(actionResults);
         };
     }
 
-    private void UpdateProcesserInfo(UserActionResult[] actionResults)
+    private void DisplayActionResults(UserActionResult[] actionResults)
     {
-        label1.Text = $"User inputs in queue: {UserInputProcessor.Queue.Events.Count}";
-
-        foreach (var actionResult in actionResults)
+        foreach (UserActionResult actionResult in actionResults)
         {
-            listBox1.Items.Add(actionResult.Summary);
+            Debug.WriteLine(actionResult);
         }
     }
 }
