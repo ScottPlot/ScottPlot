@@ -595,6 +595,16 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public Polar Polar(IEnumerable<PolarCoordinates> pts, Color? color = null)
+    {
+        var polar = new Polar(pts)
+        {
+            MarkerColor = color ?? GetNextColor(),
+        };
+        Plot.PlottableList.Add(polar);
+        return polar;
+    }
+
     public Polygon Polygon(Coordinates[] coordinates)
     {
         Color color = GetNextColor();
