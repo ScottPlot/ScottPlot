@@ -2,6 +2,8 @@
 
 public readonly record struct UserActionResult
 {
+    // TODO: need a way to signal that a particular action has fully taken over the event processing system.
+    // e.g., panning and zooming should be disabled while middle-click-drag zoom-rectangling.
     public string Summary { get; private init; }
     public bool RefreshRequired { get; private init; }
     public bool ResetAllActions { get; private init; }

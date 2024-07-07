@@ -1,13 +1,11 @@
-﻿using ScottPlot.Control;
-
-namespace ScottPlot.Interactivity.UserInputActions;
+﻿namespace ScottPlot.Interactivity.UserInputActions;
 
 public class LeftClickDragPan : IUserInputAction
 {
     private Pixel MouseDownPixel;
 
     // TODO: re-implement this being more careful about allocations
-    private MultiAxisLimitManager? RememberedLimits = null;
+    private Control.MultiAxisLimitManager? RememberedLimits = null;
 
     public void Reset()
     {
@@ -17,9 +15,9 @@ public class LeftClickDragPan : IUserInputAction
 
     public UserActionResult Execute(Plot plot, IUserInput userInput)
     {
-        if (userInput is DefaultInputs.LeftMouseDown leftDownInput)
+        if (userInput is DefaultInputs.LeftMouseDown mouseDownInput)
         {
-            MouseDownPixel = leftDownInput.Pixel;
+            MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
             return UserActionResult.Handled($"left click drag pan STARTED");
         }
@@ -34,10 +32,10 @@ public class LeftClickDragPan : IUserInputAction
             return UserActionResult.Refresh($"left click drag in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}");
         }
 
-        if (userInput is DefaultInputs.LeftMouseUp leftMouseUpInput)
+        if (userInput is DefaultInputs.LeftMouseUp mouseUpInput)
         {
             RememberedLimits?.Apply(plot);
-            plot.Axes.Pan(MouseDownPixel, leftMouseUpInput.Pixel);
+            plot.Axes.Pan(MouseDownPixel, mouseUpInput.Pixel);
             return UserActionResult.RefreshAndReset($"left click drag pan COMPLETED");
         }
 

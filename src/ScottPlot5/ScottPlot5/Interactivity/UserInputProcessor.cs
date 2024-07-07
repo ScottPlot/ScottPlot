@@ -17,6 +17,9 @@ public class UserInputProcessor
         InputActions = [
             new UserInputActions.LeftClickDragPan(),
             new UserInputActions.RightClickDragZoom(),
+            new UserInputActions.ScrollWheelZoom(),
+            new UserInputActions.MiddleClickAutoscale(),
+            new UserInputActions.MiddleClickDragZoomRectangle(),
         ];
 
         ResetAllActions();

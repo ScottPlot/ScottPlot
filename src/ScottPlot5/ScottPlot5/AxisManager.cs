@@ -768,6 +768,33 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Modify zoom for all axes as if the mouse were right-clicked and dragged
+    /// </summary>
+    public void Zoom(Pixel px1, Pixel px2)
+    {
+        if (Plot.RenderManager.LastRender.Count == 0)
+            throw new InvalidOperationException("at least one render is required before pixel zooming is possible");
+
+        float pixelDeltaX = px2.X - px1.X;
+        float pixelDeltaY = -(px2.Y - px1.Y);
+
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, Plot.LastRender.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, Plot.LastRender.DataRect.Height));
+    }
+
+    /// <summary>
+    /// Zoom into (frac >1) or out of (frac <1) the given point.
+    /// </summary>
+    public void Zoom(Pixel px, double frac)
+    {
+        if (Plot.RenderManager.LastRender.Count == 0)
+            throw new InvalidOperationException("at least one render is required before pixel zooming is possible");
+
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(frac, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(frac, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
+    }
+
+    /// <summary>
     /// Modify limits of all axes to apply the given zoom.
     /// Fractional values >1 zoom in and <1 zoom out.
     /// </summary>
