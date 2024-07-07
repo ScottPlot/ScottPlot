@@ -83,11 +83,13 @@ public partial class Form1 : Form
         if (userInput is null)
             return;
 
-        UserActionResult[] actionResults = UserInputProcessor.Add(userInput);
+        UserInputResponseResult[] results = UserInputProcessor.Process(userInput);
 
-        foreach (UserActionResult actionResult in actionResults)
+        foreach (UserInputResponseResult result in results)
         {
-            Debug.WriteLine(actionResult);
+            if (result.Summary.StartsWith("left click drag pan in progress")) continue;
+            if (result.Summary.StartsWith("right click drag zoom in progress")) continue;
+            Debug.WriteLine(result);
         }
     }
 }

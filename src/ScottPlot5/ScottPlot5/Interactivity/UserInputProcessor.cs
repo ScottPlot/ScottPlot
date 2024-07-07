@@ -1,63 +1,87 @@
 ﻿namespace ScottPlot.Interactivity;
 
 /// <summary>
-/// This class collects user inputs and performs actions to manipulate a Plot.
-/// Custom user inputs may be supplied, and the list of responsive actions can be 
+/// This class collects user inputs and performs responses to manipulate a Plot.
+/// Custom user inputs may be supplied, and the list of responses can be 
 /// modified to achieve extreme control over interaction behavior.
 /// </summary>
-public class UserInputProcessor
+public class UserInputProcessor(Plot plot)
 {
-    public readonly Plot Plot;
-    public readonly List<IUserInputAction> InputActions;
+    private readonly Plot Plot = plot;
 
-    public UserInputProcessor(Plot plot)
+    /// <summary>
+    /// Controls whether new events are processed
+    /// </summary>
+    public bool IsEnabled { get; set; } = true;
+
+    /// <summary>
+    /// A list of user input responses that processes all incoming events in order.
+    /// Users may manipulate this list to change the default behavior and
+    /// add custom behaviors.
+    /// </summary>
+    public List<IUserInputResponse> UserInputResponses = new(DefaultUserInputResponses);
+
+    /// <summary>
+    /// Remove all user input responses of the specified type
+    /// </summary>
+    public void RemoveAll<T>() where T : IUserInputResponse
     {
-        Plot = plot;
-
-        InputActions = [
-            new UserInputActions.LeftClickDragPan(),
-            new UserInputActions.RightClickDragZoom(),
-            new UserInputActions.ScrollWheelZoom(),
-            new UserInputActions.MiddleClickAutoscale(),
-            new UserInputActions.MiddleClickDragZoomRectangle(),
-        ];
-
-        ResetAllActions();
+        UserInputResponses.RemoveAll(x => x is T);
     }
 
-    public UserActionResult[] Add(IUserInput inputEvent)
+    /// <summary>
+    /// Resets the user input responses to use the
+    /// default interactivity settings
+    /// </summary>
+    public void Reset()
     {
-        List<UserActionResult> notableResults = [];
+        UserInputResponses.Clear();
+        UserInputResponses.AddRange(DefaultUserInputResponses);
+    }
 
-        bool refreshRequired = false;
+    private static readonly IUserInputResponse[] DefaultUserInputResponses =
+    [
+        new UserInputResponses.LeftClickDragPan(),
+        new UserInputResponses.RightClickDragZoom(),
+        new UserInputResponses.ScrollWheelZoom(),
+        new UserInputResponses.MiddleClickAutoscale(),
+        new UserInputResponses.MiddleClickDragZoomRectangle(),
+    ];
 
-        foreach (IUserInputAction action in InputActions)
+    /// <summary>
+    /// If defined, this is the only action which will process new events.
+    /// </summary>
+    private IUserInputResponse? PrimaryResponse = null;
+
+    /// <summary>
+    /// Process a user input and return results of the responses that engaged with it
+    /// </summary>
+    public UserInputResponseResult[] Process(IUserInput userInput)
+    {
+        if (!IsEnabled)
         {
-            UserActionResult result = action.Execute(Plot, inputEvent);
-
-            if (result == UserActionResult.NotRelevant())
-                continue;
-
-            notableResults.Add(result);
-
-            if (result.RefreshRequired)
-                refreshRequired = true;
-
-            if (result.ResetAllActions)
-            {
-                ResetAllActions();
-                break;
-            }
+            PrimaryResponse = null;
+            return [];
         }
 
-        if (refreshRequired)
+        List<UserInputResponseResult> results = [];
+
+        List<IUserInputResponse> responsesToProcess = PrimaryResponse is null
+            ? UserInputResponses
+            : [PrimaryResponse];
+
+        foreach (IUserInputResponse response in responsesToProcess)
+        {
+            UserInputResponseResult result = response.Execute(Plot, userInput);
+            results.Add(result);
+            PrimaryResponse = result.IsPrimaryResponse ? response : null;
+            if (PrimaryResponse is not null)
+                break;
+        }
+
+        if (results.Where(x => x.RefreshRequired).Any())
             Plot.PlotControl?.Refresh();
 
-        return notableResults.ToArray();
-    }
-
-    private void ResetAllActions()
-    {
-        InputActions.ForEach(x => x.Reset());
+        return results.Where(x => !string.IsNullOrEmpty(x.Summary)).ToArray();
     }
 }
