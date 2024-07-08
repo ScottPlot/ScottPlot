@@ -66,17 +66,51 @@ public partial class Form1 : Form
 
         formsPlot1.KeyDown += (s, e) =>
         {
-            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.KeyDown(e.KeyCode.ToString());
+            IKey key = GetKey(e.KeyCode);
+            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.KeyDown(key);
             ProcessInput(userInput);
         };
 
         formsPlot1.KeyUp += (s, e) =>
         {
-            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.KeyUp(e.KeyCode.ToString());
+            IKey key = GetKey(e.KeyCode);
+            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.KeyUp(key);
             ProcessInput(userInput);
         };
     }
 
+    private IKey GetKey(Keys keyCode)
+    {
+        IKey? key = keyCode switch
+        {
+            Keys.Alt => new ScottPlot.Interactivity.Keys.AltKey(),
+            Keys.Menu => new ScottPlot.Interactivity.Keys.AltKey(),
+            Keys.Shift => new ScottPlot.Interactivity.Keys.ShiftKey(),
+            Keys.Control => new ScottPlot.Interactivity.Keys.ControlKey(),
+            Keys.Down => new ScottPlot.Interactivity.Keys.DownKey(),
+            Keys.Up => new ScottPlot.Interactivity.Keys.UpKey(),
+            Keys.Left => new ScottPlot.Interactivity.Keys.LeftKey(),
+            Keys.Right => new ScottPlot.Interactivity.Keys.RightKey(),
+            _ => null,
+        };
+
+        if (key is not null)
+            return key;
+
+        string keyName = keyCode.ToString();
+        if (keyName.Length == 1)
+        {
+            return new ScottPlot.Interactivity.Keys.CharacterKey()
+            {
+                Character = keyName[0]
+            };
+        }
+
+        return new ScottPlot.Interactivity.Keys.CustomKey()
+        {
+            Name = keyName,
+        };
+    }
 
     private void ProcessInput(IUserInput? userInput)
     {

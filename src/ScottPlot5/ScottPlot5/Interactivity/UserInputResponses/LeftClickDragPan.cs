@@ -7,7 +7,7 @@ public class LeftClickDragPan : IUserInputResponse
     // TODO: re-implement this being more careful about allocations
     private Control.MultiAxisLimitManager? RememberedLimits = null;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput)
+    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
         if (userInput is DefaultInputs.LeftMouseDown mouseDownInput)
         {

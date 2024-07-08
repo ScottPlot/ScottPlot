@@ -10,5 +10,5 @@ public interface IUserInputResponse
     /// Perform the given action on the specified plot and return
     /// a result indicating what happened.
     /// </summary>
-    UserInputResponseResult Execute(Plot plot, IUserInput userInput);
+    UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys);
 }

@@ -8,7 +8,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
     {
     }
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput)
+    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
         if (userInput is DefaultInputs.MiddleMouseDown mouseDownInput)
         {

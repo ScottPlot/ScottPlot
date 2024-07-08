@@ -9,6 +9,8 @@ public class UserInputProcessor(Plot plot)
 {
     private readonly Plot Plot = plot;
 
+    private readonly KeyState Keys = new();
+
     /// <summary>
     /// Controls whether new events are processed
     /// </summary>
@@ -64,6 +66,21 @@ public class UserInputProcessor(Plot plot)
             return [];
         }
 
+        if (userInput is DefaultInputs.KeyDown keyDown)
+        {
+            Keys.Press(keyDown.Key);
+        }
+
+        if (userInput is DefaultInputs.KeyUp keyUp)
+        {
+            Keys.Release(keyUp.Key);
+        }
+
+        if (Keys.PressedKeyCount > 0)
+        {
+            Debug.WriteLine(Keys);
+        }
+
         List<UserInputResponseResult> results = [];
 
         List<IUserInputResponse> responsesToProcess = PrimaryResponse is null
@@ -72,7 +89,7 @@ public class UserInputProcessor(Plot plot)
 
         foreach (IUserInputResponse response in responsesToProcess)
         {
-            UserInputResponseResult result = response.Execute(Plot, userInput);
+            UserInputResponseResult result = response.Execute(Plot, userInput, Keys);
             results.Add(result);
             PrimaryResponse = result.IsPrimaryResponse ? response : null;
             if (PrimaryResponse is not null)

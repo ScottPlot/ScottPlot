@@ -4,7 +4,7 @@ public class MiddleClickAutoscale : IUserInputResponse
 {
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput)
+    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
         if (userInput is DefaultInputs.MiddleMouseDown mouseDownInput)
         {

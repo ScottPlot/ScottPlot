@@ -2,7 +2,7 @@
 
 public class ScrollWheelZoom : IUserInputResponse
 {
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput)
+    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
         if (userInput is DefaultInputs.MouseWheelUp mouseDownInput)
         {
@@ -13,7 +13,7 @@ public class ScrollWheelZoom : IUserInputResponse
                 RefreshRequired = true,
             };
         }
-        
+
         if (userInput is DefaultInputs.MouseWheelDown mouseUpInput)
         {
             plot.Axes.Zoom(mouseUpInput.Pixel, 0.85);
