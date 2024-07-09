@@ -1,18 +1,18 @@
-﻿namespace ScottPlot;
+﻿namespace ScottPlot.PolarAxes;
 
 /// <summary>
-/// Line on radial axis
+/// Axis line on radial axis in polar coordinates
 /// </summary>
 public class Spoke(double angle, double length, LineStyle? lineStyle = null) :
     IHasLine
 {
     /// <summary>
-    /// Line angle (degrees)
+    /// Angle(degrees) in polar coordinate system
     /// </summary>
     public double Angle { get; set; } = angle;
 
     /// <summary>
-    /// Line length
+    /// Length from the origin
     /// </summary>
     public double Length { get; set; } = length;
 
@@ -34,5 +34,10 @@ public class Spoke(double angle, double length, LineStyle? lineStyle = null) :
     {
         get => LineStyle.Color;
         set => LineStyle.Color = value;
+    }
+
+    public PolarCoordinates GetPolarCoordinates()
+    {
+        return new PolarCoordinates(Length, Angle);
     }
 }

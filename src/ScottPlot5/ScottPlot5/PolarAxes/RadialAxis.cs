@@ -4,24 +4,40 @@ public class RadialAxis : IRadialAxis
 {
     public Spoke[] Spokes { get; }
 
-    public RadialAxis(double maxRadius) :
-        this(maxRadius, [0, 90, 180, 270])
+    public double LabelDistance { get; set; } = 1.2;
+
+    /// <summary>
+    /// Generate horizontal (0 and 180 degrees) and vertical (90 and 270 degrees) radial axes
+    /// </summary>
+    /// <param name="length">axis line length</param>
+    public RadialAxis(double length) :
+        this(length, [0, 90, 180, 270])
     {
     }
 
-    public RadialAxis(double maxRadius, IEnumerable<double> angles)
+    /// <summary>
+    /// Generate radial axes form angle(degrees) list
+    /// </summary>
+    /// <param name="length">axis line length</param>
+    /// <param name="angles">axis line angle list</param>
+    public RadialAxis(double length, IEnumerable<double> angles) :
+        this(angles?.Select(i => new Spoke(i, length))!)
     {
-        Spokes = [];
-        if (angles is not null &&
-            angles.Any())
-        {
-            var spokes = new List<Spoke>();
-            foreach (double angle in angles)
-            {
-                spokes.Add(new(angle, maxRadius));
-            }
-            Spokes = [.. spokes];
-        }
+    }
+
+    /// <summary>
+    /// Generate radial axes form list
+    /// </summary>
+    /// <param name="spokes">axis line list</param>
+    public RadialAxis(IEnumerable<Spoke> spokes)
+    {
+        Spokes = spokes?.ToArray() ?? [];
+    }
+
+    public virtual AxisLimits GetAxisLimits()
+    {
+        double radius = Spokes.Max(i => i.Length) * LabelDistance;
+        return new AxisLimits(-radius, radius, radius, -radius);
     }
 
     protected virtual void RenderSpoke(RenderPack rp, IAxes axes, Spoke spoke)
@@ -29,29 +45,26 @@ public class RadialAxis : IRadialAxis
         var paint = new SKPaint();
         spoke.LineStyle.ApplyToPaint(paint);
 
-        var polar = new PolarCoordinates(spoke.Length, spoke.Angle);
+        PolarCoordinates polar = spoke.GetPolarCoordinates();
         Pixel pixel = axes.GetPixel(polar) - axes.GetPixel(Coordinates.Origin);
-
         rp.Canvas.DrawLine(0, 0, pixel.X, pixel.Y, paint);
 
         var labelStyle = new LabelStyle
         {
             Text = $"{spoke.Angle}"
         };
-
-        var labPolar = new PolarCoordinates(polar.Radial * 1.1, polar.Angular);
+        var labPolar = new PolarCoordinates(polar.Radial * LabelDistance, polar.Angular);
         Pixel labelPixel = axes.GetPixel(labPolar) - axes.GetPixel(Coordinates.Origin);
-        var labelRect = labelStyle.Measure().Rect(Alignment.MiddleCenter);
-        var labelOffset = labelRect.Center - labelRect.TopLeft;
+        PixelRect labelRect = labelStyle.Measure().Rect(Alignment.MiddleCenter);
+        Pixel labelOffset = labelRect.Center - labelRect.TopLeft;
         labelPixel -= labelOffset;
 
         labelStyle.Render(rp.Canvas, labelPixel, paint);
     }
 
-    public void Render(RenderPack rp, IAxes axes)
+    public virtual void Render(RenderPack rp, IAxes axes)
     {
-        if (Spokes is null ||
-            Spokes.Length < 1)
+        if (Spokes.Length < 1)
         {
             return;
         }
