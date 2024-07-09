@@ -5,22 +5,22 @@ namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
 
 internal class RightClickDragZoomTests
 {
-    const int PLOT_WIDTH = 400;
-    const int PLOT_HEIGHT = 300;
-    Pixel ImageCenter => new(PLOT_HEIGHT / 2, PLOT_WIDTH / 2);
+    const int FIGURE_WIDTH = 400;
+    const int FIGURE_HEIGHT = 300;
+    Pixel FIGURE_CENTER => new(FIGURE_WIDTH / 2, FIGURE_HEIGHT / 2);
 
     [Test]
     public void Test_RightClickDragZoom_ZoomsWithoutPanning()
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
-        plot.RenderInMemory(PLOT_WIDTH, PLOT_HEIGHT);
+        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
         AxisLimits originalLimits = plot.Axes.GetLimits();
 
         // simulate right-click-drag to to the upper right (zooming in)
         UserInputProcessor proc = new(plot);
-        proc.Process(new RightMouseDown(ImageCenter));
-        proc.Process(new MouseMove(ImageCenter.MovedRight(50).MovedUp(50)));
+        proc.Process(new RightMouseDown(FIGURE_CENTER));
+        proc.Process(new MouseMove(FIGURE_CENTER.MovedRight(50).MovedUp(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         // assert zoom occurred
@@ -37,14 +37,14 @@ internal class RightClickDragZoomTests
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
-        plot.RenderInMemory(PLOT_WIDTH, PLOT_HEIGHT);
+        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
         AxisLimits originalLimits = plot.Axes.GetLimits();
 
         // simulate SHIFT + right-click-drag to to the upper right (zooming in)
         UserInputProcessor proc = new(plot);
         proc.Process(new KeyDown(StandardKeys.Shift));
-        proc.Process(new RightMouseDown(ImageCenter));
-        proc.Process(new MouseMove(ImageCenter.MovedRight(50).MovedUp(50)));
+        proc.Process(new RightMouseDown(FIGURE_CENTER));
+        proc.Process(new MouseMove(FIGURE_CENTER.MovedRight(50).MovedUp(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         // assert zoom occurred
@@ -61,14 +61,14 @@ internal class RightClickDragZoomTests
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
-        plot.RenderInMemory(PLOT_WIDTH, PLOT_HEIGHT);
+        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
         AxisLimits originalLimits = plot.Axes.GetLimits();
 
         // simulate ALT + right-click-drag to to the upper right (zooming in)
         UserInputProcessor proc = new(plot);
         proc.Process(new KeyDown(StandardKeys.Control));
-        proc.Process(new RightMouseDown(ImageCenter));
-        proc.Process(new MouseMove(ImageCenter.MovedRight(50).MovedUp(50)));
+        proc.Process(new RightMouseDown(FIGURE_CENTER));
+        proc.Process(new MouseMove(FIGURE_CENTER.MovedRight(50).MovedUp(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         // assert zoom occurred

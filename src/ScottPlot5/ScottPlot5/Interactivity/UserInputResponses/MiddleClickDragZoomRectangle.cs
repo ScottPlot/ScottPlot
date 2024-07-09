@@ -4,10 +4,6 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
 {
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public void Reset()
-    {
-    }
-
     public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
         if (userInput is UserInputs.MiddleMouseDown mouseDownInput)
@@ -42,6 +38,8 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             plot.ZoomRectangle.IsVisible = true;
             plot.ZoomRectangle.MouseDown = MouseDownPixel;
             plot.ZoomRectangle.MouseUp = mouseMoveInput.Pixel;
+            plot.ZoomRectangle.HorizontalSpan = keys.IsPressed(StandardKeys.Control);
+            plot.ZoomRectangle.VerticalSpan = keys.IsPressed(StandardKeys.Shift);
 
             return new UserInputResponseResult()
             {
@@ -51,7 +49,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             };
         }
 
-        if (userInput is UserInputs.MiddleMouseUp mouseUpInput)
+        if (userInput is UserInputs.MiddleMouseUp)
         {
             MouseDownPixel = Pixel.NaN;
             if (plot.ZoomRectangle.IsVisible)
