@@ -16,15 +16,13 @@ public abstract class PolarBase
 
     public virtual AxisLimits GetAxisLimits()
     {
-        IEnumerable<Coordinates> spokePts = RadialAxis.Spokes
-            .Select(i => Coordinates.FromPolarCoordinates(i.Length, i.Angle));
-        double radius = CircularAxis.Radii.Max();
-        var limit = new AxisLimits(
-                  Math.Min(spokePts.Min(i => i.X), -radius),
-                  Math.Max(spokePts.Max(i => i.X), radius),
-                  Math.Max(spokePts.Max(i => i.Y), radius),
-                  Math.Min(spokePts.Min(i => i.Y), -radius));
-        return limit;
+        var radialLimit = RadialAxis.GetAxisLimits();
+        var circularLimit = CircularAxis.GetAxisLimits();
+        return new AxisLimits(
+            Math.Min(radialLimit.Left, circularLimit.Left),
+            Math.Max(radialLimit.Right, circularLimit.Right),
+            Math.Max(radialLimit.Bottom, circularLimit.Bottom),
+            Math.Min(radialLimit.Top, circularLimit.Top));
     }
 
     public virtual void UpdateAxisLimits(Plot plot)
