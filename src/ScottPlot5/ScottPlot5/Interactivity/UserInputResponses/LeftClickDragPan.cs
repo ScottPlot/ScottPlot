@@ -29,7 +29,7 @@ public class LeftClickDragPan : IUserInputResponse
         if (userInput is UserInputs.MouseMove mouseMoveInput)
         {
             RememberedLimits.Apply(plot);
-            plot.Axes.Pan(MouseDownPixel, mouseMoveInput.Pixel);
+            ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
 
             return new UserInputResponseResult()
             {
@@ -43,7 +43,7 @@ public class LeftClickDragPan : IUserInputResponse
         {
             RememberedLimits.Apply(plot);
             RememberedLimits = null;
-            plot.Axes.Pan(MouseDownPixel, mouseUpInput.Pixel);
+            ApplyToPlot(plot, MouseDownPixel, mouseUpInput.Pixel, keys);
             return new UserInputResponseResult()
             {
                 Summary = $"left click drag pan COMPLETED",
@@ -56,5 +56,20 @@ public class LeftClickDragPan : IUserInputResponse
             Summary = $"left click drag pan ignored {userInput}",
             IsPrimaryResponse = true,
         };
+    }
+
+    private static void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyState keys)
+    {
+        if (keys.IsPressed(StandardKeys.Shift))
+        {
+            px2.X = px1.X;
+        }
+
+        if (keys.IsPressed(StandardKeys.Control))
+        {
+            px2.Y = px1.Y;
+        }
+
+        plot.Axes.Pan(px1, px2);
     }
 }

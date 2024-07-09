@@ -83,14 +83,16 @@ public partial class Form1 : Form
     {
         IKey? key = keyCode switch
         {
-            Keys.Alt => new ScottPlot.Interactivity.Keys.AltKey(),
-            Keys.Menu => new ScottPlot.Interactivity.Keys.AltKey(),
-            Keys.Shift => new ScottPlot.Interactivity.Keys.ShiftKey(),
-            Keys.Control => new ScottPlot.Interactivity.Keys.ControlKey(),
-            Keys.Down => new ScottPlot.Interactivity.Keys.DownKey(),
-            Keys.Up => new ScottPlot.Interactivity.Keys.UpKey(),
-            Keys.Left => new ScottPlot.Interactivity.Keys.LeftKey(),
-            Keys.Right => new ScottPlot.Interactivity.Keys.RightKey(),
+            Keys.Alt => StandardKeys.Alt,
+            Keys.Menu => StandardKeys.Alt,
+            Keys.Shift => StandardKeys.Shift,
+            Keys.ShiftKey => StandardKeys.Shift,
+            Keys.Control => StandardKeys.Control,
+            Keys.ControlKey => StandardKeys.Control,
+            Keys.Down => StandardKeys.Down,
+            Keys.Up => StandardKeys.Up,
+            Keys.Left => StandardKeys.Left,
+            Keys.Right => StandardKeys.Right,
             _ => null,
         };
 
@@ -108,7 +110,7 @@ public partial class Form1 : Form
 
         return new ScottPlot.Interactivity.Keys.CustomKey()
         {
-            Name = keyName,
+            Name = $"Unknown key {keyName}",
         };
     }
 
@@ -123,6 +125,8 @@ public partial class Form1 : Form
         {
             if (result.Summary.StartsWith("left click drag pan in progress")) continue;
             if (result.Summary.StartsWith("right click drag zoom in progress")) continue;
+            if (result.Summary.StartsWith("left click drag pan ignored KeyDown")) continue;
+            if (result.Summary.StartsWith("left click drag pan ignored KeyUp")) continue;
             Debug.WriteLine(result);
         }
     }
