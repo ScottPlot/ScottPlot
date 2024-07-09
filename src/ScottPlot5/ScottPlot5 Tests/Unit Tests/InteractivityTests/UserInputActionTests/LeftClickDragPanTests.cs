@@ -17,10 +17,10 @@ internal class LeftClickDragPanTests
         plot.RenderInMemory(PLOT_WIDTH, PLOT_HEIGHT);
         AxisLimits originalLimits = plot.Axes.GetLimits();
 
-        // simulate left-click-drag to the upper right
+        // simulate left-click-drag to to the lower left (panning to the upper right)
         UserInputProcessor proc = new(plot);
         proc.Process(new LeftMouseDown(ImageCenter));
-        proc.Process(new MouseMove(ImageCenter.WithOffset(-50, 50))); // TODO: why is this reversed????
+        proc.Process(new MouseMove(ImageCenter.MovedLeft(50).MovedDown(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         Console.WriteLine(originalLimits);
@@ -43,11 +43,11 @@ internal class LeftClickDragPanTests
         plot.RenderInMemory(PLOT_WIDTH, PLOT_HEIGHT);
         AxisLimits originalLimits = plot.Axes.GetLimits();
 
-        // simulate SHIFT + left-click-drag to the upper right
+        // simulate SHIFT + left-click-drag to to the lower left (panning to the upper right)
         UserInputProcessor proc = new(plot);
         proc.Process(new KeyDown(StandardKeys.Shift));
         proc.Process(new LeftMouseDown(ImageCenter));
-        proc.Process(new MouseMove(ImageCenter.WithOffset(-50, 50))); // TODO: why is this reversed????
+        proc.Process(new MouseMove(ImageCenter.MovedLeft(50).MovedDown(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         Console.WriteLine(originalLimits);
@@ -70,11 +70,11 @@ internal class LeftClickDragPanTests
         plot.RenderInMemory(PLOT_WIDTH, PLOT_HEIGHT);
         AxisLimits originalLimits = plot.Axes.GetLimits();
 
-        // simulate ALT + left-click-drag to the upper right
+        // simulate ALT + left-click-drag to to the lower left (panning to the upper right)
         UserInputProcessor proc = new(plot);
         proc.Process(new KeyDown(StandardKeys.Control));
         proc.Process(new LeftMouseDown(ImageCenter));
-        proc.Process(new MouseMove(ImageCenter.WithOffset(-50, 50))); // TODO: why is this reversed????
+        proc.Process(new MouseMove(ImageCenter.MovedLeft(50).MovedDown(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         Console.WriteLine(originalLimits);
