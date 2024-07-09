@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity.Keys;
 
-public struct ControlKey : IKey
+public readonly struct ControlKey : IKey
 {
-    public override string ToString() => "CTRL";
+    public string Name => "CTRL";
 }

@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity.Keys;
 
-public struct ShiftKey : IKey
+public readonly struct ShiftKey : IKey
 {
-    public override string ToString() => "Shift";
+    public string Name => "Shift";
 }

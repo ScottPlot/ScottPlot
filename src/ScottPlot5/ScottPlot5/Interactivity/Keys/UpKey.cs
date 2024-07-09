@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity.Keys;
 
-public struct UpKey : IKey
+public readonly struct UpKey : IKey
 {
-    public override string ToString() => "Up";
+    public string Name => "Up";
 }

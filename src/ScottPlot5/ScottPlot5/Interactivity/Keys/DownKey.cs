@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity.Keys;
 
-public struct DownKey : IKey
+public readonly struct DownKey : IKey
 {
-    public override string ToString() => "Down";
+    public string Name => "Down";
 }
