@@ -781,13 +781,13 @@ public class AxisManager
     /// <summary>
     /// Zoom into (frac >1) or out of (frac <1) the given point.
     /// </summary>
-    public void Zoom(Pixel px, double frac)
+    public void Zoom(Pixel px, double fracX, double fracY)
     {
         if (Plot.RenderManager.LastRender.Count == 0)
             throw new InvalidOperationException("at least one render is required before pixel zooming is possible");
 
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(frac, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(frac, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
     }
 
     /// <summary>

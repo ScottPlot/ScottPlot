@@ -6,7 +6,9 @@ public class ScrollWheelZoom : IUserInputResponse
     {
         if (userInput is UserInputs.MouseWheelUp mouseDownInput)
         {
-            plot.Axes.Zoom(mouseDownInput.Pixel, 1.15);
+            double xFrac = keys.IsPressed(StandardKeys.Shift) ? 1 : 1.15;
+            double yFrac = keys.IsPressed(StandardKeys.Control) ? 1 : 1.15;
+            plot.Axes.Zoom(mouseDownInput.Pixel, xFrac, yFrac);
             return new UserInputResponseResult()
             {
                 Summary = $"scroll wheel zoom into {mouseDownInput.Pixel}",
@@ -16,7 +18,9 @@ public class ScrollWheelZoom : IUserInputResponse
 
         if (userInput is UserInputs.MouseWheelDown mouseUpInput)
         {
-            plot.Axes.Zoom(mouseUpInput.Pixel, 0.85);
+            double xFrac = keys.IsPressed(StandardKeys.Shift) ? 1 : 0.85;
+            double yFrac = keys.IsPressed(StandardKeys.Control) ? 1 : 0.85;
+            plot.Axes.Zoom(mouseUpInput.Pixel, xFrac, yFrac);
             return new UserInputResponseResult()
             {
                 Summary = $"scroll wheel zoom away from {mouseUpInput.Pixel}",

@@ -27,9 +27,6 @@ internal class MiddleClickZoomRectangle
         plot.ZoomRectangle.IsVisible.Should().BeFalse();
         AxisLimits newLimits = plot.Axes.GetLimits();
 
-        Console.WriteLine(originalLimits);
-        Console.WriteLine(newLimits);
-
         // assert pan occurred
         newLimits.HorizontalCenter.Should().BeGreaterThan(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().BeGreaterThan(originalLimits.VerticalCenter);
@@ -58,9 +55,6 @@ internal class MiddleClickZoomRectangle
         plot.ZoomRectangle.IsVisible.Should().BeFalse();
         AxisLimits newLimits = plot.Axes.GetLimits();
 
-        Console.WriteLine(originalLimits);
-        Console.WriteLine(newLimits);
-
         // assert pan occurred
         newLimits.HorizontalCenter.Should().BeGreaterThan(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().Be(originalLimits.VerticalCenter);
@@ -88,9 +82,6 @@ internal class MiddleClickZoomRectangle
         proc.Process(new MiddleMouseUp(FIGURE_CENTER.MovedRight(100).MovedUp(100)));
         plot.ZoomRectangle.IsVisible.Should().BeFalse();
         AxisLimits newLimits = plot.Axes.GetLimits();
-
-        Console.WriteLine(originalLimits);
-        Console.WriteLine(newLimits);
 
         // assert pan occurred
         newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
