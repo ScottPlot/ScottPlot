@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.Introduction;
+﻿using NUnit.Framework.Interfaces;
+
+namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Legend : ICategory
 {
@@ -174,6 +176,67 @@ public class Legend : ICategory
             sig2.LegendText = "Cosine";
 
             myPlot.ShowLegend(Edge.Right);
+        }
+    }
+
+    public class LegendCustomFontAutomaticItems : RecipeBase
+    {
+        public override string Name => "Automatic Legend Items Custom Font";
+        public override string Description => "Use custom fonts from TTF files in the legend.";
+
+        [Test]
+        public override void Execute()
+        {
+            Fonts.AddFontFile("Alumni Sans", "Fonts/AlumniSans/AlumniSans-Regular.ttf", bold: false, italic: false);
+
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "Sin";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "Cos";
+
+            myPlot.Legend.FontName = "Alumni Sans";
+            myPlot.Legend.FontSize = 48;
+            myPlot.Legend.FontColor = Colors.Red;
+
+            myPlot.ShowLegend();
+        }
+    }
+
+    public class LegendCustomFontManualItems : RecipeBase
+    {
+        public override string Name => "Manual Legend Items Custom Font";
+        public override string Description => "Use custom fonts from TTF files in the legend (manual legend items).";
+
+        [Test]
+        public override void Execute()
+        {
+            Fonts.AddFontFile("Alumni Sans", "Fonts/AlumniSans/AlumniSans-Regular.ttf", bold: false, italic: false);
+            Fonts.AddFontFile("Noto Serif Display", "Fonts/NotoSerifDisplay/NotoSerifDisplay-Regular.ttf", bold: false, italic: false);
+
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "Sin";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "Cos";
+
+            myPlot.Legend.ManualItems.Add(new LegendItem()
+            {
+                LabelText = "Manual Item 1",
+                LabelFontName = "Alumni Sans",
+                LabelFontSize = 48,
+                LabelFontColor = Colors.Red
+            });
+
+            myPlot.Legend.ManualItems.Add(new LegendItem()
+            {
+                LabelText = "Manual Item 2",
+                LabelFontName = "Noto Serif Display",
+                LabelFontSize = 32,
+                LabelFontColor = Colors.Blue
+            });
+
+            myPlot.ShowLegend();
         }
     }
 }
