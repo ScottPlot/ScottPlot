@@ -177,6 +177,11 @@ public class Legend : ICategory
         }
     }
 
+    private static string GetFontsBasePath()
+    {
+        return Path.Combine(Paths.RepoFolder, @"src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/Fonts");
+    }
+
     public class LegendCustomFontAutomaticItems : RecipeBase
     {
         public override string Name => "Automatic Legend Items Custom Font";
@@ -185,7 +190,7 @@ public class Legend : ICategory
         [Test]
         public override void Execute()
         {
-            Fonts.AddFontFile("Alumni Sans", "Fonts/AlumniSans/AlumniSans-Regular.ttf", bold: false, italic: false);
+            Fonts.AddFontFile("Alumni Sans", Path.Combine(GetFontsBasePath(), @"AlumniSans/AlumniSans-Regular.ttf"), bold: false, italic: false);
 
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.LegendText = "Sin";
@@ -209,8 +214,8 @@ public class Legend : ICategory
         [Test]
         public override void Execute()
         {
-            Fonts.AddFontFile("Alumni Sans", "Fonts/AlumniSans/AlumniSans-Regular.ttf", bold: false, italic: false);
-            Fonts.AddFontFile("Noto Serif Display", "Fonts/NotoSerifDisplay/NotoSerifDisplay-Regular.ttf", bold: false, italic: false);
+            Fonts.AddFontFile("Alumni Sans", Path.Combine(GetFontsBasePath(), @"AlumniSans/AlumniSans-Regular.ttf"), bold: false, italic: false);
+            Fonts.AddFontFile("Noto Serif Display", Path.Combine(GetFontsBasePath(), @"NotoSerifDisplay/NotoSerifDisplay-Regular.ttf"), bold: false, italic: false);
 
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.LegendText = "Sin";
