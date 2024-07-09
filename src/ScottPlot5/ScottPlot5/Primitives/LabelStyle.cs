@@ -41,7 +41,6 @@ public class LabelStyle
     public string FontName { get; set; } = Fonts.Default;
     public float FontSize { get; set; } = 12;
     public bool Bold { get; set; } = false;
-    public SKTypeface? Typeface { get; set; } = null;
 
     /// <summary>
     /// Manually defined line height in pixels.
@@ -81,10 +80,8 @@ public class LabelStyle
     /// </summary>
     public void SetBestFont()
     {
-        Typeface = null;
         FontName = Fonts.Detect(Text);
     }
-
 
     private void ApplyPointPaint(SKPaint paint)
     {
@@ -124,7 +121,7 @@ public class LabelStyle
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
-        paint.Typeface = Typeface ?? Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.Typeface = Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
