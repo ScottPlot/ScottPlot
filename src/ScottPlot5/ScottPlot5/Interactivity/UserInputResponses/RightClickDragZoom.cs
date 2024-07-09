@@ -26,7 +26,7 @@ public class RightClickDragZoom : IUserInputResponse
         if (userInput is UserInputs.MouseMove mouseMoveInput)
         {
             RememberedLimits?.Apply(plot);
-            plot.Axes.Zoom(MouseDownPixel, mouseMoveInput.Pixel);
+            ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
             return new UserInputResponseResult()
             {
                 Summary = $"right click drag zoom in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}",
@@ -38,7 +38,7 @@ public class RightClickDragZoom : IUserInputResponse
         if (userInput is UserInputs.RightMouseUp mouseUpInput)
         {
             RememberedLimits?.Apply(plot);
-            plot.Axes.Zoom(MouseDownPixel, mouseUpInput.Pixel);
+            ApplyToPlot(plot, MouseDownPixel, mouseUpInput.Pixel, keys);
             MouseDownPixel = Pixel.NaN;
             return new UserInputResponseResult()
             {
@@ -52,5 +52,20 @@ public class RightClickDragZoom : IUserInputResponse
             Summary = $"right click drag zoom ignored {userInput}",
             IsPrimaryResponse = true,
         };
+    }
+
+    private static void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyState keys)
+    {
+        if (keys.IsPressed(StandardKeys.Shift))
+        {
+            px2.X = px1.X;
+        }
+
+        if (keys.IsPressed(StandardKeys.Control))
+        {
+            px2.Y = px1.Y;
+        }
+
+        plot.Axes.Zoom(px1, px2);
     }
 }

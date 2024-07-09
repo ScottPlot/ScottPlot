@@ -23,9 +23,6 @@ internal class LeftClickDragPanTests
         proc.Process(new MouseMove(ImageCenter.MovedLeft(50).MovedDown(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
-        Console.WriteLine(originalLimits);
-        Console.WriteLine(newLimits);
-
         // assert pan occurred
         newLimits.HorizontalCenter.Should().BeGreaterThan(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().BeGreaterThan(originalLimits.VerticalCenter);
@@ -36,7 +33,7 @@ internal class LeftClickDragPanTests
     }
 
     [Test]
-    public void Test_LeftClickDrag_ShiftLocksHorizontalAxis()
+    public void Test_LeftClickDragPan_ShiftLocksHorizontalAxis()
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
@@ -50,9 +47,6 @@ internal class LeftClickDragPanTests
         proc.Process(new MouseMove(ImageCenter.MovedLeft(50).MovedDown(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
 
-        Console.WriteLine(originalLimits);
-        Console.WriteLine(newLimits);
-
         // assert pan occurred
         newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().BeGreaterThan(originalLimits.VerticalCenter);
@@ -63,7 +57,7 @@ internal class LeftClickDragPanTests
     }
 
     [Test]
-    public void Test_LeftClickDrag_CtrlLocksVerticalAxis()
+    public void Test_LeftClickDragPan_CtrlLocksVerticalAxis()
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
@@ -76,9 +70,6 @@ internal class LeftClickDragPanTests
         proc.Process(new LeftMouseDown(ImageCenter));
         proc.Process(new MouseMove(ImageCenter.MovedLeft(50).MovedDown(50)));
         AxisLimits newLimits = plot.Axes.GetLimits();
-
-        Console.WriteLine(originalLimits);
-        Console.WriteLine(newLimits);
 
         // assert pan occurred
         newLimits.HorizontalCenter.Should().BeGreaterThan(originalLimits.HorizontalCenter);
