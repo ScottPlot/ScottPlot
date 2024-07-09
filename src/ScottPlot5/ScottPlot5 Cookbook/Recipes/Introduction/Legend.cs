@@ -1,6 +1,4 @@
-﻿using NUnit.Framework.Interfaces;
-
-namespace ScottPlotCookbook.Recipes.Introduction;
+﻿namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Legend : ICategory
 {
