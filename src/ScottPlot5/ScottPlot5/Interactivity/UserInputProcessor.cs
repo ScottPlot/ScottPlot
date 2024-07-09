@@ -66,12 +66,12 @@ public class UserInputProcessor(Plot plot)
             return [];
         }
 
-        if (userInput is DefaultInputs.KeyDown keyDown)
+        if (userInput is UserInputs.KeyDown keyDown)
         {
             Keys.Press(keyDown.Key);
         }
 
-        if (userInput is DefaultInputs.KeyUp keyUp)
+        if (userInput is UserInputs.KeyUp keyUp)
         {
             Keys.Release(keyUp.Key);
         }

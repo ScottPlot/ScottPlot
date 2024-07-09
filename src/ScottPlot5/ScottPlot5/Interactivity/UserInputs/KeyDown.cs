@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.DefaultInputs;
+﻿namespace ScottPlot.Interactivity.UserInputs;
 
 public record struct KeyDown(IKey Key) : IUserInput
 {

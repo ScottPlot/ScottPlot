@@ -10,7 +10,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
 
     public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
-        if (userInput is DefaultInputs.MiddleMouseDown mouseDownInput)
+        if (userInput is UserInputs.MiddleMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             return new UserInputResponseResult()
@@ -24,7 +24,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             return UserInputResponseResult.NoActionTaken;
         }
 
-        if (userInput is DefaultInputs.MouseMove mouseMoveInput)
+        if (userInput is UserInputs.MouseMove mouseMoveInput)
         {
             double dX = Math.Abs(MouseDownPixel.X - mouseMoveInput.Pixel.X);
             double dY = Math.Abs(MouseDownPixel.Y - mouseMoveInput.Pixel.Y);
@@ -51,7 +51,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             };
         }
 
-        if (userInput is DefaultInputs.MiddleMouseUp mouseUpInput)
+        if (userInput is UserInputs.MiddleMouseUp mouseUpInput)
         {
             MouseDownPixel = Pixel.NaN;
             if (plot.ZoomRectangle.IsVisible)

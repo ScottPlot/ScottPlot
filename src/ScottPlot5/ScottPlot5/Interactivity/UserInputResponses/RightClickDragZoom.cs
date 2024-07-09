@@ -9,7 +9,7 @@ public class RightClickDragZoom : IUserInputResponse
 
     public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
-        if (userInput is DefaultInputs.RightMouseDown mouseDownInput)
+        if (userInput is UserInputs.RightMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
@@ -23,7 +23,7 @@ public class RightClickDragZoom : IUserInputResponse
         if (MouseDownPixel == Pixel.NaN)
             return UserInputResponseResult.NoActionTaken;
 
-        if (userInput is DefaultInputs.MouseMove mouseMoveInput)
+        if (userInput is UserInputs.MouseMove mouseMoveInput)
         {
             RememberedLimits?.Apply(plot);
             plot.Axes.Zoom(MouseDownPixel, mouseMoveInput.Pixel);
@@ -35,7 +35,7 @@ public class RightClickDragZoom : IUserInputResponse
             };
         }
 
-        if (userInput is DefaultInputs.RightMouseUp mouseUpInput)
+        if (userInput is UserInputs.RightMouseUp mouseUpInput)
         {
             RememberedLimits?.Apply(plot);
             plot.Axes.Zoom(MouseDownPixel, mouseUpInput.Pixel);

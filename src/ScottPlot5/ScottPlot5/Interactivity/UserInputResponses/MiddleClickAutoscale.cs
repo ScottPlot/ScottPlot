@@ -6,7 +6,7 @@ public class MiddleClickAutoscale : IUserInputResponse
 
     public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
-        if (userInput is DefaultInputs.MiddleMouseDown mouseDownInput)
+        if (userInput is UserInputs.MiddleMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             return new UserInputResponseResult()
@@ -18,7 +18,7 @@ public class MiddleClickAutoscale : IUserInputResponse
         if (MouseDownPixel == Pixel.NaN)
             return UserInputResponseResult.NoActionTaken;
 
-        if (userInput is DefaultInputs.MiddleMouseUp mouseUpInput)
+        if (userInput is UserInputs.MiddleMouseUp mouseUpInput)
         {
             double dX = Math.Abs(MouseDownPixel.X - mouseUpInput.Pixel.X);
             double dY = Math.Abs(MouseDownPixel.Y - mouseUpInput.Pixel.Y);

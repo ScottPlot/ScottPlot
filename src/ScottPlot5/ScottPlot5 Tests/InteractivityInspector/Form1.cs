@@ -23,7 +23,7 @@ public partial class Form1 : Form
         formsPlot1.MouseMove += (s, e) =>
         {
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
-            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.MouseMove(mousePixel);
+            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.MouseMove(mousePixel);
             ProcessInput(userInput);
         };
 
@@ -32,9 +32,9 @@ public partial class Form1 : Form
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
             IUserInput? userInput = e.Button switch
             {
-                MouseButtons.Left => new ScottPlot.Interactivity.DefaultInputs.LeftMouseDown(mousePixel),
-                MouseButtons.Right => new ScottPlot.Interactivity.DefaultInputs.RightMouseDown(mousePixel),
-                MouseButtons.Middle => new ScottPlot.Interactivity.DefaultInputs.MiddleMouseDown(mousePixel),
+                MouseButtons.Left => new ScottPlot.Interactivity.UserInputs.LeftMouseDown(mousePixel),
+                MouseButtons.Right => new ScottPlot.Interactivity.UserInputs.RightMouseDown(mousePixel),
+                MouseButtons.Middle => new ScottPlot.Interactivity.UserInputs.MiddleMouseDown(mousePixel),
                 _ => null,
             };
             ProcessInput(userInput);
@@ -45,9 +45,9 @@ public partial class Form1 : Form
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
             IUserInput? userInput = e.Button switch
             {
-                MouseButtons.Left => new ScottPlot.Interactivity.DefaultInputs.LeftMouseUp(mousePixel),
-                MouseButtons.Right => new ScottPlot.Interactivity.DefaultInputs.RightMouseUp(mousePixel),
-                MouseButtons.Middle => new ScottPlot.Interactivity.DefaultInputs.MiddleMouseUp(mousePixel),
+                MouseButtons.Left => new ScottPlot.Interactivity.UserInputs.LeftMouseUp(mousePixel),
+                MouseButtons.Right => new ScottPlot.Interactivity.UserInputs.RightMouseUp(mousePixel),
+                MouseButtons.Middle => new ScottPlot.Interactivity.UserInputs.MiddleMouseUp(mousePixel),
                 _ => null,
             };
             ProcessInput(userInput);
@@ -58,8 +58,8 @@ public partial class Form1 : Form
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
 
             IUserInput userInput = e.Delta > 0
-                ? new ScottPlot.Interactivity.DefaultInputs.MouseWheelUp(mousePixel)
-                : new ScottPlot.Interactivity.DefaultInputs.MouseWheelDown(mousePixel);
+                ? new ScottPlot.Interactivity.UserInputs.MouseWheelUp(mousePixel)
+                : new ScottPlot.Interactivity.UserInputs.MouseWheelDown(mousePixel);
 
             ProcessInput(userInput);
         };
@@ -67,14 +67,14 @@ public partial class Form1 : Form
         formsPlot1.KeyDown += (s, e) =>
         {
             IKey key = GetKey(e.KeyCode);
-            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.KeyDown(key);
+            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
             ProcessInput(userInput);
         };
 
         formsPlot1.KeyUp += (s, e) =>
         {
             IKey key = GetKey(e.KeyCode);
-            IUserInput userInput = new ScottPlot.Interactivity.DefaultInputs.KeyUp(key);
+            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyUp(key);
             ProcessInput(userInput);
         };
     }
