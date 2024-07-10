@@ -16,7 +16,7 @@ public class RightClickDragZoom : IUserInputResponse
             return new UserInputResponseResult()
             {
                 Summary = $"right click drag zoom STARTED",
-                IsPrimaryResponse = true,
+                IsPrimaryDragResponse = true,
             };
         }
 
@@ -31,7 +31,7 @@ public class RightClickDragZoom : IUserInputResponse
             {
                 Summary = $"right click drag zoom in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}",
                 RefreshRequired = true,
-                IsPrimaryResponse = true,
+                IsPrimaryDragResponse = true,
             };
         }
 
@@ -50,7 +50,7 @@ public class RightClickDragZoom : IUserInputResponse
         return new UserInputResponseResult()
         {
             Summary = $"right click drag zoom ignored {userInput}",
-            IsPrimaryResponse = true,
+            IsPrimaryDragResponse = true,
         };
     }
 

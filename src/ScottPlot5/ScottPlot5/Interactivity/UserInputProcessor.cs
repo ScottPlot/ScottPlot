@@ -86,7 +86,7 @@ public class UserInputProcessor(Plot plot)
         {
             UserInputResponseResult result = response.Execute(Plot, userInput, KeyState);
             results.Add(result);
-            PrimaryResponse = result.IsPrimaryResponse ? response : null;
+            PrimaryResponse = result.IsPrimaryDragResponse ? response : null;
             if (PrimaryResponse is not null)
                 break;
         }

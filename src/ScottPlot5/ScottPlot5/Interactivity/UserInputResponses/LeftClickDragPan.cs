@@ -9,7 +9,7 @@ public class LeftClickDragPan : IUserInputResponse
 
     public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
     {
-        if (userInput is UserInputs.LeftMouseDown mouseDownInput)
+        if (userInput is UserInputs.LeftMouseDown mouseDownInput && !keys.IsPressed(StandardKeys.Alt))
         {
             MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
@@ -17,7 +17,6 @@ public class LeftClickDragPan : IUserInputResponse
             return new UserInputResponseResult()
             {
                 Summary = $"left click drag pan STARTED",
-                IsPrimaryResponse = true,
             };
         }
 
@@ -34,7 +33,7 @@ public class LeftClickDragPan : IUserInputResponse
             return new UserInputResponseResult()
             {
                 Summary = $"left click drag pan in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}",
-                IsPrimaryResponse = true,
+                IsPrimaryDragResponse = true,
                 RefreshRequired = true,
             };
         }
@@ -54,7 +53,7 @@ public class LeftClickDragPan : IUserInputResponse
         return new UserInputResponseResult()
         {
             Summary = $"left click drag pan ignored {userInput}",
-            IsPrimaryResponse = true,
+            IsPrimaryDragResponse = true,
         };
     }
 

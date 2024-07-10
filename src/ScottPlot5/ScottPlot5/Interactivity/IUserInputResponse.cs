@@ -11,4 +11,9 @@ public interface IUserInputResponse
     /// a result indicating what happened.
     /// </summary>
     UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys);
+
+    /// <summary>
+    /// Indicates whether this action can take over during drag events to become the primary drag processor
+    /// </summary>
+    //public bool RespondsToDrag { get; }
 }

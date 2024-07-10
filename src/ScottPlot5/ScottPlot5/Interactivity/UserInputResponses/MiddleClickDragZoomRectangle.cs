@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Interactivity.UserInputResponses;
+﻿using ScottPlot.Interactivity.UserInputs;
+
+namespace ScottPlot.Interactivity.UserInputResponses;
 
 public class MiddleClickDragZoomRectangle : IUserInputResponse
 {
@@ -11,7 +13,16 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             MouseDownPixel = mouseDownInput.Pixel;
             return new UserInputResponseResult()
             {
-                Summary = $"middle click zoom rectangle STARTED at {MouseDownPixel}",
+                Summary = $"middle-click-drag zoom rectangle STARTED at {MouseDownPixel}",
+            };
+        }
+
+        if (userInput is UserInputs.LeftMouseDown leftMouseDownInput && keys.IsPressed(StandardKeys.Alt))
+        {
+            MouseDownPixel = leftMouseDownInput.Pixel;
+            return new UserInputResponseResult()
+            {
+                Summary = $"ALT + left-click-drag zoom rectangle STARTED at {MouseDownPixel}",
             };
         }
 
@@ -31,7 +42,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
                 plot.ZoomRectangle.IsVisible = false;
                 return new UserInputResponseResult()
                 {
-                    Summary = $"middle click zoom rectangle IGNORED because drag distance was too small ({dragDistance:N2} px)",
+                    Summary = $"middle-click-drag zoom rectangle IGNORED because drag distance was too small ({dragDistance:N2} px)",
                 };
             }
 
@@ -43,13 +54,13 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
 
             return new UserInputResponseResult()
             {
-                Summary = $"middle click zoom rectangle UPDATED",
+                Summary = $"middle-click-drag zoom rectangle UPDATED",
                 RefreshRequired = true,
-                IsPrimaryResponse = true,
+                IsPrimaryDragResponse = true,
             };
         }
 
-        if (userInput is UserInputs.MiddleMouseUp)
+        if (userInput is MiddleMouseUp || userInput is LeftMouseUp)
         {
             MouseDownPixel = Pixel.NaN;
             if (plot.ZoomRectangle.IsVisible)
@@ -61,17 +72,17 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
 
                 return new UserInputResponseResult()
                 {
-                    Summary = $"middle click zoom rectangle APPLIED",
+                    Summary = $"middle-click-drag zoom rectangle APPLIED",
                     RefreshRequired = true,
-                    IsPrimaryResponse = false,
+                    IsPrimaryDragResponse = false,
                 };
             }
         }
 
         return new UserInputResponseResult()
         {
-            Summary = $"middle click zoom rectangle ignored {userInput}",
-            IsPrimaryResponse = plot.ZoomRectangle.IsVisible,
+            Summary = $"middle-click-drag zoom rectangle ignored {userInput}",
+            IsPrimaryDragResponse = plot.ZoomRectangle.IsVisible,
         };
     }
 }
