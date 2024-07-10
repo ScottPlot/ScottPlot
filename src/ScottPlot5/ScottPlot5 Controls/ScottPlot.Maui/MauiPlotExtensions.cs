@@ -26,39 +26,4 @@ internal static class MauiPlotExtensions
     {
         return new Point(p.X, p.Y);
     }
-
-    internal static Control.MouseButton ToButton(this TappedEventArgs e, MauiPlot plot)
-    {
-        var props = e.GetPosition(plot);
-        switch (e.Buttons)
-        {
-            case ButtonsMask.Primary:
-                return Control.MouseButton.Left;
-            case ButtonsMask.Secondary:
-                return Control.MouseButton.Right;
-            default:
-                return Control.MouseButton.Unknown;
-        }
-    }
-
-    /*internal static Control.Key Key(this KeyRoutedEventArgs e)
-    {
-        return e.Key switch
-        {
-            VirtualKey.Control => Control.Key.Ctrl,
-            VirtualKey.LeftControl => Control.Key.Ctrl,
-            VirtualKey.RightControl => Control.Key.Ctrl,
-
-            VirtualKey.Menu => Control.Key.Alt,
-            VirtualKey.LeftMenu => Control.Key.Alt,
-            VirtualKey.RightMenu => Control.Key.Alt,
-
-            VirtualKey.Shift => Control.Key.Shift,
-            VirtualKey.LeftShift => Control.Key.Shift,
-            VirtualKey.RightShift => Control.Key.Shift,
-
-            _ => Control.Key.Unknown,
-        };
-    }*/
 }
-

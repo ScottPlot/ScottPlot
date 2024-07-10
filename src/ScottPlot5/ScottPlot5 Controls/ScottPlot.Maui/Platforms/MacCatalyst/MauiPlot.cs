@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Maui;
+﻿namespace ScottPlot.Maui.Apple;
 
 // All the code in this file is only included on Mac Catalyst.
-public class PlatformClass1
+internal class MauiPlot : View
 {
 }
