@@ -16,7 +16,10 @@ public class Spoke(double angle, double length, LineStyle? lineStyle = null) :
     /// </summary>
     public double Length { get; set; } = length;
 
-    public LineStyle LineStyle { get; set; } = lineStyle ?? new();
+    public LineStyle LineStyle { get; set; } = lineStyle ?? lineStyle ?? new()
+    {
+        Width = 1.0F
+    };
 
     public float LineWidth
     {

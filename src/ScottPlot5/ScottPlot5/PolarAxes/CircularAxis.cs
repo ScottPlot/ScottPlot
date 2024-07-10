@@ -4,11 +4,6 @@ public class CircularAxis : ICircularAxis
 {
     public CircularAxisLine[] AxisLines { get; }
 
-    public LineStyle AxisStyle { get; set; } = new LineStyle()
-    {
-        Width = 1,
-    };
-
     /// <summary>
     /// Generate circular axes form list
     /// </summary>
@@ -41,8 +36,6 @@ public class CircularAxis : ICircularAxis
         }
 
         var paint = new SKPaint();
-        AxisStyle.ApplyToPaint(paint);
-
         using SKAutoCanvasRestore _ = new(rp.Canvas);
 
         Pixel origin = axes.GetPixel(Coordinates.Origin);
@@ -55,7 +48,7 @@ public class CircularAxis : ICircularAxis
             Drawing.DrawOval(
                 rp.Canvas,
                 paint,
-                AxisStyle,
+                axisLine.LineStyle,
                 new PixelRect(-pixelX, pixelX, pixelY, -pixelY));
         }
     }

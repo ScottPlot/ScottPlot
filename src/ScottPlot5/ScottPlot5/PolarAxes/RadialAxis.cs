@@ -47,7 +47,7 @@ public class RadialAxis : IRadialAxis
 
         PolarCoordinates polar = spoke.GetPolarCoordinates();
         Pixel pixel = axes.GetPixel(polar) - axes.GetPixel(Coordinates.Origin);
-        rp.Canvas.DrawLine(0, 0, pixel.X, pixel.Y, paint);
+        Drawing.DrawLine(rp.Canvas, paint, new(0, 0), pixel, spoke.LineStyle);
 
         var labelStyle = new LabelStyle
         {

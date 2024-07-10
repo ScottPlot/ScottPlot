@@ -11,7 +11,10 @@ public class CircularAxisLine(double value, LineStyle? lineStyle = null) :
     /// </summary>
     public double Value { get; set; } = value;
 
-    public LineStyle LineStyle { get; set; } = lineStyle ?? new();
+    public LineStyle LineStyle { get; set; } = lineStyle ?? new()
+    {
+        Width = 1.0F
+    };
 
     public float LineWidth
     {
