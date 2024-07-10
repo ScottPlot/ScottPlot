@@ -5,11 +5,14 @@
 /// Custom user inputs may be supplied, and the list of responses can be 
 /// modified to achieve extreme control over interaction behavior.
 /// </summary>
-public class UserInputProcessor(Plot plot)
+public class UserInputProcessor
 {
-    private readonly Plot Plot = plot;
+    private readonly Plot Plot;
 
-    private readonly KeyState KeyState = new();
+    /// <summary>
+    /// Tracks which keys are currently pressed
+    /// </summary>
+    public readonly KeyState KeyState;
 
     /// <summary>
     /// Controls whether new events are processed
@@ -21,7 +24,14 @@ public class UserInputProcessor(Plot plot)
     /// Users may manipulate this list to change the default behavior and
     /// add custom behaviors.
     /// </summary>
-    public List<IUserInputResponse> UserInputResponses = new(DefaultUserInputResponses);
+    public readonly List<IUserInputResponse> UserInputResponses = [];
+
+    public UserInputProcessor(Plot plot)
+    {
+        Plot = plot;
+        KeyState = new();
+        Reset();
+    }
 
     /// <summary>
     /// Remove all user input responses of the specified type
@@ -38,10 +48,10 @@ public class UserInputProcessor(Plot plot)
     public void Reset()
     {
         UserInputResponses.Clear();
-        UserInputResponses.AddRange(DefaultUserInputResponses);
+        UserInputResponses.AddRange(DefaultUserResponses());
     }
 
-    private static readonly IUserInputResponse[] DefaultUserInputResponses =
+    public static List<IUserInputResponse> DefaultUserResponses() =>
     [
         new UserInputResponses.LeftClickDragPan(),
         new UserInputResponses.RightClickDragZoom(),
