@@ -53,7 +53,7 @@ public class RadialAxis : IRadialAxis
         {
             Text = $"{spoke.Angle}"
         };
-        var labPolar = new PolarCoordinates(polar.Radial * LabelDistance, polar.Angular);
+        var labPolar = new PolarCoordinates(polar.Radial * LabelDistance, polar.Angle);
         Pixel labelPixel = axes.GetPixel(labPolar) - axes.GetPixel(Coordinates.Origin);
         PixelRect labelRect = labelStyle.Measure().Rect(Alignment.MiddleCenter);
         Pixel labelOffset = labelRect.Center - labelRect.TopLeft;
