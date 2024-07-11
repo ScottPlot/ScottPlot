@@ -23,16 +23,18 @@ public class Polar :
 
     public override IRadialAxis RadialAxis { get; }
     public override ICircularAxis CircularAxis { get; }
-    public IReadOnlyList<PolarCoordinates> Data { get; }
+    public IReadOnlyList<PolarCoordinates> DataPoints { get; }
 
-    public Polar(IEnumerable<PolarCoordinates> data)
+    public Polar(IEnumerable<PolarCoordinates> dataPoints)
     {
-        Data = data.ToArray();
+        DataPoints = (dataPoints is null)
+            ? []
+            : [.. dataPoints.OrderBy(i => Angle.NormalizeDegrees(i.Angle))];
 
         double maxRadius = 1.0;
-        if (Data.Count > 0)
+        if (DataPoints.Count > 0)
         {
-            maxRadius = Data.Max(i => i.Radial);
+            maxRadius = DataPoints.Max(i => i.Radial);
         }
 
         RadialAxis = new PolarAxes.RadialAxis(maxRadius);
@@ -43,12 +45,12 @@ public class Polar :
     public override AxisLimits GetAxisLimits()
     {
         AxisLimits limit = base.GetAxisLimits();
-        if (Data.Count < 1)
+        if (DataPoints.Count < 1)
         {
             return limit;
         }
 
-        IEnumerable<Coordinates> pts = Data.Select(i => (Coordinates)i);
+        IEnumerable<Coordinates> pts = DataPoints.Select(i => (Coordinates)i);
         return new AxisLimits(
             Math.Min(pts.Min(i => i.X), limit.Left),
             Math.Max(pts.Max(i => i.X), limit.Right),
@@ -60,7 +62,7 @@ public class Polar :
     {
         base.Render(rp);
 
-        if (Data.Count < 1)
+        if (DataPoints.Count < 1)
         {
             return;
         }
@@ -71,10 +73,10 @@ public class Polar :
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
 
-        var markerPixels = new Pixel[Data.Count];
-        for (int i = 0; i < Data.Count; i++)
+        var markerPixels = new Pixel[DataPoints.Count];
+        for (int i = 0; i < DataPoints.Count; i++)
         {
-            markerPixels[i] = Axes.GetPixel(Data[i]) - origin;
+            markerPixels[i] = Axes.GetPixel(DataPoints[i]) - origin;
         }
 
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
