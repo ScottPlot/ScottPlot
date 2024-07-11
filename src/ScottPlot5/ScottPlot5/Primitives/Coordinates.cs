@@ -17,8 +17,8 @@ public struct Coordinates : IEquatable<Coordinates>
     }
 
     public Coordinates(PolarCoordinates polar) :
-        this(polar.Radial * Math.Cos(Angle.ToRadians(polar.Angular)),
-             polar.Radial * Math.Sin(Angle.ToRadians(polar.Angular)))
+        this(polar.Radial * Math.Cos(Angle.ToRadians(polar.Angle)),
+             polar.Radial * Math.Sin(Angle.ToRadians(polar.Angle)))
     {
     }
 

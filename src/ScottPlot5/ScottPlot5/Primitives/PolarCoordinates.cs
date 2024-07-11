@@ -1,33 +1,51 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// Represents a point in polar coordinate space (Radial and Angular axis units)
+/// Represents a point in polar coordinate space (r, θ)
 /// </summary>
-public struct PolarCoordinates(double radial, double angular) :
+public struct PolarCoordinates(double radius, double angle) :
     IEquatable<PolarCoordinates>
 {
     /// <summary>
     /// Radial coordinate
     /// </summary>
-    public double Radial { get; set; } = radial;
+    public double Radius { get; set; } = radius;
+
+    /// <summary>
+    /// Radial coordinate
+    /// </summary>
+    public double Radial
+    {
+        readonly get => Radius;
+        set => Radius = value;
+    }
 
     /// <summary>
     /// Angular coordinate (degrees)
     /// </summary>
-    public double Angular { get; set; } = angular;
+    public double Angle { get; set; } = angle;
+
+    /// <summary>
+    /// Angular coordinate (degrees)
+    /// </summary>
+    public double Theta
+    {
+        readonly get => Angle;
+        set => Angle = value;
+    }
 
     public readonly bool AreReal
-        => NumericConversion.IsReal(Radial) && NumericConversion.IsReal(Angular);
+        => NumericConversion.IsReal(Radial) && NumericConversion.IsReal(Angle);
 
     public PolarCoordinates(Coordinates coordinates) :
         this(coordinates.Distance(Coordinates.Origin),
-             Angle.ToDegrees(Math.Atan2(coordinates.Y, coordinates.X)))
+             ScottPlot.Angle.ToDegrees(Math.Atan2(coordinates.Y, coordinates.X)))
     {
     }
 
     public override readonly string ToString()
     {
-        return $"PolarCoordinates {{ Radial = {Radial}, Angular = {Angular} }}";
+        return $"PolarCoordinates {{ Radial = {Radial}, Angular = {Angle} }}";
     }
 
     public static PolarCoordinates NaN
@@ -41,7 +59,7 @@ public struct PolarCoordinates(double radial, double angular) :
 
     public readonly bool Equals(PolarCoordinates other)
     {
-        return Equals(Radial, other.Radial) && Equals(Angular, other.Angular);
+        return Equals(Radial, other.Radial) && Equals(Angle, other.Angle);
     }
 
     public override readonly bool Equals(object? obj)
@@ -67,7 +85,7 @@ public struct PolarCoordinates(double radial, double angular) :
 
     public override readonly int GetHashCode()
     {
-        return Radial.GetHashCode() ^ Angular.GetHashCode();
+        return Radial.GetHashCode() ^ Angle.GetHashCode();
     }
 
     public static implicit operator PolarCoordinates(Coordinates coordinates)
