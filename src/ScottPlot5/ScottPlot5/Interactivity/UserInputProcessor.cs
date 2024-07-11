@@ -61,6 +61,7 @@ public class UserInputProcessor
         // click events
         new UserInputResponses.ScrollWheelZoom(),
         new UserInputResponses.MiddleClickAutoscale(),
+        new UserInputResponses.RightClickContextMenu(),
     ];
 
     /// <summary>

@@ -16,7 +16,7 @@ public class RightClickDragZoom : IUserInputResponse
             return new UserInputResponseResult()
             {
                 Summary = $"right click drag zoom STARTED",
-                IsPrimaryResponse = true,
+                IsPrimaryResponse = false,
             };
         }
 
