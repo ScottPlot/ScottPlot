@@ -22,15 +22,14 @@ public class MiddleClickAutoscale : IUserInputResponse
         {
             double dX = Math.Abs(MouseDownPixel.X - mouseUpInput.Pixel.X);
             double dY = Math.Abs(MouseDownPixel.Y - mouseUpInput.Pixel.Y);
-            double dragDistance = Math.Sqrt(dX * dX + dY * dY);
 
             MouseDownPixel = Pixel.NaN;
 
-            if (dragDistance > 5)
+            if (dX > 5 || dY > 5)
             {
                 return new UserInputResponseResult()
                 {
-                    Summary = $"middle click AutoScale ABORTED because drag distance was large ({dragDistance:N2} px)",
+                    Summary = $"middle click AutoScale ABORTED because drag distance was large",
                 };
             }
 

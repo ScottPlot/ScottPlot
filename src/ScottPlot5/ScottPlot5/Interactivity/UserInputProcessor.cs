@@ -53,29 +53,44 @@ public class UserInputProcessor
 
     public static List<IUserInputResponse> DefaultUserResponses() =>
     [
+        // drag events
+        new UserInputResponses.MiddleClickDragZoomRectangle(),
         new UserInputResponses.LeftClickDragPan(),
         new UserInputResponses.RightClickDragZoom(),
+
+        // click events
         new UserInputResponses.ScrollWheelZoom(),
         new UserInputResponses.MiddleClickAutoscale(),
-        new UserInputResponses.MiddleClickDragZoomRectangle(),
     ];
 
     /// <summary>
-    /// If defined, this is the only action which will process new events.
+    /// When defined, this response is the only one that gets processed
+    /// until it returns a result indicating it is no longer the primary response.
     /// </summary>
-    private IUserInputResponse? PrimaryResponse = null;
+    IUserInputResponse? PrimaryResponse = null;
 
     /// <summary>
     /// Process a user input and return results of the responses that engaged with it
     /// </summary>
-    public UserInputResponseResult[] Process(IUserInput userInput)
+    public IReadOnlyList<UserInputResponseResult> Process(IUserInput userInput)
     {
         if (!IsEnabled)
-        {
-            PrimaryResponse = null;
             return [];
+
+        UpdateKeyboardState(userInput);
+
+        var responseResults = ExecuteUserInputResponses(userInput);
+
+        if (responseResults.Where(x => x.RefreshRequired).Any())
+        {
+            Plot.PlotControl?.Refresh();
         }
 
+        return responseResults;
+    }
+
+    private void UpdateKeyboardState(IUserInput userInput)
+    {
         if (userInput is UserInputs.KeyDown keyDown)
         {
             KeyState.Add(keyDown.Key);
@@ -85,25 +100,33 @@ public class UserInputProcessor
         {
             KeyState.Remove(keyUp.Key);
         }
+    }
 
+    private IReadOnlyList<UserInputResponseResult> ExecuteUserInputResponses(IUserInput userInput)
+    {
         List<UserInputResponseResult> results = [];
 
-        List<IUserInputResponse> responsesToProcess = PrimaryResponse is null
-            ? UserInputResponses
-            : [PrimaryResponse];
-
-        foreach (IUserInputResponse response in responsesToProcess)
+        foreach (IUserInputResponse response in UserInputResponses)
         {
+            if (PrimaryResponse is not null && PrimaryResponse != response)
+            {
+                continue;
+            }
+
             UserInputResponseResult result = response.Execute(Plot, userInput, KeyState);
             results.Add(result);
-            PrimaryResponse = result.IsPrimaryDragResponse ? response : null;
-            if (PrimaryResponse is not null)
-                break;
+
+            if (PrimaryResponse is null && result.IsPrimaryResponse)
+            {
+                PrimaryResponse = response;
+            }
+
+            if (PrimaryResponse == response && !result.IsPrimaryResponse)
+            {
+                PrimaryResponse = null;
+            }
         }
 
-        if (results.Where(x => x.RefreshRequired).Any())
-            Plot.PlotControl?.Refresh();
-
-        return results.Where(x => !string.IsNullOrEmpty(x.Summary)).ToArray();
+        return results;
     }
 }

@@ -7,23 +7,24 @@ public readonly record struct UserInputResponseResult
     /// Used only for testing and debugging.
     /// Null indicates no action was taken.
     /// </summary>
-    public string Summary { get; init; } // TODO: remove this property
+    public string? Summary { get; init; } // TODO: remove this property
 
     /// <summary>
-    /// Set this to request a render after all responses are processed
+    /// Request a render after all responses have finished executing
     /// </summary>
     public bool RefreshRequired { get; init; }
 
     /// <summary>
-    /// Enable this to prevent all other drag responses from being processed
+    /// If true, all other responses will not be executed until the response
+    /// that returned this result returns a new result with this flag false.
     /// </summary>
-    public bool IsPrimaryDragResponse { get; init; }
+    public bool IsPrimaryResponse { get; init; }
 
     public override string ToString()
     {
         string message = Summary ?? "NO ACTION";
         if (RefreshRequired) message += " [REFRESH]";
-        if (IsPrimaryDragResponse) message += " [PRIMARY]";
+        if (IsPrimaryResponse) message += " [PRIMARY]";
         return message;
     }
 

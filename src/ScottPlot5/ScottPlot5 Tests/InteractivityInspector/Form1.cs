@@ -119,10 +119,13 @@ public partial class Form1 : Form
         if (userInput is null)
             return;
 
-        UserInputResponseResult[] results = UserInputProcessor.Process(userInput);
+        var results = UserInputProcessor.Process(userInput);
 
         foreach (UserInputResponseResult result in results)
         {
+            if (result.Summary is null)
+                continue;
+
             if (result.Summary.StartsWith("left click drag pan in progress")) continue;
             if (result.Summary.StartsWith("right click drag zoom in progress")) continue;
             if (result.Summary.StartsWith("left click drag pan ignored KeyDown")) continue;
