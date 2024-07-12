@@ -27,6 +27,19 @@ public class LeftClickDragPan : IUserInputResponse
 
         if (userInput is UserInputs.MouseMove mouseMoveInput)
         {
+            double dX = mouseMoveInput.Pixel.X - MouseDownPixel.X;
+            double dY = mouseMoveInput.Pixel.Y - MouseDownPixel.Y;
+            double maxDragDistance = Math.Max(dX, dY);
+            if (maxDragDistance < 5)
+            {
+                return new UserInputResponseResult()
+                {
+                    Summary = $"left click drag pan only moved {maxDragDistance} pixels so not taking over",
+                    IsPrimaryResponse = false,
+                    RefreshRequired = false,
+                };
+            }
+
             RememberedLimits.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
 
