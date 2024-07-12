@@ -595,14 +595,27 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public Polar Polar(IEnumerable<PolarCoordinates> pts, Color? color = null)
+    public Polar Polar(IEnumerable<PolarCoordinates> polarCoordinates, Color? color = null)
     {
-        var polar = new Polar(pts)
+        var polar = new Polar(polarCoordinates)
         {
             MarkerColor = color ?? GetNextColor(),
         };
         Plot.PlottableList.Add(polar);
         return polar;
+    }
+
+    public Polar Polar(double radius, double angle, Color? color = null)
+    {
+        return Polar([new PolarCoordinates(radius, angle)], color);
+    }
+
+    public Polar Polar(IEnumerable<double> radii, IEnumerable<double> angles, Color? color = null)
+    {
+        var pts = Enumerable
+            .Range(0, Math.Min(radii.Count(), angles.Count()))
+            .Select(i => new PolarCoordinates(radii.ElementAt(i), angles.ElementAt(i)));
+        return Polar(pts, color);
     }
 
     public Polygon Polygon(Coordinates[] coordinates)
