@@ -1,22 +1,22 @@
 ﻿namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class MiddleClickAutoscale : IUserInputResponse
+public class MiddleClickAutoscale : IPlotResponse
 {
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is UserInputs.MiddleMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"middle click AutoScale STARTED at {MouseDownPixel}",
             };
         }
 
         if (MouseDownPixel == Pixel.NaN)
-            return UserInputResponseResult.NoActionTaken;
+            return PlotResponseResult.NoActionTaken;
 
         if (userInput is UserInputs.MiddleMouseUp mouseUpInput)
         {
@@ -27,21 +27,21 @@ public class MiddleClickAutoscale : IUserInputResponse
 
             if (dX > 5 || dY > 5)
             {
-                return new UserInputResponseResult()
+                return new PlotResponseResult()
                 {
                     Summary = $"middle click AutoScale ABORTED because drag distance was large",
                 };
             }
 
             plot.Axes.AutoScale();
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"middle click AutoScale APPLIED",
                 RefreshRequired = true,
             };
         }
 
-        return UserInputResponseResult.NoActionTaken;
+        return PlotResponseResult.NoActionTaken;
     }
 }
 

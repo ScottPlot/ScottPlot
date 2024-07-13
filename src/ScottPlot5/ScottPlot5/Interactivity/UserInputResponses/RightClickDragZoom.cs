@@ -1,19 +1,19 @@
 ﻿namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class RightClickDragZoom : IUserInputResponse
+public class RightClickDragZoom : IPlotResponse
 {
     private Pixel MouseDownPixel = Pixel.NaN;
 
     // TODO: re-implement this being more careful about allocations
     private Control.MultiAxisLimitManager? RememberedLimits = null;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is UserInputs.RightMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"right click drag zoom STARTED",
                 IsPrimaryResponse = false,
@@ -21,13 +21,13 @@ public class RightClickDragZoom : IUserInputResponse
         }
 
         if (MouseDownPixel == Pixel.NaN)
-            return UserInputResponseResult.NoActionTaken;
+            return PlotResponseResult.NoActionTaken;
 
         if (userInput is UserInputs.MouseMove mouseMoveInput)
         {
             RememberedLimits?.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"right click drag zoom in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}",
                 RefreshRequired = true,
@@ -40,14 +40,14 @@ public class RightClickDragZoom : IUserInputResponse
             RememberedLimits?.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseUpInput.Pixel, keys);
             MouseDownPixel = Pixel.NaN;
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"right click drag zoom COMPLETED",
                 RefreshRequired = true,
             };
         }
 
-        return new UserInputResponseResult()
+        return new PlotResponseResult()
         {
             Summary = $"right click drag zoom ignored {userInput}",
             IsPrimaryResponse = true,

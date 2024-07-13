@@ -23,14 +23,14 @@ public partial class Form1 : Form
         formsPlot1.MouseMove += (s, e) =>
         {
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
-            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.MouseMove(mousePixel);
+            IUserAction userInput = new ScottPlot.Interactivity.UserInputs.MouseMove(mousePixel);
             ProcessInput(userInput);
         };
 
         formsPlot1.MouseDown += (s, e) =>
         {
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
-            IUserInput? userInput = e.Button switch
+            IUserAction? userInput = e.Button switch
             {
                 MouseButtons.Left => new ScottPlot.Interactivity.UserInputs.LeftMouseDown(mousePixel),
                 MouseButtons.Right => new ScottPlot.Interactivity.UserInputs.RightMouseDown(mousePixel),
@@ -43,7 +43,7 @@ public partial class Form1 : Form
         formsPlot1.MouseUp += (s, e) =>
         {
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
-            IUserInput? userInput = e.Button switch
+            IUserAction? userInput = e.Button switch
             {
                 MouseButtons.Left => new ScottPlot.Interactivity.UserInputs.LeftMouseUp(mousePixel),
                 MouseButtons.Right => new ScottPlot.Interactivity.UserInputs.RightMouseUp(mousePixel),
@@ -57,7 +57,7 @@ public partial class Form1 : Form
         {
             ScottPlot.Pixel mousePixel = new(e.X, e.Y);
 
-            IUserInput userInput = e.Delta > 0
+            IUserAction userInput = e.Delta > 0
                 ? new ScottPlot.Interactivity.UserInputs.MouseWheelUp(mousePixel)
                 : new ScottPlot.Interactivity.UserInputs.MouseWheelDown(mousePixel);
 
@@ -66,25 +66,25 @@ public partial class Form1 : Form
 
         formsPlot1.KeyDown += (s, e) =>
         {
-            IKey key = GetKeyCode(e.KeyCode);
-            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
+            Key key = GetKeyCode(e.KeyCode);
+            IUserAction userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
             ProcessInput(userInput);
         };
 
         formsPlot1.KeyUp += (s, e) =>
         {
-            IKey key = GetKeyCode(e.KeyCode);
-            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyUp(key);
+            Key key = GetKeyCode(e.KeyCode);
+            IUserAction userInput = new ScottPlot.Interactivity.UserInputs.KeyUp(key);
             ProcessInput(userInput);
         };
     }
 
-    private IKey GetKeyCode(Keys keyCode)
+    private Key GetKeyCode(Keys keyCode)
     {
         // strip modifiers
         keyCode = keyCode & ~Keys.Modifiers;
 
-        IKey? key = keyCode switch
+        Key key = keyCode switch
         {
             Keys.Alt => StandardKeys.Alt,
             Keys.Menu => StandardKeys.Alt,
@@ -98,25 +98,16 @@ public partial class Form1 : Form
             Keys.Up => StandardKeys.Up,
             Keys.Left => StandardKeys.Left,
             Keys.Right => StandardKeys.Right,
-            _ => null,
+            _ => StandardKeys.Unknown,
         };
 
-        if (key is not null)
+        if (key != StandardKeys.Unknown)
             return key;
 
         string keyName = keyCode.ToString();
-        if (keyName.Length == 1)
-        {
-            return new ScottPlot.Interactivity.Keys.CharacterKey()
-            {
-                Character = keyName[0]
-            };
-        }
-
-        return new ScottPlot.Interactivity.Keys.CustomKey()
-        {
-            Name = $"Unknown key {keyName}",
-        };
+        return (keyName.Length == 1)
+            ? new Key(keyName)
+            : new Key($"Unknown modifier key {keyName}");
     }
 
     /// <summary>
@@ -124,10 +115,10 @@ public partial class Form1 : Form
     /// </summary>
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
-        IKey key = GetKeyCode(keyData);
+        Key key = GetKeyCode(keyData);
         if (StandardKeys.IsArrowKey(key))
         {
-            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
+            IUserAction userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
             ProcessInput(userInput);
             return true;
         }
@@ -135,14 +126,14 @@ public partial class Form1 : Form
         return base.ProcessCmdKey(ref msg, keyData);
     }
 
-    private void ProcessInput(IUserInput? userInput)
+    private void ProcessInput(IUserAction? userInput)
     {
         if (userInput is null)
             return;
 
         var results = UserInputProcessor.Process(userInput);
 
-        foreach (UserInputResponseResult result in results)
+        foreach (PlotResponseResult result in results)
         {
             if (result.Summary is null)
                 continue;

@@ -1,26 +1,26 @@
 ﻿namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class KeyboardPanAndZoom : IUserInputResponse
+public class KeyboardPanAndZoom : IPlotResponse
 {
-    public IKey PanLeftKey { get; set; } = StandardKeys.Left;
-    public IKey PanRightKey { get; set; } = StandardKeys.Right;
-    public IKey PanDownKey { get; set; } = StandardKeys.Down;
-    public IKey PanUpKey { get; set; } = StandardKeys.Up;
+    public Key PanLeftKey { get; set; } = StandardKeys.Left;
+    public Key PanRightKey { get; set; } = StandardKeys.Right;
+    public Key PanDownKey { get; set; } = StandardKeys.Down;
+    public Key PanUpKey { get; set; } = StandardKeys.Up;
 
     /// <summary>
     /// When this key is held, pan actions will zoom instead
     /// </summary>
-    public IKey ZoomModifierKey { get; set; } = StandardKeys.Control;
+    public Key ZoomModifierKey { get; set; } = StandardKeys.Control;
 
     /// <summary>
     /// When this key is held, panning will occur in larger steps
     /// </summary>
-    public IKey LargeStepKey { get; set; } = StandardKeys.Shift;
+    public Key LargeStepKey { get; set; } = StandardKeys.Shift;
 
     /// <summary>
     /// When this key is held, panning will occur in single pixel steps
     /// </summary>
-    public IKey FineStepKey { get; set; } = StandardKeys.Alt;
+    public Key FineStepKey { get; set; } = StandardKeys.Alt;
 
     public float StepDistance { get; set; } = 20;
     public float LargeStepDistance { get; set; } = 100;
@@ -29,7 +29,7 @@ public class KeyboardPanAndZoom : IUserInputResponse
     public double DeltaZoomIn { get; set; } = 0.85f;
     public double DeltaZoomOut { get; set; } = 1.15f;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is UserInputs.KeyDown keyDown)
         {
@@ -39,7 +39,7 @@ public class KeyboardPanAndZoom : IUserInputResponse
                 else if (keyDown.Key == PanRightKey) return ApplyZoom(plot, DeltaZoomOut, 1);
                 else if (keyDown.Key == PanDownKey) return ApplyZoom(plot, 1, DeltaZoomIn);
                 else if (keyDown.Key == PanUpKey) return ApplyZoom(plot, 1, DeltaZoomOut);
-                else return UserInputResponseResult.NoActionTaken;
+                else return PlotResponseResult.NoActionTaken;
             }
             else
             {
@@ -51,30 +51,30 @@ public class KeyboardPanAndZoom : IUserInputResponse
                 else if (keyDown.Key == PanRightKey) return ApplyPan(plot, delta, 0);
                 else if (keyDown.Key == PanDownKey) return ApplyPan(plot, 0, -delta);
                 else if (keyDown.Key == PanUpKey) return ApplyPan(plot, 0, delta);
-                else return UserInputResponseResult.NoActionTaken;
+                else return PlotResponseResult.NoActionTaken;
             }
         }
 
-        return UserInputResponseResult.NoActionTaken;
+        return PlotResponseResult.NoActionTaken;
     }
 
-    private UserInputResponseResult ApplyPan(Plot plot, float dX, float dY)
+    private PlotResponseResult ApplyPan(Plot plot, float dX, float dY)
     {
         PixelOffset pxOffset = new(dX, dY);
         plot.Axes.Pan(pxOffset);
 
-        return new UserInputResponseResult()
+        return new PlotResponseResult()
         {
             Summary = $"Applied pan X={dX}, y={dY}",
             RefreshRequired = true,
         };
     }
 
-    private UserInputResponseResult ApplyZoom(Plot plot, double dX, double dY)
+    private PlotResponseResult ApplyZoom(Plot plot, double dX, double dY)
     {
         plot.Axes.Zoom(dX, dY);
 
-        return new UserInputResponseResult()
+        return new PlotResponseResult()
         {
             Summary = $"Applied zoom X={dX}, y={dY}",
             RefreshRequired = true,

@@ -1,15 +1,15 @@
 ﻿namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class ScrollWheelZoom : IUserInputResponse
+public class ScrollWheelZoom : IPlotResponse
 {
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is UserInputs.MouseWheelUp mouseDownInput)
         {
             double xFrac = keys.IsPressed(StandardKeys.Shift) ? 1 : 1.15;
             double yFrac = keys.IsPressed(StandardKeys.Control) ? 1 : 1.15;
             plot.Axes.Zoom(mouseDownInput.Pixel, xFrac, yFrac);
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"scroll wheel zoom into {mouseDownInput.Pixel}",
                 RefreshRequired = true,
@@ -21,13 +21,13 @@ public class ScrollWheelZoom : IUserInputResponse
             double xFrac = keys.IsPressed(StandardKeys.Shift) ? 1 : 0.85;
             double yFrac = keys.IsPressed(StandardKeys.Control) ? 1 : 0.85;
             plot.Axes.Zoom(mouseUpInput.Pixel, xFrac, yFrac);
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"scroll wheel zoom away from {mouseUpInput.Pixel}",
                 RefreshRequired = true,
             };
         }
 
-        return UserInputResponseResult.NoActionTaken;
+        return PlotResponseResult.NoActionTaken;
     }
 }

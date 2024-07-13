@@ -2,22 +2,22 @@
 
 namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class RightClickContextMenu : IUserInputResponse
+public class RightClickContextMenu : IPlotResponse
 {
     Pixel MouseDownPixel = Pixel.NaN;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is RightMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
-            return UserInputResponseResult.NoActionTaken;
+            return PlotResponseResult.NoActionTaken;
         }
 
         if (userInput is RightMouseUp mouseUpInput)
         {
             if (double.IsNaN(MouseDownPixel.X))
-                return UserInputResponseResult.NoActionTaken;
+                return PlotResponseResult.NoActionTaken;
 
             // do not respond to right-click-drag
             double dX = Math.Abs(MouseDownPixel.X - mouseUpInput.Pixel.X);
@@ -26,19 +26,19 @@ public class RightClickContextMenu : IUserInputResponse
             if (rightClickDragDistance >= 5)
             {
                 MouseDownPixel = Pixel.NaN;
-                return UserInputResponseResult.NoActionTaken;
+                return PlotResponseResult.NoActionTaken;
             }
 
             plot.PlotControl?.ShowContextMenu(mouseUpInput.Pixel);
             MouseDownPixel = Pixel.NaN;
 
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = "right-click open context menu",
                 RefreshRequired = true,
             };
         }
 
-        return UserInputResponseResult.NoActionTaken;
+        return PlotResponseResult.NoActionTaken;
     }
 }

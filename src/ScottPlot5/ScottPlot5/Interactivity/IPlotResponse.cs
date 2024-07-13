@@ -4,11 +4,11 @@
 /// Describes a class that has logic to process incoming user inputs
 /// and manipulate the plot accordingly.
 /// </summary>
-public interface IUserInputResponse
+public interface IPlotResponse
 {
     /// <summary>
     /// Perform the given action on the specified plot and return
     /// a result indicating what happened.
     /// </summary>
-    UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys);
+    PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys);
 }

@@ -11,17 +11,17 @@ public class KeyState
 
     public int PressedKeyCount => PressedKeyNames.Count;
 
-    public void Add(IKey key)
+    public void Add(Key key)
     {
         PressedKeyNames.Add(key.Name);
     }
 
-    public void Remove(IKey key)
+    public void Remove(Key key)
     {
         PressedKeyNames.Remove(key.Name);
     }
 
-    public bool IsPressed(IKey key)
+    public bool IsPressed(Key key)
     {
         return IsPressed(key.Name);
     }

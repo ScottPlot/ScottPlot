@@ -1,20 +1,20 @@
 ﻿namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class LeftClickDragPan : IUserInputResponse
+public class LeftClickDragPan : IPlotResponse
 {
     private Pixel MouseDownPixel;
 
     // TODO: re-implement this being more careful about allocations
     private Control.MultiAxisLimitManager? RememberedLimits = null;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is UserInputs.LeftMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
 
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"left click drag pan STARTED",
             };
@@ -22,7 +22,7 @@ public class LeftClickDragPan : IUserInputResponse
 
         if (RememberedLimits is null)
         {
-            return UserInputResponseResult.NoActionTaken;
+            return PlotResponseResult.NoActionTaken;
         }
 
         if (userInput is UserInputs.MouseMove mouseMoveInput)
@@ -32,7 +32,7 @@ public class LeftClickDragPan : IUserInputResponse
             double maxDragDistance = Math.Max(dX, dY);
             if (maxDragDistance < 5)
             {
-                return new UserInputResponseResult()
+                return new PlotResponseResult()
                 {
                     Summary = $"left click drag pan only moved {maxDragDistance} pixels so not taking over",
                     IsPrimaryResponse = false,
@@ -43,7 +43,7 @@ public class LeftClickDragPan : IUserInputResponse
             RememberedLimits.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
 
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"left click drag pan in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}",
                 IsPrimaryResponse = true,
@@ -56,14 +56,14 @@ public class LeftClickDragPan : IUserInputResponse
             RememberedLimits.Apply(plot);
             RememberedLimits = null;
             ApplyToPlot(plot, MouseDownPixel, mouseUpInput.Pixel, keys);
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"left click drag pan COMPLETED",
                 RefreshRequired = true,
             };
         }
 
-        return new UserInputResponseResult()
+        return new PlotResponseResult()
         {
             Summary = $"left click drag pan ignored {userInput}",
             IsPrimaryResponse = true,

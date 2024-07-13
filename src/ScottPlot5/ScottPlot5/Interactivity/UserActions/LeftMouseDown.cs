@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity.UserInputs;
 
-public record struct KeyDown(IKey Key) : IUserInput
+public record struct LeftMouseDown(Pixel Pixel) : IMouseInput
 {
     public DateTime DateTime { get; set; } = DateTime.Now;
 }

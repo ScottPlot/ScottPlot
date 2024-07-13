@@ -1,9 +1,9 @@
 ﻿namespace ScottPlot.Interactivity;
 
-public interface IKey
+public readonly record struct Key(string name)
 {
     /// <summary>
     /// A name that uniquely identifies a specific key
     /// </summary>
-    string Name { get; }
+    public string Name { get; } = name;
 }

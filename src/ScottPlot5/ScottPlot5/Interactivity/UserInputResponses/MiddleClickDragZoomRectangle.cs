@@ -2,16 +2,16 @@
 
 namespace ScottPlot.Interactivity.UserInputResponses;
 
-public class MiddleClickDragZoomRectangle : IUserInputResponse
+public class MiddleClickDragZoomRectangle : IPlotResponse
 {
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public UserInputResponseResult Execute(Plot plot, IUserInput userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
         if (userInput is MiddleMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"middle-click-drag zoom rectangle STARTED at {MouseDownPixel}",
                 IsPrimaryResponse = false,
@@ -21,7 +21,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
         if (userInput is LeftMouseDown leftMouseDownInput && keys.IsPressed(StandardKeys.Alt))
         {
             MouseDownPixel = leftMouseDownInput.Pixel;
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"ALT + left-click-drag zoom rectangle STARTED at {MouseDownPixel}",
                 IsPrimaryResponse = true,
@@ -30,7 +30,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
 
         if (MouseDownPixel == Pixel.NaN)
         {
-            return UserInputResponseResult.NoActionTaken;
+            return PlotResponseResult.NoActionTaken;
         }
 
         if (userInput is MouseMove mouseMoveInput)
@@ -42,7 +42,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             {
                 bool zoomRectWasPreviouslyVisible = plot.ZoomRectangle.IsVisible;
                 plot.ZoomRectangle.IsVisible = false;
-                return new UserInputResponseResult()
+                return new PlotResponseResult()
                 {
                     Summary = $"middle-click-drag zoom rectangle IGNORED because drag distance was too small",
                     RefreshRequired = zoomRectWasPreviouslyVisible,
@@ -56,7 +56,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             plot.ZoomRectangle.HorizontalSpan = keys.IsPressed(StandardKeys.Control);
             plot.ZoomRectangle.VerticalSpan = keys.IsPressed(StandardKeys.Shift);
 
-            return new UserInputResponseResult()
+            return new PlotResponseResult()
             {
                 Summary = $"middle-click-drag zoom rectangle UPDATED",
                 RefreshRequired = true,
@@ -74,7 +74,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
 
                 plot.ZoomRectangle.IsVisible = false;
 
-                return new UserInputResponseResult()
+                return new PlotResponseResult()
                 {
                     Summary = $"middle-click-drag zoom rectangle APPLIED",
                     RefreshRequired = true,
@@ -83,7 +83,7 @@ public class MiddleClickDragZoomRectangle : IUserInputResponse
             }
         }
 
-        return new UserInputResponseResult()
+        return new PlotResponseResult()
         {
             Summary = $"middle-click-drag zoom rectangle ignored {userInput}",
             IsPrimaryResponse = plot.ZoomRectangle.IsVisible,

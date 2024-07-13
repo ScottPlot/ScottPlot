@@ -24,7 +24,7 @@ public class UserInputProcessor
     /// Users may manipulate this list to change the default behavior and
     /// add custom behaviors.
     /// </summary>
-    public readonly List<IUserInputResponse> UserInputResponses = [];
+    public readonly List<IPlotResponse> UserInputResponses = [];
 
     public UserInputProcessor(Plot plot)
     {
@@ -36,7 +36,7 @@ public class UserInputProcessor
     /// <summary>
     /// Remove all user input responses of the specified type
     /// </summary>
-    public void RemoveAll<T>() where T : IUserInputResponse
+    public void RemoveAll<T>() where T : IPlotResponse
     {
         UserInputResponses.RemoveAll(x => x is T);
     }
@@ -51,7 +51,7 @@ public class UserInputProcessor
         UserInputResponses.AddRange(DefaultUserResponses());
     }
 
-    public static List<IUserInputResponse> DefaultUserResponses() =>
+    public static List<IPlotResponse> DefaultUserResponses() =>
     [
         // drag events
         new UserInputResponses.MiddleClickDragZoomRectangle(),
@@ -72,12 +72,12 @@ public class UserInputProcessor
     /// When defined, this response is the only one that gets processed
     /// until it returns a result indicating it is no longer the primary response.
     /// </summary>
-    IUserInputResponse? PrimaryResponse = null;
+    IPlotResponse? PrimaryResponse = null;
 
     /// <summary>
     /// Process a user input and return results of the responses that engaged with it
     /// </summary>
-    public IReadOnlyList<UserInputResponseResult> Process(IUserInput userInput)
+    public IReadOnlyList<PlotResponseResult> Process(IUserAction userInput)
     {
         if (!IsEnabled)
             return [];
@@ -94,7 +94,7 @@ public class UserInputProcessor
         return responseResults;
     }
 
-    private void UpdateKeyboardState(IUserInput userInput)
+    private void UpdateKeyboardState(IUserAction userInput)
     {
         if (userInput is UserInputs.KeyDown keyDown)
         {
@@ -107,18 +107,18 @@ public class UserInputProcessor
         }
     }
 
-    private IReadOnlyList<UserInputResponseResult> ExecuteUserInputResponses(IUserInput userInput)
+    private IReadOnlyList<PlotResponseResult> ExecuteUserInputResponses(IUserAction userInput)
     {
-        List<UserInputResponseResult> results = [];
+        List<PlotResponseResult> results = [];
 
-        foreach (IUserInputResponse response in UserInputResponses)
+        foreach (IPlotResponse response in UserInputResponses)
         {
             if (PrimaryResponse is not null && PrimaryResponse != response)
             {
                 continue;
             }
 
-            UserInputResponseResult result = response.Execute(Plot, userInput, KeyState);
+            PlotResponseResult result = response.Execute(Plot, userInput, KeyState);
             results.Add(result);
 
             if (PrimaryResponse is null && result.IsPrimaryResponse)

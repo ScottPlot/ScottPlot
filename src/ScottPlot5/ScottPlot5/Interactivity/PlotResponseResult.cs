@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity;
 
-public readonly record struct UserInputResponseResult
+public readonly record struct PlotResponseResult
 {
     /// <summary>
     /// A description of what the response did.
@@ -28,5 +28,5 @@ public readonly record struct UserInputResponseResult
         return message;
     }
 
-    public static UserInputResponseResult NoActionTaken => new();
+    public static PlotResponseResult NoActionTaken => new();
 };
