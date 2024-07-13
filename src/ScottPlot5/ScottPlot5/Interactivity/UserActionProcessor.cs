@@ -60,7 +60,7 @@ public class UserInputProcessor
 
         // click events
         new PlotResponses.ScrollWheelZoom(),
-        new PlotResponses.MiddleClickAutoscale(),
+        new PlotResponses.MouseClickAutoscale(),
         new PlotResponses.RightClickContextMenu(),
         new PlotResponses.DoubleClickResponse(),
 
