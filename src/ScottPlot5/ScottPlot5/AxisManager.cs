@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using System;
 using System.Linq;
 
 namespace ScottPlot;
@@ -749,6 +750,17 @@ public class AxisManager
         // note that the plot axis limits move in the direction OPPOSITE to the mouse.
         // this line also flips the vertical orientation.
         PixelOffset offset = new(-mouseDeltaX, mouseDeltaY);
+
+        Pan(offset);
+    }
+
+    /// <summary>
+    /// Adjust limits all axes to pan given pixel distance
+    /// </summary>
+    public void Pan(PixelOffset offset)
+    {
+        if (Plot.RenderManager.LastRender.Count == 0)
+            throw new InvalidOperationException("at least one render is required before pixel panning is possible");
 
         XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
         YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));

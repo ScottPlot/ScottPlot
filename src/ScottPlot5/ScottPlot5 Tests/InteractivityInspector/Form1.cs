@@ -66,27 +66,32 @@ public partial class Form1 : Form
 
         formsPlot1.KeyDown += (s, e) =>
         {
-            IKey key = GetKey(e.KeyCode);
+            IKey key = GetKeyCode(e.KeyCode);
             IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
             ProcessInput(userInput);
         };
 
         formsPlot1.KeyUp += (s, e) =>
         {
-            IKey key = GetKey(e.KeyCode);
+            IKey key = GetKeyCode(e.KeyCode);
             IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyUp(key);
             ProcessInput(userInput);
         };
     }
 
-    private IKey GetKey(Keys keyCode)
+    private IKey GetKeyCode(Keys keyCode)
     {
+        // strip modifiers
+        keyCode = keyCode & ~Keys.Modifiers;
+
         IKey? key = keyCode switch
         {
             Keys.Alt => StandardKeys.Alt,
             Keys.Menu => StandardKeys.Alt,
             Keys.Shift => StandardKeys.Shift,
             Keys.ShiftKey => StandardKeys.Shift,
+            Keys.LShiftKey => StandardKeys.Shift,
+            Keys.RShiftKey => StandardKeys.Shift,
             Keys.Control => StandardKeys.Control,
             Keys.ControlKey => StandardKeys.Control,
             Keys.Down => StandardKeys.Down,
@@ -112,6 +117,14 @@ public partial class Form1 : Form
         {
             Name = $"Unknown key {keyName}",
         };
+    }
+
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        IKey key = GetKeyCode(keyData);
+        IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
+        ProcessInput(userInput);
+        return base.ProcessCmdKey(ref msg, keyData);
     }
 
     private void ProcessInput(IUserInput? userInput)

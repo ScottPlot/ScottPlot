@@ -63,6 +63,9 @@ public class UserInputProcessor
         new UserInputResponses.MiddleClickAutoscale(),
         new UserInputResponses.RightClickContextMenu(),
         new UserInputResponses.DoubleClickBenchmark(),
+
+        // keypress events
+        new UserInputResponses.ArrowKeyPanAndZoom(),
     ];
 
     /// <summary>
