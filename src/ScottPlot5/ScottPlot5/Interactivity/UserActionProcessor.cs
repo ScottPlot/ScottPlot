@@ -55,7 +55,7 @@ public class UserInputProcessor
     [
         // drag events
         new PlotResponses.MiddleClickDragZoomRectangle(),
-        new PlotResponses.LeftClickDragPan(),
+        new PlotResponses.MouseDragPan(),
         new PlotResponses.RightClickDragZoom(),
 
         // click events
