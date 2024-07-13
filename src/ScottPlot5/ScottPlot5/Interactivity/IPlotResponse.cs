@@ -10,5 +10,5 @@ public interface IPlotResponse
     /// Perform the given action on the specified plot and return
     /// a result indicating what happened.
     /// </summary>
-    PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys);
+    PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys);
 }

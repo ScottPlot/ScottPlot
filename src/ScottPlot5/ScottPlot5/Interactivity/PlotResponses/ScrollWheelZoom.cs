@@ -2,7 +2,7 @@
 
 public class ScrollWheelZoom : IPlotResponse
 {
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is UserActions.MouseWheelUp mouseDownInput)
         {

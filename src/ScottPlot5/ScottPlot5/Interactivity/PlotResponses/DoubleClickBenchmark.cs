@@ -1,29 +1,26 @@
-﻿using ScottPlot.Interactivity.UserActions;
+﻿using ScottPlot.Control;
+using ScottPlot.Interactivity.UserActions;
 
 namespace ScottPlot.Interactivity.PlotResponses;
 
-// TODO: refactor to DoubleLeftClickAction and make the default action replaceable
 public class DoubleClickBenchmark : IPlotResponse
 {
     DateTime LatestMouseDownTime = DateTime.MinValue;
     DateTime PreviousMouseDownTime = DateTime.MinValue;
     public TimeSpan MaximumTimeBetweenClicks = TimeSpan.FromMilliseconds(500);
 
-    IUserAction DoubleClickInput { get; set; } = new LeftMouseDown();
+    // TODO: customize double click button
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
-        if (userInput is IMouseInput mouseInput)
+        if (userAction is LeftMouseDown mouseDownAction)
         {
-            if (mouseInput == DoubleClickInput)
-            {
-                PreviousMouseDownTime = LatestMouseDownTime;
-                LatestMouseDownTime = mouseInput.DateTime;
-                return PlotResponseResult.NoActionTaken;
-            }
+            PreviousMouseDownTime = LatestMouseDownTime;
+            LatestMouseDownTime = mouseDownAction.DateTime;
+            return PlotResponseResult.NoActionTaken;
         }
 
-        if (userInput is LeftMouseUp mouseUpInput)
+        if (userAction is LeftMouseUp mouseUpInput)
         {
             TimeSpan timeSinceFirstMouseDown = mouseUpInput.DateTime - PreviousMouseDownTime;
             if (timeSinceFirstMouseDown < MaximumTimeBetweenClicks)

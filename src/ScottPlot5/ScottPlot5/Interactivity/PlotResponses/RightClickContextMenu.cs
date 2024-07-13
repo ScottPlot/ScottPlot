@@ -6,7 +6,7 @@ public class RightClickContextMenu : IPlotResponse
 {
     Pixel MouseDownPixel = Pixel.NaN;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is RightMouseDown mouseDownInput)
         {

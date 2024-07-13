@@ -7,7 +7,7 @@ public class RightClickDragZoom : IPlotResponse
     // TODO: re-implement this being more careful about allocations
     private Control.MultiAxisLimitManager? RememberedLimits = null;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is UserActions.RightMouseDown mouseDownInput)
         {
@@ -54,7 +54,7 @@ public class RightClickDragZoom : IPlotResponse
         };
     }
 
-    private static void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyState keys)
+    private static void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyboardState keys)
     {
         if (keys.IsPressed(StandardKeys.Shift))
         {

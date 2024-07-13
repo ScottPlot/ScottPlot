@@ -5,7 +5,7 @@
 /// Although designed for keyboard keys, other user inputs 
 /// could be tracked here as long as they implement <see cref="IKey"/>.
 /// </summary>
-public class KeyState
+public class KeyboardState
 {
     private readonly HashSet<string> PressedKeyNames = [];
 

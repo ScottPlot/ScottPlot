@@ -6,7 +6,7 @@ public class MiddleClickDragZoomRectangle : IPlotResponse
 {
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
+    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is MiddleMouseDown mouseDownInput)
         {

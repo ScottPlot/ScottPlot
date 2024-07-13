@@ -12,7 +12,7 @@ public class UserInputProcessor
     /// <summary>
     /// Tracks which keys are currently pressed
     /// </summary>
-    public readonly KeyState KeyState;
+    public readonly KeyboardState KeyState;
 
     /// <summary>
     /// Controls whether new events are processed
