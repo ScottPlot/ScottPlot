@@ -62,7 +62,7 @@ public class UserInputProcessor
         new PlotResponses.ScrollWheelZoom(),
         new PlotResponses.MiddleClickAutoscale(),
         new PlotResponses.RightClickContextMenu(),
-        new PlotResponses.DoubleClickBenchmark(),
+        new PlotResponses.DoubleClickResponse(),
 
         // keypress events
         new PlotResponses.KeyboardPanAndZoom(),
