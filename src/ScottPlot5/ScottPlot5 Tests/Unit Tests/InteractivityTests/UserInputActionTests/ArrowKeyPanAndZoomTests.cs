@@ -32,7 +32,7 @@ internal class ArrowKeyPanAndZoomTests
     }
 
     [Test]
-    public void Test_AltArrowKey_Zoom()
+    public void Test_CtrlArrowKey_Zoom()
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
@@ -41,7 +41,7 @@ internal class ArrowKeyPanAndZoomTests
 
         // simulate zooming in
         UserInputProcessor proc = new(plot);
-        proc.Process(new KeyDown(StandardKeys.Alt));
+        proc.Process(new KeyDown(StandardKeys.Control));
         proc.Process(new KeyDown(StandardKeys.Right));
         proc.Process(new KeyDown(StandardKeys.Up));
         AxisLimits newLimits = plot.Axes.GetLimits();

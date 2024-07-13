@@ -119,11 +119,19 @@ public partial class Form1 : Form
         };
     }
 
+    /// <summary>
+    /// Required because arrow key presses do not invoke KeyDown
+    /// </summary>
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
         IKey key = GetKeyCode(keyData);
-        IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
-        ProcessInput(userInput);
+        if (StandardKeys.IsArrowKey(key))
+        {
+            IUserInput userInput = new ScottPlot.Interactivity.UserInputs.KeyDown(key);
+            ProcessInput(userInput);
+            return true;
+        }
+
         return base.ProcessCmdKey(ref msg, keyData);
     }
 
@@ -143,7 +151,7 @@ public partial class Form1 : Form
             if (result.Summary.StartsWith("right click drag zoom in progress")) continue;
             if (result.Summary.StartsWith("left click drag pan ignored KeyDown")) continue;
             if (result.Summary.StartsWith("left click drag pan ignored KeyUp")) continue;
-            Debug.WriteLine(result);
+            Debug.WriteLine($"[{DateTime.Now}] {result}");
         }
     }
 }

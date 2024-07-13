@@ -65,7 +65,7 @@ public class UserInputProcessor
         new UserInputResponses.DoubleClickBenchmark(),
 
         // keypress events
-        new UserInputResponses.ArrowKeyPanAndZoom(),
+        new UserInputResponses.KeyboardPanAndZoom(),
     ];
 
     /// <summary>
