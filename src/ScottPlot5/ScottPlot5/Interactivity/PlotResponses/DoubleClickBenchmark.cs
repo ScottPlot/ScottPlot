@@ -1,6 +1,6 @@
-﻿using ScottPlot.Interactivity.UserInputs;
+﻿using ScottPlot.Interactivity.UserActions;
 
-namespace ScottPlot.Interactivity.UserInputResponses;
+namespace ScottPlot.Interactivity.PlotResponses;
 
 // TODO: refactor to DoubleLeftClickAction and make the default action replaceable
 public class DoubleClickBenchmark : IPlotResponse

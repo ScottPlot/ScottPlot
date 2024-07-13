@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserInputResponses;
+﻿namespace ScottPlot.Interactivity.PlotResponses;
 
 public class MiddleClickAutoscale : IPlotResponse
 {
@@ -6,7 +6,7 @@ public class MiddleClickAutoscale : IPlotResponse
 
     public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
-        if (userInput is UserInputs.MiddleMouseDown mouseDownInput)
+        if (userInput is UserActions.MiddleMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             return new PlotResponseResult()
@@ -18,7 +18,7 @@ public class MiddleClickAutoscale : IPlotResponse
         if (MouseDownPixel == Pixel.NaN)
             return PlotResponseResult.NoActionTaken;
 
-        if (userInput is UserInputs.MiddleMouseUp mouseUpInput)
+        if (userInput is UserActions.MiddleMouseUp mouseUpInput)
         {
             double dX = Math.Abs(MouseDownPixel.X - mouseUpInput.Pixel.X);
             double dY = Math.Abs(MouseDownPixel.Y - mouseUpInput.Pixel.Y);

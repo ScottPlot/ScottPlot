@@ -1,10 +1,10 @@
-﻿namespace ScottPlot.Interactivity.UserInputResponses;
+﻿namespace ScottPlot.Interactivity.PlotResponses;
 
 public class ScrollWheelZoom : IPlotResponse
 {
     public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
-        if (userInput is UserInputs.MouseWheelUp mouseDownInput)
+        if (userInput is UserActions.MouseWheelUp mouseDownInput)
         {
             double xFrac = keys.IsPressed(StandardKeys.Shift) ? 1 : 1.15;
             double yFrac = keys.IsPressed(StandardKeys.Control) ? 1 : 1.15;
@@ -16,7 +16,7 @@ public class ScrollWheelZoom : IPlotResponse
             };
         }
 
-        if (userInput is UserInputs.MouseWheelDown mouseUpInput)
+        if (userInput is UserActions.MouseWheelDown mouseUpInput)
         {
             double xFrac = keys.IsPressed(StandardKeys.Shift) ? 1 : 0.85;
             double yFrac = keys.IsPressed(StandardKeys.Control) ? 1 : 0.85;

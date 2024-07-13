@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserInputs;
+﻿namespace ScottPlot.Interactivity.UserActions;
 
 public record struct MiddleMouseDown(Pixel Pixel) : IMouseInput
 {

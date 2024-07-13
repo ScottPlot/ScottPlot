@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserInputResponses;
+﻿namespace ScottPlot.Interactivity.PlotResponses;
 
 public class RightClickDragZoom : IPlotResponse
 {
@@ -9,7 +9,7 @@ public class RightClickDragZoom : IPlotResponse
 
     public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
-        if (userInput is UserInputs.RightMouseDown mouseDownInput)
+        if (userInput is UserActions.RightMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
@@ -23,7 +23,7 @@ public class RightClickDragZoom : IPlotResponse
         if (MouseDownPixel == Pixel.NaN)
             return PlotResponseResult.NoActionTaken;
 
-        if (userInput is UserInputs.MouseMove mouseMoveInput)
+        if (userInput is UserActions.MouseMove mouseMoveInput)
         {
             RememberedLimits?.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
@@ -35,7 +35,7 @@ public class RightClickDragZoom : IPlotResponse
             };
         }
 
-        if (userInput is UserInputs.RightMouseUp mouseUpInput)
+        if (userInput is UserActions.RightMouseUp mouseUpInput)
         {
             RememberedLimits?.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseUpInput.Pixel, keys);

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserInputResponses;
+﻿namespace ScottPlot.Interactivity.PlotResponses;
 
 public class LeftClickDragPan : IPlotResponse
 {
@@ -9,7 +9,7 @@ public class LeftClickDragPan : IPlotResponse
 
     public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
-        if (userInput is UserInputs.LeftMouseDown mouseDownInput)
+        if (userInput is UserActions.LeftMouseDown mouseDownInput)
         {
             MouseDownPixel = mouseDownInput.Pixel;
             RememberedLimits = new(plot);
@@ -25,7 +25,7 @@ public class LeftClickDragPan : IPlotResponse
             return PlotResponseResult.NoActionTaken;
         }
 
-        if (userInput is UserInputs.MouseMove mouseMoveInput)
+        if (userInput is UserActions.MouseMove mouseMoveInput)
         {
             double dX = mouseMoveInput.Pixel.X - MouseDownPixel.X;
             double dY = mouseMoveInput.Pixel.Y - MouseDownPixel.Y;
@@ -51,7 +51,7 @@ public class LeftClickDragPan : IPlotResponse
             };
         }
 
-        if (userInput is UserInputs.LeftMouseUp mouseUpInput)
+        if (userInput is UserActions.LeftMouseUp mouseUpInput)
         {
             RememberedLimits.Apply(plot);
             RememberedLimits = null;

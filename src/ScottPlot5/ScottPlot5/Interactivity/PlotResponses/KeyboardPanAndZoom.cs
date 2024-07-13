@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserInputResponses;
+﻿namespace ScottPlot.Interactivity.PlotResponses;
 
 public class KeyboardPanAndZoom : IPlotResponse
 {
@@ -31,7 +31,7 @@ public class KeyboardPanAndZoom : IPlotResponse
 
     public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyState keys)
     {
-        if (userInput is UserInputs.KeyDown keyDown)
+        if (userInput is UserActions.KeyDown keyDown)
         {
             if (keys.IsPressed(ZoomModifierKey))
             {

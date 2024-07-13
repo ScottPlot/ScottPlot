@@ -54,18 +54,18 @@ public class UserInputProcessor
     public static List<IPlotResponse> DefaultUserResponses() =>
     [
         // drag events
-        new UserInputResponses.MiddleClickDragZoomRectangle(),
-        new UserInputResponses.LeftClickDragPan(),
-        new UserInputResponses.RightClickDragZoom(),
+        new PlotResponses.MiddleClickDragZoomRectangle(),
+        new PlotResponses.LeftClickDragPan(),
+        new PlotResponses.RightClickDragZoom(),
 
         // click events
-        new UserInputResponses.ScrollWheelZoom(),
-        new UserInputResponses.MiddleClickAutoscale(),
-        new UserInputResponses.RightClickContextMenu(),
-        new UserInputResponses.DoubleClickBenchmark(),
+        new PlotResponses.ScrollWheelZoom(),
+        new PlotResponses.MiddleClickAutoscale(),
+        new PlotResponses.RightClickContextMenu(),
+        new PlotResponses.DoubleClickBenchmark(),
 
         // keypress events
-        new UserInputResponses.KeyboardPanAndZoom(),
+        new PlotResponses.KeyboardPanAndZoom(),
     ];
 
     /// <summary>
@@ -96,12 +96,12 @@ public class UserInputProcessor
 
     private void UpdateKeyboardState(IUserAction userInput)
     {
-        if (userInput is UserInputs.KeyDown keyDown)
+        if (userInput is UserActions.KeyDown keyDown)
         {
             KeyState.Add(keyDown.Key);
         }
 
-        if (userInput is UserInputs.KeyUp keyUp)
+        if (userInput is UserActions.KeyUp keyUp)
         {
             KeyState.Remove(keyUp.Key);
         }
