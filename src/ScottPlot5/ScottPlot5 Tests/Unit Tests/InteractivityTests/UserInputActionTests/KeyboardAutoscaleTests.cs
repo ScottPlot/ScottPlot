@@ -1,8 +1,4 @@
-﻿using ScottPlot.Interactivity;
-using ScottPlot.Interactivity.UserActionResponses;
-using ScottPlot.Interactivity.UserActions;
-
-namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
+﻿namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
 
 internal class KeyboardAutoscaleTests
 {
@@ -13,23 +9,20 @@ internal class KeyboardAutoscaleTests
     [Test]
     public void Test_KeyboardAutoscale_ResetsAxisLimits()
     {
-        // create a plot and force a render to allow pixel-based interactions
-        Plot plot = new();
-        plot.Add.Signal(Generate.Sin());
-        plot.Add.Signal(Generate.Cos());
-        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
-        AxisLimits originalLimits = plot.Axes.GetLimits();
+        ScottPlot.Testing.MockPlotControl plotControl = new();
+        plotControl.Plot.Add.Signal(Generate.Sin());
+        plotControl.Plot.Add.Signal(Generate.Cos());
 
-        // simulate left-click-drag to to the lower left (panning to the upper right)
-        UserInputProcessor proc = new(plot);
-        proc.Process(new LeftMouseDown(FIGURE_CENTER));
-        proc.Process(new MouseMove(FIGURE_CENTER.MovedLeft(50).MovedDown(50)));
-        AxisLimits changedLimits = plot.Axes.GetLimits();
-        changedLimits.Center.Should().NotBe(originalLimits.Center);
+        // start out autoscaled
+        plotControl.Plot.Axes.AutoScale();
+        AxisLimits originalLimits = plotControl.Plot.Axes.GetLimits();
+
+        // slide the plot
+        plotControl.LeftClickDrag(plotControl.Center, plotControl.Center.MovedRight(50).MovedUp(50));
+        plotControl.Plot.Axes.GetLimits().Center.Should().NotBe(originalLimits.Center);
 
         // keyboard AutoAxis
-        proc.Process(new KeyDown(StandardKeys.A));
-        AxisLimits resetLimits = plot.Axes.GetLimits();
-        resetLimits.Center.Should().Be(originalLimits.Center);
+        plotControl.PressKey(ScottPlot.Interactivity.StandardKeys.A);
+        plotControl.Plot.Axes.GetLimits().Center.Should().Be(originalLimits.Center);
     }
 }

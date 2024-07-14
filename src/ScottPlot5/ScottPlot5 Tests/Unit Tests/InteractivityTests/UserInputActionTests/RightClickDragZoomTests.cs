@@ -1,33 +1,21 @@
-﻿using ScottPlot.Interactivity;
-using ScottPlot.Interactivity.UserActions;
-
-namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
+﻿namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
 
 internal class RightClickDragZoomTests
 {
-    const int FIGURE_WIDTH = 400;
-    const int FIGURE_HEIGHT = 300;
-    Pixel FIGURE_CENTER => new(FIGURE_WIDTH / 2, FIGURE_HEIGHT / 2);
-
     [Test]
     public void Test_RightClickDragZoom_ZoomsWithoutPanning()
     {
-        // create a plot and force a render to allow pixel-based interactions
-        Plot plot = new();
-        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
-        AxisLimits originalLimits = plot.Axes.GetLimits();
+        ScottPlot.Testing.MockPlotControl plotControl = new();
+        AxisLimits originalLimits = plotControl.Plot.Axes.GetLimits();
 
-        // simulate right-click-drag to to the upper right (zooming in)
-        UserInputProcessor proc = new(plot);
-        proc.Process(new RightMouseDown(FIGURE_CENTER));
-        proc.Process(new MouseMove(FIGURE_CENTER.MovedRight(50).MovedUp(50)));
-        AxisLimits newLimits = plot.Axes.GetLimits();
+        plotControl.RightClickDrag(plotControl.Center, plotControl.Center.MovedRight(50).MovedUp(50));
+        AxisLimits newLimits = plotControl.Plot.Axes.GetLimits();
 
-        // assert zoom occurred
+        // assert zoom
         newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().Be(originalLimits.VerticalCenter);
 
-        // assert no pan occurred
+        // assert no pan
         newLimits.HorizontalSpan.Should().BeLessThan(originalLimits.HorizontalSpan);
         newLimits.VerticalSpan.Should().BeLessThan(originalLimits.VerticalSpan);
     }
@@ -35,23 +23,18 @@ internal class RightClickDragZoomTests
     [Test]
     public void Test_RightClickDragZoom_ShiftLocksHorizontalAxis()
     {
-        // create a plot and force a render to allow pixel-based interactions
-        Plot plot = new();
-        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
-        AxisLimits originalLimits = plot.Axes.GetLimits();
+        ScottPlot.Testing.MockPlotControl plotControl = new();
+        AxisLimits originalLimits = plotControl.Plot.Axes.GetLimits();
 
-        // simulate SHIFT + right-click-drag to to the upper right (zooming in)
-        UserInputProcessor proc = new(plot);
-        proc.Process(new KeyDown(StandardKeys.Shift));
-        proc.Process(new RightMouseDown(FIGURE_CENTER));
-        proc.Process(new MouseMove(FIGURE_CENTER.MovedRight(50).MovedUp(50)));
-        AxisLimits newLimits = plot.Axes.GetLimits();
+        plotControl.PressShift();
+        plotControl.RightClickDrag(plotControl.Center, plotControl.Center.MovedRight(50).MovedUp(50));
+        AxisLimits newLimits = plotControl.Plot.Axes.GetLimits();
 
-        // assert zoom occurred
+        // assert zoom
         newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().Be(originalLimits.VerticalCenter);
 
-        // assert no pan occurred
+        // assert no pan
         newLimits.HorizontalSpan.Should().Be(originalLimits.HorizontalSpan);
         newLimits.VerticalSpan.Should().BeLessThan(originalLimits.VerticalSpan);
     }
@@ -59,23 +42,18 @@ internal class RightClickDragZoomTests
     [Test]
     public void Test_RightClickDragZoom_CtrlLocksVerticalAxis()
     {
-        // create a plot and force a render to allow pixel-based interactions
-        Plot plot = new();
-        plot.RenderInMemory(FIGURE_WIDTH, FIGURE_HEIGHT);
-        AxisLimits originalLimits = plot.Axes.GetLimits();
+        ScottPlot.Testing.MockPlotControl plotControl = new();
+        AxisLimits originalLimits = plotControl.Plot.Axes.GetLimits();
 
-        // simulate ALT + right-click-drag to to the upper right (zooming in)
-        UserInputProcessor proc = new(plot);
-        proc.Process(new KeyDown(StandardKeys.Control));
-        proc.Process(new RightMouseDown(FIGURE_CENTER));
-        proc.Process(new MouseMove(FIGURE_CENTER.MovedRight(50).MovedUp(50)));
-        AxisLimits newLimits = plot.Axes.GetLimits();
+        plotControl.PressCtrl();
+        plotControl.RightClickDrag(plotControl.Center, plotControl.Center.MovedRight(50).MovedUp(50));
+        AxisLimits newLimits = plotControl.Plot.Axes.GetLimits();
 
-        // assert zoom occurred
+        // assert zoom
         newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
         newLimits.VerticalCenter.Should().Be(originalLimits.VerticalCenter);
 
-        // assert no pan occurred
+        // assert no pan
         newLimits.HorizontalSpan.Should().BeLessThan(originalLimits.HorizontalSpan);
         newLimits.VerticalSpan.Should().Be(originalLimits.VerticalSpan);
     }

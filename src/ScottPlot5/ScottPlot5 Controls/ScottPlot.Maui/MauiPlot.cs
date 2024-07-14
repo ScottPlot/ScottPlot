@@ -80,7 +80,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
 
         _canvas.GestureRecognizers.Add(pointerGestureRecognizer);
         _canvas.GestureRecognizers.Add(tapGestureRecognizer);
-        
+
         /*this.Content = _canvas;*/
     }
 
