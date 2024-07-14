@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
 public class SingleClickContextMenu(MouseButton button) : SingleClickResponse(button, LaunchContextMenu)
 {

@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
-public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action) : IPlotResponse
+public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action) : IUserActionResponse
 {
     /// <summary>
     /// Which mouse button to watch for double-clicks.
@@ -23,7 +23,7 @@ public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action)
 
     private DateTime PreviousMouseDownTime = DateTime.MinValue;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userAction, KeyboardState keys)
+    public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction mouseAction && mouseAction.Button == MouseButton)
         {
@@ -31,7 +31,7 @@ public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action)
             {
                 PreviousMouseDownTime = LatestMouseDownTime;
                 LatestMouseDownTime = mouseAction.DateTime;
-                return PlotResponseResult.NoActionTaken;
+                return ResponseInfo.NoActionRequired;
             }
             else
             {
@@ -40,15 +40,11 @@ public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action)
                 {
                     ResponseAction.Invoke(plot, mouseAction.Pixel);
                     LatestMouseDownTime = DateTime.MinValue; // reset time so a third click won't toggle it back
-                    return new PlotResponseResult()
-                    {
-                        Summary = "Double-left-click toggling benchmark visibility",
-                        RefreshRequired = true,
-                    };
+                    return ResponseInfo.Refresh;
                 }
             }
         }
 
-        return PlotResponseResult.NoActionTaken;
+        return ResponseInfo.NoActionRequired;
     }
 }

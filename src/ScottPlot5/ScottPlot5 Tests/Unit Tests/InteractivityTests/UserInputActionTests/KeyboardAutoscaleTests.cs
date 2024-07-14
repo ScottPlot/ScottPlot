@@ -1,5 +1,5 @@
 ﻿using ScottPlot.Interactivity;
-using ScottPlot.Interactivity.PlotResponses;
+using ScottPlot.Interactivity.UserActionResponses;
 using ScottPlot.Interactivity.UserActions;
 
 namespace ScottPlotTests.InteractivityTests.UserInputActionTests;

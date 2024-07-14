@@ -1,13 +1,11 @@
 ﻿namespace ScottPlot.Interactivity;
 
 /// <summary>
-/// Tracks which keyboard keys are pressed.
-/// Although designed for keyboard keys, other user inputs 
-/// could be tracked here as long as they implement <see cref="IKey"/>.
+/// Tracks which keyboard keys are currently pressed.
 /// </summary>
 public class KeyboardState
 {
-    private readonly HashSet<string> PressedKeyNames = [];
+    readonly HashSet<string> PressedKeyNames = [];
 
     public int PressedKeyCount => PressedKeyNames.Count;
 

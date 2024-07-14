@@ -1,9 +1,9 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
 /// <summary>
 /// Click-drag draws a rectangle over a plot which becomes the new field of view when released.
 /// </summary>
-public class MouseDragZoomRectangle(MouseButton button) : IPlotResponse
+public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
 {
     Pixel MouseDownPixel = Pixel.NaN;
 
@@ -32,7 +32,7 @@ public class MouseDragZoomRectangle(MouseButton button) : IPlotResponse
     /// </summary>
     public Key VerticalLockKey { get; set; } = StandardKeys.Shift;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userAction, KeyboardState keys)
+    public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction buttonAction && buttonAction.IsPressed)
         {
@@ -41,17 +41,13 @@ public class MouseDragZoomRectangle(MouseButton button) : IPlotResponse
             if (isPrimaryButton || isSecondaryButtonAndKey)
             {
                 MouseDownPixel = buttonAction.Pixel;
-                return new PlotResponseResult()
-                {
-                    Summary = $"ZoomRectangle STARTED {MouseDownPixel}",
-                    IsPrimaryResponse = isSecondaryButtonAndKey,
-                };
+                return new ResponseInfo() { IsPrimary = isSecondaryButtonAndKey };
             }
         }
 
         if (MouseDownPixel == Pixel.NaN)
         {
-            return PlotResponseResult.NoActionTaken;
+            return ResponseInfo.NoActionRequired;
         }
 
         if (userAction is IMouseAction mouseMoveAction && userAction is not IMouseButtonAction)
@@ -63,11 +59,11 @@ public class MouseDragZoomRectangle(MouseButton button) : IPlotResponse
             {
                 bool zoomRectWasPreviouslyVisible = plot.ZoomRectangle.IsVisible;
                 plot.ZoomRectangle.IsVisible = false;
-                return new PlotResponseResult()
+
+                return new ResponseInfo()
                 {
-                    Summary = $"ZoomRectangle ignored small distance",
-                    RefreshRequired = zoomRectWasPreviouslyVisible,
-                    IsPrimaryResponse = false,
+                    RefreshNeeded = zoomRectWasPreviouslyVisible,
+                    IsPrimary = false,
                 };
             }
 
@@ -77,12 +73,7 @@ public class MouseDragZoomRectangle(MouseButton button) : IPlotResponse
             plot.ZoomRectangle.HorizontalSpan = keys.IsPressed(VerticalLockKey);
             plot.ZoomRectangle.VerticalSpan = keys.IsPressed(HorizontalLockKey);
 
-            return new PlotResponseResult()
-            {
-                Summary = $"ZoomRectangle Updated",
-                RefreshRequired = true,
-                IsPrimaryResponse = true,
-            };
+            return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }
 
         if (userAction is IMouseButtonAction mouseUpAction && !mouseUpAction.IsPressed)
@@ -93,18 +84,11 @@ public class MouseDragZoomRectangle(MouseButton button) : IPlotResponse
             {
                 plot.Axes.GetAxes().OfType<IXAxis>().ToList().ForEach(plot.ZoomRectangle.Apply);
                 plot.Axes.GetAxes().OfType<IYAxis>().ToList().ForEach(plot.ZoomRectangle.Apply);
-
                 plot.ZoomRectangle.IsVisible = false;
-
-                return new PlotResponseResult()
-                {
-                    Summary = $"ZoomRectangle APPLIED",
-                    RefreshRequired = true,
-                    IsPrimaryResponse = false,
-                };
+                return ResponseInfo.Refresh;
             }
         }
 
-        return PlotResponseResult.NoActionTaken;
+        return ResponseInfo.NoActionRequired;
     }
 }

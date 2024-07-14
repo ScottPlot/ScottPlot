@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
 public class DoubleClickBenchmark(MouseButton button) : DoubleClickResponse(button, Autoscale)
 {

@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Interactivity;
-using System.Diagnostics;
 
 namespace Interactivity_Inspector;
 
@@ -128,21 +127,7 @@ public partial class Form1 : Form
 
     private void ProcessInput(IUserAction? userInput)
     {
-        if (userInput is null)
-            return;
-
-        var results = UserInputProcessor.Process(userInput);
-
-        foreach (PlotResponseResult result in results)
-        {
-            if (result.Summary is null)
-                continue;
-
-            if (result.Summary.StartsWith("left click drag pan in progress")) continue;
-            if (result.Summary.StartsWith("right click drag zoom in progress")) continue;
-            if (result.Summary.StartsWith("left click drag pan ignored KeyDown")) continue;
-            if (result.Summary.StartsWith("left click drag pan ignored KeyUp")) continue;
-            Debug.WriteLine($"[{DateTime.Now}] {result}");
-        }
+        if (userInput is not null)
+            UserInputProcessor.Process(userInput);
     }
 }

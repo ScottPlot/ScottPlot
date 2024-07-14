@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
 public class SingleClickAutoscale(MouseButton button) : SingleClickResponse(button, AutoScale)
 {

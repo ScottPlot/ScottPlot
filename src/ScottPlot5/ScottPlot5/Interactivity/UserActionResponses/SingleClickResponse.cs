@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
-public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action) : IPlotResponse
+public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action) : IUserActionResponse
 {
     /// <summary>
     /// Which mouse button to watch for single-click events
@@ -17,19 +17,19 @@ public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action)
     /// </summary>
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userAction, KeyboardState keys)
+    public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction buttonAction && buttonAction.Button == MouseButton)
         {
             if (buttonAction.IsPressed)
             {
                 MouseDownPixel = buttonAction.Pixel;
-                return PlotResponseResult.NoActionTaken;
+                return ResponseInfo.NoActionRequired;
             }
             else
             {
                 if (double.IsNaN(MouseDownPixel.X))
-                    return PlotResponseResult.NoActionTaken;
+                    return ResponseInfo.NoActionRequired;
 
                 // do not respond to mouse dragging
                 double dX = Math.Abs(MouseDownPixel.X - buttonAction.Pixel.X);
@@ -38,20 +38,16 @@ public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action)
                 if (rightClickDragDistance >= 5)
                 {
                     MouseDownPixel = Pixel.NaN;
-                    return PlotResponseResult.NoActionTaken;
+                    return ResponseInfo.NoActionRequired;
                 }
 
                 ResponseAction.Invoke(plot, buttonAction.Pixel);
                 MouseDownPixel = Pixel.NaN;
 
-                return new PlotResponseResult()
-                {
-                    Summary = $"MouseClickResponse {MouseButton} at {buttonAction.Pixel}",
-                    RefreshRequired = true,
-                };
+                return new ResponseInfo() { RefreshNeeded = true };
             }
         }
 
-        return PlotResponseResult.NoActionTaken;
+        return ResponseInfo.NoActionRequired;
     }
 }

@@ -24,7 +24,7 @@ public class UserInputProcessor
     /// Users may manipulate this list to change the default behavior and
     /// add custom behaviors.
     /// </summary>
-    public readonly List<IPlotResponse> UserInputResponses = [];
+    public readonly List<IUserActionResponse> UserInputResponses = [];
 
     public UserInputProcessor(Plot plot)
     {
@@ -36,7 +36,7 @@ public class UserInputProcessor
     /// <summary>
     /// Remove all user input responses of the specified type
     /// </summary>
-    public void RemoveAll<T>() where T : IPlotResponse
+    public void RemoveAll<T>() where T : IUserActionResponse
     {
         UserInputResponses.RemoveAll(x => x is T);
     }
@@ -51,48 +51,47 @@ public class UserInputProcessor
         UserInputResponses.AddRange(DefaultUserResponses());
     }
 
-    public static List<IPlotResponse> DefaultUserResponses() =>
+    /// <summary>
+    /// Default user actions that are in place when the event processor is constructed or reset.
+    /// </summary>
+    public static List<IUserActionResponse> DefaultUserResponses() =>
     [
         // drag events
-        new PlotResponses.MouseDragZoomRectangle(StandardMouseButtons.Middle),
-        new PlotResponses.MouseDragPan(StandardMouseButtons.Left),
-        new PlotResponses.MouseDragZoom(StandardMouseButtons.Right),
+        new UserActionResponses.MouseDragZoomRectangle(StandardMouseButtons.Middle),
+        new UserActionResponses.MouseDragPan(StandardMouseButtons.Left),
+        new UserActionResponses.MouseDragZoom(StandardMouseButtons.Right),
 
         // click events
-        new PlotResponses.MouseWheelZoom(StandardKeys.Shift, StandardKeys.Control),
-        new PlotResponses.SingleClickAutoscale(StandardMouseButtons.Middle),
-        new PlotResponses.SingleClickContextMenu(StandardMouseButtons.Right),
-        new PlotResponses.DoubleClickBenchmark(StandardMouseButtons.Left),
+        new UserActionResponses.MouseWheelZoom(StandardKeys.Shift, StandardKeys.Control),
+        new UserActionResponses.SingleClickAutoscale(StandardMouseButtons.Middle),
+        new UserActionResponses.SingleClickContextMenu(StandardMouseButtons.Right),
+        new UserActionResponses.DoubleClickBenchmark(StandardMouseButtons.Left),
 
         // keypress events
-        new PlotResponses.KeyboardPanAndZoom(),
-        new PlotResponses.KeyboardAutoscale(StandardKeys.A),
+        new UserActionResponses.KeyboardPanAndZoom(),
+        new UserActionResponses.KeyboardAutoscale(StandardKeys.A),
     ];
 
     /// <summary>
     /// When defined, this response is the only one that gets processed
     /// until it returns a result indicating it is no longer the primary response.
     /// </summary>
-    IPlotResponse? PrimaryResponse = null;
+    IUserActionResponse? PrimaryResponse = null;
 
     /// <summary>
     /// Process a user input and return results of the responses that engaged with it
     /// </summary>
-    public IReadOnlyList<PlotResponseResult> Process(IUserAction userInput)
+    public void Process(IUserAction userInput)
     {
         if (!IsEnabled)
-            return [];
+            return;
 
         UpdateKeyboardState(userInput);
 
-        var responseResults = ExecuteUserInputResponses(userInput);
+        bool refreshNeeded = ExecuteUserInputResponses(userInput);
 
-        if (responseResults.Where(x => x.RefreshRequired).Any())
-        {
+        if (refreshNeeded)
             Plot.PlotControl?.Refresh();
-        }
-
-        return responseResults;
     }
 
     private void UpdateKeyboardState(IUserAction userInput)
@@ -108,31 +107,32 @@ public class UserInputProcessor
         }
     }
 
-    private IReadOnlyList<PlotResponseResult> ExecuteUserInputResponses(IUserAction userInput)
+    private bool ExecuteUserInputResponses(IUserAction userInput)
     {
-        List<PlotResponseResult> results = [];
+        bool refreshNeeded = false;
 
-        foreach (IPlotResponse response in UserInputResponses)
+        foreach (IUserActionResponse response in UserInputResponses)
         {
             if (PrimaryResponse is not null && PrimaryResponse != response)
             {
                 continue;
             }
 
-            PlotResponseResult result = response.Execute(Plot, userInput, KeyState);
-            results.Add(result);
+            ResponseInfo info = response.Execute(Plot, userInput, KeyState);
+            if (info.RefreshNeeded)
+                refreshNeeded = true;
 
-            if (PrimaryResponse is null && result.IsPrimaryResponse)
+            if (PrimaryResponse is null && info.IsPrimary)
             {
                 PrimaryResponse = response;
             }
 
-            if (PrimaryResponse == response && !result.IsPrimaryResponse)
+            if (PrimaryResponse == response && !info.IsPrimary)
             {
                 PrimaryResponse = null;
             }
         }
 
-        return results;
+        return refreshNeeded;
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
-public class KeyboardPanAndZoom : IPlotResponse
+public class KeyboardPanAndZoom : IUserActionResponse
 {
     public Key PanLeftKey { get; set; } = StandardKeys.Left;
     public Key PanRightKey { get; set; } = StandardKeys.Right;
@@ -29,7 +29,7 @@ public class KeyboardPanAndZoom : IPlotResponse
     public double DeltaZoomIn { get; set; } = 0.85f;
     public double DeltaZoomOut { get; set; } = 1.15f;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
+    public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is UserActions.KeyDown keyDown)
         {
@@ -39,7 +39,7 @@ public class KeyboardPanAndZoom : IPlotResponse
                 else if (keyDown.Key == PanRightKey) return ApplyZoom(plot, DeltaZoomOut, 1);
                 else if (keyDown.Key == PanDownKey) return ApplyZoom(plot, 1, DeltaZoomIn);
                 else if (keyDown.Key == PanUpKey) return ApplyZoom(plot, 1, DeltaZoomOut);
-                else return PlotResponseResult.NoActionTaken;
+                else return ResponseInfo.NoActionRequired;
             }
             else
             {
@@ -51,33 +51,23 @@ public class KeyboardPanAndZoom : IPlotResponse
                 else if (keyDown.Key == PanRightKey) return ApplyPan(plot, delta, 0);
                 else if (keyDown.Key == PanDownKey) return ApplyPan(plot, 0, -delta);
                 else if (keyDown.Key == PanUpKey) return ApplyPan(plot, 0, delta);
-                else return PlotResponseResult.NoActionTaken;
+                else return ResponseInfo.NoActionRequired;
             }
         }
 
-        return PlotResponseResult.NoActionTaken;
+        return ResponseInfo.NoActionRequired;
     }
 
-    private PlotResponseResult ApplyPan(Plot plot, float dX, float dY)
+    private ResponseInfo ApplyPan(Plot plot, float dX, float dY)
     {
         PixelOffset pxOffset = new(dX, dY);
         plot.Axes.Pan(pxOffset);
-
-        return new PlotResponseResult()
-        {
-            Summary = $"Applied pan X={dX}, y={dY}",
-            RefreshRequired = true,
-        };
+        return ResponseInfo.Refresh;
     }
 
-    private PlotResponseResult ApplyZoom(Plot plot, double dX, double dY)
+    private ResponseInfo ApplyZoom(Plot plot, double dX, double dY)
     {
         plot.Axes.Zoom(dX, dY);
-
-        return new PlotResponseResult()
-        {
-            Summary = $"Applied zoom X={dX}, y={dY}",
-            RefreshRequired = true,
-        };
+        return ResponseInfo.Refresh;
     }
 }

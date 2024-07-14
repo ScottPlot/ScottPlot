@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot.Interactivity;
 
+/// <summary>
+/// Structures for commonly used keys.
+/// Use these as a safer alternative to instantiating your own.
+/// </summary>
 public static class StandardKeys
 {
     public static readonly Key Alt = new("alt");

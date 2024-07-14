@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Interactivity.PlotResponses;
+﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
-public class MouseDragZoom(MouseButton button) : IPlotResponse
+public class MouseDragZoom(MouseButton button) : IUserActionResponse
 {
     Pixel MouseDownPixel = Pixel.NaN;
 
@@ -9,51 +9,34 @@ public class MouseDragZoom(MouseButton button) : IPlotResponse
     // TODO: re-implement this being more careful about allocations
     Control.MultiAxisLimitManager? RememberedLimits = null;
 
-    public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
+    public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is IMouseButtonAction mouseDownAction && mouseDownAction.Button == MouseButton && mouseDownAction.IsPressed)
         {
             MouseDownPixel = mouseDownAction.Pixel;
             RememberedLimits = new(plot);
-            return new PlotResponseResult()
-            {
-                Summary = $"MouseDragZoom STARTED",
-                IsPrimaryResponse = false,
-            };
+            return new ResponseInfo() { IsPrimary = false };
         }
 
         if (MouseDownPixel == Pixel.NaN)
-            return PlotResponseResult.NoActionTaken;
+            return ResponseInfo.NoActionRequired;
 
         if (userInput is IMouseButtonAction mouseUpAction && mouseUpAction.Button == MouseButton && !mouseUpAction.IsPressed)
         {
             RememberedLimits?.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
             MouseDownPixel = Pixel.NaN;
-            return new PlotResponseResult()
-            {
-                Summary = $"MouseDragZoom COMPLETED",
-                RefreshRequired = true,
-            };
+            return ResponseInfo.Refresh;
         }
 
         if (userInput is IMouseAction mouseMoveAction)
         {
             RememberedLimits?.Apply(plot);
             ApplyToPlot(plot, MouseDownPixel, mouseMoveAction.Pixel, keys);
-            return new PlotResponseResult()
-            {
-                Summary = $"MouseDragZoom from {MouseDownPixel} to {mouseMoveAction.Pixel}",
-                RefreshRequired = true,
-                IsPrimaryResponse = true,
-            };
+            return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }
 
-        return new PlotResponseResult()
-        {
-            Summary = $"MouseDragZoom is active and ignored {userInput}",
-            IsPrimaryResponse = true,
-        };
+        return new ResponseInfo() { IsPrimary = true };
     }
 
     private static void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyboardState keys)
