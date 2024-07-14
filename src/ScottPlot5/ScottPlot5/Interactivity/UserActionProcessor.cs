@@ -7,7 +7,10 @@
 /// </summary>
 public class UserInputProcessor
 {
-    private readonly Plot Plot;
+    /// <summary>
+    /// The plot this input processor will act on
+    /// </summary>
+    public Plot Plot { get; set; }
 
     /// <summary>
     /// Tracks which keys are currently pressed

@@ -741,8 +741,9 @@ public class AxisManager
     /// </summary>
     public void Pan(Pixel mouseDown, Pixel mouseUp)
     {
+        // at least one render is required before pixel panning is possible
         if (Plot.RenderManager.LastRender.Count == 0)
-            throw new InvalidOperationException("at least one render is required before pixel panning is possible");
+            return;
 
         float mouseDeltaX = mouseUp.X - mouseDown.X;
         float mouseDeltaY = mouseUp.Y - mouseDown.Y;
@@ -759,8 +760,9 @@ public class AxisManager
     /// </summary>
     public void Pan(PixelOffset offset)
     {
+        // at least one render is required before pixel panning is possible
         if (Plot.RenderManager.LastRender.Count == 0)
-            throw new InvalidOperationException("at least one render is required before pixel panning is possible");
+            return;
 
         XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
         YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
@@ -780,8 +782,9 @@ public class AxisManager
     /// </summary>
     public void Zoom(Pixel px1, Pixel px2)
     {
+        // at least one render is required before pixel panning is possible
         if (Plot.RenderManager.LastRender.Count == 0)
-            throw new InvalidOperationException("at least one render is required before pixel zooming is possible");
+            return;
 
         float pixelDeltaX = px2.X - px1.X;
         float pixelDeltaY = -(px2.Y - px1.Y);
@@ -795,8 +798,9 @@ public class AxisManager
     /// </summary>
     public void Zoom(Pixel px, double fracX, double fracY)
     {
+        // at least one render is required before pixel panning is possible
         if (Plot.RenderManager.LastRender.Count == 0)
-            throw new InvalidOperationException("at least one render is required before pixel zooming is possible");
+            return;
 
         XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
         YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
