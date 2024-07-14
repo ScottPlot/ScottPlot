@@ -37,7 +37,7 @@ internal class MiddleClickZoomRectangleTests
     }
 
     [Test]
-    public void Test_ShiftMiddleClickDragZoomRectangle_OnlyZoomsHorizontally()
+    public void Test_ShiftMiddleClickDragZoomRectangle_OnlyZoomsVertically()
     {
         // create a plot and force a render to allow pixel-based interactions
         Plot plot = new();
@@ -56,12 +56,12 @@ internal class MiddleClickZoomRectangleTests
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         // assert pan occurred
-        newLimits.HorizontalCenter.Should().BeGreaterThan(originalLimits.HorizontalCenter);
-        newLimits.VerticalCenter.Should().Be(originalLimits.VerticalCenter);
+        newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
+        newLimits.VerticalCenter.Should().BeGreaterThan(originalLimits.VerticalCenter);
 
         // assert zoom-in occurred
-        newLimits.HorizontalSpan.Should().BeLessThan(originalLimits.HorizontalSpan);
-        newLimits.VerticalSpan.Should().Be(originalLimits.VerticalSpan);
+        newLimits.HorizontalSpan.Should().Be(originalLimits.HorizontalSpan);
+        newLimits.VerticalSpan.Should().BeLessThan(originalLimits.VerticalSpan);
     }
 
     [Test]
@@ -84,12 +84,12 @@ internal class MiddleClickZoomRectangleTests
         AxisLimits newLimits = plot.Axes.GetLimits();
 
         // assert pan occurred
-        newLimits.HorizontalCenter.Should().Be(originalLimits.HorizontalCenter);
-        newLimits.VerticalCenter.Should().BeGreaterThan(originalLimits.VerticalCenter);
+        newLimits.HorizontalCenter.Should().BeGreaterThan(originalLimits.HorizontalCenter);
+        newLimits.VerticalCenter.Should().Be(originalLimits.VerticalCenter);
 
         // assert zoom-in occurred
-        newLimits.HorizontalSpan.Should().Be(originalLimits.HorizontalSpan);
-        newLimits.VerticalSpan.Should().BeLessThan(originalLimits.VerticalSpan);
+        newLimits.HorizontalSpan.Should().BeLessThan(originalLimits.HorizontalSpan);
+        newLimits.VerticalSpan.Should().Be(originalLimits.VerticalSpan);
     }
 
     [Test]

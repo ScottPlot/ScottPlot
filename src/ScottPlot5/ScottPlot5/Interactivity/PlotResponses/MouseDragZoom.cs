@@ -1,21 +1,23 @@
 ﻿namespace ScottPlot.Interactivity.PlotResponses;
 
-public class RightClickDragZoom : IPlotResponse
+public class MouseDragZoom(MouseButton button) : IPlotResponse
 {
-    private Pixel MouseDownPixel = Pixel.NaN;
+    Pixel MouseDownPixel = Pixel.NaN;
+
+    MouseButton MouseButton { get; } = button;
 
     // TODO: re-implement this being more careful about allocations
-    private Control.MultiAxisLimitManager? RememberedLimits = null;
+    Control.MultiAxisLimitManager? RememberedLimits = null;
 
     public PlotResponseResult Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
-        if (userInput is UserActions.RightMouseDown mouseDownInput)
+        if (userInput is IMouseButtonAction mouseDownAction && mouseDownAction.Button == MouseButton && mouseDownAction.IsPressed)
         {
-            MouseDownPixel = mouseDownInput.Pixel;
+            MouseDownPixel = mouseDownAction.Pixel;
             RememberedLimits = new(plot);
             return new PlotResponseResult()
             {
-                Summary = $"right click drag zoom STARTED",
+                Summary = $"MouseDragZoom STARTED",
                 IsPrimaryResponse = false,
             };
         }
@@ -23,33 +25,33 @@ public class RightClickDragZoom : IPlotResponse
         if (MouseDownPixel == Pixel.NaN)
             return PlotResponseResult.NoActionTaken;
 
-        if (userInput is UserActions.MouseMove mouseMoveInput)
+        if (userInput is IMouseButtonAction mouseUpAction && mouseUpAction.Button == MouseButton && !mouseUpAction.IsPressed)
         {
             RememberedLimits?.Apply(plot);
-            ApplyToPlot(plot, MouseDownPixel, mouseMoveInput.Pixel, keys);
+            ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
+            MouseDownPixel = Pixel.NaN;
             return new PlotResponseResult()
             {
-                Summary = $"right click drag zoom in progress from {MouseDownPixel} to {mouseMoveInput.Pixel}",
+                Summary = $"MouseDragZoom COMPLETED",
+                RefreshRequired = true,
+            };
+        }
+
+        if (userInput is IMouseAction mouseMoveAction)
+        {
+            RememberedLimits?.Apply(plot);
+            ApplyToPlot(plot, MouseDownPixel, mouseMoveAction.Pixel, keys);
+            return new PlotResponseResult()
+            {
+                Summary = $"MouseDragZoom from {MouseDownPixel} to {mouseMoveAction.Pixel}",
                 RefreshRequired = true,
                 IsPrimaryResponse = true,
             };
         }
 
-        if (userInput is UserActions.RightMouseUp mouseUpInput)
-        {
-            RememberedLimits?.Apply(plot);
-            ApplyToPlot(plot, MouseDownPixel, mouseUpInput.Pixel, keys);
-            MouseDownPixel = Pixel.NaN;
-            return new PlotResponseResult()
-            {
-                Summary = $"right click drag zoom COMPLETED",
-                RefreshRequired = true,
-            };
-        }
-
         return new PlotResponseResult()
         {
-            Summary = $"right click drag zoom ignored {userInput}",
+            Summary = $"MouseDragZoom is active and ignored {userInput}",
             IsPrimaryResponse = true,
         };
     }

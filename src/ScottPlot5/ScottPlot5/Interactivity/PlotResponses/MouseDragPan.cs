@@ -1,11 +1,11 @@
 ﻿namespace ScottPlot.Interactivity.PlotResponses;
 
-public class MouseDragPan : IPlotResponse
+public class MouseDragPan(MouseButton button) : IPlotResponse
 {
     /// <summary>
     /// Which mouse button to watch for click-drag events
     /// </summary>
-    public MouseButton MouseButton { get; set; } = StandardMouseButtons.Left;
+    public MouseButton MouseButton { get; } = button;
 
     private Pixel MouseDownPixel;
 

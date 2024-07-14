@@ -54,18 +54,19 @@ public class UserInputProcessor
     public static List<IPlotResponse> DefaultUserResponses() =>
     [
         // drag events
-        new PlotResponses.MiddleClickDragZoomRectangle(),
-        new PlotResponses.MouseDragPan(),
-        new PlotResponses.RightClickDragZoom(),
+        new PlotResponses.MouseDragZoomRectangle(StandardMouseButtons.Middle),
+        new PlotResponses.MouseDragPan(StandardMouseButtons.Left),
+        new PlotResponses.MouseDragZoom(StandardMouseButtons.Right),
 
         // click events
-        new PlotResponses.ScrollWheelZoom(),
-        new PlotResponses.MouseClickAutoscale(),
-        new PlotResponses.RightClickContextMenu(),
-        new PlotResponses.DoubleClickResponse(),
+        new PlotResponses.MouseWheelZoom(StandardKeys.Shift, StandardKeys.Control),
+        new PlotResponses.SingleClickAutoscale(StandardMouseButtons.Middle),
+        new PlotResponses.SingleClickContextMenu(StandardMouseButtons.Right),
+        new PlotResponses.DoubleClickBenchmark(StandardMouseButtons.Left),
 
         // keypress events
         new PlotResponses.KeyboardPanAndZoom(),
+        new PlotResponses.KeyboardAutoscale(StandardKeys.A),
     ];
 
     /// <summary>

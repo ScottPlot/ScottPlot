@@ -1,16 +1,17 @@
 ﻿namespace ScottPlot.Interactivity.PlotResponses;
 
-public class DoubleClickResponse : IPlotResponse
+public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action) : IPlotResponse
 {
     /// <summary>
     /// Which mouse button to watch for double-clicks.
     /// </summary>
-    public MouseButton MouseButton { get; set; } = StandardMouseButtons.Left;
+    public MouseButton MouseButton { get; } = button;
 
     /// <summary>
     /// This action is invoked when a double-click occurs.
+    /// Replace this action with your own logic to customize double-click behavior.
     /// </summary>
-    public Action<Plot, Pixel> PlotAction = ToggleBenchmarkVisibility;
+    public Action<Plot, Pixel> ResponseAction { get; } = action;
 
     /// <summary>
     /// Consecutive clicks are only considered a double-click if the time between the first
@@ -37,7 +38,7 @@ public class DoubleClickResponse : IPlotResponse
                 TimeSpan timeSinceFirstMouseDown = mouseAction.DateTime - PreviousMouseDownTime;
                 if (timeSinceFirstMouseDown < MaximumTimeBetweenClicks)
                 {
-                    PlotAction.Invoke(plot, mouseAction.Pixel);
+                    ResponseAction.Invoke(plot, mouseAction.Pixel);
                     LatestMouseDownTime = DateTime.MinValue; // reset time so a third click won't toggle it back
                     return new PlotResponseResult()
                     {
@@ -49,10 +50,5 @@ public class DoubleClickResponse : IPlotResponse
         }
 
         return PlotResponseResult.NoActionTaken;
-    }
-
-    public static void ToggleBenchmarkVisibility(Plot plot, Pixel pixel)
-    {
-        plot.Benchmark.IsVisible = !plot.Benchmark.IsVisible;
     }
 }

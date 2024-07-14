@@ -13,6 +13,8 @@ public static class StandardKeys
 
     public static readonly Key Unknown = new("unknown");
 
+    public static readonly Key A = new("a");
+
     public static bool IsArrowKey(Key key)
     {
         if (key == Left) return true;
