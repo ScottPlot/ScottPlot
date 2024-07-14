@@ -16,7 +16,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
-    public Interactivity.UserInputProcessor UserInputProcessor { get; }
+    public UserInputProcessor UserInputProcessor { get; }
 
     public float DisplayScale { get; set; }
 
@@ -68,77 +68,49 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     internal void SKElement_MouseDown(object? sender, MouseEventArgs e)
     {
-        // OLD
         Interaction.MouseDown(e.Pixel(), e.Button());
-
-        // NEW
-        UserInputProcessor.Process(e.ButtonDownAction());
-
+        UserInputProcessor.ProcessMouseDown(e);
         base.OnMouseDown(e);
     }
 
     internal void SKElement_MouseUp(object? sender, MouseEventArgs e)
     {
-        // OLD
         Interaction.MouseUp(e.Pixel(), e.Button());
-
-        // NEW
-        UserInputProcessor.Process(e.ButtonUpAction());
-
+        UserInputProcessor.ProcessMouseUp(e);
         base.OnMouseUp(e);
     }
 
     internal void SKElement_MouseMove(object? sender, MouseEventArgs e)
     {
-        // OLD
         Interaction.OnMouseMove(e.Pixel());
-
-        // NEW
-        UserInputProcessor.Process(e.MouseMoveAction());
-
+        UserInputProcessor.ProcessMouseMove(e);
         base.OnMouseMove(e);
     }
 
     internal void SKElement_DoubleClick(object? sender, EventArgs e)
     {
-        // OLD
         Interaction.DoubleClick();
-
-        // NEW - not needed because double clicks are inferred from MouseDown events
-
         base.OnDoubleClick(e);
     }
 
     internal void SKElement_MouseWheel(object? sender, MouseEventArgs e)
     {
-        // OLD
         Interaction.MouseWheelVertical(e.Pixel(), e.Delta);
-
-        // NEW
-        UserInputProcessor.Process(e.MouseWheelAction());
-
+        UserInputProcessor.ProcessMouseWheel(e);
         base.OnMouseWheel(e);
     }
 
     internal void SKElement_KeyDown(object? sender, KeyEventArgs e)
     {
-        // OLD
         Interaction.KeyDown(e.Key());
-
-        // NEW
-        UserInputProcessor.Process(e.KeyDownAction());
-
+        UserInputProcessor.ProcessKeyDown(e);
         base.OnKeyDown(e);
     }
 
     internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
     {
-        // OLD
         Interaction.KeyUp(e.Key());
-
-        // NEW
-        UserInputProcessor.Process(e.KeyUpAction());
-
+        UserInputProcessor.ProcessKeyUp(e);
         base.OnKeyUp(e);
     }
 

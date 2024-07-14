@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using ScottPlot.Control;
@@ -12,54 +13,71 @@ public static class FormsPlotExtensions
         return new Pixel(e.X, e.Y);
     }
 
-    internal static Interactivity.IUserAction ButtonDownAction(this MouseEventArgs e)
+    public static void ProcessMouseDown(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
         Pixel mousePixel = new(e.X, e.Y);
-        return e.Button switch
+
+        Interactivity.IUserAction action = e.Button switch
         {
             MouseButtons.Left => new Interactivity.UserActions.LeftMouseDown(mousePixel),
             MouseButtons.Right => new Interactivity.UserActions.RightMouseDown(mousePixel),
             MouseButtons.Middle => new Interactivity.UserActions.MiddleMouseDown(mousePixel),
             _ => new Interactivity.UserActions.Unknown("mouse button", e.ToString()!),
         };
+
+        processor.Process(action);
     }
 
-    internal static Interactivity.IUserAction ButtonUpAction(this MouseEventArgs e)
+    public static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
         Pixel mousePixel = new(e.X, e.Y);
-        return e.Button switch
+
+        Interactivity.IUserAction action = e.Button switch
         {
             MouseButtons.Left => new Interactivity.UserActions.LeftMouseUp(mousePixel),
             MouseButtons.Right => new Interactivity.UserActions.RightMouseUp(mousePixel),
             MouseButtons.Middle => new Interactivity.UserActions.MiddleMouseUp(mousePixel),
             _ => new Interactivity.UserActions.Unknown("mouse button", e.ToString()!),
         };
+
+        processor.Process(action);
     }
 
-    internal static Interactivity.IUserAction MouseMoveAction(this MouseEventArgs e)
+    public static void ProcessMouseMove(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
         Pixel mousePixel = new(e.X, e.Y);
-        return new Interactivity.UserActions.MouseMove(mousePixel);
+        Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(mousePixel);
+        processor.Process(action);
     }
 
-    internal static Interactivity.IUserAction MouseWheelAction(this MouseEventArgs e)
+    [Obsolete("Double-clicks do not require processing. They are inferred from delay between single clicks.", true)]
+    public static void ProcessDoubleClick(this Interactivity.UserInputProcessor processor, EventArgs e)
+    {
+    }
+
+    public static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
         Pixel mousePixel = new(e.X, e.Y);
-        return e.Delta > 0
+
+        Interactivity.IUserAction action = e.Delta > 0
             ? new ScottPlot.Interactivity.UserActions.MouseWheelUp(mousePixel)
             : new ScottPlot.Interactivity.UserActions.MouseWheelDown(mousePixel);
+
+        processor.Process(action);
     }
 
-    internal static Interactivity.IUserAction KeyDownAction(this KeyEventArgs e)
+    public static void ProcessKeyDown(this Interactivity.UserInputProcessor processor, KeyEventArgs e)
     {
         Interactivity.Key key = e.GetKey();
-        return new Interactivity.UserActions.KeyDown(key);
+        Interactivity.IUserAction action = new Interactivity.UserActions.KeyDown(key);
+        processor.Process(action);
     }
 
-    internal static Interactivity.IUserAction KeyUpAction(this KeyEventArgs e)
+    public static void ProcessKeyUp(this Interactivity.UserInputProcessor processor, KeyEventArgs e)
     {
         Interactivity.Key key = e.GetKey();
-        return new Interactivity.UserActions.KeyUp(key);
+        Interactivity.IUserAction action = new Interactivity.UserActions.KeyUp(key);
+        processor.Process(action);
     }
 
     internal static Interactivity.Key GetKey(this KeyEventArgs e)
