@@ -111,25 +111,29 @@ public class UserInputProcessor
     {
         bool refreshNeeded = false;
 
-        foreach (IUserActionResponse response in UserInputResponses)
+        // lock onto the sync object to prevent actions from being applied while a render is in progress
+        lock (Plot.Sync)
         {
-            if (PrimaryResponse is not null && PrimaryResponse != response)
+            foreach (IUserActionResponse response in UserInputResponses)
             {
-                continue;
-            }
+                if (PrimaryResponse is not null && PrimaryResponse != response)
+                {
+                    continue;
+                }
 
-            ResponseInfo info = response.Execute(Plot, userInput, KeyState);
-            if (info.RefreshNeeded)
-                refreshNeeded = true;
+                ResponseInfo info = response.Execute(Plot, userInput, KeyState);
+                if (info.RefreshNeeded)
+                    refreshNeeded = true;
 
-            if (PrimaryResponse is null && info.IsPrimary)
-            {
-                PrimaryResponse = response;
-            }
+                if (PrimaryResponse is null && info.IsPrimary)
+                {
+                    PrimaryResponse = response;
+                }
 
-            if (PrimaryResponse == response && !info.IsPrimary)
-            {
-                PrimaryResponse = null;
+                if (PrimaryResponse == response && !info.IsPrimary)
+                {
+                    PrimaryResponse = null;
+                }
             }
         }
 
