@@ -34,6 +34,19 @@ public class UserInputProcessor
     }
 
     /// <summary>
+    /// Enable this interaction system and disable the old one.
+    /// </summary>
+    // TODO: remove when this becomes enabled by default
+    public void EXPERIMENTAL_TAKEOVER()
+    {
+        if (Plot.PlotControl is null)
+            throw new NullReferenceException();
+
+        IsEnabled = true;
+        Plot.PlotControl.Interaction.Disable();
+    }
+
+    /// <summary>
     /// Remove all user input responses of the specified type
     /// </summary>
     public void RemoveAll<T>() where T : IUserActionResponse
