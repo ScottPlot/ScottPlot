@@ -2,8 +2,8 @@
 
 /// <summary>
 /// This class collects user inputs and performs responses to manipulate a Plot.
-/// Custom user inputs may be supplied, and the list of responses can be 
-/// modified to achieve extreme control over interaction behavior.
+/// Custom user input actions may be supplied, and the list of responses can be 
+/// modified to achieve total control over interaction behavior.
 /// </summary>
 public class UserInputProcessor
 {
@@ -24,7 +24,7 @@ public class UserInputProcessor
     /// Users may manipulate this list to change the default behavior and
     /// add custom behaviors.
     /// </summary>
-    public readonly List<IUserActionResponse> UserInputResponses = [];
+    public readonly List<IUserActionResponse> UserActionResponses = [];
 
     public UserInputProcessor(Plot plot)
     {
@@ -38,7 +38,7 @@ public class UserInputProcessor
     /// </summary>
     public void RemoveAll<T>() where T : IUserActionResponse
     {
-        UserInputResponses.RemoveAll(x => x is T);
+        UserActionResponses.RemoveAll(x => x is T);
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ public class UserInputProcessor
     /// </summary>
     public void Reset()
     {
-        UserInputResponses.Clear();
-        UserInputResponses.AddRange(DefaultUserResponses());
+        UserActionResponses.Clear();
+        UserActionResponses.AddRange(DefaultUserResponses());
     }
 
     /// <summary>
@@ -81,47 +81,47 @@ public class UserInputProcessor
     /// <summary>
     /// Process a user input and return results of the responses that engaged with it
     /// </summary>
-    public void Process(IUserAction userInput)
+    public void Process(IUserAction userAction)
     {
         if (!IsEnabled)
             return;
 
-        UpdateKeyboardState(userInput);
+        UpdateKeyboardState(userAction);
 
-        bool refreshNeeded = ExecuteUserInputResponses(userInput);
+        bool refreshNeeded = ExecuteUserInputResponses(userAction);
 
         if (refreshNeeded)
             Plot.PlotControl?.Refresh();
     }
 
-    private void UpdateKeyboardState(IUserAction userInput)
+    private void UpdateKeyboardState(IUserAction userAction)
     {
-        if (userInput is UserActions.KeyDown keyDown)
+        if (userAction is UserActions.KeyDown keyDown)
         {
             KeyState.Add(keyDown.Key);
         }
 
-        if (userInput is UserActions.KeyUp keyUp)
+        if (userAction is UserActions.KeyUp keyUp)
         {
             KeyState.Remove(keyUp.Key);
         }
     }
 
-    private bool ExecuteUserInputResponses(IUserAction userInput)
+    private bool ExecuteUserInputResponses(IUserAction userAction)
     {
         bool refreshNeeded = false;
 
         // lock onto the sync object to prevent actions from being applied while a render is in progress
         lock (Plot.Sync)
         {
-            foreach (IUserActionResponse response in UserInputResponses)
+            foreach (IUserActionResponse response in UserActionResponses)
             {
                 if (PrimaryResponse is not null && PrimaryResponse != response)
                 {
                     continue;
                 }
 
-                ResponseInfo info = response.Execute(Plot, userInput, KeyState);
+                ResponseInfo info = response.Execute(Plot, userAction, KeyState);
                 if (info.RefreshNeeded)
                     refreshNeeded = true;
 
