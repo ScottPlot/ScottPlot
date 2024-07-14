@@ -18,6 +18,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public GRContext? GRContext => null;
 
@@ -29,6 +30,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new AvaPlotMenu(this);
         Focusable = true; // Required for keyboard events
         Refresh();

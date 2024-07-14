@@ -17,7 +17,7 @@ public class UserInputProcessor
     /// <summary>
     /// Controls whether new events are processed
     /// </summary>
-    public bool IsEnabled { get; set; } = true;
+    public bool IsEnabled { get; set; } = false;
 
     /// <summary>
     /// A list of user input responses that processes all incoming events in order.

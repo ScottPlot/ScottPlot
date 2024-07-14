@@ -9,23 +9,21 @@ namespace ScottPlot.WinUI;
 
 public partial class WinUIPlot : UserControl, IPlotControl
 {
-    private readonly SKXamlCanvas _canvas = CreateRenderTarget();
-
     public Plot Plot { get; internal set; }
-
     public SkiaSharp.GRContext? GRContext => null;
-
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
-
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
-
     public float DisplayScale { get; set; } = 1;
+
+    private readonly SKXamlCanvas _canvas = CreateRenderTarget();
 
     public WinUIPlot()
     {
         Plot = new() { PlotControl = this };
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new WinUIPlotMenu(this);
 
         Background = new SolidColorBrush(Microsoft.UI.Colors.White);

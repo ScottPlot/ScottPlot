@@ -18,6 +18,11 @@ public interface IPlotControl
     IPlotInteraction Interaction { get; set; }
 
     /// <summary>
+    /// This object takes in UI events and contains logic for how to respond to them
+    /// </summary>
+    Interactivity.UserInputProcessor UserInputProcessor { get; }
+
+    /// <summary>
     /// Platform-specific logic for managing the context menu
     /// </summary>
     IPlotMenu Menu { get; set; }

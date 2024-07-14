@@ -2,7 +2,7 @@
 
 namespace ScottPlot;
 
-public interface IPlotInteraction
+public interface IPlotInteraction // TODO: deprecate this
 {
     IPlotControl PlotControl { get; }
 

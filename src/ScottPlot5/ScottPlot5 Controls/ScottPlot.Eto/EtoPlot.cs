@@ -12,13 +12,10 @@ namespace ScottPlot.Eto;
 public class EtoPlot : Drawable, IPlotControl
 {
     public Plot Plot { get; internal set; }
-
     public GRContext? GRContext => null;
-
     public IPlotInteraction Interaction { get; set; }
-
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public IPlotMenu Menu { get; set; }
-
     public float DisplayScale { get; set; }
 
     public EtoPlot()
@@ -26,6 +23,7 @@ public class EtoPlot : Drawable, IPlotControl
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new EtoPlotMenu(this);
 
         this.MouseDown += OnMouseDown;

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
 
@@ -18,6 +15,7 @@ namespace ScottPlot.WPF
         public IPlotInteraction Interaction { get; set; }
         public float DisplayScale { get; set; }
         public IPlotMenu Menu { get; set; }
+        public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
         /// <summary>
         /// Framework element used to show the resulting plot
@@ -35,6 +33,7 @@ namespace ScottPlot.WPF
             Plot = new Plot() { PlotControl = this };
             DisplayScale = DetectDisplayScale();
             Interaction = new Interaction(this);
+            UserInputProcessor = new(Plot);
             Menu = new WpfPlotMenu(this);
             Focusable = true;
         }

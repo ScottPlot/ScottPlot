@@ -8,14 +8,26 @@ internal class MockPlotControl : IPlotControl
     public int Height { get; set; } = 300;
 
     public Plot Plot { get; private set; }
-    public MockPlotControl() => Plot = new() { PlotControl = this };
+    public GRContext? GRContext => null;
 
-    public IPlotInteraction Interaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public IPlotMenu Menu { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public GRContext? GRContext => throw new NotImplementedException();
+    public IPlotInteraction Interaction { get; set; }
+    public ScottPlot.Interactivity.UserInputProcessor UserInputProcessor { get; }
+
+    public IPlotMenu Menu // TODO: mock menu
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    } 
+
+    public MockPlotControl()
+    {
+        Plot = new() { PlotControl = this };
+        Interaction = new ScottPlot.Control.Interaction(this);
+        UserInputProcessor = new(Plot);
+    }
 
     public float DisplayScale { get; set; } = 1;
-    public float DetectDisplayScale() => throw new NotImplementedException();
+    public float DetectDisplayScale() => DisplayScale;
 
     public int RefreshCount { get; private set; } = 0;
     public void Refresh()

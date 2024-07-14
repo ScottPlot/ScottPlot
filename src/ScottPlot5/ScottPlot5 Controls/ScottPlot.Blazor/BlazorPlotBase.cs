@@ -18,6 +18,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public IPlotInteraction Interaction { get; set; }
 
     public IPlotMenu Menu { get; set; }
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public BlazorPlotBase()
     {
@@ -31,6 +32,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new BlazorPlotMenu();
     }
 
