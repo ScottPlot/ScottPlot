@@ -13,7 +13,7 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
     MouseButton MouseButton { get; set; } = button;
 
     /// <summary>
-    /// A zoom rectangle is started when this button is pressed and dragged with <paramref name="SecondaryKey"/>held down
+    /// A zoom rectangle is started when this button is pressed and dragged with <see cref="SecondaryKey"/> held down
     /// </summary>
     public MouseButton SecondaryMouseButton { get; set; } = StandardMouseButtons.Left;
 
