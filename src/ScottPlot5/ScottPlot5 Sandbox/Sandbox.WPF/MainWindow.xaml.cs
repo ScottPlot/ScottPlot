@@ -8,6 +8,9 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        WpfPlot1.UserInputProcessor.EXPERIMENTAL_TAKEOVER();
+
         WpfPlot1.Plot.Add.Signal(Generate.Sin());
         WpfPlot1.Plot.Add.Signal(Generate.Cos());
     }
