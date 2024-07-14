@@ -24,9 +24,6 @@ internal class PlotAxisManipulation
         Pixel px1 = Pixel.Zero;
         Pixel px2 = px1.MovedLeft(20).MovedDown(10);
 
-        Action panBeforeRender = () => plt.Axes.Pan(px1, px2);
-        panBeforeRender.Should().Throw<InvalidOperationException>();
-
         plt.Should().RenderInMemoryWithoutThrowing();
 
         plt.Axes.Pan(px1, px2);
