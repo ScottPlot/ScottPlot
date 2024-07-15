@@ -24,6 +24,10 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle);
+    /// <summary>
+    /// If true, AxisAuto() will ignore the position of this line when determining axis limits
+    /// </summary>
+    public bool IgnoreAxisAuto { get; set; } = false;
 
     public abstract AxisLimits GetAxisLimits();
 

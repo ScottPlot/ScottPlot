@@ -25,7 +25,7 @@ public class HorizontalLine : AxisLine
 
     public override AxisLimits GetAxisLimits()
     {
-        return AxisLimits.VerticalOnly(Y, Y);
+        return IgnoreAxisAuto ? AxisLimits.NoLimits : AxisLimits.VerticalOnly(Y, Y);
     }
 
     public override void Render(RenderPack rp)

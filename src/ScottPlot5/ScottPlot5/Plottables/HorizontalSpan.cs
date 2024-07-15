@@ -23,7 +23,7 @@ public class HorizontalSpan : AxisSpan, IPlottable
 
     public override AxisLimits GetAxisLimits()
     {
-        return AxisLimits.HorizontalOnly(Left, Right);
+        return IgnoreAxisAuto ? AxisLimits.NoLimits : AxisLimits.HorizontalOnly(Left, Right);
     }
 
     public override void Render(RenderPack rp)
