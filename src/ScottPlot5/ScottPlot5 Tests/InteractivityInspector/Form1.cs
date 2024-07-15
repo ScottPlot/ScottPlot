@@ -11,10 +11,13 @@ public partial class Form1 : Form
 
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
-
-        // disable the default interaction system and use the new one
         formsPlot1.Interaction.Disable();
         formsPlot1.UserInputProcessor.IsEnabled = true;
+        formsPlot1.Plot.Title("New UserInputProcessor System");
+
+        formsPlot2.Plot.Add.Signal(ScottPlot.Generate.Sin());
+        formsPlot2.Plot.Add.Signal(ScottPlot.Generate.Cos());
+        formsPlot2.Plot.Title("Old Interaction System");
     }
 
     /// <summary>
