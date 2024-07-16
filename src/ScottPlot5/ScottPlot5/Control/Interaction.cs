@@ -10,10 +10,23 @@ public class Interaction(IPlotControl control) : IPlotInteraction
 {
     public IPlotControl PlotControl { get; private set; } = control;
 
+    private bool Disabled = false;
+
     /// <summary>
-    /// Indicates whether interactions have been disabled.
+    /// Controls whether events will be processed by this class.
+    /// Setting this resets this event processor to use the default interactions.
     /// </summary>
-    public bool Disabled { get; private set; } = false;
+    public bool IsEnabled
+    {
+        get => !Disabled;
+        set
+        {
+            if (value)
+                Enable();
+            else
+                Disable();
+        }
+    }
 
     /// <summary>
     /// Buttons and keys in this object can be overwritten to customize actions for specific user input events.
