@@ -68,10 +68,9 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
             }
 
             plot.ZoomRectangle.IsVisible = true;
-            plot.ZoomRectangle.MouseDown = MouseDownPixel;
-            plot.ZoomRectangle.MouseUp = mouseMoveAction.Pixel;
             plot.ZoomRectangle.HorizontalSpan = keys.IsPressed(VerticalLockKey);
             plot.ZoomRectangle.VerticalSpan = keys.IsPressed(HorizontalLockKey);
+            MouseAxisManipulation.PlaceZoomRectangle(plot, MouseDownPixel, mouseMoveAction.Pixel);
 
             return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }

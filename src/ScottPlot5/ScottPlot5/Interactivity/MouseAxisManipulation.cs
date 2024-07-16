@@ -116,4 +116,29 @@ public static class MouseAxisManipulation
             control.Plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
         }
     }
+
+    public static void PlaceZoomRectangle(Plot plot, Pixel px1, Pixel px2)
+    {
+        float scaleFactor = plot.ScaleFactorF;
+
+        IAxis? axisUnderMouse = plot.GetAxis(px1.Divide(scaleFactor));
+        if (axisUnderMouse is not null)
+        {
+            // Do not respond if the axis under the mouse has no data
+            // https://github.com/ScottPlot/ScottPlot/issues/3810
+            var xAxes = plot.GetPlottables().Select(x => (IAxis)x.Axes.XAxis);
+            var yAxes = plot.GetPlottables().Select(x => (IAxis)x.Axes.YAxis);
+            bool axesIsUsedByPlottables = xAxes.Contains(axisUnderMouse) || yAxes.Contains(axisUnderMouse);
+            if (!axesIsUsedByPlottables)
+                return;
+
+            // NOTE: this function only changes shape of the rectangle.
+            // It doesn't modify axis limits, so no action is required on the opposite axis.
+            plot.ZoomRectangle.VerticalSpan = axisUnderMouse.IsHorizontal();
+            plot.ZoomRectangle.HorizontalSpan = axisUnderMouse.IsVertical();
+        }
+
+        plot.ZoomRectangle.MouseDown = px1.Divide(scaleFactor);
+        plot.ZoomRectangle.MouseUp = px2.Divide(scaleFactor);
+    }
 }

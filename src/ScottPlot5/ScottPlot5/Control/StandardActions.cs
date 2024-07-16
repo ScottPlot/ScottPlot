@@ -161,28 +161,7 @@ public static class StandardActions
         {
             control.Plot.ZoomRectangle.VerticalSpan = locked.X;
             control.Plot.ZoomRectangle.HorizontalSpan = locked.Y;
-
-            float scaleFactor = control.Plot.ScaleFactorF;
-
-            IAxis? axisUnderMouse = control.Plot.GetAxis(drag.From.Divide(scaleFactor));
-            if (axisUnderMouse is not null)
-            {
-                // Do not respond if the axis under the mouse has no data
-                // https://github.com/ScottPlot/ScottPlot/issues/3810
-                var xAxes = control.Plot.GetPlottables().Select(x => (IAxis)x.Axes.XAxis);
-                var yAxes = control.Plot.GetPlottables().Select(x => (IAxis)x.Axes.YAxis);
-                bool axesIsUsedByPlottables = xAxes.Contains(axisUnderMouse) || yAxes.Contains(axisUnderMouse);
-                if (!axesIsUsedByPlottables)
-                    return;
-
-                // NOTE: this function only changes shape of the rectangle.
-                // It doesn't modify axis limits, so no action is required on the opposite axis.
-                control.Plot.ZoomRectangle.VerticalSpan = axisUnderMouse.IsHorizontal();
-                control.Plot.ZoomRectangle.HorizontalSpan = axisUnderMouse.IsVertical();
-            }
-
-            control.Plot.ZoomRectangle.MouseDown = drag.From.Divide(scaleFactor);
-            control.Plot.ZoomRectangle.MouseUp = drag.To.Divide(scaleFactor);
+            Interactivity.MouseAxisManipulation.PlaceZoomRectangle(control.Plot, drag.From, drag.To);
             control.Plot.ZoomRectangle.IsVisible = true;
             control.Refresh();
         }
