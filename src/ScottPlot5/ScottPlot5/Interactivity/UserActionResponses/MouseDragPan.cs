@@ -44,8 +44,8 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
         {
             // Ignore dragging if it's only a few pixels. This leaves room for
             // single- and double-click events that may drag by a few pixels accidentally.
-            double dX = mouseAction.Pixel.X - MouseDownPixel.X;
-            double dY = mouseAction.Pixel.Y - MouseDownPixel.Y;
+            double dX = Math.Abs(mouseAction.Pixel.X - MouseDownPixel.X);
+            double dY = Math.Abs(mouseAction.Pixel.Y - MouseDownPixel.Y);
             double maxDragDistance = Math.Max(dX, dY);
             if (maxDragDistance < 5)
             {
