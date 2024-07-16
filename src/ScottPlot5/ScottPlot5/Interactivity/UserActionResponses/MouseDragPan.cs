@@ -72,6 +72,6 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             px2.Y = px1.Y;
         }
 
-        plot.Axes.Pan(px1, px2);
+        MouseAxisManipulation.DragPan(plot, px1, px2);
     }
 }

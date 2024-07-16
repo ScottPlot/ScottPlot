@@ -51,6 +51,6 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
             px2.Y = px1.Y;
         }
 
-        plot.Axes.Zoom(px1, px2);
+        MouseAxisManipulation.DragZoom(plot, px1, px2);
     }
 }
