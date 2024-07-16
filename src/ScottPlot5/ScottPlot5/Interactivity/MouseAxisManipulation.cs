@@ -2,47 +2,50 @@
 
 /// <summary>
 /// This class stores logic for changing axis limits according to mouse inputs in pixel units.
+/// Methods here are similar to those in <see cref="Plot.Axes"/> except their inputs are all mouse events.
 /// </summary>
 public static class MouseAxisManipulation
 {
     public static void MouseWheelZoom(Plot plot, double fracX, double fracY, Pixel pixel, bool ChangeOpposingAxesTogether)
     {
-        Pixel scaledPixel = pixel.Divide(plot.ScaleFactorF);
+        pixel = pixel.Divide(plot.ScaleFactorF);
         ScottPlot.Control.MultiAxisLimitManager originalLimits = new(plot);
         PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
 
         // restore MouseDown limits
         originalLimits.Apply(plot);
 
-        var axisUnderMouse = plot.GetAxis(scaledPixel);
+        var axisUnderMouse = plot.GetAxis(pixel);
 
         if (axisUnderMouse is not null)
         {
             if (ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
-                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, dataRect)));
+                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
             }
             if (ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
-                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, dataRect)));
+                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
             }
             else
             {
                 double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
-                float scaledCoord = (axisUnderMouse.IsHorizontal() ? scaledPixel.X : scaledPixel.Y);
+                float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y);
                 axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
             }
         }
         else
         {
             // modify all axes
-            plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(scaledPixel.X, dataRect)));
-            plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(scaledPixel.Y, dataRect)));
+            plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
+            plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
         }
     }
 
     public static void DragPan(Plot plot, Pixel mouseDown, Pixel mouseNow)
     {
+        mouseDown = mouseDown.Divide(plot.ScaleFactorF);
+        mouseNow = mouseNow.Divide(plot.ScaleFactorF);
         IPlotControl control = plot.PlotControl ?? throw new NullReferenceException();
 
         float pixelDeltaX = -(mouseNow.X - mouseDown.X);
@@ -82,6 +85,8 @@ public static class MouseAxisManipulation
 
     public static void DragZoom(Plot plot, Pixel mouseDown, Pixel mouseNow)
     {
+        mouseDown = mouseDown.Divide(plot.ScaleFactorF);
+        mouseNow = mouseNow.Divide(plot.ScaleFactorF);
         IPlotControl control = plot.PlotControl ?? throw new NullReferenceException();
 
         float pixelDeltaX = mouseNow.X - mouseDown.X;
@@ -117,11 +122,12 @@ public static class MouseAxisManipulation
         }
     }
 
-    public static void PlaceZoomRectangle(Plot plot, Pixel px1, Pixel px2)
+    public static void PlaceZoomRectangle(Plot plot, Pixel mouseDown, Pixel mouseNow)
     {
-        float scaleFactor = plot.ScaleFactorF;
+        mouseDown = mouseDown.Divide(plot.ScaleFactorF);
+        mouseNow = mouseNow.Divide(plot.ScaleFactorF);
 
-        IAxis? axisUnderMouse = plot.GetAxis(px1.Divide(scaleFactor));
+        IAxis? axisUnderMouse = plot.GetAxis(mouseDown);
         if (axisUnderMouse is not null)
         {
             // Do not respond if the axis under the mouse has no data
@@ -138,12 +144,13 @@ public static class MouseAxisManipulation
             plot.ZoomRectangle.HorizontalSpan = axisUnderMouse.IsVertical();
         }
 
-        plot.ZoomRectangle.MouseDown = px1.Divide(scaleFactor);
-        plot.ZoomRectangle.MouseUp = px2.Divide(scaleFactor);
+        plot.ZoomRectangle.MouseDown = mouseDown;
+        plot.ZoomRectangle.MouseUp = mouseNow;
     }
 
     public static void AutoScale(Plot plot, Pixel pixel, bool allParallelAxes)
     {
+        pixel = pixel.Divide(plot.ScaleFactorF);
         IAxis? axisUnderMouse = plot.GetAxis(pixel);
 
         if (axisUnderMouse is null)
