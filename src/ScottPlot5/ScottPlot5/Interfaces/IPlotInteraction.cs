@@ -2,8 +2,14 @@
 
 namespace ScottPlot;
 
-public interface IPlotInteraction // TODO: deprecate this
+public interface IPlotInteraction
 {
+    /// <summary>
+    /// Controls whether this event processor processes new events.
+    /// Enabling this disables the newer <see cref="IPlotControl.UserInputProcessor"/>.
+    /// </summary>
+    public bool IsEnabled { get; set; }
+
     IPlotControl PlotControl { get; }
 
     /// <summary>
@@ -12,7 +18,8 @@ public interface IPlotInteraction // TODO: deprecate this
     void Disable();
 
     /// <summary>
-    /// Enable mouse interactivity using the default mouse actions
+    /// Enable mouse interactivity using the default mouse actions.
+    /// Enabling this disables the newer <see cref="IPlotControl.UserInputProcessor"/>.
     /// </summary>
     void Enable();
 

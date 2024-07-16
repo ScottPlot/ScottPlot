@@ -9,7 +9,7 @@ partial class MainWindow : Form
     {
         InitializeComponent();
 
-        EtoPlot1.UserInputProcessor.EXPERIMENTAL_TAKEOVER();
+        EtoPlot1.UserInputProcessor.IsEnabled = true;
 
         EtoPlot1.Plot.Add.Signal(Generate.Sin());
         EtoPlot1.Plot.Add.Signal(Generate.Cos());

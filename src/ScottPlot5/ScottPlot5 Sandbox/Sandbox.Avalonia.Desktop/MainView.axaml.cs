@@ -10,7 +10,7 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
 
-        AvaPlot.UserInputProcessor.EXPERIMENTAL_TAKEOVER();
+        AvaPlot.UserInputProcessor.IsEnabled = true;
 
         AvaPlot.Plot.Add.Signal(Generate.Sin());
         AvaPlot.Plot.Add.Signal(Generate.Cos());

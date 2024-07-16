@@ -15,6 +15,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     /// <summary>
     /// Controls whether events will be processed by this class.
     /// Setting this resets this event processor to use the default interactions.
+    /// Enabling this disables the newer <see cref="IPlotControl.UserInputProcessor"/>.
     /// </summary>
     public bool IsEnabled
     {
@@ -72,6 +73,8 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     /// </summary>
     public void Enable()
     {
+        PlotControl.UserInputProcessor.IsEnabled = false;
+
         if (Disabled)
             Actions = ActionsWhenDisabled;
 
@@ -83,6 +86,7 @@ public class Interaction(IPlotControl control) : IPlotInteraction
     /// </summary>
     public void Enable(PlotActions customActions)
     {
+        PlotControl.UserInputProcessor.IsEnabled = false;
         Actions = customActions;
         Disabled = false;
     }

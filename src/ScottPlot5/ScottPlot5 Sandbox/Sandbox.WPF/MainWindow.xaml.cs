@@ -9,7 +9,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        WpfPlot1.UserInputProcessor.EXPERIMENTAL_TAKEOVER();
+        WpfPlot1.UserInputProcessor.IsEnabled = true;
 
         WpfPlot1.Plot.Add.Signal(Generate.Sin());
         WpfPlot1.Plot.Add.Signal(Generate.Cos());

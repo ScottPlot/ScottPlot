@@ -18,9 +18,22 @@ public class UserInputProcessor
     public readonly KeyboardState KeyState;
 
     /// <summary>
-    /// Controls whether new events are processed
+    /// Controls whether new events are processed.
+    /// Enabling this disables the older <see cref="IPlotControl.Interaction"/> system.
     /// </summary>
-    public bool IsEnabled { get; set; } = false;
+    public bool IsEnabled
+    {
+        get => _IsEnabled; set
+        {
+            _IsEnabled = value;
+            if (value)
+            {
+                Plot.PlotControl?.Interaction.Disable();
+            }
+        }
+    }
+
+    private bool _IsEnabled = false;
 
     /// <summary>
     /// A list of user input responses that processes all incoming events in order.
@@ -34,19 +47,6 @@ public class UserInputProcessor
         Plot = plot;
         KeyState = new();
         Reset();
-    }
-
-    /// <summary>
-    /// Enable this interaction system and disable the old one.
-    /// </summary>
-    // TODO: remove when this becomes enabled by default
-    public void EXPERIMENTAL_TAKEOVER()
-    {
-        if (Plot.PlotControl is null)
-            throw new NullReferenceException();
-
-        IsEnabled = true;
-        Plot.PlotControl.Interaction.Disable();
     }
 
     /// <summary>

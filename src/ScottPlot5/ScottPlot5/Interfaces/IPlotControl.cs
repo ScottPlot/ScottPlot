@@ -13,12 +13,14 @@ public interface IPlotControl
     void Refresh();
 
     /// <summary>
-    /// Advanced options for configuring how user inputs manipulate the plot
+    /// Options for configuring user inputs.
+    /// This functionality is being replaced by <see cref="UserInputProcessor"/>.
     /// </summary>
     IPlotInteraction Interaction { get; set; }
 
     /// <summary>
-    /// This object takes in UI events and contains logic for how to respond to them
+    /// This object takes in UI events and contains logic for how to respond to them.
+    /// This is a newer alternative to the older <see cref="Interaction"/> system.
     /// </summary>
     Interactivity.UserInputProcessor UserInputProcessor { get; }
 
