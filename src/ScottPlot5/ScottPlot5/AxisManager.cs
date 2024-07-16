@@ -807,6 +807,35 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Zoom only in that direction of the given axis.
+    /// Optionally, all axes with the same direction (horizontal or vertical) may be zoomed together.
+    /// </summary>
+    public void Zoom(IAxis axisUnderMouse, Pixel px, double fracX, double fracY, bool allParallelAxes)
+    {
+        // at least one render is required before pixel panning is possible
+        if (Plot.RenderManager.LastRender.Count == 0)
+            return;
+
+        PixelRect dataRect = Plot.RenderManager.LastRender.DataRect;
+
+        if (allParallelAxes && axisUnderMouse.IsHorizontal())
+        {
+            XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(px.X, dataRect)));
+        }
+        else if (allParallelAxes && axisUnderMouse.IsVertical())
+        {
+            YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(px.Y, dataRect)));
+        }
+        else
+        {
+            double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
+            float zoomToPixel = axisUnderMouse.IsHorizontal() ? px.X : px.Y;
+            double zoomTo = axisUnderMouse.GetCoordinate(zoomToPixel, dataRect);
+            axisUnderMouse.Range.ZoomFrac(frac, zoomTo);
+        }
+    }
+
+    /// <summary>
     /// Modify limits of all axes to apply the given zoom.
     /// Fractional values >1 zoom in and <1 zoom out.
     /// </summary>
