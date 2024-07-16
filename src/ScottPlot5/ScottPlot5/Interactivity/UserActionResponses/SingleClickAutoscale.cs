@@ -4,7 +4,7 @@ public class SingleClickAutoscale(MouseButton button) : SingleClickResponse(butt
 {
     public static void AutoScale(Plot plot, Pixel pixel)
     {
-        plot.Axes.AutoScale();
+        MouseAxisManipulation.AutoScale(plot, pixel, false);
     }
 }
 

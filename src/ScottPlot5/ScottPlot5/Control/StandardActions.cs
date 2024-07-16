@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using ScottPlot.Interactivity;
+
+namespace ScottPlot.Control;
 
 public static class StandardActions
 {
@@ -180,40 +182,7 @@ public static class StandardActions
     {
         lock (control.Plot.Sync)
         {
-            // TODO: move axis-specific autoscaling logic into IAutoScaler
-
-            IAxis? axisUnderMouse = control.Plot.GetAxis(pixel);
-
-            if (axisUnderMouse is not null)
-            {
-                if (control.Interaction.ChangeOpposingAxesTogether)
-                {
-                    if (axisUnderMouse.IsHorizontal())
-                    {
-                        control.Plot.Axes.XAxes.ForEach(control.Plot.Axes.AutoScaleX);
-                    }
-                    else if (axisUnderMouse.IsVertical())
-                    {
-                        control.Plot.Axes.YAxes.ForEach(control.Plot.Axes.AutoScaleY);
-                    }
-                }
-                else
-                {
-                    if (axisUnderMouse is IYAxis yAxisUnderMouse)
-                    {
-                        control.Plot.Axes.AutoScaleY(yAxisUnderMouse);
-                    }
-                    else if (axisUnderMouse is IXAxis xAxisUnderMouse)
-                    {
-                        control.Plot.Axes.AutoScaleX(xAxisUnderMouse);
-                    }
-                }
-            }
-            else
-            {
-                control.Plot.Axes.AutoScale();
-            }
-
+            MouseAxisManipulation.AutoScale(control.Plot, pixel, control.Interaction.ChangeOpposingAxesTogether);
             control.Refresh();
         }
     }
