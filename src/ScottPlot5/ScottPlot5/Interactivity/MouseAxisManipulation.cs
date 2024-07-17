@@ -9,11 +9,11 @@ public static class MouseAxisManipulation
     public static void MouseWheelZoom(Plot plot, double fracX, double fracY, Pixel pixel, bool ChangeOpposingAxesTogether)
     {
         pixel = pixel.Divide(plot.ScaleFactorF);
-        ScottPlot.Control.MultiAxisLimitManager originalLimits = new(plot);
+        MultiAxisLimits originalLimits = new(plot);
         PixelRect dataRect = plot.RenderManager.LastRender.DataRect;
 
         // restore MouseDown limits
-        originalLimits.Apply(plot);
+        originalLimits.Recall();
 
         var axisUnderMouse = plot.GetAxis(pixel);
 

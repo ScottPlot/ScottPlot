@@ -9,8 +9,7 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
 
     private Pixel MouseDownPixel;
 
-    // TODO: re-implement this being more careful about allocations
-    private Control.MultiAxisLimitManager? RememberedLimits = null;
+    private MultiAxisLimits? RememberedLimits = null;
 
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
@@ -31,7 +30,7 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             && !mouseUpAction.IsPressed
             && RememberedLimits is not null)
         {
-            RememberedLimits.Apply(plot);
+            RememberedLimits.Recall();
             RememberedLimits = null;
             ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
 
@@ -52,7 +51,7 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
                 return ResponseInfo.NoActionRequired;
             }
 
-            RememberedLimits.Apply(plot);
+            RememberedLimits.Recall();
             ApplyToPlot(plot, MouseDownPixel, mouseAction.Pixel, keys);
             return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }

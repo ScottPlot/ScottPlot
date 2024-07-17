@@ -7,7 +7,7 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     MouseButton MouseButton { get; } = button;
 
     // TODO: re-implement this being more careful about allocations
-    Control.MultiAxisLimitManager? RememberedLimits = null;
+    MultiAxisLimits? RememberedLimits = null;
 
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
@@ -23,7 +23,7 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
 
         if (userInput is IMouseButtonAction mouseUpAction && mouseUpAction.Button == MouseButton && !mouseUpAction.IsPressed)
         {
-            RememberedLimits?.Apply(plot);
+            RememberedLimits?.Recall();
             ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
             MouseDownPixel = Pixel.NaN;
             return ResponseInfo.Refresh;
@@ -31,7 +31,7 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
 
         if (userInput is IMouseAction mouseMoveAction)
         {
-            RememberedLimits?.Apply(plot);
+            RememberedLimits?.Recall();
             ApplyToPlot(plot, MouseDownPixel, mouseMoveAction.Pixel, keys);
             return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }
