@@ -75,7 +75,7 @@ public class LabelStyle
     public float BorderRadiusY = 0;
 
     /// <summary>
-    /// Use the characters in <see cref="Text"/> to determine an installed 
+    /// Use the characters in <see cref="Text"/> to determine an installed
     /// system font most likely to support this character set.
     /// </summary>
     public void SetBestFont()
