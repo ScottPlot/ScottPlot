@@ -63,6 +63,7 @@ public class UserInputProcessor
     /// </summary>
     public void Reset()
     {
+        KeyState.Reset();
         UserActionResponses.Clear();
         UserActionResponses.AddRange(DefaultUserResponses());
     }

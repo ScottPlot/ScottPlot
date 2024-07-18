@@ -9,6 +9,11 @@ public class KeyboardState
 
     public int PressedKeyCount => PressedKeyNames.Count;
 
+    public void Reset()
+    {
+        PressedKeyNames.Clear();
+    }
+
     public void Add(Key key)
     {
         PressedKeyNames.Add(key.Name);
