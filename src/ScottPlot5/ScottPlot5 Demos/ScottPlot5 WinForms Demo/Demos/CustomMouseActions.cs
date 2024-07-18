@@ -1,4 +1,6 @@
-﻿namespace WinForms_Demo.Demos;
+﻿using ScottPlot.WinForms;
+
+namespace WinForms_Demo.Demos;
 
 public partial class CustomMouseActions : Form, IDemoWindow
 {
@@ -10,60 +12,95 @@ public partial class CustomMouseActions : Form, IDemoWindow
     {
         InitializeComponent();
 
+        // Disable the old input system and enable the new one.
+        // The new one will be enabled by default in a future release.
+        formsPlot1.Interaction.IsEnabled = false;
+        formsPlot1.UserInputProcessor.IsEnabled = true;
+
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
 
-        btnDefault_Click(this, EventArgs.Empty);
+        btnDefault.Click += (s, e) =>
+        {
+            richTextBox1.Text = "left-click-drag pan, right-click-drag zoom, middle-click autoscale, " +
+                "middle-click-drag zoom rectangle, alt+left-click-drag zoom rectangle, right-click menu, " +
+                "double-click benchmark, scroll wheel zoom, arrow keys pan, " +
+                "shift or alt with arrow keys pans more or less, ctrl+arrow keys zoom";
+
+            formsPlot1.UserInputProcessor.IsEnabled = true;
+            formsPlot1.UserInputProcessor.Reset();
+        };
+
+        btnDisable.Click += (s, e) =>
+        {
+            richTextBox1.Text = "Mouse and keyboard events are disabled";
+            formsPlot1.UserInputProcessor.IsEnabled = false;
+        };
+
+        btnCustom.Click += (s, e) =>
+        {
+            richTextBox1.Text = "middle-click-drag pan, right-click-drag zoom rectangle, " +
+                "right-click autoscale, left-click menu, Q key autoscale, WASD keys pan";
+
+            formsPlot1.UserInputProcessor.IsEnabled = true;
+
+            // remove all existing responses so we can create and add our own
+            formsPlot1.UserInputProcessor.UserActionResponses.Clear();
+
+            // middle-click-drag pan
+            var panButton = ScottPlot.Interactivity.StandardMouseButtons.Middle;
+            var panResponse = new ScottPlot.Interactivity.UserActionResponses.MouseDragPan(panButton);
+            formsPlot1.UserInputProcessor.UserActionResponses.Add(panResponse);
+
+            // right-click-drag zoom rectangle
+            var zoomRectangleButton = ScottPlot.Interactivity.StandardMouseButtons.Right;
+            var zoomRectangleResponse = new ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle(zoomRectangleButton);
+            formsPlot1.UserInputProcessor.UserActionResponses.Add(zoomRectangleResponse);
+
+            // right-click autoscale
+            var autoscaleButton = ScottPlot.Interactivity.StandardMouseButtons.Right;
+            var autoscaleResponse = new ScottPlot.Interactivity.UserActionResponses.SingleClickAutoscale(autoscaleButton);
+            formsPlot1.UserInputProcessor.UserActionResponses.Add(autoscaleResponse);
+
+            // left-click menu
+            var menuButton = ScottPlot.Interactivity.StandardMouseButtons.Left;
+            var menuResponse = new ScottPlot.Interactivity.UserActionResponses.SingleClickContextMenu(menuButton);
+            formsPlot1.UserInputProcessor.UserActionResponses.Add(menuResponse);
+
+            // Q key autoscale too
+            var autoscaleKey = new ScottPlot.Interactivity.Key("Q");
+            Action<ScottPlot.Plot, ScottPlot.Pixel> autoscaleAction = (plot, pixel) => plot.Axes.AutoScale();
+            var autoscaleKeyResponse = new ScottPlot.Interactivity.UserActionResponses.KeyPressResponse(autoscaleKey, autoscaleAction);
+            formsPlot1.UserInputProcessor.UserActionResponses.Add(autoscaleKeyResponse);
+
+            // WASD keys pan
+            var panLeftKey = new ScottPlot.Interactivity.Key("Q");
+            var keyPanResponse = new ScottPlot.Interactivity.UserActionResponses.KeyboardPanAndZoom()
+            {
+                PanUpKey = new ScottPlot.Interactivity.Key("W"),
+                PanLeftKey = new ScottPlot.Interactivity.Key("A"),
+                PanDownKey = new ScottPlot.Interactivity.Key("S"),
+                PanRightKey = new ScottPlot.Interactivity.Key("D"),
+            };
+            formsPlot1.UserInputProcessor.UserActionResponses.Add(keyPanResponse);
+        };
+
+        Load += (s, e) => btnDefault.PerformClick();
     }
 
-    private void btnDefault_Click(object sender, EventArgs e)
+    /// <summary>
+    /// Required because arrow key presses do not invoke KeyDown
+    /// </summary>
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
-        richTextBox1.Text = "left-click-drag pan, right-click-drag zoom, middle-click autoscale, right-click menu";
-
-        ScottPlot.Control.Interaction interaction = new(formsPlot1)
+        ScottPlot.Interactivity.Key key = keyData.GetKey();
+        if (ScottPlot.Interactivity.StandardKeys.IsArrowKey(key))
         {
-            Inputs = ScottPlot.Control.InputBindings.Standard(),
-            Actions = ScottPlot.Control.PlotActions.Standard(),
-        };
+            var keyDownAction = new ScottPlot.Interactivity.UserActions.KeyDown(key);
+            formsPlot1.UserInputProcessor.Process(keyDownAction);
+            return true;
+        }
 
-        formsPlot1.Interaction = interaction;
-    }
-
-    private void btnDisable_Click(object sender, EventArgs e)
-    {
-        richTextBox1.Text = "no mouse interactivity";
-
-        ScottPlot.Control.InputBindings customInputBindings = new() { };
-
-        ScottPlot.Control.Interaction interaction = new(formsPlot1)
-        {
-            Inputs = customInputBindings,
-            Actions = ScottPlot.Control.PlotActions.NonInteractive(),
-        };
-
-        formsPlot1.Interaction = interaction;
-    }
-
-    private void btnCustom_Click(object sender, EventArgs e)
-    {
-        richTextBox1.Text = "middle-click-drag pan, right-click zoom rectangle, right-click autoscale, left-click menu";
-
-        ScottPlot.Control.InputBindings customInputBindings = new()
-        {
-            DragPanButton = ScottPlot.Control.MouseButton.Middle,
-            DragZoomRectangleButton = ScottPlot.Control.MouseButton.Right,
-            DragZoomButton = ScottPlot.Control.MouseButton.Right,
-            ZoomInWheelDirection = ScottPlot.Control.MouseWheelDirection.Up,
-            ZoomOutWheelDirection = ScottPlot.Control.MouseWheelDirection.Down,
-            ClickAutoAxisButton = ScottPlot.Control.MouseButton.Right,
-            ClickContextMenuButton = ScottPlot.Control.MouseButton.Left,
-        };
-
-        ScottPlot.Control.Interaction interaction = new(formsPlot1)
-        {
-            Inputs = customInputBindings,
-        };
-
-        formsPlot1.Interaction = interaction;
+        return base.ProcessCmdKey(ref msg, keyData);
     }
 }
