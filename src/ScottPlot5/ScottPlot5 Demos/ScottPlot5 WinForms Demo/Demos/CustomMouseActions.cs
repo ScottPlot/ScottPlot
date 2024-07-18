@@ -74,7 +74,6 @@ public partial class CustomMouseActions : Form, IDemoWindow
             formsPlot1.UserInputProcessor.UserActionResponses.Add(autoscaleKeyResponse);
 
             // WASD keys pan
-            var panLeftKey = new ScottPlot.Interactivity.Key("Q");
             var keyPanResponse = new ScottPlot.Interactivity.UserActionResponses.KeyboardPanAndZoom()
             {
                 PanUpKey = new ScottPlot.Interactivity.Key("W"),
