@@ -3,6 +3,8 @@
 public class NumericFixedInterval(int interval = 1) : ITickGenerator
 {
     public double Interval { get; set; } = interval;
+    
+    public Func<double, string> LabelFormatter { get; set; } = LabelFormatterHelper.DefaultLabelFormatter;
 
     public Tick[] Ticks { get; set; } = [];
 
