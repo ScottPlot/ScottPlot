@@ -33,7 +33,17 @@ public class EtoPlotMenu : IPlotMenu
             OnInvoke = CopyImageToClipboard
         };
 
-        return new ContextMenuItem[] { saveImage, copyImage };
+        ContextMenuItem autoscale = new()
+        {
+            Label = "Autoscale",
+            OnInvoke = Autoscale,
+        };
+
+        return new ContextMenuItem[] {
+            saveImage,
+            copyImage,
+            autoscale,
+        };
     }
 
     public ContextMenu GetContextMenu()
@@ -103,6 +113,12 @@ public class EtoPlotMenu : IPlotMenu
         MemoryStream ms = new(bytes);
         using Bitmap bmp = new(ms);
         Clipboard.Instance.Image = bmp;
+    }
+
+    public void Autoscale(IPlotControl plotControl)
+    {
+        plotControl.Plot.Axes.AutoScale();
+        plotControl.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)
