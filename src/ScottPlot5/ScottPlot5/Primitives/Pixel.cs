@@ -125,6 +125,26 @@ public struct Pixel : IEquatable<Pixel>
         return new Pixel(X + offset.X, Y + offset.Y);
     }
 
+    public readonly Pixel MovedRight(float dX)
+    {
+        return new Pixel(X + dX, Y);
+    }
+
+    public readonly Pixel MovedLeft(float dX)
+    {
+        return new Pixel(X - dX, Y);
+    }
+
+    public readonly Pixel MovedUp(float dY)
+    {
+        return new Pixel(X, Y - dY);
+    }
+
+    public readonly Pixel MovedDown(float dY)
+    {
+        return new Pixel(X, Y + dY);
+    }
+
     public readonly Pixel Divide(float v) => new Pixel(X / v, Y / v);
     public readonly Pixel Divide(float x, float y) => new Pixel(X / x, Y / y);
 

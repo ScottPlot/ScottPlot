@@ -163,7 +163,7 @@
         FilteredRecipes = hits;
     }
 
-    private IEnumerable<Query.RecipeInfo> AllRecipes = Query.GetRecipes();
+    private IEnumerable<Query.RecipeInfo> AllRecipes = Query.GetRecipes().Where(x => x.Recipe.Name != "Signal Plot Performance");
     private IEnumerable<Query.RecipeInfo> FilteredRecipes = [];
     private IEnumerable<string> GetFilteredRecipeChapters() => FilteredRecipes.Select(x => x.Chapter).Distinct();
     private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter == chapter).Select(x => x.Category).Distinct();

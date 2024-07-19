@@ -17,6 +17,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
 
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu Menu { get; set; }
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public float DisplayScale { get; set; } = 1;
 
@@ -31,6 +32,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
     public MauiPlot()
     {
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
         PointerGestureRecognizer pointerGestureRecognizer = new PointerGestureRecognizer();
         TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
@@ -78,7 +80,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
 
         _canvas.GestureRecognizers.Add(pointerGestureRecognizer);
         _canvas.GestureRecognizers.Add(tapGestureRecognizer);
-        
+
         /*this.Content = _canvas;*/
     }
 
