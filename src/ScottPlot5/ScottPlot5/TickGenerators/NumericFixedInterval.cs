@@ -25,7 +25,7 @@ public class NumericFixedInterval(int interval = 1) : ITickGenerator
                 ? lowest + i * Interval
                 : highest - i * Interval;
 
-            string label = position.ToString();
+            string label = LabelFormatter(position);
             Tick tick = new(position, label, true);
             ticks.Add(tick);
         }
