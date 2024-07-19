@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.TickGenerators;
 
-public class NumericFixedInterval(int interval = 1) : ITickGenerator
+public class NumericFixedInterval(double interval = 1) : ITickGenerator
 {
     public double Interval { get; set; } = interval;
     
