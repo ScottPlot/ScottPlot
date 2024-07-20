@@ -35,7 +35,17 @@ public class WinUIPlotMenu : IPlotMenu
             OnInvoke = CopyImageToClipboard,
         };
 
-        return new ContextMenuItem[] { saveImage, copyImage };
+        ContextMenuItem autoscale = new()
+        {
+            Label = "Autoscale",
+            OnInvoke = Autoscale,
+        };
+
+        return new ContextMenuItem[] {
+            saveImage,
+            copyImage,
+            autoscale,
+        };
     }
 
     public MenuFlyout GetContextMenu(IPlotControl plotControl)
@@ -100,6 +110,12 @@ public class WinUIPlotMenu : IPlotMenu
         content.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
         Clipboard.SetContent(content);
+    }
+
+    public void Autoscale(IPlotControl plotControl)
+    {
+        plotControl.Plot.Axes.AutoScale();
+        plotControl.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)

@@ -98,6 +98,12 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         Max = max;
     }
 
+    public void Set(CoordinateRange range)
+    {
+        Min = range.Min;
+        Max = range.Max;
+    }
+
     public void Set(CoordinateRangeMutable range)
     {
         Min = range.Min;

@@ -39,49 +39,46 @@ partial class CustomMouseActions
         // 
         formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         formsPlot1.DisplayScale = 1F;
-        formsPlot1.Location = new Point(12, 59);
+        formsPlot1.Location = new Point(12, 86);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(776, 379);
+        formsPlot1.Size = new Size(776, 454);
         formsPlot1.TabIndex = 0;
         // 
         // btnDefault
         // 
-        btnDefault.Location = new Point(12, 12);
+        btnDefault.Location = new Point(23, 21);
         btnDefault.Name = "btnDefault";
         btnDefault.Size = new Size(82, 41);
         btnDefault.TabIndex = 1;
         btnDefault.Text = "Default";
         btnDefault.UseVisualStyleBackColor = true;
-        btnDefault.Click += btnDefault_Click;
         // 
         // btnDisable
         // 
-        btnDisable.Location = new Point(100, 12);
+        btnDisable.Location = new Point(111, 21);
         btnDisable.Name = "btnDisable";
         btnDisable.Size = new Size(82, 41);
         btnDisable.TabIndex = 2;
         btnDisable.Text = "Disable";
         btnDisable.UseVisualStyleBackColor = true;
-        btnDisable.Click += btnDisable_Click;
         // 
         // btnCustom
         // 
-        btnCustom.Location = new Point(188, 12);
+        btnCustom.Location = new Point(199, 21);
         btnCustom.Name = "btnCustom";
         btnCustom.Size = new Size(82, 41);
         btnCustom.TabIndex = 3;
         btnCustom.Text = "Custom";
         btnCustom.UseVisualStyleBackColor = true;
-        btnCustom.Click += btnCustom_Click;
         // 
         // richTextBox1
         // 
         richTextBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         richTextBox1.BackColor = SystemColors.Control;
         richTextBox1.BorderStyle = BorderStyle.None;
-        richTextBox1.Location = new Point(276, 12);
+        richTextBox1.Location = new Point(287, 12);
         richTextBox1.Name = "richTextBox1";
-        richTextBox1.Size = new Size(512, 41);
+        richTextBox1.Size = new Size(501, 68);
         richTextBox1.TabIndex = 4;
         richTextBox1.Text = "";
         // 
@@ -89,7 +86,7 @@ partial class CustomMouseActions
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(800, 450);
+        ClientSize = new Size(800, 552);
         Controls.Add(richTextBox1);
         Controls.Add(btnCustom);
         Controls.Add(btnDisable);
