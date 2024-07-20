@@ -1,135 +1,116 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using ScottPlot.Control;
 using SkiaSharp;
 
-namespace ScottPlot.WPF
+namespace ScottPlot.WPF;
+
+public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotControl
 {
-    public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotControl
+    public abstract GRContext GRContext { get; }
+    public abstract void Refresh();
+
+    public Plot Plot { get; internal set; }
+    public IPlotInteraction Interaction { get; set; }
+    public float DisplayScale { get; set; }
+    public IPlotMenu Menu { get; set; }
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
+
+    protected abstract FrameworkElement PlotFrameworkElement { get; }
+    static WpfPlotBase()
     {
-        public abstract GRContext GRContext { get; }
-        public abstract void Refresh();
+        DefaultStyleKeyProperty.OverrideMetadata(
+            forType: typeof(WpfPlotBase),
+            typeMetadata: new FrameworkPropertyMetadata(typeof(WpfPlotBase)));
+    }
 
-        public Plot Plot { get; internal set; }
-        public IPlotInteraction Interaction { get; set; }
-        public float DisplayScale { get; set; }
-        public IPlotMenu Menu { get; set; }
+    public WpfPlotBase()
+    {
+        Plot = new Plot() { PlotControl = this };
+        DisplayScale = DetectDisplayScale();
+        Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
+        Menu = new WpfPlotMenu(this);
+        Focusable = true;
+    }
 
-        /// <summary>
-        /// Framework element used to show the resulting plot
-        /// </summary>
-        protected abstract FrameworkElement PlotFrameworkElement { get; }
-        static WpfPlotBase()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                forType: typeof(WpfPlotBase),
-                typeMetadata: new FrameworkPropertyMetadata(typeof(WpfPlotBase)));
-        }
+    public void Reset()
+    {
+        Reset(new Plot());
+    }
 
-        public WpfPlotBase()
-        {
-            Plot = new Plot() { PlotControl = this };
-            DisplayScale = DetectDisplayScale();
-            Interaction = new Interaction(this);
-            Menu = new WpfPlotMenu(this);
-            Focusable = true;
-        }
+    public void Reset(Plot newPlot)
+    {
+        Plot oldPlot = Plot;
+        Plot = newPlot;
+        oldPlot?.Dispose();
+        Plot.PlotControl = this;
+    }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-            Interaction.KeyDown(e.Key());
-        }
+    public void ShowContextMenu(Pixel position)
+    {
+        Menu.ShowContextMenu(position);
+    }
 
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            base.OnKeyUp(e);
-            Interaction.KeyUp(e.Key());
-        }
+    internal void SKElement_MouseDown(object? sender, MouseButtonEventArgs e)
+    {
+        Keyboard.Focus(this);
+        Interaction.MouseDown(e.ToPixel(PlotFrameworkElement), e.OldToButton());
+        UserInputProcessor.ProcessMouseDown(PlotFrameworkElement, e);
+        (sender as UIElement)?.CaptureMouse();
 
-        public void Reset()
-        {
-            Reset(new Plot());
-        }
+        if (e.ClickCount == 2)
+            Interaction.DoubleClick();
+    }
 
-        public void Reset(Plot newPlot)
-        {
-            Plot oldPlot = Plot;
-            Plot = newPlot;
-            oldPlot?.Dispose();
-            Plot.PlotControl = this;
-        }
+    internal void SKElement_MouseUp(object? sender, MouseButtonEventArgs e)
+    {
+        Interaction.MouseUp(e.ToPixel(PlotFrameworkElement), e.OldToButton());
+        UserInputProcessor.ProcessMouseUp(PlotFrameworkElement, e);
+        (sender as UIElement)?.ReleaseMouseCapture();
+    }
 
-        public void ShowContextMenu(Pixel position)
-        {
-            Menu.ShowContextMenu(position);
-        }
+    internal void SKElement_MouseMove(object? sender, MouseEventArgs e)
+    {
+        Interaction.OnMouseMove(e.ToPixel(PlotFrameworkElement));
+        UserInputProcessor.ProcessMouseMove(PlotFrameworkElement, e);
+    }
 
-        internal void SKElement_MouseDown(object? sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Keyboard.Focus(this);
+    internal void SKElement_MouseWheel(object? sender, MouseWheelEventArgs e)
+    {
+        Interaction.MouseWheelVertical(e.ToPixel(PlotFrameworkElement), e.Delta);
+        UserInputProcessor.ProcessMouseWheel(PlotFrameworkElement, e);
+    }
 
-            Interaction.MouseDown(e.Pixel(PlotFrameworkElement), e.ToButton());
+    internal void SKElement_KeyDown(object? sender, KeyEventArgs e)
+    {
+        Interaction.KeyDown(e.OldToKey());
+        UserInputProcessor.ProcessKeyDown(e);
+    }
 
-            (sender as UIElement)?.CaptureMouse();
+    internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
+    {
+        Interaction.KeyUp(e.OldToKey());
+        UserInputProcessor.ProcessKeyUp(e);
+    }
 
-            if (e.ClickCount == 2)
-            {
-                Interaction.DoubleClick();
-            }
-        }
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        Interaction.KeyDown(e.OldToKey());
+        UserInputProcessor.ProcessKeyDown(e);
+        base.OnKeyDown(e);
+    }
 
-        internal void SKElement_MouseUp(object? sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Interaction.MouseUp(e.Pixel(PlotFrameworkElement), e.ToButton());
-            (sender as UIElement)?.ReleaseMouseCapture();
-        }
+    protected override void OnKeyUp(KeyEventArgs e)
+    {
+        Interaction.KeyUp(e.OldToKey());
+        UserInputProcessor.ProcessKeyUp(e);
+        base.OnKeyUp(e);
+    }
 
-        internal void SKElement_MouseMove(object? sender, MouseEventArgs e)
-        {
-            Interaction.OnMouseMove(e.Pixel(PlotFrameworkElement));
-        }
-
-        internal void SKElement_MouseWheel(object? sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            Interaction.MouseWheelVertical(e.Pixel(PlotFrameworkElement), e.Delta);
-        }
-
-        internal void SKElement_KeyDown(object? sender, KeyEventArgs e)
-        {
-            Interaction.KeyDown(e.Key());
-        }
-
-        internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
-        {
-            Interaction.KeyUp(e.Key());
-        }
-
-        public float DetectDisplayScale()
-        {
-            return (float)VisualTreeHelper.GetDpi(this).DpiScaleX;
-        }
-
-        /// <summary>
-        /// Returns the position of the mouse pointer relative to Plot drawing surface.
-        /// </summary>
-        /// <param name="e">Provides data for mouse related routed events</param>
-        /// <returns>The x and y coordinates in pixel of the mouse pointer position relative to Plot. The point (0,0) is the upper-left corner of the plot.</returns>
-        public Pixel GetPlotPixelPosition(MouseEventArgs e)
-        {
-            return e.Pixel(PlotFrameworkElement);
-        }
-        /// <summary>
-        /// Returns the current position of the mouse pointer relative to Plot drawing surface
-        /// </summary>
-        /// <returns>The x and y coordinates in pixel of the mouse pointer position relative to Plot. The point (0,0) is the upper-left corner of the plot.</returns>
-        public Pixel GetCurrentPlotPixelPosition()
-        {
-            return PlotFrameworkElement.Pixel(Mouse.GetPosition(PlotFrameworkElement));
-        }
+    public float DetectDisplayScale()
+    {
+        return (float)VisualTreeHelper.GetDpi(this).DpiScaleX;
     }
 }

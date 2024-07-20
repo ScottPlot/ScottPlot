@@ -10,8 +10,9 @@ public sealed partial class MainPage : Page
         InitializeComponent();
         WinUIPlot.AppWindow = App.MainWindow;
 
+        WinUIPlot.UserInputProcessor.IsEnabled = true;
+
         WinUIPlot.Plot.Add.Signal(Generate.Sin());
         WinUIPlot.Plot.Add.Signal(Generate.Cos());
-        WinUIPlot.Refresh();
     }
 }

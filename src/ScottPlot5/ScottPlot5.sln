@@ -63,9 +63,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms3D", "Scott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WebApi", "ScottPlot5 Sandbox\Sandbox.WebApi\Sandbox.WebApi.csproj", "{7DD5B2E8-CD7A-40AD-B9AB-6FEE3F86975E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Maui", "ScottPlot5 Sandbox\Sandbox.Maui\Sandbox.Maui.csproj", "{F242BE3A-5F87-4B79-AF7D-62C20BB41D0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Maui", "ScottPlot5 Sandbox\Sandbox.Maui\Sandbox.Maui.csproj", "{F242BE3A-5F87-4B79-AF7D-62C20BB41D0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.Maui", "ScottPlot5 Controls\ScottPlot.Maui\ScottPlot.Maui.csproj", "{8635283C-4CA6-4C35-A3A7-39DFDD7A6196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Maui", "ScottPlot5 Controls\ScottPlot.Maui\ScottPlot.Maui.csproj", "{8635283C-4CA6-4C35-A3A7-39DFDD7A6196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interactivity Inspector", "ScottPlot5 Tests\InteractivityInspector\Interactivity Inspector.csproj", "{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -187,6 +189,10 @@ Global
 		{8635283C-4CA6-4C35-A3A7-39DFDD7A6196}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8635283C-4CA6-4C35-A3A7-39DFDD7A6196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8635283C-4CA6-4C35-A3A7-39DFDD7A6196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,6 +223,7 @@ Global
 		{7DD5B2E8-CD7A-40AD-B9AB-6FEE3F86975E} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{F242BE3A-5F87-4B79-AF7D-62C20BB41D0F} = {9C3D2BEE-76E3-4C99-9D38-07EB5CC162B9}
 		{8635283C-4CA6-4C35-A3A7-39DFDD7A6196} = {957BAA80-422B-4231-BEC1-D03FD89425A2}
+		{A45822CE-201C-4E92-99D9-5AFEEFA1A22B} = {B0708928-FFD3-4062-A3AD-3BA9D7CD8A55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
