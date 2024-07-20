@@ -17,16 +17,15 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            PolarCoordinates[] polarPoints =
-            [
-                new(radius: 10, angle: 45),
-                new(radius: 50, angle: 90),
-                new(radius: 30, angle: 127),
-                new(radius: 15, angle: 270),
-                new(radius: 125, angle: 180),
-            ];
+            var polarAxis = myPlot.Add.PolarAxis(maximumRadius: 100);
 
-            myPlot.Add.Polar(polarPoints);
+            for (int i = 0; i < 10; i++)
+            {
+                double radius = Generate.RandomNumber(100);
+                double degrees = Generate.RandomNumber(360);
+                Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
+                myPlot.Add.Marker(pt);
+            }
 
             myPlot.HideAxesAndGrid(); // hide the Cartesian defaults
         }
@@ -42,30 +41,26 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var pol = myPlot.Add.Polar();
+            var pol = myPlot.Add.PolarAxis();
 
             // style radial axis lines
             var radialPalette = new ScottPlot.Palettes.Category10();
-            for (int i = 0; i < pol.RadialAxis.Spokes.Length; i++)
+            for (int i = 0; i < pol.Spokes.Count; i++)
             {
-                var spoke = pol.RadialAxis.Spokes[i];
-                spoke.LineColor = radialPalette.GetColor(i).WithAlpha(.5);
-                spoke.LineWidth = 4;
-                spoke.LinePattern = LinePattern.DenselyDashed;
+                pol.Spokes[i].LineColor = radialPalette.GetColor(i).WithAlpha(.5);
+                pol.Spokes[i].LineWidth = 4;
+                pol.Spokes[i].LinePattern = LinePattern.DenselyDashed;
             }
 
             // style the circular axis lines
             var circularColormap = new ScottPlot.Colormaps.Rain();
-            for (int i = 0; i < pol.CircularAxis.AxisLines.Length; i++)
+            for (int i = 0; i < pol.Circles.Count; i++)
             {
-                var circularLine = pol.CircularAxis.AxisLines[i];
-                double fraction = (double)i / (pol.CircularAxis.AxisLines.Length - 1);
-                circularLine.LineColor = circularColormap.GetColor(fraction).WithAlpha(.5);
-                circularLine.LineWidth = 2;
-                circularLine.LinePattern = LinePattern.Dashed;
+                double fraction = (double)i / (pol.Circles.Count - 1);
+                pol.Circles[i].LineColor = circularColormap.GetColor(fraction).WithAlpha(.5);
+                pol.Circles[i].LineWidth = 2;
+                pol.Circles[i].LinePattern = LinePattern.Dashed;
             }
-
-            myPlot.HideAxesAndGrid(); // hide the Cartesian defaults
         }
     }
 }

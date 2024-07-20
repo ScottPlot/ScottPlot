@@ -595,38 +595,24 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public Polar Polar()
+    public PolarAxis PolarAxis(double maximumRadius = 1, bool hideCartesianAxesAndGrids = true)
     {
-        PolarCoordinates[] polarCoordinates = [];
-        Polar polar = new (polarCoordinates)
+        PolarAxis pol = new()
         {
-            MarkerColor = GetNextColor(),
+            MaximumRadius = maximumRadius,
         };
-        Plot.PlottableList.Add(polar);
-        return polar;
-    }
 
-    public Polar Polar(IEnumerable<PolarCoordinates> polarCoordinates, Color? color = null)
-    {
-        var polar = new Polar(polarCoordinates)
+        pol.RegenerateCircles();
+        pol.RegenerateSpokes();
+
+        Plot.PlottableList.Add(pol);
+
+        if (hideCartesianAxesAndGrids)
         {
-            MarkerColor = color ?? GetNextColor(),
-        };
-        Plot.PlottableList.Add(polar);
-        return polar;
-    }
+            Plot.HideAxesAndGrid();
+        }
 
-    public Polar Polar(double radius, double angle, Color? color = null)
-    {
-        return Polar([new PolarCoordinates(radius, angle)], color);
-    }
-
-    public Polar Polar(IEnumerable<double> radii, IEnumerable<double> angles, Color? color = null)
-    {
-        var pts = Enumerable
-            .Range(0, Math.Min(radii.Count(), angles.Count()))
-            .Select(i => new PolarCoordinates(radii.ElementAt(i), angles.ElementAt(i)));
-        return Polar(pts, color);
+        return pol;
     }
 
     public Polygon Polygon(Coordinates[] coordinates)
