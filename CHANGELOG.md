@@ -8,7 +8,8 @@
 * Label: `ScottPlot.Label` has been renamed to `ScottPlot.LabelStyle` to better signal its purpose is to hold styling information rather than store text
 * Label: Improved support for custom horizontal alignment in multiline strings (#4045, #3958, #3859) @karlipl
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
-
+* TickGenerators : `NumericFixedInterval` now accepts `double` intervals and supports the passing of a LabelFormatter @epegeot
+ 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
 * Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250
