@@ -1,4 +1,6 @@
 ## ScottPlot 5.0.37
+_Not yet on NuGet..._
+* Controls: A new `IPlotControl.UserInputProcessor` has been created to replace `IPlotControl.Interaction` which will be deprecated in a future release. The new system supports arbitrary inputs (not limited to mouse actions and key presses), offers extended ability to inject highly customizable ordered plot manipulation logic that respond to streamed inputs, and has been designed to facilitate automated UI testing. Set `IPlotControl.UserInputProcessor.IsEnabled` to `true` to opt-in to this new event processor. (#4053, #3186, #3622)
 * Signal and SignalXY: Improve data source `GetNearestX()` accuracy (#4019) @StendProg
 * Maui: Created a `ScottPlot.Maui.MauiPlot` control to provide interactive plots in .NET Maui applications (#4013) @ByteSore
 * Style: Added `Plot.GetStyle()` and `Plot.SetStyle()` for applying and customizing styles in the `ScottPlot.PlotStyles` namespace (#4025, #3955, #4037) @StendProg @kebox7
@@ -8,8 +10,9 @@
 * Label: `ScottPlot.Label` has been renamed to `ScottPlot.LabelStyle` to better signal its purpose is to hold styling information rather than store text
 * Label: Improved support for custom horizontal alignment in multiline strings (#4045, #3958, #3859) @karlipl
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
+* Controls: Added autoscale to default context menu (#4053)
 * TickGenerators : `NumericFixedInterval` now accepts `double` intervals and supports the passing of a LabelFormatter @epegeot
- 
+
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
 * Fonts: Made typeface caching thread-safe to improve support for multi-threaded environments (#3940) @Hawkwind250

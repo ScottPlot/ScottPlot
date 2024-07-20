@@ -29,7 +29,16 @@ public class AvaPlotMenu : IPlotMenu
         // TODO: Copying images to the clipboard is still difficult in Avalonia
         // https://github.com/AvaloniaUI/Avalonia/issues/3588
 
-        return new ContextMenuItem[] { saveImage };
+        ContextMenuItem autoscale = new()
+        {
+            Label = "Autoscale",
+            OnInvoke = Autoscale,
+        };
+
+        return new ContextMenuItem[] {
+            saveImage,
+            autoscale,
+        };
     }
 
     public ContextMenu GetContextMenu()
@@ -82,6 +91,12 @@ public class AvaPlotMenu : IPlotMenu
         new("SVG Files") { Patterns = new List<string> { "*.svg" } },
         new("All Files") { Patterns = new List<string> { "*" } },
     };
+
+    public void Autoscale(IPlotControl plotControl)
+    {
+        plotControl.Plot.Axes.AutoScale();
+        plotControl.Refresh();
+    }
 
     public void ShowContextMenu(Pixel pixel)
     {

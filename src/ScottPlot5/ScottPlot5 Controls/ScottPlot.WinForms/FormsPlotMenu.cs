@@ -30,7 +30,13 @@ public class FormsPlotMenu : IPlotMenu
         ContextMenuItem copyImage = new()
         {
             Label = "Copy to Clipboard",
-            OnInvoke = CopyImageToClipboard
+            OnInvoke = CopyImageToClipboard,
+        };
+
+        ContextMenuItem autoscale = new()
+        {
+            Label = "Autoscale",
+            OnInvoke = Autoscale,
         };
 
         ContextMenuItem newWindow = new()
@@ -43,6 +49,7 @@ public class FormsPlotMenu : IPlotMenu
         {
             saveImage,
             copyImage,
+            autoscale,
             newWindow,
         };
     }
@@ -57,6 +64,12 @@ public class FormsPlotMenu : IPlotMenu
     public void OpenInNewWindow(IPlotControl plotControl)
     {
         FormsPlotViewer.Launch(plotControl.Plot, "Interactive Plot");
+        plotControl.Refresh();
+    }
+
+    public void Autoscale(IPlotControl plotControl)
+    {
+        plotControl.Plot.Axes.AutoScale();
         plotControl.Refresh();
     }
 
