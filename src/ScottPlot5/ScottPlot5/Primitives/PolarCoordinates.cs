@@ -19,8 +19,8 @@ public struct PolarCoordinates(double radius, Angle angle)
         get
         {
             return new Coordinates(
-                x: radius * Math.Cos(Angle.Radians),
-                y: radius * Math.Sin(Angle.Radians));
+                x: Radius * Math.Cos(Angle.Radians),
+                y: Radius * Math.Sin(Angle.Radians));
         }
     }
 }
