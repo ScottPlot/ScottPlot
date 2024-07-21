@@ -6,7 +6,7 @@ _Not yet on NuGet..._
 * Style: Added `Plot.GetStyle()` and `Plot.SetStyle()` for applying and customizing styles in the `ScottPlot.PlotStyles` namespace (#4025, #3955, #4037) @StendProg @kebox7
 * AxisLimits: Improved accuracy and performance of `WithZoom()` (#4041) @idotta
 * Documentation: Added automatically generated API documentation to the website (#4040, #3822)
-* Font: Improved documenting and testing for plot objects (like Legends) that use custom typefaces (#3830, #3825, #4060, #4043, #4057) @lasooch @kebox7
+* Font: Improved documentation and testing for plot objects (like Legends) that use custom typefaces (#3830, #3825, #4060, #4043, #4057) @lasooch @kebox7
 * Label: `ScottPlot.Label` has been renamed to `ScottPlot.LabelStyle` to better signal its purpose is to hold styling information rather than store text
 * Label: Improved support for custom horizontal alignment in multiline strings (#4045, #3958, #3859) @karlipl
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
