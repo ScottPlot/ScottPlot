@@ -2,6 +2,7 @@
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
+using System.Diagnostics;
 
 namespace ScottPlot.Maui;
 
@@ -17,6 +18,7 @@ public partial class MauiPlot : ContentView, IPlotControl
     public IPlotMenu Menu { get; set; }
 
     public float DisplayScale { get; set; } = 1;
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public MauiPlot()
     {
@@ -25,6 +27,7 @@ public partial class MauiPlot : ContentView, IPlotControl
 
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
         Content = _canvas;
         _canvas.PaintSurface += OnPaintSurface;
@@ -82,7 +85,7 @@ public partial class MauiPlot : ContentView, IPlotControl
         }
     }
 
-private Pixel GetMousePos(DragStartingEventArgs e)
+    private Pixel GetMousePos(DragStartingEventArgs e)
     {
         Point? position = e.GetPosition(null);
         if (position is null)
