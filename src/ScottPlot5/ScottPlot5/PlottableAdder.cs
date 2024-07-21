@@ -595,6 +595,26 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public PolarAxis PolarAxis(double maximumRadius = 1, bool hideCartesianAxesAndGrids = true)
+    {
+        PolarAxis pol = new()
+        {
+            MaximumRadius = maximumRadius,
+        };
+
+        pol.RegenerateCircles();
+        pol.RegenerateSpokes();
+
+        Plot.PlottableList.Add(pol);
+
+        if (hideCartesianAxesAndGrids)
+        {
+            Plot.HideAxesAndGrid();
+        }
+
+        return pol;
+    }
+
     public Polygon Polygon(Coordinates[] coordinates)
     {
         Color color = GetNextColor();
