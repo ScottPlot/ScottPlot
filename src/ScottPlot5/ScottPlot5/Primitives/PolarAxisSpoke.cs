@@ -3,13 +3,13 @@
 /// <summary>
 /// A straight line extending outward from the origin
 /// </summary>
-public class PolarAxisSpoke(double degrees, double length) : IHasLine
+public class PolarAxisSpoke(Angle angle, double length) : IHasLine
 {
-    public double Degrees { get; set; } = degrees;
+    public Angle Angle { get; set; } = angle;
 
     public double Length { get; set; } = length;
 
-    LabelStyle LabelStyle = new();
+    public readonly LabelStyle LabelStyle = new();
 
     public LineStyle LineStyle { get; set; } = new()
     {
@@ -35,20 +35,16 @@ public class PolarAxisSpoke(double degrees, double length) : IHasLine
         set => LineStyle.Color = value;
     }
 
-    public PolarCoordinates GetPolarCoordinates()
-    {
-        return new PolarCoordinates(Length, Degrees);
-    }
-
     public void Render(RenderPack rp, IAxes axes, SKPaint paint, double labelDistance)
     {
-        PolarCoordinates polar = GetPolarCoordinates();
-        Pixel pixel = axes.GetPixel(polar) - axes.GetPixel(Coordinates.Origin);
-        Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), pixel, LineStyle);
+        PolarCoordinates tipPoint = new(Length, Angle);
+        Pixel tipPixel = axes.GetPixel(tipPoint.CartesianCoordinates) - axes.GetPixel(Coordinates.Origin);
+        Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, LineStyle);
 
-        LabelStyle.Text = $"{Degrees}";
-        PolarCoordinates labPolar = new(polar.Radial * labelDistance, polar.Angle);
-        Pixel labelPixel = axes.GetPixel(labPolar) - axes.GetPixel(Coordinates.Origin);
+        LabelStyle.Text = $"{Angle.Degrees}"; // TODO: use a customizable label formatter
+
+        PolarCoordinates labelPoint = new(tipPoint.Radius * labelDistance, tipPoint.Angle);
+        Pixel labelPixel = axes.GetPixel(labelPoint.CartesianCoordinates) - axes.GetPixel(Coordinates.Origin);
         PixelRect labelRect = LabelStyle.Measure().Rect(Alignment.MiddleCenter);
         Pixel labelOffset = labelRect.Center - labelRect.TopLeft;
         labelPixel -= labelOffset;

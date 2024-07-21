@@ -1,38 +1,37 @@
 ﻿namespace ScottPlot;
 
-public static class Angle
+public struct Angle
 {
-    /// <summary>
-    /// Convert degrees to radians
-    /// </summary>
-    public static double ToRadians(double degrees)
+    public double Degrees { get; set; }
+
+    public double Radians
     {
-        return degrees * Math.PI / 180;
+        get => Degrees * Math.PI / 180;
+        set => Degrees = value * 180 / Math.PI;
     }
 
-    /// <summary>
-    /// Convert radians to degrees
-    /// </summary>
-    public static double ToDegrees(double radians)
+    public readonly Angle Normalized
     {
-        return radians * 180 / Math.PI;
+        get
+        {
+            double normalized = Degrees % 360;
+            double degrees = normalized < 0 ? normalized + 360 : normalized;
+            return FromDegrees(degrees);
+        }
     }
 
-    /// <summary>
-    /// Radians normalized to [0, 2π]
-    /// </summary>
-    public static double NormalizeRadians(double radians)
+    public static Angle FromDegrees(double degrees)
     {
-        double normalized = radians % (2 * Math.PI);
-        return normalized < 0 ? normalized + 2 * Math.PI : normalized;
+        return new Angle() { Degrees = degrees };
     }
 
-    /// <summary>
-    /// Degrees normalized to [0, 360]
-    /// </summary>
-    public static double NormalizeDegrees(double degrees)
+    public static Angle FromRadians(double radians)
     {
-        double normalized = degrees % 360;
-        return normalized < 0 ? normalized + 360 : normalized;
+        return new Angle() { Radians = radians };
+    }
+
+    public override readonly string ToString()
+    {
+        return $"Angle = {Degrees} degrees";
     }
 }

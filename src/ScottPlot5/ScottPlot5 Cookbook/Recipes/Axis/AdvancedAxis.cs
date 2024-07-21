@@ -190,9 +190,9 @@ public class AdvancedAxis : ICategory
 
             // define spoke angle and length
             pol.Spokes.Clear();
-            pol.Spokes.Add(new(0, 0.5));
-            pol.Spokes.Add(new(45, 0.75));
-            pol.Spokes.Add(new(90, 1.0));
+            pol.Spokes.Add(new(Angle.FromDegrees(0), 0.5));
+            pol.Spokes.Add(new(Angle.FromDegrees(45), 0.75));
+            pol.Spokes.Add(new(Angle.FromDegrees(90), 1.0));
 
             // define circle radius
             pol.Circles.Clear();

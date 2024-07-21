@@ -52,7 +52,8 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         double delta = 360.0 / count;
         for (int i = 0; i < count; i++)
         {
-            PolarAxisSpoke spoke = new(delta * i, MaximumRadius);
+            Angle angle = Angle.FromDegrees(delta * i);
+            PolarAxisSpoke spoke = new(angle, MaximumRadius);
             Spokes.Add(spoke);
         }
     }
