@@ -121,15 +121,18 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
 
     public virtual void UpdateAxisLimits(Plot plot)
     {
-        // Square grid need to render data, so implement IManagesAxisLimits
-        plot.Axes.Rules.Add(new AxisRules.SquareZoomOut(Axes.XAxis, Axes.YAxis));
+        foreach (IAxisRule rule in plot.Axes.Rules)
+        {
+            if (rule is AxisRules.SquareZoomOut)
+                return;
+        }
+
+        AxisRules.SquareZoomOut squareRule = new(Axes.XAxis, Axes.YAxis);
+        plot.Axes.Rules.Add(squareRule);
     }
 
     public virtual void Render(RenderPack rp)
     {
-        // TODO: make sure this doesn't creep up
-        Debug.WriteLine($"NUMBER OF RULES: {rp.Plot.Axes.Rules.Count}");
-
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
