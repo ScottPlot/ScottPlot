@@ -1,8 +1,13 @@
 ﻿namespace ScottPlot;
 
-public class Label
+[Obsolete("Label has been renamed to LabelStyle", true)]
+public class Label : LabelStyle { }
+
+public class LabelStyle
 {
     public bool IsVisible { get; set; } = true;
+
+    // TODO: deprecate this and pass text into the render method
     public string Text { get; set; } = string.Empty;
 
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
@@ -70,14 +75,13 @@ public class Label
     public float BorderRadiusY = 0;
 
     /// <summary>
-    /// Use the characters in <see cref="Text"/> to determine an installed 
+    /// Use the characters in <see cref="Text"/> to determine an installed
     /// system font most likely to support this character set.
     /// </summary>
     public void SetBestFont()
     {
         FontName = Fonts.Detect(Text);
     }
-
 
     private void ApplyPointPaint(SKPaint paint)
     {
@@ -152,7 +156,8 @@ public class Label
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
-        float maxWidth = lines.Length == 0 ? 0 : lines.Select(paint.MeasureText).Max();
+        float[] lineWidths = lines.Select(paint.MeasureText).ToArray();
+        float maxWidth = lineWidths.Length == 0 ? 0 : lineWidths.Max();
         PixelSize size = new(maxWidth, lineHeight * lines.Length);
 
         // https://github.com/ScottPlot/ScottPlot/issues/3700
@@ -162,6 +167,7 @@ public class Label
         {
             Size = size,
             LineHeight = lineHeight,
+            LineWidths = lineWidths,
             VerticalOffset = verticalOffset,
             Bottom = metrics.Bottom,
         };
@@ -211,6 +217,7 @@ public class Label
         return new Pixel(x, y);
     }
 
+    // TODO: deprecate this and require a string to be passed in
     public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
     {
         if (!IsVisible)
@@ -247,8 +254,7 @@ public class Label
     {
         ApplyTextPaint(paint);
 
-        float dV = bottom ? -measured.Bottom : measured.VerticalOffset;
-
+        float dY = bottom ? -measured.Bottom : measured.VerticalOffset;
         if (Text.Contains('\n'))
         {
             string[] lines = Text.Split('\n');
@@ -256,15 +262,23 @@ public class Label
 
             for (int i = 0; i < lines.Length; i++)
             {
-                float xPx = textRect.Left;
-                float yPx = textRect.Top + (1 + i) * lineHeight + dV;
+                float dX = Alignment.HorizontalFraction() switch
+                {
+                    0 => 0,
+                    0.5f => textRect.Width / 2 - measured.LineWidths[i] / 2,
+                    1 => textRect.Width - measured.LineWidths[i],
+                    _ => throw new NotImplementedException(paint.TextAlign.ToString()),
+                };
+
+                float xPx = textRect.Left + dX;
+                float yPx = textRect.Top + (1 + i) * lineHeight + dY;
                 canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
             float xPx = textRect.Left;
-            float yPx = textRect.Bottom + dV;
+            float yPx = textRect.Bottom + dY;
             canvas.DrawText(Text, xPx, yPx, paint);
         }
     }

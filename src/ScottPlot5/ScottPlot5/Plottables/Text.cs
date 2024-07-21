@@ -6,7 +6,7 @@ public class Text : LabelStyleProperties, IPlottable
     public float OffsetX { get; set; }
     public float OffsetY { get; set; }
 
-    public override Label LabelStyle { get; set; } = new() { FontSize = 14 };
+    public override LabelStyle LabelStyle { get; set; } = new() { FontSize = 14 };
     public Alignment Alignment { get => LabelAlignment; set => LabelAlignment = value; }
 
     public bool IsVisible { get; set; } = true;
@@ -16,7 +16,7 @@ public class Text : LabelStyleProperties, IPlottable
     #region obsolete
 
     [Obsolete("Interact properties in this class (e.g., LabelFontColor) or properties of LabelStyle", true)]
-    public readonly Label Label = null!;
+    public readonly LabelStyle Label = null!;
 
     [Obsolete("Use LabelFontColor")]
     public Color Color { get => LabelFontColor; set => LabelFontColor = value; }

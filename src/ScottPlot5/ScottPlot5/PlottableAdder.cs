@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.DataSources;
-using ScottPlot.Plottable;
 
 namespace ScottPlot;
 
@@ -594,6 +593,26 @@ public class PlottableAdder(Plot plot)
     {
         Plot.PlottableList.Add(plottable);
         return plottable;
+    }
+
+    public PolarAxis PolarAxis(double maximumRadius = 1, bool hideCartesianAxesAndGrids = true)
+    {
+        PolarAxis pol = new()
+        {
+            MaximumRadius = maximumRadius,
+        };
+
+        pol.RegenerateCircles();
+        pol.RegenerateSpokes();
+
+        Plot.PlottableList.Add(pol);
+
+        if (hideCartesianAxesAndGrids)
+        {
+            Plot.HideAxesAndGrid();
+        }
+
+        return pol;
     }
 
     public Polygon Polygon(Coordinates[] coordinates)

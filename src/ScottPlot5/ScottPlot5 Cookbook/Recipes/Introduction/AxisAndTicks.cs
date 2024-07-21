@@ -60,23 +60,4 @@ public class AxisAndTicks : ICategory
             myPlot.Axes.AutoScale();
         }
     }
-
-    public class Frameless : RecipeBase
-    {
-        public override string Name => "Frameless Plot";
-        public override string Description => "How to create a plot containig only the data area and no axes.";
-
-        [Test]
-        public override void Execute()
-        {
-            myPlot.Add.Signal(Generate.Sin(51));
-            myPlot.Add.Signal(Generate.Cos(51));
-
-            // make the data area cover the full figure
-            myPlot.Layout.Frameless();
-
-            // set the data area background so we can observe its size
-            myPlot.DataBackground.Color = Colors.WhiteSmoke;
-        }
-    }
 }

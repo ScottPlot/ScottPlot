@@ -114,6 +114,9 @@ public static class Fonts
         // A text element can consist of multiple Unicode code points.
         // Each code point can consist of 1 or 2 C# 'char's (=UTF-16 code units).
 
+        if (string.IsNullOrWhiteSpace(text))
+            return Fonts.Default;
+
         string defaultFontFamily = GetDefaultFontFamily(); // Should use the ScottPlot default font instead
         List<int> standaloneCodePoints = GetStandaloneCodePoints(text);
 

@@ -70,7 +70,7 @@ internal class ForbiddenCodeTests
         StringBuilder errorMessages = new();
         foreach (string filePath in SourceFilePaths)
         {
-            if (Path.GetFileName(filePath) == "Label.cs")
+            if (Path.GetFileName(filePath) == "LabelStyle.cs")
                 continue;
 
             if (Path.GetFileName(filePath) == "MeasuredText.cs")
@@ -107,7 +107,7 @@ internal class ForbiddenCodeTests
         StringBuilder errorMessages = new();
         foreach (string filePath in SourceFilePaths)
         {
-            if (Path.GetFileName(filePath) == "Label.cs")
+            if (Path.GetFileName(filePath) == "LabelStyle.cs")
                 continue;
 
             string[] lines = File.ReadAllLines(filePath);
@@ -128,7 +128,7 @@ internal class ForbiddenCodeTests
 
         offences.Should().Be(0,
             $"SKPaint.FontSpacing must never be accessed." +
-            $"Create a Label, style it as desired, use its Measeure() method." +
+            $"Create a Label, style it as desired, use its Measure() method." +
             $"{offences} offences:\n" +
             $"{errorMessages}");
     }

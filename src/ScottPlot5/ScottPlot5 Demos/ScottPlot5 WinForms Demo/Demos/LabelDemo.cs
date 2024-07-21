@@ -30,7 +30,7 @@ public partial class LabelDemo : Form, IDemoWindow
         SKCanvas canvas = surface.Canvas;
         canvas.Clear(SKColors.White);
 
-        ScottPlot.Label label = new()
+        ScottPlot.LabelStyle label = new()
         {
             ForeColor = Colors.Black,
             BorderColor = Colors.Gray,

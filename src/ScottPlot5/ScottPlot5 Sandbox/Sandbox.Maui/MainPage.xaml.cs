@@ -1,4 +1,6 @@
 ﻿
+﻿using ScottPlot;
+
 namespace Sandbox.Maui;
 
 public partial class MainPage : ContentPage

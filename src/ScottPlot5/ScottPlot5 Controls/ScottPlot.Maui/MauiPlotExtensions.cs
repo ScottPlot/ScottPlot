@@ -26,4 +26,19 @@ internal static class MauiPlotExtensions
     {
         return new Point(p.X, p.Y);
     }
+
+    internal static Control.MouseButton ToButton(this TappedEventArgs e, MauiPlot plot)
+    {
+        var props = e.GetPosition(plot);
+        switch (e.Buttons)
+        {
+            case ButtonsMask.Primary:
+                return Control.MouseButton.Left;
+            case ButtonsMask.Secondary:
+                return Control.MouseButton.Right;
+            default:
+                return Control.MouseButton.Unknown;
+        }
+    }
 }
+

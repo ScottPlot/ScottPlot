@@ -20,7 +20,7 @@ public class DateTimeFixedIntervalsTests
             NumericConversion.ToNumber(endRange)
         );
 
-        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new Label());
+        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new LabelStyle());
 
         gen.Ticks.Skip(1).First().Position.Should().Be(NumericConversion.ToNumber(startRange.AddHours(1)));
     }
@@ -38,7 +38,7 @@ public class DateTimeFixedIntervalsTests
             NumericConversion.ToNumber(endRange)
         );
 
-        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new Label());
+        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new LabelStyle());
 
         // 1st major tick is start
         gen.Ticks.First(t => t.IsMajor).Position.Should().Be(NumericConversion.ToNumber(startRange));
@@ -62,7 +62,7 @@ public class DateTimeFixedIntervalsTests
             NumericConversion.ToNumber(endRange)
         );
 
-        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new Label());
+        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new LabelStyle());
 
         // 1st major tick is start
         gen.Ticks.First(t => t.IsMajor).Position.Should().Be(NumericConversion.ToNumber(startRange));
@@ -88,7 +88,7 @@ public class DateTimeFixedIntervalsTests
             NumericConversion.ToNumber(endRange)
         );
 
-        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new Label());
+        gen.Regenerate(range, Edge.Bottom, new PixelLength(1), new SKPaint(), new LabelStyle());
 
         // 1st minor tick is 3am, 45minutes after range start.
         gen.Ticks.First(t => !t.IsMajor).Position.Should().Be(NumericConversion.ToNumber(startRange.AddMinutes(45)));

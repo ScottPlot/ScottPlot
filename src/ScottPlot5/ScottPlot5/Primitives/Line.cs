@@ -1,10 +1,6 @@
-﻿using System.IO;
+﻿namespace ScottPlot;
 
-namespace ScottPlot;
-
-/// <summary>
-/// Represents an line on screen defined by the endpoints, pattern, and style.
-/// </summary>
+[Obsolete("use CoordinateLine or PixelLine", true)]
 public class Line
 {
     public Coordinates Start { get; set; }

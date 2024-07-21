@@ -36,9 +36,9 @@ public abstract class AxisBase : LabelStyleProperties
     public virtual ITickGenerator TickGenerator { get; set; } = null!;
 
     [Obsolete("use LabelText, LabelFontColor, LabelFontSize, LabelFontName, etc. or properties of LabelStyle", false)]
-    public Label Label => LabelStyle;
+    public LabelStyle Label => LabelStyle;
 
-    public override Label LabelStyle { get; set; } = new()
+    public override LabelStyle LabelStyle { get; set; } = new()
     {
         Text = string.Empty,
         FontSize = 16,
@@ -71,7 +71,7 @@ public abstract class AxisBase : LabelStyleProperties
         AntiAlias = false,
     };
 
-    public Label TickLabelStyle { get; set; } = new()
+    public LabelStyle TickLabelStyle { get; set; } = new()
     {
         Alignment = Alignment.MiddleCenter
     };
@@ -114,7 +114,7 @@ public abstract class AxisBase : LabelStyleProperties
         Drawing.DrawLine(rp.Canvas, paint, pxLine, lineStyle);
     }
 
-    private static void DrawTicksHorizontalAxis(RenderPack rp, Label label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
+    private static void DrawTicksHorizontalAxis(RenderPack rp, LabelStyle label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
     {
         if (axis.Edge != Edge.Bottom && axis.Edge != Edge.Top)
         {
@@ -151,7 +151,7 @@ public abstract class AxisBase : LabelStyleProperties
         }
     }
 
-    private static void DrawTicksVerticalAxis(RenderPack rp, Label label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
+    private static void DrawTicksVerticalAxis(RenderPack rp, LabelStyle label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
     {
         if (axis.Edge != Edge.Left && axis.Edge != Edge.Right)
         {
@@ -187,7 +187,7 @@ public abstract class AxisBase : LabelStyleProperties
         }
     }
 
-    public static void DrawTicks(RenderPack rp, Label label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
+    public static void DrawTicks(RenderPack rp, LabelStyle label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
     {
         if (axis.Edge.IsVertical())
             DrawTicksVerticalAxis(rp, label, panelRect, ticks, axis, majorStyle, minorStyle);
