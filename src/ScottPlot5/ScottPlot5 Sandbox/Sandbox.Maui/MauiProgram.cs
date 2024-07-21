@@ -25,3 +25,12 @@ public static class MauiProgram
         return builder.Build();
     }
 }
+
+public static class ScottPlotMauiExtensions
+{
+    public static MauiAppBuilder UseScottPlot(this MauiAppBuilder builder)
+    {
+        // TODO: what goes here?
+        return builder;
+    }
+}
