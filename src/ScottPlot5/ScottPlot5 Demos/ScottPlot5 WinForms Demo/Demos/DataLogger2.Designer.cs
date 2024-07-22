@@ -30,8 +30,14 @@ partial class DataLogger2
     {
         btnJump = new Button();
         btnFull = new Button();
-        formsPlot1 = new ScottPlot.WinForms.FormsPlot();
         btnSlide = new Button();
+        formsPlotHorz = new ScottPlot.WinForms.FormsPlot();
+        formsPlotVert = new ScottPlot.WinForms.FormsPlot();
+        splitContainer = new SplitContainer();
+        ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+        splitContainer.Panel1.SuspendLayout();
+        splitContainer.Panel2.SuspendLayout();
+        splitContainer.SuspendLayout();
         SuspendLayout();
         // 
         // btnJump
@@ -52,15 +58,6 @@ partial class DataLogger2
         btnFull.Text = "Full";
         btnFull.UseVisualStyleBackColor = true;
         // 
-        // formsPlot1
-        // 
-        formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        formsPlot1.DisplayScale = 1F;
-        formsPlot1.Location = new Point(12, 52);
-        formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(685, 345);
-        formsPlot1.TabIndex = 6;
-        // 
         // btnSlide
         // 
         btnSlide.Location = new Point(200, 12);
@@ -70,17 +67,56 @@ partial class DataLogger2
         btnSlide.Text = "Slide";
         btnSlide.UseVisualStyleBackColor = true;
         // 
-        // DataLogger
+        // formsPlotHorz
+        // 
+        formsPlotHorz.DisplayScale = 1F;
+        formsPlotHorz.Dock = DockStyle.Fill;
+        formsPlotHorz.Location = new Point(0, 0);
+        formsPlotHorz.Name = "formsPlotHorz";
+        formsPlotHorz.Size = new Size(536, 565);
+        formsPlotHorz.TabIndex = 6;
+        // 
+        // formsPlotVert
+        // 
+        formsPlotVert.DisplayScale = 1F;
+        formsPlotVert.Dock = DockStyle.Fill;
+        formsPlotVert.Location = new Point(0, 0);
+        formsPlotVert.Name = "formsPlotVert";
+        formsPlotVert.Size = new Size(532, 565);
+        formsPlotVert.TabIndex = 7;
+        // 
+        // splitContainer
+        // 
+        splitContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        splitContainer.Location = new Point(12, 52);
+        splitContainer.Name = "splitContainer";
+        // 
+        // splitContainer.Panel1
+        // 
+        splitContainer.Panel1.Controls.Add(formsPlotHorz);
+        // 
+        // splitContainer.Panel2
+        // 
+        splitContainer.Panel2.Controls.Add(formsPlotVert);
+        splitContainer.Size = new Size(1072, 565);
+        splitContainer.SplitterDistance = 536;
+        splitContainer.TabIndex = 12;
+        // 
+        // DataLogger2
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(709, 409);
+        ClientSize = new Size(1096, 629);
+        Controls.Add(splitContainer);
         Controls.Add(btnSlide);
         Controls.Add(btnJump);
         Controls.Add(btnFull);
-        Controls.Add(formsPlot1);
         Name = "DataLogger2";
         Text = "DataLogger2";
+        splitContainer.Panel1.ResumeLayout(false);
+        splitContainer.Panel2.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+        splitContainer.ResumeLayout(false);
         ResumeLayout(false);
     }
 
@@ -88,6 +124,8 @@ partial class DataLogger2
 
     private Button btnJump;
     private Button btnFull;
-    private ScottPlot.WinForms.FormsPlot formsPlot1;
     private Button btnSlide;
+    private ScottPlot.WinForms.FormsPlot formsPlotHorz;
+    private ScottPlot.WinForms.FormsPlot formsPlotVert;
+    private SplitContainer splitContainer;
 }

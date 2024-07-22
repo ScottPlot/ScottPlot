@@ -14,13 +14,7 @@ public class DataStreamer2Source : IDataStreamer2Source
     {
         Coordinates = coordinates;
     }
-
-    public bool Rotated
-    {
-        get => false;
-        set => throw new NotImplementedException("Rotation for this data source is not yet supported. See GitHub issue #3946.");
-    }
-
+    
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
     public double YScale { get; set; } = 1;
@@ -56,16 +50,6 @@ public class DataStreamer2Source : IDataStreamer2Source
         set => WasRendered = value;
     }
 
-    public AxisLimits GetAxisLimits()
-    {
-        CoordinateRange rangeX = GetRangeX();
-        var rangeY = GetRangeY(rangeX);
-
-        return Rotated
-            ? new AxisLimits(rangeY, rangeX)
-            : new AxisLimits(rangeX, rangeY);
-    }
-
     public CoordinateRange GetRangeX() => Coordinates.Count == 0 ? CoordinateRange.NoLimits : new CoordinateRange(Coordinates[0].X + XOffset, Coordinates[^1].X + XOffset);
 
     public CoordinateRange GetRangeY(CoordinateRange newRangeX)
@@ -79,26 +63,19 @@ public class DataStreamer2Source : IDataStreamer2Source
         return GetRangeY(startIndex, endIndex);
     }
 
-    public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    public Pixel[] GetPixelsToDrawHorizontally(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         if (Coordinates.Count == 0)
             return [];
 
-        return Rotated
-            ? GetPixelsToDrawVertically(rp, axes, connectStyle)
-            : GetPixelsToDrawHorizontally(rp, axes, connectStyle);
-    }
-
-    private Pixel[] GetPixelsToDrawHorizontally(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
-    {
         // determine the range of data in view
         (Pixel[] pointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] pointAfter, int dataIndexLast) = GetLastPointX(axes);
-        IndexRange visibileRange = new(dataIndexFirst, dataIndexLast);
+        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
         // get all points in view
         IEnumerable<Pixel> visiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
-            .Select(pxColumn => GetColumnPixelsX(pxColumn, visibileRange, rp, axes))
+            .Select(pxColumn => GetColumnPixelsX(pxColumn, visibleRange, rp, axes))
             .SelectMany(x => x);
 
         Pixel[] leftOutsidePoint = pointBefore, rightOutsidePoint = pointAfter;
@@ -110,7 +87,7 @@ public class DataStreamer2Source : IDataStreamer2Source
 
         // duplicate the last point to ensure it is always rendered
         // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(new Coordinates(Coordinates[dataIndexLast].X, Coordinates[dataIndexLast].Y));
+        Pixel lastPoint = axes.GetPixel(Coordinates[dataIndexLast]);
 
         // combine with one extra point before and after
         Pixel[] points = [.. leftOutsidePoint, .. visiblePoints, .. rightOutsidePoint, lastPoint];
@@ -125,8 +102,11 @@ public class DataStreamer2Source : IDataStreamer2Source
         return points;
     }
 
-    private Pixel[] GetPixelsToDrawVertically(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    public Pixel[] GetPixelsToDrawVertically(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
+        if (Coordinates.Count == 0)
+            return [];
+
         // determine the range of data in view
         (Pixel[] pointBefore, int dataIndexFirst) = GetFirstPointY(axes);
         (Pixel[] pointAfter, int dataIndexLast) = GetLastPointY(axes);
@@ -146,7 +126,7 @@ public class DataStreamer2Source : IDataStreamer2Source
 
         // duplicate the last point to ensure it is always rendered
         // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(new Coordinates(Coordinates[dataIndexLast].X, Coordinates[dataIndexLast].Y));
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Coordinates[dataIndexLast].Y, Coordinates[dataIndexLast].X));
 
         // combine with one extra point before and after
         Pixel[] points = [.. bottomOutsidePoint, .. visiblePoints, .. topOutsidePoint, lastPoint];
@@ -277,6 +257,9 @@ public class DataStreamer2Source : IDataStreamer2Source
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointX(IAxes axes)
     {
+        if (Coordinates.Count == 1)
+            return ([], 0);
+
         var (firstPointPosition, firstPointIndex) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
         if (firstPointPosition <= 0)
@@ -296,6 +279,9 @@ public class DataStreamer2Source : IDataStreamer2Source
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointY(IAxes axes)
     {
+        if (Coordinates.Count == 1)
+            return ([], 0);
+
         var (firstPointPosition, firstPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Min : axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
 
         if (firstPointPosition <= 0)
@@ -303,8 +289,8 @@ public class DataStreamer2Source : IDataStreamer2Source
             return ([], 0);
         }
 
-        float beforeX = axes.GetPixelX(Coordinates[firstPointIndex - 1].X + XOffset);
-        float beforeY = axes.GetPixelY(Coordinates[firstPointIndex - 1].Y * YScale + YOffset);
+        float beforeY = axes.GetPixelY(Coordinates[firstPointIndex - 1].X + XOffset);
+        float beforeX = axes.GetPixelX(Coordinates[firstPointIndex - 1].Y * YScale + YOffset);
         Pixel beforePoint = new(beforeX, beforeY);
         return ([beforePoint], firstPointIndex);
     }
@@ -315,6 +301,9 @@ public class DataStreamer2Source : IDataStreamer2Source
     /// </summary>
     private (Pixel[] pointsAfter, int lastIndex) GetLastPointX(IAxes axes)
     {
+        if (Coordinates.Count == 1)
+            return ([], LastIndex);
+
         var (lastPointPosition, lastPointIndex) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
         if (lastPointPosition > LastIndex)
@@ -334,6 +323,9 @@ public class DataStreamer2Source : IDataStreamer2Source
     /// </summary>
     private (Pixel[] pointsAfter, int lastIndex) GetLastPointY(IAxes axes)
     {
+        if (Coordinates.Count == 1)
+            return ([], LastIndex);
+
         var (lastPointPosition, lastPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
 
         if (lastPointPosition > LastIndex)
@@ -341,8 +333,8 @@ public class DataStreamer2Source : IDataStreamer2Source
             return ([], LastIndex);
         }
 
-        float afterX = axes.GetPixelX(Coordinates[lastPointIndex].X + XOffset);
-        float afterY = axes.GetPixelY(Coordinates[lastPointIndex].Y * YScale + YOffset);
+        float afterY = axes.GetPixelY(Coordinates[lastPointIndex].X + XOffset);
+        float afterX = axes.GetPixelX(Coordinates[lastPointIndex].Y * YScale + YOffset);
         Pixel afterPoint = new(afterX, afterY);
         return ([afterPoint], lastPointIndex);
     }
