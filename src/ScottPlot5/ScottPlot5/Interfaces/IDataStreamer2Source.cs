@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public interface IDataLogger2Source
+public interface IDataStreamer2Source
 {
     /// <summary>
     /// X position of the first data point

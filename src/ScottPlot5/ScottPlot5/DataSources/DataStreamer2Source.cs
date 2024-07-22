@@ -2,7 +2,7 @@
 
 namespace ScottPlot.DataSources;
 
-public class DataStreamer2Source : IDataLogger2Source
+public class DataStreamer2Source : IDataStreamer2Source
 {
     private static readonly CoordinatesXComparer XComparer = new();
     private readonly IList<Coordinates> Coordinates;
@@ -46,11 +46,11 @@ public class DataStreamer2Source : IDataLogger2Source
         WasRendered = true;
     }
 
-    IList<Coordinates> IDataLogger2Source.Coordinates => Coordinates;
+    IList<Coordinates> IDataStreamer2Source.Coordinates => Coordinates;
 
-    bool IDataLogger2Source.HasNewData => HasNewData;
+    bool IDataStreamer2Source.HasNewData => HasNewData;
 
-    bool IDataLogger2Source.WasRendered
+    bool IDataStreamer2Source.WasRendered
     {
         get => WasRendered;
         set => WasRendered = value;

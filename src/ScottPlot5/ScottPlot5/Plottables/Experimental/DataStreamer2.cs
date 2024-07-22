@@ -2,9 +2,9 @@
 
 namespace ScottPlot.Plottables.Experimental;
 
-public class DataStreamer2(IDataLogger2Source dataSource) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
+public class DataStreamer2(IDataStreamer2Source dataSource) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
 {
-    public IDataLogger2Source Data { get; set; } = dataSource;
+    public IDataStreamer2Source Data { get; set; } = dataSource;
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
