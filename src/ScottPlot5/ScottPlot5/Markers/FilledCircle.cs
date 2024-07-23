@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class FilledCircle : IMarker
+internal class FilledCircle : Marker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float radius = size / 2;
 

@@ -1,11 +1,18 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class OpenSquare : IMarker
+internal class OpenSquare : Marker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         PixelRect rect = new(center, size / 2);
 
-        Drawing.DrawRectangle(canvas, rect, paint, markerStyle.LineStyle);
+        SKPath path = new();
+        path.AddRect(rect.ToSKRect());
+        if (markerStyle.Rotate is not null)
+        {
+            Rotate(path, center, markerStyle.Rotate.Value);
+        }
+
+        Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
 }

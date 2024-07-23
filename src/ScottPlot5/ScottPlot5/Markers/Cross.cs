@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class Cross : IMarker
+internal class Cross : Marker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float offset = size / 2;
 
@@ -11,6 +11,11 @@ internal class Cross : IMarker
         path.LineTo(center.X - offset, center.Y);
         path.MoveTo(center.X, center.Y + offset);
         path.LineTo(center.X, center.Y - offset);
+
+        if (markerStyle.Rotate is not null)
+        {
+            Rotate(path, center, markerStyle.Rotate.Value);
+        }
 
         Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
