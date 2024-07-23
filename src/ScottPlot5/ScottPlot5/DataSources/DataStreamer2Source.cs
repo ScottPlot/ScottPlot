@@ -87,7 +87,8 @@ public class DataStreamer2Source : IDataStreamer2Source
 
         // duplicate the last point to ensure it is always rendered
         // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(Coordinates[dataIndexLast]);
+        int lastPointIndex = axes.XAxis.IsInverted() ? dataIndexFirst : dataIndexLast;
+        Pixel lastPoint = axes.GetPixel(Coordinates[lastPointIndex]);
 
         // combine with one extra point before and after
         Pixel[] points = [.. leftOutsidePoint, .. visiblePoints, .. rightOutsidePoint, lastPoint];
@@ -126,7 +127,8 @@ public class DataStreamer2Source : IDataStreamer2Source
 
         // duplicate the last point to ensure it is always rendered
         // https://github.com/ScottPlot/ScottPlot/issues/3812
-        Pixel lastPoint = axes.GetPixel(new Coordinates(Coordinates[dataIndexLast].Y, Coordinates[dataIndexLast].X));
+        int lastPointIndex = axes.YAxis.IsInverted() ? dataIndexFirst : dataIndexLast;
+        Pixel lastPoint = axes.GetPixel(new Coordinates(Coordinates[lastPointIndex].Y, Coordinates[lastPointIndex].X));
 
         // combine with one extra point before and after
         Pixel[] points = [.. bottomOutsidePoint, .. visiblePoints, .. topOutsidePoint, lastPoint];

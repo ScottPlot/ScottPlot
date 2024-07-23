@@ -28,89 +28,71 @@ partial class DataLogger2
     /// </summary>
     private void InitializeComponent()
     {
-        btnJump = new Button();
-        btnFull = new Button();
-        btnSlide = new Button();
-        formsPlotHorz = new ScottPlot.WinForms.FormsPlot();
-        formsPlotVert = new ScottPlot.WinForms.FormsPlot();
         splitContainer = new SplitContainer();
+        loggerPlotHorz = new DataStreamerCtrl();
+        loggerPlotVert = new DataStreamerCtrl();
+        cbRunning = new CheckBox();
         ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
         splitContainer.Panel1.SuspendLayout();
         splitContainer.Panel2.SuspendLayout();
         splitContainer.SuspendLayout();
         SuspendLayout();
         // 
-        // btnJump
-        // 
-        btnJump.Location = new Point(106, 12);
-        btnJump.Name = "btnJump";
-        btnJump.Size = new Size(88, 34);
-        btnJump.TabIndex = 9;
-        btnJump.Text = "Jump";
-        btnJump.UseVisualStyleBackColor = true;
-        // 
-        // btnFull
-        // 
-        btnFull.Location = new Point(12, 12);
-        btnFull.Name = "btnFull";
-        btnFull.Size = new Size(88, 34);
-        btnFull.TabIndex = 8;
-        btnFull.Text = "Full";
-        btnFull.UseVisualStyleBackColor = true;
-        // 
-        // btnSlide
-        // 
-        btnSlide.Location = new Point(200, 12);
-        btnSlide.Name = "btnSlide";
-        btnSlide.Size = new Size(88, 34);
-        btnSlide.TabIndex = 10;
-        btnSlide.Text = "Slide";
-        btnSlide.UseVisualStyleBackColor = true;
-        // 
-        // formsPlotHorz
-        // 
-        formsPlotHorz.DisplayScale = 1F;
-        formsPlotHorz.Dock = DockStyle.Fill;
-        formsPlotHorz.Location = new Point(0, 0);
-        formsPlotHorz.Name = "formsPlotHorz";
-        formsPlotHorz.Size = new Size(536, 565);
-        formsPlotHorz.TabIndex = 6;
-        // 
-        // formsPlotVert
-        // 
-        formsPlotVert.DisplayScale = 1F;
-        formsPlotVert.Dock = DockStyle.Fill;
-        formsPlotVert.Location = new Point(0, 0);
-        formsPlotVert.Name = "formsPlotVert";
-        formsPlotVert.Size = new Size(532, 565);
-        formsPlotVert.TabIndex = 7;
-        // 
         // splitContainer
         // 
         splitContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        splitContainer.Location = new Point(12, 52);
+        splitContainer.Location = new Point(12, 37);
         splitContainer.Name = "splitContainer";
         // 
         // splitContainer.Panel1
         // 
-        splitContainer.Panel1.Controls.Add(formsPlotHorz);
+        splitContainer.Panel1.Controls.Add(loggerPlotHorz);
         // 
         // splitContainer.Panel2
         // 
-        splitContainer.Panel2.Controls.Add(formsPlotVert);
-        splitContainer.Size = new Size(1072, 565);
+        splitContainer.Panel2.Controls.Add(loggerPlotVert);
+        splitContainer.Size = new Size(1072, 580);
         splitContainer.SplitterDistance = 536;
-        splitContainer.TabIndex = 12;
+        splitContainer.TabIndex = 3;
+        // 
+        // loggerPlotHorz
+        // 
+        loggerPlotHorz.Dock = DockStyle.Fill;
+        loggerPlotHorz.Location = new Point(0, 0);
+        loggerPlotHorz.Name = "loggerPlotHorz";
+        loggerPlotHorz.Rotated = false;
+        loggerPlotHorz.Size = new Size(536, 580);
+        loggerPlotHorz.TabIndex = 1;
+        // 
+        // loggerPlotVert
+        // 
+        loggerPlotVert.Dock = DockStyle.Fill;
+        loggerPlotVert.Location = new Point(0, 0);
+        loggerPlotVert.Name = "loggerPlotVert";
+        loggerPlotVert.Rotated = true;
+        loggerPlotVert.Size = new Size(532, 580);
+        loggerPlotVert.TabIndex = 2;
+        // 
+        // cbRunning
+        // 
+        cbRunning.AutoSize = true;
+        cbRunning.Checked = true;
+        cbRunning.CheckState = CheckState.Checked;
+        cbRunning.Location = new Point(26, 12);
+        cbRunning.Name = "cbRunning";
+        cbRunning.Size = new Size(71, 19);
+        cbRunning.TabIndex = 0;
+        cbRunning.Text = "Running";
+        cbRunning.UseVisualStyleBackColor = true;
+        cbRunning.CheckedChanged += cbRunning_CheckedChanged;
         // 
         // DataLogger2
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1096, 629);
+        Controls.Add(cbRunning);
         Controls.Add(splitContainer);
-        Controls.Add(btnSlide);
-        Controls.Add(btnJump);
-        Controls.Add(btnFull);
         Name = "DataLogger2";
         Text = "DataLogger2";
         splitContainer.Panel1.ResumeLayout(false);
@@ -118,14 +100,12 @@ partial class DataLogger2
         ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
         splitContainer.ResumeLayout(false);
         ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion
-
-    private Button btnJump;
-    private Button btnFull;
-    private Button btnSlide;
-    private ScottPlot.WinForms.FormsPlot formsPlotHorz;
-    private ScottPlot.WinForms.FormsPlot formsPlotVert;
     private SplitContainer splitContainer;
+    private CheckBox cbRunning;
+    private DataStreamerCtrl loggerPlotHorz;
+    private DataStreamerCtrl loggerPlotVert;
 }
