@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-public partial class DataLogger2 : Form, IDemoWindow
+public partial class DataStreamer2 : Form, IDemoWindow
 {
     public string Title => "Data Streamer (Experimental)";
     public string Description => "Experimental data streamer that uses a circular buffer for improved performance.";
@@ -11,7 +11,7 @@ public partial class DataLogger2 : Form, IDemoWindow
     readonly ScottPlot.DataGenerators.RandomWalker Walker1 = new(0, multiplier: 0.01);
     readonly ScottPlot.DataGenerators.RandomWalker Walker2 = new(1, multiplier: 1000);
 
-    public DataLogger2()
+    public DataStreamer2()
     {
         InitializeComponent();
 

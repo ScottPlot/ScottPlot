@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class DataLogger2
+partial class DataStreamer2
 {
     /// <summary>
     /// Required designer variable.
@@ -93,7 +93,7 @@ partial class DataLogger2
         ClientSize = new Size(1096, 629);
         Controls.Add(cbRunning);
         Controls.Add(splitContainer);
-        Name = "DataLogger2";
+        Name = "DataStreamer2";
         Text = "DataLogger2";
         splitContainer.Panel1.ResumeLayout(false);
         splitContainer.Panel2.ResumeLayout(false);

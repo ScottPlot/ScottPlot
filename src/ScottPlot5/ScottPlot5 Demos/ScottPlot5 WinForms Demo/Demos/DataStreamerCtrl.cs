@@ -4,7 +4,6 @@ using ScottPlot;
 using ScottPlot.AxisPanels;
 using ScottPlot.Collections;
 using ScottPlot.DataSources;
-using ScottPlot.Plottables.Experimental;
 
 namespace WinForms_Demo.Demos
 {
@@ -32,11 +31,11 @@ namespace WinForms_Demo.Demos
 
             // create two horizontal loggers and add them to the plot
             var data1 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
-            Logger1 = new DataStreamer2(data1) { Color = Colors.C0, Rotated = Rotated };
+            Logger1 = new ScottPlot.Plottables.Experimental.DataStreamer2(data1) { Color = Colors.C0, Rotated = Rotated };
             formsPlot.Plot.Add.Plottable(Logger1);
 
             var data2 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
-            Logger2 = new DataStreamer2(data2) { Color = Colors.C1, Rotated = Rotated };
+            Logger2 = new ScottPlot.Plottables.Experimental.DataStreamer2(data2) { Color = Colors.C1, Rotated = Rotated };
             formsPlot.Plot.Add.Plottable(Logger2);
 
             if (Rotated)
@@ -102,8 +101,8 @@ namespace WinForms_Demo.Demos
             formsPlot.Plot.Axes.AutoScale(invertX: cbInvertedX.Checked, invertY: cbInvertedY.Checked);
         }
 
-        public DataStreamer2 Logger1 { get; private set; }
-        public DataStreamer2 Logger2 { get; private set; }
+        public ScottPlot.Plottables.Experimental.DataStreamer2 Logger1 { get; private set; }
+        public ScottPlot.Plottables.Experimental.DataStreamer2 Logger2 { get; private set; }
 
         public void RefreshPlot()
         {
