@@ -11,7 +11,7 @@ _Not yet on NuGet..._
 * Label: Improved support for custom horizontal alignment in multiline strings (#4045, #3958, #3859) @karlipl
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
 * Controls: Added autoscale to default context menu (#4053)
-* TickGenerator : Fixed a bug on the generation of the lowest tick in `NumericalFixedInterval` @epegeot
+* Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
