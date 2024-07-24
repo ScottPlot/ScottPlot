@@ -20,6 +20,7 @@ _Not yet on NuGet..._
 * Ticks: Improved behavior of the numeric fixed interval tick generator to ensure the correct lowest tick is always rendered (#4089) @epegeot
 * Ticks: Allow the numeric fixed interval tick generator interval to be defined as a `double` (#4090) @epegeot
 * Ticks: Add a custom tick label formatter property to the numeric fixed interval tick generator (#4090) @epegeot
+* Security: Removed outdated reference to `System.Text.Json` which contained CVE-2024-30105 (#4095, #4063) @SerTetora
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
