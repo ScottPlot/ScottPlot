@@ -404,34 +404,34 @@ internal class LegendTests
     }
 
     [Test]
-    public void Test_CustomTypeface_InLegend()
+    public void Test_CustomFont_InLegend()
     {
         string ttfFilePath = Paths.GetTtfFilePaths().First();
-        SKTypeface customTypeface = SKTypeface.FromFile(ttfFilePath);
+        Fonts.AddFontFile("Font Name", ttfFilePath, bold: false, italic: false);
 
         // create a plot with data
         Plot plot = new();
         var sig = plot.Add.Signal(Generate.Sin());
         sig.LegendText = "Sine Wave";
 
-        // axis label custom typeface
+        // axis label custom font
         plot.XLabel("Horizontal Axis Label");
         plot.Axes.Bottom.Label.ForeColor = Colors.Red;
         plot.Axes.Bottom.Label.FontSize = 26;
-        plot.Axes.Bottom.Label.Typeface = customTypeface;
+        plot.Axes.Bottom.Label.FontName = "Font Name";
 
-        // automatic legend items custom typeface (overwrites manual item customizations)
+        // automatic legend items custom font (overwrites manual item customizations)
         //plot.Legend.FontColor = Colors.Green;
         //plot.Legend.FontSize = 26;
-        //plot.Legend.Typeface = customTypeface;
+        //plot.Legend.FontName= "Font Name";
 
-        // manual legend items custom typeface
+        // manual legend items custom font
         plot.Legend.ManualItems.Add(new LegendItem()
         {
             LabelText = "Manual Item",
             LabelFontColor = Colors.Blue,
             LabelFontSize = 26,
-            LabelTypeface = customTypeface,
+            LabelFontName = "Font Name"
         });
 
         plot.SaveTestImage();

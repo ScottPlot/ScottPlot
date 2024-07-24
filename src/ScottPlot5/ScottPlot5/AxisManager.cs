@@ -1,5 +1,6 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using System;
 using System.Linq;
 
 namespace ScottPlot;
@@ -736,6 +737,38 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Adjust limits all axes to pan the pixel distance between two points
+    /// </summary>
+    public void Pan(Pixel mouseDown, Pixel mouseUp)
+    {
+        // at least one render is required before pixel panning is possible
+        if (Plot.RenderManager.LastRender.Count == 0)
+            return;
+
+        float mouseDeltaX = mouseUp.X - mouseDown.X;
+        float mouseDeltaY = mouseUp.Y - mouseDown.Y;
+
+        // note that the plot axis limits move in the direction OPPOSITE to the mouse.
+        // this line also flips the vertical orientation.
+        PixelOffset offset = new(-mouseDeltaX, mouseDeltaY);
+
+        Pan(offset);
+    }
+
+    /// <summary>
+    /// Adjust limits all axes to pan given pixel distance
+    /// </summary>
+    public void Pan(PixelOffset offset)
+    {
+        // at least one render is required before pixel panning is possible
+        if (Plot.RenderManager.LastRender.Count == 0)
+            return;
+
+        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
+    }
+
+    /// <summary>
     /// Adjust limits all axes to pan by the given distance in coordinate space
     /// </summary>
     public void Pan(CoordinateOffset distance)
@@ -745,15 +778,32 @@ public class AxisManager
     }
 
     /// <summary>
-    /// Adjust limits all axes to pan by the given distance in pixel space
+    /// Modify zoom for all axes as if the mouse were right-clicked and dragged
     /// </summary>
-    public void Pan(PixelOffset offset)
+    public void Zoom(Pixel px1, Pixel px2)
     {
+        // at least one render is required before pixel panning is possible
         if (Plot.RenderManager.LastRender.Count == 0)
-            throw new InvalidOperationException("at least one render is required before pixel panning is possible");
+            return;
 
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
+        float pixelDeltaX = px2.X - px1.X;
+        float pixelDeltaY = -(px2.Y - px1.Y);
+
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, Plot.LastRender.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, Plot.LastRender.DataRect.Height));
+    }
+
+    /// <summary>
+    /// Zoom into (frac >1) or out of (frac <1) the given point.
+    /// </summary>
+    public void Zoom(Pixel px, double fracX, double fracY)
+    {
+        // at least one render is required before pixel panning is possible
+        if (Plot.RenderManager.LastRender.Count == 0)
+            return;
+
+        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -856,11 +906,11 @@ public class AxisManager
     /// <summary>
     /// Disable visibility of all axes and titles so the data area fills the entire figure
     /// </summary>
-    public void Frameless()
+    public void Frameless(bool showTitle = false)
     {
         XAxes.ForEach(x => x.IsVisible = false);
         YAxes.ForEach(x => x.IsVisible = false);
-        Title.IsVisible = false;
+        Title.IsVisible = showTitle;
     }
 
     /// <summary>

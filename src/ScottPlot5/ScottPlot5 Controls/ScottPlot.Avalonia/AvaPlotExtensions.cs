@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Key = ScottPlot.Control.Key;
-using MouseButton = ScottPlot.Control.MouseButton;
-using AvaKey = global::Avalonia.Input.Key;
-using AvaPixelSize = global::Avalonia.PixelSize;
-using ILockedFramebuffer = global::Avalonia.Platform.ILockedFramebuffer;
+﻿using AvaKey = Avalonia.Input.Key;
 using Avalonia.Input;
-using Avalonia.VisualTree;
 using Avalonia;
+using ScottPlot.Interactivity;
 
 namespace ScottPlot.Avalonia;
 
@@ -23,34 +14,103 @@ internal static class AvaPlotExtensions
         return new Pixel(x, y);
     }
 
-    internal static Key ToKey(this KeyEventArgs e)
+    internal static void ProcessMouseDown(this UserInputProcessor processor, Pixel pixel, PointerUpdateKind kind)
+    {
+        Interactivity.IUserAction action = kind switch
+        {
+            PointerUpdateKind.LeftButtonPressed => new Interactivity.UserActions.LeftMouseDown(pixel),
+            PointerUpdateKind.MiddleButtonPressed => new Interactivity.UserActions.MiddleMouseDown(pixel),
+            PointerUpdateKind.RightButtonPressed => new Interactivity.UserActions.RightMouseDown(pixel),
+            _ => new Interactivity.UserActions.Unknown("mouse down", kind.ToString()),
+        };
+
+        processor.Process(action);
+    }
+
+    internal static void ProcessMouseUp(this UserInputProcessor processor, Pixel pixel, PointerUpdateKind kind)
+    {
+        Interactivity.IUserAction action = kind switch
+        {
+            PointerUpdateKind.LeftButtonReleased => new Interactivity.UserActions.LeftMouseUp(pixel),
+            PointerUpdateKind.MiddleButtonReleased => new Interactivity.UserActions.MiddleMouseUp(pixel),
+            PointerUpdateKind.RightButtonReleased => new Interactivity.UserActions.RightMouseUp(pixel),
+            _ => new Interactivity.UserActions.Unknown("mouse up", kind.ToString()),
+        };
+
+        processor.Process(action);
+    }
+
+    internal static void ProcessMouseMove(this UserInputProcessor processor, Pixel pixel)
+    {
+        processor.Process(new Interactivity.UserActions.MouseMove(pixel));
+    }
+
+    internal static void ProcessMouseWheel(this UserInputProcessor processor, Pixel pixel, double delta)
+    {
+        Interactivity.IUserAction action = delta > 0
+            ? new Interactivity.UserActions.MouseWheelUp(pixel)
+            : new Interactivity.UserActions.MouseWheelDown(pixel);
+
+        processor.Process(action);
+    }
+
+    internal static void ProcessKeyDown(this UserInputProcessor processor, KeyEventArgs e)
+    {
+        Interactivity.Key key = GetKey(e.Key);
+        IUserAction action = new Interactivity.UserActions.KeyDown(key);
+        processor.Process(action);
+    }
+
+    internal static void ProcessKeyUp(this UserInputProcessor processor, KeyEventArgs e)
+    {
+        Interactivity.Key key = GetKey(e.Key);
+        IUserAction action = new Interactivity.UserActions.KeyUp(key);
+        processor.Process(action);
+    }
+
+    public static Interactivity.Key GetKey(AvaKey avaKey)
+    {
+        return avaKey switch
+        {
+            AvaKey.LeftAlt => StandardKeys.Alt,
+            AvaKey.RightAlt => StandardKeys.Alt,
+            AvaKey.LeftShift => StandardKeys.Shift,
+            AvaKey.RightShift => StandardKeys.Shift,
+            AvaKey.LeftCtrl => StandardKeys.Control,
+            AvaKey.RightCtrl => StandardKeys.Control,
+            _ => new Interactivity.Key(avaKey.ToString()),
+        };
+    }
+
+    internal static Control.Key OldToKey(this KeyEventArgs e)
     {
         return e.Key switch
         {
-            AvaKey.LeftAlt => Key.Alt,
-            AvaKey.RightAlt => Key.Alt,
-            AvaKey.LeftShift => Key.Shift,
-            AvaKey.RightShift => Key.Shift,
-            AvaKey.LeftCtrl => Key.Ctrl,
-            AvaKey.RightCtrl => Key.Ctrl,
-            _ => Key.Unknown,
+            AvaKey.LeftAlt => Control.Key.Alt,
+            AvaKey.RightAlt => Control.Key.Alt,
+            AvaKey.LeftShift => Control.Key.Shift,
+            AvaKey.RightShift => Control.Key.Shift,
+            AvaKey.LeftCtrl => Control.Key.Ctrl,
+            AvaKey.RightCtrl => Control.Key.Ctrl,
+            _ => Control.Key.Unknown,
         };
     }
 
-    internal static MouseButton ToButton(this PointerUpdateKind kind)
+    internal static Control.MouseButton OldToButton(this PointerUpdateKind kind)
     {
         return kind switch
         {
-            PointerUpdateKind.LeftButtonPressed => MouseButton.Left,
-            PointerUpdateKind.LeftButtonReleased => MouseButton.Left,
+            PointerUpdateKind.LeftButtonPressed => Control.MouseButton.Left,
+            PointerUpdateKind.LeftButtonReleased => Control.MouseButton.Left,
 
-            PointerUpdateKind.RightButtonPressed => MouseButton.Right,
-            PointerUpdateKind.RightButtonReleased => MouseButton.Right,
+            PointerUpdateKind.RightButtonPressed => Control.MouseButton.Right,
+            PointerUpdateKind.RightButtonReleased => Control.MouseButton.Right,
 
-            PointerUpdateKind.MiddleButtonPressed => MouseButton.Middle,
-            PointerUpdateKind.MiddleButtonReleased => MouseButton.Middle,
+            PointerUpdateKind.MiddleButtonPressed => Control.MouseButton.Middle,
+            PointerUpdateKind.MiddleButtonReleased => Control.MouseButton.Middle,
 
-            _ => MouseButton.Unknown,
+            _ => Control.MouseButton.Unknown,
         };
     }
+
 }

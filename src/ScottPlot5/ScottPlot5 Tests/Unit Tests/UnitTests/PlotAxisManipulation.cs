@@ -21,14 +21,12 @@ internal class PlotAxisManipulation
         AxisLimits initialLimits = new(-7, 42, -13, 69);
         plt.Axes.SetLimits(initialLimits);
 
-        PixelOffset panDistance = new(20, 10);
-
-        Action panBeforeRender = () => plt.Axes.Pan(panDistance);
-        panBeforeRender.Should().Throw<InvalidOperationException>();
+        Pixel px1 = Pixel.Zero;
+        Pixel px2 = px1.MovedLeft(20).MovedDown(10);
 
         plt.Should().RenderInMemoryWithoutThrowing();
 
-        plt.Axes.Pan(panDistance);
+        plt.Axes.Pan(px1, px2);
         AxisLimits newLimits = plt.Axes.GetLimits();
         newLimits.Left.Should().BeGreaterThan(initialLimits.Left);
         newLimits.Right.Should().BeGreaterThan(initialLimits.Right);

@@ -54,6 +54,8 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public bool IsDraggable { get; set; } = false;
     public bool ExcludeFromLegend { get; set; } = false;
 
+    public bool EnableAutoscale { get; set; } = true;
+
     public Color Color
     {
         get => LineStyle.Color;
