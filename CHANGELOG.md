@@ -22,6 +22,7 @@ _Not yet on NuGet..._
 * Ticks: Add a custom tick label formatter property to the numeric fixed interval tick generator (#4090) @epegeot
 * Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
 * DataStreamer: Improved support for rotated plots (#4093, #4085) @drolevar @KroMignon @Jofstera
+* Security: Removed outdated reference to `System.Text.Json` which contained CVE-2024-30105 (#4095, #4063) @SerTetora
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
