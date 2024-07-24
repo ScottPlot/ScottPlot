@@ -12,6 +12,7 @@ _Not yet on NuGet..._
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
 * Controls: Added autoscale to default context menu (#4053)
 * Axes: A polar plot axis can now be added with `myPlot.Add.PolarAxis()` and customized as seen in the cookbook (#4055, #3939) @CoderPM2011
+* Axis lines and spans: Added `EnableAutoscale` flag to allow plottables to be ignored when `Plot.Axes.AutoScale()` is called (#4069, #4067) @KroMignon @andresod
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
