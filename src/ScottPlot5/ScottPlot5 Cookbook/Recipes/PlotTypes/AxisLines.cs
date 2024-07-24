@@ -153,4 +153,27 @@ public class AxisLines : ICategory
             myPlot.ShowLegend();
         }
     }
+
+    public class AxisLineIgnoreLimits : RecipeBase
+    {
+        public override string Name => "Ignore When Autoscaling";
+        public override string Description => "Calling Plot.Axes.AutoScale() or middle-clicking the plot will set the axis limits " +
+            "to fit the data. By default the position of axis lines and spans are included in automatic axis limit calculations, " +
+            "but a flag can be set to ignore certain plottables when automatically scaling the plot.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            var hline = myPlot.Add.HorizontalLine(0.23);
+            hline.IsDraggable = true;
+            hline.EnableAutoscale = false;
+
+            var hSpan = myPlot.Add.HorizontalSpan(-10, 20);
+            hSpan.IsDraggable = true;
+            hSpan.EnableAutoscale = false;
+        }
+    }
 }
