@@ -17,7 +17,9 @@ _Not yet on NuGet..._
 * SignalConst: Improve accuracy of the first point in low density mode (#4082, #4083, #4086, #4083) @StendProg @KroMignon
 * SignalConst: Allowed markers to become visible by setting their shape without requiring users to define a non-zero size (#4082) @KroMignon
 * Grid: Improved performance by reducing unnecessary allocations for ticks of invisible axes (#4087) @kebox7
-* Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* Ticks: Improved behavior of the numeric fixed interval tick generator to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* Ticks: Allow the numeric fixed interval tick generator interval to be defined as a `double` (#4090) @epegeot
+* Ticks: Add a custom tick label formatter property to the numeric fixed interval tick generator (#4090) @epegeot
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
