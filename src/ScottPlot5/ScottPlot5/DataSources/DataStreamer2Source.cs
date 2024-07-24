@@ -14,7 +14,7 @@ public class DataStreamer2Source : IDataStreamer2Source
     {
         Coordinates = coordinates;
     }
-    
+
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
     public double YScale { get; set; } = 1;
