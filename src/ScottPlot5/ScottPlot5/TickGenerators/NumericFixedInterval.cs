@@ -1,8 +1,10 @@
 ﻿namespace ScottPlot.TickGenerators;
 
-public class NumericFixedInterval(int interval = 1) : ITickGenerator
+public class NumericFixedInterval(double interval = 1) : ITickGenerator
 {
     public double Interval { get; set; } = interval;
+
+    public Func<double, string> LabelFormatter { get; set; } = LabelFormatters.Numeric;
 
     public Tick[] Ticks { get; set; } = [];
 
@@ -23,7 +25,7 @@ public class NumericFixedInterval(int interval = 1) : ITickGenerator
                 ? lowest + i * Interval
                 : highest - i * Interval;
 
-            string label = position.ToString();
+            string label = LabelFormatter(position);
             Tick tick = new(position, label, true);
             ticks.Add(tick);
         }
