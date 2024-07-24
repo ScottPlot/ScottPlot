@@ -77,7 +77,7 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
                 path.LineTo(col.X, col.Top);
                 path.MoveTo(col.X, col.Exit);
             }
-            if(pointsPerPx < 1)
+            if (pointsPerPx < 1)
             {
                 points.Add(new(col.X, col.Enter));
             }
