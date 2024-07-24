@@ -13,6 +13,9 @@ _Not yet on NuGet..._
 * Controls: Added autoscale to default context menu (#4053)
 * Axes: A polar plot axis can now be added with `myPlot.Add.PolarAxis()` and customized as seen in the cookbook (#4055, #3939) @CoderPM2011
 * Axis lines and spans: Added `EnableAutoscale` flag to allow plottables to be ignored when `Plot.Axes.AutoScale()` is called (#4069, #4067) @KroMignon @andresod
+* SignalConst: Improved support for custom legend text (#4081, #4082) @KroMignon @fanshuxian
+* SignalConst: Improve accuracy of the first point in low density mode (#4082, #4083, #4086) @KroMignon
+* SignalConst: Allowed markers to become visible by setting their shape without requiring users to define a non-zero size (#4082) @KroMignon
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
