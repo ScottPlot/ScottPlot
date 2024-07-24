@@ -18,6 +18,7 @@ _Not yet on NuGet..._
 * SignalConst: Allowed markers to become visible by setting their shape without requiring users to define a non-zero size (#4082) @KroMignon
 * Grid: Improved performance by reducing unnecessary allocations for ticks of invisible axes (#4087) @kebox7
 * Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* DataStreamer: Improved support for rotated plots (#4093, #4085) @drolevar @KroMignon @Jofstera
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
