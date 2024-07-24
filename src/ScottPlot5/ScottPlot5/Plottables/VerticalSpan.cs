@@ -23,7 +23,7 @@ public class VerticalSpan : AxisSpan, IPlottable
 
     public override AxisLimits GetAxisLimits()
     {
-        return AxisLimits.VerticalOnly(Bottom, Top);
+        return EnableAutoscale ? AxisLimits.VerticalOnly(Bottom, Top) : AxisLimits.NoLimits;
     }
 
     public override void Render(RenderPack rp)

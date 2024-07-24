@@ -79,11 +79,6 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// <summary>
     /// If set, this overrides the value in the LegendItem's FontStyle
     /// </summary>
-    public SKTypeface? Typeface { get; set; } = null;
-
-    /// <summary>
-    /// If set, this overrides the value in the LegendItem's FontStyle
-    /// </summary>
     public Color? FontColor { get; set; } = null;
 
     [Obsolete("Assign FontSize, FontName, or FontColor to control appearance of all legend items", true)]
@@ -153,8 +148,6 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 item.LabelFontSize = FontSize.Value;
             if (FontName is not null)
                 item.LabelFontName = FontName;
-            if (Typeface is not null)
-                item.LabelTypeface = Typeface;
             if (FontColor is not null)
                 item.LabelFontColor = FontColor.Value;
         }
