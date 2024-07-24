@@ -109,7 +109,7 @@ public class DataStreamer2(IDataStreamer2Source dataSource) : IPlottable, IManag
         CoordinateRange dataRangeX = Data.GetRangeX();
         CoordinateRange viewRangeX = firstTimeRenderingData
             ? dataRangeX
-            : xAxis.GetRangeNormalized();
+            : xAxis.GetRange().Rectified;
 
         CoordinateRange newRangeX = AxisManager.GetRangeX(viewRangeX, dataRangeX);
 
@@ -117,7 +117,7 @@ public class DataStreamer2(IDataStreamer2Source dataSource) : IPlottable, IManag
         CoordinateRange dataRangeY = Data.GetRangeY(newRangeX);
         CoordinateRange viewRangeY = firstTimeRenderingData
             ? dataRangeY
-            : yAxis.GetRangeNormalized();
+            : yAxis.GetRange().Rectified;
 
         CoordinateRange newRangeY = AxisManager.GetRangeY(viewRangeY, dataRangeY);
 
