@@ -1,24 +1,19 @@
 ﻿using Eto.Forms;
 using System;
-using System.Collections.Generic;
 using ScottPlot.Control;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
-using System.IO;
 
 namespace ScottPlot.Eto;
 
 public class EtoPlot : Drawable, IPlotControl
 {
     public Plot Plot { get; internal set; }
-
     public GRContext? GRContext => null;
-
     public IPlotInteraction Interaction { get; set; }
-
+    public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public IPlotMenu Menu { get; set; }
-
     public float DisplayScale { get; set; }
 
     public EtoPlot()
@@ -26,16 +21,17 @@ public class EtoPlot : Drawable, IPlotControl
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Interaction(this);
+        UserInputProcessor = new(Plot);
         Menu = new EtoPlotMenu(this);
 
-        this.MouseDown += OnMouseDown;
-        this.MouseUp += OnMouseUp;
-        this.MouseMove += OnMouseMove;
-        this.MouseWheel += OnMouseWheel;
-        this.KeyDown += OnKeyDown;
-        this.KeyUp += OnKeyUp;
-        this.MouseDoubleClick += OnDoubleClick;
-        this.SizeChanged += OnSizeChanged;
+        MouseDown += OnMouseDown;
+        MouseUp += OnMouseUp;
+        MouseMove += OnMouseMove;
+        MouseWheel += OnMouseWheel;
+        KeyDown += OnKeyDown;
+        KeyUp += OnKeyUp;
+        MouseDoubleClick += OnDoubleClick;
+        SizeChanged += (s, e) => Refresh();
     }
 
     public void Reset()
@@ -90,43 +86,43 @@ public class EtoPlot : Drawable, IPlotControl
     private void OnMouseDown(object? sender, MouseEventArgs e)
     {
         Focus();
-
-        Interaction.MouseDown(e.Pixel(), e.ToButton());
+        Interaction.MouseDown(e.Pixel(), e.OldToButton());
+        UserInputProcessor.ProcessMouseDown(e);
     }
 
     private void OnMouseUp(object? sender, MouseEventArgs e)
     {
-        Interaction.MouseUp(e.Pixel(), e.ToButton());
+        Interaction.MouseUp(e.Pixel(), e.OldToButton());
+        UserInputProcessor.ProcessMouseUp(e);
     }
 
     private void OnMouseMove(object? sender, MouseEventArgs e)
     {
         Interaction.OnMouseMove(e.Pixel());
+        UserInputProcessor.ProcessMouseMove(e);
     }
 
     private void OnMouseWheel(object? sender, MouseEventArgs e)
     {
         Interaction.MouseWheelVertical(e.Pixel(), e.Delta.Height);
+        UserInputProcessor.ProcessMouseWheel(e);
     }
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        Interaction.KeyDown(e.Key());
+        Interaction.KeyDown(e.OldToKey());
+        UserInputProcessor.ProcessKeyDown(e);
     }
 
     private void OnKeyUp(object? sender, KeyEventArgs e)
     {
-        Interaction.KeyUp(e.Key());
+        Interaction.KeyUp(e.OldToKey());
+        UserInputProcessor.ProcessKeyUp(e);
     }
 
     private void OnDoubleClick(object? sender, MouseEventArgs e)
     {
         Interaction.DoubleClick();
-    }
-
-    private void OnSizeChanged(object? sender, EventArgs e)
-    {
-        Refresh();
     }
 
     public float DetectDisplayScale()

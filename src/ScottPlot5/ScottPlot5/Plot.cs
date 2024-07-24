@@ -475,6 +475,15 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Disable visibility for all axes and grids
+    /// </summary>
+    public void HideAxesAndGrid(bool showTitle = true)
+    {
+        Axes.Frameless(showTitle);
+        HideGrid();
+    }
+
+    /// <summary>
     /// Disable visibility for all grids
     /// </summary>
     public void HideGrid()
