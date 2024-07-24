@@ -23,7 +23,7 @@ public class VerticalLine : AxisLine
 
     public override AxisLimits GetAxisLimits()
     {
-        return AxisLimits.HorizontalOnly(X, X);
+        return EnableAutoscale ? AxisLimits.HorizontalOnly(X, X) : AxisLimits.NoLimits;
     }
 
     public override void Render(RenderPack rp)
