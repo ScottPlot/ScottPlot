@@ -53,10 +53,8 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
     public bool LabelOppositeAxis { get; set; } = false;
     public bool IsDraggable { get; set; } = false;
     public bool ExcludeFromLegend { get; set; } = false;
-    /// <summary>
-    /// If true, AxisAuto() will ignore the position of this line when determining axis limits
-    /// </summary>
-    public bool IgnoreAxisAuto { get; set; } = false;
+
+    public bool EnableAutoscale { get; set; } = true;
 
     public Color Color
     {

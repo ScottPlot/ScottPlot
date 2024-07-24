@@ -156,10 +156,10 @@ public class AxisLines : ICategory
 
     public class AxisLineIgnoreLimits: RecipeBase
     {
-        public override string Name => "Ignore Axis Limits";
-        public override string Description => "Calling Plot.AxisAuto (or middle-clicking the plot) will set the axis limits " +
-            "automatically to fit the data on the plot. By default the position of axis lines and spans are " +
-            "included in automatic axis limit calculations, but setting the 'IgnoreAxisAuto' flag can disable this behavior.";
+        public override string Name => "Ignore When Autoscaling";
+        public override string Description => "Calling Plot.Axes.AutoScale() or middle-clicking the plot will set the axis limits " +
+            "to fit the data. By default the position of axis lines and spans are included in automatic axis limit calculations, " +
+            "but a flag can be set to ignore certain plottables when automatically scaling the plot.";
 
         [Test]
         public override void Execute()
@@ -169,11 +169,11 @@ public class AxisLines : ICategory
 
             var hline = myPlot.Add.HorizontalLine(0.23);
             hline.IsDraggable = true;
-            hline.IgnoreAxisAuto = true;
+            hline.EnableAutoscale = false;
 
             var hSpan = myPlot.Add.HorizontalSpan(-10, 20);
             hSpan.IsDraggable = true;
-            hSpan.IgnoreAxisAuto = true;
+            hSpan.EnableAutoscale = false;
         }
     }
 }
