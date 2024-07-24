@@ -10,7 +10,6 @@ public readonly record struct CoordinateRange(double Min, double Max)
     public bool IsReal => NumericConversion.IsReal(Max) && NumericConversion.IsReal(Min);
 
     public bool IsInverted => Min > Max;
-    public CoordinateRange Rectified => IsInverted ? new(Max, Min) : new(Min, Max);
     public double TrueMin => Math.Min(Min, Max);
     public double TrueMax => Math.Max(Min, Max);
 
@@ -92,5 +91,15 @@ public readonly record struct CoordinateRange(double Min, double Max)
         double min = Math.Min(value, Min);
         double max = Math.Max(value, Max);
         return new CoordinateRange(min, max);
+    }
+
+    /// <summary>
+    /// Return a copy of this range where <see cref="Max"/> is never less than <see cref="Min"/>
+    /// </summary>
+    public CoordinateRange Rectified()
+    {
+        return Max >= Min
+            ? new(Min, Max)
+            : new(Max, Min);
     }
 }
