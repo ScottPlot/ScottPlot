@@ -28,7 +28,8 @@ public class SignalConstSource<T>
 
     public int GetIndex(double x, bool visibleDataOnly)
     {
-        int i = (int)((x - XOffset) / Period);
+        // using Math.Floor to fix rounding issue with first point (https://github.com/ScottPlot/ScottPlot/issues/4083)
+        int i = (int)Math.Floor((x - XOffset) / Period);
 
         if (visibleDataOnly)
         {

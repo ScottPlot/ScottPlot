@@ -35,10 +35,11 @@ public class Crosshair : IPlottable, IRenderLast, IHasMarker
     [Obsolete("Use TextColor and TextBackgroundColor instead", true)]
     public Color FontColor;
 
+    public bool EnableAutoscale { get; set; } = false;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => HorizontalLine.LegendItems.Concat(VerticalLine.LegendItems);
-    public AxisLimits GetAxisLimits() => new(X, X, Y, Y);
+    public AxisLimits GetAxisLimits() => EnableAutoscale ? new(X, X, Y, Y) : AxisLimits.NoLimits;
 
     public virtual void Render(RenderPack rp)
     {

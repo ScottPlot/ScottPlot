@@ -25,6 +25,8 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle);
 
+    public bool EnableAutoscale { get; set; } = true;
+
     public abstract AxisLimits GetAxisLimits();
 
     public abstract void Render(RenderPack rp);
