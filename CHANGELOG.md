@@ -6,11 +6,17 @@ _Not yet on NuGet..._
 * Style: Added `Plot.GetStyle()` and `Plot.SetStyle()` for applying and customizing styles in the `ScottPlot.PlotStyles` namespace (#4025, #3955, #4037) @StendProg @kebox7
 * AxisLimits: Improved accuracy and performance of `WithZoom()` (#4041) @idotta
 * Documentation: Added automatically generated API documentation to the website (#4040, #3822)
-* Label: Added nullable `Typeface` which allows users to supply their own typefaces for rendering text in labels and legend items (#3830, #3825) @lasooch
+* Font: Improved documentation and testing for plot objects (like Legends) that use custom typefaces (#3830, #3825, #4060, #4043, #4057) @lasooch @kebox7
 * Label: `ScottPlot.Label` has been renamed to `ScottPlot.LabelStyle` to better signal its purpose is to hold styling information rather than store text
 * Label: Improved support for custom horizontal alignment in multiline strings (#4045, #3958, #3859) @karlipl
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
 * Controls: Added autoscale to default context menu (#4053)
+* Axes: A polar plot axis can now be added with `myPlot.Add.PolarAxis()` and customized as seen in the cookbook (#4055, #3939) @CoderPM2011
+* Axis lines and spans: Added `EnableAutoscale` flag to allow plottables to be ignored when `Plot.Axes.AutoScale()` is called (#4069, #4067) @KroMignon @andresod
+* SignalConst: Improved support for custom legend text (#4081, #4082) @KroMignon @fanshuxian
+* SignalConst: Improve accuracy of the first point in low density mode (#4082, #4083, #4086, #4083) @StendProg @KroMignon
+* SignalConst: Allowed markers to become visible by setting their shape without requiring users to define a non-zero size (#4082) @KroMignon
+* Grid: Improved performance by reducing unnecessary allocations for ticks of invisible axes (#4087) @kebox7
 * Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
 
 ## ScottPlot 5.0.36

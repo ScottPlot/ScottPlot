@@ -1,8 +1,4 @@
-﻿using ScottPlot.AxisPanels;
-using ScottPlot.TickGenerators;
-using SkiaSharp;
-
-namespace ScottPlotCookbook.Recipes.Axis;
+﻿namespace ScottPlotCookbook.Recipes.Axis;
 
 public class AdvancedAxis : ICategory
 {
@@ -107,6 +103,113 @@ public class AdvancedAxis : ICategory
             myPlot.Add.Scatter(dataX, dataY);
 
             myPlot.Axes.AntiAlias(true);
+        }
+    }
+
+    public class PolarQuickStart : RecipeBase
+    {
+        public override string Name => "Polar Axis";
+        public override string Description => "A polar axis can be added to the plot, " +
+            "then other plot types (marker, line, scatter, etc.) can be placed on top of it " +
+            "using ints helper methods to translate polar coordinates to Cartesian units.";
+
+        [Test]
+        public override void Execute()
+        {
+            var polarAxis = myPlot.Add.PolarAxis(maximumRadius: 100);
+
+            for (int i = 0; i < 10; i++)
+            {
+                double radius = Generate.RandomNumber(100);
+                double degrees = Generate.RandomNumber(360);
+                Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
+                myPlot.Add.Marker(pt);
+            }
+        }
+    }
+
+    public class PolarAxisStyling : RecipeBase
+    {
+        public override string Name => "Polar Axis Styling";
+        public override string Description => "The lines of polar axes may be extensively styled. " +
+            "Polar axes have radial spokes (straight lines that extend from the origin to the maximum radius) " +
+            "and circular axis lines (concentric circles centered at the origin).";
+
+        [Test]
+        public override void Execute()
+        {
+            var pol = myPlot.Add.PolarAxis();
+
+            // style the spokes (straight lines extending from the center to mark rotations)
+            var radialPalette = new ScottPlot.Palettes.Category10();
+            for (int i = 0; i < pol.Spokes.Count; i++)
+            {
+                pol.Spokes[i].LineColor = radialPalette.GetColor(i).WithAlpha(.5);
+                pol.Spokes[i].LineWidth = 4;
+                pol.Spokes[i].LinePattern = LinePattern.DenselyDashed;
+            }
+
+            // style the circles (concentric circles marking radius positions)
+            var circularColormap = new ScottPlot.Colormaps.Rain();
+            for (int i = 0; i < pol.Circles.Count; i++)
+            {
+                double fraction = (double)i / (pol.Circles.Count - 1);
+                pol.Circles[i].LineColor = circularColormap.GetColor(fraction).WithAlpha(.5);
+                pol.Circles[i].LineWidth = 2;
+                pol.Circles[i].LinePattern = LinePattern.Dashed;
+            }
+        }
+    }
+
+    public class PolarAxisLineDensity : RecipeBase
+    {
+        public override string Name => "Polar Line Density";
+        public override string Description => "Density of spokes and circles on polar axes can " +
+            "be customized using arguments passed into the functions that generate them.";
+
+        [Test]
+        public override void Execute()
+        {
+            var pol = myPlot.Add.PolarAxis();
+            pol.RegenerateCircles(count: 10);
+            pol.RegenerateSpokes(count: 4);
+        }
+    }
+
+    public class PolarAxisLinePositions : RecipeBase
+    {
+        public override string Name => "Polar Line Positions";
+        public override string Description => "The angle and length of spokes and " +
+            "position of circles can be manually defined. Each spoke and circle " +
+            "may also be individually styled.";
+
+        [Test]
+        public override void Execute()
+        {
+            var pol = myPlot.Add.PolarAxis();
+
+            // define spoke angle and length
+            pol.Spokes.Clear();
+            pol.Spokes.Add(new(Angle.FromDegrees(0), 0.5));
+            pol.Spokes.Add(new(Angle.FromDegrees(45), 0.75));
+            pol.Spokes.Add(new(Angle.FromDegrees(90), 1.0));
+
+            // define circle radius
+            pol.Circles.Clear();
+            pol.Circles.Add(new(0.5));
+            pol.Circles.Add(new(0.75));
+            pol.Circles.Add(new(1.0));
+
+            // style individual spokes and circles
+            ScottPlot.Palettes.Category10 pal = new();
+            for (int i = 0; i < 3; i++)
+            {
+                pol.Circles[i].LineColor = pal.GetColor(i).WithAlpha(.5);
+                pol.Spokes[i].LineColor = pal.GetColor(i).WithAlpha(.5);
+
+                pol.Circles[i].LineWidth = 2 + i * 2;
+                pol.Spokes[i].LineWidth = 2 + i * 2;
+            }
         }
     }
 }
