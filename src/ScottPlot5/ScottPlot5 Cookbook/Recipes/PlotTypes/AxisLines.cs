@@ -154,7 +154,7 @@ public class AxisLines : ICategory
         }
     }
 
-    public class AxisLineIgnoreLimits: RecipeBase
+    public class AxisLineIgnoreLimits : RecipeBase
     {
         public override string Name => "Ignore When Autoscaling";
         public override string Description => "Calling Plot.Axes.AutoScale() or middle-clicking the plot will set the axis limits " +
