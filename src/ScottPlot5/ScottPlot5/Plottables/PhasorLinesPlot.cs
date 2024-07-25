@@ -1,7 +1,7 @@
 ﻿namespace ScottPlot.Plottables;
 
 public class PhasorLinesPlot(IEnumerable<PolarCoordinates> points, IEnumerable<string>? lineNames = null) :
-    IPlottable, IHasLine, IHasMarker, IHasLegendText
+    IPlottable, IHasArrow, IHasLegendText
 {
     public IEnumerable<string>? LineNames { get; } = lineNames;
     public IEnumerable<PolarCoordinates> Points { get; } = points;
@@ -18,33 +18,23 @@ public class PhasorLinesPlot(IEnumerable<PolarCoordinates> points, IEnumerable<s
     /// </summary>
     public double PaddingArc { get; set; } = 5;
 
-    public MarkerStyle MarkerStyle { get; set; } = new() { Size = 12 };
-    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
-    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
-    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
-
-    public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => [new LegendItem() { LineStyle = ArrowStyle.LineStyle, LabelText = LegendText }];
+    public string LegendText { get; set; } = string.Empty;
 
-    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
-    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
-    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
-
-    public Color Color
-    {
-        get => LineStyle.Color;
-        set
-        {
-            LineStyle.Color = value;
-            MarkerStyle.FillColor = value;
-        }
-    }
+    public ArrowStyle ArrowStyle { get; set; } = new() { LineWidth = 2, ArrowWidth = 3 };
+    public Color ArrowLineColor { get => ArrowStyle.LineStyle.Color; set => ArrowStyle.LineStyle.Color = value; }
+    public float ArrowLineWidth { get => ArrowStyle.LineStyle.Width; set => ArrowStyle.LineStyle.Width = value; }
+    public Color ArrowFillColor { get => ArrowStyle.FillStyle.Color; set => ArrowStyle.FillStyle.Color = value; }
+    public float ArrowMinimumLength { get => ArrowStyle.MinimumLength; set => ArrowStyle.MinimumLength = value; }
+    public float ArrowMaximumLength { get => ArrowStyle.MaximumLength; set => ArrowStyle.MaximumLength = value; }
+    public float ArrowOffset { get => ArrowStyle.Offset; set => ArrowStyle.Offset = value; }
+    public ArrowAnchor ArrowAnchor { get => ArrowStyle.Anchor; set => ArrowStyle.Anchor = value; }
+    public float ArrowWidth { get => ArrowStyle.ArrowWidth; set => ArrowStyle.ArrowWidth = value; }
+    public float ArrowheadAxisLength { get => ArrowStyle.ArrowheadAxisLength; set => ArrowStyle.ArrowheadAxisLength = value; }
+    public float ArrowheadLength { get => ArrowStyle.ArrowheadLength; set => ArrowStyle.ArrowheadLength = value; }
+    public float ArrowheadWidth { get => ArrowStyle.ArrowheadWidth; set => ArrowStyle.ArrowheadWidth = value; }
 
     public AxisLimits GetAxisLimits()
     {
@@ -59,6 +49,8 @@ public class PhasorLinesPlot(IEnumerable<PolarCoordinates> points, IEnumerable<s
             pts.Min(i => i.Y));
     }
 
+    public IArrowShape ArrowShape { get; set; } = new ArrowShapes.Single();
+
     public virtual void Render(RenderPack rp)
     {
         if (Points is null ||
@@ -68,27 +60,30 @@ public class PhasorLinesPlot(IEnumerable<PolarCoordinates> points, IEnumerable<s
         }
 
         using SKPaint paint = new();
+
+        Pixel pxBase = Axes.GetPixel(Coordinates.Origin);
         for (int i = 0; i < Points.Count(); i++)
         {
             PolarCoordinates point = Points.ElementAt(i);
-            Coordinates pt = point.CartesianCoordinates;
-            CoordinateLine line = new(Coordinates.Origin, pt);
-            PixelLine pxLine = Axes.GetPixelLine(line);
 
-            MarkerStyle.Rotate = Angle.FromDegrees(-point.Angle.Degrees + 90);
-            Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(pt), MarkerStyle);
-            Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
+            Pixel pxTip = Axes.GetPixel(point.CartesianCoordinates);
+            PixelLine pxLine = new(pxBase, pxTip);
+            if (ArrowOffset != 0)
+            {
+                pxLine = pxLine.BackedUpBy(ArrowOffset);
+            }
+            ArrowShape.Render(rp, pxLine, ArrowStyle);
 
             if (LineNames is not null &&
                 i < LineNames.Count())
             {
                 LabelStyle.Text = LineNames.ElementAt(i);
 
-                var angle = point.Radius > 0
+                Angle angle = point.Radius > 0
                     ? Angle.FromRadians(point.Angle.Radians + PaddingArc / point.Radius)
                     : Angle.FromRadians(point.Angle.Radians);
 
-                var padding = Math.Min(Axes.XAxis.Range.Span, Axes.YAxis.Range.Span) * PaddingFraction;
+                double padding = Math.Min(Axes.XAxis.Range.Span, Axes.YAxis.Range.Span) * PaddingFraction;
                 PolarCoordinates labelPoint = new(point.Radius + padding, angle);
                 Pixel labelPixel = Axes.GetPixel(labelPoint.CartesianCoordinates);
                 PixelRect labelRect = LabelStyle.Measure().Rect(Alignment.MiddleCenter);

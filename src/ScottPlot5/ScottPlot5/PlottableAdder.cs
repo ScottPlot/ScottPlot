@@ -568,11 +568,10 @@ public class PlottableAdder(Plot plot)
     {
         PhasorLinesPlot lp = new(points, lineNames);
 
-        lp.LineStyle.Color = GetNextColor();
-        lp.MarkerStyle.FillColor = lp.LineStyle.Color;
-        lp.MarkerSize = 12;
-        lp.MarkerShape = MarkerShape.FilledTriangleUp;
-        lp.LabelStyle.ForeColor = lp.LineStyle.Color;
+        Color color = GetNextColor().WithAlpha(0.7);
+        lp.ArrowFillColor = color;
+        lp.ArrowLineColor = color;
+        lp.LabelStyle.ForeColor = lp.ArrowFillColor;
 
         Plot.PlottableList.Add(lp);
         return lp;
