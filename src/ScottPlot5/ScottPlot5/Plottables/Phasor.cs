@@ -1,11 +1,24 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class PhasorLinesPlot : IPlottable, IHasArrow, IHasLegendText
+/// <summary>
+/// A Phasor plot marks a collection of points in polar space using an 
+/// arrow with its base centered at the origin.
+/// </summary>
+public class Phasor : IPlottable, IHasArrow, IHasLegendText
 {
+    /// <summary>
+    /// A collection of points in polar space
+    /// </summary>
     public List<PolarCoordinates> Points { get; } = [];
 
-    public List<string> LineNames { get; } = [];
+    /// <summary>
+    /// If populated, <see cref="Points"/> will be labeled with these strings
+    /// </summary>
+    public List<string> Labels { get; } = [];
 
+    /// <summary>
+    /// Style for arrow labels defined in <see cref="Labels"/>
+    /// </summary>
     public LabelStyle LabelStyle { get; } = new();
 
     /// <summary>
@@ -36,25 +49,25 @@ public class PhasorLinesPlot : IPlottable, IHasArrow, IHasLegendText
     public float ArrowheadLength { get => ArrowStyle.ArrowheadLength; set => ArrowStyle.ArrowheadLength = value; }
     public float ArrowheadWidth { get => ArrowStyle.ArrowheadWidth; set => ArrowStyle.ArrowheadWidth = value; }
 
+    public IArrowShape ArrowShape { get; set; } = new ArrowShapes.Single();
+
     public AxisLimits GetAxisLimits()
     {
-        IEnumerable<Coordinates> pts =
-             Points?.Select(i => i.CartesianCoordinates) ?? [];
-        pts = pts.Concat([Coordinates.Origin]);
+        if (Points.Count == 0)
+        {
+            return AxisLimits.NoLimits;
+        }
 
-        return new AxisLimits(
-            pts.Min(i => i.X),
-            pts.Max(i => i.X),
-            pts.Max(i => i.Y),
-            pts.Min(i => i.Y));
+        IEnumerable<Coordinates> points = Points
+            .Select(i => i.CartesianCoordinates)
+            .Concat([Coordinates.Origin]);
+
+        return new AxisLimits(points);
     }
-
-    public IArrowShape ArrowShape { get; set; } = new ArrowShapes.Single();
 
     public virtual void Render(RenderPack rp)
     {
-        if (Points is null ||
-            !Points.Any())
+        if (Points.Count == 0)
         {
             return;
         }
@@ -62,9 +75,10 @@ public class PhasorLinesPlot : IPlottable, IHasArrow, IHasLegendText
         using SKPaint paint = new();
 
         Pixel pxBase = Axes.GetPixel(Coordinates.Origin);
-        for (int i = 0; i < Points.Count(); i++)
+
+        for (int i = 0; i < Points.Count; i++)
         {
-            PolarCoordinates point = Points.ElementAt(i);
+            PolarCoordinates point = Points[i];
 
             Pixel pxTip = Axes.GetPixel(point.CartesianCoordinates);
             PixelLine pxLine = new(pxBase, pxTip);
@@ -74,10 +88,9 @@ public class PhasorLinesPlot : IPlottable, IHasArrow, IHasLegendText
             }
             ArrowShape.Render(rp, pxLine, ArrowStyle);
 
-            if (LineNames is not null &&
-                i < LineNames.Count())
+            if (i < Labels.Count)
             {
-                LabelStyle.Text = LineNames.ElementAt(i);
+                LabelStyle.Text = Labels[i];
 
                 Angle angle = point.Radius > 0
                     ? Angle.FromRadians(point.Angle.Radians + PaddingArc / point.Radius)

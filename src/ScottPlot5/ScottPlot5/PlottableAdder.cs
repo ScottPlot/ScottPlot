@@ -563,9 +563,9 @@ public class PlottableAdder(Plot plot)
         return ohlc;
     }
 
-    public PhasorLinesPlot Phasor()
+    public Phasor Phasor()
     {
-        PhasorLinesPlot phasor = new();
+        Phasor phasor = new();
 
         Color color = GetNextColor().WithAlpha(0.7);
         phasor.ArrowFillColor = color;
@@ -576,9 +576,9 @@ public class PlottableAdder(Plot plot)
         return phasor;
     }
 
-    public PhasorLinesPlot Phasor(IEnumerable<PolarCoordinates> points)
+    public Phasor Phasor(IEnumerable<PolarCoordinates> points)
     {
-        PhasorLinesPlot phasor = Phasor();
+        Phasor phasor = Phasor();
         phasor.Points.AddRange(points);
         return phasor;
     }
