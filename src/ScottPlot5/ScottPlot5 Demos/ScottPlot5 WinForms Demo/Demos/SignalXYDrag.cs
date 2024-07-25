@@ -46,7 +46,7 @@ public partial class SignalXYDrag : Form, IDemoWindow
 
         PlottableBeingDragged = sigXY;
         StartingDragPosition = dataPoint;
-        StartingDragOffset = sigXY.Data.XOffset;
+        StartingDragOffset = sigXY.Data.PositionOffset;
         formsPlot1.Interaction.Disable(); // disable panning while dragging
     }
 
@@ -85,7 +85,7 @@ public partial class SignalXYDrag : Form, IDemoWindow
         if (PlottableBeingDragged is SignalXY sigXY)
         {
             HighlightedPointMarker.IsVisible = false;
-            sigXY.Data.XOffset = rect.HorizontalCenter - StartingDragPosition.X + StartingDragOffset;
+            sigXY.Data.PositionOffset = rect.HorizontalCenter - StartingDragPosition.X + StartingDragOffset;
             formsPlot1.Refresh();
         }
     }

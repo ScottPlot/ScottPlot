@@ -8,19 +8,24 @@ public interface ISignalXYSource
     int Count { get; }
 
     /// <summary>
-    /// X position of the first data point
+    /// Position value (X when not Rotated) of the first data point
     /// </summary>
-    double XOffset { get; set; }
+    double PositionOffset { get; set; }
 
     /// <summary>
-    /// Shift Y position of all values by this amount
+    /// Multiply Position values (X when not Rotated) by this scale factor (before applying offset)
     /// </summary>
-    double YOffset { get; set; }
+    double PositionScale { get; set; }
 
     /// <summary>
-    /// Multiply Y values by this scale factor (before applying offset)
+    /// Shift Amplitude  (Y when not Rotated) of all values by this amount
     /// </summary>
-    public double YScale { get; set; }
+    double AmplitudeOffset { get; set; }
+
+    /// <summary>
+    /// Multiply Amplitude values  (Y when not Rotated) by this scale factor (before applying offset)
+    /// </summary>
+    public double AmplitudeScale { get; set; }
 
     /// <summary>
     /// Do not display data below this index
@@ -33,7 +38,7 @@ public interface ISignalXYSource
     public int MaximumIndex { get; set; }
 
     /// <summary>
-    /// If enabled, Xs will be vertical and Ys will be horizontal.
+    /// If enabled, Positions will be vertical and Amplitudes will be horizontal.
     /// </summary>
     public bool Rotated { get; set; }
 
@@ -58,5 +63,5 @@ public interface ISignalXYSource
     /// Return the point nearest a specific X location given the X/Y pixel scaling information from a previous render.
     /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
     /// </summary>
-    DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
+    DataPoint GetNearestPosition(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
 }

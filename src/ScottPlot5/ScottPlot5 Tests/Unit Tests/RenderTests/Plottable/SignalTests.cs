@@ -69,12 +69,13 @@ internal class SignalTests
         ScottPlot.Plot plt = new();
 
         var sig = plt.Add.SignalXY(ScottPlot.Generate.Consecutive(51), ScottPlot.Generate.Sin(51));
-        sig.Data.YScale = 100;
+        sig.Data.AmplitudeScale = 100;
 
         var sig2 = plt.Add.SignalXY(ScottPlot.Generate.Consecutive(51), ScottPlot.Generate.Sin(51));
-        sig2.Data.YScale = 100;
-        sig2.Data.XOffset = 10;
-        sig2.Data.YOffset = 50;
+        sig2.Data.PositionScale = 1.5;
+        sig2.Data.AmplitudeScale = 150;
+        sig2.Data.PositionOffset = 10;
+        sig2.Data.AmplitudeOffset = 50;
 
         plt.SaveTestImage();
     }
