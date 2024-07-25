@@ -1,6 +1,6 @@
-﻿using ScottPlot.Panels;
+﻿using ScottPlot.DataSources;
+using ScottPlot.Panels;
 using ScottPlot.Plottables;
-using ScottPlot.DataSources;
 
 namespace ScottPlot;
 
@@ -561,6 +561,26 @@ public class PlottableAdder(Plot plot)
         OhlcPlot ohlc = new(dataSource);
         Plot.PlottableList.Add(ohlc);
         return ohlc;
+    }
+
+    public Phasor Phasor()
+    {
+        Phasor phasor = new();
+
+        Color color = GetNextColor().WithAlpha(0.7);
+        phasor.ArrowFillColor = color;
+        phasor.ArrowLineColor = color;
+        phasor.LabelStyle.ForeColor = phasor.ArrowFillColor;
+
+        Plot.PlottableList.Add(phasor);
+        return phasor;
+    }
+
+    public Phasor Phasor(IEnumerable<PolarCoordinates> points)
+    {
+        Phasor phasor = Phasor();
+        phasor.Points.AddRange(points);
+        return phasor;
     }
 
     public Pie Pie(IList<PieSlice> slices)
