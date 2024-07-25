@@ -23,6 +23,7 @@ _Not yet on NuGet..._
 * Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
 * DataStreamer: Improved support for rotated plots (#4093, #4085) @drolevar @KroMignon @Jofstera
 * Security: Removed outdated reference to `System.Text.Json` which contained CVE-2024-30105 (#4095, #4063) @SerTetora
+* Phaser: New plot type for displaying arrows to points in polar space (#4096, #3939) @CoderPM2011 @nilsakesson
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
