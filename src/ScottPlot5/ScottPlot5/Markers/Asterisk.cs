@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class Asterisk : Marker
+internal class Asterisk : IMarker
 {
-    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float crossOffset = size / 2;
         float eksOffset = (float)(size / 2.828);
@@ -19,11 +19,6 @@ internal class Asterisk : Marker
         path.LineTo(center.X - eksOffset, center.Y - eksOffset);
         path.MoveTo(center.X - eksOffset, center.Y + eksOffset);
         path.LineTo(center.X + eksOffset, center.Y - eksOffset);
-
-        if (markerStyle.Rotate is not null)
-        {
-            Rotate(path, center, markerStyle.Rotate.Value);
-        }
 
         Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }

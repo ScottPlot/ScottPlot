@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class HashTag : Marker
+internal class HashTag : IMarker
 {
-    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float sixthOffset = size / 6;
         float halfOffset = size / 2;
@@ -19,11 +19,6 @@ internal class HashTag : Marker
         path.LineTo(center.X - halfOffset, center.Y + sixthOffset);
         path.MoveTo(center.X + halfOffset, center.Y - sixthOffset);
         path.LineTo(center.X - halfOffset, center.Y - sixthOffset);
-
-        if (markerStyle.Rotate is not null)
-        {
-            Rotate(path, center, markerStyle.Rotate.Value);
-        }
 
         Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }

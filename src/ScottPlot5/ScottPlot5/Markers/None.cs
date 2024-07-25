@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class None : Marker
+internal class None : IMarker
 {
-    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         // No rendering for none marker
     }

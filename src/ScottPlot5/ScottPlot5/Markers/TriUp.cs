@@ -1,8 +1,8 @@
 ﻿namespace ScottPlot.Markers;
 
-internal class TriUp : Marker
+internal class TriUp : IMarker
 {
-    public override void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         // Length of each side of inscribing triangle = size
         float radius = (float)(size / 1.732); // size / sqrt(3)
@@ -22,11 +22,6 @@ internal class TriUp : Marker
         // Right bottom line
         path.MoveTo(center.X, center.Y);
         path.LineTo(center.X + xOffset, center.Y - yOffset);
-
-        if (markerStyle.Rotate is not null)
-        {
-            Rotate(path, center, markerStyle.Rotate.Value);
-        }
 
         Drawing.DrawPath(canvas, paint, path, markerStyle.LineStyle);
     }
