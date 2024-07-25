@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "Sandbox.UnoPlatform",
+  "display": "standalone",
+  "name": "Sandbox.UnoPlatform",
+  "short_name": "Sandbox.UnoPlatform",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

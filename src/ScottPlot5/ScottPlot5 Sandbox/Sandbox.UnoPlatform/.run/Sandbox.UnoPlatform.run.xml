@@ -1,0 +1,62 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Sandbox.UnoPlatform (Desktop)" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+    <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Sandbox.UnoPlatform/Sandbox.UnoPlatform.csproj" />
+    <option name="LAUNCH_PROFILE_TFM" value="net8.0-desktop" />
+    <option name="LAUNCH_PROFILE_NAME" value="Sandbox.UnoPlatform (Desktop)" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+    <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+    <option name="SEND_DEBUG_REQUEST" value="1" />
+    <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+    <method v="2">
+      <option name="Build" />
+    </method>
+  </configuration>
+  <configuration default="false" name="Sandbox.UnoPlatform (WebAssembly IIS Express)" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+    <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Sandbox.UnoPlatform/Sandbox.UnoPlatform.csproj" />
+    <option name="LAUNCH_PROFILE_TFM" value="net8.0-browserwasm" />
+    <option name="LAUNCH_PROFILE_NAME" value="Sandbox.UnoPlatform (WebAssembly IIS Express)" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+    <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+    <option name="SEND_DEBUG_REQUEST" value="1" />
+    <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+    <method v="2">
+      <option name="Build" />
+    </method>
+  </configuration>
+  <configuration default="false" name="Sandbox.UnoPlatform (WebAssembly)" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+    <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Sandbox.UnoPlatform/Sandbox.UnoPlatform.csproj" />
+    <option name="LAUNCH_PROFILE_TFM" value="net8.0-browserwasm" />
+    <option name="LAUNCH_PROFILE_NAME" value="Sandbox.UnoPlatform (WebAssembly)" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+    <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+    <option name="SEND_DEBUG_REQUEST" value="1" />
+    <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+    <method v="2">
+      <option name="Build" />
+    </method>
+  </configuration>
+  <configuration default="false" name="Sandbox.UnoPlatform (WinAppSDK Unpackaged)" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+    <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Sandbox.UnoPlatform/Sandbox.UnoPlatform.csproj" />
+    <option name="LAUNCH_PROFILE_TFM" value="net8.0-windows10.0.19041.0" />
+    <option name="LAUNCH_PROFILE_NAME" value="Sandbox.UnoPlatform (WinAppSDK Unpackaged)" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+    <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+    <option name="SEND_DEBUG_REQUEST" value="1" />
+    <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+    <method v="2">
+      <option name="Build" />
+    </method>
+  </configuration>
+</component>
