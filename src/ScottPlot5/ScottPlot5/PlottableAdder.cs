@@ -563,18 +563,24 @@ public class PlottableAdder(Plot plot)
         return ohlc;
     }
 
-    public PhasorLinesPlot PhasorLines(
-        IEnumerable<PolarCoordinates> points, IEnumerable<string>? lineNames = null)
+    public PhasorLinesPlot Phasor()
     {
-        PhasorLinesPlot lp = new(points, lineNames);
+        PhasorLinesPlot phasor = new();
 
         Color color = GetNextColor().WithAlpha(0.7);
-        lp.ArrowFillColor = color;
-        lp.ArrowLineColor = color;
-        lp.LabelStyle.ForeColor = lp.ArrowFillColor;
+        phasor.ArrowFillColor = color;
+        phasor.ArrowLineColor = color;
+        phasor.LabelStyle.ForeColor = phasor.ArrowFillColor;
 
-        Plot.PlottableList.Add(lp);
-        return lp;
+        Plot.PlottableList.Add(phasor);
+        return phasor;
+    }
+
+    public PhasorLinesPlot Phasor(IEnumerable<PolarCoordinates> points)
+    {
+        PhasorLinesPlot phasor = Phasor();
+        phasor.Points.AddRange(points);
+        return phasor;
     }
 
     public Pie Pie(IList<PieSlice> slices)

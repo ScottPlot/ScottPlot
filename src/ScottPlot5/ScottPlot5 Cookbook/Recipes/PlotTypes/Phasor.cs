@@ -15,19 +15,23 @@ public class Phasor : ICategory
         [Test]
         public override void Execute()
         {
-            // these are the points we will display
-            PolarCoordinates[] points = [
+            // Start by placing a polar axis system on the plot
+            var polarAxis = myPlot.Add.PolarAxis(30);
+            polarAxis.LinePattern = LinePattern.Dotted;
+
+            // A Phasor may be added with predefined points
+            PolarCoordinates[] points1 = [
                 new (10, Angle.FromDegrees(15)),
                 new (20, Angle.FromDegrees(120)),
                 new (30, Angle.FromDegrees(240)),
             ];
+            myPlot.Add.Phasor(points1);
 
-            // start by adding a polar axis to the plot
-            var polarAxis = myPlot.Add.PolarAxis(30);
-            polarAxis.LinePattern = LinePattern.Dotted;
-
-            // then add phasor lines on top of the polar axis
-            myPlot.Add.PhasorLines(points);
+            // Points on a Phasor may be added or modified after it is created
+            var phaser2 = myPlot.Add.Phasor();
+            phaser2.Points.Add(new PolarCoordinates(20, Angle.FromDegrees(35)));
+            phaser2.Points.Add(new PolarCoordinates(25, Angle.FromDegrees(140)));
+            phaser2.Points.Add(new PolarCoordinates(20, Angle.FromDegrees(260)));
         }
     }
 }

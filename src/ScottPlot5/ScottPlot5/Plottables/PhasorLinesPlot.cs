@@ -1,12 +1,12 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class PhasorLinesPlot(IEnumerable<PolarCoordinates> points, IEnumerable<string>? lineNames = null) :
-    IPlottable, IHasArrow, IHasLegendText
+public class PhasorLinesPlot : IPlottable, IHasArrow, IHasLegendText
 {
-    public IEnumerable<string>? LineNames { get; } = lineNames;
-    public IEnumerable<PolarCoordinates> Points { get; } = points;
+    public List<PolarCoordinates> Points { get; } = [];
 
-    public readonly LabelStyle LabelStyle = new();
+    public List<string> LineNames { get; } = [];
+
+    public LabelStyle LabelStyle { get; } = new();
 
     /// <summary>
     /// Additional padding given to accommodate labels
