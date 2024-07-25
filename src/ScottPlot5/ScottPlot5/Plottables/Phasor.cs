@@ -22,7 +22,7 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
     public LabelStyle LabelStyle { get; } = new();
 
     /// <summary>
-    /// Additional padding given to accommodate labels
+    /// Additional padding given to accommodate spoke labels
     /// </summary>
     public double PaddingFraction { get; set; } = 0.01;
 
