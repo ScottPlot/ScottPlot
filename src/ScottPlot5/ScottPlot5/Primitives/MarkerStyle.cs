@@ -51,19 +51,17 @@ public class MarkerStyle : IHasLine, IHasFill, IHasOutline
     [Obsolete("use FillColor, FillHatchColor, FillHatch, or FillStyle", true)]
     public FillStyle Fill { get => FillStyle; set => FillStyle = value; }
 
-    public Angle? Rotate { get; set; }
-
     public MarkerStyle()
     {
+
     }
 
-    public MarkerStyle(MarkerShape shape, float size, Angle? rotate = null) :
-        this(shape, size, Colors.Gray, rotate)
+    public MarkerStyle(MarkerShape shape, float size) : this(shape, size, Colors.Gray)
     {
 
     }
 
-    public MarkerStyle(MarkerShape shape, float size, Color color, Angle? rotate = null)
+    public MarkerStyle(MarkerShape shape, float size, Color color)
     {
         Shape = shape;
         LineColor = color;
@@ -78,8 +76,6 @@ public class MarkerStyle : IHasLine, IHasFill, IHasOutline
         }
 
         Size = size;
-
-        Rotate = rotate;
     }
 
     public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
