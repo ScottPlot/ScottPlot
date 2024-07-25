@@ -21,9 +21,9 @@ public class Phasor : ICategory
 
             // A Phasor may be added with predefined points
             PolarCoordinates[] points1 = [
-                new (10, Angle.FromDegrees(15)),
-                new (20, Angle.FromDegrees(120)),
-                new (30, Angle.FromDegrees(240)),
+                new(10, Angle.FromDegrees(15)),
+                new(20, Angle.FromDegrees(120)),
+                new(30, Angle.FromDegrees(240)),
             ];
             myPlot.Add.Phasor(points1);
 

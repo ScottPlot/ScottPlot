@@ -139,9 +139,9 @@ public class AdvancedAxis : ICategory
         public override void Execute()
         {
             PolarCoordinates[] points = [
-                new (10, Angle.FromDegrees(15)),
-                new (20, Angle.FromDegrees(120)),
-                new (30, Angle.FromDegrees(240)),
+                new(10, Angle.FromDegrees(15)),
+                new(20, Angle.FromDegrees(120)),
+                new(30, Angle.FromDegrees(240)),
             ];
 
             var polarAxis = myPlot.Add.PolarAxis(30);
