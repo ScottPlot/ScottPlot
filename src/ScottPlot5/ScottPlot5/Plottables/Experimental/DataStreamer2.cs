@@ -2,14 +2,14 @@
 
 namespace ScottPlot.Plottables.Experimental;
 
-public class DataStreamer2(IDataLogger2Source dataSource) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
+public class DataStreamer2(IDataStreamer2Source dataSource) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
 {
-    public IDataLogger2Source Data { get; set; } = dataSource;
+    public IDataStreamer2Source Data { get; } = dataSource;
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IAxisLimitManager AxisManager { get; set; } = new Full();
-
+    public bool Rotated { get; set; }
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
@@ -47,14 +47,23 @@ public class DataStreamer2(IDataLogger2Source dataSource) : IPlottable, IManages
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle, MarkerStyle);
 
-    public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
+    public AxisLimits GetAxisLimits()
+    {
+        CoordinateRange rangeX = Data.GetRangeX();
+        CoordinateRange rangeY = Data.GetRangeY(rangeX);
+
+        return Rotated
+            ? new AxisLimits(rangeY, rangeX)
+            : new AxisLimits(rangeX, rangeY);
+    }
 
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
         Data.GetNearest(location, renderInfo, maxDistance);
 
     public virtual void Render(RenderPack rp)
     {
-        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes, ConnectStyle);
+        Pixel[] markerPixels = Rotated ? Data.GetPixelsToDrawVertically(rp, Axes, ConnectStyle)
+                                       : Data.GetPixelsToDrawHorizontally(rp, Axes, ConnectStyle);
 
         Pixel[] linePixels = ConnectStyle switch
         {
@@ -94,10 +103,13 @@ public class DataStreamer2(IDataLogger2Source dataSource) : IPlottable, IManages
     {
         bool firstTimeRenderingData = !Data.WasRendered;
 
+        IAxis xAxis = Rotated ? Axes.YAxis : Axes.XAxis;
+        IAxis yAxis = Rotated ? Axes.XAxis : Axes.YAxis;
+
         CoordinateRange dataRangeX = Data.GetRangeX();
         CoordinateRange viewRangeX = firstTimeRenderingData
             ? dataRangeX
-            : Axes.XAxis.GetRange();
+            : xAxis.GetRange().Rectified();
 
         CoordinateRange newRangeX = AxisManager.GetRangeX(viewRangeX, dataRangeX);
 
@@ -105,9 +117,24 @@ public class DataStreamer2(IDataLogger2Source dataSource) : IPlottable, IManages
         CoordinateRange dataRangeY = Data.GetRangeY(newRangeX);
         CoordinateRange viewRangeY = firstTimeRenderingData
             ? dataRangeY
-            : Axes.YAxis.GetRange();
+            : yAxis.GetRange().Rectified();
 
         CoordinateRange newRangeY = AxisManager.GetRangeY(viewRangeY, dataRangeY);
+
+        if (Rotated)
+        {
+            (newRangeX, newRangeY) = (newRangeY, newRangeX);
+        }
+
+        if (Axes.XAxis.IsInverted())
+        {
+            newRangeX = new(newRangeX.Max, newRangeX.Min);
+        }
+
+        if (Axes.YAxis.IsInverted())
+        {
+            newRangeY = new(newRangeY.Max, newRangeY.Min);
+        }
 
         AxisLimits newLimits = new(newRangeX, newRangeY);
 

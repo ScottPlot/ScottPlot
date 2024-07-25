@@ -28,7 +28,7 @@ public class SignalConstSource<T>
 
     public int GetIndex(double x, bool visibleDataOnly)
     {
-        int i = (int)((x - XOffset) / Period);
+        int i = (int)Math.Floor((x - XOffset) / Period);
 
         if (visibleDataOnly)
         {

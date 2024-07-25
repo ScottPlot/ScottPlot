@@ -74,4 +74,5 @@ public interface IAxis : IPanel
 public static class IAxisExtensions
 {
     public static CoordinateRange GetRange(this IAxis axis) => new(axis.Min, axis.Max);
+    public static bool IsInverted(this IAxis axis) => axis.Min > axis.Max;
 }

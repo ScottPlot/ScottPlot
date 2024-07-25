@@ -12,6 +12,17 @@ _Not yet on NuGet..._
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
 * Controls: Added autoscale to default context menu (#4053)
 * Axes: A polar plot axis can now be added with `myPlot.Add.PolarAxis()` and customized as seen in the cookbook (#4055, #3939) @CoderPM2011
+* Axis lines and spans: Added `EnableAutoscale` flag to allow plottables to be ignored when `Plot.Axes.AutoScale()` is called (#4069, #4067) @KroMignon @andresod
+* SignalConst: Improved support for custom legend text (#4081, #4082) @KroMignon @fanshuxian
+* SignalConst: Improve accuracy of the first point in low density mode (#4082, #4083, #4086, #4083) @StendProg @KroMignon
+* SignalConst: Allowed markers to become visible by setting their shape without requiring users to define a non-zero size (#4082) @KroMignon
+* Grid: Improved performance by reducing unnecessary allocations for ticks of invisible axes (#4087) @kebox7
+* Ticks: Improved behavior of the numeric fixed interval tick generator to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* Ticks: Allow the numeric fixed interval tick generator interval to be defined as a `double` (#4090) @epegeot
+* Ticks: Add a custom tick label formatter property to the numeric fixed interval tick generator (#4090) @epegeot
+* Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* DataStreamer: Improved support for rotated plots (#4093, #4085) @drolevar @KroMignon @Jofstera
+* Security: Removed outdated reference to `System.Text.Json` which contained CVE-2024-30105 (#4095, #4063) @SerTetora
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
