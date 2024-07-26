@@ -17,6 +17,24 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     public double PositionOffset { get; set; } = 0;
     public double PositionScale { get; set; } = 1;
 
+    //Obselete properties handled for backward compatibility
+    public double XOffset
+    {
+        get => PositionOffset;
+        set => PositionOffset = value;
+    }
+    public double YOffset
+    {
+        get => AmplitudeOffset;
+        set => AmplitudeOffset = value;
+    }
+    public double YScale
+    {
+        get => AmplitudeScale;
+        set => AmplitudeScale = value;
+    }
+
+
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
 

@@ -12,6 +12,9 @@ public interface ISignalXYSource
     /// </summary>
     double PositionOffset { get; set; }
 
+    [Obsolete("XOffset is obsolete. Use PositionOffset instead.")]
+    double XOffset { get; set; }
+
     /// <summary>
     /// Multiply Position values (X when not Rotated) by this scale factor (before applying offset)
     /// </summary>
@@ -22,10 +25,16 @@ public interface ISignalXYSource
     /// </summary>
     double AmplitudeOffset { get; set; }
 
+    [Obsolete("YOffset is obsolete. Use AmplitudeOffset instead.")]
+    double YOffset { get; set; }
+
     /// <summary>
     /// Multiply Amplitude values  (Y when not Rotated) by this scale factor (before applying offset)
     /// </summary>
     public double AmplitudeScale { get; set; }
+
+    [Obsolete("YOffset is obsolete. Use AmplitudeScale instead.")]
+    double YScale { get; set; }
 
     /// <summary>
     /// Do not display data below this index
