@@ -25,6 +25,7 @@ _Not yet on NuGet..._
 * Security: Removed outdated reference to `System.Text.Json` which contained CVE-2024-30105 (#4095, #4063) @SerTetora
 * Phaser: New plot type for displaying arrows to points in polar space (#4096, #3939) @CoderPM2011 @nilsakesson
 * PlottableAdder: Exposed `Plot` so users can create methods that extend `Plot.Add` which have access to the `Plot` itself (#4109, #4107) @DDiggs91
+* AxisManager: Improve `AutoScale()` support for inverted axes (#4110) @BrianAtZetica
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
