@@ -9,7 +9,7 @@ namespace ScottPlot;
 /// </summary>
 public class PlottableAdder(Plot plot)
 {
-    private readonly Plot Plot = plot;
+    public Plot Plot { get; } = plot;
 
     /// <summary>
     /// Color set used for adding new plottables
