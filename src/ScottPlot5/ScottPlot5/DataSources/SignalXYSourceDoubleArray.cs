@@ -99,13 +99,6 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         // combine with one extra point before and after
         Pixel[] points = [.. leftOutsidePoint, .. VisiblePoints, .. rightOutsidePoint];
 
-        // duplicate the last point to ensure it is always rendered
-        // https://github.com/ScottPlot/ScottPlot/issues/3812
-        if (VisiblePoints.Count() > 0)
-        {
-            points.Concat(new[] { VisiblePoints.Last() });
-        }
-
         // use interpolation at the edges to prevent points from going way off the screen
         if (leftOutsidePoint.Length > 0)
             SignalInterpolation.InterpolateBeforeX(rp, points, connectStyle);
