@@ -422,6 +422,30 @@ public class Scatter : ICategory
         }
     }
 
+    public class ScatterFillGradient : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Gradient Fill";
+        public override string Description => "The area beneath a scatter plot can be " +
+            "filled with a custom gradient of colors.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var poly = myPlot.Add.ScatterLine(xs, ys);
+
+            poly.FillY = true;
+            poly.ColorPositions.Add(new(Colors.Red, 0));
+            poly.ColorPositions.Add(new(Colors.Orange, 10));
+            poly.ColorPositions.Add(new(Colors.Yellow, 20));
+            poly.ColorPositions.Add(new(Colors.Green, 30));
+            poly.ColorPositions.Add(new(Colors.Blue, 40));
+            poly.ColorPositions.Add(new(Colors.Violet, 50));
+        }
+    }
+
     public class ScatterScaleAndOffset : RecipeBase
     {
         public override string Name => "Scatter Scale and Offset";
