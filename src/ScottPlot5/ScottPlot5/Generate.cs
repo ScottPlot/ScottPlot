@@ -23,6 +23,18 @@ public static class Generate
     }
 
     /// <summary>
+    /// Return an array of evenly-spaced numbers
+    /// </summary>
+    public static float[] fConsecutive(int count = 51, double delta = 1, double first = 0)
+    {
+        float[] ys = new float[count];
+        for (int i = 0; i < ys.Length; i++)
+            ys[i] = (float)(i * delta + first);
+        return ys;
+    }
+
+
+    /// <summary>
     /// Return an array of sine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
@@ -37,6 +49,20 @@ public static class Generate
     }
 
     /// <summary>
+    /// Return an array of sine waves between -1 and 1.
+    /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
+    /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
+    /// </summary>
+    public static float[] fSin(int count = 51, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    {
+        double sinScale = 2 * Math.PI * oscillations / (count - 1);
+        float[] ys = new float[count];
+        for (int i = 0; i < ys.Length; i++)
+            ys[i] = (float)(Math.Sin(i * sinScale + phase * Math.PI * 2) * mult + offset);
+        return ys;
+    }
+
+    /// <summary>
     /// Return an array of cosine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
@@ -47,6 +73,20 @@ public static class Generate
         double[] ys = new double[count];
         for (int i = 0; i < ys.Length; i++)
             ys[i] = Math.Cos(i * sinScale + phase * Math.PI * 2) * mult + offset;
+        return ys;
+    }
+
+    /// <summary>
+    /// Return an array of cosine waves between -1 and 1.
+    /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
+    /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
+    /// </summary>
+    public static float[] fCos(int count = 51, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    {
+        double sinScale = 2 * Math.PI * oscillations / (count - 1);
+        float[] ys = new float[count];
+        for (int i = 0; i < ys.Length; i++)
+            ys[i] = (float)(Math.Cos(i * sinScale + phase * Math.PI * 2) * mult + offset);
         return ys;
     }
 

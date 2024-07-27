@@ -33,7 +33,7 @@ public partial class ShowValueUnderMouseSignalXY : Form, IDemoWindow
             Coordinates mouseLocation = formsPlot1.Plot.GetCoordinates(mousePixel);
             DataPoint nearest = rbNearestXY.Checked
                 ? MySignal.Data.GetNearest(mouseLocation, formsPlot1.Plot.LastRender)
-                : MySignal.Data.GetNearestX(mouseLocation, formsPlot1.Plot.LastRender);
+                : MySignal.Data.GetNearestPosition(mouseLocation, formsPlot1.Plot.LastRender);
 
             // place the crosshair over the highlighted point
             if (nearest.IsReal)

@@ -8,19 +8,33 @@ public interface ISignalXYSource
     int Count { get; }
 
     /// <summary>
-    /// X position of the first data point
+    /// Position value (X when not Rotated) of the first data point
     /// </summary>
+    double PositionOffset { get; set; }
+
+    [Obsolete("XOffset is obsolete. Use PositionOffset instead.")]
     double XOffset { get; set; }
 
     /// <summary>
-    /// Shift Y position of all values by this amount
+    /// Multiply Position values (X when not Rotated) by this scale factor (before applying offset)
     /// </summary>
+    double PositionScale { get; set; }
+
+    /// <summary>
+    /// Shift Amplitude  (Y when not Rotated) of all values by this amount
+    /// </summary>
+    double AmplitudeOffset { get; set; }
+
+    [Obsolete("YOffset is obsolete. Use AmplitudeOffset instead.")]
     double YOffset { get; set; }
 
     /// <summary>
-    /// Multiply Y values by this scale factor (before applying offset)
+    /// Multiply Amplitude values  (Y when not Rotated) by this scale factor (before applying offset)
     /// </summary>
-    public double YScale { get; set; }
+    public double AmplitudeScale { get; set; }
+
+    [Obsolete("YOffset is obsolete. Use AmplitudeScale instead.")]
+    double YScale { get; set; }
 
     /// <summary>
     /// Do not display data below this index
@@ -33,7 +47,7 @@ public interface ISignalXYSource
     public int MaximumIndex { get; set; }
 
     /// <summary>
-    /// If enabled, Xs will be vertical and Ys will be horizontal.
+    /// If enabled, Positions will be vertical and Amplitudes will be horizontal.
     /// </summary>
     public bool Rotated { get; set; }
 
@@ -58,5 +72,5 @@ public interface ISignalXYSource
     /// Return the point nearest a specific X location given the X/Y pixel scaling information from a previous render.
     /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
     /// </summary>
-    DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
+    DataPoint GetNearestPosition(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
 }

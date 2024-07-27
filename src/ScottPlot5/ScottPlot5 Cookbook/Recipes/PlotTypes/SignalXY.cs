@@ -75,21 +75,21 @@ public class SignalXY : ICategory
 
             var sigAll = myPlot.Add.SignalXY(xs, ys);
             sigAll.LegendText = "Full";
-            sigAll.Data.YOffset = 80;
+            sigAll.Data.AmplitudeOffset = 80;
 
             var sigLeft = myPlot.Add.SignalXY(xs, ys);
             sigLeft.LegendText = "Left";
-            sigLeft.Data.YOffset = 60;
+            sigLeft.Data.AmplitudeOffset = 60;
             sigLeft.Data.MaximumIndex = 700;
 
             var sigRight = myPlot.Add.SignalXY(xs, ys);
             sigRight.LegendText = "Right";
-            sigRight.Data.YOffset = 40;
+            sigRight.Data.AmplitudeOffset = 40;
             sigRight.Data.MinimumIndex = 300;
 
             var sigMid = myPlot.Add.SignalXY(xs, ys);
             sigMid.LegendText = "Mid";
-            sigMid.Data.YOffset = 20;
+            sigMid.Data.AmplitudeOffset = 20;
             sigMid.Data.MinimumIndex = 300;
             sigMid.Data.MaximumIndex = 700;
 
@@ -112,8 +112,8 @@ public class SignalXY : ICategory
             var sig1 = myPlot.Add.SignalXY(xs, ys);
 
             var sig2 = myPlot.Add.SignalXY(xs, ys);
-            sig2.Data.XOffset = 250;
-            sig2.Data.YOffset = .5;
+            sig2.Data.PositionOffset = 250;
+            sig2.Data.AmplitudeOffset = .5;
         }
     }
 
@@ -131,7 +131,7 @@ public class SignalXY : ICategory
             var signalXY = myPlot.Add.SignalXY(xs, values);
 
             // increase the vertical scaling
-            signalXY.Data.YScale = 500;
+            signalXY.Data.AmplitudeScale = 500;
         }
     }
 
