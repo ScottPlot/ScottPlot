@@ -256,7 +256,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         }
 
         if (pointsInRange > 1)
-        { 
+        {
             yield return new Pixel(axes.GetPixelX(Ys[lastIndex] * YScale + YOffset), yPixel); // exit
         }
     }

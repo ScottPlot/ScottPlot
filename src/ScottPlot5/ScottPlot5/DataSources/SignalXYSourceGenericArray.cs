@@ -183,7 +183,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex;
         double yStart = NumericConversion.GenericToDouble(Ys, firstIndex) * YScale + YOffset;
         double yEnd = NumericConversion.GenericToDouble(Ys, lastIndex) * YScale + YOffset;
-        
+
         yield return new Pixel(xPixel, axes.GetPixelY(yStart)); // enter
 
         if (pointsInRange > 2)
