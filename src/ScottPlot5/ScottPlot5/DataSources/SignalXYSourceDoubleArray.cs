@@ -13,7 +13,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
     public double YScale { get; set; } = 1;
-    // TODO: add XScale
+    public double XScale { get; set; } = 1;
+
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
@@ -35,8 +36,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         if (Xs.Length == 0)
             return AxisLimits.NoLimits;
 
-        double xMin = Xs[MinimumIndex] + XOffset;
-        double xMax = Xs[MaximumIndex] + XOffset;
+        double xMin = Xs[MinimumIndex] * XScale + XOffset;
+        double xMax = Xs[MaximumIndex] * XScale + XOffset;
 
         CoordinateRange xRange = new(xMin, xMax);
         CoordinateRange yRange = GetRangeY(MinimumIndex, MaximumIndex);
@@ -273,7 +274,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (firstPointIndex > MinimumIndex)
         {
-            float beforeX = axes.GetPixelX(Xs[firstPointIndex - 1] + XOffset);
+            float beforeX = axes.GetPixelX(Xs[firstPointIndex - 1] * XScale + XOffset);
             float beforeY = axes.GetPixelY(Ys[firstPointIndex - 1] * YScale + YOffset);
             Pixel beforePoint = new(beforeX, beforeY);
             return ([beforePoint], firstPointIndex);
@@ -297,7 +298,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (firstPointIndex > MinimumIndex)
         {
-            float beforeY = axes.GetPixelY(Xs[firstPointIndex - 1] + XOffset);
+            float beforeY = axes.GetPixelY(Xs[firstPointIndex - 1] * XScale + XOffset);
             float beforeX = axes.GetPixelX(Ys[firstPointIndex - 1] * YScale + YOffset);
             Pixel beforePoint = new(beforeX, beforeY);
             return ([beforePoint], firstPointIndex);
@@ -321,7 +322,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (lastPointIndex <= MaximumIndex)
         {
-            float afterX = axes.GetPixelX(Xs[lastPointIndex] + XOffset);
+            float afterX = axes.GetPixelX(Xs[lastPointIndex] * XScale + XOffset);
             float afterY = axes.GetPixelY(Ys[lastPointIndex] * YScale + YOffset);
             Pixel afterPoint = new(afterX, afterY);
             return ([afterPoint], lastPointIndex - 1);
@@ -345,7 +346,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         if (lastPointIndex <= MaximumIndex)
         {
-            float afterY = axes.GetPixelY(Xs[lastPointIndex] + XOffset);
+            float afterY = axes.GetPixelY(Xs[lastPointIndex] * XScale + XOffset);
             float afterX = axes.GetPixelX(Ys[lastPointIndex] * YScale + YOffset);
             Pixel afterPoint = new(afterX, afterY);
             return ([afterPoint], lastPointIndex - 1);
@@ -370,7 +371,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     /// </summary>
     private (int SearchedPosition, int LimitedIndex) SearchIndex(double x, IndexRange indexRange)
     {
-        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x - XOffset);
+        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, (x - XOffset) / XScale);
 
         // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
         // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
@@ -396,9 +397,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         {
             double dX = Rotated ?
                  (Ys[i] * YScale + YOffset - mouseLocation.X) * renderInfo.PxPerUnitX :
-                 (Xs[i] + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
+                 (Xs[i] * XScale + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
             double dY = Rotated ?
-                (Xs[i] + XOffset - mouseLocation.Y) * renderInfo.PxPerUnitY :
+                (Xs[i] * XScale + XOffset - mouseLocation.Y) * renderInfo.PxPerUnitY :
                 (Ys[i] * YScale + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
 
             double distanceSquared = dX * dX + dY * dY;
@@ -409,9 +410,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
                 closestX = Rotated ?
                     Ys[i] * YScale + YOffset :
-                    Xs[i] + XOffset;
+                    Xs[i] * XScale + XOffset;
                 closestY = Rotated ?
-                    Xs[i] + XOffset :
+                    Xs[i] * XScale + XOffset :
                     Ys[i] * YScale + YOffset;
 
                 closestIndex = i;
@@ -429,9 +430,9 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         int i = GetIndex(MousePosition); // TODO: check the index after too?
         var PxPerPositionUnit = Rotated ? renderInfo.PxPerUnitY : renderInfo.PxPerUnitX;
 
-        double distance = (Xs[i] + XOffset - MousePosition) * PxPerPositionUnit;
-        var closestX = Rotated ? Ys[i] * YScale + YOffset : Xs[i] + XOffset;
-        var closestY = Rotated ? Xs[i] + XOffset : Ys[i] * YScale + YOffset;
+        double distance = (Xs[i] * XScale + XOffset - MousePosition) * PxPerPositionUnit;
+        var closestX = Rotated ? Ys[i] * YScale + YOffset : Xs[i] * XScale + XOffset;
+        var closestY = Rotated ? Xs[i] * XScale + XOffset : Ys[i] * YScale + YOffset;
 
         return Math.Abs(distance) <= maxDistance
             ? new DataPoint(closestX, closestY, i)
