@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos
 {
-    partial class DataStreamerCtrl
+    partial class DataLoggerCtrl
     {
         /// <summary> 
         /// Required designer variable.
@@ -135,7 +135,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(formsPlot);
             Controls.Add(flpControls);
-            Name = "DataStreamerCtrl";
+            Name = "DataLoggerCtrl";
             Size = new Size(701, 501);
             flpControls.ResumeLayout(false);
             flpControls.PerformLayout();

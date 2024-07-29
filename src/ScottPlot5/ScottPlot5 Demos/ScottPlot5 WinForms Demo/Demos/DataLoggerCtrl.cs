@@ -7,13 +7,13 @@ using ScottPlot.DataSources;
 
 namespace WinForms_Demo.Demos
 {
-    public partial class DataStreamerCtrl : UserControl
+    public partial class DataLoggerCtrl : UserControl
     {
         private bool _rotated;
         private BottomAxis? _secondXAxis;
         private RightAxis? _secondYAxis;
 
-        public DataStreamerCtrl()
+        public DataLoggerCtrl()
         {
             InitializeComponent();
 
@@ -30,12 +30,12 @@ namespace WinForms_Demo.Demos
             formsPlot.Plot.Clear();
 
             // create two horizontal loggers and add them to the plot
-            var data1 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
-            Logger1 = new ScottPlot.Plottables.Experimental.DataStreamer2(data1) { Color = Colors.C0, Rotated = Rotated };
+            var data1 = new CircularBuffer<Coordinates>(1000);
+            Logger1 = new ScottPlot.Plottables.DataLogger(data1) { Color = Colors.C0, Rotated = Rotated };
             formsPlot.Plot.Add.Plottable(Logger1);
 
-            var data2 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
-            Logger2 = new ScottPlot.Plottables.Experimental.DataStreamer2(data2) { Color = Colors.C1, Rotated = Rotated };
+            var data2 = new CircularBuffer<Coordinates>(1000);
+            Logger2 = new ScottPlot.Plottables.DataLogger(data2) { Color = Colors.C1, Rotated = Rotated };
             formsPlot.Plot.Add.Plottable(Logger2);
 
             if (Rotated)
@@ -101,8 +101,8 @@ namespace WinForms_Demo.Demos
             formsPlot.Plot.Axes.AutoScale(invertX: cbInvertedX.Checked, invertY: cbInvertedY.Checked);
         }
 
-        public ScottPlot.Plottables.Experimental.DataStreamer2 Logger1 { get; private set; }
-        public ScottPlot.Plottables.Experimental.DataStreamer2 Logger2 { get; private set; }
+        public ScottPlot.Plottables.DataLogger Logger1 { get; private set; }
+        public ScottPlot.Plottables.DataLogger Logger2 { get; private set; }
 
         public void RefreshPlot()
         {
