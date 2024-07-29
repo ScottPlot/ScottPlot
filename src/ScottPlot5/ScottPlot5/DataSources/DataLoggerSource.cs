@@ -167,7 +167,7 @@ public class DataLoggerSource
     /// <summary>
     /// Get the index associated with the given X position
     /// </summary>
-    private int GetIndex(double x)
+    public int GetIndex(double x)
     {
         IndexRange range = new(0, LastIndex);
         return GetIndex(x, range);
@@ -367,44 +367,6 @@ public class DataLoggerSource
         }
 
         return (SearchedPosition: index, LimitedIndex: index > indexRange.Max ? indexRange.Max : index);
-    }
-
-    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
-
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
-
-        for (int i = 0; i < Coordinates.Count; i++)
-        {
-            double dX = (Coordinates[i].X + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (Coordinates[i].Y * YScale + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-                closestX = Coordinates[i].X + XOffset;
-                closestY = Coordinates[i].Y * YScale + YOffset;
-                closestIndex = i;
-            }
-        }
-
-        return closestDistanceSquared <= maxDistanceSquared
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
-
-    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        int i = GetIndex(mouseLocation.X); // TODO: check the index after too?
-        double distance = (Coordinates[i].X + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-        return distance <= maxDistance
-            ? new DataPoint(Coordinates[i].X, Coordinates[i].Y, i)
-            : DataPoint.None;
     }
 }
 

@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 using ScottPlot;
 using ScottPlot.AxisPanels;
 using ScottPlot.Collections;
-using ScottPlot.DataSources;
+using Crosshair = ScottPlot.Plottables.Crosshair;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace WinForms_Demo.Demos
 {
@@ -12,6 +14,8 @@ namespace WinForms_Demo.Demos
         private bool _rotated;
         private BottomAxis? _secondXAxis;
         private RightAxis? _secondYAxis;
+        private Crosshair _crossHair1;
+        private bool _tracking;
 
         public DataLoggerCtrl()
         {
@@ -25,6 +29,7 @@ namespace WinForms_Demo.Demos
 
         [MemberNotNull(nameof(Logger1))]
         [MemberNotNull(nameof(Logger2))]
+        [MemberNotNull(nameof(_crossHair1))]
         private void InitPlots()
         {
             formsPlot.Plot.Clear();
@@ -76,6 +81,13 @@ namespace WinForms_Demo.Demos
                     _secondXAxis = null;
                 }
             }
+
+            _crossHair1 = formsPlot.Plot.Add.Crosshair(0, 0);
+            _crossHair1.IsVisible = false;
+            _crossHair1.MarkerShape = MarkerShape.OpenCircle;
+            _crossHair1.MarkerSize = 15;
+            _crossHair1.Axes.XAxis = Logger1.Axes.XAxis;
+            _crossHair1.Axes.YAxis = Logger1.Axes.YAxis;
         }
 
         private void btnFull_Click(object sender, EventArgs e)
@@ -112,7 +124,42 @@ namespace WinForms_Demo.Demos
             }
         }
 
+        private void formsPlot_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!Tracking)
+            {
+                return;
+            }
+
+            // determine where the mouse is and get the nearest point
+            Pixel mousePixel = new(e.Location.X, e.Location.Y);
+            Coordinates mouseLocation = formsPlot.Plot.GetCoordinates(mousePixel, Logger1.Axes.XAxis, Logger1.Axes.YAxis);
+
+            DataPoint nearest = Logger1.GetNearest(mouseLocation, formsPlot.Plot.LastRender.DataRect);
+
+            // place the crosshair over the highlighted point
+            if (nearest.IsReal)
+            {
+                _crossHair1.IsVisible = true;
+
+                var coordinates = nearest.Coordinates;
+                _crossHair1.Position = Rotated ? coordinates.Rotated : coordinates;
+
+                formsPlot.Refresh();
+                tbStatus.Text = $"Selected Index={nearest.Index}, X={nearest.X:0.##}, Y={nearest.Y:0.##}";
+            }
+
+            //hide the crosshair when no point is selected
+            if (!nearest.IsReal && _crossHair1.IsVisible)
+            {
+                _crossHair1.IsVisible = false;
+                formsPlot.Refresh();
+                tbStatus.Text = $"No point selected";
+            }
+        }
+
         [Description("True if the control is rotated")]
+        [DefaultValue(false)]
         public bool Rotated
         {
             get => _rotated;
@@ -126,6 +173,28 @@ namespace WinForms_Demo.Demos
                 {
                     InitPlots();
                 }
+            }
+        }
+
+        [Description("True if tracking is enabled")]
+        [DefaultValue(false)]
+        public bool Tracking
+        {
+            get => _tracking;
+            set
+            {
+                if (_tracking == value)
+                {
+                    return;
+                }
+
+                if (!value)
+                {
+                    _crossHair1.IsVisible = false;
+                    formsPlot.Refresh();
+                }
+
+                _tracking = value;
             }
         }
     }

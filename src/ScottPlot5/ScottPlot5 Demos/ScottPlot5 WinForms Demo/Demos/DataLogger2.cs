@@ -41,5 +41,7 @@ public partial class DataLogger2 : Form, IDemoWindow
     {
         AddNewDataTimer.Enabled = cbRunning.Checked;
         UpdatePlotTimer.Enabled = cbRunning.Checked;
+        loggerPlotHorz.Tracking = !cbRunning.Checked;
+        loggerPlotVert.Tracking = !cbRunning.Checked;
     }
 }

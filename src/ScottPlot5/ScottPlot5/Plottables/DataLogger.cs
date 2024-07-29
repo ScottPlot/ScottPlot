@@ -70,8 +70,79 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, 
             : new AxisLimits(rangeX, rangeY);
     }
 
-    public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
-        Data.GetNearest(location, renderInfo, maxDistance);
+
+    /// <summary>
+    /// Get the data point nearest to the given mouse location.
+    /// </summary>
+    /// <param name="mouseLocation">Mouse location</param>
+    /// <param name="dataRect">Data rectangle from RenderDetails</param>
+    /// <param name="maxDistance">Maximum distance to the point</param>
+    /// <returns></returns>
+    public DataPoint GetNearest(Coordinates mouseLocation, PixelRect dataRect, float maxDistance = 15)
+    {
+        double pxPerUnitX = dataRect.Width / Axes.XAxis.GetRange().Span;
+        double pxPerUnitY = dataRect.Height / Axes.YAxis.GetRange().Span;
+
+        double maxDistanceSquared = maxDistance * maxDistance;
+        double closestDistanceSquared = double.PositiveInfinity;
+
+        int closestIndex = 0;
+        double closestX = double.PositiveInfinity;
+        double closestY = double.PositiveInfinity;
+
+        for (int i = 0; i < Data.Coordinates.Count; i++)
+        {
+            double x = Data.Coordinates[i].X + Data.XOffset;
+            double y = Data.Coordinates[i].Y * Data.YScale + Data.YOffset;
+
+            if (Rotated)
+                (x, y) = (y, x);
+
+            double dX = (x - mouseLocation.X) * pxPerUnitX;
+            double dY = (y - mouseLocation.Y) * pxPerUnitY;
+            double distanceSquared = dX * dX + dY * dY;
+
+            if (distanceSquared <= closestDistanceSquared)
+            {
+                closestDistanceSquared = distanceSquared;
+                closestX = x;
+                closestY = y;
+                closestIndex = i;
+            }
+        }
+
+        return closestDistanceSquared <= maxDistanceSquared
+            ? Rotated ? new DataPoint(closestY, closestX, closestIndex) : new DataPoint(closestX, closestY, closestIndex)
+            : DataPoint.None;
+    }
+
+    /// <summary>
+    /// Get the data point nearest to the given mouse location (only considering X values).
+    /// </summary>
+    /// <param name="mouseLocation">Mouse location</param>
+    /// <param name="dataRect">Data rectangle from RenderDetails</param>
+    /// <param name="maxDistance">Maximum X distance to the point</param>
+    /// <returns></returns>
+    public DataPoint GetNearestX(Coordinates mouseLocation, PixelRect dataRect, float maxDistance = 15)
+    {
+        double pxPerUnit;
+
+        if (Rotated)
+        {
+            mouseLocation = mouseLocation.Rotated;
+            pxPerUnit = dataRect.Height / Axes.YAxis.GetRange().Span;
+        }
+        else
+        {
+            pxPerUnit = dataRect.Width / Axes.XAxis.GetRange().Span;
+        }
+
+        int i = Data.GetIndex(mouseLocation.X); // TODO: check the index after too?
+        double distance = (Data.Coordinates[i].X + Data.XOffset - mouseLocation.X) * pxPerUnit;
+        return distance <= maxDistance
+            ? new DataPoint(Data.Coordinates[i].X, Data.Coordinates[i].Y, i)
+            : DataPoint.None;
+    }
 
     public virtual void Render(RenderPack rp)
     {

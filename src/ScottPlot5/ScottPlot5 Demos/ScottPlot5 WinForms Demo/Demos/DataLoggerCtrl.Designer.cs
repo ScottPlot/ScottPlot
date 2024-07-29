@@ -36,6 +36,7 @@
             cbInvertedY = new CheckBox();
             lblInverted = new Label();
             flpControls = new FlowLayoutPanel();
+            tbStatus = new TextBox();
             flpControls.SuspendLayout();
             SuspendLayout();
             // 
@@ -45,8 +46,9 @@
             formsPlot.Dock = DockStyle.Fill;
             formsPlot.Location = new Point(0, 44);
             formsPlot.Name = "formsPlot";
-            formsPlot.Size = new Size(701, 457);
+            formsPlot.Size = new Size(701, 434);
             formsPlot.TabIndex = 6;
+            formsPlot.MouseMove += formsPlot_MouseMove;
             // 
             // btnSlide
             // 
@@ -129,17 +131,27 @@
             flpControls.Size = new Size(701, 44);
             flpControls.TabIndex = 18;
             // 
-            // DataStreamerCtrl
+            // tbStatus
+            // 
+            tbStatus.Dock = DockStyle.Bottom;
+            tbStatus.Location = new Point(0, 478);
+            tbStatus.Name = "tbStatus";
+            tbStatus.Size = new Size(701, 23);
+            tbStatus.TabIndex = 19;
+            // 
+            // DataLoggerCtrl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(formsPlot);
             Controls.Add(flpControls);
+            Controls.Add(tbStatus);
             Name = "DataLoggerCtrl";
             Size = new Size(701, 501);
             flpControls.ResumeLayout(false);
             flpControls.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -152,5 +164,6 @@
         private CheckBox cbInvertedY;
         private Label lblInverted;
         private FlowLayoutPanel flpControls;
+        private TextBox tbStatus;
     }
 }
