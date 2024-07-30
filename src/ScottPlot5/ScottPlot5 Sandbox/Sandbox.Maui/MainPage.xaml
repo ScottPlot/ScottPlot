@@ -4,14 +4,11 @@
              xmlns:sp="clr-namespace:ScottPlot.Maui;assembly=ScottPlot.Maui"
              x:Class="Sandbox.Maui.MainPage"
              Title="ScottPlot">
-    <Grid
-        HorizontalOptions="FillAndExpand" 
-        VerticalOptions="FillAndExpand">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <sp:MauiPlot x:Name="MauiPlot1" Grid.Row="0" />
-        <Label Text="Label" Grid.Row="1" />
+
+        <sp:MauiPlot Grid.Row="0" x:Name="canvas" />
     </Grid>
 </ContentPage>

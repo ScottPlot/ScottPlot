@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using ScottPlot.Maui;
 
 namespace Sandbox.Maui;
 public static class MauiProgram
@@ -10,6 +11,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseSkiaSharp()
+            .UseScottPlot()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -21,5 +23,14 @@ public static class MauiProgram
 #endif
 
         return builder.Build();
+    }
+}
+
+public static class ScottPlotMauiExtensions
+{
+    public static MauiAppBuilder UseScottPlot(this MauiAppBuilder builder)
+    {
+        // TODO: what goes here?
+        return builder;
     }
 }

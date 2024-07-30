@@ -40,25 +40,5 @@ internal static class MauiPlotExtensions
                 return Control.MouseButton.Unknown;
         }
     }
-
-    /*internal static Control.Key Key(this KeyRoutedEventArgs e)
-    {
-        return e.Key switch
-        {
-            VirtualKey.Control => Control.Key.Ctrl,
-            VirtualKey.LeftControl => Control.Key.Ctrl,
-            VirtualKey.RightControl => Control.Key.Ctrl,
-
-            VirtualKey.Menu => Control.Key.Alt,
-            VirtualKey.LeftMenu => Control.Key.Alt,
-            VirtualKey.RightMenu => Control.Key.Alt,
-
-            VirtualKey.Shift => Control.Key.Shift,
-            VirtualKey.LeftShift => Control.Key.Shift,
-            VirtualKey.RightShift => Control.Key.Shift,
-
-            _ => Control.Key.Unknown,
-        };
-    }*/
 }
 
