@@ -1,4 +1,17 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Colormaps;
+
+namespace ScottPlot.Plottables;
+
+[Flags]
+internal enum EdgeDirection
+{
+    None = 0,
+    Up = 0b1,
+    Right = 0b10,
+    Down = 0b100,
+    Left = 0b1000,
+    All = Up | Right | Down | Left,
+}
 
 public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
@@ -10,6 +23,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public bool IsoMap { get; set; } = false;
     private IColormap _colormap { get; set; } = new Colormaps.Viridis();
     public IColormap Colormap
     {
@@ -256,6 +270,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
     private SKBitmap? Bitmap = null;
+    private List<LinkedList<(int i, int j)>>? EdgePaths = null;
 
     ~Heatmap()
     {
@@ -269,6 +284,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     private uint[] GetArgbValues()
     {
+        // TODO: Allow setting number of buckets (and possibly their size, it's often useful to highlight a narrow range)
+        var quantizedColormap = IsoMap ? new QuantizedColormap(Colormap, 3) : Colormap;
+
         Range range = GetRange();
         uint[] argb = new uint[Intensities.Length];
 
@@ -292,7 +310,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                     continue;
                 }
 
-                Color cellColor = Colormap.GetColor(Intensities[y, xIndex], range);
+                Color cellColor = quantizedColormap.GetColor(Intensities[y, xIndex], range);
 
                 if (AlphaMap is not null)
                     cellColor = cellColor.WithAlpha(AlphaMap[y, xIndex]);
@@ -307,6 +325,171 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         return argb;
     }
 
+    private EdgeDirection[,] GetEdgePoints(uint[] argbs)
+    {
+        var differsFrom = new EdgeDirection[Height, Width];
+
+        if (!IsoMap)
+            return differsFrom;
+
+        // We assume here that each bitmap pixel has one and only one intensity value (i.e. the image is not scaled)
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                var self = argbs[i * Width + j];
+
+                var leftIndex = i * Width + j - 1;
+                var rightIndex = i * Width + j + 1;
+                var upIndex = (i - 1) * Width + j;
+                var downIndex = (i + 1) * Width + j;
+
+                var left = leftIndex >= 0 && j > 0 ? argbs[leftIndex] : self;
+                var right = rightIndex < argbs.Length && j + 1 < Width ? argbs[rightIndex] : self;
+                var up = upIndex >= 0 ? argbs[upIndex] : self;
+                var down = downIndex < argbs.Length ? argbs[downIndex] : self;
+
+                // Because this is only intended to be used for the isomap we can do simplistic edge detection
+                // If we ever extend it we likely need something like Canny detection
+
+                var edgeDirection = EdgeDirection.None;
+                if (self != left)
+                    edgeDirection |= EdgeDirection.Left;
+
+                if (self != right)
+                    edgeDirection |= EdgeDirection.Right;
+
+                if (self != up)
+                    edgeDirection |= EdgeDirection.Up;
+
+                if (self != down)
+                    edgeDirection |= EdgeDirection.Down;
+
+
+                differsFrom[i, j] = edgeDirection;
+            }
+        }
+
+        var edgeDirections = new EdgeDirection[Height, Width];
+
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (differsFrom[i, j] == EdgeDirection.None)
+                    continue;
+
+                if ((differsFrom[i, j] & EdgeDirection.Left) != EdgeDirection.None)
+                {
+                    // i.e. the edge continues above this cell either in the same direction, or 90 degrees different
+                    if (i > 0 && (differsFrom[i - 1, j] & (EdgeDirection.All ^ EdgeDirection.Down)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Up;
+
+                    if (i + 1 < Height && (differsFrom[i + 1, j] & (EdgeDirection.All ^ EdgeDirection.Up)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Down;
+                }
+
+                //if (false && (differsFrom[i, j] & EdgeDirection.Right) != EdgeDirection.None)
+                //{
+                //    if (i > 0 && (differsFrom[i - 1, j] & EdgeDirection.Right) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Up;
+
+                //    if (i + 1 < Height && (differsFrom[i + 1, j] & EdgeDirection.Right) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Down;
+                //}
+
+                if ((differsFrom[i, j] & EdgeDirection.Up) != EdgeDirection.None)
+                {
+                    if (j > 0 && (differsFrom[i, j - 1] & (EdgeDirection.All ^ EdgeDirection.Right)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Left;
+
+                    if (j + 1 < Width && (differsFrom[i, j + 1] & (EdgeDirection.All ^ EdgeDirection.Left)) != EdgeDirection.None)
+                        edgeDirections[i, j] |= EdgeDirection.Right;
+                }
+
+                //if (false && (differsFrom[i, j] & EdgeDirection.Down) != EdgeDirection.None)
+                //{
+                //    if (j > 0 && (differsFrom[i, j - 1] & EdgeDirection.Down) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Left;
+
+                //    if (j + 1 < Width && (differsFrom[i, j + 1] & EdgeDirection.Down) != EdgeDirection.None)
+                //        edgeDirections[i, j] |= EdgeDirection.Right;
+                //}
+            }
+        }
+
+        return edgeDirections;
+    }
+
+    // Prefers upper neighbour and makes its way clockwise
+    private (int i, int j)? GetNeighbour(EdgeDirection[,] edges, (int i, int j) coords)
+    {
+        (int i, int j) = coords;
+        var directions = EdgeDirection.None;
+        try
+        {
+            directions = edges[i, j];
+        }
+        catch (Exception ex)
+        {
+            return null; // lol fix this shit
+        }
+
+        if ((directions & EdgeDirection.Up) != EdgeDirection.None)
+            return (i - 1, j);
+
+        if ((directions & EdgeDirection.Down) != EdgeDirection.None)
+            return (i + 1, j);
+
+        if ((directions & EdgeDirection.Left) != EdgeDirection.None)
+            return (i, j - 1);
+
+        if ((directions & EdgeDirection.Right) != EdgeDirection.None)
+            return (i, j + 1);
+
+        return null;
+    }
+
+    private void AddEdgesWithoutBackTracking(EdgeDirection[,] edges, LinkedList<(int i, int j)> path)
+    {
+        (int i, int j)? neighbour = null;
+        while (path.Last is not null
+            && (neighbour = GetNeighbour(edges, path.Last.Value)).HasValue) {
+
+            var loop = path.Contains(neighbour.Value);
+
+            path.AddLast(neighbour.Value);
+
+            if (loop)
+                break;
+        }
+    }
+
+    private List<LinkedList<(int i, int j)>> GetEdgePaths(uint[] argbs)
+    {
+        var edges = GetEdgePoints(argbs);
+
+        var paths = new List<LinkedList<(int i, int j)>>();
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (edges[i, j] != EdgeDirection.None)
+                {
+                    if (paths.Find(ll => ll.Contains((i, j))) is not null)
+                         continue;
+
+                    var path = new LinkedList<(int i, int j)>([(i, j)]);
+                    AddEdgesWithoutBackTracking(edges, path);
+
+                    paths.Add(path);
+                }
+            }
+        }
+
+        return paths;
+    }
+
     /// <summary>
     /// Regenerate the image using the present settings and data in <see cref="Intensities"/>
     /// </summary>
@@ -316,6 +499,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         uint[] argbs = GetArgbValues();
         Bitmap?.Dispose();
         Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
+
+        if (IsoMap)
+            EdgePaths = GetEdgePaths(argbs);
     }
 
     public AxisLimits GetAxisLimits()
@@ -337,6 +523,16 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         int yIndex = (int)(distanceFromTop / CellHeight);
 
         return (xIndex, yIndex);
+    }
+
+    public Coordinates GetCoordinates(int x, int y)
+    {
+        CoordinateRect rect = AlignedExtent;
+
+        double xCoord = rect.Left + x * CellWidth;
+        double yCood = rect.Top - y * CellHeight;
+
+        return new(xCoord, yCood);
     }
 
     /// <summary>
@@ -393,5 +589,45 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         SKRect rect = Axes.GetPixelRect(AlignedExtent).ToSKRect();
 
         rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+
+        var argbs = GetArgbValues();
+
+        var edges = GetEdgePoints(argbs);
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                if (edges[i, j] != EdgeDirection.None)
+                {
+                    var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
+                    //rp.Canvas.DrawCircle(pt, 3, paint);
+
+                }
+            }
+        }
+
+
+        if (IsoMap && EdgePaths is not null)
+        {
+            LineStyle style = new LineStyle() { Width = 5 };
+            style.ApplyToPaint(paint);
+
+            foreach (var pathPoints in EdgePaths)
+            {
+                using SKPath path = new();
+                foreach (var (i, j) in pathPoints)
+                {
+                    var pt = Axes.GetPixel(GetCoordinates(j, i)).ToSKPoint();
+                    //System.Diagnostics.Debug.WriteLine($"({j}, {i}), {GetCoordinates(j, i)}");
+
+                    if (path.PointCount == 0)
+                        path.MoveTo(pt);
+                    else
+                        path.LineTo(pt);
+                }
+
+                rp.Canvas.DrawPath(path, paint);
+            }
+        }
     }
 }
