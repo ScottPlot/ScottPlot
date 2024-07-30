@@ -27,6 +27,7 @@ _Not yet on NuGet..._
 * PlottableAdder: Exposed `Plot` so users can create methods that extend `Plot.Add` which have access to the `Plot` itself (#4109, #4107) @DDiggs91
 * AxisManager: Improve `AutoScale()` support for inverted axes (#4110) @BrianAtZetica
 * Scatter: Added `ColorPositions` to allow placement of colors at specific X positions when using filled scatter plots (#4111) @CoderPM2011
+* SignalXY: Improved support for rotated plots and added support for `XScale` to compliment `YScale` (#4112, #4102) @BrianAtZetica
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_
