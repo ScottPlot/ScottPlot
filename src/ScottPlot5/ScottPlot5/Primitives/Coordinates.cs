@@ -38,6 +38,8 @@ public struct Coordinates : IEquatable<Coordinates>
     public static Coordinates Origin => new(0, 0);
 
     public static Coordinates Infinity => new(double.PositiveInfinity, double.PositiveInfinity);
+    
+    public Coordinates Rotated => new(Y, X);
 
     public bool Equals(Coordinates other)
     {

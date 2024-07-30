@@ -1,19 +1,23 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 using ScottPlot;
 using ScottPlot.AxisPanels;
 using ScottPlot.Collections;
-using ScottPlot.DataSources;
+using Crosshair = ScottPlot.Plottables.Crosshair;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace WinForms_Demo.Demos
 {
-    public partial class DataStreamerCtrl : UserControl
+    public partial class DataLoggerCtrl : UserControl
     {
         private bool _rotated;
         private BottomAxis? _secondXAxis;
         private RightAxis? _secondYAxis;
+        private Crosshair _crossHair1;
+        private bool _tracking;
 
-        public DataStreamerCtrl()
+        public DataLoggerCtrl()
         {
             InitializeComponent();
 
@@ -25,17 +29,18 @@ namespace WinForms_Demo.Demos
 
         [MemberNotNull(nameof(Logger1))]
         [MemberNotNull(nameof(Logger2))]
+        [MemberNotNull(nameof(_crossHair1))]
         private void InitPlots()
         {
             formsPlot.Plot.Clear();
 
             // create two horizontal loggers and add them to the plot
-            var data1 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
-            Logger1 = new ScottPlot.Plottables.Experimental.DataStreamer2(data1) { Color = Colors.C0, Rotated = Rotated };
+            var data1 = new CircularBuffer<Coordinates>(1000);
+            Logger1 = new ScottPlot.Plottables.DataLogger(data1) { Color = Colors.C0, Rotated = Rotated };
             formsPlot.Plot.Add.Plottable(Logger1);
 
-            var data2 = new DataStreamer2Source(new CircularBuffer<Coordinates>(1000));
-            Logger2 = new ScottPlot.Plottables.Experimental.DataStreamer2(data2) { Color = Colors.C1, Rotated = Rotated };
+            var data2 = new CircularBuffer<Coordinates>(1000);
+            Logger2 = new ScottPlot.Plottables.DataLogger(data2) { Color = Colors.C1, Rotated = Rotated };
             formsPlot.Plot.Add.Plottable(Logger2);
 
             if (Rotated)
@@ -76,6 +81,13 @@ namespace WinForms_Demo.Demos
                     _secondXAxis = null;
                 }
             }
+
+            _crossHair1 = formsPlot.Plot.Add.Crosshair(0, 0);
+            _crossHair1.IsVisible = false;
+            _crossHair1.MarkerShape = MarkerShape.OpenCircle;
+            _crossHair1.MarkerSize = 15;
+            _crossHair1.Axes.XAxis = Logger1.Axes.XAxis;
+            _crossHair1.Axes.YAxis = Logger1.Axes.YAxis;
         }
 
         private void btnFull_Click(object sender, EventArgs e)
@@ -101,8 +113,8 @@ namespace WinForms_Demo.Demos
             formsPlot.Plot.Axes.AutoScale(invertX: cbInvertedX.Checked, invertY: cbInvertedY.Checked);
         }
 
-        public ScottPlot.Plottables.Experimental.DataStreamer2 Logger1 { get; private set; }
-        public ScottPlot.Plottables.Experimental.DataStreamer2 Logger2 { get; private set; }
+        public ScottPlot.Plottables.DataLogger Logger1 { get; private set; }
+        public ScottPlot.Plottables.DataLogger Logger2 { get; private set; }
 
         public void RefreshPlot()
         {
@@ -112,7 +124,42 @@ namespace WinForms_Demo.Demos
             }
         }
 
+        private void formsPlot_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!Tracking)
+            {
+                return;
+            }
+
+            // determine where the mouse is and get the nearest point
+            Pixel mousePixel = new(e.Location.X, e.Location.Y);
+            Coordinates mouseLocation = formsPlot.Plot.GetCoordinates(mousePixel, Logger1.Axes.XAxis, Logger1.Axes.YAxis);
+
+            DataPoint nearest = Logger1.GetNearest(mouseLocation, formsPlot.Plot.LastRender.DataRect);
+
+            // place the crosshair over the highlighted point
+            if (nearest.IsReal)
+            {
+                _crossHair1.IsVisible = true;
+
+                var coordinates = nearest.Coordinates;
+                _crossHair1.Position = Rotated ? coordinates.Rotated : coordinates;
+
+                formsPlot.Refresh();
+                tbStatus.Text = $"Selected Index={nearest.Index}, X={nearest.X:0.##}, Y={nearest.Y:0.##}";
+            }
+
+            //hide the crosshair when no point is selected
+            if (!nearest.IsReal && _crossHair1.IsVisible)
+            {
+                _crossHair1.IsVisible = false;
+                formsPlot.Refresh();
+                tbStatus.Text = $"No point selected";
+            }
+        }
+
         [Description("True if the control is rotated")]
+        [DefaultValue(false)]
         public bool Rotated
         {
             get => _rotated;
@@ -126,6 +173,28 @@ namespace WinForms_Demo.Demos
                 {
                     InitPlots();
                 }
+            }
+        }
+
+        [Description("True if tracking is enabled")]
+        [DefaultValue(false)]
+        public bool Tracking
+        {
+            get => _tracking;
+            set
+            {
+                if (_tracking == value)
+                {
+                    return;
+                }
+
+                if (!value)
+                {
+                    _crossHair1.IsVisible = false;
+                    formsPlot.Refresh();
+                }
+
+                _tracking = value;
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class DataStreamer2
+partial class DataLogger2
 {
     /// <summary>
     /// Required designer variable.
@@ -29,8 +29,8 @@ partial class DataStreamer2
     private void InitializeComponent()
     {
         splitContainer = new SplitContainer();
-        loggerPlotHorz = new DataStreamerCtrl();
-        loggerPlotVert = new DataStreamerCtrl();
+        loggerPlotHorz = new DataLoggerCtrl();
+        loggerPlotVert = new DataLoggerCtrl();
         cbRunning = new CheckBox();
         ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
         splitContainer.Panel1.SuspendLayout();
@@ -93,7 +93,7 @@ partial class DataStreamer2
         ClientSize = new Size(1096, 629);
         Controls.Add(cbRunning);
         Controls.Add(splitContainer);
-        Name = "DataStreamer2";
+        Name = "DataLogger2";
         Text = "DataLogger2";
         splitContainer.Panel1.ResumeLayout(false);
         splitContainer.Panel2.ResumeLayout(false);
@@ -106,6 +106,6 @@ partial class DataStreamer2
     #endregion
     private SplitContainer splitContainer;
     private CheckBox cbRunning;
-    private DataStreamerCtrl loggerPlotHorz;
-    private DataStreamerCtrl loggerPlotVert;
+    private DataLoggerCtrl loggerPlotHorz;
+    private DataLoggerCtrl loggerPlotVert;
 }
