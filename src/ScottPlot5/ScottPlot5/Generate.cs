@@ -136,6 +136,15 @@ public static class Generate
         return Repeating(count, double.NaN);
     }
 
+    public static IEnumerable<double> RangeEnumerable(double startValue, double endValue, double step)
+    {
+        for(double value = startValue; value <= endValue; value += step)
+        {
+            yield return value;
+        }
+    }
+    public static double[] Range(double startValue, double endValue, double step) => RangeEnumerable(startValue, endValue, step).ToArray();
+
     #endregion
 
     #region numerical 2D
