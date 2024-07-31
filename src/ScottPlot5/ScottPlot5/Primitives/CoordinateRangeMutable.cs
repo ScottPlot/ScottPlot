@@ -49,13 +49,11 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         if (double.IsNaN(value))
             return;
 
-        //if (double.IsNaN(Min) || value < Min)
-        //    Min = value;
-        Min = double.IsNaN(Min) ? value : Math.Min(Min, value);
+        if (double.IsNaN(Min) || value < Min)
+            Min = value;
 
-        //if (double.IsNaN(Max) || value > Max)
-        //   Max = value;
-        Max = double.IsNaN(Max) ? value : Math.Max(Max, value);
+        if (double.IsNaN(Max) || value > Max)
+            Max = value;
     }
 
     // TODO: deprecate

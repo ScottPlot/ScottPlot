@@ -4,8 +4,7 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net7.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
-		<LangVersion>12.0</LangVersion>
-		<UseWindowsForms>true</UseWindowsForms>
+        <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
