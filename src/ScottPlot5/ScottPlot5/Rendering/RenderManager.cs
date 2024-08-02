@@ -105,6 +105,7 @@ public class RenderManager(Plot plot)
 
     public void Render(SKCanvas canvas, PixelRect rect)
     {
+        canvas.Scale(Plot.ScaleFactorF);
         int maxRenderCount = 5;
         for (int i = 0; i < maxRenderCount; i++)
         {
@@ -121,7 +122,6 @@ public class RenderManager(Plot plot)
             return;
 
         IsRendering = true;
-        canvas.Scale(Plot.ScaleFactorF);
 
         // TODO: make this an object
         List<(string, TimeSpan)> actionTimes = [];
