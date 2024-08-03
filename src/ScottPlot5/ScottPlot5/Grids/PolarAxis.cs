@@ -1,15 +1,39 @@
-﻿namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Grids;
 
 /// <summary>
 /// A polar axes uses spoke lines and circles to describe a polar coordinate system
 /// where points are represented by a radius and angle. 
 /// This class draws a polar axes and has options to customize spokes and circles.
 /// </summary>
-public class PolarAxis : IPlottable, IManagesAxisLimits
+public class PolarAxis(IXAxis xAxis, IYAxis yAxis) : IGrid, IManagesAxisLimits
 {
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = new Axes();
-    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    public bool IsBeneathPlottables { get; set; } = true;
+    public IXAxis XAxis { get; set; } = xAxis;
+    public IYAxis YAxis { get; set; } = yAxis;
+
+    public GridStyle XAxisStyle { get; set; } = new();
+    public GridStyle YAxisStyle { get; set; } = new();
+
+    public Color MajorLineColor
+    {
+        get => XAxisStyle.MajorLineStyle.Color;
+        set
+        {
+            XAxisStyle.MajorLineStyle.Color = value;
+            YAxisStyle.MajorLineStyle.Color = value;
+        }
+    }
+
+    public Color MinorLineColor
+    {
+        get => XAxisStyle.MinorLineStyle.Color;
+        set
+        {
+            XAxisStyle.MinorLineStyle.Color = value;
+            YAxisStyle.MinorLineStyle.Color = value;
+        }
+    }
 
     /// <summary>
     /// Spokes are straight lines that extend outward from the origin
@@ -74,6 +98,11 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         }
     }
 
+    public PolarAxis(IAxes axes) :
+        this(axes.XAxis, axes.YAxis)
+    {
+    }
+
     /// <summary>
     /// Replace spokes with a new collection evenly-spaced around the circle
     /// </summary>
@@ -88,7 +117,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         double delta = 360.0 / count;
         for (int i = 0; i < count; i++)
         {
-            Angle angle = Angle.FromDegrees(delta * i);
+            var angle = Angle.FromDegrees(delta * i);
             PolarAxisSpoke spoke = new(angle, MaximumRadius);
             Spokes.Add(spoke);
         }
@@ -168,21 +197,40 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         foreach (IAxisRule rule in plot.Axes.Rules)
         {
             if (rule is AxisRules.SquareZoomOut)
+            {
                 return;
+            }
         }
 
-        AxisRules.SquareZoomOut squareRule = new(Axes.XAxis, Axes.YAxis);
+        AxisRules.SquareZoomOut squareRule = new(XAxis, YAxis);
         plot.Axes.Rules.Add(squareRule);
     }
 
     public virtual void Render(RenderPack rp)
     {
+        if (!IsVisible)
+        {
+            return;
+        }
+
+        Axes axes = new()
+        {
+            XAxis = XAxis,
+            YAxis = YAxis,
+            DataRect = rp.DataRect,
+        };
+        Pixel origin = axes.GetPixel(Coordinates.Origin);
+
         using SKAutoCanvasRestore _ = new(rp.Canvas);
-        Pixel origin = Axes.GetPixel(Coordinates.Origin);
+
+        // Limit polar axis rendering area
+        rp.Canvas.ClipRect(axes.DataRect.ToSKRect());
+
+        // Move polar axis to center
         rp.Canvas.Translate(origin.X, origin.Y);
 
         using SKPaint paint = new();
-        Spokes.ForEach(x => x.Render(rp, Axes, paint, PaddingFraction));
-        Circles.ForEach(x => x.Render(rp, Axes, paint));
+        Spokes.ForEach(x => x.Render(rp, axes, paint, PaddingFraction));
+        Circles.ForEach(x => x.Render(rp, axes, paint));
     }
 }
