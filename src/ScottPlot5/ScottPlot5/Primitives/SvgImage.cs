@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 internal class SvgImage : IDisposable
 {
@@ -8,41 +6,34 @@ internal class SvgImage : IDisposable
     public readonly int Width;
     public readonly int Height;
     private readonly MemoryStream Stream;
-    public readonly SKCanvas Canvas;
+    public SKCanvas Canvas
+    {
+        get
+        {
+            // always create a new Canvas when required
+            if (_canvas is null && !IsDisposed)
+            {
+                SKRect rect = new(0, 0, Width, Height);
+                _canvas = SKSvgCanvas.Create(rect, Stream);
+            }
+            return _canvas!;
+        }
+    }
+    private SKCanvas? _canvas = null;
 
     public SvgImage(int width, int height)
     {
         Width = width;
         Height = height;
-        SKRect rect = new(0, 0, width, height);
         Stream = new MemoryStream();
-        Canvas = SKSvgCanvas.Create(rect, Stream);
     }
-
-    private static int CountSubstring(string text, string substring)
-    {
-#if NET5_0_OR_GREATER
-        int count = Regex.Matches(text, substring).Count;
-
-#else
-        var expression = new Regex(substring);
-        int count = expression.Matches(text).Count;
-#endif
-        return count;
-    }
-
-    private static string[] SvgTags = new string[] { "g", "svg" };
     public string GetXml()
     {
-        var str = Encoding.UTF8.GetString(Stream.ToArray());
-        // Add possible missed closing tags
-        foreach (var tag in SvgTags)
-        {
-            if (CountSubstring(str, $"\\<{tag}(\\s+.*)*\\>") > CountSubstring(str, $"\\</{tag}\\>"))
-                str += $"</{tag}>";
-        }
-
-        return str;
+        // ensure Canvas is disposed before reading stream content to avoid errors
+        _canvas?.Dispose();
+        // Canvas no more relevant
+        _canvas = null; 
+        return Encoding.UTF8.GetString(Stream.ToArray());
     }
 
     public void Dispose()
@@ -50,7 +41,7 @@ internal class SvgImage : IDisposable
         if (IsDisposed)
             return;
 
-        Canvas.Dispose();
+        _canvas?.Dispose();
         IsDisposed = true;
 
         GC.SuppressFinalize(this);
