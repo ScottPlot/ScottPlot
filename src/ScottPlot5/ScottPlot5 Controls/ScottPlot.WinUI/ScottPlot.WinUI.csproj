@@ -15,8 +15,8 @@
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>plot graph data chart signal line bar heatmap scatter uno winui</PackageTags>
-        <description>User controls for displaying interactive plots in Uno applications</description>
+        <PackageTags>plot graph data chart signal line bar heatmap scatter uno platform winui</PackageTags>
+        <description>User controls for displaying interactive plots in WinUI and Uno Platform applications</description>
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
