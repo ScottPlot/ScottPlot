@@ -11,6 +11,13 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     private IColormap _colormap { get; set; } = new Colormaps.Viridis();
+
+    /// <summary>
+    /// A thread locaker for memory sensitive data access - thread safe
+    /// It ensures that one thread does not enter a critical section of code while another thread is in the critical section.
+    /// </summary>
+    private readonly object m_threadLock = new();
+
     public IColormap Colormap
     {
         get { return _colormap; }
@@ -314,8 +321,14 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     {
         DataRange = Range.GetRange(Intensities);
         uint[] argbs = GetArgbValues();
-        Bitmap?.Dispose();
-        Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
+
+        //Bitmap?.Dispose();
+
+        // Ensures Bitmap is accessed only by one thread at time, other threads have to wait till it is released 
+        lock (m_threadLock)
+        {
+            Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
+        }
     }
 
     public AxisLimits GetAxisLimits()
@@ -383,7 +396,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     public virtual void Render(RenderPack rp)
     {
         if (Bitmap is null)
+        {
             Update(); // automatically generate the bitmap on first render if it was not generated manually
+        }
 
         using SKPaint paint = new()
         {
@@ -392,6 +407,10 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
         SKRect rect = Axes.GetPixelRect(AlignedExtent).ToSKRect();
 
-        rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+        // Ensures Bitmap is accessed only by one thread at time, other threads have to wait till it is released 
+        lock (m_threadLock)
+        {
+            rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+        }
     }
 }
