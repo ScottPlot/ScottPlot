@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.AutoScalers;
+﻿using ScottPlot.Grids;
+
+namespace ScottPlot.AutoScalers;
 
 public class FractionalAutoScaler : IAutoScaler
 {
@@ -33,10 +35,16 @@ public class FractionalAutoScaler : IAutoScaler
         TopFraction = top;
     }
 
-    public void AutoScaleAll(IEnumerable<IPlottable> plottables)
+    public void AutoScaleAll(IEnumerable<IPlottable> plottables, IEnumerable<IGrid>? grids = null)
     {
         IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
         IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
+
+        if (grids is not null)
+        {
+            xAxes = xAxes.Concat(grids.Select(i => i.XAxis)).Distinct();
+            yAxes = yAxes.Concat(grids.Select(i => i.YAxis)).Distinct();
+        }
 
         xAxes.ToList().ForEach(x => x.Range.Reset());
         yAxes.ToList().ForEach(x => x.Range.Reset());
@@ -49,6 +57,20 @@ public class FractionalAutoScaler : IAutoScaler
             AxisLimits limits = plottable.GetAxisLimits();
             plottable.Axes.XAxis.Range.Expand(limits.XRange);
             plottable.Axes.YAxis.Range.Expand(limits.YRange);
+        }
+
+        if (grids is not null)
+        {
+            foreach (IGrid grid in grids)
+            {
+                if (!grid.IsVisible ||
+                    grid is not PolarAxis polar)
+                    continue;
+
+                AxisLimits limits = polar.GetAxisLimits();
+                polar.XAxis.Range.Expand(limits.XRange);
+                polar.YAxis.Range.Expand(limits.YRange);
+            }
         }
 
         foreach (IAxis xAxis in xAxes)

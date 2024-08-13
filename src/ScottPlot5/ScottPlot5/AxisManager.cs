@@ -578,7 +578,7 @@ public class AxisManager
         ReplaceNullAxesWithDefaults();
         AutoScaler.InvertedX = invertX ?? AutoScaler.InvertedX;
         AutoScaler.InvertedY = invertY ?? AutoScaler.InvertedY;
-        AutoScaler.AutoScaleAll(Plot.PlottableList);
+        AutoScaler.AutoScaleAll(Plot.PlottableList, AllGrids);
     }
 
     /// <summary>

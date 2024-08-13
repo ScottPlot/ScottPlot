@@ -16,7 +16,7 @@ public interface IAutoScaler
     /// <summary>
     /// Autoscale every unset axis used by plottables.
     /// </summary>
-    public void AutoScaleAll(IEnumerable<IPlottable> plottables);
+    public void AutoScaleAll(IEnumerable<IPlottable> plottables, IEnumerable<IGrid>? grids);
 
     // TODO: axis-specific autoscaling can be moved out of the control class and placed somewhere in here
 
