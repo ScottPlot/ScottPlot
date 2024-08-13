@@ -535,6 +535,15 @@ public class AxisManager
     {
         ExpandingAxisLimits expandingLimits = new();
 
+        foreach (IGrid grid in Plot.Axes.AllGrids)
+        {
+            if (grid.XAxis != xAxis || grid.YAxis != yAxis ||
+                grid is not PolarAxis polar)
+                continue;
+
+            expandingLimits.Expand(polar.GetAxisLimits());
+        }
+
         foreach (IPlottable plottable in Plot.PlottableList)
         {
             if (plottable.Axes.XAxis != xAxis || plottable.Axes.YAxis != yAxis)
