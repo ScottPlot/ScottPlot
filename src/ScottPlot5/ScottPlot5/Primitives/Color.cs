@@ -1,4 +1,5 @@
-﻿namespace ScottPlot;
+﻿using System.Linq;
+namespace ScottPlot;
 
 internal static class ColorByteExtensions
 {
@@ -58,6 +59,16 @@ public readonly struct Color
         Green = (byte)(green * 255);
         Blue = (byte)(blue * 255);
         Alpha = (byte)(alpha * 255);
+    }
+
+    public Color(string hexCode)
+    {
+        var clr = FromHex(hexCode);
+
+        Red = clr.R;
+        Green = clr.G;
+        Blue = clr.B;
+        Alpha = clr.A;
     }
 
     public static bool operator ==(Color a, Color b)
