@@ -1,5 +1,4 @@
-﻿using System.Linq;
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 internal static class ColorByteExtensions
 {
