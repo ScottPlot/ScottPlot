@@ -132,7 +132,7 @@ public readonly struct Color
     public static Color FromHex(string hex) => new(hex);
 
     //Returns ARGB value from hex string
-    public static uint Hex2Argb(string hex)
+    private static uint Hex2Argb(string hex)
     {
         uint rgba = 0;
 
