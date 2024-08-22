@@ -61,14 +61,14 @@ public readonly struct Color
         Alpha = (byte)(alpha * 255);
     }
 
-    public Color(string hexCode)
-    {
-        var clr = FromHex(hexCode);
+    public Color(string hexCode) : this(Hex2Argb(hexCode)) { }    
 
-        Red = clr.R;
-        Green = clr.G;
-        Blue = clr.B;
-        Alpha = clr.A;
+    public Color(uint argb)
+    {
+        Alpha = (byte)(argb >> 24);
+        Red = (byte)(argb >> 16);
+        Green = (byte)(argb >> 8);
+        Blue = (byte)(argb >> 0);
     }
 
     public static bool operator ==(Color a, Color b)
@@ -126,19 +126,20 @@ public readonly struct Color
     }
 
     public static Color FromARGB(uint argb)
-    {
-        byte alpha = (byte)(argb >> 24);
-        byte red = (byte)(argb >> 16);
-        byte green = (byte)(argb >> 8);
-        byte blue = (byte)(argb >> 0);
-        return new Color(red, green, blue, alpha);
+    {        
+        return new Color(argb);
     }
 
-    public static Color FromHex(string hex)
+    public static Color FromHex(string hex) => new(hex);    
+
+    //Returns ARGB value from hex string
+    public static uint Hex2Argb(string hex)
     {
+        uint rgba = 0;
+
         if (hex[0] == '#')
         {
-            return FromHex(hex.Substring(1));
+            return Hex2Argb(hex.Substring(1));
         }
 
         if (hex.Length == 6)
@@ -146,13 +147,18 @@ public readonly struct Color
             hex += "FF";
         }
 
-        if (!uint.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out uint rgba))
+        if (!uint.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out uint val))
         {
-            return new Color(0, 0, 0);
+            rgba = 0;
+        }
+        else
+        {
+            rgba = val;
         }
 
         uint argb = ((rgba & 0xFF) << 24) | (rgba >> 8);
-        return FromARGB(argb);
+
+        return argb;
     }
 
     public static Color[] FromHex(string[] hex)
