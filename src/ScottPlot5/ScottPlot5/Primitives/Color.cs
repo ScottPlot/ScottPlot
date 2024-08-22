@@ -61,7 +61,7 @@ public readonly struct Color
         Alpha = (byte)(alpha * 255);
     }
 
-    public Color(string hexCode) : this(Hex2Argb(hexCode)) { }    
+    public Color(string hexCode) : this(Hex2Argb(hexCode)) { }
 
     public Color(uint argb)
     {
@@ -126,11 +126,11 @@ public readonly struct Color
     }
 
     public static Color FromARGB(uint argb)
-    {        
+    {
         return new Color(argb);
     }
 
-    public static Color FromHex(string hex) => new(hex);    
+    public static Color FromHex(string hex) => new(hex);
 
     //Returns ARGB value from hex string
     public static uint Hex2Argb(string hex)
