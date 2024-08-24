@@ -33,6 +33,11 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
         get => AmplitudeScale;
         set => AmplitudeScale = value;
     }
+    public double XScale
+    {
+        get => PositionScale;
+        set => PositionScale = value;
+    }
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
@@ -191,7 +196,7 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
     /// If the column contains one point, return that one pixel.
     /// If the column contains multiple points, return 4 pixels: enter, min, max, and exit
     /// </summary>
-    public IEnumerable<Pixel> GetColumnPixelsX(int pixelColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
+    public IEnumerable<Pixel> GetColumnPixels(int pixelColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
     {
         float xPixel = pixelColumnIndex + rp.DataRect.Left;
         double unitsPerPixelX = axes.XAxis.Width / rp.DataRect.Width;

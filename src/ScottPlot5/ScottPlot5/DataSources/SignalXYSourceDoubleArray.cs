@@ -35,6 +35,11 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         get => AmplitudeScale;
         set => AmplitudeScale = value;
     }
+    public double XScale
+    {
+        get => PositionScale;
+        set => PositionScale = value;
+    }
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }

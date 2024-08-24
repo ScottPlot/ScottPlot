@@ -19,6 +19,8 @@ public interface ISignalXYSource
     /// Multiply Position values (X when not Rotated) by this scale factor (before applying offset)
     /// </summary>
     double PositionScale { get; set; }
+    [Obsolete("XScale is obsolete. Use PositionScale instead.")]
+    public double XScale { get; set; }
 
     /// <summary>
     /// Shift Amplitude  (Y when not Rotated) of all values by this amount
@@ -35,12 +37,6 @@ public interface ISignalXYSource
 
     [Obsolete("YOffset is obsolete. Use AmplitudeScale instead.")]
     double YScale { get; set; }
-
-    /// <summary>
-    /// Multiply X values by this scale factor (before applying offset)
-    /// </summary>
-    [Obsolete("XScale is obsolete. Use PositionScale instead.")]
-    public double XScale { get; set; }
 
     /// <summary>
     /// Do not display data below this index
