@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
 
@@ -22,7 +22,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Maui</PackageId>
-        <Version>5.0.36</Version>
+        <Version>5.0.37</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.DataSources;
+﻿using System;
+
+namespace ScottPlot.DataSources;
 
 public class SignalXYSourceDoubleArray : ISignalXYSource
 {
@@ -33,7 +35,6 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         get => AmplitudeScale;
         set => AmplitudeScale = value;
     }
-
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
@@ -204,6 +205,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         var (startIndex, _) = SearchPositionIndex(start, rng);
         var (endIndex, _) = SearchPositionIndex(end, rng);
+
         int pointsInRange = Math.Abs(endIndex - startIndex);
 
         if (pointsInRange == 0)
@@ -213,6 +215,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         int firstIndex = startIndex < endIndex ? startIndex : startIndex - 1;
         int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex;
+
+
         yield return new Pixel(xPixel, axes.GetPixelY(Amplitudes[firstIndex] * AmplitudeScale + AmplitudeOffset)); // enter
 
         if (pointsInRange > 2)
@@ -246,6 +250,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     {
         // here pixelRowIndex will count upwards from the bottom, but pixels are measured from the top of the plot
         float yPixel = rp.DataRect.Bottom - pixelRowIndex;
+
         double unitsPerPixelY = axes.YAxis.Height / rp.DataRect.Height;
         double start = axes.YAxis.Min + unitsPerPixelY * pixelRowIndex;
         double end = start + unitsPerPixelY;
@@ -257,6 +262,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         var (startIndex, _) = SearchPositionIndex(start, rng);
         var (endIndex, _) = SearchPositionIndex(end, rng);
+
         int pointsInRange = Math.Abs(endIndex - startIndex);
 
         if (pointsInRange == 0)
@@ -266,6 +272,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
         int firstIndex = startIndex < endIndex ? startIndex : startIndex - 1;
         int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex;
+
         yield return new Pixel(axes.GetPixelX(Amplitudes[firstIndex] * AmplitudeScale + AmplitudeOffset), yPixel); // enter
 
         if (pointsInRange > 2)
@@ -452,6 +459,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             double dY = Rotated ?
                 (Positions[i] * PositionScale + PositionOffset - mouseLocation.Y) * renderInfo.PxPerUnitY :
                 (Amplitudes[i] * AmplitudeScale + AmplitudeOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
+
             double distanceSquared = dX * dX + dY * dY;
 
             if (distanceSquared <= closestDistanceSquared)
@@ -463,6 +471,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
                 closestY = Rotated ?
                     Positions[i] * PositionScale + PositionOffset :
                     Amplitudes[i] * AmplitudeScale + AmplitudeOffset;
+                    
                 closestIndex = i;
             }
         }

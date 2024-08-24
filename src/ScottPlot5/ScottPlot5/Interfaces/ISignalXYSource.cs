@@ -37,6 +37,11 @@ public interface ISignalXYSource
     double YScale { get; set; }
 
     /// <summary>
+    /// Multiply X values by this scale factor (before applying offset)
+    /// </summary>
+    public double XScale { get; set; }
+
+    /// <summary>
     /// Do not display data below this index
     /// </summary>
     public int MinimumIndex { get; set; }

@@ -1,5 +1,8 @@
-## ScottPlot 5.0.37
+## ScottPlot 5.0.38
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.37
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
 * Controls: A new `IPlotControl.UserInputProcessor` has been created to replace `IPlotControl.Interaction` which will be deprecated in a future release. The new system supports arbitrary inputs (not limited to mouse actions and key presses), offers extended ability to inject highly customizable ordered plot manipulation logic that respond to streamed inputs, and has been designed to facilitate automated UI testing. Set `IPlotControl.UserInputProcessor.IsEnabled` to `true` to opt-in to this new event processor. (#4053, #3186, #3622)
 * Signal and SignalXY: Improve data source `GetNearestX()` accuracy (#4019) @StendProg
 * Maui: Created a `ScottPlot.Maui.MauiPlot` control to provide interactive plots in .NET Maui applications (#4013) @ByteSore
@@ -12,6 +15,22 @@ _Not yet on NuGet..._
 * Fonts: Improve performance when automatic best font detection is enabled (#4049) @zxy874175242
 * Controls: Added autoscale to default context menu (#4053)
 * Axes: A polar plot axis can now be added with `myPlot.Add.PolarAxis()` and customized as seen in the cookbook (#4055, #3939) @CoderPM2011
+* Axis lines and spans: Added `EnableAutoscale` flag to allow plottables to be ignored when `Plot.Axes.AutoScale()` is called (#4069, #4067) @KroMignon @andresod
+* SignalConst: Improved support for custom legend text (#4081, #4082) @KroMignon @fanshuxian
+* SignalConst: Improve accuracy of the first point in low density mode (#4082, #4083, #4086, #4083) @StendProg @KroMignon
+* SignalConst: Allowed markers to become visible by setting their shape without requiring users to define a non-zero size (#4082) @KroMignon
+* Grid: Improved performance by reducing unnecessary allocations for ticks of invisible axes (#4087) @kebox7
+* Ticks: Improved behavior of the numeric fixed interval tick generator to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* Ticks: Allow the numeric fixed interval tick generator interval to be defined as a `double` (#4090) @epegeot
+* Ticks: Add a custom tick label formatter property to the numeric fixed interval tick generator (#4090) @epegeot
+* Ticks: Improved behavior of `NumericalFixedInterval` to ensure the correct lowest tick is always rendered (#4089) @epegeot
+* DataStreamer: Improved support for rotated plots (#4093, #4085) @drolevar @KroMignon @Jofstera
+* Security: Removed outdated reference to `System.Text.Json` which contained CVE-2024-30105 (#4095, #4063) @SerTetora
+* Phaser: New plot type for displaying arrows to points in polar space (#4096, #3939) @CoderPM2011 @nilsakesson
+* PlottableAdder: Exposed `Plot` so users can create methods that extend `Plot.Add` which have access to the `Plot` itself (#4109, #4107) @DDiggs91
+* AxisManager: Improve `AutoScale()` support for inverted axes (#4110) @BrianAtZetica
+* Scatter: Added `ColorPositions` to allow placement of colors at specific X positions when using filled scatter plots (#4111) @CoderPM2011
+* SignalXY: Improved support for rotated plots and added support for `XScale` to compliment `YScale` (#4112, #4102) @BrianAtZetica
 
 ## ScottPlot 5.0.36
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-06-29_

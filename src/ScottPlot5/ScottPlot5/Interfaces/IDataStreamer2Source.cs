@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public interface IDataLogger2Source
+public interface IDataStreamer2Source
 {
     /// <summary>
     /// X position of the first data point
@@ -17,24 +17,19 @@ public interface IDataLogger2Source
     /// </summary>
     public double YScale { get; set; }
 
-    /// <summary>
-    /// If enabled, Xs will be vertical and Ys will be horizontal.
-    /// </summary>
-    public bool Rotated { get; set; }
-
     bool HasNewData { get; }
     bool WasRendered { get; set; }
-
     /// <summary>
-    /// Return the axis limits covered by these data
+    /// Return pixels to render to display this signal.
+    /// May return one extra point on each side of the plot outside the data area.
     /// </summary>
-    AxisLimits GetAxisLimits();
+    Pixel[] GetPixelsToDrawHorizontally(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
 
     /// <summary>
     /// Return pixels to render to display this signal.
     /// May return one extra point on each side of the plot outside the data area.
     /// </summary>
-    Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
+    Pixel[] GetPixelsToDrawVertically(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
 
     /// <summary>
     /// Return the point nearest a specific location given the X/Y pixel scaling information from a previous render.

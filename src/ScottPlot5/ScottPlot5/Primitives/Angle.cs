@@ -34,4 +34,24 @@ public struct Angle
     {
         return $"Angle = {Degrees} degrees";
     }
+
+    public static Angle operator +(Angle a)
+    {
+        return FromDegrees(+a.Degrees);
+    }
+
+    public static Angle operator -(Angle a)
+    {
+        return FromDegrees(-a.Degrees);
+    }
+
+    public static Angle operator +(Angle a, Angle b)
+    {
+        return FromDegrees(a.Degrees + b.Degrees);
+    }
+
+    public static Angle operator -(Angle a, Angle b)
+    {
+        return FromDegrees(a.Degrees - b.Degrees);
+    }
 }

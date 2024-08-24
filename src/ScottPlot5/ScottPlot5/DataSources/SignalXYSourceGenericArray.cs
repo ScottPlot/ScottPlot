@@ -59,6 +59,7 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
 
         CoordinateRange positionRange = new(positionMin, positionMax);
         CoordinateRange amplitudeRange = GetAmplitudeRange(MinimumIndex, MaximumIndex);
+
         return Rotated
             ? new AxisLimits(amplitudeRange, positionRange)
             : new AxisLimits(positionRange, amplitudeRange);
@@ -145,8 +146,6 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
         return points;
     }
 
-
-
     /// <summary>
     /// Return the range covered by amplitude data between the given indices (inclusive)
     /// </summary>
@@ -192,7 +191,7 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
     /// If the column contains one point, return that one pixel.
     /// If the column contains multiple points, return 4 pixels: enter, min, max, and exit
     /// </summary>
-    public IEnumerable<Pixel> GetColumnPixels(int pixelColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
+    public IEnumerable<Pixel> GetColumnPixelsX(int pixelColumnIndex, IndexRange rng, RenderPack rp, IAxes axes)
     {
         float xPixel = pixelColumnIndex + rp.DataRect.Left;
         double unitsPerPixelX = axes.XAxis.Width / rp.DataRect.Width;
@@ -215,13 +214,16 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
 
         int firstIndex = startIndex < endIndex ? startIndex : startIndex - 1;
         int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex;
+
         double yStart = NumericConversion.GenericToDouble(Amplitudes, firstIndex) * AmplitudeScale + AmplitudeOffset;
         double yEnd = NumericConversion.GenericToDouble(Amplitudes, lastIndex) * AmplitudeScale + AmplitudeOffset;
+        
         yield return new Pixel(xPixel, axes.GetPixelY(yStart)); // enter
 
         if (pointsInRange > 2)
         {
             CoordinateRange yRange = GetAmplitudeRange(firstIndex, lastIndex); //AmplitudeOffset is added in GetAmplitudeRange
+
             if (yStart > yEnd)
             { //signal amplitude is decreasing, so we'll return the maximum before the minimum
                 yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max
@@ -272,6 +274,7 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
         int lastIndex = startIndex < endIndex ? endIndex - 1 : endIndex;
         double xStart = NumericConversion.GenericToDouble(Amplitudes, firstIndex) * AmplitudeScale + AmplitudeOffset;
         double xEnd = NumericConversion.GenericToDouble(Amplitudes, lastIndex) * AmplitudeScale + AmplitudeOffset;
+        
         yield return new Pixel(axes.GetPixelX(xStart), yPixel); // enter
 
         if (pointsInRange > 2)
@@ -498,7 +501,6 @@ public class SignalXYSourceGenericArray<TPositions, TAmplitudes> : ISignalXYSour
 
         var closestX = Rotated ? amplitude : position;
         var closestY = Rotated ? position : amplitude;
-
 
         return Math.Abs(distance) <= maxDistance
             ? new DataPoint(closestX, closestY, i)

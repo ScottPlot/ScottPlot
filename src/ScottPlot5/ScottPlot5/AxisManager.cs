@@ -564,7 +564,7 @@ public class AxisManager
     /// <summary>
     /// Automatically scale all axes to fit the data in all plottables
     /// </summary>
-    public void AutoScale(bool? invertX = false, bool? invertY = false)
+    public void AutoScale(bool? invertX = null, bool? invertY = null)
     {
         ReplaceNullAxesWithDefaults();
         AutoScaler.InvertedX = invertX ?? AutoScaler.InvertedX;

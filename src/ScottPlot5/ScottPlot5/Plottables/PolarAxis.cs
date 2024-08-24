@@ -39,6 +39,42 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     public bool ManageAxisLimits { get; set; } = true;
 
     /// <summary>
+    /// Sets line width for all <see cref="Circles"/> and <see cref="Spokes"/>
+    /// </summary>
+    public float LineWidth
+    {
+        set
+        {
+            Circles.ForEach(x => x.LineWidth = value);
+            Spokes.ForEach(x => x.LineWidth = value);
+        }
+    }
+
+    /// <summary>
+    /// Sets line pattern for all <see cref="Circles"/> and <see cref="Spokes"/>
+    /// </summary>
+    public LinePattern LinePattern
+    {
+        set
+        {
+            Circles.ForEach(x => x.LinePattern = value);
+            Spokes.ForEach(x => x.LinePattern = value);
+        }
+    }
+
+    /// <summary>
+    /// Sets line color for all <see cref="Circles"/> and <see cref="Spokes"/>
+    /// </summary>
+    public Color LineColor
+    {
+        set
+        {
+            Circles.ForEach(x => x.LineColor = value);
+            Spokes.ForEach(x => x.LineColor = value);
+        }
+    }
+
+    /// <summary>
     /// Replace spokes with a new collection evenly-spaced around the circle
     /// </summary>
     public void RegenerateSpokes(int count = 5)
@@ -92,6 +128,14 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         double x = radius * Math.Cos(degrees * Math.PI / 180);
         double y = radius * Math.Sin(degrees * Math.PI / 180);
         return new Coordinates(x, y);
+    }
+
+    /// <summary>
+    /// Return the X/Y position of a polar point
+    /// </summary>
+    public Coordinates GetCoordinates(PolarCoordinates point)
+    {
+        return GetCoordinates(point.Radius, point.Angle.Degrees);
     }
 
     public AxisLimits GetAxisLimits()
