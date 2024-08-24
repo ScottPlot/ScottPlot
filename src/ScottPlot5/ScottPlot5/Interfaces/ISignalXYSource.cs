@@ -39,6 +39,7 @@ public interface ISignalXYSource
     /// <summary>
     /// Multiply X values by this scale factor (before applying offset)
     /// </summary>
+    [Obsolete("XScale is obsolete. Use PositionScale instead.")]
     public double XScale { get; set; }
 
     /// <summary>
