@@ -28,7 +28,7 @@ internal class SvgImage : IDisposable
         // See: https://learn.microsoft.com/en-us/dotnet/api/skiasharp.sksvgcanvas?view=skiasharp-2.88#remarks
         _canvas?.Dispose();
         // Canvas no more relevant
-        _canvas = null; 
+        _canvas = null;
         return Encoding.UTF8.GetString(Stream.ToArray());
     }
 
