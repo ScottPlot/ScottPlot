@@ -139,9 +139,9 @@ public static class Generate
     /// <summary>
     /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
     /// </summary>
-    public static IEnumerable<double> RangeEnumerable(double start, double stop, double step)
+    public static IEnumerable<double> RangeEnumerable(double start, double stop, double step = 1)
     {
-        for(double value = start; value <= stop; value += step)
+        for (double value = start; value <= stop; value += step)
         {
             yield return value;
         }
@@ -150,7 +150,7 @@ public static class Generate
     /// <summary>
     /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
     /// </summary>
-    public static double[] Range(double start, double stop, double step) => RangeEnumerable(start, stop, step).ToArray();
+    public static double[] Range(double start, double stop, double step = 1) => RangeEnumerable(start, stop, step).ToArray();
 
     #endregion
 
