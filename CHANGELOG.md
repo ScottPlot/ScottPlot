@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.38
 _Not yet on NuGet..._
+* DataLogger: Merged in numerous additional features (optional circular buffer, X and Y offset, etc.) from the experimental DataLogger (#4085, #4114) @drolevar
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
