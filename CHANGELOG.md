@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * Rendering: Improve behavior of plots using custom scale factors in situations of repeated renders (#4125) @BrianAtZetica
 * Palette: Improved behavior of automatic color selection for new plottables added to the plot (#4105)
 * Color: Added overload to allow constructing colors from hex strings (#4170, #4165) @aespitia @KroMignon @kebox7
+* WinUI: Improved support and documentation for applications built using Uno Platform (#4123) @agneszitte
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
