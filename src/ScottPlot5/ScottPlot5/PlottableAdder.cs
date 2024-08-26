@@ -37,8 +37,7 @@ public class PlottableAdder(Plot plot)
     public Color GetNextColor()
     {
         int coloredPlottableCount = Plot.PlottableList.Where(x => !PlottablesThatDoNotGetColors.Contains(x.GetType())).Count();
-        int nextPaletteIndex = coloredPlottableCount % Palette.Colors.Length;
-        return Palette.Colors[nextPaletteIndex];
+        return Palette.GetColor(coloredPlottableCount);
     }
 
     public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)
