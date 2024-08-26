@@ -1,9 +1,9 @@
 ﻿namespace WinForms_Demo.Demos;
 
-public partial class DataStreamer2 : Form, IDemoWindow
+public partial class DataLogger2 : Form, IDemoWindow
 {
-    public string Title => "Data Streamer (Experimental)";
-    public string Description => "Experimental data streamer that uses a circular buffer for improved performance.";
+    public string Title => "Data Logger (Extended)";
+    public string Description => "Extended Data Logger example that uses a circular buffer for improved performance.";
 
     readonly System.Windows.Forms.Timer AddNewDataTimer = new() { Interval = 10, Enabled = true };
     readonly System.Windows.Forms.Timer UpdatePlotTimer = new() { Interval = 50, Enabled = true };
@@ -11,7 +11,7 @@ public partial class DataStreamer2 : Form, IDemoWindow
     readonly ScottPlot.DataGenerators.RandomWalker Walker1 = new(0, multiplier: 0.01);
     readonly ScottPlot.DataGenerators.RandomWalker Walker2 = new(1, multiplier: 1000);
 
-    public DataStreamer2()
+    public DataLogger2()
     {
         InitializeComponent();
 
@@ -41,5 +41,7 @@ public partial class DataStreamer2 : Form, IDemoWindow
     {
         AddNewDataTimer.Enabled = cbRunning.Checked;
         UpdatePlotTimer.Enabled = cbRunning.Checked;
+        loggerPlotHorz.Tracking = !cbRunning.Checked;
+        loggerPlotVert.Tracking = !cbRunning.Checked;
     }
 }

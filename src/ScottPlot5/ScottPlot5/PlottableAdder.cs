@@ -1,6 +1,7 @@
 ﻿using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -16,9 +17,27 @@ public class PlottableAdder(Plot plot)
     /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
+    /// <summary>
+    /// Plottables of these types are ignored when assigning colors according to new plottables according to the <see cref="Palette"/>
+    /// </summary>
+    public List<Type> PlottablesThatDoNotGetColors = [
+            typeof(Plottables.PolarAxis),
+        typeof(Plottables.Annotation),
+        typeof(Plottables.Benchmark),
+        typeof(Plottables.CandlestickPlot),
+        typeof(Plottables.OhlcPlot),
+        typeof(Plottables.Heatmap),
+        typeof(Plottables.ImageMarker),
+        typeof(Plottables.ImageRect),
+        typeof(Plottables.IsoLines),
+        typeof(Plottables.Pie),
+        typeof(Plottables.Text),
+    ];
+
     public Color GetNextColor()
     {
-        return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
+        int coloredPlottableCount = Plot.PlottableList.Where(x => !PlottablesThatDoNotGetColors.Contains(x.GetType())).Count();
+        return Palette.GetColor(coloredPlottableCount);
     }
 
     public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)

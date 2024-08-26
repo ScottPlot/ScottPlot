@@ -136,6 +136,22 @@ public static class Generate
         return Repeating(count, double.NaN);
     }
 
+    /// <summary>
+    /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
+    /// </summary>
+    public static IEnumerable<double> RangeEnumerable(double start, double stop, double step = 1)
+    {
+        for (double value = start; value <= stop; value += step)
+        {
+            yield return value;
+        }
+    }
+
+    /// <summary>
+    /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
+    /// </summary>
+    public static double[] Range(double start, double stop, double step = 1) => RangeEnumerable(start, stop, step).ToArray();
+
     #endregion
 
     #region numerical 2D

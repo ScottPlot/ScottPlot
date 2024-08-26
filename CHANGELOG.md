@@ -1,5 +1,11 @@
 ## ScottPlot 5.0.38
 _Not yet on NuGet..._
+* DataLogger: Merged in numerous additional features (optional circular buffer, X and Y offset, etc.) from the experimental DataLogger (#4085, #4114) @drolevar
+* SVG: Improved correctness of exported SVG files to overcome a SkiaSharp bug that sometimes results in XML missing a closing tag (#4104, #4121) @KroMignon @aespitia @bclehmann @DDiggs91 
+* Generate: Added `Range()` to create a sequence of values between two numbers (#4122, #4119) @KroMignon
+* Rendering: Improve behavior of plots using custom scale factors in situations of repeated renders (#4125) @BrianAtZetica
+* Palette: Improved behavior of automatic color selection for new plottables added to the plot (#4105)
+* Color: Added overload to allow constructing colors from hex strings (#4170, #4165) @aespitia @KroMignon @kebox7
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
