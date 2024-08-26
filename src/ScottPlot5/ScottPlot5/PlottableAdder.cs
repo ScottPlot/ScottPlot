@@ -36,7 +36,7 @@ public class PlottableAdder(Plot plot)
 
     public Color GetNextColor()
     {
-        int existingPlottableCount = Plot.PlottableList.Where(x => PlottablesThatDoNotGetColors.Contains(x.GetType())).Count();
+        int existingPlottableCount = Plot.PlottableList.Where(x => !PlottablesThatDoNotGetColors.Contains(x.GetType())).Count();
         return Palette.Colors[Plot.PlottableList.Count % Palette.Colors.Length];
     }
 
