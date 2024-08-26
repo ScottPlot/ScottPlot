@@ -22,17 +22,17 @@ public class PlottableAdder(Plot plot)
     /// </summary>
     public List<Type> PlottablesThatDoNotGetColors = [
             typeof(Plottables.PolarAxis),
-            typeof(Plottables.Annotation),
-            typeof(Plottables.Benchmark),
-            typeof(Plottables.CandlestickPlot),
-            typeof(Plottables.OhlcPlot),
-            typeof(Plottables.Heatmap),
-            typeof(Plottables.ImageMarker),
-            typeof(Plottables.ImageRect),
-            typeof(Plottables.IsoLines),
-            typeof(Plottables.Pie),
-            typeof(Plottables.Text),
-        ];
+        typeof(Plottables.Annotation),
+        typeof(Plottables.Benchmark),
+        typeof(Plottables.CandlestickPlot),
+        typeof(Plottables.OhlcPlot),
+        typeof(Plottables.Heatmap),
+        typeof(Plottables.ImageMarker),
+        typeof(Plottables.ImageRect),
+        typeof(Plottables.IsoLines),
+        typeof(Plottables.Pie),
+        typeof(Plottables.Text),
+    ];
 
     public Color GetNextColor()
     {
