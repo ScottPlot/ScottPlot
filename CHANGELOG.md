@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * SVG: Improved correctness of exported SVG files to overcome a SkiaSharp bug that sometimes results in XML missing a closing tag (#4104, #4121) @KroMignon @aespitia @bclehmann @DDiggs91 
 * Generate: Added `Range()` to create a sequence of values between two numbers (#4122, #4119) @KroMignon
 * Rendering: Improve behavior of plots using custom scale factors in situations of repeated renders (#4125) @BrianAtZetica
+* Palette: Improved behavior of automatic color selection for new plottables added to the plot (#4105)
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
