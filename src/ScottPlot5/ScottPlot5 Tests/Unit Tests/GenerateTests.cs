@@ -19,4 +19,12 @@ public class Tests
         double[] values = Generate.RandomNormal(10);
         Console.WriteLine(string.Join(Environment.NewLine, values.Select(x => x.ToString())));
     }
+
+    [Test]
+    public void Test_Range()
+    {
+        double[] values = Generate.Range(7, 9, 0.5);
+        double[] expected = [7, 7.5, 8, 8.5, 9];
+        values.Should().BeEquivalentTo(expected);
+    }
 }
