@@ -8,6 +8,7 @@ public class CodeFormatTests
         List<string> methodNames = SourceCodeParsing.GetMethodNames("PlottableAdder.cs");
 
         methodNames.Remove("GetNextColor");
+        methodNames.Remove("PlottablesThatDoNotGetColors = [");
 
         string lastMethodName = string.Empty;
         foreach (string methodName in methodNames)
