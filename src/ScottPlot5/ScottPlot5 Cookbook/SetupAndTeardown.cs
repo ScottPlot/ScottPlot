@@ -12,6 +12,7 @@ internal class SetupAndTeardown
 
         // create a fresh cookbook folder
         Directory.CreateDirectory(Paths.OutputFolder);
+        Directory.CreateDirectory(Paths.OutputImageFolder);
     }
 
     [OneTimeTearDown]
