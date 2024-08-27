@@ -12,6 +12,8 @@ internal class Generate
         GenerateCategoryPages(cb);
         GenerateRecipePages(cb);
         GenerateSearchPage();
+        GeneratePalettesPage();
+        GenerateColormapsPage();
 
         Console.WriteLine(Paths.OutputFolder);
     }
@@ -50,6 +52,16 @@ internal class Generate
 
     private static void GenerateSearchPage()
     {
-        new SearchPage().Generate(Paths.OutputFolder);
+        SearchPage.Generate(Paths.OutputFolder);
+    }
+
+    private static void GeneratePalettesPage()
+    {
+        PalettesPage.Generate(Paths.OutputFolder);
+    }
+
+    private static void GenerateColormapsPage()
+    {
+        ColormapsPage.Generate(Paths.OutputFolder);
     }
 }
