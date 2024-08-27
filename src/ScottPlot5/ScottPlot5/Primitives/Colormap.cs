@@ -16,4 +16,27 @@ public static class Colormap
             .Select(x => (IColormap)Activator.CreateInstance(x)!)
             .ToArray();
     }
+
+    public static Image GetImage(IColormap colormap, int width, int height)
+    {
+        using SKBitmap bmp = new(width, height);
+        using SKCanvas canvas = new(bmp);
+
+        using SKPaint paint = new()
+        {
+            IsAntialias = false,
+            IsStroke = true,
+        };
+
+        for (int i = 0; i < width; i++)
+        {
+            paint.Color = colormap.GetColor(i / (width - 1.0)).ToSKColor();
+            canvas.DrawLine(i, 0, i, height, paint);
+        }
+
+        using MemoryStream ms = new();
+        bmp.Encode(ms, SKEncodedImageFormat.Jpeg, quality: 85);
+        byte[] bytes = ms.ToArray();
+        return new ScottPlot.Image(bytes);
+    }
 }

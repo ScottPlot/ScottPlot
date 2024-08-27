@@ -16,6 +16,17 @@ internal class ColormapsPage : PageBase
         }
     }
 
+    private static string GenerateColormapImage(IColormap colormap)
+    {
+        string className = colormap.ToString()!.Split(".").Last();
+        string filename = $"Colormap_{className}.png";
+        Console.WriteLine(filename);
+        Image img = ScottPlot.Colormap.GetImage(colormap, 1000, 100);
+        string filePath = Path.Combine(Paths.OutputImageFolder, filename);
+        img.SavePng(filePath);
+        return filename;
+    }
+
     public static void Generate(string folder)
     {
         StringBuilder sb = new();
@@ -29,20 +40,14 @@ internal class ColormapsPage : PageBase
 
         foreach (IColormap colormap in colormaps)
         {
+            string filename = GenerateColormapImage(colormap);
             sb.AppendLine($"### {colormap.Name}");
             sb.AppendLine();
             sb.AppendLine($"```cs");
             sb.AppendLine($"IColormap colormap = new {colormap}();");
             sb.AppendLine($"```");
             sb.AppendLine();
-            int steps = 50;
-            double[] fractions = Enumerable.Range(0, steps + 1).Select(x => x / (double)steps).ToArray();
-            for (int i = 0; i < fractions.Length; i++)
-            {
-                // TODO: show colormaps as images
-                Color color = colormap.GetColor(fractions[i]);
-                sb.Append($"<span style='background-color: {color.ToHex()};'>&nbsp;&nbsp;</span>");
-            }
+            sb.AppendLine($"<img src='../images/{filename}' class='w-100' height=100>");
             sb.AppendLine();
             sb.AppendLine();
         }
