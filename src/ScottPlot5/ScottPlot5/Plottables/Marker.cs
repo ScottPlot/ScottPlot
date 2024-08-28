@@ -9,6 +9,16 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
         get => new(X, Y);
         set { X = value.X; Y = value.Y; }
     }
+    public Coordinates Position
+    {
+        get => new(X, Y);
+        set { X = value.X; Y = value.Y; }
+    }
+    public Coordinates Coordinates
+    {
+        get => new(X, Y);
+        set { X = value.X; Y = value.Y; }
+    }
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
