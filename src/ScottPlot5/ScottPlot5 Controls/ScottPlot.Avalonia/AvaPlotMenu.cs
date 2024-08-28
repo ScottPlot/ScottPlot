@@ -78,7 +78,7 @@ public class AvaPlotMenu : IPlotMenu
         if (path is not null && !string.IsNullOrWhiteSpace(path))
         {
             PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-            plotControl.Plot.Save(path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, ImageFormatLookup.FromFilePath(path));
+            plotControl.Plot.Save(path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, ImageFormats.FromFilename(path));
         }
     }
 

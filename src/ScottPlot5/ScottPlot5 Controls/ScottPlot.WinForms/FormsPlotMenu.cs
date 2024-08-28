@@ -117,7 +117,7 @@ public class FormsPlotMenu : IPlotMenu
 
             try
             {
-                format = ImageFormatLookup.FromFilePath(dialog.FileName);
+                format = ImageFormats.FromFilename(dialog.FileName);
             }
             catch (ArgumentException)
             {
