@@ -10,6 +10,7 @@ _Not yet on NuGet..._
 * Color: Added Hue, Saturation, and Luminance properties
 * Colormap: Added `Colormap.GetColormaps()` to allow iterating over all available colormaps
 * Colormap: Added `Colormap.GetImage()` to generate a gradient image using a given colormap
+* Coordinates: Added `Position` and `Coordinates` properties (#4185) @blouflashdb
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
