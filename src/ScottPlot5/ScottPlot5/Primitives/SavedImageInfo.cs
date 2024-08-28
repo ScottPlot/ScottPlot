@@ -1,16 +1,18 @@
 ﻿
 namespace ScottPlot;
 
-public class SavedImageInfo
+public class SavedImageInfo(string path, int fileSize)
 {
-    public string Path { get; }
-    public int FileSize { get; }
+    public string Path { get; } = System.IO.Path.GetFullPath(path);
+    public int FileSize { get; } = fileSize;
     private RenderDetails RenderDetails;
 
-    public SavedImageInfo(string path, int fileSize)
+    public override string ToString()
     {
-        Path = System.IO.Path.GetFullPath(path);
-        FileSize = fileSize;
+        return $"Saved Image " +
+            $"[{RenderDetails.FigureRect.Width}x{RenderDetails.FigureRect.Height}] " +
+            $"({FileSize * .001} kB) " +
+            $"{Path}";
     }
 
     public SavedImageInfo WithRenderDetails(RenderDetails renderDetails)
