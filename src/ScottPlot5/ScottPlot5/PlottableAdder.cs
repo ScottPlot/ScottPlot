@@ -472,7 +472,7 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
-    public LollipopPlot Lollipop(double[] values, double[]? positions = null, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    public LollipopPlot Lollipop(double[] values, double[]? positions = null, MarkerShape shape = MarkerShape.FilledCircle, float size = 5, Color? color = null)
     {
         var plottable = new LollipopPlot(values, positions)
         {
