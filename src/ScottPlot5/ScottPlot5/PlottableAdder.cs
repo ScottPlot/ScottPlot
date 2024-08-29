@@ -1,7 +1,6 @@
 ﻿using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -473,6 +472,17 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
+    public LollipopPlot Lollipop(double[] values, double[]? positions = null, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
+    {
+        var plottable = new LollipopPlot(values, positions)
+        {
+            MarkerShape = shape,
+            MarkerSize = size,
+            Color = color ?? GetNextColor()
+        };
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
 
     public Marker Marker(double x, double y, MarkerShape shape = MarkerShape.FilledCircle, float size = 10, Color? color = null)
     {
