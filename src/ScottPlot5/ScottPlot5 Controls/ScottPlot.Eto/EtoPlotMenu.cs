@@ -100,7 +100,7 @@ public class EtoPlotMenu : IPlotMenu
                 filename += $".{dialog.CurrentFilter.Extensions[0]}";
 
             // TODO: launch a pop-up window indicating if extension is invalid or save failed
-            ImageFormat format = ImageFormatLookup.FromFilePath(filename);
+            ImageFormat format = ImageFormats.FromFilename(filename);
             PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
             plotControl.Plot.Save(filename, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
         }

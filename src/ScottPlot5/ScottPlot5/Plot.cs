@@ -322,7 +322,13 @@ public class Plot : IDisposable
         return svg.GetXml();
     }
 
-    public SavedImageInfo Save(string filePath, int width, int height, ImageFormat format = ImageFormat.Png, int quality = 85)
+    public SavedImageInfo Save(string filePath, int width, int height)
+    {
+        ImageFormat format = ImageFormats.FromFilename(filePath);
+        return Save(filePath, width, height, format);
+    }
+
+    public SavedImageInfo Save(string filePath, int width, int height, ImageFormat format, int quality = 85)
     {
         if (format == ImageFormat.Svg)
         {
