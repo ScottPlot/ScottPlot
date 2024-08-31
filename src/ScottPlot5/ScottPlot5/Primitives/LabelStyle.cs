@@ -217,12 +217,13 @@ public class LabelStyle
         return new Pixel(x, y);
     }
 
-    // TODO: deprecate this and require a string to be passed in
+    // TODO: deprecate this and require a string to be passed in. Maybe put it in ScottPlot.Drawing?
     public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
     {
         if (!IsVisible)
             return;
 
+        ApplyToPaint(paint);
         MeasuredText measured = Measure(Text, paint);
         PixelRect textRect = measured.Rect(Alignment);
 
