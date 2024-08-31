@@ -14,6 +14,8 @@ _Not yet on NuGet..._
 * Signal: Added `AlwaysUseLowDensityMode` for improved anti-aliased rendering in static plots (#4153)
 * Plot: Improved default `ToString()` implementation for the object returned when saving image files (#4154)
 * Plot: Added `Save()` overload which detects file format from filename extension (#4164)
+* Coordinates: Added `Coordinates.Zip()` for creating a `Coordinates[]` from distinct `xs[]` and `ys[]` arrays.
+* Lollipop: New plot type that displays values with a stem and a marker similar to a bar graph but with less visual clutter (#4193, #4183) @CoderPM2011
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_

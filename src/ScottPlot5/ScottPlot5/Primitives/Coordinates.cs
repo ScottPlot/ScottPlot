@@ -10,10 +10,31 @@ public struct Coordinates : IEquatable<Coordinates>
 
     public bool AreReal => NumericConversion.IsReal(X) && NumericConversion.IsReal(Y);
 
+    /// <summary>
+    /// Define a new coordinate at the given X and Y location (in axis units)
+    /// </summary>
     public Coordinates(double x, double y)
     {
         X = x;
         Y = y;
+    }
+
+    /// <summary>
+    /// Create an array of coordinates from individual arrays of X and Y positions
+    /// </summary>
+    public static Coordinates[] Zip(double[] xs, double[] ys)
+    {
+        if (xs.Length != ys.Length)
+            throw new ArgumentException($"{nameof(xs)} and {nameof(ys)} must have equal length");
+
+        Coordinates[] cs = new Coordinates[xs.Length];
+
+        for (int i = 0; i < cs.Length; i++)
+        {
+            cs[i] = new Coordinates(xs[i], ys[i]);
+        }
+
+        return cs;
     }
 
     public double DistanceSquared(Coordinates pt)
@@ -39,7 +60,10 @@ public struct Coordinates : IEquatable<Coordinates>
 
     public static Coordinates Infinity => new(double.PositiveInfinity, double.PositiveInfinity);
 
-    public Coordinates Rotated => new(Y, X);
+    /// <summary>
+    /// The inverse of the present coordinate. E.g., the point (X, Y) becomes (Y, X).
+    /// </summary>
+    public readonly Coordinates Rotated => new(Y, X);
 
     public bool Equals(Coordinates other)
     {
