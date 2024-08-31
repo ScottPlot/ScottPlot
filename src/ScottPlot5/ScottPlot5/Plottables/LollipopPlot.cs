@@ -15,7 +15,12 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public MarkerStyle MarkerStyle { get; set; } = new() { Size = 0 };
+    public MarkerStyle MarkerStyle { get; set; } = new()
+    {
+        Size = 5,
+        Shape = MarkerShape.FilledCircle,
+        IsVisible = true,
+    };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
@@ -30,52 +35,37 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
         {
             LineStyle.Color = value;
             MarkerStyle.FillColor = value;
+            MarkerStyle.LineColor = value;
         }
     }
 
-    public double[] Data { get; }
-
-    public double[] Positions { get; }
+    public IEnumerable<Coordinates> Coordinates { get; set; }
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
 
-    public LollipopPlot(IEnumerable<double> data, IEnumerable<double>? positions = null)
+    public LollipopPlot(IEnumerable<Coordinates> coordinates)
     {
-        Data = data.ToArray();
-        Positions =
-            (positions ?? Enumerable.Range(0, Data.Length).Select(i => (double)i))
-            .ToArray();
+        Coordinates = coordinates;
     }
 
     public AxisLimits GetAxisLimits()
     {
-        return Orientation == Orientation.Vertical
-            ? new AxisLimits(Positions.Min(), Positions.Max(), Data.Max(), 0)
-            : new AxisLimits(0, Data.Max(), Positions.Max(), Positions.Min());
+        return new AxisLimits(Coordinates);
     }
 
     public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
-        for (int i = 0; i < Data.Length; i++)
+        foreach (Coordinates c in Coordinates)
         {
-            Coordinates Start;
-            Coordinates End;
-            if (Orientation == Orientation.Vertical)
-            {
-                Start = new(Positions[i], 0);
-                End = new(Positions[i], Data[i]);
-            }
-            else
-            {
-                Start = new(0, Positions[i]);
-                End = new(Data[i], Positions[i]);
-            }
-
-            PixelLine pxLine = Axes.GetPixelLine(new(Start, End));
+            Coordinates lineBase = (Orientation == Orientation.Vertical) ? new(c.X, 0) : new(0, c.Y);
+            Coordinates lineTip = c;
+            CoordinateLine line = new(lineBase, lineTip);
+            PixelLine pxLine = Axes.GetPixelLine(line);
+            Pixel px = Axes.GetPixel(lineTip);
 
             Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
-            Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(End), MarkerStyle);
+            Drawing.DrawMarker(rp.Canvas, paint, px, MarkerStyle);
         }
     }
 }

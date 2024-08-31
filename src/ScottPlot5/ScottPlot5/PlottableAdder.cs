@@ -472,14 +472,21 @@ public class PlottableAdder(Plot plot)
         return Line(start, end);
     }
 
-    public LollipopPlot Lollipop(double[] values, double[]? positions = null, MarkerShape shape = MarkerShape.FilledCircle, float size = 5, Color? color = null)
+    public LollipopPlot Lollipop(double[] values)
     {
-        var plottable = new LollipopPlot(values, positions)
-        {
-            MarkerShape = shape,
-            MarkerSize = size,
-            Color = color ?? GetNextColor()
-        };
+        var coordinates = Enumerable.Range(0, values.Length).Select(x => new Coordinates(x, values[x]));
+        return Lollipop(coordinates);
+    }
+
+    public LollipopPlot Lollipop(double[] values, double[] positions)
+    {
+        Coordinates[] coordinates = Coordinates.Zip(positions, values);
+        return Lollipop(coordinates);
+    }
+
+    public LollipopPlot Lollipop(IEnumerable<Coordinates> coordinates)
+    {
+        LollipopPlot plottable = new(coordinates) { Color = GetNextColor() };
         Plot.PlottableList.Add(plottable);
         return plottable;
     }

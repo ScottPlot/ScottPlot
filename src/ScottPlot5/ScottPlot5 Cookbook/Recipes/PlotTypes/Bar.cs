@@ -349,34 +349,4 @@ public class Bar : ICategory
             myPlot.Axes.Margins(bottom: 0, top: .3);
         }
     }
-
-    public class BarLollipop : RecipeBase
-    {
-        public override string Name => "Lollipop Plot Quickstart";
-        public override string Description => "Lollipop plots convey the same information as Bar plots but have a different appearance.";
-
-        [Test]
-        public override void Execute()
-        {
-            double[] values = { 26, 20, 23, 7, 16 };
-            myPlot.Add.Lollipop(values);
-        }
-    }
-
-    public class BarLollipopCustom : RecipeBase
-    {
-        public override string Name => "Lollipop Plot Customizations";
-        public override string Description => "Lollipop plots can be extensively customized.";
-
-        [Test]
-        public override void Execute()
-        {
-            double[] values = { 26, 20, 23, 7, 16 };
-            double[] positions = { 2, 6, 10, 16, 20 };
-            var lollipop = myPlot.Add.Lollipop(values, positions);
-            lollipop.Orientation = Orientation.Horizontal;
-            lollipop.MarkerColor = Colors.Red;
-            lollipop.MarkerSize = 10;
-        }
-    }
 }
