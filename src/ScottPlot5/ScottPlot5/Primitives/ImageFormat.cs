@@ -13,7 +13,7 @@ public static class ImageFormats
 {
     public static ImageFormat FromFileExtension(string ext)
     {
-        if (!ext.StartsWith('.'))
+        if (!ext.StartsWith("."))
             throw new ArgumentException("extension must start with '.'");
 
         return ext.ToLowerInvariant() switch
