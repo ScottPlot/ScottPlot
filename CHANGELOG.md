@@ -16,6 +16,7 @@ _Not yet on NuGet..._
 * Plot: Added `Save()` overload which detects file format from filename extension (#4164)
 * Coordinates: Added `Coordinates.Zip()` for creating a `Coordinates[]` from distinct `xs[]` and `ys[]` arrays.
 * Lollipop: New plot type that displays values with a stem and a marker similar to a bar graph but with less visual clutter (#4193, #4183) @CoderPM2011
+* Grid: Added support for fill colors to highlight spans between pairs of major grid lines (#4201, #4022) @CoderPM2011 @seeingistrue
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
