@@ -109,6 +109,26 @@ public static class Generate
         return values;
     }
 
+    /// <summary>
+    /// Generate a square wave by summing sine waves with decreasing amplitudes at odd harmonics of the fundamental frequency
+    /// </summary>
+    public static double[] SquareWaveFromSines(int pointCount = 1000, double oscillations = 2, int sineCount = 5)
+    {
+        double[] values = new double[pointCount];
+        double dX = Math.PI * 2 * oscillations / (pointCount - 1);
+
+        for (int j = 0; j < sineCount; j++)
+        {
+            int harmonic = (j * 2) + 1;
+            for (int i = 0; i < pointCount; i++)
+            {
+                values[i] += Math.Sin(i * dX * harmonic) / harmonic;
+            }
+        }
+
+        return values;
+    }
+
     public static double[] Zeros(int count)
     {
         return Repeating(count, 0);

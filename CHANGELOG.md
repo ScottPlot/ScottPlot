@@ -19,6 +19,7 @@ _Not yet on NuGet..._
 * Polar Axis: Added `Rotation` property to rotate the axis and coordinates it returns
 * Polar Axis: Added the ability to customize spoke label text (#4188)
 * Polar Axis: Added a `RegenerateSpokes()` overload that accepts `string[]` to create new spokes and set their label text automatically
+* Grid: Added support for fill colors to highlight spans between pairs of major grid lines (#4201, #4022) @CoderPM2011 @seeingistrue
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
