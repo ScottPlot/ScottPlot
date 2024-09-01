@@ -157,20 +157,21 @@ public static class Generate
     }
 
     /// <summary>
-    /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
+    /// Return <paramref name="n"/> values evenly spaced between <paramref name="start"/> to <paramref name="stop"/> (inclusive)
     /// </summary>
-    public static IEnumerable<double> RangeEnumerable(double start, double stop, double step = 1)
+    public static IEnumerable<double> Range(double start, double stop, int n)
     {
-        for (double value = start; value <= stop; value += step)
-        {
-            yield return value;
-        }
+        return Enumerable.Range(0, n).Select(i => (stop - start) * i / (n - 1) + start);
     }
 
     /// <summary>
     /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
     /// </summary>
-    public static double[] Range(double start, double stop, double step = 1) => RangeEnumerable(start, stop, step).ToArray();
+    public static double[] Range(double start, double stop, double step = 1)
+    {
+        int n = (int)Math.Round((stop - start) / step) + 1;
+        return Range(start, stop, n).ToArray();
+    }
 
     #endregion
 
