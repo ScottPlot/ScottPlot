@@ -139,9 +139,30 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Return the X/Y position of a polar point
     /// </summary>
+    public Coordinates GetCoordinates(double radius, Angle angle)
+    {
+        return GetCoordinates(radius, angle.Degrees);
+    }
+
+    /// <summary>
+    /// Return the X/Y position of a polar point
+    /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
         return GetCoordinates(point.Radius, point.Angle.Degrees);
+    }
+
+    /// <summary>
+    /// Return coordinates for the given radius values assuming one value per spoke.
+    /// </summary>
+    public Coordinates[] GetCoordinates(double[] values)
+    {
+        if (values.Length != Spokes.Count)
+            throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
+
+        return Enumerable.Range(0, Spokes.Count)
+            .Select(x => GetCoordinates(values[x], Spokes[x].Angle))
+            .ToArray();
     }
 
     public AxisLimits GetAxisLimits()
