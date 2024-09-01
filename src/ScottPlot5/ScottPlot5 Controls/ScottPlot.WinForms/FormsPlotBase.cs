@@ -15,7 +15,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     public Plot Plot { get; internal set; }
 
     public IPlotInteraction Interaction { get; set; }
-    public IPlotMenu Menu { get; set; }
+    public IPlotMenu? Menu { get; set; }
     public UserInputProcessor UserInputProcessor { get; }
 
     public float DisplayScale { get; set; }
@@ -63,7 +63,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        Menu.ShowContextMenu(position);
+        Menu?.ShowContextMenu(position);
     }
 
     internal void SKElement_MouseDown(object? sender, MouseEventArgs e)
