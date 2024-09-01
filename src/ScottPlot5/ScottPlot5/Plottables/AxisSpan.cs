@@ -34,6 +34,7 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
     public bool IsDraggable { get; set; } = false;
     public bool IsResizable { get; set; } = false;
     public abstract AxisSpanUnderMouse? UnderMouse(CoordinateRect rect);
+    public bool IsUnderMouse(CoordinateRect rect) => UnderMouse(rect) is not null;
     public abstract void DragTo(AxisSpanUnderMouse start, Coordinates mouseNow);
 
     protected void Render(RenderPack rp, PixelRect rect)
