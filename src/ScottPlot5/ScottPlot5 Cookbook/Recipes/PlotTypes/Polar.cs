@@ -121,6 +121,24 @@ internal class Polar : ICategory
         }
     }
 
+    public class PolarAxisLabels : RecipeBase
+    {
+        public override string Name => "Polar Axis Labels";
+        public override string Description => "Polar axis spokes may be individually labeled.";
+
+        [Test]
+        public override void Execute()
+        {
+            var pol = myPlot.Add.PolarAxis();
+
+            pol.PaddingFraction = 1.4;
+            for (int i = 0; i < pol.Spokes.Count; i++)
+            {
+                pol.Spokes[i].LabelText = $"Spoke #{i + 1}";
+            };
+        }
+    }
+
     public class PolarAxisLineDensity : RecipeBase
     {
         public override string Name => "Polar Line Density";
