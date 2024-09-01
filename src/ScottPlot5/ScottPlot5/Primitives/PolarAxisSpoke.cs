@@ -10,6 +10,7 @@ public class PolarAxisSpoke(Angle angle, double length) : IHasLine
     public double Length { get; set; } = length;
 
     public readonly LabelStyle LabelStyle = new();
+    public string? LabelText = null;
 
     public LineStyle LineStyle { get; set; } = new()
     {
@@ -35,19 +36,18 @@ public class PolarAxisSpoke(Angle angle, double length) : IHasLine
         set => LineStyle.Color = value;
     }
 
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint, double labelDistance)
+    public void Render(RenderPack rp, IAxes axes, SKPaint paint, double labelDistance, double rotation)
     {
         PolarCoordinates tipPoint = new(Length, Angle);
         Pixel tipPixel = axes.GetPixel(tipPoint.CartesianCoordinates) - axes.GetPixel(Coordinates.Origin);
         Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, LineStyle);
 
-        LabelStyle.Text = $"{Angle.Degrees}"; // TODO: use a customizable label formatter
+        LabelStyle.Text = LabelText ?? $"{Angle.Degrees}";
+        LabelStyle.Rotation = -(float)rotation;
+        LabelStyle.Alignment = Alignment.MiddleCenter;
 
         PolarCoordinates labelPoint = new(tipPoint.Radius * labelDistance, tipPoint.Angle);
         Pixel labelPixel = axes.GetPixel(labelPoint.CartesianCoordinates) - axes.GetPixel(Coordinates.Origin);
-        PixelRect labelRect = LabelStyle.Measure().Rect(Alignment.MiddleCenter);
-        Pixel labelOffset = labelRect.Center - labelRect.TopLeft;
-        labelPixel -= labelOffset;
-        LabelStyle.Render(rp.Canvas, labelPixel, paint);
+        LabelStyle.Render(rp.Canvas, labelPixel.WithOffset(0, 0), paint);
     }
 }
