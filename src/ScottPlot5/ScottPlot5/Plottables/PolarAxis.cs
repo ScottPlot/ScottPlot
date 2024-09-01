@@ -164,6 +164,8 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
 
         double maxAbs = Math.Max(spokeAbs, circleAbs);
 
+        spokeAbs *= PaddingFraction;
+
         return maxAbs > 0
             ? new AxisLimits(-spokeAbs, spokeAbs, -spokeAbs, spokeAbs)
             : AxisLimits.NoLimits;
