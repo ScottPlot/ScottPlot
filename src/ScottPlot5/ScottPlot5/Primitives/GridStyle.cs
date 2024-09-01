@@ -20,9 +20,23 @@ public class GridStyle
     };
 
     public int MaximumNumberOfGridLines { get; set; } = 1_000;
+
+    /// <summary>
+    /// When set to false the grid will be rendered on top of plottables instead of beneath them.
+    /// </summary>
     public bool IsBeneathPlottables { get; set; } = true;
 
-    public Color? AlternatingColor { get; set; } = null;
+    /// <summary>
+    /// Fill the region between every other pair of major grid lines with this color.
+    /// </summary>
+    public Color FillColor1 { get; set; } = Colors.Transparent;
+
+    /// <summary>
+    /// Fill the region between every other pair of major grid lines with this color.
+    /// </summary>
+    public Color FillColor2 { get; set; } = Colors.Transparent;
+
+    private bool FillColorEnabled => FillColor1 != Colors.Transparent || FillColor2 != Colors.Transparent;
 
     public void Render(RenderPack rp, IAxis axis, IEnumerable<Tick> ticks)
     {
@@ -31,34 +45,26 @@ public class GridStyle
             return;
         }
 
-        if (MinorLineStyle.CanBeRendered)
-        {
-            float[] xTicksMinor = ticks
-                .Where(x => !x.IsMajor)
-                .Select(x => axis.GetPixel(x.Position, rp.DataRect))
-                .Take(MaximumNumberOfGridLines)
-                .ToArray();
+        float[] xTicksMinor = ticks
+            .Where(x => !x.IsMajor)
+            .Select(x => axis.GetPixel(x.Position, rp.DataRect))
+            .Take(MaximumNumberOfGridLines)
+            .ToArray();
 
-            RenderGridLines(rp, xTicksMinor, axis.Edge, MinorLineStyle);
-        }
+        float[] xTicksMajor = ticks
+            .Where(x => x.IsMajor)
+            .Select(x => axis.GetPixel(x.Position, rp.DataRect))
+            .Take(MaximumNumberOfGridLines)
+            .ToArray();
 
-        if (MajorLineStyle.CanBeRendered)
-        {
-            float[] xTicksMajor = ticks
-                .Where(x => x.IsMajor)
-                .Select(x => axis.GetPixel(x.Position, rp.DataRect))
-                .Take(MaximumNumberOfGridLines)
-                .ToArray();
-
-            RenderGridBackground(rp, xTicksMajor, axis.Edge);
-            RenderGridLines(rp, xTicksMajor, axis.Edge, MajorLineStyle);
-        }
+        RenderGridLines(rp, xTicksMinor, axis.Edge, MinorLineStyle);
+        RenderAlternatingFill(rp, xTicksMajor, axis.Edge);
+        RenderGridLines(rp, xTicksMajor, axis.Edge, MajorLineStyle);
     }
 
-    private void RenderGridBackground(
-        RenderPack rp, float[] positions, Edge edge)
+    private void RenderAlternatingFill(RenderPack rp, float[] positions, Edge edge)
     {
-        if (AlternatingColor is null)
+        if (!FillColorEnabled)
         {
             return;
         }
@@ -79,20 +85,17 @@ public class GridStyle
 
         for (int i = 1; i < starts.Count(); i++)
         {
-            if (i % 2 == 0)
-            {
-                continue;
-            }
-
-            Drawing.FillRectangle(
-                rp.Canvas,
-                new PixelRect(starts.ElementAt(i - 1), ends.ElementAt(i)),
-                AlternatingColor.Value);
+            Color fillColor = i % 2 == 0 ? FillColor1 : FillColor2; // TODO: change this to minimize flicker while dragging
+            PixelRect rect = new(starts.ElementAt(i - 1), ends.ElementAt(i));
+            Drawing.FillRectangle(rp.Canvas, rect, fillColor);
         }
     }
 
     private static void RenderGridLines(RenderPack rp, float[] positions, Edge edge, LineStyle lineStyle)
     {
+        if (!lineStyle.CanBeRendered)
+            return;
+
         var starts = new Pixel[positions.Length];
         var ends = new Pixel[positions.Length];
 
