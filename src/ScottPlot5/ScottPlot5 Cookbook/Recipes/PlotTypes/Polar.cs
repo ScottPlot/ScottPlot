@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-internal class Polar : ICategory
+public class Polar : ICategory
 {
     public string Chapter => "Plot Types";
     public string CategoryName => "Polar Axis";
