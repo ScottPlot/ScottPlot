@@ -100,6 +100,26 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     }
 
     /// <summary>
+    /// Replace spokes with a new collection evenly-spaced around the circle labeled with the given strings
+    /// </summary>
+    public void RegenerateSpokes(string[] labels)
+    {
+        Spokes.Clear();
+        if (labels.Length < 1)
+        {
+            return;
+        }
+
+        double delta = 360.0 / labels.Length;
+        for (int i = 0; i < labels.Length; i++)
+        {
+            Angle angle = Angle.FromDegrees(delta * i);
+            PolarAxisSpoke spoke = new(angle, MaximumRadius) { LabelText = labels[i] };
+            Spokes.Add(spoke);
+        }
+    }
+
+    /// <summary>
     /// Replace circles with a new collection evenly-spaced along the maximum radius
     /// </summary>
     public void RegenerateCircles(int count = 3)
