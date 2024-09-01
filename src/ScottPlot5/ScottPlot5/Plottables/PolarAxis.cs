@@ -32,6 +32,11 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     public double PaddingFraction { get; set; } = 1.1;
 
     /// <summary>
+    /// Rotates the axis from its default position (where 0 points right)
+    /// </summary>
+    public double RotationDegrees { get; set; } = 0;
+
+    /// <summary>
     /// Enable this to modify the axis limits at render time to achieve "square axes"
     /// where the units/px values are equal for horizontal and vertical axes, allowing
     /// circles to always appear as circles instead of ellipses.
@@ -95,6 +100,26 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     }
 
     /// <summary>
+    /// Replace spokes with a new collection evenly-spaced around the circle labeled with the given strings
+    /// </summary>
+    public void RegenerateSpokes(string[] labels)
+    {
+        Spokes.Clear();
+        if (labels.Length < 1)
+        {
+            return;
+        }
+
+        double delta = 360.0 / labels.Length;
+        for (int i = 0; i < labels.Length; i++)
+        {
+            Angle angle = Angle.FromDegrees(delta * i);
+            PolarAxisSpoke spoke = new(angle, MaximumRadius) { LabelText = labels[i] };
+            Spokes.Add(spoke);
+        }
+    }
+
+    /// <summary>
     /// Replace circles with a new collection evenly-spaced along the maximum radius
     /// </summary>
     public void RegenerateCircles(int count = 3)
@@ -125,6 +150,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(double radius, double degrees)
     {
+        degrees -= RotationDegrees;
         double x = radius * Math.Cos(degrees * Math.PI / 180);
         double y = radius * Math.Sin(degrees * Math.PI / 180);
         return new Coordinates(x, y);
@@ -133,9 +159,30 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Return the X/Y position of a polar point
     /// </summary>
+    public Coordinates GetCoordinates(double radius, Angle angle)
+    {
+        return GetCoordinates(radius, angle.Degrees);
+    }
+
+    /// <summary>
+    /// Return the X/Y position of a polar point
+    /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
         return GetCoordinates(point.Radius, point.Angle.Degrees);
+    }
+
+    /// <summary>
+    /// Return coordinates for the given radius values assuming one value per spoke.
+    /// </summary>
+    public Coordinates[] GetCoordinates(double[] values)
+    {
+        if (values.Length != Spokes.Count)
+            throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
+
+        return Enumerable.Range(0, Spokes.Count)
+            .Select(x => GetCoordinates(values[x], Spokes[x].Angle))
+            .ToArray();
     }
 
     public AxisLimits GetAxisLimits()
@@ -157,6 +204,8 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         }
 
         double maxAbs = Math.Max(spokeAbs, circleAbs);
+
+        spokeAbs *= PaddingFraction;
 
         return maxAbs > 0
             ? new AxisLimits(-spokeAbs, spokeAbs, -spokeAbs, spokeAbs)
@@ -180,9 +229,10 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
+        rp.Canvas.RotateDegrees((float)RotationDegrees);
 
         using SKPaint paint = new();
-        Spokes.ForEach(x => x.Render(rp, Axes, paint, PaddingFraction));
+        Spokes.ForEach(x => x.Render(rp, Axes, paint, PaddingFraction, RotationDegrees));
         Circles.ForEach(x => x.Render(rp, Axes, paint));
     }
 }
