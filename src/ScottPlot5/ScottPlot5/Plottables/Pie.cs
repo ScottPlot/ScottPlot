@@ -17,13 +17,14 @@ public class Pie : PieBase
             : 1 + ExplodeFraction + Padding;
 
         return new AxisLimits(-radius, radius, -radius, radius);
-
     }
 
     public override void Render(RenderPack rp)
     {
         double total = Slices.Sum(s => s.Value);
-        float[] sliceSizeDegrees = Slices.Select(x => (float)(x.Value / total) * 360).ToArray();
+        Angle[] sliceSizeDegrees = Slices
+            .Select(x => Angle.FromDegrees(x.Value / total * 360))
+            .ToArray();
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
@@ -44,14 +45,14 @@ public class Pie : PieBase
         using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
 
-        // TODO: first slice should be North, not East.        
-        float[] sliceOffsetDegrees = new float[Slices.Count];
+        // TODO: first slice should be North, not East.
+        var sliceOffsetDegrees = new Angle[Slices.Count];
         for (int i = 1; i < Slices.Count; i++)
         {
             sliceOffsetDegrees[i] = sliceOffsetDegrees[i - 1] + sliceSizeDegrees[i - 1];
         }
 
-        float[] sliceCenterDegrees = new float[Slices.Count];
+        var sliceCenterDegrees = new Angle[Slices.Count];
         for (int i = 0; i < Slices.Count; i++)
         {
             sliceCenterDegrees[i] = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
@@ -61,26 +62,26 @@ public class Pie : PieBase
         {
             using SKAutoCanvasRestore _ = new(rp.Canvas);
 
-            float rotation = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
+            Angle rotation = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
             rp.Canvas.Translate(origin.X, origin.Y);
-            rp.Canvas.RotateDegrees(rotation);
+            rp.Canvas.RotateDegrees((float)rotation.Degrees);
             rp.Canvas.Translate(explosionOuterRadius, 0);
 
-            float degrees1 = -sliceSizeDegrees[i] / 2;
-            float degrees2 = sliceSizeDegrees[i] / 2;
+            double degrees1 = -sliceSizeDegrees[i].Degrees / 2;
+            double degrees2 = sliceSizeDegrees[i].Degrees / 2;
 
             SKPoint ptInnerHome = GetRotatedPoint(innerRadius, degrees1);
             SKPoint ptOuterHome = GetRotatedPoint(outerRadius, degrees1);
             SKPoint ptOuterRotated = GetRotatedPoint(outerRadius, degrees2);
             SKPoint ptInnerRotated = GetRotatedPoint(innerRadius, degrees2);
 
-            if (sliceSizeDegrees[i] != 360)
+            if (sliceSizeDegrees[i].Degrees != 360)
             {
                 path.MoveTo(ptInnerHome);
                 path.LineTo(ptOuterHome);
-                path.ArcTo(outerRect, -sliceSizeDegrees[i] / 2, sliceSizeDegrees[i], false);
+                path.ArcTo(outerRect, (float)-sliceSizeDegrees[i].Degrees / 2, (float)sliceSizeDegrees[i].Degrees, false);
                 path.LineTo(ptInnerRotated);
-                path.ArcTo(innerRect, sliceSizeDegrees[i] / 2, -sliceSizeDegrees[i], false);
+                path.ArcTo(innerRect, (float)sliceSizeDegrees[i].Degrees / 2, (float)-sliceSizeDegrees[i].Degrees, false);
                 path.Close();
             }
             else
@@ -89,7 +90,7 @@ public class Pie : PieBase
             }
 
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, outerRadius));
-            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotation));
+            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees((float)-rotation.Degrees));
             rp.Canvas.DrawPath(path, paint);
 
             LineStyle.ApplyToPaint(paint);
@@ -102,8 +103,8 @@ public class Pie : PieBase
         {
             for (int i = 0; i < Slices.Count; i++)
             {
-                double x = Math.Cos(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
-                double y = -Math.Sin(sliceCenterDegrees[i] * Math.PI / 180) * SliceLabelDistance;
+                double x = Math.Cos(sliceCenterDegrees[i].Radians) * SliceLabelDistance;
+                double y = -Math.Sin(sliceCenterDegrees[i].Radians) * SliceLabelDistance;
                 Pixel px = Axes.GetPixel(new Coordinates(x, y));
                 Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
             }
