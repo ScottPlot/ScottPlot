@@ -7,6 +7,16 @@ public class PolarAxisCircle(double radius) : IHasLine
 {
     public double Radius { get; set; } = radius;
 
+    public LabelStyle LabelStyle { get; set; } = new()
+    {
+        Alignment = Alignment.LowerLeft,
+        OffsetX = 3,
+    };
+
+    public string LabelText { get; set; } = string.Empty;
+
+    public Angle LabelAngle { get; set; } = Angle.FromDegrees(0);
+
     public LineStyle LineStyle { get; set; } = new()
     {
         Width = 1,

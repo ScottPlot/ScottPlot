@@ -23,36 +23,6 @@ public class Radar() : IPlottable
 
     public AxisLimits GetAxisLimits() => PolarAxis.GetAxisLimits();
 
-    public void SetLabels(string[] labels)
-    {
-        PolarAxis.RegenerateSpokes(labels);
-    }
-
-    public void SetTicks(double[] positions)
-    {
-        PolarAxis.Circles.Clear();
-        foreach (double radius in positions)
-        {
-            PolarAxisCircle circle = new(radius);
-            PolarAxis.Circles.Add(circle);
-        }
-    }
-
-    /// <summary>
-    /// Scale the polar axis to fit the data in each series
-    /// </summary>
-    public void AutoScale()
-    {
-        if (Series.Count == 0)
-            return;
-
-        double maxValue = Series.Select(x => x.Values.Max()).Max();
-
-        PolarAxis.MaximumRadius = maxValue * (1 + ValuePaddingFraction);
-
-        Console.WriteLine($"max radius: {PolarAxis.MaximumRadius}");
-    }
-
     public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)

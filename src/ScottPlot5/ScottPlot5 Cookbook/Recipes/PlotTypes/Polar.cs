@@ -17,13 +17,13 @@ public class Polar : ICategory
         public override void Execute()
         {
             // add a polar axis to the plot
-            var polar = myPlot.Add.PolarAxis(maximumRadius: 100);
+            var polar = myPlot.Add.PolarAxis(radius: 100);
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
             foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
             {
                 // use the polar axis to get X/Y coordinates given a position in polar space
-                double radius = polar.MaximumRadius * fraction;
+                double radius = 100 * fraction;
                 double degrees = 360 * fraction;
                 Coordinates pt = polar.GetCoordinates(radius, degrees);
 
@@ -42,13 +42,13 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis(maximumRadius: 100);
+            var polar = myPlot.Add.PolarAxis(radius: 100);
             polar.RotationDegrees = -90;
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
             foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
             {
-                double radius = polar.MaximumRadius * fraction;
+                double radius = 100 * fraction;
                 double degrees = 360 * fraction;
                 Coordinates pt = polar.GetCoordinates(radius, degrees);
                 var marker = myPlot.Add.Marker(pt);
@@ -106,7 +106,9 @@ public class Polar : ICategory
             {
                 polar.Spokes[i].LineColor = radialPalette.GetColor(i).WithAlpha(.5);
                 polar.Spokes[i].LineWidth = 4;
-                polar.Spokes[i].LinePattern = LinePattern.DenselyDashed;
+                polar.Spokes[i].LabelStyle.ForeColor = radialPalette.GetColor(i);
+                polar.Spokes[i].LabelStyle.FontSize = 16;
+                polar.Spokes[i].LabelStyle.Bold = true;
             }
 
             // style the circles (concentric circles marking radius positions)
@@ -121,9 +123,9 @@ public class Polar : ICategory
         }
     }
 
-    public class PolarAxisLabels : RecipeBase
+    public class PolarSpokeLabels : RecipeBase
     {
-        public override string Name => "Polar Axis Labels";
+        public override string Name => "Polar Axis Spoke Labels";
         public override string Description => "Polar axis spokes may be individually labeled.";
 
         [Test]
@@ -131,33 +133,33 @@ public class Polar : ICategory
         {
             var polar = myPlot.Add.PolarAxis();
 
-            polar.PaddingFraction = 1.4;
-
-            for (int i = 0; i < polar.Spokes.Count; i++)
-            {
-                polar.Spokes[i].LabelText = $"Spoke #{i + 1}";
-            };
+            string[] labels = { "alpha", "beta", "gamma", "delta", "epsilon" };
+            polar.SetSpokes(labels, 1.1);
         }
     }
 
-    public class PolarAxisLineDensity : RecipeBase
+    public class PolarTickLabels : RecipeBase
     {
-        public override string Name => "Polar Line Density";
-        public override string Description => "Density of spokes and circles on polar axes can " +
-            "be customized using arguments passed into the functions that generate them.";
+        public override string Name => "Polar Axis Tick Labels";
+        public override string Description => "Polar axis ticks are marked by circles which may be individually labeled.";
 
         [Test]
         public override void Execute()
         {
             var polar = myPlot.Add.PolarAxis();
-            polar.RegenerateCircles(count: 10);
-            polar.RegenerateSpokes(count: 4);
+            polar.RotationDegrees = -90;
+
+            double[] ticksPositions = { 5, 10, 15, 20 };
+            string[] tickLabels = { "A", "B", "C", "D" };
+            polar.SetTicks(ticksPositions, tickLabels);
+
+            polar.SetSpokes(count: 5, length: 22, degreeLabels: false);
         }
     }
 
-    public class PolarAxisLinePositions : RecipeBase
+    public class PolarAxisLineCustomizations : RecipeBase
     {
-        public override string Name => "Polar Line Positions";
+        public override string Name => "Polar Axis Line Customization";
         public override string Description => "The angle and length of spokes and " +
             "position of circles can be manually defined. Each spoke and circle " +
             "may also be individually styled.";
@@ -202,16 +204,15 @@ public class Polar : ICategory
         public override void Execute()
         {
             var polar = myPlot.Add.PolarAxis();
-            polar.PaddingFraction = 1.3;
             polar.RotationDegrees = -90;
-            polar.MaximumRadius = 5;
-            polar.RegenerateCircles(3);
 
             // add labeled spokes
             string[] labels = { "Alpha", "Beta", "Gamma", "Delta", "Epsilon" };
-            polar.RegenerateSpokes(labels);
-            double[] spokeAngles = polar.Spokes.Select(x => x.Angle.Degrees).ToArray();
-            polar.Circles.ForEach(x => x.LineColor = Colors.Gray.WithAlpha(.3));
+            polar.SetSpokes(labels, length: 5.5);
+
+            // add defined ticks
+            double[] ticks = { 1, 2, 3, 4, 5 };
+            polar.SetTicks(ticks);
 
             // convert radar values to coordinates
             double[] values1 = { 5, 4, 5, 2, 3 };
