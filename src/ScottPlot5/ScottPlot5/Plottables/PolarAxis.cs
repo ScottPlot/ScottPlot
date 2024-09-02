@@ -44,6 +44,11 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     public bool ManageAxisLimits { get; set; } = true;
 
     /// <summary>
+    /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
+    /// </summary>
+    public bool StraightLines { get; set; } = false;
+
+    /// <summary>
     /// Sets line width for all <see cref="Circles"/> and <see cref="Spokes"/>
     /// </summary>
     public float LineWidth
@@ -175,9 +180,9 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Return coordinates for the given radius values assuming one value per spoke.
     /// </summary>
-    public Coordinates[] GetCoordinates(double[] values)
+    public Coordinates[] GetCoordinates(IReadOnlyList<double> values)
     {
-        if (values.Length != Spokes.Count)
+        if (values.Count != Spokes.Count)
             throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
 
         return Enumerable.Range(0, Spokes.Count)
@@ -187,29 +192,8 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
 
     public AxisLimits GetAxisLimits()
     {
-        double spokeAbs = 0;
-        if (Spokes.Count > 0)
-        {
-            double minSpokeLength = Spokes.Select(x => x.Length).Min();
-            double maxSpokeLength = Spokes.Select(x => x.Length).Max();
-            spokeAbs = Math.Max(Math.Abs(minSpokeLength), Math.Abs(maxSpokeLength));
-        }
-
-        double circleAbs = 0;
-        if (Circles.Count > 0)
-        {
-            double minCircleRadius = Circles.Select(x => x.Radius).Min();
-            double maxCircleRadius = Circles.Select(x => x.Radius).Max();
-            circleAbs = Math.Max(Math.Abs(minCircleRadius), Math.Abs(maxCircleRadius));
-        }
-
-        double maxAbs = Math.Max(spokeAbs, circleAbs);
-
-        spokeAbs *= PaddingFraction;
-
-        return maxAbs > 0
-            ? new AxisLimits(-spokeAbs, spokeAbs, -spokeAbs, spokeAbs)
-            : AxisLimits.NoLimits;
+        double radius = MaximumRadius * PaddingFraction;
+        return new AxisLimits(-radius, radius, -radius, radius);
     }
 
     public virtual void UpdateAxisLimits(Plot plot)
@@ -233,6 +217,38 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
 
         using SKPaint paint = new();
         Spokes.ForEach(x => x.Render(rp, Axes, paint, PaddingFraction, RotationDegrees));
-        Circles.ForEach(x => x.Render(rp, Axes, paint));
+
+        _.Dispose();
+
+        if (StraightLines)
+        {
+            RenderStraightLines(rp, paint);
+        }
+        else
+        {
+            RenderCircles(rp, paint);
+        }
+    }
+
+    private void RenderCircles(RenderPack rp, SKPaint paint)
+    {
+        Pixel originPx = Axes.GetPixel(Coordinates.Origin);
+        double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
+
+        for (int i = 0; i < Circles.Count; i++)
+        {
+            float radiusPx = (float)(pxPerUnit * Circles[i].Radius);
+            Drawing.DrawCircle(rp.Canvas, originPx, radiusPx, Circles[i].LineStyle, paint);
+        }
+    }
+
+    private void RenderStraightLines(RenderPack rp, SKPaint paint)
+    {
+        for (int i = 0; i < Circles.Count; i++)
+        {
+            Coordinates[] cs = Spokes.Select(x => GetCoordinates(Circles[i].Radius, x.Angle)).ToArray();
+            Pixel[] px = cs.Select(Axes.GetPixel).ToArray();
+            Drawing.DrawPath(rp.Canvas, paint, px, Circles[i].LineStyle, true);
+        }
     }
 }

@@ -30,12 +30,4 @@ public class PolarAxisCircle(double radius) : IHasLine
         get => LineStyle.Color;
         set => LineStyle.Color = value;
     }
-
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint)
-    {
-        float pixelX = axes.GetPixelX(Radius) - axes.XAxis.GetPixel(0, rp.DataRect);
-        float pixelY = axes.GetPixelY(Radius) - axes.YAxis.GetPixel(0, rp.DataRect);
-        PixelRect circleRect = new(-pixelX, pixelX, pixelY, -pixelY);
-        Drawing.DrawOval(rp.Canvas, paint, LineStyle, circleRect);
-    }
 }

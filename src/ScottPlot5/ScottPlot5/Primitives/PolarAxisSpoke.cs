@@ -42,7 +42,7 @@ public class PolarAxisSpoke(Angle angle, double length) : IHasLine
         Pixel tipPixel = axes.GetPixel(tipPoint.CartesianCoordinates) - axes.GetPixel(Coordinates.Origin);
         Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, LineStyle);
 
-        LabelStyle.Text = LabelText ?? $"{Angle.Degrees}";
+        LabelStyle.Text = LabelText ?? string.Empty;
         LabelStyle.Rotation = -(float)rotation;
         LabelStyle.Alignment = Alignment.MiddleCenter;
 
