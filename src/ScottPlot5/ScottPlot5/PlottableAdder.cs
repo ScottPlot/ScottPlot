@@ -654,7 +654,7 @@ public class PlottableAdder(Plot plot)
     public PolarAxis PolarAxis(double radius = 1.0)
     {
         PolarAxis polarAxis = new() { };
-        polarAxis.SetTicks(radius, 5);
+        polarAxis.SetCircles(radius, 5);
         polarAxis.SetSpokes(12, radius * 1.1);
 
         Plot.PlottableList.Add(polarAxis);
@@ -700,19 +700,6 @@ public class PlottableAdder(Plot plot)
 
         Plot.PlottableList.Add(radar);
 
-        Plot.Axes.SquareUnits();
-        Plot.HideAxesAndGrid();
-        return radar;
-    }
-
-    public Radar Radar(IReadOnlyList<RadarSeries> series)
-    {
-        Radar radar = new();
-        radar.Series.AddRange(series);
-
-        Plot.PlottableList.Add(radar);
-
-        Plot.Axes.SquareUnits();
         Plot.HideAxesAndGrid();
         return radar;
     }
@@ -765,13 +752,12 @@ public class PlottableAdder(Plot plot)
         }
 
         double maxValue = series.Select(x => x.Max()).Max();
-        radar.PolarAxis.SetTicks(maxValue, 4);
+        radar.PolarAxis.SetCircles(maxValue, 4);
 
-        radar.PolarAxis.SetSpokes(series.First().Count(), maxValue * 1.1);
+        radar.PolarAxis.SetSpokes(series.First().Count(), maxValue * 1.1, degreeLabels: false);
 
         Plot.PlottableList.Add(radar);
 
-        Plot.Axes.SquareUnits();
         Plot.HideAxesAndGrid();
         return radar;
     }

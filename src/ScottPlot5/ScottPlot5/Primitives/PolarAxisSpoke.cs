@@ -9,8 +9,10 @@ public class PolarAxisSpoke(Angle angle, double length) : IHasLine
 
     public double Length { get; set; } = length;
 
-    public readonly LabelStyle LabelStyle = new();
-    public string? LabelText = null;
+    public LabelStyle LabelStyle { get; } = new();
+    public string? LabelText { get; set; } = null;
+    public double LabelPaddingFraction { get; set; } = 0.2;
+    public double LabelLength => Length * (1 + LabelPaddingFraction);
 
     public LineStyle LineStyle { get; set; } = new()
     {

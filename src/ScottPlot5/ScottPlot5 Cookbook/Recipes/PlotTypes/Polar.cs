@@ -17,7 +17,7 @@ public class Polar : ICategory
         public override void Execute()
         {
             // add a polar axis to the plot
-            var polar = myPlot.Add.PolarAxis(radius: 100);
+            var polarAxis = myPlot.Add.PolarAxis(radius: 100);
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
             foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
@@ -25,7 +25,7 @@ public class Polar : ICategory
                 // use the polar axis to get X/Y coordinates given a position in polar space
                 double radius = 100 * fraction;
                 double degrees = 360 * fraction;
-                Coordinates pt = polar.GetCoordinates(radius, degrees);
+                Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
 
                 // place markers or other plot types using X/Y coordinates like normal
                 var marker = myPlot.Add.Marker(pt);
@@ -42,15 +42,15 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis(radius: 100);
-            polar.RotationDegrees = -90;
+            var polarAxis = myPlot.Add.PolarAxis(radius: 100);
+            polarAxis.RotationDegrees = -90;
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
             foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
             {
                 double radius = 100 * fraction;
                 double degrees = 360 * fraction;
-                Coordinates pt = polar.GetCoordinates(radius, degrees);
+                Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
                 var marker = myPlot.Add.Marker(pt);
                 marker.Color = colormap.GetColor(fraction);
             }
@@ -73,14 +73,15 @@ public class Polar : ICategory
                 new(30, Angle.FromDegrees(240)),
             ];
 
-            var polar = myPlot.Add.PolarAxis(30);
-            polar.LinePattern = LinePattern.Dotted;
+            var polarAxis = myPlot.Add.PolarAxis(30);
+            polarAxis.Circles.ForEach(x => x.LinePattern = LinePattern.Dotted);
+            polarAxis.Spokes.ForEach(x => x.LinePattern = LinePattern.Dotted);
 
             IPalette palette = new ScottPlot.Palettes.Category10();
-            Coordinates center = polar.GetCoordinates(0, 0);
+            Coordinates center = polarAxis.GetCoordinates(0, 0);
             for (int i = 0; i < points.Length; i++)
             {
-                Coordinates tip = polar.GetCoordinates(points[i]);
+                Coordinates tip = polarAxis.GetCoordinates(points[i]);
                 var arrow = myPlot.Add.Arrow(center, tip);
                 arrow.ArrowLineWidth = 0;
                 arrow.ArrowFillColor = palette.GetColor(i).WithAlpha(.7);
@@ -98,27 +99,27 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis();
+            var polarAxis = myPlot.Add.PolarAxis();
 
             // style the spokes (straight lines extending from the center to mark rotations)
             var radialPalette = new ScottPlot.Palettes.Category10();
-            for (int i = 0; i < polar.Spokes.Count; i++)
+            for (int i = 0; i < polarAxis.Spokes.Count; i++)
             {
-                polar.Spokes[i].LineColor = radialPalette.GetColor(i).WithAlpha(.5);
-                polar.Spokes[i].LineWidth = 4;
-                polar.Spokes[i].LabelStyle.ForeColor = radialPalette.GetColor(i);
-                polar.Spokes[i].LabelStyle.FontSize = 16;
-                polar.Spokes[i].LabelStyle.Bold = true;
+                polarAxis.Spokes[i].LineColor = radialPalette.GetColor(i).WithAlpha(.5);
+                polarAxis.Spokes[i].LineWidth = 4;
+                polarAxis.Spokes[i].LabelStyle.ForeColor = radialPalette.GetColor(i);
+                polarAxis.Spokes[i].LabelStyle.FontSize = 16;
+                polarAxis.Spokes[i].LabelStyle.Bold = true;
             }
 
             // style the circles (concentric circles marking radius positions)
             var circularColormap = new ScottPlot.Colormaps.Rain();
-            for (int i = 0; i < polar.Circles.Count; i++)
+            for (int i = 0; i < polarAxis.Circles.Count; i++)
             {
-                double fraction = (double)i / (polar.Circles.Count - 1);
-                polar.Circles[i].LineColor = circularColormap.GetColor(fraction).WithAlpha(.5);
-                polar.Circles[i].LineWidth = 2;
-                polar.Circles[i].LinePattern = LinePattern.Dashed;
+                double fraction = (double)i / (polarAxis.Circles.Count - 1);
+                polarAxis.Circles[i].LineColor = circularColormap.GetColor(fraction).WithAlpha(.5);
+                polarAxis.Circles[i].LineWidth = 2;
+                polarAxis.Circles[i].LinePattern = LinePattern.Dashed;
             }
         }
     }
@@ -131,10 +132,10 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis();
+            var polarAxis = myPlot.Add.PolarAxis();
 
             string[] labels = { "alpha", "beta", "gamma", "delta", "epsilon" };
-            polar.SetSpokes(labels, 1.1);
+            polarAxis.SetSpokes(labels, 1.1);
         }
     }
 
@@ -146,14 +147,14 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis();
-            polar.RotationDegrees = -90;
+            var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.RotationDegrees = -90;
 
             double[] ticksPositions = { 5, 10, 15, 20 };
             string[] tickLabels = { "A", "B", "C", "D" };
-            polar.SetTicks(ticksPositions, tickLabels);
+            polarAxis.SetCircles(ticksPositions, tickLabels);
 
-            polar.SetSpokes(count: 5, length: 22, degreeLabels: false);
+            polarAxis.SetSpokes(count: 5, length: 22, degreeLabels: false);
         }
     }
 
@@ -167,29 +168,29 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis();
+            var polarAxis = myPlot.Add.PolarAxis();
 
             // define spoke angle and length
-            polar.Spokes.Clear();
-            polar.Spokes.Add(new(Angle.FromDegrees(0), 0.5));
-            polar.Spokes.Add(new(Angle.FromDegrees(45), 0.75));
-            polar.Spokes.Add(new(Angle.FromDegrees(90), 1.0));
+            polarAxis.Spokes.Clear();
+            polarAxis.Spokes.Add(new(Angle.FromDegrees(0), 0.5));
+            polarAxis.Spokes.Add(new(Angle.FromDegrees(45), 0.75));
+            polarAxis.Spokes.Add(new(Angle.FromDegrees(90), 1.0));
 
             // define circle radius
-            polar.Circles.Clear();
-            polar.Circles.Add(new(0.5));
-            polar.Circles.Add(new(0.75));
-            polar.Circles.Add(new(1.0));
+            polarAxis.Circles.Clear();
+            polarAxis.Circles.Add(new(0.5));
+            polarAxis.Circles.Add(new(0.75));
+            polarAxis.Circles.Add(new(1.0));
 
             // style individual spokes and circles
             ScottPlot.Palettes.Category10 pal = new();
             for (int i = 0; i < 3; i++)
             {
-                polar.Circles[i].LineColor = pal.GetColor(i).WithAlpha(.5);
-                polar.Spokes[i].LineColor = pal.GetColor(i).WithAlpha(.5);
+                polarAxis.Circles[i].LineColor = pal.GetColor(i).WithAlpha(.5);
+                polarAxis.Spokes[i].LineColor = pal.GetColor(i).WithAlpha(.5);
 
-                polar.Circles[i].LineWidth = 2 + i * 2;
-                polar.Spokes[i].LineWidth = 2 + i * 2;
+                polarAxis.Circles[i].LineWidth = 2 + i * 2;
+                polarAxis.Spokes[i].LineWidth = 2 + i * 2;
             }
         }
     }
@@ -203,22 +204,22 @@ public class Polar : ICategory
         [Test]
         public override void Execute()
         {
-            var polar = myPlot.Add.PolarAxis();
-            polar.RotationDegrees = -90;
+            var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.RotationDegrees = -90;
 
             // add labeled spokes
             string[] labels = { "Alpha", "Beta", "Gamma", "Delta", "Epsilon" };
-            polar.SetSpokes(labels, length: 5.5);
+            polarAxis.SetSpokes(labels, length: 5.5);
 
             // add defined ticks
             double[] ticks = { 1, 2, 3, 4, 5 };
-            polar.SetTicks(ticks);
+            polarAxis.SetCircles(ticks);
 
             // convert radar values to coordinates
             double[] values1 = { 5, 4, 5, 2, 3 };
             double[] values2 = { 2, 3, 2, 4, 2 };
-            Coordinates[] cs1 = polar.GetCoordinates(values1);
-            Coordinates[] cs2 = polar.GetCoordinates(values2);
+            Coordinates[] cs1 = polarAxis.GetCoordinates(values1);
+            Coordinates[] cs2 = polarAxis.GetCoordinates(values2);
 
             // add polygons for each dataset
             var poly1 = myPlot.Add.Polygon(cs1);

@@ -1,7 +1,8 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// A circle centered at the origin
+/// A polar axis tick describes the radius of a circle centered at the origin 
+/// and includes the styling information required to render it
 /// </summary>
 public class PolarAxisCircle(double radius) : IHasLine
 {
