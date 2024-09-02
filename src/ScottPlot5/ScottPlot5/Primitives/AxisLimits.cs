@@ -191,6 +191,16 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         return new(xMin, xMax, yMin, yMax);
     }
 
+    public bool Contains(double x, double y)
+    {
+        return Rect.Contains(x, y);
+    }
+
+    public bool Contains(Coordinates pt)
+    {
+        return Rect.Contains(pt);
+    }
+
     public bool Equals(AxisLimits other)
     {
         return

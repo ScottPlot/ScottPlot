@@ -651,24 +651,15 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public PolarAxis PolarAxis(double maximumRadius = 1, bool hideCartesianAxesAndGrids = true)
+    public PolarAxis PolarAxis(double radius = 1.0)
     {
-        PolarAxis pol = new()
-        {
-            MaximumRadius = maximumRadius,
-        };
+        PolarAxis polarAxis = new() { };
+        polarAxis.SetCircles(radius, 5);
+        polarAxis.SetSpokes(12, radius * 1.1);
 
-        pol.RegenerateCircles();
-        pol.RegenerateSpokes();
-
-        Plot.PlottableList.Add(pol);
-
-        if (hideCartesianAxesAndGrids)
-        {
-            Plot.HideAxesAndGrid();
-        }
-
-        return pol;
+        Plot.PlottableList.Add(polarAxis);
+        Plot.HideAxesAndGrid();
+        return polarAxis;
     }
 
     public Polygon Polygon(Coordinates[] coordinates)
@@ -703,24 +694,71 @@ public class PlottableAdder(Plot plot)
         return sym;
     }
 
-    public Radar Radar(IReadOnlyList<RadarSeries> series)
+    public Radar Radar()
     {
-        Radar radar = new(series);
+        Radar radar = new();
+
         Plot.PlottableList.Add(radar);
+
+        Plot.HideAxesAndGrid();
         return radar;
+    }
+
+    public Radar Radar(double[] values)
+    {
+        List<double[]> values2 = [values];
+
+        return Radar(values2);
+    }
+
+    public Radar Radar(double[,] values)
+    {
+        List<double[]> valuesList = [];
+
+        for (int i = 0; i < values.GetLength(0); i++)
+        {
+            double[] row = new double[values.GetLength(1)];
+            for (int j = 0; j < row.Length; j++)
+            {
+                row[j] = values[i, j];
+            }
+            valuesList.Add(row);
+        }
+
+        return Radar(valuesList);
     }
 
     public Radar Radar(IEnumerable<IEnumerable<double>> series)
     {
-        List<RadarSeries> radarSeries = new();
+        double spokeCount = series.First().Count();
+        Radar radar = new();
+
+        int seriesIndex = 0;
         foreach (var values in series)
         {
-            var radarSerie = new RadarSeries(values.ToList(), Palette.GetColor(radarSeries.Count).WithOpacity(0.5));
-            radarSeries.Add(radarSerie);
+            Color color = Palette.GetColor(seriesIndex++);
+
+            double[] valuesArray = values.ToArray();
+            if (valuesArray.Length != spokeCount)
+                throw new InvalidOperationException("Every collection in the series must have the same number of items");
+
+            RadarSeries rs = new()
+            {
+                Values = valuesArray,
+                FillColor = color.WithOpacity(0.5),
+                LineColor = color.WithOpacity(1),
+            };
+            radar.Series.Add(rs);
         }
 
-        Radar radar = new(radarSeries);
+        double maxValue = series.Select(x => x.Max()).Max();
+        radar.PolarAxis.SetCircles(maxValue, 4);
+
+        radar.PolarAxis.SetSpokes(series.First().Count(), maxValue * 1.1, degreeLabels: false);
+
         Plot.PlottableList.Add(radar);
+
+        Plot.HideAxesAndGrid();
         return radar;
     }
 

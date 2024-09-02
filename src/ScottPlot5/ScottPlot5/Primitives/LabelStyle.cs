@@ -217,7 +217,13 @@ public class LabelStyle
         return new Pixel(x, y);
     }
 
-    // TODO: deprecate this and require a string to be passed in. Maybe put it in ScottPlot.Drawing?
+    public void Render(SKCanvas canvas, Pixel px, SKPaint paint, string text, bool bottom = true)
+    {
+        Text = text;
+        Render(canvas, px, paint, bottom);
+    }
+
+    // TODO: deprecate this and require a string to be passed in
     public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
     {
         if (!IsVisible)
@@ -253,6 +259,9 @@ public class LabelStyle
 
     private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaint paint, PixelRect textRect, bool bottom)
     {
+        if (Text is null)
+            return;
+
         ApplyTextPaint(paint);
 
         float dY = bottom ? -measured.Bottom : measured.VerticalOffset;
