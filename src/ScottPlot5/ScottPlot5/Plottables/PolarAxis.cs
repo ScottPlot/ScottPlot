@@ -258,4 +258,13 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             Drawing.DrawPath(rp.Canvas, paint, px, Circles[i].LineStyle, true);
         }
     }
+
+    [Obsolete("use SetCircles()", true)]
+    public void RegenerateCircles(int count = 3) { }
+
+    [Obsolete("use SetSpokes()", true)]
+    public void RegenerateSpokes(int count = 5) { }
+
+    [Obsolete("use SetSpokes()", true)]
+    public void RegenerateSpokes(string[] labels) { }
 }
