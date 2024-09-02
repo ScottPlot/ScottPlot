@@ -18,10 +18,12 @@ _Not yet on NuGet..._
 * Lollipop: New plot type that displays values with a stem and a marker similar to a bar graph but with less visual clutter (#4193, #4183) @CoderPM2011
 * Polar Axis: Added `Rotation` property to rotate the axis and coordinates it returns
 * Polar Axis: Added the ability to customize spoke label text (#4188)
-* Polar Axis: Added a `RegenerateSpokes()` overload that accepts `string[]` to create new spokes and set their label text automatically
+* Polar Axis: Added a `SetSpokes()` overload that accepts `string[]` to create new spokes and set their label text automatically
+* Polar Axis: Replaced `RegenerateSpokes()` and `RegenerateCircles()` with `SetSpokes()` and `SetCircles()` (#4207)
 * Grid: Added support for fill colors to highlight spans between pairs of major grid lines (#4201, #4022) @CoderPM2011 @seeingistrue
 * AxisSpan: Added `IsUnderMouse()` to improve API naming consistency with AxisLine (#4150)
 * AxisLimits: Added `Contains()` to allow quick checking whether a point is contained by the boundaries of the axis limits (#4161)
+* Radar: Refactored to use a `PolarAxis` to handle spoke and tick management and translation between polar and Cartesian space (#4207, #4187, #4186, #4055)
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_
