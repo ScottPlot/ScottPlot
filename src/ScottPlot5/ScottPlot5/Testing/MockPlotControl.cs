@@ -20,7 +20,7 @@ public class MockPlotControl : IPlotControl
     public IPlotInteraction Interaction { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
-    public IPlotMenu Menu // TODO: mock menu
+    public IPlotMenu? Menu // TODO: mock menu
     {
         get => throw new NotImplementedException();
         set => throw new NotImplementedException();

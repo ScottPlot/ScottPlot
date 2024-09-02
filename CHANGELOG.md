@@ -24,6 +24,7 @@ _Not yet on NuGet..._
 * AxisSpan: Added `IsUnderMouse()` to improve API naming consistency with AxisLine (#4150)
 * AxisLimits: Added `Contains()` to allow quick checking whether a point is contained by the boundaries of the axis limits (#4161)
 * Radar: Refactored to use a `PolarAxis` to handle spoke and tick management and translation between polar and Cartesian space (#4207, #4187, #4186, #4055)
+* Controls: Made `IPlotControl.Menu` nullable so users creating their own controls are not required to create a menu system (#4203) @kebox7
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_

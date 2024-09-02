@@ -17,7 +17,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     public Plot Plot { get; internal set; }
 
     public IPlotInteraction Interaction { get; set; }
-    public IPlotMenu Menu { get; set; }
+    public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public GRContext? GRContext => null;
@@ -93,7 +93,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        Menu.ShowContextMenu(position);
+        Menu?.ShowContextMenu(position);
     }
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)

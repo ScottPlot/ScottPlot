@@ -16,7 +16,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public IPlotInteraction Interaction { get; set; }
 
-    public IPlotMenu Menu { get; set; }
+    public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public BlazorPlotBase()
@@ -52,7 +52,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public virtual void Refresh() { }
 
-    public void ShowContextMenu(Pixel position) => Menu.ShowContextMenu(position);
+    public void ShowContextMenu(Pixel position) => Menu?.ShowContextMenu(position);
 
     public void OnPointerMoved(PointerEventArgs e) => UserInputProcessor.ProcessMouseMove(e);
     public void OnPointerPressed(PointerEventArgs e) => UserInputProcessor.ProcessMouseDown(e);
