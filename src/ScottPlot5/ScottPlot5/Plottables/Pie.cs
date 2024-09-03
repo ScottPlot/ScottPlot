@@ -21,10 +21,8 @@ public class Pie : PieBase
 
     public override void Render(RenderPack rp)
     {
-        double total = Slices.Sum(s => s.Value);
-        Angle[] sliceSizeDegrees = Slices
-            .Select(x => Angle.FromDegrees(x.Value / total * 360))
-            .ToArray();
+        using SKPath path = new();
+        using SKPaint paint = new() { IsAntialias = true };
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
@@ -39,75 +37,63 @@ public class Pie : PieBase
         float innerRadius = outerRadius * (float)DonutFraction;
         SKRect innerRect = new(-innerRadius, -innerRadius, innerRadius, innerRadius);
 
-        // radius of the outer edge after explosion
-        float explosionOuterRadius = (float)ExplodeFraction * outerRadius;
-
-        using SKPath path = new();
-        using SKPaint paint = new() { IsAntialias = true };
-
         // TODO: first slice should be North, not East.
-        var sliceOffsetDegrees = new Angle[Slices.Count];
-        for (int i = 1; i < Slices.Count; i++)
-        {
-            sliceOffsetDegrees[i] = sliceOffsetDegrees[i - 1] + sliceSizeDegrees[i - 1];
-        }
-
-        var sliceCenterDegrees = new Angle[Slices.Count];
-        for (int i = 0; i < Slices.Count; i++)
-        {
-            sliceCenterDegrees[i] = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
-        }
-
-        for (int i = 0; i < Slices.Count; i++)
+        double totalValue = Slices.Sum(s => s.Value);
+        var totalAngle = Angle.FromDegrees(0);
+        foreach (PieSlice slice in Slices)
         {
             using SKAutoCanvasRestore _ = new(rp.Canvas);
 
-            Angle rotation = sliceOffsetDegrees[i] + sliceSizeDegrees[i] / 2;
-            rp.Canvas.Translate(origin.X, origin.Y);
-            rp.Canvas.RotateDegrees((float)rotation.Degrees);
-            rp.Canvas.Translate(explosionOuterRadius, 0);
+            var sliceAngle = Angle.FromDegrees(slice.Value / totalValue * 360);
+            Angle centerDegrees = totalAngle + sliceAngle / 2;
 
-            double degrees1 = -sliceSizeDegrees[i].Degrees / 2;
-            double degrees2 = sliceSizeDegrees[i].Degrees / 2;
+            var explosionOffset = Coordinates
+                .FromPolar((float)ExplodeFraction * outerRadius, centerDegrees);
+            rp.Canvas.Translate(
+                (float)(origin.X + explosionOffset.X),
+                (float)(origin.Y + explosionOffset.Y));
 
-            SKPoint ptInnerHome = GetRotatedPoint(innerRadius, degrees1);
-            SKPoint ptOuterHome = GetRotatedPoint(outerRadius, degrees1);
-            SKPoint ptOuterRotated = GetRotatedPoint(outerRadius, degrees2);
-            SKPoint ptInnerRotated = GetRotatedPoint(innerRadius, degrees2);
-
-            if (sliceSizeDegrees[i].Degrees != 360)
-            {
-                path.MoveTo(ptInnerHome);
-                path.LineTo(ptOuterHome);
-                path.ArcTo(outerRect, (float)-sliceSizeDegrees[i].Degrees / 2, (float)sliceSizeDegrees[i].Degrees, false);
-                path.LineTo(ptInnerRotated);
-                path.ArcTo(innerRect, (float)sliceSizeDegrees[i].Degrees / 2, (float)-sliceSizeDegrees[i].Degrees, false);
-                path.Close();
-            }
-            else
+            if (sliceAngle.Degrees == 360)
             {
                 path.AddOval(outerRect);
             }
+            else
+            {
+                var ptInnerHome = Coordinates.FromPolar(innerRadius, totalAngle);
+                var ptOuterHome = Coordinates.FromPolar(outerRadius, totalAngle);
+                var ptInnerRotated = Coordinates.FromPolar(innerRadius, totalAngle + sliceAngle);
 
-            Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, outerRadius));
-            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees((float)-rotation.Degrees));
+                path.MoveTo(new SKPoint((float)ptInnerHome.X, (float)ptInnerHome.Y));
+                path.LineTo(new SKPoint((float)ptOuterHome.X, (float)ptOuterHome.Y));
+                path.ArcTo(outerRect,
+                    (float)totalAngle.Degrees,
+                    (float)sliceAngle.Degrees,
+                    false);
+                path.LineTo(new SKPoint((float)ptInnerRotated.X, (float)ptInnerRotated.Y));
+                path.ArcTo(innerRect,
+                    (float)(totalAngle + sliceAngle).Degrees,
+                    (float)-sliceAngle.Degrees,
+                    false);
+                path.Close();
+            }
+
+            slice.Fill.ApplyToPaint(paint, new PixelRect(origin, outerRadius));
             rp.Canvas.DrawPath(path, paint);
 
             LineStyle.ApplyToPaint(paint);
             rp.Canvas.DrawPath(path, paint);
 
-            path.Reset();
-        }
-
-        if (ShowSliceLabels)
-        {
-            for (int i = 0; i < Slices.Count; i++)
+            if (ShowSliceLabels)
             {
-                double x = Math.Cos(sliceCenterDegrees[i].Radians) * SliceLabelDistance;
-                double y = -Math.Sin(sliceCenterDegrees[i].Radians) * SliceLabelDistance;
-                Pixel px = Axes.GetPixel(new Coordinates(x, y));
-                Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
+                var polar = Coordinates
+                    .FromPolar(1.0 * SliceLabelDistance, centerDegrees);
+                polar.Y = -polar.Y;
+                Pixel px = Axes.GetPixel(polar) - origin;
+                slice.LabelStyle.Render(rp.Canvas, px, paint);
             }
+
+            totalAngle += sliceAngle;
+            path.Reset();
         }
     }
 }
