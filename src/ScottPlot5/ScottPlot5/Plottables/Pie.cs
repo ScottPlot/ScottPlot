@@ -55,6 +55,22 @@ public class Pie : PieBase
 
             if (sliceAngle.Degrees == 360)
             {
+                if (DonutFraction > 0)
+                {
+                    // Clip inner oval
+                    // avoid clipping to inner oval line
+                    float innerRadius2 = innerRadius - 1;
+                    path.AddOval(new SKRect(
+                        -innerRadius2, -innerRadius2, innerRadius2, innerRadius2));
+                    rp.Canvas.ClipPath(path, SKClipOperation.Difference);
+                    path.Reset();
+
+                    // Draw inner oval line
+                    path.AddOval(innerRect);
+                    LineStyle.ApplyToPaint(paint);
+                    rp.Canvas.DrawPath(path, paint);
+                }
+
                 path.AddOval(outerRect);
             }
             else
