@@ -32,10 +32,8 @@ public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
 
     protected static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
     {
-        double angleInRadians = angleInDegrees * (Math.PI / 180);
-        double x = radius * Math.Cos(angleInRadians);
-        double y = radius * Math.Sin(angleInRadians);
-        return new SKPoint((float)x, (float)y);
+        var polar = Coordinates.FromPolar(radius, Angle.FromDegrees(angleInDegrees));
+        return new SKPoint((float)polar.X, (float)polar.Y);
     }
 
     public virtual void UpdateAxisLimits(Plot plot)
