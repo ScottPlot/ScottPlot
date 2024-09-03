@@ -37,9 +37,8 @@ public class Pie : PieBase
         float innerRadius = outerRadius * (float)DonutFraction;
         SKRect innerRect = new(-innerRadius, -innerRadius, innerRadius, innerRadius);
 
-        // TODO: first slice should be North, not East.
         double totalValue = Slices.Sum(s => s.Value);
-        var totalAngle = Angle.FromDegrees(0);
+        Angle totalAngle = Rotation;
         foreach (PieSlice slice in Slices)
         {
             using SKAutoCanvasRestore _ = new(rp.Canvas);

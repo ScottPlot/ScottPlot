@@ -26,7 +26,7 @@ public class Coxcomb : PieBase
 
     public override void Render(RenderPack rp)
     {
-        const float startAngle = -90;
+        float startAngle = (float)Rotation.Degrees;
 
         var sliceSizes = NormalizedSlices;
         double maxRadius = NormalizedSlices.Max();

@@ -5,6 +5,8 @@ public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
     public IAxes Axes { get; set; } = new Axes();
     public bool IsVisible { get; set; } = true;
 
+    public Angle Rotation { get; set; } = Angle.FromDegrees(-90);
+
     public IEnumerable<LegendItem> LegendItems => Slices
         .Select((Func<PieSlice, LegendItem>)(slice => new LegendItem
         {
