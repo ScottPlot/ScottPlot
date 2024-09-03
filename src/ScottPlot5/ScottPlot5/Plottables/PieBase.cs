@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public abstract class PieBase : IPlottable, IHasLine
+public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
 {
     public IAxes Axes { get; set; } = new Axes();
     public bool IsVisible { get; set; } = true;
@@ -21,12 +21,32 @@ public abstract class PieBase : IPlottable, IHasLine
     public double SliceLabelDistance { get; set; } = 1.2;
     public IList<PieSlice> Slices { get; set; } = [];
 
+    /// <summary>
+    /// Enable this to modify the axis limits at render time to achieve "square axes"
+    /// where the units/px values are equal for horizontal and vertical axes, allowing
+    /// circles to always appear as circles instead of ellipses.
+    /// </summary>
+    public bool ManageAxisLimits { get; set; } = true;
+
     protected static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
     {
         double angleInRadians = angleInDegrees * (Math.PI / 180);
         double x = radius * Math.Cos(angleInRadians);
         double y = radius * Math.Sin(angleInRadians);
         return new SKPoint((float)x, (float)y);
+    }
+
+    public virtual void UpdateAxisLimits(Plot plot)
+    {
+        if (plot.Axes.Rules
+                .OfType<AxisRules.SquareZoomOut>()
+                .Any())
+        {
+            return;
+        }
+
+        AxisRules.SquareZoomOut squareRule = new(Axes.XAxis, Axes.YAxis);
+        plot.Axes.Rules.Add(squareRule);
     }
 
     public abstract AxisLimits GetAxisLimits();
