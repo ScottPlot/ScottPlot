@@ -17,24 +17,19 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     public List<PolarAxisSpoke> Spokes { get; } = [];
 
     /// <summary>
-    /// Concentric circles centered on the origin
+    /// Radial positions describing concentric circles centered on the origin
     /// </summary>
     public List<PolarAxisCircle> Circles { get; } = [];
 
     /// <summary>
-    /// Size of the largest circle or longest spoke
-    /// </summary>
-    public double MaximumRadius { get; set; } = 1;
-
-    /// <summary>
-    /// Additional padding given to accommodate labels
-    /// </summary>
-    public double PaddingFraction { get; set; } = 1.1;
-
-    /// <summary>
-    /// Rotates the axis from its default position (where 0 points right)
+    /// Rotates the axis clockwise from its default position (where 0 points right)
     /// </summary>
     public double RotationDegrees { get; set; } = 0;
+
+    /// <summary>
+    /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
+    /// </summary>
+    public bool StraightLines { get; set; } = false;
 
     /// <summary>
     /// Enable this to modify the axis limits at render time to achieve "square axes"
@@ -44,109 +39,94 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     public bool ManageAxisLimits { get; set; } = true;
 
     /// <summary>
-    /// Sets line width for all <see cref="Circles"/> and <see cref="Spokes"/>
+    /// Create <paramref name="count"/> ticks (circles) evenly spaced between 0 and <paramref name="maximumRadius"/>
     /// </summary>
-    public float LineWidth
+    public void SetCircles(double maximumRadius, int count)
     {
-        set
+        double[] positions = Enumerable.Range(1, count).Select(x => maximumRadius * x / count).ToArray();
+        SetCircles(positions);
+    }
+
+    /// <summary>
+    /// Clear existing circles and add new ones at the defined positions.
+    /// </summary>
+    public void SetCircles(double[] positions)
+    {
+        string[] labels = new string[positions.Length];
+        SetCircles(positions, labels);
+    }
+
+    /// <summary>
+    /// Clear existing circles and add new ones at the defined positions with the given labels.
+    /// </summary>
+    public void SetCircles(double[] positions, string[] labels)
+    {
+        if (positions.Length != labels.Length)
+            throw new ArgumentException($"{nameof(positions)} and {nameof(labels)} must have equal length");
+
+        Circles.Clear();
+        for (int i = 0; i < positions.Length; i++)
         {
-            Circles.ForEach(x => x.LineWidth = value);
-            Spokes.ForEach(x => x.LineWidth = value);
+            PolarAxisCircle circle = new(positions[i]) { LabelText = labels[i] };
+            Circles.Add(circle);
         }
     }
 
     /// <summary>
-    /// Sets line pattern for all <see cref="Circles"/> and <see cref="Spokes"/>
+    /// Replace existing spokes with a new set evenly spaced around the circle.
     /// </summary>
-    public LinePattern LinePattern
+    public void SetSpokes(int count, double length, bool degreeLabels = true)
     {
-        set
-        {
-            Circles.ForEach(x => x.LinePattern = value);
-            Spokes.ForEach(x => x.LinePattern = value);
-        }
-    }
-
-    /// <summary>
-    /// Sets line color for all <see cref="Circles"/> and <see cref="Spokes"/>
-    /// </summary>
-    public Color LineColor
-    {
-        set
-        {
-            Circles.ForEach(x => x.LineColor = value);
-            Spokes.ForEach(x => x.LineColor = value);
-        }
-    }
-
-    /// <summary>
-    /// Replace spokes with a new collection evenly-spaced around the circle
-    /// </summary>
-    public void RegenerateSpokes(int count = 5)
-    {
-        Spokes.Clear();
-        if (count < 1)
-        {
-            return;
-        }
-
+        Angle[] angles = new Angle[count];
         double delta = 360.0 / count;
         for (int i = 0; i < count; i++)
         {
-            Angle angle = Angle.FromDegrees(delta * i);
-            PolarAxisSpoke spoke = new(angle, MaximumRadius);
+            angles[i] = Angle.FromDegrees(delta * i);
+        }
+
+        string[] labels = degreeLabels
+            ? angles.Select(x => x.Degrees.ToString()).ToArray()
+            : new string[count];
+
+        SetSpokes(angles, length, labels);
+    }
+
+    /// <summary>
+    /// Replace existing spokes with new ones placed at the specified angles
+    /// </summary>
+    public void SetSpokes(Angle[] angles, double length, string[] labels)
+    {
+        if (angles.Length != labels.Length)
+            throw new ArgumentException($"{nameof(angles)} and {nameof(labels)} must have equal length");
+
+        Spokes.Clear();
+        for (int i = 0; i < angles.Length; i++)
+        {
+            PolarAxisSpoke spoke = new(angles[i], length) { LabelText = labels[i] };
             Spokes.Add(spoke);
         }
     }
 
     /// <summary>
-    /// Replace spokes with a new collection evenly-spaced around the circle labeled with the given strings
+    /// Replace existing spokes with new ones that have the given labels evenly spaced around the circle
     /// </summary>
-    public void RegenerateSpokes(string[] labels)
+    public void SetSpokes(string[] labels, double length, bool clockwise = true)
     {
         Spokes.Clear();
-        if (labels.Length < 1)
-        {
-            return;
-        }
 
+        Angle[] angles = new Angle[labels.Length];
         double delta = 360.0 / labels.Length;
         for (int i = 0; i < labels.Length; i++)
         {
-            Angle angle = Angle.FromDegrees(delta * i);
-            PolarAxisSpoke spoke = new(angle, MaximumRadius) { LabelText = labels[i] };
-            Spokes.Add(spoke);
+            double degrees = clockwise ? -delta * i : delta * i;
+            angles[i] = Angle.FromDegrees(degrees);
         }
+
+        SetSpokes(angles, length, labels);
     }
 
     /// <summary>
-    /// Replace circles with a new collection evenly-spaced along the maximum radius
-    /// </summary>
-    public void RegenerateCircles(int count = 3)
-    {
-        Circles.Clear();
-        if (count < 1)
-        {
-            return;
-        }
-
-        if (count == 1)
-        {
-            PolarAxisCircle circle = new(MaximumRadius);
-            Circles.Add(circle);
-            return;
-        }
-
-        double delta = MaximumRadius / count;
-        for (int i = 0; i < count; i++)
-        {
-            PolarAxisCircle circle = new(delta * (i + 1));
-            Circles.Add(circle);
-        }
-    }
-
-    /// <summary>
-    /// Return the X/Y position of a polar point
+    /// Return the X/Y position of a point defined in polar space
     /// </summary>
     public Coordinates GetCoordinates(double radius, double degrees)
     {
@@ -157,7 +137,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     }
 
     /// <summary>
-    /// Return the X/Y position of a polar point
+    /// Return the X/Y position of a point defined in polar space
     /// </summary>
     public Coordinates GetCoordinates(double radius, Angle angle)
     {
@@ -165,7 +145,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     }
 
     /// <summary>
-    /// Return the X/Y position of a polar point
+    /// Return the X/Y position of a point defined in polar space
     /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
@@ -175,41 +155,24 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Return coordinates for the given radius values assuming one value per spoke.
     /// </summary>
-    public Coordinates[] GetCoordinates(double[] values)
+    public Coordinates[] GetCoordinates(IReadOnlyList<double> values, bool clockwise = false)
     {
-        if (values.Length != Spokes.Count)
+        if (values.Count != Spokes.Count)
             throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
 
-        return Enumerable.Range(0, Spokes.Count)
-            .Select(x => GetCoordinates(values[x], Spokes[x].Angle))
-            .ToArray();
+        return clockwise
+            ? Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], -Spokes[x].Angle)).ToArray()
+            : Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], Spokes[x].Angle)).ToArray();
     }
 
     public AxisLimits GetAxisLimits()
     {
-        double spokeAbs = 0;
-        if (Spokes.Count > 0)
-        {
-            double minSpokeLength = Spokes.Select(x => x.Length).Min();
-            double maxSpokeLength = Spokes.Select(x => x.Length).Max();
-            spokeAbs = Math.Max(Math.Abs(minSpokeLength), Math.Abs(maxSpokeLength));
-        }
-
-        double circleAbs = 0;
-        if (Circles.Count > 0)
-        {
-            double minCircleRadius = Circles.Select(x => x.Radius).Min();
-            double maxCircleRadius = Circles.Select(x => x.Radius).Max();
-            circleAbs = Math.Max(Math.Abs(minCircleRadius), Math.Abs(maxCircleRadius));
-        }
-
-        double maxAbs = Math.Max(spokeAbs, circleAbs);
-
-        spokeAbs *= PaddingFraction;
-
-        return maxAbs > 0
-            ? new AxisLimits(-spokeAbs, spokeAbs, -spokeAbs, spokeAbs)
-            : AxisLimits.NoLimits;
+        double maxCircleRadius = Circles.Count > 0 ? Circles.Select(x => x.Radius).Max() : 0;
+        double maxSpokeLabelRadius = Spokes.Count > 0 ? Spokes.Select(x => x.LabelLength).Max() : 0;
+        double radius = Math.Max(maxCircleRadius, maxSpokeLabelRadius);
+        return radius == 0
+            ? AxisLimits.NoLimits
+            : new AxisLimits(-radius, radius, -radius, radius);
     }
 
     public virtual void UpdateAxisLimits(Plot plot)
@@ -226,13 +189,82 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
 
     public virtual void Render(RenderPack rp)
     {
+        using SKPaint paint = new();
+        RenderSpokes(rp, paint);
+
+        if (StraightLines)
+        {
+            RenderStraightLines(rp, paint);
+        }
+        else
+        {
+            RenderCircles(rp, paint);
+        }
+
+        RenderCircleLabels(rp, paint);
+    }
+
+    private void RenderSpokes(RenderPack rp, SKPaint paint)
+    {
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
         rp.Canvas.RotateDegrees((float)RotationDegrees);
 
-        using SKPaint paint = new();
-        Spokes.ForEach(x => x.Render(rp, Axes, paint, PaddingFraction, RotationDegrees));
-        Circles.ForEach(x => x.Render(rp, Axes, paint));
+        foreach (var spoke in Spokes)
+        {
+            PolarCoordinates tipPoint = new(spoke.Length, spoke.Angle);
+            Pixel tipPixel = Axes.GetPixel(tipPoint.CartesianCoordinates) - Axes.GetPixel(Coordinates.Origin);
+            Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
+
+            spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
+            spoke.LabelStyle.Rotation = -(float)RotationDegrees;
+            spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
+
+            PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
+            Pixel labelPixel = Axes.GetPixel(labelPoint.CartesianCoordinates) - Axes.GetPixel(Coordinates.Origin);
+            spoke.LabelStyle.Render(rp.Canvas, labelPixel.WithOffset(0, 0), paint);
+        }
     }
+
+    private void RenderCircleLabels(RenderPack rp, SKPaint paint)
+    {
+        foreach (var circle in Circles)
+        {
+            Coordinates c = GetCoordinates(radius: circle.Radius, angle: circle.LabelAngle);
+            Pixel px = Axes.GetPixel(c);
+            circle.LabelStyle.Render(rp.Canvas, px, paint, circle.LabelText);
+        }
+    }
+
+    private void RenderCircles(RenderPack rp, SKPaint paint)
+    {
+        Pixel originPx = Axes.GetPixel(Coordinates.Origin);
+        double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
+
+        for (int i = 0; i < Circles.Count; i++)
+        {
+            float radiusPx = (float)(pxPerUnit * Circles[i].Radius);
+            Drawing.DrawCircle(rp.Canvas, originPx, radiusPx, Circles[i].LineStyle, paint);
+        }
+    }
+
+    private void RenderStraightLines(RenderPack rp, SKPaint paint)
+    {
+        for (int i = 0; i < Circles.Count; i++)
+        {
+            Coordinates[] cs = Spokes.Select(x => GetCoordinates(Circles[i].Radius, x.Angle)).ToArray();
+            Pixel[] px = cs.Select(Axes.GetPixel).ToArray();
+            Drawing.DrawPath(rp.Canvas, paint, px, Circles[i].LineStyle, true);
+        }
+    }
+
+    [Obsolete("use SetCircles()", true)]
+    public void RegenerateCircles(int count = 3) { }
+
+    [Obsolete("use SetSpokes()", true)]
+    public void RegenerateSpokes(int count = 5) { }
+
+    [Obsolete("use SetSpokes()", true)]
+    public void RegenerateSpokes(string[] labels) { }
 }

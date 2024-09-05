@@ -59,7 +59,7 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -69,6 +69,12 @@ public static class Drawing
         {
             path.LineTo(px.ToSKPoint());
         }
+
+        if (close)
+        {
+            path.LineTo(pixels.First().ToSKPoint());
+        }
+
         DrawPath(canvas, paint, path, lineStyle);
     }
 

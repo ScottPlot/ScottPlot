@@ -1,113 +1,61 @@
-﻿
+﻿namespace ScottPlot.Plottables;
 
-namespace ScottPlot.Plottables;
-
-public class Radar(IReadOnlyList<RadarSeries> series) : IPlottable, IHasLine
+public class Radar() : IPlottable, IManagesAxisLimits
 {
+    /// <summary>
+    /// The polar axis drawn beneath each radar series polygon
+    /// </summary>
+    public PolarAxis PolarAxis { get; set; } = new() { RotationDegrees = -90 };
+
+    /// <summary>
+    /// A collection of RadarSeries, each of which hold a set of values and the styling information that controls how the shape is rendered
+    /// </summary>
+    public List<RadarSeries> Series { get; } = [];
+
+    /// <summary>
+    /// Enable this to modify the axis limits at render time to achieve "square axes"
+    /// where the units/px values are equal for horizontal and vertical axes, allowing
+    /// circles to always appear as circles instead of ellipses.
+    /// </summary>
+    public bool ManageAxisLimits { get => PolarAxis.ManageAxisLimits; set => PolarAxis.ManageAxisLimits = value; }
+
+    public virtual void UpdateAxisLimits(Plot plot) => PolarAxis.UpdateAxisLimits(plot);
+
     public bool IsVisible { get; set; } = true;
-    public IAxes Axes { get; set; } = new Axes();
+
+    public IAxes Axes
+    {
+        get => PolarAxis.Axes;
+        set => PolarAxis.Axes = value;
+    }
 
     public IEnumerable<LegendItem> LegendItems => Series.Select(s => new LegendItem
     {
         LabelText = s.LegendText,
-        FillStyle = s.Fill
+        FillStyle = s.FillStyle,
+        LineStyle = s.LineStyle,
     });
 
-    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
-    public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
-    public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
-    public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
-
-    public IStarAxis StarAxis { get; set; } = new StarAxes.PolygonalStarAxis();
-    public IReadOnlyList<RadarSeries> Series { get; set; } = series;
-    public double Padding { get; set; } = 0.2;
-    public double LabelDistance { get; set; } = 1.2;
-    public IReadOnlyList<LabelStyle>? Labels { get; set; }
-
-    public AxisLimits GetAxisLimits()
-    {
-        double radius = 1 + Padding;
-
-        return new AxisLimits(-radius, radius, -radius, radius);
-    }
+    public AxisLimits GetAxisLimits() => PolarAxis.GetAxisLimits();
 
     public virtual void Render(RenderPack rp)
     {
-        if (!Series.Any())
+        if (!IsVisible)
             return;
 
-        const float startAngle = -90;
-        int seriesArity = Series.Select(s => s.Values.Count()).Min();
-        var rotationPerSlice = Math.PI * 2 / seriesArity;
-
-        StarAxis.Render(rp, Axes, 1, seriesArity, (float)(startAngle - rotationPerSlice * 180 / Math.PI / 2));
-
-        double maxValue = Series.SelectMany(s => s.Values).Max();
-        if (maxValue == 0)
+        if (Series.Count == 0)
             return;
-
-        Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
         using SKPaint paint = new();
-        using SKPath path = new();
-        using SKAutoCanvasRestore _ = new(rp.Canvas);
-        rp.Canvas.Translate(origin.X, origin.Y);
 
+        PolarAxis.Render(rp);
 
-        foreach (var serie in Series)
+        for (int i = 0; i < Series.Count; i++)
         {
-            for (int i = 0; i < seriesArity; i++)
-            {
-                double coordinateRadius = serie.Values[i] / maxValue;
-                var theta = GetAngleRadians(rotationPerSlice, i, startAngle);
-                var px = PixelFromPolar(coordinateRadius, theta, origin);
-
-                if (i == 0)
-                    path.MoveTo(px.ToSKPoint());
-                else
-                    path.LineTo(px.ToSKPoint());
-            }
-
-            path.Close();
-
-            serie.Fill.ApplyToPaint(paint, rp.FigureRect);
-            rp.Canvas.DrawPath(path, paint);
-
-            LineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
-
-            path.Reset();
+            Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values, clockwise: true);
+            Pixel[] pixels = cs1.Select(Axes.GetPixel).ToArray();
+            Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
+            Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);
         }
-
-        if (Labels is not null)
-        {
-            for (int i = 0; i < seriesArity; i++)
-            {
-                if (i >= Labels.Count)
-                    break;
-
-                var theta = GetAngleRadians(rotationPerSlice, i, startAngle);
-                var px = PixelFromPolar(LabelDistance, theta, origin);
-
-                Labels[i].Render(rp.Canvas, px, paint);
-            }
-        }
-    }
-
-    private static double GetAngleRadians(double rotationPerSliceDegrees, int i, double startAngleDegrees)
-    {
-        return rotationPerSliceDegrees * i + startAngleDegrees * Math.PI / 180;
-    }
-
-    private Pixel PixelFromPolar(double coordinateRadius, double theta, Pixel origin)
-    {
-        float minX = Math.Abs(Axes.GetPixelX(coordinateRadius) - origin.X);
-        float minY = Math.Abs(Axes.GetPixelY(coordinateRadius) - origin.Y);
-        var radius = Math.Min(minX, minY);
-
-        float x = (float)(radius * Math.Cos(theta));
-        float y = (float)(radius * Math.Sin(theta));
-
-        return new(x, y);
     }
 }

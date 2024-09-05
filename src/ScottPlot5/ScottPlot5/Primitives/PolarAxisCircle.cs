@@ -1,11 +1,22 @@
 ﻿namespace ScottPlot;
 
 /// <summary>
-/// A circle centered at the origin
+/// A polar axis tick describes the radius of a circle centered at the origin 
+/// and includes the styling information required to render it
 /// </summary>
 public class PolarAxisCircle(double radius) : IHasLine
 {
     public double Radius { get; set; } = radius;
+
+    public LabelStyle LabelStyle { get; set; } = new()
+    {
+        Alignment = Alignment.LowerLeft,
+        OffsetX = 3,
+    };
+
+    public string LabelText { get; set; } = string.Empty;
+
+    public Angle LabelAngle { get; set; } = Angle.FromDegrees(0);
 
     public LineStyle LineStyle { get; set; } = new()
     {
@@ -29,13 +40,5 @@ public class PolarAxisCircle(double radius) : IHasLine
     {
         get => LineStyle.Color;
         set => LineStyle.Color = value;
-    }
-
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint)
-    {
-        float pixelX = axes.GetPixelX(Radius) - axes.XAxis.GetPixel(0, rp.DataRect);
-        float pixelY = axes.GetPixelY(Radius) - axes.YAxis.GetPixel(0, rp.DataRect);
-        PixelRect circleRect = new(-pixelX, pixelX, pixelY, -pixelY);
-        Drawing.DrawOval(rp.Canvas, paint, LineStyle, circleRect);
     }
 }
