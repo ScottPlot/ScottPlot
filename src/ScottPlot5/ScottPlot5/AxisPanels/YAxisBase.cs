@@ -85,7 +85,13 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
         using SKPaint paint = new();
         LabelAlignment = Alignment.UpperCenter;
+
+        rp.CanvasState.Save();
+        rp.CanvasState.Clip(panelRect);
+
         LabelStyle.Render(rp.Canvas, labelPoint, paint);
+
+        rp.CanvasState.Restore();
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
