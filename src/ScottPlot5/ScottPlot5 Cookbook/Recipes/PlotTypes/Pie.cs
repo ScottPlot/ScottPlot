@@ -69,6 +69,21 @@ public class Pie : ICategory
         }
     }
 
+    public class PieRotation : RecipeBase
+    {
+        public override string Name => "Pie Chart Rotation";
+        public override string Description => "Pie charts may be rotated to control where the first slice begins.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] values = { 5, 2, 8, 4, 8 };
+            var pie = myPlot.Add.Pie(values);
+            pie.ExplodeFraction = .1;
+            pie.Rotation = Angle.FromDegrees(90);
+        }
+    }
+
     public class PieSliceLabels : RecipeBase
     {
         public override string Name => "Pie Slice Labels";

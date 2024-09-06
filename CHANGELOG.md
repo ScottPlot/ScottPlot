@@ -2,6 +2,7 @@
 _Not yet on NuGet..._
 * Angle: Added support for common arithmetic operators
 * PolarCoordinates: Added `FromCartesian()` and `FromCartesian()` overloads to facilitate conversion between polar and Cartesian space (#4211) @CoderPM2011
+* Pie: Added `Rotation` property (#4211) @CoderPM2011
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
