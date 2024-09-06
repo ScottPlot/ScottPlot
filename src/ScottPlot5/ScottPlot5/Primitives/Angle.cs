@@ -54,4 +54,24 @@ public struct Angle
     {
         return FromDegrees(a.Degrees - b.Degrees);
     }
+
+    public static Angle operator *(Angle a, double b)
+    {
+        return FromDegrees(a.Degrees * b);
+    }
+
+    public static Angle operator *(double a, Angle b)
+    {
+        return FromDegrees(a * b.Degrees);
+    }
+
+    public static Angle operator /(Angle a, double b)
+    {
+        return FromDegrees(a.Degrees / b);
+    }
+
+    public static Angle operator %(Angle a, double b)
+    {
+        return FromDegrees(a.Degrees % b);
+    }
 }
