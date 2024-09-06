@@ -16,6 +16,11 @@ public abstract class AxisBase : LabelStyleProperties
     public PixelPadding PaddingBetweenTickAndAxisLabels { get; set; } = new(5, 3);
     public PixelPadding PaddingOutsideAxisLabels { get; set; } = new(2, 2);
 
+    /// <summary>
+    /// Controls whether labels should be clipped to the boundaries of the data area
+    /// </summary>
+    public bool ClipLabel { get; set; } = false;
+
     public double Min
     {
         get => Range.Min;

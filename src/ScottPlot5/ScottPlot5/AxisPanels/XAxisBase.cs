@@ -96,7 +96,15 @@ public abstract class XAxisBase : AxisBase, IXAxis
         }
 
         LabelAlignment = Alignment.LowerCenter;
+
+        rp.CanvasState.Save();
+
+        if (ClipLabel)
+            rp.CanvasState.Clip(panelRect);
+
         LabelStyle.Render(rp.Canvas, labelPoint, paint);
+
+        rp.CanvasState.Restore();
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);
