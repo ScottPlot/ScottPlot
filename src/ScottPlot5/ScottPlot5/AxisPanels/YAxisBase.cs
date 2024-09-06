@@ -87,7 +87,9 @@ public abstract class YAxisBase : AxisBase, IYAxis
         LabelAlignment = Alignment.UpperCenter;
 
         rp.CanvasState.Save();
-        rp.CanvasState.Clip(panelRect);
+
+        if (ClipLabel)
+            rp.CanvasState.Clip(panelRect);
 
         LabelStyle.Render(rp.Canvas, labelPoint, paint);
 
