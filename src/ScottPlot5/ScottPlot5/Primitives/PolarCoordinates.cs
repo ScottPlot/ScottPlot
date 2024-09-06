@@ -18,6 +18,9 @@ public struct PolarCoordinates(double radius, Angle angle)
         return $"PolarCoordinates {{ Radius = {Radius}, {Angle} }}";
     }
 
+    [Obsolete("use ToCartesian()", true)]
+    public Coordinates CartesianCoordinates => ToCartesian();
+
     public Coordinates ToCartesian() => ToCartesian(Coordinates.Origin);
     public Coordinates ToCartesian(Coordinates origin)
     {
