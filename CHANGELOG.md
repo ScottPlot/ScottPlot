@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Pie: Added `Rotation` property (#4211) @CoderPM2011
 * Pie: Improved label alignment (#4211) @CoderPM2011
 * Pie: First slice now starts vertically (-90 degrees) instead of to the right (0 degrees) (#4211) @CoderPM2011
+* Generate: Random seed uses `System.Random.Shared` on .NET platforms where it is available (#4217) @LeaFrock
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
