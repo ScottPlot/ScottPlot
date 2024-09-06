@@ -110,42 +110,4 @@ public struct Coordinates : IEquatable<Coordinates>
     {
         return new(X + dX, Y + dY);
     }
-
-    #region Polar coordinate system
-
-    public static Coordinates FromPolar(
-        double distance, Angle angle, double originX = 0, double originY = 0)
-    {
-        return new(
-            distance * Math.Cos(angle.Radians) + originX,
-            distance * Math.Sin(angle.Radians) + originY);
-    }
-
-    public static Coordinates FromPolar(
-        double distance, Angle angle, Coordinates origin)
-    {
-        return FromPolar(distance, angle, origin.X, origin.Y);
-    }
-
-    public (double distance, Angle angle) ToPolar(
-        double originX = 0, double originY = 0)
-    {
-        return ToPolar(new(originX, originY));
-    }
-
-    public (double distance, Angle angle) ToPolar(Coordinates origin)
-    {
-        return new(
-            Distance(origin),
-            Angle.FromDegrees(Math.Atan2(Y - origin.Y, X - origin.X)));
-    }
-
-    public Coordinates WithPolarAngle(
-        Angle deltaAngle, double originX = 0, double originY = 0)
-    {
-        (double distance, Angle angle) = ToPolar(originX, originY);
-        return FromPolar(distance, angle + deltaAngle);
-    }
-
-    #endregion // Polar coordinate system
 }

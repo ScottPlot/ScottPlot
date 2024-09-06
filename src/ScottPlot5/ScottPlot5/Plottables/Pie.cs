@@ -44,10 +44,9 @@ public class Pie : PieBase
             using SKAutoCanvasRestore _ = new(rp.Canvas);
 
             var sliceAngle = Angle.FromDegrees(slice.Value / totalValue * 360);
-            Angle centerDegrees = totalAngle + sliceAngle / 2;
+            Angle centerAngle = totalAngle + sliceAngle / 2;
 
-            var explosionOffset = Coordinates
-                .FromPolar((float)ExplodeFraction * outerRadius, centerDegrees);
+            Coordinates explosionOffset = new PolarCoordinates(ExplodeFraction * outerRadius, centerAngle).ToCartesian();
             rp.Canvas.Translate(
                 (float)(origin.X + explosionOffset.X),
                 (float)(origin.Y + explosionOffset.Y));
@@ -74,9 +73,9 @@ public class Pie : PieBase
             }
             else
             {
-                var ptInnerHome = Coordinates.FromPolar(innerRadius, totalAngle);
-                var ptOuterHome = Coordinates.FromPolar(outerRadius, totalAngle);
-                var ptInnerRotated = Coordinates.FromPolar(innerRadius, totalAngle + sliceAngle);
+                Coordinates ptInnerHome = new PolarCoordinates(innerRadius, totalAngle).ToCartesian();
+                Coordinates ptOuterHome = new PolarCoordinates(outerRadius, totalAngle).ToCartesian();
+                Coordinates ptInnerRotated = new PolarCoordinates(innerRadius, totalAngle + sliceAngle).ToCartesian();
 
                 path.MoveTo(new SKPoint((float)ptInnerHome.X, (float)ptInnerHome.Y));
                 path.LineTo(new SKPoint((float)ptOuterHome.X, (float)ptOuterHome.Y));
@@ -100,8 +99,7 @@ public class Pie : PieBase
 
             if (ShowSliceLabels)
             {
-                var polar = Coordinates
-                    .FromPolar(1.0 * SliceLabelDistance, centerDegrees);
+                Coordinates polar = new PolarCoordinates(1.0 * SliceLabelDistance, centerAngle).ToCartesian();
                 polar.Y = -polar.Y;
                 Pixel px = Axes.GetPixel(polar) - origin;
                 slice.LabelStyle.Render(rp.Canvas, px, paint);

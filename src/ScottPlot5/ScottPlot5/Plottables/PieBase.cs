@@ -30,12 +30,6 @@ public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
 
-    protected static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
-    {
-        var polar = Coordinates.FromPolar(radius, Angle.FromDegrees(angleInDegrees));
-        return new SKPoint((float)polar.X, (float)polar.Y);
-    }
-
     public virtual void UpdateAxisLimits(Plot plot)
     {
         if (plot.Axes.Rules
