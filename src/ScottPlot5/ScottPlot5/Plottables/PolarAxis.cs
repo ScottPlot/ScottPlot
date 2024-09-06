@@ -214,7 +214,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         foreach (var spoke in Spokes)
         {
             PolarCoordinates tipPoint = new(spoke.Length, spoke.Angle);
-            Pixel tipPixel = Axes.GetPixel(tipPoint.CartesianCoordinates) - Axes.GetPixel(Coordinates.Origin);
+            Pixel tipPixel = Axes.GetPixel(tipPoint.ToCartesian()) - Axes.GetPixel(Coordinates.Origin);
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
@@ -222,7 +222,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
-            Pixel labelPixel = Axes.GetPixel(labelPoint.CartesianCoordinates) - Axes.GetPixel(Coordinates.Origin);
+            Pixel labelPixel = Axes.GetPixel(labelPoint.ToCartesian()) - Axes.GetPixel(Coordinates.Origin);
             spoke.LabelStyle.Render(rp.Canvas, labelPixel.WithOffset(0, 0), paint);
         }
     }

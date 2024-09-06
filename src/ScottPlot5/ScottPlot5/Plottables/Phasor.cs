@@ -59,7 +59,7 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
         }
 
         IEnumerable<Coordinates> points = Points
-            .Select(i => i.CartesianCoordinates)
+            .Select(i => i.ToCartesian())
             .Concat([Coordinates.Origin]);
 
         return new AxisLimits(points);
@@ -80,7 +80,7 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
         {
             PolarCoordinates point = Points[i];
 
-            Pixel pxTip = Axes.GetPixel(point.CartesianCoordinates);
+            Pixel pxTip = Axes.GetPixel(point.ToCartesian());
             PixelLine pxLine = new(pxBase, pxTip);
             if (ArrowOffset != 0)
             {
@@ -98,7 +98,7 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
 
                 double padding = Math.Min(Axes.XAxis.Range.Span, Axes.YAxis.Range.Span) * PaddingFraction;
                 PolarCoordinates labelPoint = new(point.Radius + padding, angle);
-                Pixel labelPixel = Axes.GetPixel(labelPoint.CartesianCoordinates);
+                Pixel labelPixel = Axes.GetPixel(labelPoint.ToCartesian());
                 PixelRect labelRect = LabelStyle.Measure().Rect(Alignment.MiddleCenter);
                 Pixel labelOffset = labelRect.Center - labelRect.TopLeft;
                 labelPixel -= labelOffset;
