@@ -24,9 +24,16 @@ public class Coxcomb : PieBase
     private double SliceTotal => Slices.Sum(s => s.Value);
     private float[] NormalizedSlices => Slices.Select(x => (float)(x.Value / SliceTotal)).ToArray();
 
+    private static SKPoint GetRotatedPoint(double radius, double angleInDegrees)
+    {
+        // WARNING: this returns pixel units but primitive types suggest coordinate units
+        Coordinates pt = new PolarCoordinates(radius, Angle.FromDegrees(angleInDegrees)).ToCartesian();
+        return new SKPoint((float)pt.X, (float)pt.Y);
+    }
+
     public override void Render(RenderPack rp)
     {
-        const float startAngle = -90;
+        float startAngle = (float)Rotation.Degrees;
 
         var sliceSizes = NormalizedSlices;
         double maxRadius = NormalizedSlices.Max();
