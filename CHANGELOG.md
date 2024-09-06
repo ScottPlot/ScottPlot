@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.39
 _Not yet on NuGet..._
+* Angle: Added support for common arithmetic operators
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
