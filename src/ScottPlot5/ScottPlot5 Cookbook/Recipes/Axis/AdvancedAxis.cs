@@ -105,4 +105,28 @@ public class AdvancedAxis : ICategory
             myPlot.Axes.AntiAlias(true);
         }
     }
+
+    public class HideAxis : RecipeBase
+    {
+        public override string Name => "Hide Axis and Turn frame lines on/off";
+        public override string Description =>
+            "Demonstrates how to hide axis ticks and turn frame lines on and off.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // Hide axis label and tick
+            myPlot.Axes.Bottom.TickLabelStyle.IsVisible = false;
+            myPlot.Axes.Bottom.MajorTickStyle.Length = 0;
+            myPlot.Axes.Bottom.MinorTickStyle.Length = 0;
+
+            // Hide axis edge line
+            myPlot.Axes.Bottom.FrameLineStyle.Width = 0;
+            myPlot.Axes.Right.FrameLineStyle.Width = 0;
+            myPlot.Axes.Top.FrameLineStyle.Width = 0;
+        }
+    }
 }
