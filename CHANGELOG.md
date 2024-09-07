@@ -7,6 +7,7 @@ _Not yet on NuGet..._
 * Pie: First slice now starts vertically (-90 degrees) instead of to the right (0 degrees) (#4211) @CoderPM2011
 * Generate: Random seed uses `System.Random.Shared` on .NET platforms where it is available (#4217) @LeaFrock
 * Axes: Added `ClipLabel` option to prevent long labels from overlapping on very small plots (#4219) @drolevar
+* Plot: Improved performance when adding new plot objects by reducing complexity of color palette sampling (#4218) @0xfded @StendProg
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
