@@ -1,61 +1,24 @@
 <Project Sdk="Uno.Sdk/5.3.90">
-  <PropertyGroup>
-    <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.22621;net8.0-browserwasm;net8.0-desktop</TargetFrameworks>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.22621;net8.0-browserwasm;net8.0-desktop</TargetFrameworks>
+        <WindowsSdkPackageVersion>10.0.22621.34</WindowsSdkPackageVersion>
+        <WinAppSdkVersion>1.5.240802000</WinAppSdkVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <UnoSingleProject>true</UnoSingleProject>
+        <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257</NoWarn>
 
-    <OutputType>Exe</OutputType>
-    <UnoSingleProject>true</UnoSingleProject>
+        <ApplicationTitle>Sandbox.UnoPlatform</ApplicationTitle>
+        <ApplicationId>com.companyname.Sandbox.UnoPlatform</ApplicationId>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationPublisher>UnoPlatform</ApplicationPublisher>
+        <Description>Sandbox.UnoPlatform powered by Uno Platform.</Description>
+    </PropertyGroup>
 
-    <!-- Display name -->
-    <ApplicationTitle>Sandbox.UnoPlatform</ApplicationTitle>
-    <!-- App Identifier -->
-    <ApplicationId>com.companyname.Sandbox.UnoPlatform</ApplicationId>
-    <!-- Versions -->
-    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-    <ApplicationVersion>1</ApplicationVersion>
-    <!-- Package Publisher -->
-    <ApplicationPublisher>UnoPlatform</ApplicationPublisher>
-    <!-- Package Description -->
-    <Description>Sandbox.UnoPlatform powered by Uno Platform.</Description>
-    <!--
-      If you encounter this error message:
-
-        error NETSDK1148: A referenced assembly was compiled using a newer version of Microsoft.Windows.SDK.NET.dll.
-        Please update to a newer .NET SDK in order to reference this assembly.
-
-      This means that the two packages below must be aligned with the "build" version number of
-      the "Microsoft.Windows.SDK.BuildTools" package above, and the "revision" version number
-      must be the highest found in https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref.
-    -->
-     <WindowsSdkPackageVersion>10.0.22621.34</WindowsSdkPackageVersion> 
-
-    <!--
-      UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
-      https://aka.platform.uno/singleproject-features
-    -->
-    <UnoFeatures>
-    </UnoFeatures>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-
-    <!--
-      Adding NoWarn to remove build warnings
-      NU1507: Warning when there are multiple package sources when using CPM with no source mapping
-      NETSDK1201: Warning that specifying RID won't create self containing app
-      PRI257: Ignore default language (en) not being one of the included resources (eg en-us, en-uk)
-    -->
-    <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <WinAppSdkVersion>1.5.240627000</WinAppSdkVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
+    </ItemGroup>
 
 </Project>
