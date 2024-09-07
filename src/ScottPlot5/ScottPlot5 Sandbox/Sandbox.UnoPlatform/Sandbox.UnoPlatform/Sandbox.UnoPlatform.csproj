@@ -1,6 +1,6 @@
 <Project Sdk="Uno.Sdk/5.3.90">
     <PropertyGroup>
-        <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.22621;net8.0-browserwasm;net8.0-desktop</TargetFrameworks>
+        <TargetFramework>net8.0-windows10.0.22621</TargetFramework>
         <WindowsSdkPackageVersion>10.0.22621.34</WindowsSdkPackageVersion>
         <WinAppSdkVersion>1.5.240802000</WinAppSdkVersion>
         <ImplicitUsings>enable</ImplicitUsings>
