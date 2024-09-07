@@ -8,7 +8,7 @@
     [Windows Forms](https://scottplot.net/quickstart/winforms/), 
     [WPF](https://scottplot.net/quickstart/wpf/),
     [Console](https://scottplot.net/quickstart/console/),
-    [Uno Platform](https://scottplot.net/quickstart/unoplatform/)
+    [Uno Platform](https://scottplot.net/quickstart/unoplatform/),
     [Blazor](https://scottplot.net/quickstart/blazor/),
     [Avalonia](https://scottplot.net/quickstart/avalonia/),
     [Eto](https://scottplot.net/quickstart/eto/),
