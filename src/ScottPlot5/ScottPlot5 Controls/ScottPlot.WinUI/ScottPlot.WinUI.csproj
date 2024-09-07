@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
     <!-- ref ; https://github.com/unoplatform/uno/discussions/10977 -->
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows10.0.18362;net6.0;net7.0-ios;net7.0-maccatalyst;net7.0-android</TargetFrameworks>
+        <TargetFrameworks>net6.0-windows10.0.18362;net6.0;net8.0;net8.0-windows10.0.19041.0;net8.0-ios;net8.0-maccatalyst;net8.0-android</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
@@ -28,6 +28,9 @@
         <IncludeSource>true</IncludeSource>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>Uno0001, NU5118, CS8002, NU1701, CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
+
+        <!-- runtime identifiers used but ignored by .NET 8 -->
+        <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
         
         <!--- SourceLink configuration -->
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -38,7 +41,7 @@
         <GenerateLibraryLayout>true</GenerateLibraryLayout>
         <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
-        
+
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->
@@ -47,37 +50,26 @@
         <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
 
-    <!-- Package dependencies -->
-    <ItemGroup Condition="'$(TargetFramework)'=='net6.0-windows10.0.18362'">
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230822000" />
+    <ItemGroup>
+        <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Condition="$(TargetFramework.Contains('windows'))">
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240802000" />
         <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.8" />
         <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.22000.27" />
         <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.22000.27" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)'!='net6.0-windows10.0.18362'">
+    <ItemGroup Condition="!$(TargetFramework.Contains('windows'))">
         <PackageReference Include="Uno.WinUI" Version="4.10.39" />
         <PackageReference Include="SkiaSharp.Views.Uno.WinUI" Version="2.88.8" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)'!='net6.0-windows10.0.18362'">
-        <Content Include="Assets\**" />
-        <Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
-        <Compile Update="**\*.xaml.cs">
-            <DependentUpon>%(Filename)</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
     </ItemGroup>
 
 </Project>
