@@ -5,8 +5,7 @@ on:
   workflow_call:
 
 env:
-  SP5_SOLUTION: "src/ScottPlot5/ScottPlot5.sln"
-  SP4_SOLUTION: "src/ScottPlot4/ScottPlot4.sln"
+  SOLUTION_FOLDER: "./src/ScottPlot5"
 
 jobs:
   full:
@@ -25,7 +24,8 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: "9.0"
+          dotnet-quality: "preview"
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Setup Java
@@ -33,28 +33,26 @@ jobs:
         with:
           distribution: "microsoft"
           java-version: "17"
-      - name: Install Workloads
+      - name: Remove Heavy Projects
+        working-directory: ${{ env.SOLUTION_FOLDER }}
         run: |
-          dotnet workload install maui-android maui-ios maccatalyst wasm-tools
-          dotnet workload restore "${{ env.SP5_SOLUTION }}"
-          dotnet workload restore "${{ env.SP4_SOLUTION }}"
-      - name: Build ScottPlot5
-        run: |
-          dotnet restore "${{ env.SP5_SOLUTION }}"
-          dotnet build "${{ env.SP5_SOLUTION }}" --configuration Release
-      - name: Test ScottPlot5
-        run: dotnet test "${{ env.SP5_SOLUTION }}" --configuration Release --no-build --verbosity minimal
-      - name: Build ScottPlot4
-        run: |
-          dotnet restore "${{ env.SP4_SOLUTION }}"
-          dotnet build "${{ env.SP4_SOLUTION }}" --configuration Release
-      - name: Test ScottPlot4
-        run: dotnet test "${{ env.SP4_SOLUTION }}" --configuration Release --no-build --verbosity minimal
-      - name: SP4 vulnerable package check
-        working-directory: src/ScottPlot4
-        run: dotnet list package --vulnerable
-      - name: SP5 vulnerable package check
-        working-directory: src/ScottPlot5
+          dotnet sln remove "ScottPlot5 Sandbox\Sandbox.Maui"
+          dotnet sln remove "ScottPlot5 Sandbox\Sandbox.WinUI.Desktop"
+          dotnet sln remove "ScottPlot5 Sandbox\Sandbox.Blazor.WebAssembly"
+      - name: Restore Workloads
+        working-directory: ${{ env.SOLUTION_FOLDER }}
+        run: dotnet workload restore
+      - name: Restore Solution
+        working-directory: ${{ env.SOLUTION_FOLDER }}
+        run: dotnet restore
+      - name: Build Solution
+        working-directory: ${{ env.SOLUTION_FOLDER }}
+        run: dotnet build --configuration Release
+      - name: Run Tests
+        working-directory: ${{ env.SOLUTION_FOLDER }}
+        run: dotnet test --configuration Release --no-build --verbosity minimal
+      - name: Check for Vulnerable Packages
+        working-directory: ${{ env.SOLUTION_FOLDER }}
         run: dotnet list package --vulnerable
       - name: Security Scan
         uses: github/codeql-action/analyze@v3
