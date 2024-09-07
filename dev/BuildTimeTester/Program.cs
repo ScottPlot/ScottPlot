@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-string pathSP5 = Path.GetFullPath("../../../../../src/ScottPlot5");
+string pathSP5 = GetScottPlot5Path();
 
 string[] mainProjectPath = [Path.Join(pathSP5, "ScottPlot5")];
 string[] controlProjectPaths = Directory.GetDirectories(Path.Join(pathSP5, "ScottPlot5 Controls"));
@@ -22,6 +22,19 @@ foreach (string projectPath in allPaths)
 }
 
 Console.WriteLine($"\n\n{sb}\n{sw.Elapsed}\n\n");
+
+static string GetScottPlot5Path()
+{
+    string path = Path.GetFullPath("./");
+    for (int i = 0; i < 10; i++)
+    {
+        if (Directory.GetDirectories(path).Where(x => Path.GetFileName(x) == "src").Any())
+            return Path.Combine(path, "src/ScottPlot5");
+
+        path = Path.GetDirectoryName(path) ?? throw new DirectoryNotFoundException();
+    }
+    throw new DirectoryNotFoundException();
+}
 
 static TimeSpan Dotnet(string verb, string projectFolderPath)
 {
