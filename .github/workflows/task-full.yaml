@@ -33,6 +33,11 @@ jobs:
         with:
           distribution: "microsoft"
           java-version: "17"
+      - name: Remove Heavy Projects
+        run: | 
+          dotnet sln "${{ env.SP5_SOLUTION }}" remove "ScottPlot5 Sandbox\Sandbox.Maui"
+          dotnet sln "${{ env.SP5_SOLUTION }}" remove "ScottPlot5 Sandbox\Sandbox.WinUI.Desktop"
+          dotnet sln "${{ env.SP5_SOLUTION }}" remove "ScottPlot5 Sandbox\Sandbox.Blazor.WebAssembly"
       - name: Install Workloads
         run: |
           dotnet workload install maui-android maui-ios maccatalyst wasm-tools
