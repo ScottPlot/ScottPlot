@@ -22,12 +22,17 @@ public class PlottableAdder(Plot plot)
     /// Return the next color of the <see cref="Palette"/>.
     /// Colors reset if <see cref="Plot.PlottableList"/> is cleared.
     /// </summary>
-    public Color GetNextColor()
+    public Color GetNextColor(bool incrementCounter = true)
     {
         if (Plot.PlottableList.Count == 0)
             NextColorIndex = 0;
 
-        return Palette.GetColor(NextColorIndex++);
+        Color color = Palette.GetColor(NextColorIndex);
+
+        if (incrementCounter)
+            NextColorIndex++;
+
+        return color;
     }
 
     public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)
