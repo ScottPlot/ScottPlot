@@ -30,6 +30,20 @@ public struct Angle
         return new Angle() { Radians = radians };
     }
 
+    public static Angle FromFraction(double fraction, bool clockwise = false)
+    {
+        if (clockwise)
+            fraction *= -1;
+        return new Angle() { Degrees = 360 * fraction };
+    }
+
+    public static Angle FromFraction(double fraction, Angle start, bool clockwise = false)
+    {
+        if (clockwise)
+            fraction *= -1;
+        return new Angle() { Degrees = 360 * fraction + start.Degrees };
+    }
+
     public override readonly string ToString()
     {
         return $"Angle = {Degrees} degrees";

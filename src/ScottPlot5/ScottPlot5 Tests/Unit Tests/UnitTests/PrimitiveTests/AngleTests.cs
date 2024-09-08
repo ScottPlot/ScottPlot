@@ -55,4 +55,15 @@ public class AngleTests
         (Angle.FromDegrees(100) % 90).Should().BeEquivalentTo(Angle.FromDegrees(10));
         (Angle.FromDegrees(-100) % 90).Should().BeEquivalentTo(Angle.FromDegrees(-10));
     }
+
+    [Test]
+    public void Test_Angle_FromFraction()
+    {
+        (Angle.FromFraction(0)).Should().BeEquivalentTo(Angle.FromDegrees(0));
+        (Angle.FromFraction(0.25)).Should().BeEquivalentTo(Angle.FromDegrees(90));
+        (Angle.FromFraction(-0.25)).Should().BeEquivalentTo(Angle.FromDegrees(-90));
+        (Angle.FromFraction(2)).Should().BeEquivalentTo(Angle.FromDegrees(720));
+        (Angle.FromFraction(0.25, clockwise: true)).Should().BeEquivalentTo(Angle.FromDegrees(-90));
+        (Angle.FromFraction(0.25, Angle.FromDegrees(90))).Should().BeEquivalentTo(Angle.FromDegrees(180));
+    }
 }

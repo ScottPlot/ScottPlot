@@ -10,6 +10,7 @@ _Not yet on NuGet..._
 * Plot: Improved performance when adding new plot objects by reducing complexity of color palette sampling (#4218) @0xfded @StendProg
 * Colormap: Added `GetColor()` overload to get color of an item in a collection with an option to sample from a range of the colormap
 * Markers: Added optional `Colormap` so marker colors can be sampled from a colormap instead of assigned manually (#4143)
+* Angle: Added `FromFraction()` to produce angles represented by a fraction around the unit circle (#4208)
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
