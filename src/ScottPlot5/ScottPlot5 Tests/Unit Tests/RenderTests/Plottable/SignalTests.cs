@@ -213,4 +213,16 @@ internal class SignalTests
 
         plt.Should().RenderInMemoryWithoutThrowing();
     }
+
+    [Test]
+    public void SignalXY_Throws_IfNotAscending()
+    {
+        double[] xs = Generate.RandomWalk(5_000);
+        double[] ys = new double[xs.Length];
+
+        ScottPlot.Plot plt = new();
+        plt.Add.SignalXY(xs, ys);
+
+        plt.Should().ThrowOnRender<InvalidDataException>();
+    }
 }

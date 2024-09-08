@@ -33,6 +33,12 @@ internal class PlotAssertions(Plot plot)
         Plot.GetImage(width, height);
     }
 
+    public void ThrowOnRender<T>(int width = 400, int height = 300) where T : Exception
+    {
+        Action action = () => Plot.GetImage(width, height);
+        action.Should().Throw<T>();
+    }
+
     public void RenderIdenticallyTo(Plot otherPlot, int width = 400, int height = 300)
     {
         byte[] bytes1 = Plot.GetImage(width, height).GetImageBytes();
