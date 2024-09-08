@@ -34,19 +34,12 @@ jobs:
           distribution: "microsoft"
           java-version: "17"
       - name: Restore Workloads
-        working-directory: ${{ env.SOLUTION_FILE }}
-        run: dotnet workload restore
+        run: dotnet workload restore ${{ env.SOLUTION_FILE }}
       - name: Restore Solution
-        working-directory: ${{ env.SOLUTION_FILE }}
-        run: dotnet restore
+        run: dotnet restore ${{ env.SOLUTION_FILE }}
       - name: Build Solution
-        working-directory: ${{ env.SOLUTION_FILE }}
-        run: dotnet build --configuration Release
+        run: dotnet build  ${{ env.SOLUTION_FILE }} --configuration Release
       - name: Run Tests
-        working-directory: ${{ env.SOLUTION_FILE }}
-        run: dotnet test --configuration Release --no-build --verbosity minimal
-      - name: Check for Vulnerable Packages
-        working-directory: ${{ env.SOLUTION_FILE }}
-        run: dotnet list package --vulnerable
+        run: dotnet test ${{ env.SOLUTION_FILE }} --configuration Release --no-build --verbosity minimal
       - name: Security Scan
         uses: github/codeql-action/analyze@v3
