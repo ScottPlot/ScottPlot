@@ -16,27 +16,23 @@ public class PlottableAdder(Plot plot)
     /// </summary>
     public IPalette Palette { get; set; } = new Palettes.Category10();
 
-    /// <summary>
-    /// Plottables of these types are ignored when assigning colors according to new plottables according to the <see cref="Palette"/>
-    /// </summary>
-    public List<Type> PlottablesThatDoNotGetColors = [
-            typeof(Plottables.PolarAxis),
-        typeof(Plottables.Annotation),
-        typeof(Plottables.Benchmark),
-        typeof(Plottables.CandlestickPlot),
-        typeof(Plottables.OhlcPlot),
-        typeof(Plottables.Heatmap),
-        typeof(Plottables.ImageMarker),
-        typeof(Plottables.ImageRect),
-        typeof(Plottables.IsoLines),
-        typeof(Plottables.Pie),
-        typeof(Plottables.Text),
-    ];
+    private int NextColorIndex = 0;
 
-    public Color GetNextColor()
+    /// <summary>
+    /// Return the next color of the <see cref="Palette"/>.
+    /// Colors reset if <see cref="Plot.PlottableList"/> is cleared.
+    /// </summary>
+    public Color GetNextColor(bool incrementCounter = true)
     {
-        int coloredPlottableCount = Plot.PlottableList.Where(x => !PlottablesThatDoNotGetColors.Contains(x.GetType())).Count();
-        return Palette.GetColor(coloredPlottableCount);
+        if (Plot.PlottableList.Count == 0)
+            NextColorIndex = 0;
+
+        Color color = Palette.GetColor(NextColorIndex);
+
+        if (incrementCounter)
+            NextColorIndex++;
+
+        return color;
     }
 
     public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)
