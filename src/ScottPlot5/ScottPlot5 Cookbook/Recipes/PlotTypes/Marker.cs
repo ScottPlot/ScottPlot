@@ -103,6 +103,22 @@ public class Marker : ICategory
         }
     }
 
+    public class MarkersColormap : RecipeBase
+    {
+        public override string Name => "Marker with Colormap";
+        public override string Description => "A colormap may be used to style a collection of markers";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var markers = myPlot.Add.Markers(xs, ys);
+            markers.Colormap = new ScottPlot.Colormaps.Turbo();
+        }
+    }
+
     public class ImageMarkerQuickstart : RecipeBase
     {
         public override string Name => "Image Marker";
