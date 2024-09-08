@@ -165,4 +165,115 @@ internal class ColorTests
         Color[] colors = Colors.RandomHue(10);
         colors.Select(x => x.ToHex()).Should().OnlyHaveUniqueItems();
     }
+
+    [Test]
+    public void Test_Color_ValuesMatchKnown()
+    {
+        Color color = Color.FromHex("#2e5b6d");
+
+        // https://www.rapidtables.com/convert/color/hex-to-rgb.html
+        color.Red.Should().Be(46);
+        color.Green.Should().Be(91);
+        color.Blue.Should().Be(109);
+        color.Alpha.Should().Be(255);
+
+        color.ARGB.Should().Be(0xff2e5b6d);
+    }
+
+    [Test]
+    public void Test_Color_Transparent()
+    {
+        // If requesting a semitransparent black, make it slightly non-black
+        // to prevent SVG export from rendering the color as opaque.
+        // https://github.com/ScottPlot/ScottPlot/issues/3063
+
+        Color color = Colors.Transparent;
+        color.Red.Should().Be(1);
+        color.Green.Should().Be(1);
+        color.Blue.Should().Be(1);
+        color.Alpha.Should().Be(0);
+        color.ARGB.Should().Be(0x00010101);
+        color.ARGB.Should().Be(65793);
+    }
+
+    [Test]
+    public void Test_Color_AlphaARGB()
+    {
+        Color color = Color.FromHex("#2e5b6d").WithAlpha(123);
+        color.Red.Should().Be(46);
+        color.Green.Should().Be(91);
+        color.Blue.Should().Be(109);
+        color.Alpha.Should().Be(123);
+        color.ARGB.Should().Be(0x7B2E5B6D);
+    }
+
+    [Test]
+    public void Test_RgbColor_RgbConstructor()
+    {
+        ScottPlot.Color color = new(33, 66, 99);
+        color.R.Should().Be(33);
+        color.G.Should().Be(66);
+        color.B.Should().Be(99);
+        color.A.Should().Be(255);
+    }
+
+    [Test]
+    public void Test_RgbColor_HexConstructor()
+    {
+        ScottPlot.Color color = ScottPlot.Color.FromHex("#336699");
+        color.R.Should().Be(51);
+        color.G.Should().Be(102);
+        color.B.Should().Be(153);
+        color.A.Should().Be(255);
+    }
+
+    [Test]
+    public void Test_RgbColor_HexConstructorWithAlpha()
+    {
+        ScottPlot.Color color = ScottPlot.Color.FromHex("#336699AA");
+        color.R.Should().Be(51);
+        color.G.Should().Be(102);
+        color.B.Should().Be(153);
+        color.A.Should().Be(170);
+    }
+
+    [Test]
+    public void Test_Color_FromSystemDrawingColor()
+    {
+        System.Drawing.Color sdColor = System.Drawing.ColorTranslator.FromHtml("#7b2e5b6d");
+        sdColor.ToArgb().Should().Be(0x7B2E5B6D);
+        Color spColor = Color.FromSDColor(sdColor);
+        spColor.ARGB.Should().Be((uint)sdColor.ToArgb());
+    }
+
+    [Test]
+    public void Test_Color_ConstructedWithSystemDrawingColor()
+    {
+        System.Drawing.Color sdColor = System.Drawing.ColorTranslator.FromHtml("#7b2e5b6d");
+        sdColor.ToArgb().Should().Be(0x7B2E5B6D);
+        Color spColor = new(sdColor);
+        spColor.ARGB.Should().Be((uint)sdColor.ToArgb());
+    }
+
+    [Test]
+    public void Test_Color_FromSKColor()
+    {
+        SKColor skColor = SKColor.Parse("#7b2e5b6d");
+        Color spColor = Color.FromSKColor(skColor);
+        spColor.Alpha.Should().Be(skColor.Alpha);
+        spColor.Red.Should().Be(skColor.Red);
+        spColor.Green.Should().Be(skColor.Green);
+        spColor.Blue.Should().Be(skColor.Blue);
+    }
+
+    [Test]
+    public void Test_Color_ConstructedWithSKColor()
+    {
+        SKColor skColor = SKColor.Parse("#7b2e5b6d");
+        Color spColor = new(skColor);
+        spColor.Alpha.Should().Be(skColor.Alpha);
+        spColor.Red.Should().Be(skColor.Red);
+        spColor.Green.Should().Be(skColor.Green);
+        spColor.Blue.Should().Be(skColor.Blue);
+    }
 }

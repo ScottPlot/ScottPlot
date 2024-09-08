@@ -11,6 +11,7 @@ _Not yet on NuGet..._
 * Colormap: Added `GetColor()` overload to get color of an item in a collection with an option to sample from a range of the colormap
 * Markers: Added optional `Colormap` so marker colors can be sampled from a colormap instead of assigned manually (#4143)
 * Angle: Added `FromFraction()` to produce angles represented by a fraction around the unit circle (#4208)
+* Color: Added constructor overloads to create colors from `SKColor` and `System.Drawing.Color` (#4209)
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
