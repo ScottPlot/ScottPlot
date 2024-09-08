@@ -70,6 +70,22 @@ public readonly struct Color
         Blue = (byte)(argb >> 0);
     }
 
+    public Color(SKColor color)
+    {
+        Alpha = color.Alpha;
+        Red = color.Red;
+        Green = color.Green;
+        Blue = color.Blue;
+    }
+
+    public Color(System.Drawing.Color color)
+    {
+        Alpha = color.A;
+        Red = color.R;
+        Green = color.G;
+        Blue = color.B;
+    }
+
     public static bool operator ==(Color a, Color b)
     {
         return a.ARGB == b.ARGB;
@@ -180,6 +196,11 @@ public readonly struct Color
     public static Color FromSKColor(SKColor skcolor)
     {
         return new Color(skcolor.Red, skcolor.Green, skcolor.Blue, skcolor.Alpha);
+    }
+
+    public static Color FromSDColor(System.Drawing.Color sdColor)
+    {
+        return new Color(sdColor.R, sdColor.G, sdColor.B, sdColor.A);
     }
 
     public string ToStringRGB()
