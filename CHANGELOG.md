@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * Axes: Added `ClipLabel` option to prevent long labels from overlapping on very small plots (#4219) @drolevar
 * Plot: Improved performance when adding new plot objects by reducing complexity of color palette sampling (#4218) @0xfded @StendProg
 * Colormap: Added `GetColor()` overload to get color of an item in a collection with an option to sample from a range of the colormap
+* Markers: Added optional `Colormap` so marker colors can be sampled from a colormap instead of assigned manually (#4143)
 
 ## ScottPlot 5.0.38
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
