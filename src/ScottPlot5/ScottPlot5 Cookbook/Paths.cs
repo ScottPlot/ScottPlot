@@ -2,10 +2,12 @@
 
 internal static class Paths
 {
+
     public static readonly string RepoFolder = GetRepoFolder();
     public static readonly string OutputFolder = Path.Combine(GetRepoFolder(), "dev/www/cookbook/5.0");
     public static readonly string OutputImageFolder = Path.Combine(GetRepoFolder(), "dev/www/cookbook/5.0/images");
     public static readonly string RecipeSourceFolder = Path.Combine(GetRepoFolder(), "src/ScottPlot5/ScottPlot5 Cookbook/Recipes");
+    public static readonly string FontFolder = Path.Combine(GetRepoFolder(), @"src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/Fonts");
 
     private static string GetRepoFolder()
     {

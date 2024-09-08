@@ -23,7 +23,7 @@ public static class Fonts
     /// <summary>
     /// Add a font resolver that creates a typeface from a TTF file
     /// </summary>
-    public static void AddFontFile(string name, string path, bool bold, bool italic)
+    public static void AddFontFile(string name, string path, bool bold = false, bool italic = false)
     {
         FontResolvers.FileFontResolver resolver = new(name, path, bold, italic);
         FontResolvers.Add(resolver);
