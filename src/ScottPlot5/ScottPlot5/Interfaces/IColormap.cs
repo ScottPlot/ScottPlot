@@ -78,4 +78,21 @@ public static class IColormapExtensions
             .Select(i => colormap.GetColor(i * fractionStep + minFraction))
             .ToArray();
     }
+
+    /// <summary>
+    /// Return the color for an item at index <paramref name="index"/> of a collection of size <paramref name="count"/>.
+    /// The <paramref name="startFraction"/> and <paramref name="endFraction"/> may be customized to restrict sampling to a portion of the colormap.
+    /// </summary>
+    public static Color GetColor(this IColormap cmap, int index, int count, double startFraction = 0, double endFraction = 1)
+    {
+        if (count == 1)
+            return cmap.GetColor(.5);
+
+        double fraction = (double)index / (count - 1);
+
+        double fractionRange = endFraction - startFraction;
+        fraction = fraction * fractionRange + startFraction;
+
+        return cmap.GetColor(fraction);
+    }
 }
