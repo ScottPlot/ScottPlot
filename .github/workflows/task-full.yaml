@@ -5,7 +5,7 @@ on:
   workflow_call:
 
 env:
-  SOLUTION_FOLDER: "./src/ScottPlot5"
+  SOLUTION_FILE: "./src/ScottPlot5/ScottPlot5.sln"
 
 jobs:
   full:
@@ -33,26 +33,13 @@ jobs:
         with:
           distribution: "microsoft"
           java-version: "17"
-      - name: Remove Heavy Projects
-        working-directory: ${{ env.SOLUTION_FOLDER }}
-        run: |
-          dotnet sln remove "ScottPlot5 Sandbox\Sandbox.Maui"
-          dotnet sln remove "ScottPlot5 Sandbox\Sandbox.WinUI.Desktop"
-          dotnet sln remove "ScottPlot5 Sandbox\Sandbox.Blazor.WebAssembly"
       - name: Restore Workloads
-        working-directory: ${{ env.SOLUTION_FOLDER }}
-        run: dotnet workload restore
+        run: dotnet workload restore ${{ env.SOLUTION_FILE }}
       - name: Restore Solution
-        working-directory: ${{ env.SOLUTION_FOLDER }}
-        run: dotnet restore
+        run: dotnet restore ${{ env.SOLUTION_FILE }}
       - name: Build Solution
-        working-directory: ${{ env.SOLUTION_FOLDER }}
-        run: dotnet build --configuration Release
+        run: dotnet build  ${{ env.SOLUTION_FILE }} --configuration Release
       - name: Run Tests
-        working-directory: ${{ env.SOLUTION_FOLDER }}
-        run: dotnet test --configuration Release --no-build --verbosity minimal
-      - name: Check for Vulnerable Packages
-        working-directory: ${{ env.SOLUTION_FOLDER }}
-        run: dotnet list package --vulnerable
+        run: dotnet test ${{ env.SOLUTION_FILE }} --configuration Release --no-build --verbosity minimal
       - name: Security Scan
         uses: github/codeql-action/analyze@v3

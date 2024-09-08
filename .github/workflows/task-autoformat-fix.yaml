@@ -7,9 +7,6 @@ on:
       GH_TOKEN:
         required: true
 
-env:
-  DOTNET_VERSION: "8.0.x"
-
 jobs:
   sp4-autoformat:
     name: Fix
@@ -23,10 +20,11 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+      - name: ✨ Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: "9.0.x"
+          dotnet-quality: "preview"
       - name: ✒️ Run Autoformatter
         run: bash  .github/workflows/scripts/autoformat.sh
       - name: 🧐 Inspect Changes

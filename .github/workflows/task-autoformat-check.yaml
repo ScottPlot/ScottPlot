@@ -5,7 +5,7 @@ on:
   workflow_call:
 
 env:
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: "9.0.x"
 
 jobs:
   sp4-autoformat:
@@ -14,10 +14,11 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
-      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+      - name: ✨ Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: "9.0.x"
+          dotnet-quality: "preview"
       - name: ✒️ Code Format
         run: |
           bash  .github/workflows/scripts/autoformat.sh
