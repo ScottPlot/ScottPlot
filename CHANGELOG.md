@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.40
 _Not yet on NuGet..._
+* DataLogger: Added `Add()` overloads to be consistent the original DataLogger API (#4243, #4114) @drolevar @jpgarza93
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
