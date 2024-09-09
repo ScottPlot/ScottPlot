@@ -29,3 +29,20 @@ public interface IAxes
     double GetCoordinateX(float pixel);
     double GetCoordinateY(float pixel);
 }
+
+public static class IAxesExtensions
+{
+    public static void SetSpanX(this IAxes axes, double span)
+    {
+        double xMin = axes.XAxis.Range.Center - span / 2;
+        double xMax = axes.XAxis.Range.Center + span / 2;
+        axes.XAxis.Range.Set(xMin, xMax);
+    }
+
+    public static void SetSpanY(this IAxes axes, double span)
+    {
+        double yMin = axes.YAxis.Range.Center - span / 2;
+        double yMax = axes.YAxis.Range.Center + span / 2;
+        axes.YAxis.Range.Set(yMin, yMax);
+    }
+}
