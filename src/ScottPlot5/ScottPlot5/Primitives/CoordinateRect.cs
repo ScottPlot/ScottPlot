@@ -45,7 +45,7 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         Top = yRange.Max;
     }
 
-    public CoordinateRect(IAxes axes) : this(axes.XAxis.Range, axes.YAxis.Range)
+    public CoordinateRect(IAxes axes) : this(axes.XAxis.GetRange(), axes.YAxis.GetRange())
     {
     }
 

@@ -52,15 +52,15 @@ internal class MultiAxis_Tests
         var sig = myPlot.Add.Signal(Generate.Sin());
         sig.Axes.YAxis = myPlot.Axes.Right;
 
-        myPlot.Axes.Left.Range.HasBeenSet.Should().BeFalse();
-        myPlot.Axes.Right.Range.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Left.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Right.HasBeenSet.Should().BeFalse();
 
         myPlot.Should().SavePngWithoutThrowing();
-        myPlot.Axes.Left.Range.HasBeenSet.Should().BeFalse();
-        myPlot.Axes.Right.Range.HasBeenSet.Should().BeTrue();
+        myPlot.Axes.Left.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Right.HasBeenSet.Should().BeTrue();
 
         myPlot.Should().SavePngWithoutThrowing();
-        myPlot.Axes.Left.Range.HasBeenSet.Should().BeFalse();
-        myPlot.Axes.Right.Range.HasBeenSet.Should().BeTrue();
+        myPlot.Axes.Left.HasBeenSet.Should().BeFalse();
+        myPlot.Axes.Right.HasBeenSet.Should().BeTrue();
     }
 }

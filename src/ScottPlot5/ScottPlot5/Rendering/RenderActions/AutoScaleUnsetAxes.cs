@@ -20,8 +20,8 @@ public class AutoScaleUnsetAxes : IRenderAction
     {
         foreach (IPlottable plottable in plot.PlottableList)
         {
-            bool xAxisNeedsScaling = !plottable.Axes.XAxis.Range.HasBeenSet;
-            bool yAxisNeedsScaling = !plottable.Axes.YAxis.Range.HasBeenSet;
+            bool xAxisNeedsScaling = !plottable.Axes.XAxis.HasBeenSet;
+            bool yAxisNeedsScaling = !plottable.Axes.YAxis.HasBeenSet;
             if (xAxisNeedsScaling || yAxisNeedsScaling)
             {
                 plot.Axes.AutoScale(
@@ -35,12 +35,12 @@ public class AutoScaleUnsetAxes : IRenderAction
 
     private void ApplyDefaultLimitsToUnsetAxes(Plot plot)
     {
-        if (!plot.Axes.Bottom.Range.HasBeenSet)
+        if (!plot.Axes.Bottom.HasBeenSet)
         {
             plot.Axes.SetLimitsX(AxisLimits.Default);
         }
 
-        if (!plot.Axes.Left.Range.HasBeenSet)
+        if (!plot.Axes.Left.HasBeenSet)
         {
             plot.Axes.SetLimitsY(AxisLimits.Default);
         }

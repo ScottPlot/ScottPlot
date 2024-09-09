@@ -38,8 +38,8 @@ public class FractionalAutoScaler : IAutoScaler
         IEnumerable<IXAxis> xAxes = plottables.Select(x => x.Axes.XAxis).Distinct();
         IEnumerable<IYAxis> yAxes = plottables.Select(x => x.Axes.YAxis).Distinct();
 
-        xAxes.ToList().ForEach(x => x.Range.Reset());
-        yAxes.ToList().ForEach(x => x.Range.Reset());
+        xAxes.ToList().ForEach(x => x.Reset());
+        yAxes.ToList().ForEach(x => x.Reset());
 
         foreach (IPlottable plottable in plottables)
         {
@@ -47,40 +47,40 @@ public class FractionalAutoScaler : IAutoScaler
                 continue;
 
             AxisLimits limits = plottable.GetAxisLimits();
-            plottable.Axes.XAxis.Range.Expand(limits.XRange);
-            plottable.Axes.YAxis.Range.Expand(limits.YRange);
+            plottable.Axes.XAxis.Expand(limits.XRange);
+            plottable.Axes.YAxis.Expand(limits.YRange);
         }
 
         foreach (IAxis xAxis in xAxes)
         {
-            double left = xAxis.Range.Min - (xAxis.Range.Span * LeftFraction);
-            double right = xAxis.Range.Max + (xAxis.Range.Span * RightFraction);
+            double left = xAxis.Min - (xAxis.Span * LeftFraction);
+            double right = xAxis.Max + (xAxis.Span * RightFraction);
             if (NumericConversion.IsReal(left) && NumericConversion.IsReal(right))
             {
                 if (InvertedX)
                 {
-                    xAxis.Range.Set(right, left);
+                    xAxis.SetRange(right, left);
                 }
                 else
                 {
-                    xAxis.Range.Set(left, right);
+                    xAxis.SetRange(left, right);
                 }
             }
         }
 
         foreach (IYAxis yAxis in yAxes)
         {
-            double bottom = yAxis.Range.Min - (yAxis.Range.Span * BottomFraction);
-            double top = yAxis.Range.Max + (yAxis.Range.Span * TopFraction);
+            double bottom = yAxis.Min - (yAxis.Span * BottomFraction);
+            double top = yAxis.Max + (yAxis.Span * TopFraction);
             if (NumericConversion.IsReal(bottom) && NumericConversion.IsReal(top))
             {
                 if (InvertedY)
                 {
-                    yAxis.Range.Set(top, bottom);
+                    yAxis.SetRange(top, bottom);
                 }
                 else
                 {
-                    yAxis.Range.Set(bottom, top);
+                    yAxis.SetRange(bottom, top);
                 }
             }
         }

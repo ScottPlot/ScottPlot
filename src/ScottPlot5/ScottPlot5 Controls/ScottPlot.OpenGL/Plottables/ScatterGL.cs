@@ -55,8 +55,8 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected Matrix4d CalcTransform()
     {
-        var xRange = Axes.XAxis.Range;
-        var yRange = Axes.YAxis.Range;
+        var xRange = Axes.XAxis.GetRange();
+        var yRange = Axes.YAxis.GetRange();
 
         Matrix4d translate = Matrix4d.CreateTranslation(
             x: -1.0 * (xRange.Min + xRange.Max) / 2,

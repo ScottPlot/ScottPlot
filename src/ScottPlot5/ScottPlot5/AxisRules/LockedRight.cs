@@ -7,6 +7,6 @@ public class LockedRight(IXAxis xAxis, double xMax) : IAxisRule
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        XAxis.Range.Max = XMax;
+        XAxis.Max = XMax;
     }
 }

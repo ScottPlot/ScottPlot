@@ -10,18 +10,18 @@ public class MaximumSpan(IXAxis xAxis, IYAxis yAxis, double xSpan, double ySpan)
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        if (XAxis.Range.Span > XSpan)
+        if (XAxis.Span > XSpan)
         {
-            double xMin = XAxis.Range.Center - XSpan / 2;
-            double xMax = XAxis.Range.Center + XSpan / 2;
-            XAxis.Range.Set(xMin, xMax);
+            double xMin = XAxis.Center - XSpan / 2;
+            double xMax = XAxis.Center + XSpan / 2;
+            XAxis.SetRange(xMin, xMax);
         }
 
-        if (YAxis.Range.Span > YSpan)
+        if (YAxis.Span > YSpan)
         {
-            double yMin = YAxis.Range.Center - YSpan / 2;
-            double yMax = YAxis.Range.Center + YSpan / 2;
-            YAxis.Range.Set(yMin, yMax);
+            double yMin = YAxis.Center - YSpan / 2;
+            double yMax = YAxis.Center + YSpan / 2;
+            YAxis.SetRange(yMin, yMax);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using System;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -73,7 +71,7 @@ public class AxisManager
     /// <summary>
     /// Indicates whether the axis limits have been set (manually or by autoscale)
     /// </summary>
-    public bool LimitsHaveBeenSet => Bottom.Range.HasBeenSet && Left.Range.HasBeenSet;
+    public bool LimitsHaveBeenSet => Bottom.HasBeenSet && Left.HasBeenSet;
 
     /// <summary>
     /// The standard grid that is added when a Plot is created.
@@ -347,7 +345,7 @@ public class AxisManager
     {
         xAxis.Min = left;
         xAxis.Max = right;
-        if (xAxis.Range.HasBeenSet)
+        if (xAxis.HasBeenSet)
             AutoScaler.InvertedX = left > right;
     }
 
@@ -356,7 +354,7 @@ public class AxisManager
         yAxis.Min = bottom;
         yAxis.Max = top;
 
-        if (yAxis.Range.HasBeenSet)
+        if (yAxis.HasBeenSet)
             AutoScaler.InvertedY = bottom > top;
     }
 
@@ -764,8 +762,8 @@ public class AxisManager
         if (Plot.RenderManager.LastRender.Count == 0)
             return;
 
-        XAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
-        YAxes.ForEach(ax => ax.Range.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
+        XAxes.ForEach(ax => ax.Pan(ax.GetCoordinateDistance(offset.X, Plot.RenderManager.LastRender.DataRect)));
+        YAxes.ForEach(ax => ax.Pan(ax.GetCoordinateDistance(offset.Y, Plot.RenderManager.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -773,8 +771,8 @@ public class AxisManager
     /// </summary>
     public void Pan(CoordinateOffset distance)
     {
-        XAxes.ForEach(x => x.Range.Pan(distance.X));
-        YAxes.ForEach(x => x.Range.Pan(distance.Y));
+        XAxes.ForEach(x => x.Pan(distance.X));
+        YAxes.ForEach(x => x.Pan(distance.Y));
     }
 
     /// <summary>
@@ -789,8 +787,8 @@ public class AxisManager
         float pixelDeltaX = px2.X - px1.X;
         float pixelDeltaY = -(px2.Y - px1.Y);
 
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, Plot.LastRender.DataRect.Width));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, Plot.LastRender.DataRect.Height));
+        XAxes.ForEach(xAxis => xAxis.ZoomMouseDelta(pixelDeltaX, Plot.LastRender.DataRect.Width));
+        YAxes.ForEach(yAxis => yAxis.ZoomMouseDelta(pixelDeltaY, Plot.LastRender.DataRect.Height));
     }
 
     /// <summary>
@@ -802,8 +800,8 @@ public class AxisManager
         if (Plot.RenderManager.LastRender.Count == 0)
             return;
 
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
+        XAxes.ForEach(xAxis => xAxis.ZoomFrac(fracX, xAxis.GetCoordinate(px.X, Plot.LastRender.DataRect)));
+        YAxes.ForEach(yAxis => yAxis.ZoomFrac(fracY, yAxis.GetCoordinate(px.Y, Plot.LastRender.DataRect)));
     }
 
     /// <summary>
@@ -815,8 +813,8 @@ public class AxisManager
         if (fracX <= 0 || fracY <= 0)
             throw new ArgumentException("zoom fraction must be >= 0");
 
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY));
+        XAxes.ForEach(xAxis => xAxis.ZoomFrac(fracX));
+        YAxes.ForEach(yAxis => yAxis.ZoomFrac(fracY));
     }
 
     /// <summary>
@@ -839,8 +837,8 @@ public class AxisManager
         if (x <= 0 || y <= 0)
             throw new ArgumentException("zoom fraction must be >= 0");
 
-        XAxes.ForEach(xAxis => xAxis.Range.ZoomOut(x));
-        YAxes.ForEach(yAxis => yAxis.Range.ZoomOut(y));
+        XAxes.ForEach(xAxis => xAxis.ZoomOut(x));
+        YAxes.ForEach(yAxis => yAxis.ZoomOut(y));
     }
 
     /// <summary>

@@ -31,7 +31,7 @@ public class StandardZoomRectangle(Plot plot) : IZoomRectangle
         double x2 = xAxis.GetCoordinate(MouseUp.X, dataRect);
         double xMin = Math.Min(x1, x2);
         double xMax = Math.Max(x1, x2);
-        xAxis.Range.Set(xMin, xMax);
+        xAxis.SetRange(xMin, xMax);
     }
 
     public void Apply(IYAxis yAxis)
@@ -44,7 +44,7 @@ public class StandardZoomRectangle(Plot plot) : IZoomRectangle
         double y2 = yAxis.GetCoordinate(MouseUp.Y, dataRect);
         double xMin = Math.Min(y1, y2);
         double xMax = Math.Max(y1, y2);
-        yAxis.Range.Set(xMin, xMax);
+        yAxis.SetRange(xMin, xMax);
     }
 
     public void Render(RenderPack rp)

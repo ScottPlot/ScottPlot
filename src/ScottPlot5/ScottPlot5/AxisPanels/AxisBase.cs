@@ -8,7 +8,7 @@ public abstract class AxisBase : LabelStyleProperties
 
     public abstract Edge Edge { get; }
 
-    public virtual CoordinateRangeMutable Range { get; private set; } = CoordinateRangeMutable.NotSet;
+    protected virtual CoordinateRangeMutable Range { get; set; } = CoordinateRangeMutable.NotSet;
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
     public float SizeWhenNoData { get; set; } = 15;
@@ -21,6 +21,9 @@ public abstract class AxisBase : LabelStyleProperties
     /// </summary>
     public bool ClipLabel { get; set; } = false;
 
+    public bool HasBeenSet
+        => Range.HasBeenSet;
+
     public double Min
     {
         get => Range.Min;
@@ -32,6 +35,12 @@ public abstract class AxisBase : LabelStyleProperties
         get => Range.Max;
         set => Range.Max = value;
     }
+
+    public double Center
+        => Range.Center;
+
+    public double Span
+        => Range.Span;
 
     public override string ToString()
     {
@@ -216,5 +225,54 @@ public abstract class AxisBase : LabelStyleProperties
         }
 
         TickGenerator = manualTickGen;
+    }
+
+    public void SetRange(double min, double max)
+    {
+        Range.Set(min, max);
+    }
+    public void SetRange(CoordinateRange range)
+    {
+        Range.Set(range);
+    }
+
+    public void Reset()
+    {
+        Range.Reset();
+    }
+
+    public void Expand(CoordinateRange range)
+    {
+        Range.Expand(range);
+    }
+
+    public void Pan(double delta)
+    {
+        Range.Pan(delta);
+    }
+
+    public void PanMouse(float mouseDeltaPx, float dataSizePx)
+    {
+        Range.PanMouse(mouseDeltaPx, dataSizePx);
+    }
+
+    public void ZoomFrac(double frac)
+    {
+        Range.ZoomFrac(frac);
+    }
+
+    public void ZoomOut(double multiple)
+    {
+        Range.ZoomOut(multiple);
+    }
+
+    public void ZoomMouseDelta(float deltaPx, float dataSizePx)
+    {
+        Range.ZoomMouseDelta(deltaPx, dataSizePx);
+    }
+
+    public void ZoomFrac(double frac, double zoomTo)
+    {
+        Range.ZoomFrac(frac, zoomTo);
     }
 }

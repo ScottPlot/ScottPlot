@@ -80,7 +80,7 @@ public class DataLoggerSource
             .SelectMany(x => x);
 
         Pixel[] leftOutsidePoint = pointBefore, rightOutsidePoint = pointAfter;
-        if (axes.XAxis.Range.Span < 0)
+        if (axes.XAxis.Span < 0)
         {
             leftOutsidePoint = pointAfter;
             rightOutsidePoint = pointBefore;
@@ -120,7 +120,7 @@ public class DataLoggerSource
             .SelectMany(x => x);
 
         Pixel[] bottomOutsidePoint = pointBefore, topOutsidePoint = pointAfter;
-        if (axes.YAxis.Range.Span < 0)
+        if (axes.YAxis.Span < 0)
         {
             bottomOutsidePoint = pointAfter;
             topOutsidePoint = pointBefore;
@@ -263,7 +263,7 @@ public class DataLoggerSource
         if (Coordinates.Count == 1)
             return ([], 0);
 
-        var (firstPointPosition, firstPointIndex) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
+        var (firstPointPosition, firstPointIndex) = SearchIndex(axes.XAxis.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
         if (firstPointPosition <= 0)
         {
@@ -285,7 +285,7 @@ public class DataLoggerSource
         if (Coordinates.Count == 1)
             return ([], 0);
 
-        var (firstPointPosition, firstPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Min : axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
+        var (firstPointPosition, firstPointIndex) = SearchIndex(axes.YAxis.Span > 0 ? axes.YAxis.Min : axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
 
         if (firstPointPosition <= 0)
         {
@@ -307,7 +307,7 @@ public class DataLoggerSource
         if (Coordinates.Count == 1)
             return ([], LastIndex);
 
-        var (lastPointPosition, lastPointIndex) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
+        var (lastPointPosition, lastPointIndex) = SearchIndex(axes.XAxis.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
         if (lastPointPosition > LastIndex)
         {
@@ -329,7 +329,7 @@ public class DataLoggerSource
         if (Coordinates.Count == 1)
             return ([], LastIndex);
 
-        var (lastPointPosition, lastPointIndex) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
+        var (lastPointPosition, lastPointIndex) = SearchIndex(axes.YAxis.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
 
         if (lastPointPosition > LastIndex)
         {

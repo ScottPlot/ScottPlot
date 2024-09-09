@@ -21,24 +21,24 @@ public static class MouseAxisManipulation
         {
             if (ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
-                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
+                plot.Axes.XAxes.ForEach(xAxis => xAxis.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
             }
             if (ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
-                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
+                plot.Axes.YAxes.ForEach(yAxis => yAxis.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
             }
             else
             {
                 double frac = axisUnderMouse.IsHorizontal() ? fracX : fracY;
                 float scaledCoord = (axisUnderMouse.IsHorizontal() ? pixel.X : pixel.Y);
-                axisUnderMouse.Range.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
+                axisUnderMouse.ZoomFrac(frac, axisUnderMouse.GetCoordinate(scaledCoord, dataRect));
             }
         }
         else
         {
             // modify all axes
-            plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
-            plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
+            plot.Axes.XAxes.ForEach(xAxis => xAxis.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
+            plot.Axes.YAxes.ForEach(yAxis => yAxis.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
         }
     }
 
@@ -62,24 +62,24 @@ public static class MouseAxisManipulation
         {
             if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
-                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, dataRect.Width));
+                plot.Axes.XAxes.ForEach(xAxis => xAxis.PanMouse(scaledDeltaX, dataRect.Width));
             }
             else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
-                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, dataRect.Height));
+                plot.Axes.YAxes.ForEach(yAxis => yAxis.PanMouse(scaledDeltaY, dataRect.Height));
             }
             else
             {
                 float scaledDelta = axisUnderMouse.IsHorizontal() ? scaledDeltaX : scaledDeltaY;
                 float dataSize = axisUnderMouse.IsHorizontal() ? dataRect.Width : dataRect.Height;
-                axisUnderMouse.Range.PanMouse(scaledDelta, dataSize);
+                axisUnderMouse.PanMouse(scaledDelta, dataSize);
             }
         }
         else
         {
             // modify all axes
-            plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, dataRect.Width));
-            plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, dataRect.Height));
+            plot.Axes.XAxes.ForEach(xAxis => xAxis.PanMouse(scaledDeltaX, dataRect.Width));
+            plot.Axes.YAxes.ForEach(yAxis => yAxis.PanMouse(scaledDeltaY, dataRect.Height));
         }
     }
 
@@ -100,25 +100,25 @@ public static class MouseAxisManipulation
         {
             if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
-                plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
+                plot.Axes.XAxes.ForEach(xAxis => xAxis.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
             }
             else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
-                plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
+                plot.Axes.YAxes.ForEach(yAxis => yAxis.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
             }
             else
             {
                 // modify a single axis
                 float pixelDelta = axisUnderMouse.IsHorizontal() ? pixelDeltaX : pixelDeltaY;
                 float dataSize = axisUnderMouse.IsHorizontal() ? lastRenderDataRect.Width : lastRenderDataRect.Height;
-                axisUnderMouse.Range.ZoomMouseDelta(pixelDelta, dataSize);
+                axisUnderMouse.ZoomMouseDelta(pixelDelta, dataSize);
             }
         }
         else
         {
             // modify all axes
-            plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
-            plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
+            plot.Axes.XAxes.ForEach(xAxis => xAxis.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
+            plot.Axes.YAxes.ForEach(yAxis => yAxis.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
         }
     }
 

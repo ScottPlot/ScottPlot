@@ -62,7 +62,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             .SelectMany(x => x);
 
         Pixel[] leftOutsidePoint = PointBefore, rightOutsidePoint = PointAfter;
-        if (axes.XAxis.Range.Span < 0)
+        if (axes.XAxis.Span < 0)
         {
             leftOutsidePoint = PointAfter;
             rightOutsidePoint = PointBefore;
@@ -94,7 +94,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             .SelectMany(x => x);
 
         Pixel[] bottomOutsidePoint = PointBefore, topOutsidePoint = PointAfter;
-        if (axes.YAxis.Range.Span < 0)
+        if (axes.YAxis.Span < 0)
         {
             bottomOutsidePoint = PointAfter;
             topOutsidePoint = PointBefore;
@@ -274,7 +274,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         if (Xs.Length == 1)
             return ([], MinimumIndex);
 
-        var (firstPointIndex, _) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
+        var (firstPointIndex, _) = SearchIndex(axes.XAxis.Span > 0 ? axes.XAxis.Min : axes.XAxis.Max); // if axis is reversed first index will on the right limit of the plot
 
         if (firstPointIndex > MinimumIndex)
         {
@@ -300,7 +300,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         if (Xs.Length == 1)
             return ([], MinimumIndex);
 
-        var (firstPointIndex, _) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Min : axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
+        var (firstPointIndex, _) = SearchIndex(axes.YAxis.Span > 0 ? axes.YAxis.Min : axes.YAxis.Max); // if axis is reversed first index will on the top limit of the plot
 
         if (firstPointIndex > MinimumIndex)
         {
@@ -326,7 +326,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         if (Xs.Length == 1)
             return ([], MaximumIndex);
 
-        var (lastPointIndex, _) = SearchIndex(axes.XAxis.Range.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
+        var (lastPointIndex, _) = SearchIndex(axes.XAxis.Span > 0 ? axes.XAxis.Max : axes.XAxis.Min); // if axis is reversed last index will on the left limit of the plot
 
         if (lastPointIndex <= MaximumIndex)
         {
@@ -352,7 +352,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         if (Xs.Length == 1)
             return ([], MaximumIndex);
 
-        var (lastPointIndex, _) = SearchIndex(axes.YAxis.Range.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
+        var (lastPointIndex, _) = SearchIndex(axes.YAxis.Span > 0 ? axes.YAxis.Max : axes.YAxis.Min); // if axis is reversed last index will on the bottom limit of the plot
 
         if (lastPointIndex <= MaximumIndex)
         {

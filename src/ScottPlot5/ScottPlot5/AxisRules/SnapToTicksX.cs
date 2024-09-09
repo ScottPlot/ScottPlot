@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace ScottPlot.AxisRules;
+﻿namespace ScottPlot.AxisRules;
 
 public class SnapToTicksX(IXAxis xAxis) : IAxisRule
 {
@@ -16,9 +14,8 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         var inverted = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].IsInverted;
         var oldRight = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
         var oldLeft = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
-        var newLimits = XAxis.Range;
-        double newRight = newLimits.Max;
-        double newLeft = newLimits.Min;
+        double newRight = XAxis.Max;
+        double newLeft = XAxis.Min;
 
         // do not attempt to set limits if they have not changed
         if (newRight == oldRight & newLeft == oldLeft)
@@ -91,7 +88,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         }
 
         //This is to handle panning, which can be jumpy if we snap before it has panned more than half the tick interval
-        if (isPanning & Math.Abs(newLimits.Max - oldRight) < tickDelta / 2)
+        if (isPanning & Math.Abs(XAxis.Max - oldRight) < tickDelta / 2)
         {
             newRight = oldRight;
             newLeft = oldLeft;
@@ -109,7 +106,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         }
 
         //Now we can set the new limits that are snapped to tick intervals
-        if (newLeft != newRight) XAxis.Range.Set(newLeft, newRight);
+        if (newLeft != newRight) XAxis.SetRange(newLeft, newRight);
 
         //But, the new limits might cause a change in the tick interval! So here we will test that and update the snap if necessary
         XAxis.RegenerateTicks(new PixelLength(rp.DataRect.Width));
@@ -144,7 +141,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
             }
 
             // Finally, we need to reset the limits
-            if (newLeft != newRight) XAxis.Range.Set(newLeft, newRight);
+            if (newLeft != newRight) XAxis.SetRange(newLeft, newRight);
         }
     }
 

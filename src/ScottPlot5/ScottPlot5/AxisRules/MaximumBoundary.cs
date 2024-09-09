@@ -8,31 +8,31 @@ public class MaximumBoundary(IXAxis xAxis, IYAxis yAxis, AxisLimits limits) : IA
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        double xSpan = Math.Min(XAxis.Range.Span, Limits.HorizontalSpan);
-        double ySpan = Math.Min(YAxis.Range.Span, Limits.VerticalSpan);
+        double xSpan = Math.Min(XAxis.Span, Limits.HorizontalSpan);
+        double ySpan = Math.Min(YAxis.Span, Limits.VerticalSpan);
 
-        if (XAxis.Range.Max > Limits.Right)
+        if (XAxis.Max > Limits.Right)
         {
-            XAxis.Range.Max = Limits.Right;
-            XAxis.Range.Min = Limits.Right - xSpan;
+            XAxis.Max = Limits.Right;
+            XAxis.Min = Limits.Right - xSpan;
         }
 
-        if (XAxis.Range.Min < Limits.Left)
+        if (XAxis.Min < Limits.Left)
         {
-            XAxis.Range.Min = Limits.Left;
-            XAxis.Range.Max = Limits.Left + xSpan;
+            XAxis.Min = Limits.Left;
+            XAxis.Max = Limits.Left + xSpan;
         }
 
-        if (YAxis.Range.Max > Limits.Top)
+        if (YAxis.Max > Limits.Top)
         {
-            YAxis.Range.Max = Limits.Top;
-            YAxis.Range.Min = Limits.Top - ySpan;
+            YAxis.Max = Limits.Top;
+            YAxis.Min = Limits.Top - ySpan;
         }
 
-        if (YAxis.Range.Min < Limits.Bottom)
+        if (YAxis.Min < Limits.Bottom)
         {
-            YAxis.Range.Min = Limits.Bottom;
-            YAxis.Range.Max = Limits.Bottom + ySpan;
+            YAxis.Min = Limits.Bottom;
+            YAxis.Max = Limits.Bottom + ySpan;
         }
     }
 }

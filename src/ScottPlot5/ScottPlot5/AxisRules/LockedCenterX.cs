@@ -7,6 +7,6 @@ public class LockedCenterX(IXAxis xAxis, double xCenter) : IAxisRule
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        XAxis.Range.Pan(XCenter - XAxis.Range.Center);
+        XAxis.Pan(XCenter - XAxis.Center);
     }
 }

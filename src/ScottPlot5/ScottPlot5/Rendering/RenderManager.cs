@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-
-namespace ScottPlot.Rendering;
+﻿namespace ScottPlot.Rendering;
 
 public class RenderManager(Plot plot)
 {
@@ -172,10 +169,10 @@ public class RenderManager(Plot plot)
             if (axis is null)
                 continue;
 
-            if (double.IsNaN(axis.Range.Span))
+            if (double.IsNaN(axis.Span))
                 continue;
 
-            CoordinateRangeMutable rangeNow = axis.Range;
+            CoordinateRange rangeNow = axis.GetRange();
             CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
             bool axisLimitsChanged = rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max;
             if (axisLimitsChanged)

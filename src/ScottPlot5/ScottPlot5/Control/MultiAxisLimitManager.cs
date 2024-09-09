@@ -65,8 +65,8 @@ public class MultiAxisLimitManager
             if (!RememberedLimits.ContainsKey(axis))
                 continue;
 
-            axis.Range.Min = RememberedLimits[axis].Min;
-            axis.Range.Max = RememberedLimits[axis].Max;
+            axis.Min = RememberedLimits[axis].Min;
+            axis.Max = RememberedLimits[axis].Max;
         }
     }
 }

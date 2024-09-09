@@ -8,13 +8,11 @@
 /// </summary>
 public interface IAxis : IPanel
 {
-    /// <summary>
-    /// Min/Max range currently displayed by this axis
-    /// </summary>
-    CoordinateRangeMutable Range { get; } // TODO: don't expose this
-
     double Min { get; set; }
     double Max { get; set; }
+    double Center { get; }
+    double Span { get; }
+    bool HasBeenSet { get; }
 
     /// <summary>
     /// Get the pixel position of a coordinate given the location and size of the data area
@@ -69,6 +67,25 @@ public interface IAxis : IPanel
     LabelStyle TickLabelStyle { get; set; }
 
     LineStyle FrameLineStyle { get; }
+
+    void SetRange(double min, double max);
+    void SetRange(CoordinateRange value);
+
+    void Reset();
+
+    void Expand(CoordinateRange range);
+
+    void Pan(double delta);
+
+    void PanMouse(float mouseDeltaPx, float dataSizePx);
+
+    void ZoomFrac(double frac);
+
+    void ZoomOut(double multiple);
+
+    void ZoomMouseDelta(float deltaPx, float dataSizePx);
+
+    void ZoomFrac(double frac, double zoomTo);
 }
 
 public static class IAxisExtensions

@@ -8,6 +8,6 @@ public class LockedHorizontal(IXAxis xAxis, double xMin, double xMax) : IAxisRul
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        XAxis.Range.Set(XMin, XMax);
+        XAxis.SetRange(XMin, XMax);
     }
 }

@@ -16,23 +16,23 @@ public class SquareZoomOut(IXAxis xAxis, IYAxis yAxis) : IAxisRule
         double maxUnitsPerPx = Math.Max(unitsPerPxX, unitsPerPxY);
 
         double halfHeight = rp.DataRect.Height / 2 * maxUnitsPerPx;
-        double yMin = YAxis.Range.Center - halfHeight;
-        double yMax = YAxis.Range.Center + halfHeight;
+        double yMin = YAxis.Center - halfHeight;
+        double yMax = YAxis.Center + halfHeight;
 
         var invertedY = YAxis.Min > YAxis.Max;
         if (invertedY)
-            YAxis.Range.Set(yMax, yMin);
+            YAxis.SetRange(yMax, yMin);
         else
-            YAxis.Range.Set(yMin, yMax);
+            YAxis.SetRange(yMin, yMax);
 
         double halfWidth = rp.DataRect.Width / 2 * maxUnitsPerPx;
-        double xMin = XAxis.Range.Center - halfWidth;
-        double xMax = XAxis.Range.Center + halfWidth;
+        double xMin = XAxis.Center - halfWidth;
+        double xMax = XAxis.Center + halfWidth;
 
         var invertedX = XAxis.Min > XAxis.Max;
         if (invertedX)
-            XAxis.Range.Set(xMax, xMin);
+            XAxis.SetRange(xMax, xMin);
         else
-            XAxis.Range.Set(xMin, xMax);
+            XAxis.SetRange(xMin, xMax);
     }
 }

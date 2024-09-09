@@ -96,7 +96,7 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
                     ? Angle.FromRadians(point.Angle.Radians + PaddingArc / point.Radius)
                     : Angle.FromRadians(point.Angle.Radians);
 
-                double padding = Math.Min(Axes.XAxis.Range.Span, Axes.YAxis.Range.Span) * PaddingFraction;
+                double padding = Math.Min(Axes.XAxis.Span, Axes.YAxis.Span) * PaddingFraction;
                 PolarCoordinates labelPoint = new(point.Radius + padding, angle);
                 Pixel labelPixel = Axes.GetPixel(labelPoint.ToCartesian());
                 PixelRect labelRect = LabelStyle.Measure().Rect(Alignment.MiddleCenter);

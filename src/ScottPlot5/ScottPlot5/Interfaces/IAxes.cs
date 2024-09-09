@@ -34,15 +34,15 @@ public static class IAxesExtensions
 {
     public static void SetSpanX(this IAxes axes, double span)
     {
-        double xMin = axes.XAxis.Range.Center - span / 2;
-        double xMax = axes.XAxis.Range.Center + span / 2;
-        axes.XAxis.Range.Set(xMin, xMax);
+        double xMin = axes.XAxis.Center - span / 2;
+        double xMax = axes.XAxis.Center + span / 2;
+        axes.XAxis.SetRange(xMin, xMax);
     }
 
     public static void SetSpanY(this IAxes axes, double span)
     {
-        double yMin = axes.YAxis.Range.Center - span / 2;
-        double yMax = axes.YAxis.Range.Center + span / 2;
-        axes.YAxis.Range.Set(yMin, yMax);
+        double yMin = axes.YAxis.Center - span / 2;
+        double yMax = axes.YAxis.Center + span / 2;
+        axes.YAxis.SetRange(yMin, yMax);
     }
 }

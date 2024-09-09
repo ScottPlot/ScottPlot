@@ -8,6 +8,6 @@ public class LockedVertical(IYAxis yAxis, double yMin, double yMax) : IAxisRule
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        YAxis.Range.Set(YMin, Max);
+        YAxis.SetRange(YMin, Max);
     }
 }

@@ -13,8 +13,8 @@ public class SquarePreserveY(IXAxis xAxis, IYAxis yAxis) : IAxisRule
 
         double unitsPerPxY = YAxis.Height / rp.DataRect.Height;
         double halfWidth = rp.DataRect.Width / 2 * unitsPerPxY;
-        double xMin = XAxis.Range.Center - halfWidth;
-        double xMax = XAxis.Range.Center + halfWidth;
-        XAxis.Range.Set(xMin, xMax);
+        double xMin = XAxis.Center - halfWidth;
+        double xMax = XAxis.Center + halfWidth;
+        XAxis.SetRange(xMin, xMax);
     }
 }

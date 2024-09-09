@@ -25,7 +25,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (!IsVisible)
             return 0;
 
-        if (!Range.HasBeenSet)
+        if (!HasBeenSet)
             return SizeWhenNoData;
 
         using SKPaint paint = new();
