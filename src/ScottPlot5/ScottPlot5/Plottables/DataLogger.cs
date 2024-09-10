@@ -181,7 +181,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, 
             Add(y);
         }
     }
-    
+
     public void Add(double[] xs, double[] ys)
     {
         if (xs is null || ys is null)
@@ -205,7 +205,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, 
         {
             Add(coordinates[i]);
         }
-    }    
+    }
 
     public void UpdateAxisLimits(Plot plot)
     {
