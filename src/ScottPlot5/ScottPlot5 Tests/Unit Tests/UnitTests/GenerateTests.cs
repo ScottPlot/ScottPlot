@@ -18,10 +18,10 @@ internal class GenerateTests
     public void Test_RandomNumbers()
     {
         double[] nums = Generate.RandomNumbers(100, 34, 38);
-        foreach (var n  in nums)
+        foreach (var n in nums)
         {
             n.Should().BeGreaterOrEqualTo(34);
-            n.Should().BeLessOrEqualTo(38);            
+            n.Should().BeLessOrEqualTo(38);
         }
     }
 }
