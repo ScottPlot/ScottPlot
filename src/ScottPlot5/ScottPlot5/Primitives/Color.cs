@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 internal static class ColorByteExtensions
 {
@@ -68,6 +68,22 @@ public readonly struct Color
         Red = (byte)(argb >> 16);
         Green = (byte)(argb >> 8);
         Blue = (byte)(argb >> 0);
+    }
+
+    public Color(SKColor color)
+    {
+        Alpha = color.Alpha;
+        Red = color.Red;
+        Green = color.Green;
+        Blue = color.Blue;
+    }
+
+    public Color(System.Drawing.Color color)
+    {
+        Alpha = color.A;
+        Red = color.R;
+        Green = color.G;
+        Blue = color.B;
     }
 
     public static bool operator ==(Color a, Color b)
@@ -182,6 +198,11 @@ public readonly struct Color
         return new Color(skcolor.Red, skcolor.Green, skcolor.Blue, skcolor.Alpha);
     }
 
+    public static Color FromSDColor(System.Drawing.Color sdColor)
+    {
+        return new Color(sdColor.R, sdColor.G, sdColor.B, sdColor.A);
+    }
+
     public string ToStringRGB()
     {
         return "#" + Red.ToString("X2") + Green.ToString("X2") + Blue.ToString("X2");
@@ -197,9 +218,27 @@ public readonly struct Color
         return new SKColor(Red, Green, Blue, Alpha);
     }
 
+    /// <summary>
+    /// Luminance as a fraction from 0 to 1
+    /// </summary>
+    public float Luminance => ToHSL().l;
+
+    /// <summary>
+    /// Hue as a fraction from 0 to 1
+    /// </summary>
+    public float Hue => ToHSL().h;
+
+    /// <summary>
+    /// Saturation as a fraction from 0 to 1
+    /// </summary>
+    public float Saturation => ToHSL().s;
+
+    /// <summary>
+    /// Hue, Saturation, and Luminance (as fractions from 0 to 1)
+    /// </summary>
     public (float h, float s, float l) ToHSL()
     {
-        // Converter adapted from http://en.wikipedia.org/wiki/HSL_color_space
+        // adapted from http://en.wikipedia.org/wiki/HSL_color_space
         float r = Red / 255f;
         float g = Green / 255f;
         float b = Blue / 255f;
@@ -236,6 +275,9 @@ public readonly struct Color
         return (h, s, l);
     }
 
+    /// <summary>
+    /// Create a Color given Hue, Saturation, and Luminance (as fractions from 0 to 1)
+    /// </summary>
     public static Color FromHSL(float hue, float saturation, float luminosity, float alpha = 1)
     {
         // adapted from Microsoft.Maui.Graphics/Color.cs (MIT license)

@@ -2,17 +2,17 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+        <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
         <WindowsPackageType>None</WindowsPackageType>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
-        <nowarn>Uno0001, CS0436</nowarn>
+        <nowarn>Uno0001,CS0436,NETSDK1206</nowarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.*" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240802000" />
     </ItemGroup>
 
     <ItemGroup>

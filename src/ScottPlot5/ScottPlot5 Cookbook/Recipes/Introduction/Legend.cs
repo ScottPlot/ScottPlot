@@ -214,8 +214,10 @@ public class Legend : ICategory
         [Test]
         public override void Execute()
         {
-            Fonts.AddFontFile("Alumni Sans", Path.Combine(GetFontsBasePath(), @"AlumniSans/AlumniSans-Regular.ttf"), bold: false, italic: false);
-            Fonts.AddFontFile("Noto Serif Display", Path.Combine(GetFontsBasePath(), @"NotoSerifDisplay/NotoSerifDisplay-Regular.ttf"), bold: false, italic: false);
+            // Add a font file to use its typeface for fonts with a given name
+            Fonts.AddFontFile(
+                name: "Alumni Sans",
+                path: Path.Combine(Paths.FontFolder, @"AlumniSans/AlumniSans-Regular.ttf"));
 
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.LegendText = "Sin";
@@ -225,21 +227,14 @@ public class Legend : ICategory
 
             myPlot.Legend.ManualItems.Add(new LegendItem()
             {
-                LabelText = "Manual Item 1",
+                LabelText = "Custom",
                 LabelFontName = "Alumni Sans",
-                LabelFontSize = 48,
-                LabelFontColor = Colors.Red
+                LabelFontSize = 18,
+                LabelFontColor = Colors.Magenta,
+                LinePattern = LinePattern.Dotted,
+                LineWidth = 2,
+                LineColor = Colors.Magenta,
             });
-
-            myPlot.Legend.ManualItems.Add(new LegendItem()
-            {
-                LabelText = "Manual Item 2",
-                LabelFontName = "Noto Serif Display",
-                LabelFontSize = 32,
-                LabelFontColor = Colors.Blue
-            });
-
-            myPlot.ShowLegend();
         }
     }
 }

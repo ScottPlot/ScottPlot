@@ -80,4 +80,52 @@ public class AdvancedStyling : ICategory
             }
         }
     }
+
+    public class CustomFontFiles : RecipeBase
+    {
+        public override string Name => "Custom Font Files";
+        public override string Description => "Users can apply custom typefaces by loaded from font files.";
+
+        [Test]
+        public override void Execute()
+        {
+            // Add a font file to use its typeface for fonts with a given name
+            Fonts.AddFontFile(
+                name: "Alumni Sans",
+                path: Path.Combine(Paths.FontFolder, @"AlumniSans/AlumniSans-Regular.ttf"));
+
+            // plot sample data
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "Sin";
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "Cos";
+
+            // custom fonts may be used in legends
+            myPlot.Legend.FontName = "Alumni Sans";
+            myPlot.Legend.FontSize = 24;
+
+            // custom fonts may be used in plottables that contain text
+            var text = myPlot.Add.Text("Hello", 25, 0.5);
+            text.LabelStyle.FontName = "Alumni Sans";
+            text.LabelStyle.FontSize = 24;
+
+            // Custom fonts may be used for axis labels.
+            // Note that bold is disabled because support for
+            // bold would require loading an additional font file.
+            myPlot.Title("Custom Font Demo");
+            myPlot.Axes.Title.Label.FontName = "Alumni Sans";
+            myPlot.Axes.Title.Label.FontSize = 36;
+            myPlot.Axes.Title.Label.Bold = false;
+
+            myPlot.XLabel("Horizontal Axis");
+            myPlot.Axes.Bottom.Label.FontName = "Alumni Sans";
+            myPlot.Axes.Bottom.Label.FontSize = 24;
+            myPlot.Axes.Bottom.Label.Bold = false;
+
+            myPlot.YLabel("Vertical Axis");
+            myPlot.Axes.Left.Label.FontName = "Alumni Sans";
+            myPlot.Axes.Left.Label.FontSize = 24;
+            myPlot.Axes.Left.Label.Bold = false;
+        }
+    }
 }

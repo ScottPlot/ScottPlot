@@ -92,7 +92,7 @@ public class WinUIPlotMenu : IPlotMenu
         if (file != null)
         {
             // TODO: launch a pop-up window indicating if extension is invalid or save failed
-            ImageFormat format = ImageFormatLookup.FromFilePath(file.Name);
+            ImageFormat format = ImageFormats.FromFilename(file.Name);
             PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
             plotControl.Plot.Save(file.Path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
         }

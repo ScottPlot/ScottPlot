@@ -28,6 +28,8 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
         }
     }
 
+    public IColormap? Colormap { get; set; } = null;
+
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
@@ -39,9 +41,17 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
         if (this.MarkerStyle == MarkerStyle.None || points.Count == 0)
             return;
 
-        IEnumerable<Pixel> markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel);
+        Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
         using SKPaint paint = new();
-        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
+
+        if (Colormap is not null)
+        {
+            Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle, Colormap);
+        }
+        else
+        {
+            Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
+        }
     }
 }

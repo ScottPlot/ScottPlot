@@ -1,5 +1,50 @@
-## ScottPlot 5.0.38
+## ScottPlot 5.0.40
 _Not yet on NuGet..._
+* DataLogger: Added `Add()` overloads to be consistent the original DataLogger API (#4243, #4114) @drolevar @jpgarza93
+
+## ScottPlot 5.0.39
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
+* Angle: Added support for common arithmetic operators
+* PolarCoordinates: Added `FromCartesian()` and `FromCartesian()` overloads to facilitate conversion between polar and Cartesian space (#4211) @CoderPM2011
+* Pie: Added `Rotation` property (#4211) @CoderPM2011
+* Pie: Improved label alignment (#4211) @CoderPM2011
+* Pie: First slice now starts vertically (-90 degrees) instead of to the right (0 degrees) (#4211) @CoderPM2011
+* Generate: Random seed uses `System.Random.Shared` on .NET platforms where it is available (#4217) @LeaFrock
+* Axes: Added `ClipLabel` option to prevent long labels from overlapping on very small plots (#4219) @drolevar
+* Plot: Improved performance when adding new plot objects by reducing complexity of color palette sampling (#4218) @0xfded @StendProg
+* Colormap: Added `GetColor()` overload to get color of an item in a collection with an option to sample from a range of the colormap
+* Markers: Added optional `Colormap` so marker colors can be sampled from a colormap instead of assigned manually (#4143)
+* Angle: Added `FromFraction()` to produce angles represented by a fraction around the unit circle (#4208)
+* Color: Added constructor overloads to create colors from `SKColor` and `System.Drawing.Color` (#4209)
+* Axes: Added `SetSpanX()` and `SetSpanY()` for defining axis range size without changing the center position (#4221)
+
+## ScottPlot 5.0.38
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-09-02_
+* DataLogger: Merged in numerous additional features (optional circular buffer, X and Y offset, etc.) from the experimental DataLogger (#4085, #4114) @drolevar
+* SVG: Improved correctness of exported SVG files to overcome a SkiaSharp bug that sometimes results in XML missing a closing tag (#4104, #4121) @KroMignon @aespitia @bclehmann @DDiggs91 
+* Generate: Added `Range()` to create a sequence of values between two numbers (#4122, #4119, #4179) @KroMignon @StendProg
+* Rendering: Improve behavior of plots using custom scale factors in situations of repeated renders (#4125) @BrianAtZetica
+* Palette: Improved behavior of automatic color selection for new plottables added to the plot (#4105)
+* Color: Added overload to allow constructing colors from hex strings (#4170, #4165) @aespitia @KroMignon @kebox7
+* WinUI: Improved support and documentation for applications built using Uno Platform (#4123) @agneszitte
+* Color: Added Hue, Saturation, and Luminance properties
+* Colormap: Added `Colormap.GetColormaps()` to allow iterating over all available colormaps
+* Colormap: Added `Colormap.GetImage()` to generate a gradient image using a given colormap
+* Coordinates: Added `Position` and `Coordinates` properties (#4185) @blouflashdb
+* Signal: Added `AlwaysUseLowDensityMode` for improved anti-aliased rendering in static plots (#4153)
+* Plot: Improved default `ToString()` implementation for the object returned when saving image files (#4154)
+* Plot: Added `Save()` overload which detects file format from filename extension (#4164)
+* Coordinates: Added `Coordinates.Zip()` for creating a `Coordinates[]` from distinct `xs[]` and `ys[]` arrays.
+* Lollipop: New plot type that displays values with a stem and a marker similar to a bar graph but with less visual clutter (#4193, #4183) @CoderPM2011
+* Polar Axis: Added `Rotation` property to rotate the axis and coordinates it returns
+* Polar Axis: Added the ability to customize spoke label text (#4188)
+* Polar Axis: Added a `SetSpokes()` overload that accepts `string[]` to create new spokes and set their label text automatically
+* Polar Axis: Replaced `RegenerateSpokes()` and `RegenerateCircles()` with `SetSpokes()` and `SetCircles()` (#4207)
+* Grid: Added support for fill colors to highlight spans between pairs of major grid lines (#4201, #4022) @CoderPM2011 @seeingistrue
+* AxisSpan: Added `IsUnderMouse()` to improve API naming consistency with AxisLine (#4150)
+* AxisLimits: Added `Contains()` to allow quick checking whether a point is contained by the boundaries of the axis limits (#4161)
+* Radar: Refactored to use a `PolarAxis` to handle spoke and tick management and translation between polar and Cartesian space (#4207, #4187, #4186, #4055)
+* Controls: Made `IPlotControl.Menu` nullable so users creating their own controls are not required to create a menu system (#4203) @kebox7
 
 ## ScottPlot 5.0.37
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-07-29_

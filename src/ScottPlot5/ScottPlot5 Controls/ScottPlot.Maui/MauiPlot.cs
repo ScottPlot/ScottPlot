@@ -16,7 +16,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
     public SkiaSharp.GRContext? GRContext => null;
 
     public IPlotInteraction Interaction { get; set; }
-    public IPlotMenu Menu { get; set; }
+    public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     public float DisplayScale { get; set; } = 1;
@@ -126,7 +126,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
 
     public void ShowContextMenu(Pixel position)
     {
-        Menu.ShowContextMenu(position);
+        Menu?.ShowContextMenu(position);
     }
 
     private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)

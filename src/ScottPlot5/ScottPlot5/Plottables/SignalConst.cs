@@ -43,6 +43,14 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
         }
     }
 
+    /// <summary>
+    /// Setting this flag causes lines to be drawn between every visible point
+    /// (similar to scatter plots) to improve anti-aliasing in static images.
+    /// Setting this will decrease performance for large datasets 
+    /// and is not recommended for interactive environments.
+    /// </summary>
+    public bool AlwaysUseLowDensityMode { get; set; } = false;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
 
@@ -60,7 +68,8 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
 
         List<PixelColumn> cols = Data.GetPixelColumns(Axes);
         List<Pixel> points = [];
-        var pointsPerPx = PointsPerPixel();
+        double pointsPerPx = PointsPerPixel();
+        bool useLowDensityMode = pointsPerPx < 1 || AlwaysUseLowDensityMode;
 
         if (!cols.Any())
             return;
@@ -77,15 +86,15 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
                 path.LineTo(col.X, col.Top);
                 path.MoveTo(col.X, col.Exit);
             }
-            if (pointsPerPx < 1)
+            if (useLowDensityMode)
             {
                 points.Add(new(col.X, col.Enter));
             }
         }
 
         rp.Canvas.DrawPath(path, paint);
-        /// Zoomed in enough that no pixel could contain two points.
-        if (pointsPerPx < 1)
+
+        if (useLowDensityMode)
         {
             paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
@@ -94,6 +103,7 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
         }
 
     }
+
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {
         // TODO: put GetRange in axis translator
@@ -103,6 +113,7 @@ public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasM
             ? new CoordinateRange(xViewLeft, xViewRight)
             : new CoordinateRange(xViewRight, xViewLeft);
     }
+
     private double PointsPerPixel()
     {
         return GetVisibleXRange(Axes.DataRect).Span / Axes.DataRect.Width / Data.Period;

@@ -1,16 +1,24 @@
-﻿using System.Threading;
-
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 #nullable enable
 
 public class RandomDataGenerator
 {
+#if !NET5_0_OR_GREATER
     /// <summary>
     /// Global random number generator, to ensure each generator will returns different data.
     /// Using ThreadLocal, because Random is not thread safe.
     /// </summary>
-    private static readonly ThreadLocal<Random> GlobalRandomThread = new(() => new Random(GetCryptoRandomInt()));
+    private static readonly System.Threading.ThreadLocal<Random> GlobalRandomThread = new(() => new Random(GetCryptoRandomInt()));
+
+    private static int GetCryptoRandomInt()
+    {
+        var RNG = System.Security.Cryptography.RandomNumberGenerator.Create();
+        byte[] data = new byte[sizeof(int)];
+        RNG.GetBytes(data);
+        return BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
+    }
+#endif
 
     /// <summary>
     /// To select right random number generator
@@ -25,7 +33,11 @@ public class RandomDataGenerator
     {
         Rand = seed.HasValue
             ? new Random(seed.Value)
+#if NET5_0_OR_GREATER
+            : Random.Shared;
+#else
             : GlobalRandomThread.Value!;
+#endif
     }
 
     public void Seed(int seed)
@@ -35,13 +47,7 @@ public class RandomDataGenerator
 
     public static RandomDataGenerator Generate { get; private set; } = new(0);
 
-    private static int GetCryptoRandomInt()
-    {
-        var RNG = System.Security.Cryptography.RandomNumberGenerator.Create();
-        byte[] data = new byte[sizeof(int)];
-        RNG.GetBytes(data);
-        return BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
-    }
+
 
     #region Methods that return single numbers
 

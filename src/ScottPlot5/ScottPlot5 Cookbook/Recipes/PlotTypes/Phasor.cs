@@ -17,7 +17,8 @@ public class Phasor : ICategory
         {
             // Start by placing a polar axis system on the plot
             var polarAxis = myPlot.Add.PolarAxis(30);
-            polarAxis.LinePattern = LinePattern.Dotted;
+            polarAxis.Circles.ForEach(x => x.LinePattern = LinePattern.Dotted);
+            polarAxis.Spokes.ForEach(x => x.LinePattern = LinePattern.Dotted);
 
             // A Phasor may be added with predefined points
             PolarCoordinates[] points1 = [
@@ -46,7 +47,8 @@ public class Phasor : ICategory
         {
             // setup the polar axis
             var polarAxis = myPlot.Add.PolarAxis(30);
-            polarAxis.LinePattern = LinePattern.Dotted;
+            polarAxis.Circles.ForEach(x => x.LinePattern = LinePattern.Dotted);
+            polarAxis.Spokes.ForEach(x => x.LinePattern = LinePattern.Dotted);
 
             // create a phasor plot and points in coordinate space
             var phaser = myPlot.Add.Phasor();

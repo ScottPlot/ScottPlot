@@ -109,6 +109,26 @@ public static class Generate
         return values;
     }
 
+    /// <summary>
+    /// Generate a square wave by summing sine waves with decreasing amplitudes at odd harmonics of the fundamental frequency
+    /// </summary>
+    public static double[] SquareWaveFromSines(int pointCount = 1000, double oscillations = 2, int sineCount = 5)
+    {
+        double[] values = new double[pointCount];
+        double dX = Math.PI * 2 * oscillations / (pointCount - 1);
+
+        for (int j = 0; j < sineCount; j++)
+        {
+            int harmonic = (j * 2) + 1;
+            for (int i = 0; i < pointCount; i++)
+            {
+                values[i] += Math.Sin(i * dX * harmonic) / harmonic;
+            }
+        }
+
+        return values;
+    }
+
     public static double[] Zeros(int count)
     {
         return Repeating(count, 0);
@@ -134,6 +154,23 @@ public static class Generate
     public static double[] NaN(int count)
     {
         return Repeating(count, double.NaN);
+    }
+
+    /// <summary>
+    /// Return <paramref name="n"/> values evenly spaced between <paramref name="start"/> to <paramref name="stop"/> (inclusive)
+    /// </summary>
+    public static IEnumerable<double> Range(double start, double stop, int n)
+    {
+        return Enumerable.Range(0, n).Select(i => (stop - start) * i / (n - 1) + start);
+    }
+
+    /// <summary>
+    /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
+    /// </summary>
+    public static double[] Range(double start, double stop, double step = 1)
+    {
+        int n = (int)Math.Round((stop - start) / step) + 1;
+        return Range(start, stop, n).ToArray();
     }
 
     #endregion

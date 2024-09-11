@@ -1,0 +1,25 @@
+<Project Sdk="Uno.Sdk/5.3.90">
+    <PropertyGroup>
+        <TargetFramework>net8.0-windows10.0.22621</TargetFramework>
+        <WindowsSdkPackageVersion>10.0.22621.34</WindowsSdkPackageVersion>
+        <WinAppSdkVersion>1.5.240802000</WinAppSdkVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
+        <UnoSingleProject>true</UnoSingleProject>
+        <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257</NoWarn>
+
+        <ApplicationTitle>Sandbox.UnoPlatform</ApplicationTitle>
+        <ApplicationId>com.companyname.Sandbox.UnoPlatform</ApplicationId>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationPublisher>UnoPlatform</ApplicationPublisher>
+        <Description>Sandbox.UnoPlatform powered by Uno Platform.</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
+        <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    </ItemGroup>
+
+</Project>

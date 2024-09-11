@@ -59,7 +59,7 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -69,6 +69,12 @@ public static class Drawing
         {
             path.LineTo(px.ToSKPoint());
         }
+
+        if (close)
+        {
+            path.LineTo(pixels.First().ToSKPoint());
+        }
+
         DrawPath(canvas, paint, path, lineStyle);
     }
 
@@ -294,6 +300,21 @@ public static class Drawing
 
         foreach (Pixel pixel in pixels)
         {
+            marker.Render(canvas, paint, pixel, style.Size, style);
+        }
+    }
+
+    public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IReadOnlyList<Pixel> pixels, MarkerStyle style, IColormap colormap)
+    {
+        if (!style.IsVisible)
+            return;
+
+        IMarker marker = style.CustomRenderer ?? style.Shape.GetMarker();
+
+        for (int i = 0; i < pixels.Count; i++)
+        {
+            Pixel pixel = pixels[i];
+            style.MarkerColor = colormap.GetColor(i, pixels.Count);
             marker.Render(canvas, paint, pixel, style.Size, style);
         }
     }

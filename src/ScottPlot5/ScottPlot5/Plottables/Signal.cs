@@ -33,6 +33,14 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     /// </summary>
     public float MaximumMarkerSize { get; set; } = 4;
 
+    /// <summary>
+    /// Setting this flag causes lines to be drawn between every visible point
+    /// (similar to scatter plots) to improve anti-aliasing in static images.
+    /// Setting this will decrease performance for large datasets 
+    /// and is not recommended for interactive environments.
+    /// </summary>
+    public bool AlwaysUseLowDensityMode { get; set; } = false;
+
     public Color Color
     {
         get => LineColor;
@@ -70,7 +78,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
             return;
         }
 
-        if (PointsPerPixel() < 1)
+        if (PointsPerPixel() < 1 || AlwaysUseLowDensityMode)
         {
             RenderLowDensity(rp);
         }

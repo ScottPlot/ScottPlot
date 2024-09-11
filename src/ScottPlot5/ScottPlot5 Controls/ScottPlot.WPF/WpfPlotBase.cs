@@ -14,7 +14,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public Plot Plot { get; internal set; }
     public IPlotInteraction Interaction { get; set; }
     public float DisplayScale { get; set; }
-    public IPlotMenu Menu { get; set; }
+    public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
     protected abstract FrameworkElement PlotFrameworkElement { get; }
@@ -50,7 +50,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
 
     public void ShowContextMenu(Pixel position)
     {
-        Menu.ShowContextMenu(position);
+        Menu?.ShowContextMenu(position);
     }
 
     internal void SKElement_MouseDown(object? sender, MouseButtonEventArgs e)

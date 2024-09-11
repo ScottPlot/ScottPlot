@@ -58,6 +58,8 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 **/Properties/launchSettings.json
+# Unignore the specific launchSettings.json file for Sandbox.UnoPlatform
+!/src/ScottPlot5/ScottPlot5 Sandbox/Sandbox.UnoPlatform/Sandbox.UnoPlatform/Properties/launchSettings.json
 
 *_i.c
 *_p.c

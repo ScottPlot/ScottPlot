@@ -28,7 +28,7 @@ public static class Palette
             .Where(x => x.IsClass)
             .Where(x => !x.IsAbstract)
             .Where(x => x.GetInterfaces().Contains(typeof(IPalette)))
-            .Where(x => x.GetConstructors().Where(x => x.GetParameters().Count() == 0).Any())
+            .Where(x => x.GetConstructors().Where(x => x.GetParameters().Length == 0).Any())
             .Select(x => (IPalette)Activator.CreateInstance(x)!)
             .ToArray();
     }
