@@ -379,7 +379,7 @@ public static class Generate
     /// </summary>
     public static double[] RandomNumbers(int count, double min, double max)
     {
-        return RandomData.RandomSample(count, min, max);
+        return RandomData.RandomNumbers(count, min, max);
     }
 
     /// <summary>

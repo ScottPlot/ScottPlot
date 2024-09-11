@@ -170,6 +170,17 @@ public class RandomDataGenerator
     }
 
     /// <summary>
+    /// Generates <paramref name="count"/> random numbers between <paramref name="min"/> (inclusive) and <paramref name="max"/> (exclusive)
+    /// </summary>
+    public double[] RandomNumbers(int count, double min, double max)
+    {
+        double[] values = new double[count];
+        for (int i = 0; i < count; i++)
+            values[i] = RandomNumber(min, max);
+        return values;
+    }
+
+    /// <summary>
     /// Return a collection of numbers normally distributed around the given <paramref name="mean"/> 
     /// according to the <paramref name="stdDev"/> standard deviation.
     /// </summary>
