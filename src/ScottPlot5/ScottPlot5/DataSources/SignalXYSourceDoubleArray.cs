@@ -391,40 +391,106 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         return (SearchedPosition: index, LimitedIndex: index > indexRange.Max ? indexRange.Max : index);
     }
 
+    private int GetNextPointNearestSearch(double locationXRotated, int searchedLeft, int searchedRight, double maxDistanceSquared, double PxPerUnitXRotated)
+    {
+        int leftCandidate = searchedLeft - 1;
+        int rightCandidate = searchedRight + 1;
+
+        if (leftCandidate < 0 && rightCandidate >= Xs.Length)
+            return -1;
+
+        if (leftCandidate < 0)
+
+        {
+            double distance = (Xs[rightCandidate] * XScale + XOffset - locationXRotated) * PxPerUnitXRotated;
+            if (distance * distance > maxDistanceSquared)
+                return -1;
+
+            return rightCandidate;
+        }
+
+        if (rightCandidate >= Xs.Length)
+        {
+            double distance = (Xs[leftCandidate] * XScale + XOffset - locationXRotated) * PxPerUnitXRotated;
+            if (distance * distance > maxDistanceSquared)
+                return -1;
+
+            return leftCandidate;
+        }
+
+        double leftCandidateDistance = (Xs[leftCandidate] * XScale + XOffset - locationXRotated) * PxPerUnitXRotated;
+        double rightCandidateDistance = (Xs[rightCandidate] * XScale + XOffset - locationXRotated) * PxPerUnitXRotated;
+
+        double minDistanceSquared = Math.Min(leftCandidateDistance * leftCandidateDistance, rightCandidateDistance * rightCandidateDistance);
+
+        if (minDistanceSquared > maxDistanceSquared)
+            return -1;
+
+        return Math.Abs(leftCandidateDistance) < Math.Abs(rightCandidateDistance) ? leftCandidate : rightCandidate;
+
+    }
+
     public DataPoint GetNearest(Coordinates mouseLocation, double PxPerUnitX, double PxPerUnitY, float maxDistance = 15)
     {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
+        double[] XsRotated = Xs;
+        double XScaleRotated = XScale;
+        double XOffsetRotated = XOffset;
 
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
+        double[] YsRotated = Ys;
+        double YScaleRotated = YScale;
+        double YOffsetRotated = YOffset;
+        double PxPerUnitXRotated = PxPerUnitX;
+        Coordinates mouseLocationRotated = mouseLocation;
 
-        for (int i = 0; i < Xs.Length; i++)
+        if (Rotated)
         {
-            double dX = Rotated ?
-                 (Ys[i] * YScale + YOffset - mouseLocation.X) * PxPerUnitX :
-                 (Xs[i] * XScale + XOffset - mouseLocation.X) * PxPerUnitX;
-            double dY = Rotated ?
-                (Xs[i] * XScale + XOffset - mouseLocation.Y) * PxPerUnitY :
-                (Ys[i] * YScale + YOffset - mouseLocation.Y) * PxPerUnitY;
+            XsRotated = Ys;
+            XScaleRotated = YScale;
+            XOffsetRotated = YOffset;
 
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-
-                closestX = Rotated ?
-                    Ys[i] * YScale + YOffset :
-                    Xs[i] * XScale + XOffset;
-                closestY = Rotated ?
-                    Xs[i] * XScale + XOffset :
-                    Ys[i] * YScale + YOffset;
-
-                closestIndex = i;
-            }
+            YsRotated = Xs;
+            YScaleRotated = XScale;
+            YOffsetRotated = XOffset;
+            mouseLocationRotated.X = mouseLocation.Y;
+            mouseLocationRotated.Y = mouseLocation.X;
+            PxPerUnitXRotated = PxPerUnitY;
         }
+
+        double maxDistanceSquared = maxDistance * maxDistance;
+
+        int closestIndex = GetIndex(mouseLocationRotated.X);
+
+        double maxDistanceToSearch = maxDistanceSquared;
+        int searchedLeft = closestIndex;
+        int searchedRight = closestIndex;
+        int NextPoint = closestIndex;
+
+        while (NextPoint != -1)
+        {
+            double dx = (XsRotated[NextPoint] * XScaleRotated + XOffsetRotated - mouseLocation.X) * PxPerUnitX;
+            double dy = (YsRotated[NextPoint] * YScaleRotated + YOffsetRotated - mouseLocation.Y) * PxPerUnitY;
+            double distanceSquared = dx * dx + dy * dy;
+
+            if (distanceSquared < maxDistanceToSearch)
+            {
+                maxDistanceToSearch = distanceSquared;
+                closestIndex = NextPoint;
+            }
+
+            NextPoint = GetNextPointNearestSearch(mouseLocationRotated.X, searchedLeft, searchedRight, maxDistanceToSearch, PxPerUnitXRotated);
+
+            if (NextPoint < searchedLeft)
+                searchedLeft = NextPoint;
+            else
+                searchedRight = NextPoint;
+        };
+
+        double closestXdiff = (XsRotated[closestIndex] * XScaleRotated + XOffsetRotated - mouseLocation.X) * PxPerUnitX;
+        double closestYdiff = (YsRotated[closestIndex] * YScaleRotated + YOffsetRotated - mouseLocation.Y) * PxPerUnitY;
+        double closestDistanceSquared = closestXdiff * closestXdiff + closestYdiff * closestYdiff;
+
+        double closestX = XsRotated[closestIndex] * XScaleRotated + XOffsetRotated;
+        double closestY = YsRotated[closestIndex] * YScaleRotated + YOffsetRotated;
 
         return closestDistanceSquared <= maxDistanceSquared
             ? new DataPoint(closestX, closestY, closestIndex)

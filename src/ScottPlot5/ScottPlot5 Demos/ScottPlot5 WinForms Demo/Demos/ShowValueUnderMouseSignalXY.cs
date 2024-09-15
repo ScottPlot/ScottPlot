@@ -21,8 +21,8 @@ public partial class ShowValueUnderMouseSignalXY : Form, IDemoWindow
     {
         InitializeComponent();
 
-        double[] xs = Generate.Consecutive(1000);
-        double[] ys = Generate.RandomWalk(1000);
+        double[] xs = Generate.Consecutive(10_000_000);
+        double[] ys = Generate.RandomWalk(10_000_000);
 
         double[] xs1 = Generate.Consecutive(2000);
         double[] ys1 = Generate.RandomWalk(2000);
@@ -31,6 +31,7 @@ public partial class ShowValueUnderMouseSignalXY : Form, IDemoWindow
         formsPlot1.Plot.Axes.AddTopAxis();
 
         MySignal = formsPlot1.Plot.Add.SignalXY(xs, ys);
+        MySignal.Data.Rotated = true;
 
         MySignalDifferentAxes = formsPlot1.Plot.Add.SignalXY(xs1, ys1);
         MySignalDifferentAxes.Axes.XAxis = formsPlot1.Plot.Axes.Top;
