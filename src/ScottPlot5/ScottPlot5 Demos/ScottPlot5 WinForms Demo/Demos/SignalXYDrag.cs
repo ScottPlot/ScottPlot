@@ -102,7 +102,7 @@ public partial class SignalXYDrag : Form, IDemoWindow
 
         foreach (SignalXY signal in plot.GetPlottables<SignalXY>().Reverse())
         {
-            DataPoint nearest = signal.Data.GetNearest(mouseLocation, plot.LastRender);
+            DataPoint nearest = signal.GetNearest(mouseLocation, plot.LastRender);
             if (nearest.IsReal)
             {
                 return (signal, nearest);

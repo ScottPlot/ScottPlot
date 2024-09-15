@@ -50,7 +50,10 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
 
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
-        Data.GetNearest(location, renderInfo, maxDistance);
+        Data.GetNearest(location, renderInfo.GetPxPerUnitXForAxis(Axes.XAxis), renderInfo.GetPxPerUnitYForAxis(Axes.YAxis), maxDistance);
+
+    public DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
+        Data.GetNearestX(location, renderInfo.GetPxPerUnitXForAxis(Axes.XAxis), renderInfo.GetPxPerUnitYForAxis(Axes.YAxis), maxDistance);
 
     public virtual void Render(RenderPack rp)
     {

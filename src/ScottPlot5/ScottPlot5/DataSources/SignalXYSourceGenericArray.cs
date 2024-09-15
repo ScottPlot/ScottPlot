@@ -397,7 +397,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         return (SearchedPosition: index, LimitedIndex: index > indexRange.Max ? indexRange.Max : index);
     }
 
-    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    public DataPoint GetNearest(Coordinates mouseLocation, double PxPerUnitX, double PxPerUnitY, float maxDistance = 15)
     {
         double maxDistanceSquared = maxDistance * maxDistance;
         double closestDistanceSquared = double.PositiveInfinity;
@@ -409,11 +409,11 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         for (int i = 0; i < Xs.Length; i++)
         {
             double dX = Rotated ?
-                 (NumericConversion.GenericToDouble(Ys, i) * YScale + YOffset - mouseLocation.X) * renderInfo.PxPerUnitX :
-                 (NumericConversion.GenericToDouble(Xs, i) * XScale + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
+                 (NumericConversion.GenericToDouble(Ys, i) * YScale + YOffset - mouseLocation.X) * PxPerUnitX :
+                 (NumericConversion.GenericToDouble(Xs, i) * XScale + XOffset - mouseLocation.X) * PxPerUnitX;
             double dY = Rotated ?
-                (NumericConversion.GenericToDouble(Xs, i) * XScale + XOffset - mouseLocation.Y) * renderInfo.PxPerUnitY :
-                (NumericConversion.GenericToDouble(Ys, i) * YScale + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
+                (NumericConversion.GenericToDouble(Xs, i) * XScale + XOffset - mouseLocation.Y) * PxPerUnitY :
+                (NumericConversion.GenericToDouble(Ys, i) * YScale + YOffset - mouseLocation.Y) * PxPerUnitY;
             double distanceSquared = dX * dX + dY * dY;
 
             if (distanceSquared <= closestDistanceSquared)
@@ -436,11 +436,11 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             : DataPoint.None;
     }
 
-    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    public DataPoint GetNearestX(Coordinates mouseLocation, double PxPerUnitX, double PxPerUnitY, float maxDistance = 15)
     {
         var MousePosition = Rotated ? mouseLocation.Y : mouseLocation.X;
         int i = GetIndex(MousePosition); // TODO: check the index after too?
-        var PxPerPositionUnit = Rotated ? renderInfo.PxPerUnitY : renderInfo.PxPerUnitX;
+        var PxPerPositionUnit = Rotated ? PxPerUnitY : PxPerUnitX;
         double x = NumericConversion.GenericToDouble(Xs, i);
         double y = NumericConversion.GenericToDouble(Ys, i);
         double distance = (x * XScale + XOffset - MousePosition) * PxPerPositionUnit;

@@ -80,6 +80,44 @@ public readonly struct RenderDetails
     public double UnitsPerPxX => AxisLimits.HorizontalSpan / DataRect.Width;
     public double UnitsPerPxY => AxisLimits.VerticalSpan / DataRect.Height;
 
+    public double GetPxPerUnitXForAxis(IAxis axis)
+    {
+        if (axis is null)
+            return PxPerUnitX;
+        if (AxisLimitsByAxis.TryGetValue(axis, out var range))
+            return DataRect.Width / range.Span;
+        throw new Exception($"Unknown axis {axis}");
+    }
+
+    public double GetPxPerUnitYForAxis(IAxis axis)
+    {
+        if (axis is null)
+            return PxPerUnitY;
+        if (AxisLimitsByAxis.TryGetValue(axis, out var range))
+            return DataRect.Height / range.Span;
+        throw new Exception($"Unknown axis {axis}");
+    }
+
+    public double GetUnitsPerPxXForAxis(IAxis axis)
+    {
+        if (axis is null)
+            return UnitsPerPxX;
+        if (AxisLimitsByAxis.TryGetValue(axis, out var range))
+            return range.Span / DataRect.Width;
+
+        throw new Exception($"Unknown axis {axis}");
+    }
+
+    public double GetUnitsPerPxYForAxis(IAxis axis)
+    {
+        if (axis is null)
+            return UnitsPerPxY;
+        if (AxisLimitsByAxis.TryGetValue(axis, out var range))
+            return range.Span / DataRect.Height;
+
+        throw new Exception($"Unknown axis {axis}");
+    }
+
     public RenderDetails(RenderPack rp, (string, TimeSpan)[] actionTimes, RenderDetails lastRender)
     {
         // TODO: extend actionTimes report individual plottables, axes, etc.
