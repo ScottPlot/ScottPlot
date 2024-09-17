@@ -1,9 +1,11 @@
-﻿namespace ScottPlot.DataSources;
+﻿using ScottPlot.Interfaces;
+
+namespace ScottPlot.DataSources;
 
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
 /// </summary>
-public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
+public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource, IGetNearest
 {
     private readonly double[] Xs = xs;
     private readonly double[] Ys = ys;

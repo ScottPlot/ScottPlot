@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.DataSources;
+﻿using ScottPlot.Interfaces;
 
-public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> rootedVectors) : IVectorFieldSource
+namespace ScottPlot.DataSources;
+
+public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> rootedVectors) : IVectorFieldSource, IGetNearest
 {
     private readonly IList<RootedCoordinateVector> RootedVectors = rootedVectors;
 
@@ -59,6 +61,34 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
         }
 
         return closestDistanceSquared <= maxDistanceSquared
+            ? new DataPoint(closestX, closestY, closestIndex)
+            : DataPoint.None;
+    }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        double closestDistance = double.PositiveInfinity;
+
+        int closestIndex = 0;
+        double closestX = double.PositiveInfinity;
+        double closestY = double.PositiveInfinity;
+
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
+        {
+            int i = MinRenderIndex + i2;
+            var coordinate = this.RootedVectors[i].Point;
+            double dX = Math.Abs(coordinate.X - mouseLocation.X) * renderInfo.PxPerUnitX;
+
+            if (dX <= closestDistance)
+            {
+                closestDistance = dX;
+                closestX = coordinate.X;
+                closestY = coordinate.Y;
+                closestIndex = i;
+            }
+        }
+
+        return closestDistance <= maxDistance
             ? new DataPoint(closestX, closestY, closestIndex)
             : DataPoint.None;
     }

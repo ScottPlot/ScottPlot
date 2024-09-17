@@ -1,9 +1,10 @@
-﻿using System.Data;
+﻿using ScottPlot.Interfaces;
+using System.Data;
 using System.Linq;
 
 namespace ScottPlot.Plottables;
 
-public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
+public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -296,4 +297,10 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         return pixelsStep;
     }
+
+    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+        => Data.GetNearest(mouseLocation, renderInfo, maxDistance);
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+        => Data.GetNearestX(mouseLocation, renderInfo, maxDistance);
 }

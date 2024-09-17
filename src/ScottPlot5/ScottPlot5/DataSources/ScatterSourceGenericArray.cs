@@ -1,9 +1,11 @@
-﻿namespace ScottPlot.DataSources;
+﻿using ScottPlot.Interfaces;
+
+namespace ScottPlot.DataSources;
 
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
 /// </summary>
-public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSource
+public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSource, IGetNearest
 {
     private readonly T1[] Xs = xs;
     private readonly T2[] Ys = ys;
@@ -80,10 +82,32 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
-        // TODO: Implement GetNearestX() in this DataSource
-        // Code can be copied from ScatterSourceDoubleArray.GetNearestX() and modified as needed
-        // Contributions are welcome!
-        // https://github.com/ScottPlot/ScottPlot/issues/3807
-        throw new NotImplementedException();
+        double closestDistance = double.PositiveInfinity;
+
+        int closestIndex = 0;
+        double closestX = double.PositiveInfinity;
+        double closestY = double.PositiveInfinity;
+
+        for (int i2 = 0; i2 < RenderIndexCount; i2++)
+        {
+            int i = MinRenderIndex + i2;
+
+            T1 xValue = Xs[i];
+            double xValueDouble = NumericConversion.GenericToDouble(ref xValue);
+            double dX = Math.Abs(xValueDouble - mouseLocation.X) * renderInfo.PxPerUnitX;
+
+            if (dX <= closestDistance)
+            {
+                T2 yValue = Ys[i];
+                closestDistance = dX;
+                closestX = xValueDouble;
+                closestY = NumericConversion.GenericToDouble(ref yValue);
+                closestIndex = i;
+            }
+        }
+
+        return closestDistance <= maxDistance
+            ? new DataPoint(closestX, closestY, closestIndex)
+            : DataPoint.None;
     }
 }

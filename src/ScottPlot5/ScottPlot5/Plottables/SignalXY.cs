@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.Plottables;
+﻿using ScottPlot.Interfaces;
 
-public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker, IHasLegendText
+namespace ScottPlot.Plottables;
+
+public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
 {
     public ISignalXYSource Data { get; set; } = dataSource;
 
@@ -51,6 +53,9 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
 
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15) =>
         Data.GetNearest(location, renderInfo, maxDistance);
+
+    public DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
+        => Data.GetNearestX(location, renderInfo, maxDistance);
 
     public virtual void Render(RenderPack rp)
     {
