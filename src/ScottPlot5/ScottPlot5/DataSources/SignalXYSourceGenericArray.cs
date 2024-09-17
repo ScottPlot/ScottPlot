@@ -1,6 +1,8 @@
-﻿namespace ScottPlot.DataSources;
+﻿using ScottPlot.Interfaces;
 
-public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
+namespace ScottPlot.DataSources;
+
+public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IGetNearest
 {
     public TX[] Xs { get; set; }
     public TY[] Ys { get; set; }

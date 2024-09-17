@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ScottPlot.Interfaces;
+using System;
 
 namespace ScottPlot.DataSources;
 
-public class SignalXYSourceDoubleArray : ISignalXYSource
+public class SignalXYSourceDoubleArray : ISignalXYSource, IGetNearest
 {
     readonly double[] Xs;
     readonly double[] Ys;
