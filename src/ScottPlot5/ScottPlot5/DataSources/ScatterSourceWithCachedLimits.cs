@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.DataSources;
+﻿using ScottPlot.Interfaces;
+
+namespace ScottPlot.DataSources;
 
 public class CacheScatterLimitsDecorator(IScatterSource source) : IScatterSource, IGetNearest
 {
