@@ -1,6 +1,4 @@
-﻿using ScottPlot.Interfaces;
-
-namespace ScottPlot.DataSources;
+﻿namespace ScottPlot.DataSources;
 
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections

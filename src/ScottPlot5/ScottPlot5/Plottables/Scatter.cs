@@ -1,5 +1,4 @@
-﻿using ScottPlot.Interfaces;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 
 namespace ScottPlot.Plottables;

@@ -1,5 +1,4 @@
-﻿using ScottPlot.Interfaces;
-using System;
+﻿using System;
 
 namespace ScottPlot.DataSources;
 

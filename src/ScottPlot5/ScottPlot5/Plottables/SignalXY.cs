@@ -1,6 +1,4 @@
-﻿using ScottPlot.Interfaces;
-
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
 {

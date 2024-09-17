@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScottPlot.Interfaces
+﻿
+namespace ScottPlot
 {
     /// <summary>
     /// This interface is used by plottables that can locate a <see cref="DataPoint"> within a specified range of a coordinate on the plot.
