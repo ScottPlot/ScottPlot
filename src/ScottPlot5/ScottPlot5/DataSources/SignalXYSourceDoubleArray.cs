@@ -2,7 +2,7 @@
 
 namespace ScottPlot.DataSources;
 
-public class SignalXYSourceDoubleArray : ISignalXYSource, IGetNearest
+public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNearest
 {
     readonly double[] Xs;
     readonly double[] Ys;
@@ -18,6 +18,11 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IGetNearest
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
+
+    bool IDataSource.PreferCoordinates => false;
+    int IDataSource.Length => Xs.Length;
+    int IDataSource.MinRenderIndex => MinimumIndex;
+    int IDataSource.MaxRenderIndex => MaximumIndex;
 
     public SignalXYSourceDoubleArray(double[] xs, double[] ys)
     {
@@ -394,57 +399,46 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IGetNearest
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
-
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
-
-        for (int i = 0; i < Xs.Length; i++)
-        {
-            double dX = Rotated ?
-                 (Ys[i] * YScale + YOffset - mouseLocation.X) * renderInfo.PxPerUnitX :
-                 (Xs[i] * XScale + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = Rotated ?
-                (Xs[i] * XScale + XOffset - mouseLocation.Y) * renderInfo.PxPerUnitY :
-                (Ys[i] * YScale + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
-
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-
-                closestX = Rotated ?
-                    Ys[i] * YScale + YOffset :
-                    Xs[i] * XScale + XOffset;
-                closestY = Rotated ?
-                    Xs[i] * XScale + XOffset :
-                    Ys[i] * YScale + YOffset;
-
-                closestIndex = i;
-            }
-        }
-
-        return closestDistanceSquared <= maxDistanceSquared
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
+        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
+
+    Coordinates IDataSource.GetCoordinate(int index)
     {
-        var MousePosition = Rotated ? mouseLocation.Y : mouseLocation.X;
-        int i = GetIndex(MousePosition); // TODO: check the index after too?
-        var PxPerPositionUnit = Rotated ? renderInfo.PxPerUnitY : renderInfo.PxPerUnitX;
+        return new Coordinates(((IDataSource)this).GetX(index), ((IDataSource)this).GetY(index));
+    }
 
-        double distance = (Xs[i] * XScale + XOffset - MousePosition) * PxPerPositionUnit;
-        var closestX = Rotated ? Ys[i] * YScale + YOffset : Xs[i] * XScale + XOffset;
-        var closestY = Rotated ? Xs[i] * XScale + XOffset : Ys[i] * YScale + YOffset;
+    Coordinates IDataSource.GetCoordinateScaled(int index)
+    {
+        return new Coordinates(((IDataSource)this).GetXScaled(index), ((IDataSource)this).GetYScaled(index));
+    }
 
-        return Math.Abs(distance) <= maxDistance
-            ? new DataPoint(closestX, closestY, i)
-            : DataPoint.None;
+    double IDataSource.GetX(int index)
+    {
+        return Rotated ?
+            NumericConversion.GenericToDouble(Ys, index) :
+            NumericConversion.GenericToDouble(Xs, index);
+    }
+
+    double IDataSource.GetXScaled(int index)
+    {
+        return Rotated ?
+            DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset) :
+            DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset);
+    }
+
+    double IDataSource.GetY(int index)
+    {
+        return Rotated ?
+            NumericConversion.GenericToDouble(Xs, index) :
+            NumericConversion.GenericToDouble(Ys, index);
+    }
+
+    double IDataSource.GetYScaled(int index)
+    {
+        return Rotated ?
+            DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset) :
+            DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
     }
 }

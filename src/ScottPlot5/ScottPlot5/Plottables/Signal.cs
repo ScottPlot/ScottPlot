@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Plottables;
 
-public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
+public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -157,5 +157,25 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         }
 
         rp.Canvas.DrawPath(path, paint);
+    }
+
+    public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        if (Data is IDataSource ds)
+            return DataSourceUtilities.GetNearest(ds, location, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+        else if (Data is IGetNearest gn)
+            return gn.GetNearest(location, renderInfo, maxDistance);
+        else
+            throw new NotImplementedException("Data does not implement IGetNearest");
+    }
+
+    public DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        if (Data is IDataSource ds)
+            return DataSourceUtilities.GetNearestX(ds, location, renderInfo, maxDistance, Axes.XAxis);
+        else if (Data is IGetNearest gn)
+            return gn.GetNearest(location, renderInfo, maxDistance);
+        else
+            throw new NotImplementedException("Data does not implement IGetNearest");
     }
 }

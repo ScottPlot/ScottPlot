@@ -3,26 +3,31 @@
 /// <summary>
 /// This data source manages X/Y points as a collection of coordinates
 /// </summary>
-public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatterSource, IGetNearest
+public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatterSource, IDataSource, IGetNearest
 {
     private readonly Coordinates[] Coordinates = coordinates;
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
-    private int RenderIndexCount => Math.Min(Coordinates.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
+
+    bool IDataSource.PreferCoordinates => true;
+    int IDataSource.Length => Coordinates.Length;
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
         return Coordinates
             .Skip(MinRenderIndex)
-            .Take(RenderIndexCount)
+            .Take(this.CalculateRenderIndexCount())
             .ToList();
     }
 
     public AxisLimits GetLimits()
     {
         ExpandingAxisLimits limits = new();
-        limits.Expand(Coordinates.Skip(MinRenderIndex).Take(RenderIndexCount));
+        limits
+            .Expand(Coordinates
+            .Skip(MinRenderIndex)
+            .Take(this.CalculateRenderIndexCount()));
         return limits.AxisLimits;
     }
 
@@ -37,60 +42,22 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
-
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
-
-        for (int i2 = 0; i2 < RenderIndexCount; i2++)
-        {
-            int i = MinRenderIndex + i2;
-            double dX = (Coordinates[i].X - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (Coordinates[i].Y - mouseLocation.Y) * renderInfo.PxPerUnitY;
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-                closestX = Coordinates[i].X;
-                closestY = Coordinates[i].Y;
-                closestIndex = i;
-            }
-        }
-
-        return closestDistanceSquared <= maxDistanceSquared
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
+        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
+    
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double closestDistance = double.PositiveInfinity;
+        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
 
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
+    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis, IYAxis? yAxis)
+        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance, xAxis, yAxis);
 
-        for (int i2 = 0; i2 < RenderIndexCount; i2++)
-        {
-            int i = MinRenderIndex + i2;
-            var coordinate = this.Coordinates[i];
-            double dX = Math.Abs(coordinate.X - mouseLocation.X) * renderInfo.PxPerUnitX;
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis)
+        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance, xAxis);
 
-            if (dX <= closestDistance)
-            {
-                closestDistance = dX;
-                closestX = coordinate.X;
-                closestY = coordinate.Y;
-                closestIndex = i;
-            }
-        }
-
-        return closestDistance <= maxDistance
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
+    Coordinates IDataSource.GetCoordinate(int index) => Coordinates[index];
+    Coordinates IDataSource.GetCoordinateScaled(int index) => Coordinates[index];
+    double IDataSource.GetX(int index) => Coordinates[index].X;
+    double IDataSource.GetY(int index) => Coordinates[index].Y;
+    double IDataSource.GetXScaled(int index) => Coordinates[index].X;
+    double IDataSource.GetYScaled(int index) => Coordinates[index].Y;
 }

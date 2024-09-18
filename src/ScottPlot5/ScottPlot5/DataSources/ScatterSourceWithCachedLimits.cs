@@ -49,13 +49,13 @@ public class CacheScatterLimitsDecorator(IScatterSource source) : IScatterSource
         return _source.GetNearest(mouseLocation, renderInfo, maxDistance);
     }
 
-    public IReadOnlyList<Coordinates> GetScatterPoints()
-    {
-        return _source.GetScatterPoints();
-    }
-
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
         return _source.GetNearestX(mouseLocation, renderInfo, maxDistance);
+    }
+
+    public IReadOnlyList<Coordinates> GetScatterPoints()
+    {
+        return _source.GetScatterPoints();
     }
 }

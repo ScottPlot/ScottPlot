@@ -9,7 +9,7 @@ namespace ScottPlot;
 /// </summary>
 public static class NumericConversion
 {
-    private const MethodImplOptions ImplOptions =
+    internal const MethodImplOptions ImplOptions =
 #if NETCOREAPP
         MethodImplOptions.AggressiveOptimization |
 #endif

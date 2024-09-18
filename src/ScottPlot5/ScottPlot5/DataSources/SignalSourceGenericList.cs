@@ -1,9 +1,10 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
+public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource, IDataSource
 {
     private readonly IReadOnlyList<T> Ys;
     public override int Length => Ys.Count;
+    bool IDataSource.PreferCoordinates => false;
 
     public SignalSourceGenericList(IReadOnlyList<T> ys, double period)
     {
@@ -83,5 +84,35 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource
         float yTop = axes.GetPixelY(yMax);
 
         return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
+    }
+
+    Coordinates IDataSource.GetCoordinate(int index)
+    {
+        return new Coordinates(((IDataSource)this).GetX(index), ((IDataSource)this).GetY(index));
+    }
+
+    Coordinates IDataSource.GetCoordinateScaled(int index)
+    {
+        return new Coordinates(((IDataSource)this).GetXScaled(index), ((IDataSource)this).GetYScaled(index));
+    }
+
+    double IDataSource.GetX(int index)
+    {
+        return index * Period;
+    }
+
+    double IDataSource.GetXScaled(int index)
+    {
+        return index * Period + XOffset;
+    }
+
+    double IDataSource.GetY(int index)
+    {
+        return NumericConversion.GenericToDouble(Ys, index);
+    }
+
+    double IDataSource.GetYScaled(int index)
+    {
+        return DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
     }
 }

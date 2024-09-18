@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottables;
 
-public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
+public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -298,8 +298,63 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => Data.GetNearest(mouseLocation, renderInfo, maxDistance);
+    {
+        return DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+    }
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => Data.GetNearestX(mouseLocation, renderInfo, maxDistance);
+    {
+        return DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+    }
+
+    #region IDataSource
+
+    // Data object is assumed to implement IDataSource and will provide best execution
+
+    bool IDataSource.PreferCoordinates => Data is IDataSource ds ? ds.PreferCoordinates : true;
+    int IDataSource.Length => Data is IDataSource ds ? ds.Length : Data.GetScatterPoints().Count;
+    int IDataSource.MinRenderIndex => Data.MinRenderIndex;
+    int IDataSource.MaxRenderIndex => Data.MaxRenderIndex;
+    
+    Coordinates IDataSource.GetCoordinate(int index)
+    {
+        return Data is IDataSource ds ? 
+            ds.GetCoordinate(index):
+            Data.GetScatterPoints()[index];
+    }
+
+    Coordinates IDataSource.GetCoordinateScaled(int index)
+    {
+        IDataSource ds = this;
+        if (ds.PreferCoordinates)
+        {
+            return DataSourceUtilities.ScaleXY(ds.GetCoordinate(index), ScaleX, OffsetX, ScaleY, OffsetY);
+        }
+        return new Coordinates()
+        {
+            X = ds.GetXScaled(index),
+            Y = ds.GetYScaled(index)
+        };
+    }
+
+    double IDataSource.GetX(int index)
+    {
+        return Data is IDataSource ds ? ds.GetX(index) : Data.GetScatterPoints()[index].X;
+    }
+
+    double IDataSource.GetXScaled(int index)
+    {
+        return DataSourceUtilities.ScaleXY(((IDataSource)this).GetX(index), ScaleX, OffsetX);
+    }
+
+    double IDataSource.GetY(int index)
+    {
+        return Data is IDataSource ds ? ds.GetX(index) : Data.GetScatterPoints()[index].Y;
+    }
+
+    double IDataSource.GetYScaled(int index)
+    {
+        return DataSourceUtilities.ScaleXY(((IDataSource)this).GetY(index), ScaleY, OffsetY);
+    }
+    #endregion
 }
