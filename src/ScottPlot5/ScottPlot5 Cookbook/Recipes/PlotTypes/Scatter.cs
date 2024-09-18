@@ -152,7 +152,21 @@ public class Scatter : ICategory
         [Test]
         public override void Execute()
         {
-            LinePattern[] patterns = Enum.GetValues<LinePattern>();
+            string[] patternNames = new string[] {
+                "Solid",
+                "Dashed",
+                "DenselyDashed",
+                "Dotted",
+                "Customization",
+            };
+            LinePattern[] patterns = new LinePattern[] {
+                LinePattern.Solid,
+                LinePattern.Dashed,
+                LinePattern.DenselyDashed,
+                LinePattern.Dotted,
+                new LinePattern(new float[] { 10, 3 }, 5)
+            };
+
             ScottPlot.Palettes.ColorblindFriendly palette = new();
 
             for (int i = 0; i < patterns.Length; i++)
@@ -167,7 +181,7 @@ public class Scatter : ICategory
                 sp.LinePattern = patterns[i];
                 sp.Color = palette.GetColor(i);
 
-                var txt = myPlot.Add.Text(patterns[i].ToString(), 51, yOffset);
+                var txt = myPlot.Add.Text(patternNames[i], 51, yOffset);
                 txt.LabelFontColor = sp.Color;
                 txt.LabelFontSize = 22;
                 txt.LabelBold = true;

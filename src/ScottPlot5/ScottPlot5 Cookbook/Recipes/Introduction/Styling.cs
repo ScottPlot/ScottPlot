@@ -132,7 +132,20 @@ public class Styling : ICategory
         [Test]
         public override void Execute()
         {
-            LinePattern[] linePatterns = Enum.GetValues<LinePattern>().ToArray();
+            string[] patternNames = new string[] {
+                "Solid",
+                "Dashed",
+                "DenselyDashed",
+                "Dotted",
+                "Customization",
+            };
+            LinePattern[] linePatterns = new LinePattern[] {
+                LinePattern.Solid,
+                LinePattern.Dashed,
+                LinePattern.DenselyDashed,
+                LinePattern.Dotted,
+                new LinePattern(new float[] { 10, 3 }, 5)
+            };
 
             for (int i = 0; i < linePatterns.Length; i++)
             {
@@ -143,7 +156,7 @@ public class Styling : ICategory
                 line.LineWidth = 2;
                 line.Color = Colors.Black;
 
-                var txt = myPlot.Add.Text(pattern.ToString(), 1.1, -i);
+                var txt = myPlot.Add.Text(patternNames[i], 1.1, -i);
                 txt.LabelFontSize = 18;
                 txt.LabelBold = true;
                 txt.LabelFontColor = Colors.Black;
