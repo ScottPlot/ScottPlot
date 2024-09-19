@@ -9,8 +9,10 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
     private readonly double[] Ys = ys;
 
     public int MinRenderIndex { get; set; } = 0;
-    public int MaxRenderIndex { get; set; } = int.MaxValue;
+    public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
     private int RenderIndexCount => Math.Min(Ys.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
+    
+    bool IDataSource.IsSorted => Xs.IsAscending(BinarySearchComparer.Instance);
     bool IDataSource.PreferCoordinates => false;
     int IDataSource.Length => Math.Min(Xs.Length, Ys.Length);
 
@@ -45,6 +47,7 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
         => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
 
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, mouseLocation.X, new IndexRange(MinRenderIndex, MaxRenderIndex));
     Coordinates IDataSource.GetCoordinate(int index) => new Coordinates(Xs[index], Ys[index]);
     Coordinates IDataSource.GetCoordinateScaled(int index) => new Coordinates(Xs[index], Ys[index]);
     double IDataSource.GetX(int index) => Xs[index];

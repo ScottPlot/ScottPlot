@@ -10,6 +10,8 @@ public class ScatterSourceCoordinatesList(List<Coordinates> coordinates) : IScat
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
     private int RenderIndexCount => Math.Min(Coordinates.Count - 1, MaxRenderIndex) - MinRenderIndex + 1;
+    
+    bool IDataSource.IsSorted => Coordinates.IsAscending(BinarySearchComparer.Instance);
     bool IDataSource.PreferCoordinates => true;
     int IDataSource.Length => Coordinates.Count;
 
@@ -44,6 +46,7 @@ public class ScatterSourceCoordinatesList(List<Coordinates> coordinates) : IScat
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
         => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
 
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Coordinates, mouseLocation, this.GetRenderIndexRange());
     Coordinates IDataSource.GetCoordinate(int index) => Coordinates[index];
     Coordinates IDataSource.GetCoordinateScaled(int index) => Coordinates[index];
     double IDataSource.GetX(int index) => Coordinates[index].X;

@@ -129,6 +129,13 @@ public static class NumericConversion
             v = (T)Convert.ChangeType(value, typeof(T));
     }
 
+    [MethodImpl(ImplOptions)]
+    public static T DoubleToGeneric<T>(double value)
+    {
+        DoubleToGeneric(value, out T converted);
+        return converted;
+    }
+
     public static T[] DoubleToGeneric<T>(this double[] input)
     {
         T[] result = new T[input.Length];

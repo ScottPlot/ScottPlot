@@ -297,30 +297,56 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         return pixelsStep;
     }
 
+
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
-        return DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+        return DataSourceUtilities.GetNearest(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
     }
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
-        return DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+        return DataSourceUtilities.GetNearestX(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+    }
+
+    /// <summary>
+    /// Returns an optimized <see cref="IDataSource"/> to work with when having to iterate across the collection of points
+    /// </summary>
+    public IDataSource GetIDataSource()
+    {
+        if (Data is IDataSource) return this; // should be already optimized, as this just passed calls to the data directly
+
+        // benefits : wrapping the collection will handle the offset, scaling and axes whereas IScatterSource.GetNearest will not.
+        // cons : copies values to array. BUT, this should still be much better than having to get the value from the GetScatterPoints() every interface call.
+        return new CoordinateDataSource(Data.GetScatterPoints())
+        {
+            XOffset = OffsetX,
+            XScale = ScaleX,
+            YOffset = OffsetY,
+            YScale = ScaleY,
+        };
     }
 
     #region IDataSource
 
     // Data object is assumed to implement IDataSource and will provide best execution
-
+    bool IDataSource.IsSorted => Data is IDataSource ds ? ds.IsSorted : false;
     bool IDataSource.PreferCoordinates => Data is IDataSource ds ? ds.PreferCoordinates : true;
     int IDataSource.Length => Data is IDataSource ds ? ds.Length : Data.GetScatterPoints().Count;
     int IDataSource.MinRenderIndex => Data.MinRenderIndex;
     int IDataSource.MaxRenderIndex => Data.MaxRenderIndex;
-    
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
+    {
+        return Data is IDataSource ds 
+            ? ds.GetXClosestIndex(mouseLocation)
+            : DataSourceUtilities.GetClosestIndex(Data.GetScatterPoints(), mouseLocation, this.GetRenderIndexRange(), BinarySearchComparer.Instance);
+    }
+
     Coordinates IDataSource.GetCoordinate(int index)
     {
-        return Data is IDataSource ds ? 
-            ds.GetCoordinate(index):
-            Data.GetScatterPoints()[index];
+        return Data is IDataSource ds
+            ? ds.GetCoordinate(index)
+            : Data.GetScatterPoints()[index];
     }
 
     Coordinates IDataSource.GetCoordinateScaled(int index)

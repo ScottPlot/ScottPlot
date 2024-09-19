@@ -6,6 +6,7 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDat
     public override int Length => Ys.Length;
 
     bool IDataSource.PreferCoordinates => false;
+    bool IDataSource.IsSorted => true;
 
     public SignalSourceGenericArray(T[] ys, double period)
     {
@@ -82,6 +83,11 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDat
         float yTop = axes.GetPixelY(yMax);
 
         return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
+    }
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
+    {
+        return GetIndex(mouseLocation.X, true);
     }
 
     Coordinates IDataSource.GetCoordinate(int index)

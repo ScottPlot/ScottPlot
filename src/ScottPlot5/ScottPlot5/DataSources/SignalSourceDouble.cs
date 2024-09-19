@@ -5,6 +5,7 @@ public class SignalSourceDouble : SignalSourceBase, ISignalSource, IDataSource
     private readonly IReadOnlyList<double> Ys;
     public override int Length => Ys.Count;
     bool IDataSource.PreferCoordinates => false;
+    bool IDataSource.IsSorted => true;
 
     public SignalSourceDouble(IReadOnlyList<double> ys, double period)
     {
@@ -73,6 +74,8 @@ public class SignalSourceDouble : SignalSourceBase, ISignalSource, IDataSource
 
         return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
     }
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => GetIndex(mouseLocation.X, true);
 
     Coordinates IDataSource.GetCoordinate(int index)
     {

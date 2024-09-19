@@ -4,7 +4,6 @@ namespace ScottPlot.DataSources;
 
 public class DataLoggerSource
 {
-    private static readonly CoordinatesXComparer XComparer = new();
     private volatile bool hasNewData;
     private volatile bool wasRendered;
 
@@ -356,7 +355,7 @@ public class DataLoggerSource
     /// </summary>
     private (int SearchedPosition, int LimitedIndex) SearchIndex(double x, IndexRange indexRange)
     {
-        int index = Coordinates.BinarySearch(indexRange.Min, indexRange.Length, new Coordinates(x - XOffset, 0), XComparer);
+        int index = Coordinates.BinarySearch(indexRange.Min, indexRange.Length, new Coordinates(x - XOffset, 0), BinarySearchComparer.Instance);
 
         // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negate to obtain the position where x would be inserted (i.e., the next highest index).
         // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
@@ -367,31 +366,5 @@ public class DataLoggerSource
         }
 
         return (SearchedPosition: index, LimitedIndex: index > indexRange.Max ? indexRange.Max : index);
-    }
-}
-
-internal class CoordinatesXComparer : IComparer<Coordinates>
-{
-    public int Compare(Coordinates a, Coordinates b)
-    {
-        return a.X.CompareTo(b.X);
-    }
-}
-
-internal static class IListBinarySearchExtensions
-{
-    public static int BinarySearch<T>(this IList<T> list, int index, int count, T value, IComparer<T> comparer)
-    {
-        switch (list)
-        {
-            case List<T> listT:
-                return listT.BinarySearch(index, count, value, comparer);
-            case T[] arrayT:
-                return Array.BinarySearch(arrayT, index, count, value, comparer);
-            case CircularBuffer<T> circularBufferT:
-                return circularBufferT.BinarySearch(index, count, value, comparer);
-            default:
-                throw new NotSupportedException($"unsupported {nameof(IList<T>)}: {list.GetType().Name}");
-        }
     }
 }

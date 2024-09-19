@@ -17,6 +17,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
     public int MaximumIndex { get; set; }
 
     bool IDataSource.PreferCoordinates => false;
+    bool IDataSource.IsSorted => true;
     int IDataSource.Length => Xs.Length;
     int IDataSource.MinRenderIndex => MinimumIndex;
     int IDataSource.MaxRenderIndex => MaximumIndex;
@@ -407,6 +408,13 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
         => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
+    {
+        return Rotated
+            ? GetIndex(mouseLocation.X)
+            : GetIndex(mouseLocation.Y);
+    }
 
     Coordinates IDataSource.GetCoordinate(int index)
     {

@@ -8,6 +8,7 @@ public class FastSignalSourceDouble : SignalSourceBase, ISignalSource, IDataSour
     public override int Length => Ys.Count;
 
     bool IDataSource.PreferCoordinates => false;
+    bool IDataSource.IsSorted => true;
 
     public FastSignalSourceDouble(IReadOnlyList<double> ys, double period, int cachePeriod = 1000)
     {
@@ -68,6 +69,8 @@ public class FastSignalSourceDouble : SignalSourceBase, ISignalSource, IDataSour
 
         return new PixelColumn(xPixel, yEnter, yExit, yBottom, yTop);
     }
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => GetIndex(mouseLocation.X, true);
 
     Coordinates IDataSource.GetCoordinate(int index)
     {

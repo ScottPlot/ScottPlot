@@ -8,16 +8,17 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     private readonly Coordinates[] Coordinates = coordinates;
 
     public int MinRenderIndex { get; set; } = 0;
-    public int MaxRenderIndex { get; set; } = int.MaxValue;
+    public int MaxRenderIndex { get; set; } = coordinates.Length - 1;
 
     bool IDataSource.PreferCoordinates => true;
     int IDataSource.Length => Coordinates.Length;
+    bool IDataSource.IsSorted => Coordinates.IsAscending(BinarySearchComparer.Instance);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
         return Coordinates
             .Skip(MinRenderIndex)
-            .Take(this.CalculateRenderIndexCount())
+            .Take(this.GetRenderIndexCount())
             .ToList();
     }
 
@@ -27,7 +28,7 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
         limits
             .Expand(Coordinates
             .Skip(MinRenderIndex)
-            .Take(this.CalculateRenderIndexCount()));
+            .Take(this.GetRenderIndexCount()));
         return limits.AxisLimits;
     }
 
@@ -54,6 +55,7 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis)
         => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance, xAxis);
 
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Coordinates, mouseLocation, new IndexRange(MinRenderIndex, MaxRenderIndex));
     Coordinates IDataSource.GetCoordinate(int index) => Coordinates[index];
     Coordinates IDataSource.GetCoordinateScaled(int index) => Coordinates[index];
     double IDataSource.GetX(int index) => Coordinates[index].X;
