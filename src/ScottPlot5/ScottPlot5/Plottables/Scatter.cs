@@ -317,7 +317,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         // benefits : wrapping the collection will handle the offset, scaling and axes whereas IScatterSource.GetNearest will not.
         // cons : copies values to array. BUT, this should still be much better than having to get the value from the GetScatterPoints() every interface call.
-        return new CoordinateDataSource(Data.GetScatterPoints())
+        return new DataSources.CoordinateDataSource(Data.GetScatterPoints())
         {
             XOffset = OffsetX,
             XScale = ScaleX,

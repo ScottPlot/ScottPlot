@@ -166,7 +166,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         else if (Data is IGetNearest gn)
             return gn.GetNearest(location, renderInfo, maxDistance);
         else
-            throw new NotImplementedException("Data does not implement IGetNearest");
+            throw new NotImplementedException("Data does not implement IDataSource (preferred) or IGetNearest");
     }
 
     public DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
@@ -176,6 +176,6 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         else if (Data is IGetNearest gn)
             return gn.GetNearest(location, renderInfo, maxDistance);
         else
-            throw new NotImplementedException("Data does not implement IGetNearest");
+            throw new NotImplementedException("Data does not implement IDataSource (preferred) or IGetNearest");
     }
 }

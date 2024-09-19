@@ -44,7 +44,7 @@ public class ScatterSourceCoordinatesList(List<Coordinates> coordinates) : IScat
         => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
 
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Coordinates, mouseLocation, this.GetRenderIndexRange());
     Coordinates IDataSource.GetCoordinate(int index) => Coordinates[index];
