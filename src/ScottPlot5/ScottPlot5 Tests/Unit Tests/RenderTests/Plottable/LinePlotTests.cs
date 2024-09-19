@@ -33,7 +33,7 @@ internal class LinePlotTests
         lp.End = end;
 
         var cl = new CoordinateLine(start, end);
-        
+
         cl.Should().Be(lp.Line);
     }
 }
