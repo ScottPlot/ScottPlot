@@ -5,7 +5,7 @@ namespace ScottPlotTests.RenderTests.Plottable;
 internal class LinePlotTests
 {
     [Test]
-    public void Test_LinePlotGetSet()
+    public void Test_LinePlotSet()
     {
         Coordinates start = new Coordinates(0, 0);
         Coordinates end = new Coordinates(5, 6);
@@ -19,5 +19,21 @@ internal class LinePlotTests
 
         newStart.Should().Be(start);
         newEnd.Should().Be(end);
+    }
+
+    [Test]
+    public void Test_LinePlotGet()
+    {
+        Coordinates start = new Coordinates(0, 0);
+        Coordinates end = new Coordinates(5, 6);
+
+        LinePlot lp = new();
+
+        lp.Start = start;
+        lp.End = end;
+
+        var cl = new CoordinateLine(start, end);
+        
+        cl.Should().Be(lp.Line);
     }
 }
