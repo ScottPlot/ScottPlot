@@ -36,17 +36,20 @@ namespace ScottPlot
     {
         public static readonly GenericDoubleComparer<T> Instance = new GenericDoubleComparer<T>();
 
+#pragma warning disable CS8767 // This error is due to checking is IComparable is implemented when T is not specified as a struct -- Maybe restrict generic data sources to 'where T : struct, IComparable<T>' ?
         public int Compare(T a, T b)
         {
             if (a is IComparable<T> cA)
             {
-                return cA.CompareTo(b);
+                return cA.CompareTo(b); // JIT should optimize this call after detecting that T always implements IComparable
             }
             else
             {
                 return NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b));
             }
         }
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+
     }
 
     internal static class DataSourceUtilities
