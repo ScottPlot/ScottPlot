@@ -354,7 +354,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
         IDataSource ds = this;
         if (ds.PreferCoordinates)
         {
-            return DataSourceUtilities.ScaleXY(ds.GetCoordinate(index), ScaleX, OffsetX, ScaleY, OffsetY);
+            return DataSourceUtilities.ScaleCoordinate(ds.GetCoordinate(index), ScaleX, OffsetX, ScaleY, OffsetY);
         }
         return new Coordinates()
         {

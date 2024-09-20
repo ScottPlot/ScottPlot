@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace ScottPlot
 {
-    internal class BinarySearchComparer : IComparer<Coordinates>, IComparer<double>, IComparer<RootedCoordinateVector>, IComparer<RootedPixelVector>
+    public sealed class BinarySearchComparer : IComparer<Coordinates>, IComparer<double>, IComparer<RootedCoordinateVector>, IComparer<RootedPixelVector>
     {
         public static readonly BinarySearchComparer Instance = new BinarySearchComparer();
 
@@ -32,7 +32,7 @@ namespace ScottPlot
         }
     }
 
-    internal class GenericDoubleComparer<T> : IComparer<T>
+    public sealed class GenericDoubleComparer<T> : IComparer<T>
     {
         public static readonly GenericDoubleComparer<T> Instance = new GenericDoubleComparer<T>();
 
@@ -52,7 +52,7 @@ namespace ScottPlot
 
     }
 
-    internal static class DataSourceUtilities
+    public static class DataSourceUtilities
     {
         public static bool IsAscending<T>(this IEnumerable<T> values, IComparer<T> comparer)
         {
@@ -149,14 +149,12 @@ namespace ScottPlot
         public static int GetRenderIndexCount(this IDataSource dataSource)
             => Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex) - dataSource.MinRenderIndex + 1;
 
-        [MethodImpl(NumericConversion.ImplOptions)]
-        public static int CalculateRenderIndexCount(int XsLength, int maxRenderIndex, int minRenderIndex)
-            => Math.Min(XsLength - 1, maxRenderIndex) - minRenderIndex + 1;
-
-        /// <summary> Creates a new <see cref="IndexRange"/> using the MinRenderIndex and <see cref="GetRenderIndexCount(IDataSource)"/> </summary>
+        /// <summary> Creates a new <see cref="IndexRange"/>  </summary>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static IndexRange GetRenderIndexRange(this IDataSource dataSource) 
-            => new IndexRange(dataSource.MinRenderIndex, Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex));
+            => new IndexRange(Math.Max(0, dataSource.MinRenderIndex), Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex));
+
+        #region < ScaleXY >
 
         [MethodImpl(NumericConversion.ImplOptions)]
         public static double ScaleXY(double point, double scalingFactor, double offset)
@@ -174,30 +172,60 @@ namespace ScottPlot
         public static double ScaleXY<T>(IReadOnlyList<T> collection, int index, double scalingFactor, double offset)
             => NumericConversion.GenericToDouble(collection, index) * scalingFactor + offset;
 
+        #endregion
+
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static Coordinates ScaleXY(Coordinates coordinate, double xScalingFactor, double xOffset, double yScalingFactor, double yOffset) => new Coordinates()
+        public static Coordinates ScaleCoordinate(Coordinates coordinate, double xScalingFactor, double xOffset, double yScalingFactor, double yOffset)
         {
-            X = ScaleXY(coordinate.X, xScalingFactor, xOffset),
-            Y = ScaleXY(coordinate.Y, yScalingFactor, yOffset)
-        };
-
-        public static DataPoint GetNearest(this IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
-        {
-            if (dataSource.IsSorted)
-                return GetNearest_Optimized(dataSource, mouseLocation, renderInfo, maxDistance, xAxis, yAxis);
-            else
-                return GetNearest_New(dataSource, mouseLocation, renderInfo, maxDistance, xAxis, yAxis);
+            return new Coordinates(
+                x: ScaleXY(coordinate.X, xScalingFactor, xOffset), 
+                y: ScaleXY(coordinate.Y, yScalingFactor, yOffset)
+                );
         }
 
-        public static DataPoint GetNearestX(this IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null)
+
+        [MethodImpl(NumericConversion.ImplOptions)]
+        public static Coordinates UnScaleCoordinate(Coordinates coordinate, double xScalingFactor, double xOffset, double yScalingFactor, double yOffset)
         {
-            if (dataSource.IsSorted)
-                return GetNearestX_Optimized(dataSource, mouseLocation, renderInfo, maxDistance, xAxis);
-            else
-                return GetNearestX_New(dataSource, mouseLocation, renderInfo, maxDistance, xAxis);
+            return new Coordinates(
+                x: (coordinate.X - xOffset) / xScalingFactor,
+                y: (coordinate.Y - yOffset) / yScalingFactor
+                );
         }
 
-        public static DataPoint GetNearest_New(this IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
+        [MethodImpl(NumericConversion.ImplOptions)]
+        public static Coordinates UnScaleCoordinate(Coordinates pixelCoordinate, RenderDetails renderInfo, double xScalingFactor = 1, double xOffset = 0, double yScalingFactor = 1, double yOffset = 0, IXAxis? xaxis = null, IYAxis? yaxis = null)
+        {
+            renderInfo.TryGetPixelPerUnitX(xaxis, out var pixelScaleX);
+            renderInfo.TryGetPixelPerUnitY(yaxis, out var pixelScaleY);
+
+            return new Coordinates(
+                x: UnScale(pixelCoordinate.X, pixelScaleX, xScalingFactor, xOffset),
+                y: UnScale(pixelCoordinate.Y, pixelScaleY, yScalingFactor, yOffset)
+                ); ;
+
+            static double UnScale(double value,  double pixelScaling, double axisScaling, double offset)
+            {
+                return ((value / pixelScaling) - offset) / axisScaling;
+            }
+        }
+
+        /// <summary>
+        /// Get the nearest datapoint from the <paramref name="dataSource"/>, based on the <paramref name="mouseLocation"/> and the <paramref name="renderInfo"/>
+        /// </summary>
+        /// <remarks>This is the original way to locate the nearest DataPoint from the collection, and is safe for unsorted collections (such as Scatter)</remarks>
+        /// <param name="dataSource">The data source</param>
+        /// <param name="mouseLocation">the mouse coordinates from the plot. <see cref="Plot.GetCoordinates(Pixel, IXAxis?, IYAxis?)"/></param>
+        /// <param name="renderInfo"><see cref="Plot.LastRender"/></param>
+        /// <param name="maxDistance">The maximum distance to search</param>
+        /// <param name="xAxis">The X-Axis of assigned to the datasource. If not specified, uses the bottom axis.</param>
+        /// <param name="yAxis">The X-Axis of assigned to the datasource. If not specified, uses the left axis.</param>
+        /// <returns>
+        /// If match found : returns a datapoint that represents the (X,Y) values (not scaled or offset) 
+        /// <br/>If no match found : returns <see cref="DataPoint.None"/>
+        /// </returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static DataPoint GetNearest(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
         {
             if (dataSource is null) throw new ArgumentNullException(nameof(dataSource));
 
@@ -208,46 +236,93 @@ namespace ScottPlot
             double closestDistanceSquared = double.PositiveInfinity;
 
             int closestIndex = 0;
-            double closestX = double.PositiveInfinity;
-            double closestY = double.PositiveInfinity;
 
-            _ = renderInfo.TryGetPxPerUnitX(xAxis, out double pxPerUnitX);
-            _ = renderInfo.TryGetPxPerUnitY(yAxis, out double pxPerUnitY);
+            _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
+            _ = renderInfo.TryGetPixelPerUnitY(yAxis, out double pxPerUnitY);
+
+            bool preferCoordinates = dataSource.PreferCoordinates;
 
             for (int i2 = 0; i2 < renderIndexCount; i2++)
             {
                 int i = minRenderIndex + i2;
 
-                (double X, double Y) = dataSource.PreferCoordinates ?
+                (double X, double Y) = preferCoordinates ?
                     dataSource.GetCoordinateScaled(i).Deconstruct() :
                     (dataSource.GetXScaled(i), dataSource.GetYScaled(i));
 
-                double dX = (X - mouseLocation.X) * pxPerUnitX;
-                double dY = (Y - mouseLocation.Y) * pxPerUnitY;
+                double dX = Math.Abs(X - mouseLocation.X) * pxPerUnitX;
+                double dY = Math.Abs(Y - mouseLocation.Y) * pxPerUnitY;
                 double distanceSquared = dX * dX + dY * dY;
 
                 if (distanceSquared <= closestDistanceSquared)
                 {
                     closestDistanceSquared = distanceSquared;
-                    closestX = X;
-                    closestY = Y;
                     closestIndex = i;
                 }
-
             }
 
-            return closestDistanceSquared <= maxDistanceSquared
-                    ? new DataPoint(closestX, closestY, closestIndex)
-                    : DataPoint.None;
+            if (closestDistanceSquared <= maxDistanceSquared)
+            {
+                if (preferCoordinates)
+                {
+                    var coord = dataSource.GetCoordinate(closestIndex);
+                    return new DataPoint(coord.X, coord.Y, closestIndex);
+                }
+                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+            }
+            return DataPoint.None;
         }
 
-        public static DataPoint GetNearest_Optimized(this IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
+        /// <summary>
+        /// Get the nearest datapoint from the <paramref name="dataSource"/>, based on the <paramref name="mouseLocation"/> X location and the <paramref name="renderInfo"/>
+        /// </summary>
+        /// <inheritdoc cref="GetNearest"/>
+        public static DataPoint GetNearestX(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null)
         {
+            if (dataSource is null) throw new ArgumentNullException(nameof(dataSource));
 
+            _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
+
+            var renderIndexCount = dataSource.GetRenderIndexCount();
+            var minRenderIndex = dataSource.MinRenderIndex;
+
+            double closestDistance = double.PositiveInfinity;
+
+            int closestIndex = 0;
+
+            for (int i2 = 0; i2 < renderIndexCount; i2++)
+            {
+                int i = minRenderIndex + i2;
+                var x = dataSource.GetXScaled(i);
+                double dX = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
+                if (dX <= closestDistance)
+                {
+                    closestDistance = dX;
+                    closestIndex = i;
+                }
+            }
+
+            if (closestDistance <= maxDistance)
+            {
+                if (dataSource.PreferCoordinates)
+                {
+                    Coordinates closestCoord = dataSource.GetCoordinate(closestIndex);
+                    return new DataPoint(closestCoord.X, closestCoord.Y, closestIndex);
+                }
+                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+            }
+            return DataPoint.None;
+        }
+
+        /// <remarks>This is a faster way to locate the nearest DataPoint from the collection, but it requires the collection to be sorted in ascending order. ( Signal | SignalXY )</remarks>
+        /// <inheritdoc cref="GetNearest"/>
+        public static DataPoint GetNearestFast(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
+        {
+            // To-DO : GetXCLosestIndex accepts the mouse coordinate, which means its fully scalled and offset. This must be accounted for in the IDataSource.GetXClosestIndex
             int closestIndex = dataSource.GetXClosestIndex(mouseLocation);
 
-            _ = renderInfo.TryGetPxPerUnitX(xAxis, out double pxPerUnitX);
-            _ = renderInfo.TryGetPxPerUnitY(yAxis, out double pxPerUnitY);
+            _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
+            _ = renderInfo.TryGetPixelPerUnitY(yAxis, out double pxPerUnitY);
 
             
             int searchedLeft = closestIndex;
@@ -257,25 +332,23 @@ namespace ScottPlot
             double maxDistanceToSearch = maxDistanceSquared;
             
             double closestDistanceSquared = double.PositiveInfinity;
-            double closestX = 0;
-            double closestY = 0;
+
+            bool preferCoordinates = dataSource.PreferCoordinates;
 
             while (NextPoint != -1)
             {
-                (double x, double y) = dataSource.PreferCoordinates ?
-                    dataSource.GetCoordinateScaled(closestIndex).Deconstruct() :
-                    (dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex));
+                (double x, double y) = preferCoordinates ?
+                    dataSource.GetCoordinateScaled(NextPoint).Deconstruct() :
+                    (dataSource.GetXScaled(NextPoint), dataSource.GetYScaled(NextPoint));
 
-                double dx = (x - mouseLocation.X) * pxPerUnitX;
-                double dy = (y - mouseLocation.Y) * pxPerUnitY;
+                double dx = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
+                double dy = Math.Abs(y - mouseLocation.Y) * pxPerUnitY;
                 double distanceSquared = dx * dx + dy * dy;
 
                 if (distanceSquared < maxDistanceToSearch)
                 {
                     maxDistanceToSearch = distanceSquared;
                     closestIndex = NextPoint;
-                    closestX = x; 
-                    closestY = y;
                     closestDistanceSquared = distanceSquared;
                 }
 
@@ -287,13 +360,67 @@ namespace ScottPlot
                     searchedRight = NextPoint;
             };
 
-            return closestDistanceSquared <= maxDistanceSquared
-                ? new DataPoint(closestX, closestY, closestIndex)
-                : DataPoint.None;
+            if (closestDistanceSquared <= maxDistanceSquared)
+            {
+                if (preferCoordinates)
+                {
+                    var coord = dataSource.GetCoordinate(closestIndex);
+                    return new DataPoint(coord.X, coord.Y, closestIndex);
+                }
+                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+            }
+            return DataPoint.None;
         }
 
-        
-        private static int GetNextPointNearestSearch(IDataSource dataSource, double locationXRotated, int searchedLeft, int searchedRight, double maxDistanceSquared, double PxPerUnitXRotated)
+        /// <summary>
+        /// Get the nearest datapoint from the <paramref name="dataSource"/>, based on the <paramref name="mouseLocation"/> X location and the <paramref name="renderInfo"/>
+        /// </summary>
+        /// <inheritdoc cref="GetNearestFast"/>
+        public static DataPoint GetNearestXFast(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null)
+        {
+            int closestIndex = dataSource.GetXClosestIndex(mouseLocation);
+
+            _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
+
+            int searchedLeft = closestIndex;
+            int searchedRight = closestIndex;
+            int NextPoint = closestIndex;
+            double closestDistance = double.PositiveInfinity;
+            double closestDistanceSquared = closestDistance;
+
+            while (NextPoint != -1)
+            {
+                double x = dataSource.GetXScaled(NextPoint);
+                double dx = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
+
+                if (dx < closestDistance)
+                {
+                    closestIndex = NextPoint;
+                    closestDistance = dx;
+                    closestDistanceSquared = dx * dx;
+                }
+
+                NextPoint = GetNextPointNearestSearch(dataSource, mouseLocation.X, searchedLeft, searchedRight, closestDistanceSquared, pxPerUnitX);
+
+                if (NextPoint < searchedLeft)
+                    searchedLeft = NextPoint;
+                else
+                    searchedRight = NextPoint;
+            }
+
+            if (closestDistance <= maxDistance)
+            {
+                if (dataSource.PreferCoordinates)
+                {
+                    Coordinates closestCoord = dataSource.GetCoordinate(closestIndex);
+                    return new DataPoint(closestCoord.X, closestCoord.Y, closestIndex);
+                }
+                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+            }
+            return DataPoint.None;
+        }
+
+        private static int GetNextPointNearestSearch(IDataSource dataSource, double locationX, int searchedLeft, int searchedRight, double maxDistanceSquared, double PxPerUnitX)
         {
             int leftCandidate = searchedLeft - 1;
             int rightCandidate = searchedRight + 1;
@@ -304,7 +431,7 @@ namespace ScottPlot
             }
             else if (leftCandidate < 0)
             {
-                double distance = (dataSource.GetXScaled(rightCandidate) - locationXRotated) * PxPerUnitXRotated;
+                double distance = (dataSource.GetXScaled(rightCandidate) - locationX) * PxPerUnitX;
                 if (distance * distance > maxDistanceSquared)
                     return -1;
 
@@ -312,7 +439,7 @@ namespace ScottPlot
             }
             else if (rightCandidate >= dataSource.Length)
             {
-                double distance = (dataSource.GetXScaled(leftCandidate) - locationXRotated) * PxPerUnitXRotated;
+                double distance = (dataSource.GetXScaled(leftCandidate) - locationX) * PxPerUnitX;
                 if (distance * distance > maxDistanceSquared)
                     return -1;
 
@@ -321,8 +448,8 @@ namespace ScottPlot
             else
             {
 
-                double leftCandidateDistance = (dataSource.GetXScaled(leftCandidate) - locationXRotated) * PxPerUnitXRotated;
-                double rightCandidateDistance = (dataSource.GetXScaled(rightCandidate) - locationXRotated) * PxPerUnitXRotated;
+                double leftCandidateDistance = (dataSource.GetXScaled(leftCandidate) - locationX) * PxPerUnitX;
+                double rightCandidateDistance = (dataSource.GetXScaled(rightCandidate) - locationX) * PxPerUnitX;
 
                 double minDistanceSquared = Math.Min(leftCandidateDistance * leftCandidateDistance, rightCandidateDistance * rightCandidateDistance);
 
@@ -330,140 +457,6 @@ namespace ScottPlot
                     return -1;
 
                 return Math.Abs(leftCandidateDistance) < Math.Abs(rightCandidateDistance) ? leftCandidate : rightCandidate;
-            }
-        }
-
-        public static DataPoint GetNearestX_Optimized(this IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
-        {
-            int closestIndex = dataSource.GetXClosestIndex(mouseLocation);
-
-            _ = renderInfo.TryGetPxPerUnitX(xAxis, out double pxPerUnitX);
-
-            int searchedLeft = closestIndex;
-            int searchedRight = closestIndex;
-            int NextPoint = closestIndex;
-            double maxDistanceSquared = maxDistance * maxDistance;
-            double maxDistanceToSearch = maxDistanceSquared;
-
-            double closestDistanceSquared = double.PositiveInfinity;
-
-
-            if (dataSource.PreferCoordinates)
-            {
-                Coordinates closestCoordinate = Coordinates.NaN;
-                while (NextPoint != -1)
-                {
-                    var coord = dataSource.GetCoordinateScaled(closestIndex);
-
-                    double dx = (coord.X - mouseLocation.X) * pxPerUnitX;
-                    double distanceSquared = dx * dx;
-
-                    if (distanceSquared < maxDistanceToSearch)
-                    {
-                        maxDistanceToSearch = distanceSquared;
-                        closestIndex = NextPoint;
-                        closestCoordinate = coord;
-                        closestDistanceSquared = distanceSquared;
-                    }
-
-                    NextPoint = GetNextPointNearestSearch(dataSource, mouseLocation.X, searchedLeft, searchedRight, maxDistanceToSearch, pxPerUnitX);
-
-                    if (NextPoint < searchedLeft)
-                        searchedLeft = NextPoint;
-                    else
-                        searchedRight = NextPoint;
-                }
-
-                return closestDistanceSquared <= maxDistanceSquared
-                    ? new DataPoint(closestCoordinate.X, closestCoordinate.Y, closestIndex)
-                    : DataPoint.None;
-            }
-            else
-            {
-                double closestX = 0;
-                while (NextPoint != -1)
-                {
-                    double x = dataSource.GetXScaled(closestIndex);
-
-                    double dx = (x - mouseLocation.X) * pxPerUnitX;
-                    double distanceSquared = dx * dx;
-
-                    if (distanceSquared < maxDistanceToSearch)
-                    {
-                        maxDistanceToSearch = distanceSquared;
-                        closestIndex = NextPoint;
-                        closestX = x;
-                        closestDistanceSquared = distanceSquared;
-                    }
-
-                    NextPoint = GetNextPointNearestSearch(dataSource, mouseLocation.X, searchedLeft, searchedRight, maxDistanceToSearch, pxPerUnitX);
-
-                    if (NextPoint < searchedLeft)
-                        searchedLeft = NextPoint;
-                    else
-                        searchedRight = NextPoint;
-                }
-
-                return closestDistanceSquared <= maxDistanceSquared
-                    ? new DataPoint(closestX, dataSource.GetYScaled(closestIndex), closestIndex)
-                    : DataPoint.None;
-            }
-        }
-
-        public static DataPoint GetNearestX_New(this IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null)
-        {
-            if (dataSource is null) throw new ArgumentNullException(nameof(dataSource));
-
-            _ = renderInfo.TryGetPxPerUnitX(xAxis, out double pxPerUnitX);
-
-            var renderIndexCount = dataSource.GetRenderIndexCount();
-            var minRenderIndex = dataSource.MinRenderIndex;
-
-            double closestDistance = double.PositiveInfinity;
-
-            int closestIndex = 0;
-            
-            if (dataSource.PreferCoordinates)
-            {
-                // To-DO : check for IScatterSource and optimize with GetScatterPoints?
-
-                Coordinates closestCoord = default;
-                for (int i2 = 0; i2 < renderIndexCount; i2++)
-                {
-                    int i = minRenderIndex + i2;
-                    var coord = dataSource.GetCoordinateScaled(i);
-                    double dX = Math.Abs(coord.X - mouseLocation.X) * pxPerUnitX;
-                    if (dX <= closestDistance)
-                    {
-                        closestDistance = dX;
-                        closestCoord = coord;
-                        closestIndex = i;
-                    }
-                }
-
-                return closestDistance <= maxDistance
-                    ? new DataPoint(closestCoord.X, closestCoord.Y, closestIndex)
-                    : DataPoint.None;
-            }
-            else
-            {
-                double closestX = double.PositiveInfinity;
-                for (int i2 = 0; i2 < renderIndexCount; i2++)
-                {
-                    int i = minRenderIndex + i2;
-                    var x = dataSource.GetXScaled(i);
-                    double dX = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
-                    if (dX <= closestDistance)
-                    {
-                        closestDistance = dX;
-                        closestX = x;
-                        closestIndex = i;
-                    }
-                }
-
-                return closestDistance <= maxDistance
-                    ? new DataPoint(closestX, dataSource.GetYScaled(closestIndex), closestIndex)
-                    : DataPoint.None;
             }
         }
     }

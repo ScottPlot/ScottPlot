@@ -162,7 +162,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
     {
         if (Data is IDataSource ds)
-            return DataSourceUtilities.GetNearest(ds, location, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+            return DataSourceUtilities.GetNearestFast(ds, location, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
         else if (Data is IGetNearest gn)
             return gn.GetNearest(location, renderInfo, maxDistance);
         else
@@ -172,7 +172,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     public DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
     {
         if (Data is IDataSource ds)
-            return DataSourceUtilities.GetNearestX(ds, location, renderInfo, maxDistance, Axes.XAxis);
+            return DataSourceUtilities.GetNearestXFast(ds, location, renderInfo, maxDistance, Axes.XAxis);
         else if (Data is IGetNearest gn)
             return gn.GetNearest(location, renderInfo, maxDistance);
         else

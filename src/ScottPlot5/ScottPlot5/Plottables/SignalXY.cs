@@ -52,7 +52,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
     {
         if (Data is IDataSource ds)
-            return DataSourceUtilities.GetNearest(ds, location, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+            return DataSourceUtilities.GetNearestFast(ds, location, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
         else 
             return Data.GetNearest(location, renderInfo, maxDistance);
     }
@@ -60,7 +60,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)
     {
         if (Data is IDataSource ds)
-            return DataSourceUtilities.GetNearestX(ds, location, renderInfo, maxDistance, Axes.XAxis);
+            return DataSourceUtilities.GetNearestXFast(ds, location, renderInfo, maxDistance, Axes.XAxis);
         else
             return Data.GetNearestX(location, renderInfo, maxDistance);
     }

@@ -400,10 +400,10 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestFast(this, mouseLocation, renderInfo, maxDistance);
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestXFast(this, mouseLocation, renderInfo, maxDistance);
 
     Coordinates IDataSource.GetCoordinate(int index)
     {

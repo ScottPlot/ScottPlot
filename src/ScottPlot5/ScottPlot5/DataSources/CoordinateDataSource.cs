@@ -33,7 +33,7 @@
         public int MinRenderIndex => 0;
         public int MaxRenderIndex => coordinates.Length - 1;
         public Coordinates GetCoordinate(int index) => coordinates[index];
-        public Coordinates GetCoordinateScaled(int index) => DataSourceUtilities.ScaleXY(coordinates[index], XScale, XOffset, YScale, YOffset);
+        public Coordinates GetCoordinateScaled(int index) => DataSourceUtilities.ScaleCoordinate(coordinates[index], XScale, XOffset, YScale, YOffset);
         public double GetX(int index) => coordinates[index].X;
         public int GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(coordinates, mouseLocation, new IndexRange(MinRenderIndex, MaxRenderIndex));
         public double GetXScaled(int index) => DataSourceUtilities.ScaleXY(coordinates[index].X, XScale, XOffset);
