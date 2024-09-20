@@ -28,14 +28,14 @@ public class Pie : ICategory
         [Test]
         public override void Execute()
         {
-            List<PieSlice> slices = new()
-            {
-                new PieSlice() { Value = 5, FillColor = Colors.Red, Label = "Red" },
+            List<PieSlice> slices =
+            [
+                new PieSlice() { Value = 5, FillColor = Colors.Red, Label = "Red", LegendText = "R" },
                 new PieSlice() { Value = 2, FillColor = Colors.Orange, Label = "Orange" },
                 new PieSlice() { Value = 8, FillColor = Colors.Gold, Label = "Yellow" },
-                new PieSlice() { Value = 4, FillColor = Colors.Green, Label = "Green" },
-                new PieSlice() { Value = 8, FillColor = Colors.Blue, Label = "Blue" },
-            };
+                new PieSlice() { Value = 4, FillColor = Colors.Green, Label = "Green", LegendText = "G" },
+                new PieSlice() { Value = 8, FillColor = Colors.Blue, Label = "Blue", LegendText = "B" },
+            ];
 
             var pie = myPlot.Add.Pie(slices);
             pie.ExplodeFraction = .1;
