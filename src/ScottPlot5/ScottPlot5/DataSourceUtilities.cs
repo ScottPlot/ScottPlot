@@ -61,7 +61,7 @@ namespace ScottPlot
             var enu = values.GetEnumerator();
             while (isAscending && enu.MoveNext())
             {
-                isAscending = comparer.Compare(prev, enu.Current) >= 0;
+                isAscending = comparer.Compare(prev, enu.Current) <= 0;
                 prev = enu.Current;
             }
             return isAscending;
@@ -155,8 +155,8 @@ namespace ScottPlot
 
         /// <summary> Creates a new <see cref="IndexRange"/> using the MinRenderIndex and <see cref="GetRenderIndexCount(IDataSource)"/> </summary>
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static IndexRange GetRenderIndexRange(this IDataSource source) 
-            => new IndexRange(source.MinRenderIndex, source.MinRenderIndex + source.GetRenderIndexCount());
+        public static IndexRange GetRenderIndexRange(this IDataSource dataSource) 
+            => new IndexRange(dataSource.MinRenderIndex, Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex));
 
         [MethodImpl(NumericConversion.ImplOptions)]
         public static double ScaleXY(double point, double scalingFactor, double offset)

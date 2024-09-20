@@ -375,7 +375,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     double IDataSource.GetY(int index)
     {
-        return Data is IDataSource ds ? ds.GetX(index) : Data.GetScatterPoints()[index].Y;
+        return Data is IDataSource ds ? ds.GetY(index) : Data.GetScatterPoints()[index].Y;
     }
 
     double IDataSource.GetYScaled(int index)

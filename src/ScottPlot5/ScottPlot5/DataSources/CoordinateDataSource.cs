@@ -4,7 +4,7 @@
     /// Helper class used when a source (such as <see cref="IScatterSource"/>) does not implement <see cref="IDataSource"/>
     /// <br/> This copies the collection to an array, and sorts it during construction.
     /// </summary>
-    internal class CoordinateDataSource : IDataSource
+    public class CoordinateDataSource : IDataSource
     {
         private readonly Coordinates[] coordinates;
         public double XOffset = 0;
@@ -12,14 +12,19 @@
         public double XScale = 1;
         public double YScale = 1;
 
+        public CoordinateDataSource(Coordinates[] array)
+        {
+            coordinates = array.ToArray();
+            Array.Sort(coordinates, BinarySearchComparer.Instance);
+        }
         public CoordinateDataSource(IList<Coordinates> list)
         {
             coordinates = list.ToArray();
             Array.Sort(coordinates, BinarySearchComparer.Instance);
         }
-        public CoordinateDataSource(IReadOnlyList<Coordinates> list)
+        public CoordinateDataSource(IReadOnlyList<Coordinates> readOnlyList)
         {
-            coordinates = list.ToArray();
+            coordinates = readOnlyList.ToArray();
             Array.Sort(coordinates, BinarySearchComparer.Instance);
         }
         public bool PreferCoordinates => true;
