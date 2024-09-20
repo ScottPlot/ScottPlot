@@ -6,13 +6,14 @@
 public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatterSource, IDataSource, IGetNearest
 {
     private readonly Coordinates[] Coordinates = coordinates;
+    private bool? isSorted;
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = coordinates.Length - 1;
 
     bool IDataSource.PreferCoordinates => true;
     int IDataSource.Length => Coordinates.Length;
-    bool IDataSource.IsSorted => Coordinates.IsAscending(BinarySearchComparer.Instance);
+    bool IDataSource.IsSorted => isSorted ??= Coordinates.IsAscending(BinarySearchComparer.Instance);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {

@@ -7,6 +7,7 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
 {
     private readonly T1[] Xs = xs;
     private readonly T2[] Ys = ys;
+    private bool? isSorted;
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
@@ -14,7 +15,7 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
 
     int IDataSource.Length => Math.Min(Xs.Length, Ys.Length);
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => Xs.IsAscending(GenericDoubleComparer<T1>.Instance);
+    bool IDataSource.IsSorted => isSorted ??= Xs.IsAscending(GenericDoubleComparer<T1>.Instance);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
