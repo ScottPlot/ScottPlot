@@ -7,6 +7,7 @@ public class PieSlice : LabelStyleProperties, IHasLegendText, IHasLabel
     public double Value { get; set; }
     public FillStyle Fill { get; set; } = new();
     public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
+    public LabelStyle PercentLabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
 
     public PieSlice() { }

@@ -21,6 +21,13 @@ public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
     public double Padding { get; set; } = 0.2;
     public bool ShowSliceLabels { get; set; } = false;
     public double SliceLabelDistance { get; set; } = 1.2;
+
+    /// <summary>
+    /// Display a percentage with percent format specifier("P","P2" etc..) of <see cref="double.ToString(string?)"/>. Hide the pecentage if it's null or invalid specifier.
+    /// </summary>
+    public string? SlicePercentFormat { get; set; }
+    public double SlicePercentDistance { get; set; } = 0.6;
+
     public IList<PieSlice> Slices { get; set; } = [];
 
     /// <summary>

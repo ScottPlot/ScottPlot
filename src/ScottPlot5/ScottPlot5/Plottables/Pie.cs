@@ -43,7 +43,8 @@ public class Pie : PieBase
         {
             using SKAutoCanvasRestore _ = new(rp.Canvas);
 
-            var sliceAngle = Angle.FromDegrees(slice.Value / totalValue * 360);
+            var percentage = slice.Value / totalValue;
+            var sliceAngle = Angle.FromDegrees(percentage * 360);
             Angle centerAngle = totalAngle + sliceAngle / 2;
 
             Coordinates explosionOffset = new PolarCoordinates(ExplodeFraction * outerRadius, centerAngle).ToCartesian();
@@ -103,6 +104,22 @@ public class Pie : PieBase
                 polar.Y = -polar.Y;
                 Pixel px = Axes.GetPixel(polar) - origin;
                 slice.LabelStyle.Render(rp.Canvas, px, paint);
+            }
+
+            var slicePercentFormat = SlicePercentFormat;
+            if (slicePercentFormat != null && slicePercentFormat.StartsWith("P", StringComparison.OrdinalIgnoreCase))
+            {
+                Coordinates polar = new PolarCoordinates(1.0 * SlicePercentDistance, centerAngle).ToCartesian();
+                polar.Y = -polar.Y;
+                Pixel px = Axes.GetPixel(polar) - origin;
+                var percentLabelStyle = slice.PercentLabelStyle;
+                // Let it be if we've already set the percent label text manually.
+                if (string.IsNullOrEmpty(percentLabelStyle.Text))
+                {
+                    // TODO: maybe someone wants to specify the CultureInfo too
+                    percentLabelStyle.Text = percentage.ToString(slicePercentFormat, CultureInfo.InvariantCulture);
+                }
+                percentLabelStyle.Render(rp.Canvas, px, paint);
             }
 
             totalAngle += sliceAngle;
