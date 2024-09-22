@@ -27,7 +27,6 @@ namespace ScottPlot
         public static readonly IComparer<T> Instance = GetComparer(); 
         public int Compare(T a, T b)
         {
-                return cA.CompareTo(b); // JIT should optimize this call after detecting that T always implements IComparable
             return true switch
             {
                 true when a is Coordinates c && b is Coordinates d => c.X.CompareTo(d.X),
@@ -218,7 +217,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Get the nearest datapoint from the <paramref name="dataSource"/>, based on the <paramref name="mouseLocation"/> and the <paramref name="renderInfo"/>
+        /// Get the nearest datapoint on the plot from the <paramref name="dataSource"/>, based on the <paramref name="mouseLocation"/> and the <paramref name="renderInfo"/>
         /// </summary>
         /// <remarks>This is the original way to locate the nearest DataPoint from the collection, and is safe for unsorted collections (such as Scatter)</remarks>
         /// <param name="dataSource">The data source</param>
@@ -228,7 +227,7 @@ namespace ScottPlot
         /// <param name="xAxis">The X-Axis of assigned to the datasource. If not specified, uses the bottom axis.</param>
         /// <param name="yAxis">The X-Axis of assigned to the datasource. If not specified, uses the left axis.</param>
         /// <returns>
-        /// If match found : returns a datapoint that represents the (X,Y) values (not scaled or offset) 
+        /// If match found : returns a datapoint that represents the closest (X,Y) coordinate on the plot, and the index that can be used to get the values from the DataSource.
         /// <br/>If no match found : returns <see cref="DataPoint.None"/>
         /// </returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -272,10 +271,10 @@ namespace ScottPlot
             {
                 if (preferCoordinates)
                 {
-                    var coord = dataSource.GetCoordinate(closestIndex);
+                    var coord = dataSource.GetCoordinateScaled(closestIndex);
                     return new DataPoint(coord.X, coord.Y, closestIndex);
                 }
-                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+                return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
             return DataPoint.None;
         }
@@ -313,10 +312,10 @@ namespace ScottPlot
             {
                 if (dataSource.PreferCoordinates)
                 {
-                    Coordinates closestCoord = dataSource.GetCoordinate(closestIndex);
+                    Coordinates closestCoord = dataSource.GetCoordinateScaled(closestIndex);
                     return new DataPoint(closestCoord.X, closestCoord.Y, closestIndex);
                 }
-                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+                return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
             return DataPoint.None;
         }
@@ -371,10 +370,10 @@ namespace ScottPlot
             {
                 if (preferCoordinates)
                 {
-                    var coord = dataSource.GetCoordinate(closestIndex);
+                    var coord = dataSource.GetCoordinateScaled(closestIndex);
                     return new DataPoint(coord.X, coord.Y, closestIndex);
                 }
-                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+                return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
             return DataPoint.None;
         }
@@ -419,10 +418,10 @@ namespace ScottPlot
             {
                 if (dataSource.PreferCoordinates)
                 {
-                    Coordinates closestCoord = dataSource.GetCoordinate(closestIndex);
+                    Coordinates closestCoord = dataSource.GetCoordinateScaled(closestIndex);
                     return new DataPoint(closestCoord.X, closestCoord.Y, closestIndex);
                 }
-                return new DataPoint(dataSource.GetX(closestIndex), dataSource.GetY(closestIndex), closestIndex);
+                return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
             return DataPoint.None;
         }
