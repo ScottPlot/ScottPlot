@@ -25,18 +25,22 @@ namespace ScottPlot
         ///For standard numerics (single, long, int, etc) this will be '<see cref="Comparer{T}.Default"/>', which is significantly faster than this interface implementation
         ///</summary> 
         public static readonly IComparer<T> Instance = GetComparer(); 
+
+#pragma warning disable CS8767 // handled by null check
         public int Compare(T a, T b)
         {
             return true switch
             {
+                true when a is null | b is null => throw new Exception("Generic Comparer can not handle null values"),
                 true when a is Coordinates c && b is Coordinates d => c.X.CompareTo(d.X),
                 true when a is RootedPixelVector x && b is RootedPixelVector y => x.Point.X.CompareTo(y.Point.X),
                 true when a is RootedCoordinateVector x && b is RootedCoordinateVector y => x.Point.X.CompareTo(y.Point.X),
                 // in practice, these should never be used if the 'Instance' field is refer
                 IComparable<T> c => c.CompareTo(b),
-                _ => NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b))   
-            }; ;
+                _ => NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b))
+            };
         }
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 
         public static IComparer<T> GetComparer()
         {
