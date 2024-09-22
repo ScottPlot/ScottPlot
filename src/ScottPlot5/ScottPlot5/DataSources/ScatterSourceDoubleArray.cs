@@ -7,13 +7,12 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 {
     private readonly double[] Xs = xs;
     private readonly double[] Ys = ys;
-    private bool? isSorted;
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
     private int RenderIndexCount => Math.Min(Ys.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
     
-    bool IDataSource.IsSorted => isSorted??= Xs.IsAscending(BinarySearchComparer.Instance);
+    bool IDataSource.IsSorted => Xs.IsAscending(BinarySearchComparer.Instance);
     bool IDataSource.PreferCoordinates => false;
     int IDataSource.Length => Math.Min(Xs.Length, Ys.Length);
 

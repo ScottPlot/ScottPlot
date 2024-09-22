@@ -14,7 +14,7 @@ public class ScatterSourceGenericList<T1, T2>(List<T1> xs, List<T2> ys) : IScatt
 
     int IDataSource.Length => Math.Min(Xs.Count, Ys.Count);
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => Xs.IsAscending(GenericDoubleComparer<T1>.Instance);
+    bool IDataSource.IsSorted => Xs.IsAscending(GenericComparer<T1>.Instance);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
@@ -54,7 +54,7 @@ public class ScatterSourceGenericList<T1, T2>(List<T1> xs, List<T2> ys) : IScatt
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
         => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
 
-    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, NumericConversion.DoubleToGeneric<T1>(mouseLocation.X), this.GetRenderIndexRange(), GenericDoubleComparer<T1>.Instance);
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, NumericConversion.DoubleToGeneric<T1>(mouseLocation.X), this.GetRenderIndexRange(), GenericComparer<T1>.Instance);
     Coordinates IDataSource.GetCoordinate(int index) => new Coordinates(NumericConversion.GenericToDouble(Xs, index), NumericConversion.GenericToDouble(Ys, index));
     Coordinates IDataSource.GetCoordinateScaled(int index) => new Coordinates(NumericConversion.GenericToDouble(Xs, index), NumericConversion.GenericToDouble(Ys, index));
     double IDataSource.GetX(int index) => NumericConversion.GenericToDouble(Xs, index);

@@ -53,7 +53,14 @@ internal class IDataSourceTests
     #endregion
 
     #region < GetNearest | GetNearestFast >
-    
+
+    [Test]
+    public void Test_IsAscending()
+    {
+        Assert.That(Xs.IsAscending(null), Is.True);
+        Assert.That(Ys.IsAscending(null), Is.False);
+    }
+
     [TestCase(false)]
     [TestCase(true)]
     [Test]
@@ -96,7 +103,7 @@ internal class IDataSourceTests
         var signal = plot.Add.SignalXY(dataSource);
         plot.RenderInMemory(PlotWidth, PlotHeight);
 
-        var nearest = DataSourceUtilities.GetNearest(dataSource, ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        var nearest = DataSourceUtilities.GetNearestFast(dataSource, ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
         nearest.X.Should().Be(Xs[IndexToCheck]);
         nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
@@ -313,7 +320,7 @@ internal class IDataSourceTests
         Assert.That(dataSource.GetYScaled(IndexToCheck), Is.EqualTo(scaledCoordinate.Y), $"{nameof(IDataSource)}.{nameof(IDataSource.GetYScaled)} returned a different result than scaled coordinate at same index");
 
         // GetClosestIndex
-        Coordinates mouseLocation = new Coordinates(coordinate.X - 7, coordinate.X - 7); // Use same XY here to validate any Rotated items
+        Coordinates mouseLocation = new Coordinates(Xs[IndexToCheck], Ys[IndexToCheck]); // Use same XY here to validate any Rotated items
         Assert.That(dataSource.GetXClosestIndex(mouseLocation), Is.EqualTo(IndexToCheck), $"{nameof(IDataSource)}.{nameof(IDataSource.GetXClosestIndex)} returned an unexpected value");
     }
 

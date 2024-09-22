@@ -300,12 +300,18 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
-        return DataSourceUtilities.GetNearest(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+        if (Data is IDataSource ds && ds.IsSorted)
+            return DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+        else
+            return DataSourceUtilities.GetNearest(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
     }
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
     {
-        return DataSourceUtilities.GetNearestX(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+        if (Data is IDataSource ds && ds.IsSorted)
+            return DataSourceUtilities.GetNearestXFast(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+        else
+            return DataSourceUtilities.GetNearestX(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis);
     }
 
     /// <summary>
@@ -329,9 +335,11 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     #region IDataSource
 
     // Data object is assumed to implement IDataSource and will provide best execution
-    bool IDataSource.IsSorted => Data is IDataSource ds ? ds.IsSorted : false;
-    bool IDataSource.PreferCoordinates => Data is IDataSource ds ? ds.PreferCoordinates : true;
-    int IDataSource.Length => Data is IDataSource ds ? ds.Length : Data.GetScatterPoints().Count;
+
+    readonly IDataSource? _dataSource = data as IDataSource;
+    bool IDataSource.IsSorted => _dataSource?.IsSorted ?? false;
+    bool IDataSource.PreferCoordinates => _dataSource?.PreferCoordinates ?? true;
+    int IDataSource.Length => _dataSource?.Length ?? Data.GetScatterPoints().Count;
     int IDataSource.MinRenderIndex => Data.MinRenderIndex;
     int IDataSource.MaxRenderIndex => Data.MaxRenderIndex;
 
@@ -344,9 +352,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     Coordinates IDataSource.GetCoordinate(int index)
     {
-        return Data is IDataSource ds
-            ? ds.GetCoordinate(index)
-            : Data.GetScatterPoints()[index];
+        return _dataSource?.GetCoordinate(index) ?? Data.GetScatterPoints()[index];
     }
 
     Coordinates IDataSource.GetCoordinateScaled(int index)
@@ -365,22 +371,30 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     double IDataSource.GetX(int index)
     {
-        return Data is IDataSource ds ? ds.GetX(index) : Data.GetScatterPoints()[index].X;
+        return _dataSource?.GetX(index) ?? Data.GetScatterPoints()[index].X;
     }
 
     double IDataSource.GetXScaled(int index)
     {
-        return DataSourceUtilities.ScaleXY(((IDataSource)this).GetX(index), ScaleX, OffsetX);
+        return DataSourceUtilities.ScaleXY(
+            point: _dataSource?.GetX(index) ?? Data.GetScatterPoints()[index].X,
+            scalingFactor: ScaleY,
+            offset: OffsetY
+            );
     }
 
     double IDataSource.GetY(int index)
     {
-        return Data is IDataSource ds ? ds.GetY(index) : Data.GetScatterPoints()[index].Y;
+        return _dataSource?.GetY(index) ?? Data.GetScatterPoints()[index].Y;
     }
 
     double IDataSource.GetYScaled(int index)
     {
-        return DataSourceUtilities.ScaleXY(((IDataSource)this).GetY(index), ScaleY, OffsetY);
+        return DataSourceUtilities.ScaleXY(
+            point : _dataSource?.GetY(index) ?? Data.GetScatterPoints()[index].Y,
+            scalingFactor: ScaleY,
+            offset: OffsetY
+            );
     }
     #endregion
 }

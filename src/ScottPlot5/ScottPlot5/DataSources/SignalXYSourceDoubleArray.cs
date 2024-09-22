@@ -418,8 +418,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
     {
         return Rotated
-            ? GetIndex(mouseLocation.X)
-            : GetIndex(mouseLocation.Y);
+            ? GetIndex(mouseLocation.Y)
+            : GetIndex(mouseLocation.X);
     }
 
     double IDataSource.GetX(int index)

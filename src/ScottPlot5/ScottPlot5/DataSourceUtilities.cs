@@ -11,58 +11,71 @@ namespace ScottPlot
     {
         public static readonly BinarySearchComparer Instance = new BinarySearchComparer();
 
-        public int Compare(Coordinates a, Coordinates b)
-        {
-            return a.X.CompareTo(b.X);
-        }
+        public static IComparer<T> GetComparer<T>() => GenericComparer<T>.Instance;
+        public int Compare(Coordinates a, Coordinates b) => a.X.CompareTo(b.X);
+        public int Compare(double a, double b) => a.CompareTo(b);
+        public int Compare(RootedPixelVector x, RootedPixelVector y) => x.Point.X.CompareTo(y.Point.X);
+        public int Compare(RootedCoordinateVector x, RootedCoordinateVector y) => x.Point.X.CompareTo(y.Point.X);
 
-        public int Compare(double a, double b)
-        {
-            return a.CompareTo(b);
-        }
-
-        public int Compare(RootedPixelVector x, RootedPixelVector y)
-        {
-            return  x.Point.X.CompareTo(y.Point.X);
-        }
-
-        public int Compare(RootedCoordinateVector x, RootedCoordinateVector y)
-        {
-            return x.Point.X.CompareTo(y.Point.X);
-        }
     }
 
-    public sealed class GenericDoubleComparer<T> : IComparer<T>
+    public sealed class GenericComparer<T> : IComparer<T>
     {
-        public static readonly GenericDoubleComparer<T> Instance = new GenericDoubleComparer<T>();
-
-#pragma warning disable CS8767 // This error is due to checking is IComparable is implemented when T is not specified as a struct -- Maybe restrict generic data sources to 'where T : struct, IComparable<T>' ?
+        ///<summary>
+        ///For standard numerics (single, long, int, etc) this will be '<see cref="Comparer{T}.Default"/>', which is significantly faster than this interface implementation
+        ///</summary> 
+        public static readonly IComparer<T> Instance = GetComparer(); 
         public int Compare(T a, T b)
         {
-            if (a is IComparable<T> cA)
-            {
                 return cA.CompareTo(b); // JIT should optimize this call after detecting that T always implements IComparable
-            }
-            else
+            return true switch
             {
-                return NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b));
-            }
+                true when a is Coordinates c && b is Coordinates d => c.X.CompareTo(d.X),
+                true when a is RootedPixelVector x && b is RootedPixelVector y => x.Point.X.CompareTo(y.Point.X),
+                true when a is RootedCoordinateVector x && b is RootedCoordinateVector y => x.Point.X.CompareTo(y.Point.X),
+                // in practice, these should never be used if the 'Instance' field is refer
+                IComparable<T> c => c.CompareTo(b),
+                _ => NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b))   
+            }; ;
         }
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
 
+        public static IComparer<T> GetComparer()
+        {
+            return Instance ?? default(T) switch
+            {
+                null => throw new ArgumentException($"T should be a struct (non-nullable)"),
+                Coordinates => new GenericComparer<T>(),
+                RootedPixelVector => new GenericComparer<T>(),
+                RootedCoordinateVector => new GenericComparer<T>(),
+                IComparable<T> => Comparer<T>.Default,
+                _ => new GenericComparer<T>()
+            };
+        }
     }
 
     public static class DataSourceUtilities
     {
-        public static bool IsAscending<T>(this IEnumerable<T> values, IComparer<T> comparer)
+
+        /// <summary>
+        /// Check if a collection is in ascending order
+        /// </summary>
+        /// <typeparam name="T">the type to evaluate</typeparam>
+        /// <param name="values">The values</param>
+        /// <param name="comparer">The comparer to use. If not specified, uses Comparer{T}.Default (which is preferred)</param>
+        /// <returns>True if the collection is ascending (and can therefore be used with BinarySearch and GetClosest). Otherwise false.</returns>
+        public static bool IsAscending<T>(this IEnumerable<T> values, IComparer<T>? comparer)
         {
-            bool isAscending = true;
-            T prev = values.First();
+            bool isAscending;
             var enu = values.GetEnumerator();
-            while (isAscending && enu.MoveNext())
+            if (isAscending = enu.MoveNext())
             {
-                isAscending = comparer.Compare(prev, enu.Current) <= 0;
-                prev = enu.Current;
+                comparer ??= BinarySearchComparer.GetComparer<T>();
+                T prev = enu.Current;
+                while (isAscending && enu.MoveNext())
+                {
+                    isAscending = comparer.Compare(prev, enu.Current) <= 0;
+                    prev = enu.Current;
+                }
             }
             return isAscending;
         }
@@ -114,17 +127,11 @@ namespace ScottPlot
             return index > indexRange.Max ? indexRange.Max : index;
         }
 
-        public static int GetClosestIndex<T>(this T[] sortedList, T value, IndexRange indexRange)
-        {
-            int index = Array.BinarySearch(sortedList, indexRange.Min, indexRange.Length, value, GenericDoubleComparer<T>.Instance);
-            if (index < 0) index = ~index;
-            return index > indexRange.Max ? indexRange.Max : index;
-        }
-
         public static int GetClosestIndex<TValue, TList>(this TList sortedList, TValue value, IndexRange indexRange, IComparer<TValue> comparer)
             where TList : IEnumerable<TValue> // expects IList & IReadOnlyList
         {
-            comparer ??= GenericDoubleComparer<TValue>.Instance;
+            if (valueScale == 0) throw new ArgumentException($"{nameof(valueScale)} is zero.");
+            comparer ??= GenericComparer<TValue>.Instance;
             int index = sortedList switch
             {
                 List<TValue> list => list.BinarySearch(indexRange.Min, indexRange.Length, value, comparer),

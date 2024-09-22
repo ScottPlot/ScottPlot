@@ -3,12 +3,11 @@
 public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> rootedVectors) : IVectorFieldSource, IDataSource, IGetNearest
 {
     private readonly IList<RootedCoordinateVector> RootedVectors = rootedVectors;
-    private bool? isSorted;
-
+    
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
 
-    bool IDataSource.IsSorted => isSorted ??= RootedVectors.IsAscending(BinarySearchComparer.Instance);
+    bool IDataSource.IsSorted => RootedVectors.IsAscending(BinarySearchComparer.Instance);
     int IDataSource.Length => RootedVectors.Count;
     bool IDataSource.PreferCoordinates => true;
 
