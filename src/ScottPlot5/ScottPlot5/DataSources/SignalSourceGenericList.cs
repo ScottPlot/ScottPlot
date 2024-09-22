@@ -91,12 +91,12 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource, IData
 
     Coordinates IDataSource.GetCoordinate(int index)
     {
-        return new Coordinates(((IDataSource)this).GetX(index), ((IDataSource)this).GetY(index));
+        return new Coordinates(index * Period, NumericConversion.GenericToDouble(Ys, index));
     }
 
     Coordinates IDataSource.GetCoordinateScaled(int index)
     {
-        return new Coordinates(((IDataSource)this).GetXScaled(index), ((IDataSource)this).GetYScaled(index));
+        return new Coordinates(index * Period + XOffset, DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset));
     }
 
     double IDataSource.GetX(int index)

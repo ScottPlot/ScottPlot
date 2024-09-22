@@ -1,4 +1,5 @@
-﻿using ScottPlot.DataSources;
+﻿using FluentAssertions;
+using ScottPlot.DataSources;
 
 namespace ScottPlotTests.UnitTests;
 
@@ -13,7 +14,7 @@ internal class IDataSourceTests
     public static readonly Coordinates[] Cs = Xs.Zip(Ys).Select(pair => new Coordinates(pair.First, pair.Second)).ToArray();
     
     public static readonly int[] GenericXs = Xs.Select(i => (int)i).ToArray();
-    public static readonly int[] GenericYs = Ys.Select(i => (int)i).ToArray();
+    public static readonly float[] GenericYs = Ys.Select(i => (float)i).ToArray();
 
     public const int PlotWidth = 600;
     public const int PlotHeight = 400;
@@ -27,7 +28,6 @@ internal class IDataSourceTests
     public static readonly double YScaling = 3;
 
     public static readonly Coordinates MouseLocation = new(Period * IndexToCheck, Ys[IndexToCheck]);
-    public static readonly Coordinates ScaledMouseLocation = DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
 
     private static double GetValidScaling()
     {
@@ -78,11 +78,12 @@ internal class IDataSourceTests
             };
         plot.Add.SignalXY(dataSource);
         plot.RenderInMemory(PlotWidth, PlotHeight);
-        
-        var nearest = DataSourceUtilities.GetNearest(dataSource, ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        var mouseLoc = ignoreOffsetsAndScaling ? MouseLocation : DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
+
+        var nearest = DataSourceUtilities.GetNearest(dataSource, mouseLoc, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
-        nearest.X.Should().Be(Xs[IndexToCheck]);
-        nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
+        nearest.X.Should().Be(mouseLoc.X);
+        nearest.Y.Should().BeApproximately(mouseLoc.Y, .001);
     }
 
     [TestCase(false)]
@@ -102,17 +103,18 @@ internal class IDataSourceTests
             };
         var signal = plot.Add.SignalXY(dataSource);
         plot.RenderInMemory(PlotWidth, PlotHeight);
+        var mouseLoc = ignoreOffsetsAndScaling ? MouseLocation : DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
 
-        var nearest = DataSourceUtilities.GetNearestFast(dataSource, ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        var nearest = DataSourceUtilities.GetNearestFast(dataSource, mouseLoc, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
-        nearest.X.Should().Be(Xs[IndexToCheck]);
-        nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
+        nearest.X.Should().Be(mouseLoc.X);
+        nearest.Y.Should().BeApproximately(mouseLoc.Y, .001);
 
         //Native function should also be using this method
-        nearest = signal.GetNearest(ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        nearest = signal.GetNearest(mouseLoc, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
-        nearest.X.Should().Be(Xs[IndexToCheck]);
-        nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
+        nearest.X.Should().Be(mouseLoc.X);
+        nearest.Y.Should().BeApproximately(mouseLoc.Y, .001);
     }
 
     #endregion
@@ -136,11 +138,12 @@ internal class IDataSourceTests
             };
         plot.Add.SignalXY(dataSource);
         plot.RenderInMemory(PlotWidth, PlotHeight);
-        
-        var nearest = DataSourceUtilities.GetNearestX(dataSource, ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        var mouseLoc = ignoreOffsetsAndScaling ? MouseLocation : DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
+
+        var nearest = DataSourceUtilities.GetNearestX(dataSource, mouseLoc, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
-        nearest.X.Should().Be(Xs[IndexToCheck]);
-        nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
+        nearest.X.Should().Be(mouseLoc.X);
+        nearest.Y.Should().BeApproximately(mouseLoc.Y, .001);
     }
 
     [TestCase(false)]
@@ -160,41 +163,56 @@ internal class IDataSourceTests
             };
         var signal = plot.Add.SignalXY(dataSource);
         plot.RenderInMemory(PlotWidth, PlotHeight);
-        
-        var nearest = DataSourceUtilities.GetNearestXFast(dataSource, ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        var mouseLoc = ignoreOffsetsAndScaling ? MouseLocation : DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
+
+        var nearest = DataSourceUtilities.GetNearestXFast(dataSource, mouseLoc, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
-        nearest.X.Should().Be(Xs[IndexToCheck]);
-        nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
+        nearest.X.Should().Be(mouseLoc.X);
+        nearest.Y.Should().BeApproximately(mouseLoc.Y, .001);
 
         //Native function should also be using this method
-        nearest = signal.GetNearestX(ignoreOffsetsAndScaling ? MouseLocation : ScaledMouseLocation, plot.LastRender, 100);
+        nearest = signal.GetNearestX(mouseLoc, plot.LastRender, 100);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck));
-        nearest.X.Should().Be(Xs[IndexToCheck]);
-        nearest.Y.Should().BeApproximately(Ys[IndexToCheck], .001);
+        nearest.X.Should().Be(mouseLoc.X);
+        nearest.Y.Should().BeApproximately(mouseLoc.Y, .001);
     }
 
     #endregion
 
+    [TestCase(false)]
+    [TestCase(true)]
     [Test]
-    public void Test_CoordinateDataSource()
+    public void Test_CoordinateDataSource(bool scaling)
     {
         // Test IDataSource
-        var ds = new ScottPlot.DataSources.CoordinateDataSource(Cs);
-        Test_IDataSource(ds);
+        var ds = new CoordinateDataSource(Cs);
+        if (scaling)
+        {
+            ds.YOffset = YOffSet; 
+            ds.XOffset = XOffSet; 
+            ds.XScale = XScaling; 
+            ds.YScale = YScaling;
+        }
+        Test_IDataSource(ds, scaling ? DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet) : MouseLocation);
     }
 
-    [Test] public void Test_SignalSourceDouble() => TestSignal(new ScottPlot.DataSources.SignalSourceDouble(Ys, Period));
-    [Test] public void Test_SignalSourceGenericArray() => TestSignal(new ScottPlot.DataSources.SignalSourceGenericArray<int>(GenericYs, Period));
-    [Test] public void Test_SignalSourceGenericList() => TestSignal(new ScottPlot.DataSources.SignalSourceGenericList<int>(GenericYs, Period));
-    [Test] public void Test_FastSignalSourceDouble() => TestSignal(new ScottPlot.DataSources.FastSignalSourceDouble(Ys, Period));
+    [TestCase(true)][TestCase(false)][Test] public void Test_SignalSourceDouble(bool scaling) => TestSignal(new SignalSourceDouble(Ys, Period), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_SignalSourceGenericArray(bool scaling) => TestSignal(new SignalSourceGenericArray<float>(GenericYs, Period), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_SignalSourceGenericList(bool scaling) => TestSignal(new SignalSourceGenericList<float>(GenericYs, Period), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_FastSignalSourceDouble(bool scaling) => TestSignal(new FastSignalSourceDouble(Ys, Period), scaling);
 
-    private static void TestSignal<T>(T signalSource) where T : ISignalSource, IDataSource
+    private static void TestSignal<T>(T signalSource, bool scaling) where T : ISignalSource, IDataSource
     {
-        signalSource.XOffset = XOffSet;
-        signalSource.YOffset = YOffSet;
-        signalSource.YScale = YScaling;
+        var mouse = MouseLocation;
+        if (scaling)
+        {
+            signalSource.XOffset = XOffSet;
+            signalSource.YOffset = YOffSet;
+            signalSource.YScale = YScaling;
+            mouse = DataSourceUtilities.ScaleCoordinate(MouseLocation, 1, XOffSet, YScaling, YOffSet);
+        }
         Console.Write($" - Testing {signalSource.GetType().Name} as {nameof(IDataSource)} ");
-        Test_IDataSource(signalSource);
+        Test_IDataSource(signalSource, mouse);
         Console.WriteLine($"- Passed");
 
         var plot = GetPlot();
@@ -205,33 +223,53 @@ internal class IDataSourceTests
         if (signalSource is IGetNearest gn)
         {
             Console.Write($" - Testing {signalSource.GetType().Name} as {nameof(IGetNearest)} ");
-            Test_IGetNearest(gn, plot);
+            Test_IGetNearest(gn, plot, mouse);
             Console.WriteLine($"- Passed");
         }
 
         if (signal is IDataSource ds)
         {
             Console.Write($" - Testing {signal.GetType().Name} as {nameof(IDataSource)} ");
-            Test_IDataSource(ds);
+            Test_IDataSource(ds, mouse);
             Console.WriteLine($"- Passed");
         }
 
         Console.Write($" - Testing Signal as {nameof(IGetNearest)}");
-        Test_IGetNearest(signal, plot);
+        Test_IGetNearest(signal, plot, mouse);
         Console.WriteLine($"- Passed");
     }
 
-    [Test] public void Test_SignalXYSourceDoubleArray() => TestSignalXY(new ScottPlot.DataSources.SignalXYSourceDoubleArray(Xs, Ys));
-    [Test] public void Test_SignalXYSourceGenericArray() => TestSignalXY(new ScottPlot.DataSources.SignalXYSourceGenericArray<int, int>(GenericXs, GenericYs));
 
-    private static void TestSignalXY<T>(T signalXYSource) where T: ISignalXYSource, IDataSource
+    [TestCase(false, false)]
+    [TestCase(false, true)]
+    [TestCase(true, true)]    
+    [TestCase(true, false)]
+    [Test] 
+    public void Test_SignalXYSourceDoubleArray(bool rotation, bool scaling)
+        => TestSignalXY(new SignalXYSourceDoubleArray(Xs, Ys) { Rotated = rotation }, rotation, scaling);
+
+    [TestCase(false, false)]
+    [TestCase(false, true)]
+    [TestCase(true, true)]
+    [TestCase(true, false)]
+    [Test] public void Test_SignalXYSourceGenericArray(bool rotation, bool scaling) 
+        => TestSignalXY(new SignalXYSourceGenericArray<int, float>(GenericXs, GenericYs) { Rotated = rotation}, rotation, scaling);
+
+    private static void TestSignalXY<T>(T signalXYSource, bool rotation, bool scaling) where T: ISignalXYSource, IDataSource
     {
-        signalXYSource.XOffset = XOffSet;
-        signalXYSource.YOffset = YOffSet;
-        signalXYSource.XScale = XScaling;
-        signalXYSource.YScale = YScaling;
+        var mouse = MouseLocation;
+        if (scaling)
+        {
+            signalXYSource.XOffset = XOffSet;
+            signalXYSource.YOffset = YOffSet;
+            signalXYSource.XScale = XScaling;
+            signalXYSource.YScale = YScaling;
+            mouse = DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
+        }
+        if (rotation) mouse = new Coordinates(mouse.Y, mouse.X);
+
         Console.Write($" - Testing {signalXYSource.GetType().Name} as {nameof(IDataSource)} ");
-        Test_IDataSource(signalXYSource);
+        Test_IDataSource(signalXYSource, mouse, rotation);
         Console.WriteLine($"- Passed");
 
         var plot = GetPlot();
@@ -243,45 +281,50 @@ internal class IDataSourceTests
         if (signalXYSource is IGetNearest gn)
         {
             Console.Write($" - Testing {signalXYSource.GetType().Name} as {nameof(IGetNearest)} ");
-            Test_IGetNearest(gn, plot);
+            Test_IGetNearest(gn, plot, mouse, rotation);
             Console.WriteLine($"- Passed");
         }
 
         if (signal is IDataSource ds)
         {
             Console.Write($" - Testing {signal.GetType().Name} as {nameof(IDataSource)} ");
-            Test_IDataSource(ds);
+            Test_IDataSource(ds, mouse, rotation);
             Console.WriteLine($"- Passed");
         }
 
         Console.Write($" - Testing SignalXY as {nameof(IGetNearest)}");
-        Test_IGetNearest(signal, plot);
+        Test_IGetNearest(signal, plot, mouse, rotation);
         Console.WriteLine($"- Passed");
     }
 
-    [Test] public void Test_ScatterSourceDoubleArray() => TestScatter(new ScottPlot.DataSources.ScatterSourceDoubleArray(Xs, Ys));
-    [Test] public void Test_ScatterSourceGenericArray() => TestScatter(new ScottPlot.DataSources.ScatterSourceGenericArray<int, int>(GenericXs, GenericYs));
-    [Test] public void Test_ScatterSourceGenericList() => TestScatter(new ScottPlot.DataSources.ScatterSourceGenericList<int, int>(GenericXs.ToList(), GenericYs.ToList()));
-    [Test] public void Test_ScatterSourceCoordinatesArray() => TestScatter(new ScottPlot.DataSources.ScatterSourceCoordinatesArray(Cs));
-    [Test] public void Test_ScatterSourceCoordinatesList() => TestScatter(new ScottPlot.DataSources.ScatterSourceCoordinatesList(Cs.ToList()));
+    [TestCase(true)][TestCase(false)][Test] public void Test_ScatterSourceDoubleArray(bool scaling) => TestScatter(new ScatterSourceDoubleArray(Xs, Ys), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_ScatterSourceGenericArray(bool scaling) => TestScatter(new ScatterSourceGenericArray<int, float>(GenericXs, GenericYs), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_ScatterSourceGenericList(bool scaling) => TestScatter(new ScatterSourceGenericList<int, float>(GenericXs.ToList(), GenericYs.ToList()), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_ScatterSourceCoordinatesArray(bool scaling) => TestScatter(new ScatterSourceCoordinatesArray(Cs), scaling);
+    [TestCase(true)][TestCase(false)][Test] public void Test_ScatterSourceCoordinatesList(bool scaling) => TestScatter(new ScatterSourceCoordinatesList(Cs.ToList()), scaling);
 
-    private static void TestScatter<T>(T scatterSource) where T : IScatterSource, IDataSource
+    private static void TestScatter<T>(T scatterSource, bool scaling) where T : IScatterSource, IDataSource
     {
         Console.Write($" - Testing {scatterSource.GetType().Name} as {nameof(IDataSource)} ");
-        Test_IDataSource(scatterSource);
+        var mouse = MouseLocation;
+        Test_IDataSource(scatterSource, mouse);
         Console.WriteLine($"- Passed");
 
         var plot = GetPlot();
 
         var scatter = plot.Add.Scatter(scatterSource);
-        scatter.OffsetX = XOffSet;
-        scatter.OffsetY = YOffSet;
-        scatter.ScaleX = XScaling;
-        scatter.ScaleY = YScaling;
         
+        if (scaling)
+        {
+            scatter.OffsetX = XOffSet;
+            scatter.OffsetY = YOffSet;
+            scatter.ScaleX = XScaling;
+            scatter.ScaleY = YScaling;
+            mouse = DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet);
+        }
 
         Console.Write($" - Testing Scatter as {nameof(IDataSource)}");
-        Test_IDataSource(scatter);
+        Test_IDataSource(scatter, mouse);
         Console.WriteLine($"- Passed");
 
         plot.RenderInMemory(PlotWidth, PlotHeight);
@@ -289,26 +332,29 @@ internal class IDataSourceTests
         if (scatterSource is IGetNearest gn)
         {
             Console.Write($" - Testing {scatterSource.GetType().Name} as {nameof(IGetNearest)} ");
-            Test_IGetNearest(gn, plot);
+            Test_IGetNearest(gn, plot, MouseLocation); // unscaled mouse location is required because Scatter has scaling details, IScatterSource does not
             Console.WriteLine($"- Passed");
         }
 
         Console.Write($" - Testing Scatter as {nameof(IGetNearest)}");
-        Test_IGetNearest(scatter, plot);
+        Test_IGetNearest(scatter, plot, mouse);
         Console.WriteLine($"- Passed");
     }
 
-    private static void Test_IDataSource(IDataSource dataSource)
+    private static void Test_IDataSource(IDataSource dataSource, Coordinates mouseLocation, bool isRotated = false)
     {
         Assert.That(dataSource, Is.Not.Null);
         
         // If using the supplied dataset, all are sorted!
         Assert.That(dataSource.IsSorted, Is.True);
 
+        double expectedX = isRotated ? Cs[IndexToCheck].Y : Cs[IndexToCheck].X;
+        double expectedY = isRotated ? Cs[IndexToCheck].X : Cs[IndexToCheck].Y;
+
         // Get Coordinate
         var coordinate = dataSource.GetCoordinate(IndexToCheck);
-        Assert.That(coordinate.X, Is.EqualTo(Cs[IndexToCheck].X), $"{nameof(IDataSource)}.{nameof(IDataSource.GetCoordinate)} returned a different X result than coordinate at same index");
-        Assert.That(coordinate.Y, Is.EqualTo(Cs[IndexToCheck].Y), $"{nameof(IDataSource)}.{nameof(IDataSource.GetCoordinate)} returned a different Y result than coordinate at same index");
+        coordinate.X.Should().BeApproximately(expectedX, .001, $"{nameof(IDataSource)}.{nameof(IDataSource.GetCoordinate)} returned a different X result than coordinate at same index");
+        coordinate.Y.Should().BeApproximately(expectedY, .001, $"{nameof(IDataSource)}.{nameof(IDataSource.GetCoordinate)} returned a different Y result than coordinate at same index");
 
         // Get XY
         Assert.That(dataSource.GetX(IndexToCheck), Is.EqualTo(coordinate.X), $"{nameof(IDataSource)}.{nameof(IDataSource.GetX)} returned a different result than coordinate at same index");
@@ -320,34 +366,28 @@ internal class IDataSourceTests
         Assert.That(dataSource.GetYScaled(IndexToCheck), Is.EqualTo(scaledCoordinate.Y), $"{nameof(IDataSource)}.{nameof(IDataSource.GetYScaled)} returned a different result than scaled coordinate at same index");
 
         // GetClosestIndex
-        Coordinates mouseLocation = new Coordinates(Xs[IndexToCheck], Ys[IndexToCheck]); // Use same XY here to validate any Rotated items
         Assert.That(dataSource.GetXClosestIndex(mouseLocation), Is.EqualTo(IndexToCheck), $"{nameof(IDataSource)}.{nameof(IDataSource.GetXClosestIndex)} returned an unexpected value");
     }
 
-    private static void Test_IGetNearest(IGetNearest dataSource, Plot plot)
+    private static void Test_IGetNearest(IGetNearest dataSource, Plot plot, Coordinates mouseLocation, bool isRotated = false)
     {
-        // TO-DO - Figure out correct mouse coordinates.
-
-        return;
         Assert.That(dataSource, Is.Not.Null);
+        Assert.That(plot, Is.Not.Null);
 
-        float maxDistance = 10;
-        float mouseShift = maxDistance * 0.7f;
-        var dataPoint = new DataPoint(Cs[IndexToCheck], IndexToCheck);
-
-        // X and Y are slightly apart, but should result in same X getting selected, even when rotated
-        var mouseLocation = new Coordinates((dataPoint.X - mouseShift) * plot.LastRender.PxPerUnitX, (dataPoint.Y + (maxDistance - mouseShift)) * plot.LastRender.PxPerUnitY);
+        float maxDistance = 100;
 
         var nearestX = dataSource.GetNearestX(mouseLocation, plot.LastRender, maxDistance);
         Assert.That(nearestX.Index, Is.EqualTo(IndexToCheck), $"{dataSource.GetType().Name} failed to get correct index using {nameof(IGetNearest)}.{nameof(IGetNearest.GetNearestX)}");
-
+        nearestX.X.Should().BeApproximately(mouseLocation.X, .001);
+        nearestX.Y.Should().BeApproximately(mouseLocation.Y, .001);
+        
         var nearest = dataSource.GetNearest(mouseLocation, plot.LastRender, maxDistance);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck), $"{dataSource.GetType().Name} failed to get correct index using {nameof(IGetNearest)}.{nameof(IGetNearest.GetNearest)}");
-        
+        nearest.X.Should().BeApproximately(mouseLocation.X, .001);
+        nearest.Y.Should().BeApproximately(mouseLocation.Y, .001);
 
-        Assert.That(nearest.X, Is.EqualTo(nearestX.X), $"nearestX.X != nearest.X");
-        Assert.That(nearest.Y, Is.EqualTo(nearestX.Y), $"nearestX.Y != nearest.Y");
-        Assert.That(nearest.Index, Is.EqualTo(nearestX.Index), $"nearestX.Index != nearest.Index");
     }
+
+    
 }
 

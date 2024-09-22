@@ -26,9 +26,14 @@
         public Coordinates GetCoordinate(int index) => coordinates[index];
         public Coordinates GetCoordinateScaled(int index) => DataSourceUtilities.ScaleCoordinate(coordinates[index], XScale, XOffset, YScale, YOffset);
         public double GetX(int index) => coordinates[index].X;
-        public int GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(coordinates is Coordinates[] ca? ca : [.. coordinates], mouseLocation, new IndexRange(MinRenderIndex, MaxRenderIndex));
+        public int GetXClosestIndex(Coordinates mouseLocation) 
+            => DataSourceUtilities.GetClosestIndex(
+                coordinates is Coordinates[] ca? ca : [.. coordinates], 
+                DataSourceUtilities.UnScaleCoordinate(mouseLocation, XScale, XOffset, YScale, YOffset), 
+                new IndexRange(MinRenderIndex, MaxRenderIndex)
+                );
         public double GetXScaled(int index) => DataSourceUtilities.ScaleXY(coordinates[index].X, XScale, XOffset);
         public double GetY(int index) => coordinates[index].Y;
-        public double GetYScaled(int index) => DataSourceUtilities.ScaleXY(coordinates[index].Y, XScale, XOffset);
+        public double GetYScaled(int index) => DataSourceUtilities.ScaleXY(coordinates[index].Y, YScale, YOffset);
     }
 }

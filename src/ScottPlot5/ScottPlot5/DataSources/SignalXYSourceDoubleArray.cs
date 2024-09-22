@@ -407,12 +407,16 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
 
     Coordinates IDataSource.GetCoordinate(int index)
     {
-        return new Coordinates(((IDataSource)this).GetX(index), ((IDataSource)this).GetY(index));
+        double x = NumericConversion.GenericToDouble(Xs, index);
+        double y = NumericConversion.GenericToDouble(Ys, index);
+        return Rotated ? new Coordinates(y, x) : new Coordinates(x, y);
     }
 
     Coordinates IDataSource.GetCoordinateScaled(int index)
     {
-        return new Coordinates(((IDataSource)this).GetXScaled(index), ((IDataSource)this).GetYScaled(index));
+        double x = DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset);
+        double y = DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
+        return Rotated ? new Coordinates(y, x) : new Coordinates(x, y);
     }
 
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation)

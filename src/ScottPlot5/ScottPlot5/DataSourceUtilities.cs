@@ -126,10 +126,9 @@ namespace ScottPlot
             return index > indexRange.Max ? indexRange.Max : index;
         }
 
-        public static int GetClosestIndex<TValue, TList>(this TList sortedList, TValue value, IndexRange indexRange, IComparer<TValue> comparer)
+        public static int GetClosestIndex<TValue, TList>(this TList sortedList, TValue value, IndexRange indexRange, IComparer<TValue>? comparer)
             where TList : IEnumerable<TValue> // expects IList & IReadOnlyList
         {
-            if (valueScale == 0) throw new ArgumentException($"{nameof(valueScale)} is zero.");
             comparer ??= GenericComparer<TValue>.Instance;
             int index = sortedList switch
             {
@@ -157,7 +156,7 @@ namespace ScottPlot
 
         /// <summary> Creates a new <see cref="IndexRange"/>  </summary>
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static IndexRange GetRenderIndexRange(this IDataSource dataSource) 
+        public static IndexRange GetRenderIndexRange(this IDataSource dataSource)
             => new IndexRange(Math.Max(0, dataSource.MinRenderIndex), Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex));
 
         #region < ScaleXY >
@@ -178,13 +177,16 @@ namespace ScottPlot
         public static double ScaleXY<T>(IReadOnlyList<T> collection, int index, double scalingFactor, double offset)
             => NumericConversion.GenericToDouble(collection, index) * scalingFactor + offset;
 
+        public static double UnscaleXY(double value, double scalingFactor, double offset)
+            => (value - offset )/ scalingFactor;
+
         #endregion
 
         [MethodImpl(NumericConversion.ImplOptions)]
         public static Coordinates ScaleCoordinate(Coordinates coordinate, double xScalingFactor, double xOffset, double yScalingFactor, double yOffset)
         {
             return new Coordinates(
-                x: ScaleXY(coordinate.X, xScalingFactor, xOffset), 
+                x: ScaleXY(coordinate.X, xScalingFactor, xOffset),
                 y: ScaleXY(coordinate.Y, yScalingFactor, yOffset)
                 );
         }
@@ -210,7 +212,7 @@ namespace ScottPlot
                 y: UnScale(pixelCoordinate.Y, pixelScaleY, yScalingFactor, yOffset)
                 ); ;
 
-            static double UnScale(double value,  double pixelScaling, double axisScaling, double offset)
+            static double UnScale(double value, double pixelScaling, double axisScaling, double offset)
             {
                 return ((value / pixelScaling) - offset) / axisScaling;
             }

@@ -404,10 +404,10 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestFast(this, mouseLocation, renderInfo, maxDistance);
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestXFast(this, mouseLocation, renderInfo, maxDistance);
 
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
     {
@@ -418,12 +418,16 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
 
     Coordinates IDataSource.GetCoordinate(int index)
     {
-        return new Coordinates(((IDataSource)this).GetX(index), ((IDataSource)this).GetY(index));
+        double x = NumericConversion.GenericToDouble(Xs, index);
+        double y = NumericConversion.GenericToDouble(Ys, index);
+        return Rotated ? new Coordinates(y, x) : new Coordinates(x, y);
     }
 
     Coordinates IDataSource.GetCoordinateScaled(int index)
     {
-        return new Coordinates(((IDataSource)this).GetXScaled(index), ((IDataSource)this).GetYScaled(index));
+        double x = DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset);
+        double y = DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
+        return Rotated ? new Coordinates(y, x) : new Coordinates(x, y);
     }
 
     double IDataSource.GetX(int index)

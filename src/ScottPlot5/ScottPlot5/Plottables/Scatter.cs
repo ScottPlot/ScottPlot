@@ -345,9 +345,38 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
     {
-        return Data is IDataSource ds 
-            ? ds.GetXClosestIndex(mouseLocation)
-            : DataSourceUtilities.GetClosestIndex(Data.GetScatterPoints(), mouseLocation, this.GetRenderIndexRange(), BinarySearchComparer.Instance);
+        if (OffsetX == 0 && ScaleX == 1 && Data is IDataSource ds)
+            return ds.GetXClosestIndex(mouseLocation);
+
+        var points = Data.GetScatterPoints();
+        if (points.IsAscending(BinarySearchComparer.Instance))
+        {
+            return DataSourceUtilities.GetClosestIndex(
+                points,
+                DataSourceUtilities.UnScaleCoordinate(mouseLocation, ScaleX, OffsetX, ScaleY, OffsetY),
+                new IndexRange(0, points.Count - 1),
+                BinarySearchComparer.Instance
+                );
+        }
+        else
+        {
+            int closestIndex = -1;
+            double closestDistance = double.PositiveInfinity;
+            mouseLocation = DataSourceUtilities.UnScaleCoordinate(mouseLocation, ScaleX, OffsetX, ScaleY, OffsetY);
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                double dx = mouseLocation.X - points[i].X;
+
+                if (dx < closestDistance)
+                {
+                    if (dx == 0) return i;
+                    closestDistance = dx;
+                    closestIndex = i;
+                }
+            }
+            return closestIndex;
+        }
     }
 
     Coordinates IDataSource.GetCoordinate(int index)
@@ -378,8 +407,8 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     {
         return DataSourceUtilities.ScaleXY(
             point: _dataSource?.GetX(index) ?? Data.GetScatterPoints()[index].X,
-            scalingFactor: ScaleY,
-            offset: OffsetY
+            scalingFactor: ScaleX,
+            offset: OffsetX
             );
     }
 
