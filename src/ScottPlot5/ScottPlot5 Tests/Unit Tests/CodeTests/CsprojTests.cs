@@ -27,4 +27,35 @@ internal class CsprojTests
             }
         }
     }
+
+    [Test]
+    public void Test_SkiaSharpVersion_IsAllSame()
+    {
+        Dictionary<string, string> versionsByFile = [];
+
+        foreach ((string file, string[] lines) in CsprojFiles)
+        {
+            foreach (string line in lines)
+            {
+                if (!line.Contains("PackageReference"))
+                    continue;
+
+                if (!line.Contains("SkiaSharp"))
+                    continue;
+
+                string version = line.Split("Version=")[1].Split('"')[1];
+                versionsByFile[file] = version;
+            }
+        }
+
+        if (versionsByFile.Values.ToHashSet().Count > 1)
+        {
+            foreach ((string file, string version) in versionsByFile)
+            {
+                Console.WriteLine($"{version} {file}");
+            }
+
+            throw new InvalidDataException("Multiple SkiaSharp versions found!");
+        }
+    }
 }

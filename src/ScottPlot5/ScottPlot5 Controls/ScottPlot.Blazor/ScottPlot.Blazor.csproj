@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -49,7 +49,7 @@
     <!-- Package dependencies -->
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
-        <PackageReference Include="SkiaSharp.Views.Blazor" Version="2.88.6" />
+        <PackageReference Include="SkiaSharp.Views.Blazor" Version="2.88.8" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
