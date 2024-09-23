@@ -129,7 +129,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             )
             return false;
 
-        if (GenericComparer<TX>.Instance.Compare(Xs[firstIndex], Xs[lastIndex]) > 0)
+        if (Comparer<TX>.Default.Compare(Xs[firstIndex], Xs[lastIndex]) > 0) // Default Comparer should work on expected primitive types (long, uint, single, etc)
             throw new InvalidDataException($"Xs must contain only ascending values. The value at index {firstIndex} ({Xs[firstIndex]}) is greater than the value at index {lastIndex} ({Xs[lastIndex]})");
 
         return true;
