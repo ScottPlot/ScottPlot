@@ -54,6 +54,8 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointX(axes);
+        if (ValidateVisibleRange(dataIndexFirst, dataIndexLast) is false) return [];
+
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
         // get all points in view
@@ -86,6 +88,8 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointY(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointY(axes);
+        if (ValidateVisibleRange(dataIndexFirst, dataIndexLast) is false) return [];
+
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
         // get all points in view
@@ -111,6 +115,24 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource
             SignalInterpolation.InterpolateAfterY(rp, points, connectStyle);
 
         return points;
+    }
+
+    // Validate the visible range - Fixes Zoom Bug - https://github.com/ScottPlot/ScottPlot/issues/4261
+    private bool ValidateVisibleRange(int firstIndex, int lastIndex)
+    {
+        if (
+            firstIndex > lastIndex ||
+            firstIndex < 0 ||
+            lastIndex < 0 ||
+            firstIndex >= Xs.Length ||
+            lastIndex >= Xs.Length
+            )
+            return false;
+
+        if (GenericComparer<TX>.Instance.Compare(Xs[firstIndex], Xs[lastIndex]) > 0)
+            throw new InvalidDataException($"Xs must contain only ascending values. The value at index {firstIndex} ({Xs[firstIndex]}) is greater than the value at index {lastIndex} ({Xs[lastIndex]})");
+
+        return true;
     }
 
     /// <summary>
