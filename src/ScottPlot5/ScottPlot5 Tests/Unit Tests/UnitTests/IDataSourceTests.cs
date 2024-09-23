@@ -29,16 +29,6 @@ internal class IDataSourceTests
 
     public static readonly Coordinates MouseLocation = new(Period * IndexToCheck, Ys[IndexToCheck]);
 
-    private static double GetValidScaling()
-    {
-        double i = Random.Shared.NextDouble();
-        while (i is 0d or 1d) 
-        {
-            i = Random.Shared.NextDouble();
-        }
-        return i * 3;
-    }
-
     private static Plot GetPlot()
     {
         Plot plot = new Plot();
@@ -178,6 +168,81 @@ internal class IDataSourceTests
     }
 
     #endregion
+
+    [Test]
+    public void Test_GetRenderIndexCount()
+    {
+        // empty collection
+        var data = new CoordinateDataSource([]);
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(0));
+        Assert.That(data.Length, Is.EqualTo(0));
+        Assert.That(data.MinRenderIndex, Is.EqualTo(0));
+        Assert.That(data.MaxRenderIndex, Is.EqualTo(-1));
+
+        // Collection Validation
+        data = new CoordinateDataSource(Cs);
+        Assert.That(data.Length, Is.EqualTo(Cs.Length));
+        Assert.That(data.MinRenderIndex, Is.EqualTo(0));
+        Assert.That(data.MaxRenderIndex, Is.EqualTo(Cs.Length - 1));
+
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed Nominal Check"); // nominal -- MaxRenderIndex == data.Length -1
+
+        data.MaxRenderIndex= int.MaxValue;
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed int.Max check"); // int.Max
+
+        data.MaxRenderIndex = data.Length - 5;
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.MaxRenderIndex + 1), "- Failed MaxRenderIndex < data.Length"); // MaxRenderIndex < data.Length
+
+        data.MaxRenderIndex = data.Length - 1; // back to default
+        data.MinRenderIndex = 5; // Remove indexes 0-4
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length - 5), "- Failed MinRenderIndex > 0");
+
+        // If negative max numbers are supplied, should result in 0 renders
+        data.MaxRenderIndex = -25;
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(0), "- Failed Negative MaxRenderIndex Check");
+
+        // Negative Min has no effect -- Max(0,minIndex)
+        data.MinRenderIndex = -100;
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void Test_GetRenderIndexRange()
+    {
+        // empty collection
+        var data = new CoordinateDataSource([]);
+        var range = data.GetRenderIndexRange();
+        Assert.That(range.Min, Is.EqualTo(-1));
+        Assert.That(range.Max, Is.EqualTo(-1));
+        Assert.That(range.Length, Is.EqualTo(0));
+        Assert.That(range, Is.EqualTo(IndexRange.None));
+
+        data = new CoordinateDataSource(Cs);
+        range = data.GetRenderIndexRange();
+        Assert.That(range.Min, Is.EqualTo(0)); // nominal -- MaxRenderIndex == data.Length -1
+        Assert.That(range.Max, Is.EqualTo(data.Length-1)); // nominal -- MaxRenderIndex == data.Length -1
+        Assert.That(range.Length, Is.EqualTo(data.Length));
+
+        data.MaxRenderIndex = 10;
+        range = data.GetRenderIndexRange();
+        Assert.That(range.Min, Is.EqualTo(0));
+        Assert.That(range.Max, Is.EqualTo(10));
+        Assert.That(range.Length, Is.EqualTo(11));
+
+        data.MinRenderIndex= 5;
+        range = data.GetRenderIndexRange();
+        Assert.That(range.Min, Is.EqualTo(5));
+        Assert.That(range.Max, Is.EqualTo(10));
+        Assert.That(range.Length, Is.EqualTo(6));
+
+        //Negative Index Validation
+        data.MaxRenderIndex = -5;
+        Assert.That( data.GetRenderIndexRange(), Is.EqualTo(IndexRange.None));
+
+        data.MaxRenderIndex = 10;
+        data.MinRenderIndex = -10;
+        Assert.That(data.GetRenderIndexRange(), Is.EqualTo(IndexRange.None));
+    }
 
     [TestCase(false)]
     [TestCase(true)]
@@ -346,7 +411,7 @@ internal class IDataSourceTests
         Assert.That(dataSource, Is.Not.Null);
         
         // If using the supplied dataset, all are sorted!
-        Assert.That(dataSource.IsSorted, Is.True);
+        Assert.That(dataSource.IsSorted(), Is.True);
 
         double expectedX = isRotated ? Cs[IndexToCheck].Y : Cs[IndexToCheck].X;
         double expectedY = isRotated ? Cs[IndexToCheck].X : Cs[IndexToCheck].Y;

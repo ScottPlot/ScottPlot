@@ -20,7 +20,6 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
     public int MaximumIndex { get; set; }
 
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => true;
     int IDataSource.Length => Xs.Length;
     int IDataSource.MinRenderIndex => MinimumIndex;
     int IDataSource.MaxRenderIndex => MaximumIndex;
@@ -453,4 +452,6 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
             DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset) :
             DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
     }
+    bool IDataSource.IsSorted() => true;
+
 }

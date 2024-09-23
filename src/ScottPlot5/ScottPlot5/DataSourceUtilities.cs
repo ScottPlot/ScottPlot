@@ -24,20 +24,20 @@ namespace ScottPlot
         ///<summary>
         ///For standard numerics (single, long, int, etc) this will be '<see cref="Comparer{T}.Default"/>', which is significantly faster than this interface implementation
         ///</summary> 
-        public static readonly IComparer<T> Instance = GetComparer(); 
+        public static readonly IComparer<T> Instance = GetComparer();
 
 #pragma warning disable CS8767 // handled by null check
         public int Compare(T a, T b)
         {
             return true switch
             {
+                true when typeof(T).IsPrimitive => NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b)),
+                true when a is Coordinates A && b is Coordinates B => A.X.CompareTo(B.X),
+                true when a is RootedPixelVector A && b is RootedPixelVector B => A.Point.X.CompareTo(B.Point.X),
+                true when a is RootedCoordinateVector A && b is RootedCoordinateVector B => A.Point.X.CompareTo(B.Point.X),
                 true when a is null | b is null => throw new Exception("Generic Comparer can not handle null values"),
-                true when a is Coordinates c && b is Coordinates d => c.X.CompareTo(d.X),
-                true when a is RootedPixelVector x && b is RootedPixelVector y => x.Point.X.CompareTo(y.Point.X),
-                true when a is RootedCoordinateVector x && b is RootedCoordinateVector y => x.Point.X.CompareTo(y.Point.X),
-                // in practice, these should never be used if the 'Instance' field is refer
-                IComparable<T> c => c.CompareTo(b),
-                _ => NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b))
+                true when a is IComparable<T> A => A.CompareTo(b),
+                _ => throw new NotImplementedException()
             };
         }
 #pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
@@ -68,26 +68,28 @@ namespace ScottPlot
         /// <returns>True if the collection is ascending (and can therefore be used with BinarySearch and GetClosest). Otherwise false.</returns>
         public static bool IsAscending<T>(this IEnumerable<T> values, IComparer<T>? comparer)
         {
-            bool isAscending;
-            var enu = values.GetEnumerator();
-            if (isAscending = enu.MoveNext())
+            using var enu = values.GetEnumerator();
+            if (enu.MoveNext() == false)
+                return false;
+
+            comparer ??= GenericComparer<T>.Instance;
+            T prev = enu.Current;
+            while (enu.MoveNext())
             {
-                comparer ??= BinarySearchComparer.GetComparer<T>();
-                T prev = enu.Current;
-                while (isAscending && enu.MoveNext())
-                {
-                    isAscending = comparer.Compare(prev, enu.Current) <= 0;
-                    prev = enu.Current;
-                }
+                if (comparer.Compare(enu.Current, prev) < 0) // current >= prev = OK, current < prev Not OK
+                    return false;
+
+                prev = enu.Current;
             }
-            return isAscending;
+            return true;
         }
 
         #region < Binary Search | GetClosestIndex >
 
         /// <inheritdoc cref="Array.BinarySearch{T}(T[], int, int, T, IComparer{T})"/>
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static int BinarySearch<T>(this IList<T> sortedList, int index, int count, T value, IComparer<T> comparer)
+        public static int BinarySearch<T, TList>(this TList sortedList, int index, int count, T value, IComparer<T> comparer)
+            where TList : IEnumerable<T>
         {
             return sortedList switch
             {
@@ -98,6 +100,7 @@ namespace ScottPlot
             };
         }
 
+        /// <inheritdoc cref="GetClosestIndex{TValue, TList}(TList, TValue, IndexRange, IComparer{TValue}?)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetClosestIndex(double[] sortedList, double value, IndexRange indexRange)
         {
@@ -106,6 +109,7 @@ namespace ScottPlot
             return index > indexRange.Max ? indexRange.Max : index;
         }
 
+        /// <inheritdoc cref="GetClosestIndex{TValue, TList}(TList, TValue, IndexRange, IComparer{TValue}?)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetClosestIndex(List<double> sortedList, double value, IndexRange indexRange)
         {
@@ -114,6 +118,7 @@ namespace ScottPlot
             return index > indexRange.Max ? indexRange.Max : index;
         }
 
+        /// <inheritdoc cref="GetClosestIndex{TValue, TList}(TList, TValue, IndexRange, IComparer{TValue}?)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetClosestIndex(Coordinates[] sortedList, Coordinates value, IndexRange indexRange)
         {
@@ -122,6 +127,7 @@ namespace ScottPlot
             return index > indexRange.Max ? indexRange.Max : index;
         }
 
+        /// <inheritdoc cref="GetClosestIndex{TValue, TList}(TList, TValue, IndexRange, IComparer{TValue}?)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetClosestIndex(List<Coordinates> sortedList, Coordinates value, IndexRange indexRange)
         {
@@ -130,17 +136,22 @@ namespace ScottPlot
             return index > indexRange.Max ? indexRange.Max : index;
         }
 
+        /// <summary>
+        /// Gets the closest index to a specified <paramref name="value"/> from the <paramref name="sortedList"/>
+        /// </summary>
+        /// <typeparam name="TValue">The type of values in the collection</typeparam>
+        /// <typeparam name="TList">Must be an object that implements IList or IReadOnlyList. List{T} | T[] are preferred.</typeparam>
+        /// <param name="sortedList">The collection to search. Collection must be in ascending order.</param>
+        /// <param name="value">The value to search for in the collection</param>
+        /// <param name="indexRange">Provides details about the range of indexes to search</param>
+        /// <param name="comparer">A comparer used to determine equality - recommend default comparer or <see cref="GenericComparer{T}.Instance"/></param>
+        /// <returns>The index of the item that is closest to the <paramref name="value"/></returns>
         public static int GetClosestIndex<TValue, TList>(this TList sortedList, TValue value, IndexRange indexRange, IComparer<TValue>? comparer)
             where TList : IEnumerable<TValue> // expects IList & IReadOnlyList
         {
             comparer ??= GenericComparer<TValue>.Instance;
-            int index = sortedList switch
-            {
-                List<TValue> list => list.BinarySearch(indexRange.Min, indexRange.Length, value, comparer),
-                TValue[] arr => Array.BinarySearch(arr, indexRange.Min, indexRange.Length, value, comparer),
-                CircularBuffer<TValue> circBuffer => circBuffer.BinarySearch(indexRange.Min, indexRange.Length, value, comparer),
-                _ => throw new NotSupportedException($"unsupported {nameof(TList)}: {sortedList.GetType().Name}")
-            };
+            int index = BinarySearch(sortedList, indexRange.Min, indexRange.Length, value, comparer);
+
             // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
             // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
             // If x is above the max Xs, BinarySearch returns -maxIndex. Bitwise negation of this value returns maxIndex + 1 (i.e., the position after the last index). However, this index is beyond the array bounds, so we return the final index instead.
@@ -154,38 +165,82 @@ namespace ScottPlot
 
         #endregion
 
+        /// <summary>
+        /// Calculates the maximum count of indexes available to render in an <see cref="IDataSource"/>'s collection
+        /// </summary>
+        /// <param name="dataSource">The datasource</param>
+        /// <returns>The number of indexes that should be rendered </returns>
+        /// <remarks>Example : <br/>MaxIndex = Xs.Length - 1 <br/>MinIndex = 0, <br/>returns Xs.Length </remarks>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetRenderIndexCount(this IDataSource dataSource)
-            => Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex) - dataSource.MinRenderIndex + 1;
+            => Math.Max(0, Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex) - Math.Max(0, dataSource.MinRenderIndex) + 1);
 
-        /// <summary> Creates a new <see cref="IndexRange"/>  </summary>
+        /// <summary>
+        /// Creates a new <see cref="IndexRange"/> 
+        /// </summary>
+        /// <param name="dataSource">The DataSource</param>
+        /// <returns>an IndexRange representing a the minimum and maximum indexes to render</returns>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static IndexRange GetRenderIndexRange(this IDataSource dataSource)
-            => new IndexRange(Math.Max(0, dataSource.MinRenderIndex), Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex));
+        {
+            if (dataSource.Length == 0) return IndexRange.None;
+            int min = Math.Min(dataSource.Length - 1, dataSource.MinRenderIndex);
+            int max = Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex);
+            if (min > max || min < 0 || max < 0) return IndexRange.None;
+            return new IndexRange(min, max);
+        }
 
         #region < ScaleXY >
 
+        /// <summary>
+        /// Scale the <paramref name="value"/> by applying the <paramref name="scalingFactor"/> and the <paramref name="offset"/>
+        /// </summary>
+        /// <param name="value">the value to scale</param>
+        /// <param name="scalingFactor">the scaling factor to apply.</param>
+        /// <param name="offset">the offset to apply</param>
+        /// <returns>value * <paramref name="scalingFactor"/> + <paramref name="offset"/></returns>
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static double ScaleXY(double point, double scalingFactor, double offset)
-            => point * scalingFactor + offset;
+        public static double ScaleXY(double value, double scalingFactor, double offset)
+            => value * scalingFactor + offset;
 
+        /// <inheritdoc cref="ScaleXY(double, double, double)"/>
+        /// <typeparam name="T">The type of value - will be converted to a double via <see cref="NumericConversion.GenericToDouble{T}(ref T)"/></typeparam>
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static double ScaleXY<T>(T point, double scalingFactor, double offset)
-            => NumericConversion.GenericToDouble(ref point) * scalingFactor + offset;
+        public static double ScaleXY<T>(T value, double scalingFactor, double offset)
+            => NumericConversion.GenericToDouble(ref value) * scalingFactor + offset;
 
+        /// <summary>
+        /// Scale a value from the collection by the <paramref name="scalingFactor"/> and <paramref name="offset"/>
+        /// </summary>
+        /// <inheritdoc cref="ScaleXY(double, double, double)"/>
+        /// <param name="collection">the collection to select a value from</param>
+        /// <param name="index">the index of the value within the collection</param>
+        /// <param name="scalingFactor"/> <param name="offset"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static double ScaleXY<T>(T[] collection, int index, double scalingFactor, double offset)
             => NumericConversion.GenericToDouble(collection, index) * scalingFactor + offset;
 
+        /// <inheritdoc cref="ScaleXY{T}(T[], int, double, double)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static double ScaleXY<T>(IReadOnlyList<T> collection, int index, double scalingFactor, double offset)
             => NumericConversion.GenericToDouble(collection, index) * scalingFactor + offset;
 
+        /// <summary>
+        /// Scale the <paramref name="value"/> by applying the <paramref name="scalingFactor"/> and the <paramref name="offset"/>
+        /// </summary>
+        /// <param name="value">the value to unscale</param>
+        /// <param name="scalingFactor">the scaling factor to remove.</param>
+        /// <param name="offset">the offset to remove</param>
+        /// <returns>(<paramref name="value"> - <paramref name="offset"/>) / <paramref name="scalingFactor"/> </returns>
         public static double UnscaleXY(double value, double scalingFactor, double offset)
-            => (value - offset )/ scalingFactor;
+            => (value - offset) / scalingFactor;
 
         #endregion
 
+        /// <summary>
+        /// Scale a coordinate by applying the offsets and the scaling factors.
+        /// </summary>
+        /// <inheritdoc cref="UnScaleCoordinate(Coordinates, RenderDetails, double, double, double, double, IXAxis?, IYAxis?)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static Coordinates ScaleCoordinate(Coordinates coordinate, double xScalingFactor, double xOffset, double yScalingFactor, double yOffset)
         {
@@ -196,6 +251,7 @@ namespace ScottPlot
         }
 
 
+        /// <inheritdoc cref="UnScaleCoordinate(Coordinates, RenderDetails, double, double, double, double, IXAxis?, IYAxis?)"/>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static Coordinates UnScaleCoordinate(Coordinates coordinate, double xScalingFactor, double xOffset, double yScalingFactor, double yOffset)
         {
@@ -205,6 +261,19 @@ namespace ScottPlot
                 );
         }
 
+
+        /// <summary>
+        /// Unscale a coordinate
+        /// </summary>
+        /// <param name="pixelCoordinate">the coordinate to unscale</param>
+        /// <param name="renderInfo">RenderDetails used to unscale the coordinate by the pixels/axis</param>
+        /// <param name="xScalingFactor">The plottable's X Scaling factor</param>
+        /// <param name="xOffset">The plottable's X Offset</param>
+        /// <param name="yScalingFactor">The plottable's Y Scaling factor</param>
+        /// <param name="yOffset">The plottable's Y OFfset</param>
+        /// <param name="xaxis">The X-Axis to used to get the pixel scaling from the <paramref name="renderInfo"/>. If not found uses the default value from the renderInfo.</param>
+        /// <param name="yaxis">The Y-Axis to used to get the pixel scaling from the <paramref name="renderInfo"/>. If not found uses the default value from the renderInfo.</param>
+        /// <returns>A new <see cref="Coordinates"/> value</returns>
         [MethodImpl(NumericConversion.ImplOptions)]
         public static Coordinates UnScaleCoordinate(Coordinates pixelCoordinate, RenderDetails renderInfo, double xScalingFactor = 1, double xOffset = 0, double yScalingFactor = 1, double yOffset = 0, IXAxis? xaxis = null, IYAxis? yaxis = null)
         {
@@ -220,6 +289,25 @@ namespace ScottPlot
             {
                 return ((value / pixelScaling) - offset) / axisScaling;
             }
+        }
+
+        /// <remarks> Checks <see cref="IDataSource.IsSorted"/> and decides to call the Fast or Original method accordingly</remarks>
+        /// <inheritdoc cref="GetNearestFast"/>
+        [MethodImpl(NumericConversion.ImplOptions)]
+        public static DataPoint GetNearestSmart(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null, IYAxis? yAxis = null)
+        {
+            if (dataSource.IsSorted()) return GetNearestFast(dataSource, mouseLocation, renderInfo, maxDistance, xAxis, yAxis);
+            return GetNearest(dataSource, mouseLocation, renderInfo, maxDistance, xAxis, yAxis);
+        }
+
+
+        /// <remarks> Checks <see cref="IDataSource.IsSorted"/> and decides to call the Fast or Original method accordingly</remarks>
+        /// <inheritdoc cref="GetNearestXFast"/>
+        [MethodImpl(NumericConversion.ImplOptions)]
+        public static DataPoint GetNearestXSmart(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null)
+        {
+            if (dataSource.IsSorted()) return GetNearestXFast(dataSource, mouseLocation, renderInfo, maxDistance, xAxis);
+            return GetNearestX(dataSource, mouseLocation, renderInfo, maxDistance, xAxis);
         }
 
         /// <summary>
@@ -241,44 +329,45 @@ namespace ScottPlot
         {
             if (dataSource is null) throw new ArgumentNullException(nameof(dataSource));
 
-            var renderIndexCount = dataSource.GetRenderIndexCount();
-            var minRenderIndex = dataSource.MinRenderIndex;
-
             double maxDistanceSquared = maxDistance * maxDistance;
             double closestDistanceSquared = double.PositiveInfinity;
-
             int closestIndex = 0;
 
             _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
             _ = renderInfo.TryGetPixelPerUnitY(yAxis, out double pxPerUnitY);
 
+            int indexLength = Math.Max(0, dataSource.MinRenderIndex) + dataSource.GetRenderIndexCount();
             bool preferCoordinates = dataSource.PreferCoordinates;
+            double X; double Y;
 
-            for (int i2 = 0; i2 < renderIndexCount; i2++)
+            for (int i = Math.Max(0, dataSource.MinRenderIndex); i < indexLength; i++)
             {
-                int i = minRenderIndex + i2;
+                if (preferCoordinates)
+                {
+                    (X, Y) = dataSource.GetCoordinateScaled(i).Deconstruct();
+                }
+                else
+                {
+                    X = dataSource.GetXScaled(i);
+                    Y = dataSource.GetYScaled(i);
+                }
 
-                (double X, double Y) = preferCoordinates ?
-                    dataSource.GetCoordinateScaled(i).Deconstruct() :
-                    (dataSource.GetXScaled(i), dataSource.GetYScaled(i));
-
-                double dX = Math.Abs(X - mouseLocation.X) * pxPerUnitX;
-                double dY = Math.Abs(Y - mouseLocation.Y) * pxPerUnitY;
+                double dX = (X - mouseLocation.X) * pxPerUnitX;
+                double dY = (Y - mouseLocation.Y) * pxPerUnitY;
                 double distanceSquared = dX * dX + dY * dY;
 
-                if (distanceSquared <= closestDistanceSquared)
+                if (distanceSquared < closestDistanceSquared)
                 {
                     closestDistanceSquared = distanceSquared;
                     closestIndex = i;
                 }
             }
 
-            if (closestDistanceSquared <= maxDistanceSquared)
+            if (closestDistanceSquared < maxDistanceSquared)
             {
                 if (preferCoordinates)
                 {
-                    var coord = dataSource.GetCoordinateScaled(closestIndex);
-                    return new DataPoint(coord.X, coord.Y, closestIndex);
+                    return new DataPoint(dataSource.GetCoordinateScaled(closestIndex), closestIndex);
                 }
                 return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
@@ -295,19 +384,15 @@ namespace ScottPlot
 
             _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
 
-            var renderIndexCount = dataSource.GetRenderIndexCount();
-            var minRenderIndex = dataSource.MinRenderIndex;
-
+            var indexLength = Math.Max(0, dataSource.MinRenderIndex) + dataSource.GetRenderIndexCount();
             double closestDistance = double.PositiveInfinity;
 
             int closestIndex = 0;
 
-            for (int i2 = 0; i2 < renderIndexCount; i2++)
+            for (int i = Math.Max(0, dataSource.MinRenderIndex); i < indexLength; i++)
             {
-                int i = minRenderIndex + i2;
-                var x = dataSource.GetXScaled(i);
-                double dX = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
-                if (dX <= closestDistance)
+                double dX = Math.Abs(dataSource.GetXScaled(i) - mouseLocation.X) * pxPerUnitX;
+                if (dX < closestDistance)
                 {
                     closestDistance = dX;
                     closestIndex = i;
@@ -318,8 +403,7 @@ namespace ScottPlot
             {
                 if (dataSource.PreferCoordinates)
                 {
-                    Coordinates closestCoord = dataSource.GetCoordinateScaled(closestIndex);
-                    return new DataPoint(closestCoord.X, closestCoord.Y, closestIndex);
+                    return new DataPoint(dataSource.GetCoordinateScaled(closestIndex), closestIndex);
                 }
                 return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
@@ -336,25 +420,31 @@ namespace ScottPlot
             _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
             _ = renderInfo.TryGetPixelPerUnitY(yAxis, out double pxPerUnitY);
 
-            
+
             int searchedLeft = closestIndex;
             int searchedRight = closestIndex;
             int NextPoint = closestIndex;
             double maxDistanceSquared = maxDistance * maxDistance;
             double maxDistanceToSearch = maxDistanceSquared;
-            
+
             double closestDistanceSquared = double.PositiveInfinity;
 
             bool preferCoordinates = dataSource.PreferCoordinates;
-
+            double x; double y;
             while (NextPoint != -1)
             {
-                (double x, double y) = preferCoordinates ?
-                    dataSource.GetCoordinateScaled(NextPoint).Deconstruct() :
-                    (dataSource.GetXScaled(NextPoint), dataSource.GetYScaled(NextPoint));
+                if (preferCoordinates)
+                {
+                    (x, y) = dataSource.GetCoordinateScaled(NextPoint).Deconstruct();
+                }
+                else
+                {
+                    x = dataSource.GetXScaled(NextPoint);
+                    y = dataSource.GetYScaled(NextPoint);
+                }
 
-                double dx = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
-                double dy = Math.Abs(y - mouseLocation.Y) * pxPerUnitY;
+                double dx = (x - mouseLocation.X) * pxPerUnitX;
+                double dy = (y - mouseLocation.Y) * pxPerUnitY;
                 double distanceSquared = dx * dx + dy * dy;
 
                 if (distanceSquared < maxDistanceToSearch)
@@ -376,8 +466,7 @@ namespace ScottPlot
             {
                 if (preferCoordinates)
                 {
-                    var coord = dataSource.GetCoordinateScaled(closestIndex);
-                    return new DataPoint(coord.X, coord.Y, closestIndex);
+                    return new DataPoint(dataSource.GetCoordinateScaled(closestIndex), closestIndex);
                 }
                 return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
             }
@@ -390,46 +479,38 @@ namespace ScottPlot
         /// <inheritdoc cref="GetNearestFast"/>
         public static DataPoint GetNearestXFast(IDataSource dataSource, Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis = null)
         {
+            //Nearest X will always be within 1 of the closest index of a sorted collection
+            _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
             int closestIndex = dataSource.GetXClosestIndex(mouseLocation);
 
-            _ = renderInfo.TryGetPixelPerUnitX(xAxis, out double pxPerUnitX);
-
-            int searchedLeft = closestIndex;
-            int searchedRight = closestIndex;
-            int NextPoint = closestIndex;
-            double closestDistance = double.PositiveInfinity;
-            double closestDistanceSquared = closestDistance;
-
-            while (NextPoint != -1)
+            double d1 = Math.Abs(dataSource.GetXScaled(closestIndex) - mouseLocation.X) * pxPerUnitX;
+            if (closestIndex > 0)
             {
-                double x = dataSource.GetXScaled(NextPoint);
-                double dx = Math.Abs(x - mouseLocation.X) * pxPerUnitX;
-
-                if (dx < closestDistance)
+                double d2 = Math.Abs(dataSource.GetXScaled(closestIndex - 1) - mouseLocation.X) * pxPerUnitX;
+                if (d1 <= d2 && d1 <= maxDistance)
                 {
-                    closestIndex = NextPoint;
-                    closestDistance = dx;
-                    closestDistanceSquared = dx * dx;
+                    // do nothing - heads to the return statements at bottom
                 }
-
-                NextPoint = GetNextPointNearestSearch(dataSource, mouseLocation.X, searchedLeft, searchedRight, closestDistanceSquared, pxPerUnitX);
-
-                if (NextPoint < searchedLeft)
-                    searchedLeft = NextPoint;
+                else if (d2 < maxDistance) // d2 is known closer at this point, check if within range
+                {
+                    closestIndex--;
+                }
                 else
-                    searchedRight = NextPoint;
+                {
+                    return DataPoint.None;
+                }
+            }
+            else if (d1 > maxDistance)
+            {
+                return DataPoint.None;
             }
 
-            if (closestDistance <= maxDistance)
+            // return closest Index
+            if (dataSource.PreferCoordinates)
             {
-                if (dataSource.PreferCoordinates)
-                {
-                    Coordinates closestCoord = dataSource.GetCoordinateScaled(closestIndex);
-                    return new DataPoint(closestCoord.X, closestCoord.Y, closestIndex);
-                }
-                return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
+                return new DataPoint(dataSource.GetCoordinateScaled(closestIndex), closestIndex);
             }
-            return DataPoint.None;
+            return new DataPoint(dataSource.GetXScaled(closestIndex), dataSource.GetYScaled(closestIndex), closestIndex);
         }
 
         private static int GetNextPointNearestSearch(IDataSource dataSource, double locationX, int searchedLeft, int searchedRight, double maxDistanceSquared, double PxPerUnitX)
@@ -441,7 +522,8 @@ namespace ScottPlot
             {
                 return -1;
             }
-            else if (leftCandidate < 0)
+
+            if (leftCandidate < 0)
             {
                 double distance = (dataSource.GetXScaled(rightCandidate) - locationX) * PxPerUnitX;
                 if (distance * distance > maxDistanceSquared)
@@ -449,7 +531,8 @@ namespace ScottPlot
 
                 return rightCandidate;
             }
-            else if (rightCandidate >= dataSource.Length)
+
+            if (rightCandidate >= dataSource.Length)
             {
                 double distance = (dataSource.GetXScaled(leftCandidate) - locationX) * PxPerUnitX;
                 if (distance * distance > maxDistanceSquared)
@@ -457,19 +540,15 @@ namespace ScottPlot
 
                 return leftCandidate;
             }
-            else
-            {
 
-                double leftCandidateDistance = (dataSource.GetXScaled(leftCandidate) - locationX) * PxPerUnitX;
-                double rightCandidateDistance = (dataSource.GetXScaled(rightCandidate) - locationX) * PxPerUnitX;
+            double leftCandidateDistance = (dataSource.GetXScaled(leftCandidate) - locationX) * PxPerUnitX;
+            double rightCandidateDistance = (dataSource.GetXScaled(rightCandidate) - locationX) * PxPerUnitX;
 
-                double minDistanceSquared = Math.Min(leftCandidateDistance * leftCandidateDistance, rightCandidateDistance * rightCandidateDistance);
+            double minDistanceSquared = Math.Min(leftCandidateDistance * leftCandidateDistance, rightCandidateDistance * rightCandidateDistance);
+            if (minDistanceSquared > maxDistanceSquared)
+                return -1;
 
-                if (minDistanceSquared > maxDistanceSquared)
-                    return -1;
-
-                return Math.Abs(leftCandidateDistance) < Math.Abs(rightCandidateDistance) ? leftCandidate : rightCandidate;
-            }
+            return Math.Abs(leftCandidateDistance) < Math.Abs(rightCandidateDistance) ? leftCandidate : rightCandidate;
         }
     }
 }

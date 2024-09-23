@@ -6,7 +6,6 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDat
     public override int Length => Ys.Length;
 
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => true;
 
     public SignalSourceGenericArray(T[] ys, double period)
     {
@@ -119,4 +118,6 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDat
     {
         return DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
     }
+    bool IDataSource.IsSorted() => true;
+
 }

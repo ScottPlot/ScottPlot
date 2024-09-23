@@ -8,8 +8,7 @@ public class FastSignalSourceDouble : SignalSourceBase, ISignalSource, IDataSour
     public override int Length => Ys.Count;
 
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => true;
-
+    
     public FastSignalSourceDouble(IReadOnlyList<double> ys, double period, int cachePeriod = 1000)
     {
         Ys = ys;
@@ -101,4 +100,6 @@ public class FastSignalSourceDouble : SignalSourceBase, ISignalSource, IDataSour
     {
         return DataSourceUtilities.ScaleXY(Ys[index], YScale, YOffset);
     }
+
+    bool IDataSource.IsSorted() => true;
 }

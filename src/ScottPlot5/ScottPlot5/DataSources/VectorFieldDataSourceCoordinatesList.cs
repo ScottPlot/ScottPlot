@@ -7,7 +7,6 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
 
-    bool IDataSource.IsSorted => RootedVectors.IsAscending(BinarySearchComparer.Instance);
     int IDataSource.Length => RootedVectors.Count;
     bool IDataSource.PreferCoordinates => true;
 
@@ -54,4 +53,5 @@ public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> 
     double IDataSource.GetXScaled(int index) => RootedVectors[index].Point.X;
     double IDataSource.GetY(int index) => RootedVectors[index].Point.Y;
     double IDataSource.GetYScaled(int index) => RootedVectors[index].Point.Y;
+    bool IDataSource.IsSorted() => RootedVectors.IsAscending(BinarySearchComparer.Instance);
 }

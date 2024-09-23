@@ -12,11 +12,6 @@ namespace ScottPlot
         /// </summary>
         bool PreferCoordinates { get; }
 
-        /// <summary>
-        /// When the collection is sorted, this will enable much quicker execution by allowing usage of BinarySearch methods ( GetNearest should call GetXClosestIndex when this is true )
-        /// </summary>
-        bool IsSorted { get; }
-
         /// <summary> The length of the collection </summary>
         int Length { get; }
         int MinRenderIndex { get; }
@@ -45,5 +40,9 @@ namespace ScottPlot
         /// <summary> Gets the Y value from the data source at the specified index with any offsets and scaling applied </summary>
         double GetYScaled(int index);
 
+        /// <summary>
+        /// When the collection is sorted, this will enable much quicker execution by allowing usage of BinarySearch methods ( GetNearest should call GetXClosestIndex when this is true )
+        /// </summary>
+        bool IsSorted();
     }
 }

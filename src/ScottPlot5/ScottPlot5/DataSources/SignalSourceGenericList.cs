@@ -5,7 +5,6 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource, IData
     private readonly IReadOnlyList<T> Ys;
     public override int Length => Ys.Count;
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => true;
 
     public SignalSourceGenericList(IReadOnlyList<T> ys, double period)
     {
@@ -118,4 +117,6 @@ public class SignalSourceGenericList<T> : SignalSourceBase, ISignalSource, IData
     {
         return DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
     }
+    bool IDataSource.IsSorted() => true;
+
 }

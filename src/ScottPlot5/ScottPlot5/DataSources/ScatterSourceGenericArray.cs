@@ -10,17 +10,15 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
     
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
-    private int RenderIndexCount => Math.Min(Ys.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
 
     int IDataSource.Length => Math.Min(Xs.Length, Ys.Length);
     bool IDataSource.PreferCoordinates => false;
-    bool IDataSource.IsSorted => Xs.IsAscending(GenericComparer<T1>.Instance);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        List<Coordinates> points = new(RenderIndexCount);
+        List<Coordinates> points = new(this.GetRenderIndexCount());
 
-        for (int i = 0; i < RenderIndexCount; i++)
+        for (int i = 0; points.Count < points.Capacity; i++)
         {
             T1 x = Xs[MinRenderIndex + i];
             T2 y = Ys[MinRenderIndex + i];
@@ -38,21 +36,21 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
 
     public CoordinateRange GetLimitsX()
     {
-        double[] values = NumericConversion.GenericToDoubleArray(Xs.Skip(MinRenderIndex).Take(RenderIndexCount));
+        double[] values = NumericConversion.GenericToDoubleArray(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
         return CoordinateRange.MinMaxNan(values);
     }
 
     public CoordinateRange GetLimitsY()
     {
-        double[] values = NumericConversion.GenericToDoubleArray(Ys.Skip(MinRenderIndex).Take(RenderIndexCount));
+        double[] values = NumericConversion.GenericToDoubleArray(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
         return CoordinateRange.MinMaxNan(values);
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestSmart(this, mouseLocation, renderInfo, maxDistance);
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestXSmart(this, mouseLocation, renderInfo, maxDistance);
 
 
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, NumericConversion.DoubleToGeneric<T1>(mouseLocation.X), new IndexRange(MinRenderIndex, MaxRenderIndex), GenericComparer<T1>.Instance);
@@ -62,4 +60,5 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
     double IDataSource.GetY(int index) => NumericConversion.GenericToDouble(Ys, index);
     double IDataSource.GetXScaled(int index) => NumericConversion.GenericToDouble(Xs, index);
     double IDataSource.GetYScaled(int index) => NumericConversion.GenericToDouble(Ys, index);
+    bool IDataSource.IsSorted() => Xs.IsAscending(GenericComparer<T1>.Instance);
 }

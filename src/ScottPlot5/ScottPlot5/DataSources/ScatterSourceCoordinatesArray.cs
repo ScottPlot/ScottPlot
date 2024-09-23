@@ -12,7 +12,6 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
 
     bool IDataSource.PreferCoordinates => true;
     int IDataSource.Length => Coordinates.Length;
-    bool IDataSource.IsSorted => Coordinates.IsAscending(BinarySearchComparer.Instance);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
@@ -43,17 +42,11 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance);
+        => DataSourceUtilities.GetNearestSmart(this, mouseLocation, renderInfo, maxDistance);
     
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance);
-
-    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis, IYAxis? yAxis)
-        => DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance, xAxis, yAxis);
-
-    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance, IXAxis? xAxis)
-        => DataSourceUtilities.GetNearestX(this, mouseLocation, renderInfo, maxDistance, xAxis);
+        => DataSourceUtilities.GetNearestXSmart(this, mouseLocation, renderInfo, maxDistance);
 
     int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Coordinates, mouseLocation, new IndexRange(MinRenderIndex, MaxRenderIndex));
     Coordinates IDataSource.GetCoordinate(int index) => Coordinates[index];
@@ -62,4 +55,5 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     double IDataSource.GetY(int index) => Coordinates[index].Y;
     double IDataSource.GetXScaled(int index) => Coordinates[index].X;
     double IDataSource.GetYScaled(int index) => Coordinates[index].Y;
+    bool IDataSource.IsSorted() => Coordinates.IsAscending(BinarySearchComparer.Instance);
 }
