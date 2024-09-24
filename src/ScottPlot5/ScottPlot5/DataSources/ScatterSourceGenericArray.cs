@@ -53,12 +53,12 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
         => DataSourceUtilities.GetNearestXSmart(this, mouseLocation, renderInfo, maxDistance);
 
 
-    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, NumericConversion.DoubleToGeneric<T1>(mouseLocation.X), new IndexRange(MinRenderIndex, MaxRenderIndex), GenericComparer<T1>.Instance);
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, NumericConversion.DoubleToGeneric<T1>(mouseLocation.X), new IndexRange(MinRenderIndex, MaxRenderIndex), GenericComparer<T1>.Default);
     Coordinates IDataSource.GetCoordinate(int index) => new Coordinates(NumericConversion.GenericToDouble(Xs, index), NumericConversion.GenericToDouble(Ys, index));
     Coordinates IDataSource.GetCoordinateScaled(int index) => new Coordinates(NumericConversion.GenericToDouble(Xs, index), NumericConversion.GenericToDouble(Ys, index));
     double IDataSource.GetX(int index) => NumericConversion.GenericToDouble(Xs, index);
     double IDataSource.GetY(int index) => NumericConversion.GenericToDouble(Ys, index);
     double IDataSource.GetXScaled(int index) => NumericConversion.GenericToDouble(Xs, index);
     double IDataSource.GetYScaled(int index) => NumericConversion.GenericToDouble(Ys, index);
-    bool IDataSource.IsSorted() => Xs.IsAscending(GenericComparer<T1>.Instance);
+    bool IDataSource.IsSorted() => Xs.IsAscending(GenericComparer<T1>.Default);
 }

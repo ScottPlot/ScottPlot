@@ -18,7 +18,7 @@ namespace ScottPlot
         public static readonly BinarySearchComparer Instance = new BinarySearchComparer();
         private BinarySearchComparer() { }
 
-        public static IComparer<T> GetComparer<T>() => GenericComparer<T>.Instance;
+        public static IComparer<T> GetComparer<T>() => GenericComparer<T>.Default;
         public int Compare(Coordinates a, Coordinates b) => a.X.CompareTo(b.X);
         public int Compare(double a, double b) => a.CompareTo(b);
         public int Compare(RootedPixelVector x, RootedPixelVector y) => x.Point.X.CompareTo(y.Point.X);
@@ -29,8 +29,8 @@ namespace ScottPlot
     /// <summary>
     /// Generic helper used to provide <see cref="IComparer{T}"/> on supported types.
     /// </summary>
-    /// <typeparam name="T"><inheritdoc cref="Instance" path="/remarks"/></typeparam>
-    public sealed class GenericComparer<T> 
+    /// <typeparam name="T"><inheritdoc cref="Default" path="/remarks"/></typeparam>
+    public static class GenericComparer<T> 
     {
         ///<summary>
         /// An appropriate <see cref="IComparer{T}"/> for this type.
@@ -43,8 +43,7 @@ namespace ScottPlot
         /// <br/> - Types comparable via <see cref="BinarySearchComparer.Instance"/>
         /// <br/> - Types that implement <see cref="IComparable{T}"/>
         ///</remarks>
-        public static readonly IComparer<T> Instance = GetComparer();
-        private GenericComparer() { }
+        public static readonly IComparer<T> Default = GetComparer();
         private static IComparer<T> GetComparer()
         {
             if (typeof(T).IsPrimitive) return Comparer<T>.Default;
@@ -70,7 +69,7 @@ namespace ScottPlot
             if (enu.MoveNext() == false)
                 return false;
 
-            comparer ??= GenericComparer<T>.Instance;
+            comparer ??= GenericComparer<T>.Default;
             T prev = enu.Current;
             while (enu.MoveNext())
             {
@@ -142,12 +141,12 @@ namespace ScottPlot
         /// <param name="sortedList">The collection to search. Collection must be in ascending order.</param>
         /// <param name="value">The value to search for in the collection</param>
         /// <param name="indexRange">Provides details about the range of indexes to search</param>
-        /// <param name="comparer">A comparer used to determine equality - recommend default comparer or <see cref="GenericComparer{T}.Instance"/></param>
+        /// <param name="comparer">A comparer used to determine equality - recommend default comparer or <see cref="GenericComparer{T}.Default"/></param>
         /// <returns>The index of the item that is closest to the <paramref name="value"/></returns>
         public static int GetClosestIndex<TValue, TList>(this TList sortedList, TValue value, IndexRange indexRange, IComparer<TValue>? comparer)
             where TList : IEnumerable<TValue> // expects IList & IReadOnlyList
         {
-            comparer ??= GenericComparer<TValue>.Instance;
+            comparer ??= GenericComparer<TValue>.Default;
             int index = BinarySearch(sortedList, indexRange.Min, indexRange.Length, value, comparer);
 
             // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).

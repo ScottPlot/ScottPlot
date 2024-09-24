@@ -54,10 +54,10 @@ internal class DataSourceUtilitiesTests
     [Test]
     public void Test_GenericComparer()
     {
-        Assert.That(GenericComparer<int>.Instance, Is.EqualTo(Comparer<int>.Default));
-        Assert.That(GenericComparer<Coordinates>.Instance, Is.EqualTo(BinarySearchComparer.Instance));
-        Assert.That(GenericComparer<ComparableStruct>.Instance, Is.EqualTo(Comparer<ComparableStruct>.Default));
-        Assert.Throws<TypeInitializationException>(() => _ = GenericComparer<NonComparableClass>.Instance);
+        Assert.That(GenericComparer<int>.Default, Is.EqualTo(Comparer<int>.Default));
+        Assert.That(GenericComparer<Coordinates>.Default, Is.EqualTo(BinarySearchComparer.Instance));
+        Assert.That(GenericComparer<ComparableStruct>.Default, Is.EqualTo(Comparer<ComparableStruct>.Default));
+        Assert.Throws<TypeInitializationException>(() => _ = GenericComparer<NonComparableClass>.Default);
     }
 
     private record ComparableStruct(int ID) : IComparable<ComparableStruct>
