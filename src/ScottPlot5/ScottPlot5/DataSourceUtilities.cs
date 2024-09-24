@@ -7,9 +7,16 @@ using System.Runtime.CompilerServices;
 
 namespace ScottPlot
 {
+    /// <summary>
+    /// <see cref="IComparer{T}"/> for various types provided by ScottPlot
+    /// </summary>
     public sealed class BinarySearchComparer : IComparer<Coordinates>, IComparer<double>, IComparer<RootedCoordinateVector>, IComparer<RootedPixelVector>
     {
+        /// <summary>
+        /// Thread-Safe singleton
+        /// </summary>
         public static readonly BinarySearchComparer Instance = new BinarySearchComparer();
+        private BinarySearchComparer() { }
 
         public static IComparer<T> GetComparer<T>() => GenericComparer<T>.Instance;
         public int Compare(Coordinates a, Coordinates b) => a.X.CompareTo(b.X);
@@ -19,40 +26,31 @@ namespace ScottPlot
 
     }
 
-    public sealed class GenericComparer<T> : IComparer<T>
+    /// <summary>
+    /// Generic helper used to provide <see cref="IComparer{T}"/> on supported types.
+    /// </summary>
+    /// <typeparam name="T"><inheritdoc cref="Instance" path="/remarks"/></typeparam>
+    public sealed class GenericComparer<T> 
     {
         ///<summary>
-        ///For standard numerics (single, long, int, etc) this will be '<see cref="Comparer{T}.Default"/>', which is significantly faster than this interface implementation
+        /// An appropriate <see cref="IComparer{T}"/> for this type.
         ///</summary> 
+        ///<remarks>
+        /// If the type is supported, this will be either <see cref="BinarySearchComparer.Instance"/> or <see cref="Comparer{T}.Default"/>
+        /// <br/> If the type is unsupported, throws <see cref="TypeInitializationException"/>
+        /// <para/> Supported Types :
+        /// <br/> - All primitive types
+        /// <br/> - Types comparable via <see cref="BinarySearchComparer.Instance"/>
+        /// <br/> - Types that implement <see cref="IComparable{T}"/>
+        ///</remarks>
         public static readonly IComparer<T> Instance = GetComparer();
-
-#pragma warning disable CS8767 // handled by null check
-        public int Compare(T a, T b)
+        private GenericComparer() { }
+        private static IComparer<T> GetComparer()
         {
-            return true switch
-            {
-                true when typeof(T).IsPrimitive => NumericConversion.GenericToDouble(ref a).CompareTo(NumericConversion.GenericToDouble(ref b)),
-                true when a is Coordinates A && b is Coordinates B => A.X.CompareTo(B.X),
-                true when a is RootedPixelVector A && b is RootedPixelVector B => A.Point.X.CompareTo(B.Point.X),
-                true when a is RootedCoordinateVector A && b is RootedCoordinateVector B => A.Point.X.CompareTo(B.Point.X),
-                true when a is null | b is null => throw new Exception("Generic Comparer can not handle null values"),
-                true when a is IComparable<T> A => A.CompareTo(b),
-                _ => throw new NotImplementedException()
-            };
-        }
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
-
-        public static IComparer<T> GetComparer()
-        {
-            return Instance ?? default(T) switch
-            {
-                null => throw new ArgumentException($"T should be a struct (non-nullable)"),
-                Coordinates => new GenericComparer<T>(),
-                RootedPixelVector => new GenericComparer<T>(),
-                RootedCoordinateVector => new GenericComparer<T>(),
-                IComparable<T> => Comparer<T>.Default,
-                _ => new GenericComparer<T>()
-            };
+            if (typeof(T).IsPrimitive) return Comparer<T>.Default;
+            if (BinarySearchComparer.Instance is IComparer<T> custom) return custom;
+            if (typeof(IComparable<>).MakeGenericType(typeof(T)).IsAssignableFrom(typeof(T))) return Comparer<T>.Default;
+            throw new ArgumentException($"{typeof(T)} is not supported. Must be a primitive type, handled by BinarySearchComparer, or implemenent IComparable<{typeof(T).Name}>.");
         }
     }
 
