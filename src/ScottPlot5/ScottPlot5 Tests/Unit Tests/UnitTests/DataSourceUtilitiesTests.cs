@@ -3,7 +3,7 @@ using ScottPlot.DataSources;
 
 namespace ScottPlotTests.UnitTests;
 
-internal class DataSourceUtilities
+internal class DataSourceUtilitiesTests
 {
     // Data that tests should use when creating the IDataSource
 
