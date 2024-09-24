@@ -62,7 +62,7 @@ internal class DataSourceUtilitiesTests
 
     private record ComparableStruct(int ID) : IComparable<ComparableStruct>
     {
-        public int CompareTo(ComparableStruct? other) => ID.CompareTo(other.ID);
+        public int CompareTo(ComparableStruct? other) => ID.CompareTo(other!.ID);
     }
     private class NonComparableClass() { }
 
