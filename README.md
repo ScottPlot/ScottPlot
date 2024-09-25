@@ -51,6 +51,7 @@
     2. **Create a new plot and add the points**
     3. **Play around with the color type!**
     4. **Remember to save your file using .SavePng**
+    </details>
 
   7. **Run the Application in your Terminal**: 
      ```bash
