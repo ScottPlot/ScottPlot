@@ -47,12 +47,12 @@
      Use the above documentation to create your code and polyglot (Example)
      ![Screenshot of Program.cs](Images/Example_Code.png)
     <details>
-    <summary>Explanation of Code</summary>
+       <summary>Explanation of Code</summary>
 
-    1. **Add Coordinates**
-    2. **Create a new plot and add the points**
-    3. **Play around with the color type!**
-    4. **Remember to save your file using `.SavePng()`**
+       1. **Add Coordinates**
+       2. **Create a new plot and add the points**
+       3. **Play around with the color type!**
+       4. **Remember to save your file using `.SavePng()`**
   
     </details>
    
