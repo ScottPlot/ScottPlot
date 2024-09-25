@@ -27,18 +27,18 @@
 
 <details>
   <summary>Click to expand the step-by-step guide (VS Code)</summary>
-  
+
   ## Step-by-Step Instructions From Git to Running on your computer on VS Code! 
   1. **Clone the Repository**: 
      ```bash
      git clone https://github.com/your-repo/ScottPlot
      ```
   2. **Install Extension .NET Install Package on VS Code**: 
-    ```bash
+     ```bash
      ![Screenshot of .NET Extension](Images/Extension_.NET.png)
      ```
   3. **Install Polyglot Notebooks Install Package on VS Code**: 
-    ```bash
+     ```bash
      ![Screenshot of Polyglot Notebooks Extension](Images/Extension_Polyglot_Notebooks.png)
      ```
   4. **Install Dependencies in your Terminal**: 
