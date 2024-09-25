@@ -26,14 +26,18 @@
 </div>
 
 <details>
-  <summary>Click to expand the step-by-step guide</summary>
+  <summary>Click to expand the step-by-step guide (VS Code)</summary>
 
-  ## Step-by-Step Instructions
+  ## Step-by-Step Instructions From Git to Running on your computer on VS Code! 
   1. **Clone the Repository**: 
      ```bash
-     git clone https://github.com/your-repo/your-project.git
+     git clone https://github.com/your-repo/ScottPlot
      ```
-  2. **Install Dependencies**: 
+  2. **Install Extension .NET Install Package on VS Code**: 
+    ```bash
+     ![Screenshot of .NET Extension](/Users/maitrijajoo/Desktop/Extension .NET.png)
+     ```
+  3. **Install Dependencies**: 
      ```bash
      dotnet add package ScottPlot
      ```
