@@ -48,7 +48,7 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
         => DataSourceUtilities.GetNearestXSmart(this, mouseLocation, renderInfo, maxDistance);
 
-    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Coordinates, mouseLocation, new IndexRange(MinRenderIndex, MaxRenderIndex));
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Coordinates, mouseLocation, this.GetRenderIndexRange());
     Coordinates IDataSource.GetCoordinate(int index) => Coordinates[index];
     Coordinates IDataSource.GetCoordinateScaled(int index) => Coordinates[index];
     double IDataSource.GetX(int index) => Coordinates[index].X;

@@ -23,8 +23,8 @@
         public int GetXClosestIndex(Coordinates mouseLocation) 
             => DataSourceUtilities.GetClosestIndex(
                 coordinates is Coordinates[] ca? ca : [.. coordinates], 
-                DataSourceUtilities.UnScaleCoordinate(mouseLocation, XScale, XOffset, YScale, YOffset), 
-                new IndexRange(MinRenderIndex, MaxRenderIndex)
+                DataSourceUtilities.UnScaleCoordinate(mouseLocation, XScale, XOffset, YScale, YOffset),
+                this.GetRenderIndexRange()
                 );
         public double GetXScaled(int index) => DataSourceUtilities.ScaleXY(coordinates[index].X, XScale, XOffset);
         public double GetY(int index) => coordinates[index].Y;

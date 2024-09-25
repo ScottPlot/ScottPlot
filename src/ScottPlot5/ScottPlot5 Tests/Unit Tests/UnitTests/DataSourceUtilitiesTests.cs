@@ -231,29 +231,34 @@ internal class DataSourceUtilitiesTests
         Assert.That(range.Min, Is.EqualTo(-1));
         Assert.That(range.Max, Is.EqualTo(-1));
         Assert.That(range.Length, Is.EqualTo(0));
+        Assert.That(range.Length, Is.EqualTo(data.GetRenderIndexCount()));
         Assert.That(range, Is.EqualTo(IndexRange.None));
 
+        // Populated Collection 
         data = new CoordinateDataSource(Cs);
         range = data.GetRenderIndexRange();
         Assert.That(range.Min, Is.EqualTo(0)); // nominal -- MaxRenderIndex == data.Length -1
         Assert.That(range.Max, Is.EqualTo(data.Length-1)); // nominal -- MaxRenderIndex == data.Length -1
         Assert.That(range.Length, Is.EqualTo(data.Length));
+        Assert.That(range.Length, Is.EqualTo(data.GetRenderIndexCount()));
 
         data.MaxRenderIndex = 10;
         range = data.GetRenderIndexRange();
         Assert.That(range.Min, Is.EqualTo(0));
         Assert.That(range.Max, Is.EqualTo(10));
         Assert.That(range.Length, Is.EqualTo(11));
+        Assert.That(range.Length, Is.EqualTo(data.GetRenderIndexCount()));
 
         data.MinRenderIndex= 5;
         range = data.GetRenderIndexRange();
         Assert.That(range.Min, Is.EqualTo(5));
         Assert.That(range.Max, Is.EqualTo(10));
         Assert.That(range.Length, Is.EqualTo(6));
+        Assert.That(range.Length, Is.EqualTo(data.GetRenderIndexCount()));
 
         //Negative Index Validation
         data.MaxRenderIndex = -5;
-        Assert.That( data.GetRenderIndexRange(), Is.EqualTo(IndexRange.None));
+        Assert.That(data.GetRenderIndexRange(), Is.EqualTo(IndexRange.None));
 
         data.MaxRenderIndex = 10;
         data.MinRenderIndex = -10;
@@ -431,6 +436,9 @@ internal class DataSourceUtilitiesTests
 
         double expectedX = isRotated ? Cs[IndexToCheck].Y : Cs[IndexToCheck].X;
         double expectedY = isRotated ? Cs[IndexToCheck].X : Cs[IndexToCheck].Y;
+
+        // IndexRange & Count testing
+        Assert.That(dataSource.GetRenderIndexRange().Length, Is.EqualTo(dataSource.GetRenderIndexCount()));
 
         // Get Coordinate
         var coordinate = dataSource.GetCoordinate(IndexToCheck);
