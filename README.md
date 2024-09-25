@@ -36,7 +36,7 @@
   2. **Install Extension .NET Install Package on VS Code**: 
     ```
      ![Screenshot of .NET Extension](Images/Extension_.NET.png)
-     ```
+    
   3. **Install Polyglot Notebooks Install Package on VS Code**: 
      ```bash
      ![Screenshot of Polyglot Notebooks Extension](Images/Extension_Polyglot_Notebooks.png)
