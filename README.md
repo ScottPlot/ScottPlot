@@ -47,7 +47,7 @@
      ![Screenshot of Temp Folder Structure](Images/Temp_Folder_Creation.png)
      
   5. **Create a file named Program.cs (example)**: 
-     Use the above documentation to create your code and polyglot (Example Code Provided Below)
+     Use the above documentation to create your code and polyglot (Example)
      ![Screenshot of Program.cs](Images/Example_Code.png)
   6. **Run the Application in your Terminal**: 
      dotnet run Program.cs
