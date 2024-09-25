@@ -52,12 +52,17 @@
   5. **Create a file named Program.cs (example)**: 
      Use the above documentation to create your code and polyglot (Example Code Provided Below)
     ```bash
-     ![Screenshot of Temp Folder Structure](Images/Example_Code.png)
+     ![Screenshot of Program.cs](Images/Example_Code.png)
      ```
   6. **Run the Application in your Terminal**: 
      ```bash
      dotnet run Program.cs
      ```
+  7.  **When run application, output would be a .png of your shape**
+     ```bash
+     Using Code Above:
+     ![Screenshot of Output](Images/Output_Polyglot.png)
+    ```
 
 </details>
 
