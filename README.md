@@ -27,7 +27,7 @@
 
 <details>
   <summary>Click to expand the step-by-step guide (VS Code)</summary>
-
+  
   ## Step-by-Step Instructions From Git to Running on your computer on VS Code! 
   1. **Clone the Repository**: 
      ```bash
@@ -39,13 +39,22 @@
      ```
   3. **Install Polyglot Notebooks Install Package on VS Code**: 
     ```bash
-     ![Screenshot of .NET Extension](Images/Extension_Polyglot_Notebooks.png)
+     ![Screenshot of Polyglot Notebooks Extension](Images/Extension_Polyglot_Notebooks.png)
      ```
-  4. **Install Dependencies**: 
+  4. **Install Dependencies in your Terminal**: 
      ```bash
      dotnet add package ScottPlot
      ```
-  3. **Run the Application**: 
+  5. **Create a Temp folder and put bin and obj in there**: 
+     ```bash
+     ![Screenshot of Temp Folder Structure](Images/Temp_Folder_Creation.png)
+     ```
+  5. **Create a file named Program.cs (example)**: 
+     Use the above documentation to create your code and polyglot (Example Code Provided Below)
+     ```bash
+     ![Screenshot of Code Structure](Images/Example_Code.png)
+     ```
+  6. **Run the Application in your Terminal**: 
      ```bash
      dotnet run Program.cs
      ```
