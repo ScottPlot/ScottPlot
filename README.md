@@ -59,7 +59,6 @@
      dotnet run Program.cs
      ```
   7.  **When run application, output would be a .png of your shape**
-     Using Code Above:
      ```bash
      ![Screenshot of Output](Images/Output_Polyglot.png)
      ```
