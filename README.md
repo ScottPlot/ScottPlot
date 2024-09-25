@@ -54,7 +54,7 @@
        3. **Play around with the color type!**
        4. **Remember to save your file using `.SavePng()`**
   
-    </details>
+     </details>
    
 
   7. **Run the Application in your Terminal**: 
