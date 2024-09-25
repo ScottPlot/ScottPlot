@@ -25,6 +25,25 @@
 
 </div>
 
+<details>
+  <summary>Click to expand the step-by-step guide</summary>
+
+  ## Step-by-Step Instructions
+  1. **Clone the Repository**: 
+     ```bash
+     git clone https://github.com/your-repo/your-project.git
+     ```
+  2. **Install Dependencies**: 
+     ```bash
+     dotnet add package ScottPlot
+     ```
+  3. **Run the Application**: 
+     ```bash
+     dotnet run Program.cs
+     ```
+
+</details>
+
 **Contributing:** We welcome contributions from the community! We invite contributions from anyone, including developers who may be new to contributing to open-source projects. Visit https://ScottPlot.net/contributing/ to get started!
 
 **License:** ScottPlot was created by [Scott W Harden](https://swharden.com/about/) and enhanced by [many contributions](https://scottplot.net/changelog/) from the [open-source community](https://scottplot.net/contributors/). It is provided under the permissive [MIT license](LICENSE) and is free to modify and use for any purpose.
