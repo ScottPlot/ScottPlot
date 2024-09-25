@@ -35,7 +35,7 @@
      ```
   2. **Install Extension .NET Install Package on VS Code**: 
     ```bash
-     ![Screenshot of .NET Extension](/Users/maitrijajoo/Desktop/ESEP Documentation/ScottPlot/Images/Extension .NET.png)
+     ![Screenshot of .NET Extension](Images/Extension .NET.png)
      ```
   3. **Install Dependencies**: 
      ```bash
