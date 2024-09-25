@@ -1,8 +1,4 @@
 ﻿using ScottPlot.Collections;
-using ScottPlot.DataSources;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace ScottPlot
@@ -65,7 +61,7 @@ namespace ScottPlot
         /// <returns>True if the collection is ascending (and can therefore be used with BinarySearch and GetClosest). Otherwise false.</returns>
         public static bool IsAscending<T>(this IEnumerable<T> values, IComparer<T>? comparer)
         {
-            using var enu = values.GetEnumerator();
+            using var enu = values?.GetEnumerator() ?? throw new ArgumentNullException(nameof(values));
             if (enu.MoveNext() == false)
                 return false;
 
@@ -85,14 +81,17 @@ namespace ScottPlot
 
         /// <inheritdoc cref="Array.BinarySearch{T}(T[], int, int, T, IComparer{T})"/>
         [MethodImpl(NumericConversion.ImplOptions)]
-        public static int BinarySearch<T, TList>(this TList sortedList, int index, int count, T value, IComparer<T> comparer)
+        public static int BinarySearch<T, TList>(this TList sortedList, int index, int length, T value, IComparer<T>? comparer)
             where TList : IEnumerable<T>
         {
+            if (sortedList is null) throw new ArgumentNullException(nameof(sortedList));
+            comparer ??= BinarySearchComparer.GetComparer<T>();
+
             return sortedList switch
             {
-                List<T> listT => listT.BinarySearch(index, count, value, comparer),
-                T[] arrayT => Array.BinarySearch(arrayT, index, count, value, comparer),
-                CircularBuffer<T> circularBufferT => circularBufferT.BinarySearch(index, count, value, comparer),
+                List<T> listT => listT.BinarySearch(index, length, value, comparer),
+                T[] arrayT => Array.BinarySearch(arrayT, index, length, value, comparer),
+                CircularBuffer<T> circularBufferT => circularBufferT.BinarySearch(index, length, value, comparer),
                 _ => throw new NotSupportedException($"unsupported {nameof(IList<T>)}: {sortedList.GetType().Name}")
             };
         }
@@ -110,6 +109,7 @@ namespace ScottPlot
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetClosestIndex(List<double> sortedList, double value, IndexRange indexRange)
         {
+            if (sortedList is null) throw new ArgumentNullException(nameof(sortedList));
             int index = sortedList.BinarySearch(indexRange.Min, indexRange.Length, value, BinarySearchComparer.Instance);
             if (index < 0) index = ~index;
             return index > indexRange.Max ? indexRange.Max : index;
@@ -128,6 +128,7 @@ namespace ScottPlot
         [MethodImpl(NumericConversion.ImplOptions)]
         public static int GetClosestIndex(List<Coordinates> sortedList, Coordinates value, IndexRange indexRange)
         {
+            if (sortedList is null) throw new ArgumentNullException(nameof(sortedList));
             int index = sortedList.BinarySearch(indexRange.Min, indexRange.Length, value, BinarySearchComparer.Instance);
             if (index < 0) index = ~index;
             return index > indexRange.Max ? indexRange.Max : index;
@@ -146,7 +147,6 @@ namespace ScottPlot
         public static int GetClosestIndex<TValue, TList>(this TList sortedList, TValue value, IndexRange indexRange, IComparer<TValue>? comparer)
             where TList : IEnumerable<TValue> // expects IList & IReadOnlyList
         {
-            comparer ??= GenericComparer<TValue>.Default;
             int index = BinarySearch(sortedList, indexRange.Min, indexRange.Length, value, comparer);
 
             // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
@@ -180,7 +180,7 @@ namespace ScottPlot
         [MethodImpl(NumericConversion.ImplOptions)]
         public static IndexRange GetRenderIndexRange(this IDataSource dataSource)
         {
-            if (dataSource.Length == 0) return IndexRange.None;
+            if (dataSource is null || dataSource.Length == 0) return IndexRange.None;
             int min = Math.Min(dataSource.Length - 1, dataSource.MinRenderIndex);
             int max = Math.Min(dataSource.Length - 1, dataSource.MaxRenderIndex);
             if (min > max || min < 0 || max < 0) return IndexRange.None;
