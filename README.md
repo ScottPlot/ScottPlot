@@ -32,7 +32,7 @@
   1. **Clone the Repository**: 
      ```bash
      git clone https://github.com/your-repo/ScottPlot
-     ```
+    ```
   2. **Install Extension .NET Install Package on VS Code**: 
     ```bash
      ![Screenshot of .NET Extension](Images/Extension_.NET.png)
