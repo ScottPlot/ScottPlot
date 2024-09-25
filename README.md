@@ -50,7 +50,9 @@
      Use the above documentation to create your code and polyglot (Example)
      ![Screenshot of Program.cs](Images/Example_Code.png)
   6. **Run the Application in your Terminal**: 
+     ```bash
      dotnet run Program.cs
+     ```
   7.  **When run application, output would be a .png of your shape**
      ![Screenshot of Output](Images/Output_Polyglot.png)
 </details>
