@@ -46,12 +46,16 @@
   6. **Create a file named Program.cs (example)**: 
      Use the above documentation to create your code and polyglot (Example)
      ![Screenshot of Program.cs](Images/Example_Code.png)
-    <summary>Explanation of Code</summary>
-    1. **Add Coordinates**
-    2. **Create a new plot and add the points**
-    3. **Play around with the color type!**
-    4. **Remember to save your file using .SavePng**
-    </details>
+    <details>
+  <summary>Explanation of Code</summary>
+
+  1. **Add Coordinates**
+  2. **Create a new plot and add the points**
+  3. **Play around with the color type!**
+  4. **Remember to save your file using `.SavePng()`
+  
+</details>
+   
 
   7. **Run the Application in your Terminal**: 
      ```bash
