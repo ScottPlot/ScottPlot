@@ -37,31 +37,22 @@
      ![Screenshot of .NET Extension](Images/Extension_.NET.png)
     
   3. **Install Polyglot Notebooks Install Package on VS Code**: 
-     ```bash
      ![Screenshot of Polyglot Notebooks Extension](Images/Extension_Polyglot_Notebooks.png)
-     ```
+     
   4. **Install Dependencies in your Terminal**: 
      ```bash
      dotnet add package ScottPlot
      ```
   5. **Create a Temp folder and put bin and obj in there**: 
-     ```bash
      ![Screenshot of Temp Folder Structure](Images/Temp_Folder_Creation.png)
-     ```
+     
   5. **Create a file named Program.cs (example)**: 
      Use the above documentation to create your code and polyglot (Example Code Provided Below)
-     ```bash
      ![Screenshot of Program.cs](Images/Example_Code.png)
-     ```
   6. **Run the Application in your Terminal**: 
-     ```bash
      dotnet run Program.cs
-     ```
   7.  **When run application, output would be a .png of your shape**
-     ```bash
      ![Screenshot of Output](Images/Output_Polyglot.png)
-     ```
-
 </details>
 
 **Contributing:** We welcome contributions from the community! We invite contributions from anyone, including developers who may be new to contributing to open-source projects. Visit https://ScottPlot.net/contributing/ to get started!
