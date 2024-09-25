@@ -49,10 +49,10 @@
     <details>
     <summary>Explanation of Code</summary>
 
-  1. **Add Coordinates**
-  2. **Create a new plot and add the points**
-  3. **Play around with the color type!**
-  4. **Remember to save your file using `.SavePng()`
+    1. **Add Coordinates**
+    2. **Create a new plot and add the points**
+    3. **Play around with the color type!**
+    4. **Remember to save your file using `.SavePng()`**
   
     </details>
    
