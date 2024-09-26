@@ -45,12 +45,13 @@
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
         <NoWarn>CS1591</NoWarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->
     <ItemGroup>
-        <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true"
-            PackagePath="icon.png" />
+        <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
         <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
 

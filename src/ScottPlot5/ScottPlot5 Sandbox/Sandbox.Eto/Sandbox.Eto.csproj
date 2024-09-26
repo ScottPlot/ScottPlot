@@ -10,6 +10,8 @@
 
         <!-- This package may not be fully compatible with your project -->
         <NoWarn>NU1701</NoWarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
