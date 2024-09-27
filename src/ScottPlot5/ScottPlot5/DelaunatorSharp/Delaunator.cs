@@ -53,9 +53,9 @@ namespace DelaunatorSharp
         public int[] Hull { get; private set; }
 
         private readonly int hashSize;
-        private readonly int[] hullPrev;
-        private readonly int[] hullNext;
-        private readonly int[] hullTri;
+        private readonly int[] hullPrev=new int[0];
+        private readonly int[] hullNext=new int[0];
+        private readonly int[] hullTri= new int[0];
         private readonly int[] hullHash;
 
         private double cx;
@@ -322,7 +322,7 @@ namespace DelaunatorSharp
                 s = hullNext[s];
             }
 
-            hullPrev = hullNext = hullTri = null; // get rid of temporary arrays
+            hullPrev = hullNext = hullTri = new int[0]; //null; // get rid of temporary arrays
 
             //// trim typed triangle mesh arrays
             Triangles = Triangles.Take(trianglesLen).ToArray();
@@ -574,7 +574,7 @@ int a0 = a - a % 3;
                 }
             }
         }
-        public IEnumerable<IEdge> GetVoronoiEdges(Func<int, IPoint> triangleVerticeSelector = null)
+        public IEnumerable<IEdge> GetVoronoiEdges(Func<int, IPoint>? triangleVerticeSelector = null)
         {
             if (triangleVerticeSelector == null) triangleVerticeSelector = x => GetCentroid(x);
             for (var e = 0; e < Triangles.Length; e++)
@@ -591,7 +591,7 @@ int a0 = a - a % 3;
         public IEnumerable<IEdge> GetVoronoiEdgesBasedOnCircumCenter() => GetVoronoiEdges(GetTriangleCircumcenter);
         public IEnumerable<IEdge> GetVoronoiEdgesBasedOnCentroids() => GetVoronoiEdges(GetCentroid);
 
-        public IEnumerable<IVoronoiCell> GetVoronoiCells(Func<int, IPoint> triangleVerticeSelector = null)
+        public IEnumerable<IVoronoiCell> GetVoronoiCells(Func<int, IPoint>? triangleVerticeSelector = null)
         {
             if (triangleVerticeSelector == null) triangleVerticeSelector = x => GetCentroid(x);
 
@@ -727,7 +727,7 @@ int a0 = a - a % 3;
             }
         }
 
-        public void ForEachVoronoiCell(Action<IVoronoiCell> callback, Func<int, IPoint> triangleVertexSelector = null)
+        public void ForEachVoronoiCell(Action<IVoronoiCell> callback, Func<int, IPoint>? triangleVertexSelector = null)
         {
             foreach (var cell in GetVoronoiCells(triangleVertexSelector))
             {

@@ -82,7 +82,7 @@ namespace ScottPlot.Plottables
 
         #endregion
 
-        private IPoint FindPointAtElevation(IPoint startPoint, IPoint endPoint, double elev)
+        private IPoint? FindPointAtElevation(IPoint startPoint, IPoint endPoint, double elev)
         {
             // If both Z values are on the same side of the contour, skip this edge
             if ((startPoint.Z < elev && endPoint.Z < elev) || (startPoint.Z > elev && endPoint.Z > elev))
@@ -155,7 +155,7 @@ namespace ScottPlot.Plottables
                         {
                             // Find the points on the edge of the triangle at the current elevation.
                             // the third edge wraps around to the first point
-                            IPoint pt = FindPointAtElevation(t.Points.ElementAt(i), t.Points.ElementAt(i < 2 ? i + 1 : 0), z);
+                            IPoint? pt = FindPointAtElevation(t.Points.ElementAt(i), t.Points.ElementAt(i < 2 ? i + 1 : 0), z);
                             
                             if (pt != null)
                             {
