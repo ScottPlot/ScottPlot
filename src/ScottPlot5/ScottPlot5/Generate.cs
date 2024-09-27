@@ -408,7 +408,7 @@ public static class Generate
     /// </summary>
     public static double[] RandomNumbers(int count, double max)
     {
-        return RandomData.RandomSample(count, 0, max);
+        return Generate.RandomSample(count, 0, max);
     }
 
     /// <summary>
@@ -416,7 +416,7 @@ public static class Generate
     /// </summary>
     public static double[] RandomNumbers(int count, double min, double max)
     {
-        return RandomData.RandomNumbers(count, min, max);
+        return Generate.RandomSample(count, min, max);
     }
 
     /// <summary>
