@@ -3,6 +3,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
+		<LangVersion>Latest</LangVersion>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -28,6 +29,9 @@
 
     <ItemGroup>
         <Compile Update="Demos\ShowValueOnHoverMultiple.cs" />
+        <Compile Update="Demos\SignalXY_ZoomBug.cs">
+          <SubType>Form</SubType>
+        </Compile>
         <Compile Update="Properties\Resources.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
