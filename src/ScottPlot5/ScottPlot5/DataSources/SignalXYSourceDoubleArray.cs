@@ -59,12 +59,12 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointX(axes);
 
-        if (ValidateVisibleRange(dataIndexFirst, dataIndexLast) is false) return [];
-
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
         // get all points in view
-        IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
+        IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
+            ? []
+            : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
             .Select(pxColumn => GetColumnPixelsX(pxColumn, visibleRange, rp, axes))
             .SelectMany(x => x);
 
@@ -94,12 +94,12 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointY(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointY(axes);
         
-        if (ValidateVisibleRange(dataIndexFirst, dataIndexLast) is false) return []; 
-
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
         // get all points in view
-        IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
+        IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
+            ? []
+            : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
             .Select(pxRow => GetColumnPixelsY(pxRow, visibleRange, rp, axes))
             .SelectMany(x => x);
 
@@ -122,24 +122,6 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
             SignalInterpolation.InterpolateAfterY(rp, points, connectStyle);
 
         return points;
-    }
-
-    // Validate the visible range - Fixes Zoom Bug - https://github.com/ScottPlot/ScottPlot/issues/4261
-    private bool ValidateVisibleRange(int firstIndex, int lastIndex)
-    {
-        if (
-            firstIndex > lastIndex ||
-            firstIndex < 0 ||
-            lastIndex < 0 ||
-            firstIndex >= Xs.Length ||
-            lastIndex >= Xs.Length
-            )
-            return false;
-
-        if (Xs[firstIndex] > Xs[lastIndex])
-            throw new InvalidDataException($"Xs must contain only ascending values. The value at index {firstIndex} ({Xs[firstIndex]}) is greater than the value at index {lastIndex} ({Xs[lastIndex]})");
-
-        return true;
     }
 
     /// <summary>

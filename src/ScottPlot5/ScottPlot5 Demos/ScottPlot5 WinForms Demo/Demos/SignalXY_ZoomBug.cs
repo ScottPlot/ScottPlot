@@ -22,7 +22,7 @@ public partial class SignalXY_ZoomBug : Form, IDemoWindow
     {
         var plot = this.formsPlot2.Plot;
         AddScatter(plot);
-        AddSignal(plot, new Original_SignalXYSourceDoubleArray(Generate.Consecutive(20, 1, 16), Generate.Sin(20)));
+        AddSignal(plot, new Original_SignalXYSourceDoubleArray(Generate.Consecutive(20, 1, 16), Generate.Sin(20)), Colors.Red);
         plot.Title("SignalXYSourceDoubleArray in v5.0.39");
         formsPlot2.Refresh();
     }
@@ -31,7 +31,9 @@ public partial class SignalXY_ZoomBug : Form, IDemoWindow
     {
         var plot = this.formsPlot1.Plot;
         AddScatter(plot);
-        AddSignal(plot, new SignalXYSourceDoubleArray(Generate.Consecutive(20, 1, 16), Generate.Sin(20)));
+        AddSignal(plot, new SignalXYSourceDoubleArray(Generate.Consecutive(20, 1, 16), Generate.Sin(20)), Colors.Red);
+        //AddSignal(plot, new SignalXYSourceDoubleArray(Generate.Consecutive(20, 1, 16), Generate.Cos(20)), Colors.Green);
+        AddDataLogger(plot);
         plot.Title("With Validation");
         formsPlot1.Refresh();
     }
@@ -46,11 +48,19 @@ public partial class SignalXY_ZoomBug : Form, IDemoWindow
         s.ConnectStyle = ConnectStyle.StepHorizontal;
     }
 
-    private static void AddSignal(Plot plot, ISignalXYSource source)
+    private static void AddSignal(Plot plot, ISignalXYSource source, ScottPlot.Color color)
     {
-        var sig = plot.Add.SignalXY(source, Colors.Red);
+        var sig = plot.Add.SignalXY(source, color);
         sig.Axes.XAxis = plot.Axes.Bottom;
         sig.Axes.YAxis = plot.Axes.Left;
+    }
+
+    private static void AddDataLogger(Plot plot)
+    {
+        var coordinates = Generate.Consecutive(20, 1,16).Zip(Generate.Cos(20)).Select(x => new Coordinates(x.First, x.Second)).ToArray();
+        var logger = new ScottPlot.Plottables.DataLogger(coordinates);
+        logger.Color = Colors.Green;
+        plot.Add.Plottable(logger);
     }
 
     private void formsPlot1_Load(object sender, EventArgs e)
