@@ -25,9 +25,9 @@ public class ScatterGLCustom : ScatterGL
         JoinsProgram = new MarkerFillCircleProgram();
     }
 
-    protected override void RenderWithOpenGL(SKSurface surface, GRContext context)
+    protected override void RenderWithOpenGL(SKCanvas canvas, GRContext context)
     {
-        int height = (int)surface.Canvas.LocalClipBounds.Height;
+        int height = (int)canvas.LocalClipBounds.Height;
 
         context.Flush();
         context.ResetContext();

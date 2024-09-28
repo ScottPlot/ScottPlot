@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Rendering.RenderActions;
+using System;
 using System.Data;
 
 namespace ScottPlot.Rendering;
@@ -23,7 +24,9 @@ public class RenderManager(Plot plot)
         new RenderActions.RegenerateTicks(),
         new RenderActions.RenderStartingEvent(),
         new RenderActions.RenderDataBackground(),
+        new RenderActions.StoreGLState(),
         new RenderActions.RenderGridsBelowPlottables(),
+        new RenderActions.RestoreGLState(),
         new RenderActions.RenderPlottables(),
         new RenderActions.RenderGridsAbovePlottables(),
         new RenderActions.RenderLegends(),
