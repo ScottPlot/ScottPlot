@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
@@ -41,15 +41,21 @@
         <None Include="../../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
         <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
     </ItemGroup>
-    
+
     <!-- Package dependencies -->
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="SkiaSharp.Views" Version="2.88.8" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+		<PackageReference Include="OpenTK" Version="3.3.1" NoWarn="NU1701" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+		<PackageReference Include="OpenTK" Version="4.3.0" NoWarn="NU1701" />
+	</ItemGroup>
 
 </Project>
