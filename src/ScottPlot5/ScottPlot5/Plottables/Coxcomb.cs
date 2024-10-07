@@ -52,8 +52,6 @@ public class Coxcomb : PieBase
 
         for (int i = 0; i < Slices.Count; i++)
         {
-            rp.Canvas.RotateDegrees(rotationPerSlice);
-
             float degrees1 = 0f;
 
             SKPoint ptInner = GetRotatedPoint(sliceSizes[i], degrees1); // Unlike piecharts this is unique (there's no donut coxcomb charts)
@@ -77,7 +75,7 @@ public class Coxcomb : PieBase
             }
 
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
-            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * (i + 1) - startAngle));
+            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
             rp.Canvas.DrawPath(path, paint);
 
             LineStyle.ApplyToPaint(paint);
@@ -87,7 +85,7 @@ public class Coxcomb : PieBase
 
             if (ShowSliceLabels)
             {
-                double cumulativeRotation = (i + 1) * rotationPerSlice;
+                double cumulativeRotation = i * rotationPerSlice;
                 double x = SliceLabelDistance * maxRadius * Math.Cos(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
                 double y = SliceLabelDistance * maxRadius * Math.Sin(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
                 Pixel px = Axes.GetPixel(new Coordinates(x, y));
@@ -99,6 +97,9 @@ public class Coxcomb : PieBase
                 Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
 
             }
+
+            // rotate canvas for next slice
+            rp.Canvas.RotateDegrees(rotationPerSlice);
         }
     }
 }
