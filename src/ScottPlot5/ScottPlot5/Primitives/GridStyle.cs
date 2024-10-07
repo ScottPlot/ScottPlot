@@ -57,7 +57,7 @@ public class GridStyle
             .Take(MaximumNumberOfGridLines)
             .ToArray();
 
-        int evenTick = 0; // 0 for even, 1 for odd.
+        int oddTick = 0; // 0 for even, 1 for odd.
 
         var Ticks = ticks
             .Where(x => x.IsMajor)
@@ -65,14 +65,14 @@ public class GridStyle
             .Take(2) // need only first 2
             .ToArray();
         if (Ticks.Length >= 2 && (Ticks[1].Position - Ticks[0].Position != 0))
-            evenTick = (int)(Ticks[0].Position / (Ticks[1].Position - Ticks[0].Position)) % 2;
+            oddTick = (int)(Ticks[0].Position / (Ticks[1].Position - Ticks[0].Position)) % 2;
 
         RenderGridLines(rp, xTicksMinor, axis.Edge, MinorLineStyle);
-        RenderAlternatingFill(rp, xTicksMajor, axis.Edge, evenTick);
+        RenderAlternatingFill(rp, xTicksMajor, axis.Edge, oddTick);
         RenderGridLines(rp, xTicksMajor, axis.Edge, MajorLineStyle);
     }
 
-    private void RenderAlternatingFill(RenderPack rp, float[] positions, Edge edge, int evenTick)
+    private void RenderAlternatingFill(RenderPack rp, float[] positions, Edge edge, int oddTick)
     {
         if (!FillColorEnabled)
         {
@@ -95,7 +95,7 @@ public class GridStyle
 
         for (int i = 1; i < starts.Count(); i++)
         {
-            Color fillColor = (i + evenTick) % 2 == 0 ? FillColor1 : FillColor2;
+            Color fillColor = (i + oddTick) % 2 == 0 ? FillColor1 : FillColor2;
             PixelRect rect = new(starts.ElementAt(i - 1), ends.ElementAt(i));
             Drawing.FillRectangle(rp.Canvas, rect, fillColor);
         }
