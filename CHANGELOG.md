@@ -7,6 +7,7 @@ _Not yet on NuGet..._
 * DataSources: Created `IDataSource` to standardize and simplify data access, render index management, and pixel/coordinate conversion (#3807, #4270) @RFBomb @StendProg
 * LinePlot: Added `CoordinateLine` property (#4277, #4274) @aespitia
 * Pie: Improved respect for `LineStyle` customizations (#7278)
+* Pie: Improved automatic axis limit behavior for pie charts with internal slice labels (#7278)
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
