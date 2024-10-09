@@ -1,29 +1,36 @@
-﻿namespace ScottPlot;
+﻿using System.Reflection;
+
+namespace ScottPlot;
 
 // NOTE: names are consistent with matplotlib linestyles
 // https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html
 
 // TODO: add more preset LinePatterns
 
-public readonly struct LinePattern(float[] intervals, float phase)
+public readonly struct LinePattern(float[] intervals, float phase, string name)
 {
-    // default(LinePattern) is actually "Solid"
-    public static LinePattern Solid { get; } = default;
-    public static LinePattern Dashed { get; } = new([10, 10], 0);
-    public static LinePattern DenselyDashed { get; } = new([6, 6], 0);
-    public static LinePattern Dotted { get; } = new([3, 5], 0);
+    public static LinePattern Solid { get; } = new([], 0, "Solid");
+    public static LinePattern Dashed { get; } = new([10, 10], 0, "Dashed");
+    public static LinePattern DenselyDashed { get; } = new([6, 6], 0, "DenselyDashed");
+    public static LinePattern Dotted { get; } = new([3, 5], 0, "Dotted");
 
     public float[] Intervals { get; } = intervals;
-
     public float Phase { get; } = phase;
+    public string Name { get; } = name;
 
-    // default(LinePattern) does not set _hasBeenSet to true.
-    private readonly bool _hasBeenSet = true;
-
-    public SKPathEffect? GetPathEffect()
+    public static LinePattern[] GetAllPatterns()
     {
-        return !_hasBeenSet || Intervals is null
-            ? null
+        return typeof(LinePattern)
+            .GetProperties()
+            .Select(property => property.GetValue(Solid))
+            .OfType<LinePattern>()
+            .ToArray();
+    }
+
+    public SKPathEffect GetPathEffect()
+    {
+        return Intervals is null
+            ? Solid.GetPathEffect()
             : SKPathEffect.CreateDash(Intervals, Phase);
     }
 }
