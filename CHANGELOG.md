@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * Fonts: Improve typeface caching to significantly improve Avalonia performance on Linux (#3439, #4250) @kebox7
 * Generate: Improved `RandomNumbers()` to include lower boundary as described in XML docs (#4251, #4252) @aespitia @LeaFrock @ArchieCoder
 * LinePattern: Added `Name` property and added support for custom patterns (#4275, #4289) @CoderPM2011
+* DataSources: Created `IDataSource` to standardize and simplify data access, render index management, and pixel/coordinate conversion (#3807, #4270) @RFBomb @StendProg
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
