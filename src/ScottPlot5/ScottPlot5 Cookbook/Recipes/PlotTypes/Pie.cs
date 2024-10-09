@@ -17,6 +17,11 @@ public class Pie : ICategory
             double[] values = { 5, 2, 8, 4, 8 };
             var pie = myPlot.Add.Pie(values);
             pie.ExplodeFraction = .1;
+
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+            myPlot.HideLegend();
         }
     }
 
@@ -41,6 +46,10 @@ public class Pie : ICategory
             pie.ExplodeFraction = .1;
 
             myPlot.ShowLegend();
+
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
         }
     }
 
@@ -66,6 +75,10 @@ public class Pie : ICategory
             pie.DonutFraction = .5;
 
             myPlot.ShowLegend();
+
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
         }
     }
 
@@ -81,6 +94,11 @@ public class Pie : ICategory
             var pie = myPlot.Add.Pie(values);
             pie.ExplodeFraction = .1;
             pie.Rotation = Angle.FromDegrees(90);
+
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+            myPlot.HideLegend();
         }
     }
 
@@ -115,6 +133,11 @@ public class Pie : ICategory
             slice5.LabelStyle.FontSize = 22;
             slice5.LabelStyle.Bold = true;
             slice5.LabelStyle.Italic = true;
+
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+            myPlot.HideLegend();
         }
     }
 
