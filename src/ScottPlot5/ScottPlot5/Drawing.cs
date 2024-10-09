@@ -45,7 +45,7 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
-    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = LinePattern.Solid)
+    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = default)
     {
         if (width == 0)
             return;
