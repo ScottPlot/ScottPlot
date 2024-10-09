@@ -102,22 +102,6 @@ public class Pie : PieBase
                 slice.LabelStyle.Render(rp.Canvas, px, paint);
             }
 
-            var slicePercentFormat = SlicePercentFormat;
-            if (slicePercentFormat != null && slicePercentFormat.StartsWith("P", StringComparison.OrdinalIgnoreCase))
-            {
-                Coordinates polar = new PolarCoordinates(1.0 * SlicePercentDistance, centerAngle).ToCartesian();
-                polar.Y = -polar.Y;
-                Pixel px = Axes.GetPixel(polar) - origin;
-                var percentLabelStyle = slice.PercentLabelStyle;
-                // Let it be if we've already set the percent label text manually.
-                if (string.IsNullOrEmpty(percentLabelStyle.Text))
-                {
-                    // TODO: maybe someone wants to specify the CultureInfo too
-                    percentLabelStyle.Text = percentage.ToString(slicePercentFormat, CultureInfo.InvariantCulture);
-                }
-                percentLabelStyle.Render(rp.Canvas, px, paint);
-            }
-
             totalAngle += sliceAngle;
             path.Reset();
         }
