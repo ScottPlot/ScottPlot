@@ -749,11 +749,7 @@ public static class Generate
 
     public static LinePattern RandomLinePattern()
     {
-        LinePattern[] linePatterns = Enum
-            .GetValues(typeof(LinePattern))
-            .Cast<LinePattern>()
-            .ToArray();
-
+        LinePattern[] linePatterns = LinePattern.GetAllPatterns();
         int i = RandomInteger(linePatterns.Length);
         return linePatterns[i];
     }
