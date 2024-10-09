@@ -64,9 +64,12 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointX(axes);
 
-        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
+        if (Xs[dataIndexFirst] > Xs[dataIndexLast])
+            throw new InvalidDataException("Xs must contain only ascending values. " +
+                $"The value at index {dataIndexFirst} ({Xs[dataIndexFirst]}) is greater than the value at index {dataIndexLast} ({Xs[dataIndexLast]})");
 
         // get all points in view
+        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
         IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
             ? []
             : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
@@ -98,10 +101,13 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointY(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointY(axes);
-        
-        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
+
+        if (Xs[dataIndexFirst] > Xs[dataIndexLast])
+            throw new InvalidDataException("Xs must contain only ascending values. " +
+                $"The value at index {dataIndexFirst} ({Xs[dataIndexFirst]}) is greater than the value at index {dataIndexLast} ({Xs[dataIndexLast]})");
 
         // get all points in view
+        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
         IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
             ? []
             : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
