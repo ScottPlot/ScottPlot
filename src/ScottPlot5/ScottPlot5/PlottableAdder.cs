@@ -381,7 +381,7 @@ public class PlottableAdder(Plot plot)
         return heatmap;
     }
 
-    public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
+    public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = default)
     {
         Color color2 = color ?? GetNextColor();
         HorizontalLine line = new()
@@ -1038,7 +1038,7 @@ public class PlottableAdder(Plot plot)
         return field;
     }
 
-    public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
+    public VerticalLine VerticalLine(double x, float width = 2, Color? color = null, LinePattern pattern = default)
     {
         Color color2 = color ?? GetNextColor();
         VerticalLine line = new()

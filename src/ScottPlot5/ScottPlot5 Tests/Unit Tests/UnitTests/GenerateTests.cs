@@ -12,4 +12,16 @@ internal class GenerateTests
             dt.DayOfWeek.Should().NotBe(DayOfWeek.Sunday);
         }
     }
+
+
+    [Test]
+    public void Test_RandomNumbers()
+    {
+        double[] nums = Generate.RandomNumbers(100, 34, 38);
+        foreach (var n in nums)
+        {
+            n.Should().BeGreaterOrEqualTo(34);
+            n.Should().BeLessOrEqualTo(38);
+        }
+    }
 }
