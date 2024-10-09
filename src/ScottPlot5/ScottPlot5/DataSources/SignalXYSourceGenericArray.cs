@@ -61,8 +61,14 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointX(axes);
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
+        if (visibleRange.IsValid && NumericConversion.GenericToDouble(Xs, dataIndexFirst) > NumericConversion.GenericToDouble(Xs, dataIndexLast))
+            throw new InvalidDataException("Xs must contain only ascending values. " +
+                $"The value at index {dataIndexFirst} ({Xs[dataIndexFirst]}) is greater than the value at index {dataIndexLast} ({Xs[dataIndexLast]})");
+
         // get all points in view
-        IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
+        IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
+            ? []
+            : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
             .Select(pixelColumnIndex => GetColumnPixelsX(pixelColumnIndex, visibleRange, rp, axes))
             .SelectMany(x => x);
 
@@ -93,8 +99,14 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointY(axes);
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
+        if (visibleRange.IsValid && NumericConversion.GenericToDouble(Xs, dataIndexFirst) > NumericConversion.GenericToDouble(Xs, dataIndexLast))
+            throw new InvalidDataException("Xs must contain only ascending values. " +
+                $"The value at index {dataIndexFirst} ({Xs[dataIndexFirst]}) is greater than the value at index {dataIndexLast} ({Xs[dataIndexLast]})");
+
         // get all points in view
-        IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
+        IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
+            ? []
+            : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
             .Select(pixelRowIndex => GetColumnPixelsY(pixelRowIndex, visibleRange, rp, axes))
             .SelectMany(x => x);
 
