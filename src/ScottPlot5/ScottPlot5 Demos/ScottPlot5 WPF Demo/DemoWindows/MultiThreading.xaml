@@ -1,0 +1,40 @@
+﻿<Window x:Class="WPF_Demo.DemoWindows.MultiThreading"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Demo.DemoWindows" xmlns:wpf="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="MultiThreading" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <wpf:WpfPlot Grid.Row="0" Name="WpfPlot1" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Name="ButtonStackPanel">
+            <Label
+                FontSize="18" 
+                VerticalAlignment="Center"
+                Content="Continuously update using:"
+                />
+            <Button
+                FontSize="18" 
+                Padding="10 5"
+                Margin="5"
+                VerticalContentAlignment="Center"
+                Content="Timer"
+                Click="StartTimer"
+                />
+            <Button
+                FontSize="18" 
+                Padding="10 5"
+                Margin="5"
+                VerticalContentAlignment="Center"
+                Content="DispatchTimer"
+                Click="StartDispatchTimer"
+                />
+        </StackPanel>
+    </Grid>
+</Window>
