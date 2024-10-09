@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * LinePlot: Added `CoordinateLine` property (#4277, #4274) @aespitia
 * Pie: Improved respect for `LineStyle` customizations (#7278)
 * Pie: Improved automatic axis limit behavior for pie charts with internal slice labels (#7278)
+* Pie: Slices now have distinct `Label` and `LegendText` properties (#3295, #4280) @LeaFrock @sterenas @Martin12350
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
