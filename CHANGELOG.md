@@ -1,6 +1,15 @@
 ## ScottPlot 5.0.40
 _Not yet on NuGet..._
 * DataLogger: Added `Add()` overloads to be consistent the original DataLogger API (#4243, #4114) @drolevar @jpgarza93
+* Fonts: Improve typeface caching to significantly improve Avalonia performance on Linux (#3439, #4250) @kebox7
+* Generate: Improved `RandomNumbers()` to include lower boundary as described in XML docs (#4251, #4252) @aespitia @LeaFrock @ArchieCoder
+* LinePattern: Added `Name` property and added support for custom patterns (#4275, #4289) @CoderPM2011
+* DataSources: Created `IDataSource` to standardize and simplify data access, render index management, and pixel/coordinate conversion (#3807, #4270) @RFBomb @StendProg
+* LinePlot: Added `CoordinateLine` property (#4277, #4274) @aespitia
+* Pie: Improved respect for `LineStyle` customizations (#7278)
+* Pie: Improved automatic axis limit behavior for pie charts with internal slice labels (#7278)
+* Pie: Slices now have distinct `Label` and `LegendText` properties (#3295, #4280) @LeaFrock @sterenas @Martin12350
+* SignalXY: Fixed bug introduced in the last version that caused off-screen data to throw an ascending value exception (#4261, #4286) @RFBomb @StendProg
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_

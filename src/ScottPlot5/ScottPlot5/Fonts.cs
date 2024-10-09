@@ -1,6 +1,5 @@
 ﻿using ScottPlot.FontResolvers;
 using System.Collections.Concurrent;
-using System.Runtime.Serialization;
 
 namespace ScottPlot;
 
@@ -91,7 +90,9 @@ public static class Fonts
             }
         }
 
-        return SystemFontResolver.CreateDefaultTypeface();
+        SKTypeface defaultTypeface = SystemFontResolver.CreateDefaultTypeface();
+        TypefaceCache.TryAdd(typefaceCacheKey, defaultTypeface);
+        return defaultTypeface;
     }
 
     #region Font Detection
