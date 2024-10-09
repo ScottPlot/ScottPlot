@@ -94,13 +94,10 @@ public class Pie : PieBase
 
             Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
 
-            if (ShowSliceLabels)
-            {
-                Coordinates polar = new PolarCoordinates(1.0 * SliceLabelDistance, centerAngle).ToCartesian();
-                polar.Y = -polar.Y;
-                Pixel px = Axes.GetPixel(polar) - origin;
-                slice.LabelStyle.Render(rp.Canvas, px, paint);
-            }
+            Coordinates polar = new PolarCoordinates(1.0 * SliceLabelDistance, centerAngle).ToCartesian();
+            polar.Y = -polar.Y;
+            Pixel px = Axes.GetPixel(polar) - origin;
+            slice.LabelStyle.Render(rp.Canvas, px, paint);
 
             totalAngle += sliceAngle;
             path.Reset();

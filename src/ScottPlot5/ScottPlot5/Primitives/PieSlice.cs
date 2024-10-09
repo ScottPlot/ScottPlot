@@ -2,10 +2,8 @@
 
 public class PieSlice : LabelStyleProperties, IHasLegendText, IHasLabel
 {
-    private string? _legendText;
-
     public string Label { get => LabelStyle.Text; set => LabelStyle.Text = value; }
-    public string LegendText { get => _legendText ?? Label; set => _legendText = value; }
+    public string LegendText { get; set; } = string.Empty;
     public double Value { get; set; }
     public FillStyle Fill { get; set; } = new();
     public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
