@@ -16,6 +16,8 @@
 		<ApplicationId>net.scottplot.sandbox.maui</ApplicationId>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 	<ItemGroup>
