@@ -10,6 +10,7 @@ _Not yet on NuGet..._
 * Pie: Improved automatic axis limit behavior for pie charts with internal slice labels (#7278)
 * Pie: Slices now have distinct `Label` and `LegendText` properties (#3295, #4280) @LeaFrock @sterenas @Martin12350
 * SignalXY: Fixed bug introduced in the last version that caused off-screen data to throw an ascending value exception (#4261, #4286) @RFBomb @StendProg
+* Controls: Added strong naming by signing assemblies for the WPF, Maui, and Eto controls (#4295) @RFBomb
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
