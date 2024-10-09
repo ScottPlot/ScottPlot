@@ -12,10 +12,7 @@ public class Pie : PieBase
 
     public override AxisLimits GetAxisLimits()
     {
-        double radius = ShowSliceLabels
-            ? SliceLabelDistance + Padding
-            : 1 + ExplodeFraction + Padding;
-
+        double radius = Math.Max(SliceLabelDistance, 1 + ExplodeFraction) + Padding;
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
@@ -92,11 +89,10 @@ public class Pie : PieBase
                 path.Close();
             }
 
-            slice.Fill.ApplyToPaint(paint, new PixelRect(origin, outerRadius));
-            rp.Canvas.DrawPath(path, paint);
+            PixelRect rect = new(origin, outerRadius);
+            Drawing.DrawPath(rp.Canvas, paint, path, slice.Fill, rect);
 
-            LineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
+            Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
 
             if (ShowSliceLabels)
             {

@@ -16,7 +16,7 @@ public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
 
-    public LineStyle LineStyle { get; set; } = new() { Width = 0 };
+    public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public double Padding { get; set; } = 0.2;
     public bool ShowSliceLabels { get; set; } = false;
