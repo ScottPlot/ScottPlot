@@ -1,10 +1,13 @@
-﻿namespace ScottPlot;
+﻿using SkiaSharp.HarfBuzz;
+
+namespace ScottPlot;
 
 [Obsolete("Label has been renamed to LabelStyle", true)]
 public class Label : LabelStyle { }
 
 public class LabelStyle
 {
+    public static bool RTLSupport { get; set; } = false;
     public bool IsVisible { get; set; } = true;
 
     // TODO: deprecate this and pass text into the render method
@@ -295,14 +298,26 @@ public class LabelStyle
 
                 float xPx = textRect.Left + dX;
                 float yPx = textRect.Top + (1 + i) * lineHeight + dY;
-                canvas.DrawText(lines[i], xPx, yPx, paint);
+                if (LabelStyle.RTLSupport)
+                {
+                    using (var shaper = new SKShaper(paint.Typeface))
+                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint);
+                }
+                else
+                    canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
             float xPx = textRect.Left;
             float yPx = textRect.Bottom + dY;
-            canvas.DrawText(Text, xPx, yPx, paint);
+            if (LabelStyle.RTLSupport)
+            {
+                using (var shaper = new SKShaper(paint.Typeface))
+                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint);
+            }
+            else
+                canvas.DrawText(Text, xPx, yPx, paint);
         }
     }
 
