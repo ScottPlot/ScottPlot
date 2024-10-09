@@ -118,34 +118,39 @@ public class Pie : ICategory
         }
     }
 
-    public class PieSlicePercentLabels : RecipeBase
+    public class PieSliceLabelsPercent : RecipeBase
     {
-        public override string Name => "Pie Slice Percent Labels";
-        public override string Description => "Slice percent labels can be displayed " +
-            "centered with the slice at a specific format " +
-            "and a customizable distance from the center of the pie.";
+        public override string Name => "Pie with Percent Labels";
+        public override string Description => "Slice labels may be adapted to display any text " +
+            "(including numerical values) centered over each slice.";
 
         [Test]
         public override void Execute()
         {
-            PieSlice slice1 = new() { Value = 2, FillColor = Colors.Red, Label = "alpha" };
-            PieSlice slice2 = new() { Value = 4, FillColor = Colors.Orange, Label = "beta" };
-            PieSlice slice3 = new() { Value = 6, FillColor = Colors.Gold, Label = "gamma" };
-            PieSlice slice4 = new() { Value = 8, FillColor = Colors.Green, Label = "delta" };
-            PieSlice slice5 = new() { Value = 10, FillColor = Colors.Blue, Label = "epsilon" };
+            // create a pie chart
+            double[] values = [6, 8, 10];
+            var pie = myPlot.Add.Pie(values);
+            pie.ExplodeFraction = .1;
+            pie.ShowSliceLabels = true;
+            pie.SliceLabelDistance = 0.5;
 
-            List<PieSlice> slices = [slice1, slice2, slice3, slice4, slice5];
+            // determine percentages for each slice
+            double total = pie.Slices.Select(x => x.Value).Sum();
+            double[] percentages = pie.Slices.Select(x => x.Value / total * 100).ToArray();
 
-            // setup the pie to display slice labels
-            var pie = myPlot.Add.Pie(slices);
-            pie.ExplodeFraction = 0.05;
-            pie.SlicePercentFormat = "P1";
-            pie.SlicePercentDistance = 0.66;
+            // set each slice label to its percentage
+            for (int i = 0; i < pie.Slices.Count; i++)
+            {
+                pie.Slices[i].Label = $"{percentages[i]:0.0}%";
+                pie.Slices[i].LabelFontSize = 20;
+                pie.Slices[i].LabelBold = true;
+                pie.Slices[i].LabelFontColor = Colors.Black.WithAlpha(.5);
+            }
 
-            // styling can be customized for individual slices
-            slice5.PercentLabelStyle.FontSize = 22;
-            slice5.PercentLabelStyle.Bold = true;
-            slice5.PercentLabelStyle.Italic = true;
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+            myPlot.HideLegend();
         }
     }
 }
