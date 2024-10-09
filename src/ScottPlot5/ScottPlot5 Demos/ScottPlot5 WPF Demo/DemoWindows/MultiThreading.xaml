@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Demo.DemoWindows" xmlns:wpf="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="MultiThreading" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -12,18 +13,28 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <wpf:WpfPlot Grid.Row="0" Name="WpfPlot1" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <CheckBox
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Name="ButtonStackPanel">
+            <Label
                 FontSize="18" 
-                Padding="5 0"
-                Margin="5"
-                VerticalContentAlignment="Center"
-                Content="Continuously Render"/>
+                VerticalAlignment="Center"
+                Content="Continuously update using:"
+                />
             <Button
                 FontSize="18" 
-                Padding="5 0"
+                Padding="10 5"
                 Margin="5"
-                Content="Change Data"/>
+                VerticalContentAlignment="Center"
+                Content="Timer"
+                Click="StartTimer"
+                />
+            <Button
+                FontSize="18" 
+                Padding="10 5"
+                Margin="5"
+                VerticalContentAlignment="Center"
+                Content="DispatchTimer"
+                Click="StartDispatchTimer"
+                />
         </StackPanel>
     </Grid>
 </Window>
