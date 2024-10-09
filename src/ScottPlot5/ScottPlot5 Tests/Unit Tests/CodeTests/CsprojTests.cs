@@ -58,4 +58,15 @@ internal class CsprojTests
             throw new InvalidDataException("Multiple SkiaSharp versions found!");
         }
     }
+
+    [Test]
+    public void Test_Projects_AreSigned()
+    {
+        foreach ((string file, string[] lines) in CsprojFiles)
+        {
+            if (!lines.Where(x => x.Contains("<SignAssembly>")).Any())
+                Assert.Fail($"{file} requires 'SignAssembly' to be defined. " +
+                    $"See other project files in this repository for more information.");
+        }
+    }
 }

@@ -9,6 +9,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>false</IsPackable>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
 
         <!-- package restored using non-identical framework -->
         <NoWarn>NU1701</NoWarn>
