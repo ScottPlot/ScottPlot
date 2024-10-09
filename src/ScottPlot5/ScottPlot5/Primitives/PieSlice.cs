@@ -2,25 +2,25 @@
 
 public class PieSlice : LabelStyleProperties, IHasLegendText, IHasLabel
 {
-    public string Label { get => LegendText; set => LegendText = value; }
-    public string LegendText { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+    public string Label { get => LabelStyle.Text; set => LabelStyle.Text = value; }
+    public string LegendText { get; set; } = string.Empty;
     public double Value { get; set; }
     public FillStyle Fill { get; set; } = new();
     public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleCenter };
     public Color FillColor { get => Fill.Color; set => Fill.Color = value; }
 
-    public PieSlice() { }
-
-    public PieSlice(double value, Color color)
+    public PieSlice() : this(default, default, string.Empty)
     {
-        Value = value;
-        Fill.Color = color;
+    }
+
+    public PieSlice(double value, Color color) : this(value, color, string.Empty)
+    {
     }
 
     public PieSlice(double value, Color color, string label)
     {
         Value = value;
-        LegendText = label;
         Fill.Color = color;
+        Label = label;
     }
 }

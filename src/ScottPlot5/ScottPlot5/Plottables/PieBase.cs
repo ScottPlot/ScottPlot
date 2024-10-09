@@ -19,7 +19,6 @@ public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public double Padding { get; set; } = 0.2;
-    public bool ShowSliceLabels { get; set; } = false;
     public double SliceLabelDistance { get; set; } = 1.2;
 
     public IList<PieSlice> Slices { get; set; } = [];
