@@ -26,7 +26,7 @@ namespace ScottPlot
     /// Generic helper used to provide <see cref="IComparer{T}"/> on supported types.
     /// </summary>
     /// <typeparam name="T"><inheritdoc cref="Default" path="/remarks"/></typeparam>
-    public static class GenericComparer<T> 
+    public static class GenericComparer<T>
     {
         ///<summary>
         /// An appropriate <see cref="IComparer{T}"/> for this type.

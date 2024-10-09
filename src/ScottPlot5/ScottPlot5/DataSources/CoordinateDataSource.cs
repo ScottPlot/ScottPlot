@@ -16,13 +16,13 @@
         public int Length => coordinates.Count;
         public int MinRenderIndex { get; set; } = 0;
         public int MaxRenderIndex { get; set; } = readOnlyList.Count - 1;
-        
+
         public Coordinates GetCoordinate(int index) => coordinates[index];
         public Coordinates GetCoordinateScaled(int index) => DataSourceUtilities.ScaleCoordinate(coordinates[index], XScale, XOffset, YScale, YOffset);
         public double GetX(int index) => coordinates[index].X;
-        public int GetXClosestIndex(Coordinates mouseLocation) 
+        public int GetXClosestIndex(Coordinates mouseLocation)
             => DataSourceUtilities.GetClosestIndex(
-                coordinates is Coordinates[] ca? ca : [.. coordinates], 
+                coordinates is Coordinates[] ca ? ca : [.. coordinates],
                 DataSourceUtilities.UnScaleCoordinate(mouseLocation, XScale, XOffset, YScale, YOffset),
                 this.GetRenderIndexRange()
                 );

@@ -53,7 +53,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     {
         if (Data is IDataSource ds)
             return DataSourceUtilities.GetNearestFast(ds, location, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
-        else 
+        else
             return Data.GetNearest(location, renderInfo, maxDistance);
     }
 

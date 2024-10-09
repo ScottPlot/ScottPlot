@@ -111,5 +111,5 @@ public struct Coordinates : IEquatable<Coordinates>
         return new(X + dX, Y + dY);
     }
 
-    public readonly (double X, double Y) Deconstruct() => (X,  Y);
+    public readonly (double X, double Y) Deconstruct() => (X, Y);
 }

@@ -3,7 +3,7 @@
 public class VectorFieldDataSourceCoordinatesList(IList<RootedCoordinateVector> rootedVectors) : IVectorFieldSource, IDataSource, IGetNearest
 {
     private readonly IList<RootedCoordinateVector> RootedVectors = rootedVectors;
-    
+
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
 

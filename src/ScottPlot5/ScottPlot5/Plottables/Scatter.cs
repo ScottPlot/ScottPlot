@@ -420,7 +420,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     double IDataSource.GetYScaled(int index)
     {
         return DataSourceUtilities.ScaleXY(
-            value : _dataSource?.GetY(index) ?? Data.GetScatterPoints()[index].Y,
+            value: _dataSource?.GetY(index) ?? Data.GetScatterPoints()[index].Y,
             scalingFactor: ScaleY,
             offset: OffsetY
             );

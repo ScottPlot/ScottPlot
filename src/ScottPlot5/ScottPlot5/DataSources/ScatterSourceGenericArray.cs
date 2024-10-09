@@ -7,7 +7,7 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
 {
     private readonly T1[] Xs = xs;
     private readonly T2[] Ys = ys;
-    
+
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
 

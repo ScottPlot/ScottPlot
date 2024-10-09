@@ -10,7 +10,7 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
-    
+
     bool IDataSource.PreferCoordinates => false;
     int IDataSource.Length => Math.Min(Xs.Length, Ys.Length);
 

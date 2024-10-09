@@ -12,7 +12,7 @@ internal class DataSourceUtilitiesTests
     public static readonly double[] Xs = Generate.Consecutive(51, Period, 0);
     public static readonly double[] Ys = Generate.Sin(51);
     public static readonly Coordinates[] Cs = Xs.Zip(Ys).Select(pair => new Coordinates(pair.First, pair.Second)).ToArray();
-    
+
     public static readonly int[] GenericXs = Xs.Select(i => (int)i).ToArray();
     public static readonly float[] GenericYs = Ys.Select(i => (float)i).ToArray();
 
@@ -98,7 +98,7 @@ internal class DataSourceUtilitiesTests
     public void Test_DataSourceUtility_GetNearestFast(bool ignoreOffsetsAndScaling)
     {
         Plot plot = new Plot();
-        var dataSource = ignoreOffsetsAndScaling 
+        var dataSource = ignoreOffsetsAndScaling
             ? new SignalXYSourceDoubleArray(Xs, Ys)
             : new SignalXYSourceDoubleArray(Xs, Ys)
             {
@@ -203,7 +203,7 @@ internal class DataSourceUtilitiesTests
 
         Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed Nominal Check"); // nominal -- MaxRenderIndex == data.Length -1
 
-        data.MaxRenderIndex= int.MaxValue;
+        data.MaxRenderIndex = int.MaxValue;
         Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed int.Max check"); // int.Max
 
         data.MaxRenderIndex = data.Length - 5;
@@ -238,7 +238,7 @@ internal class DataSourceUtilitiesTests
         data = new CoordinateDataSource(Cs);
         range = data.GetRenderIndexRange();
         Assert.That(range.Min, Is.EqualTo(0)); // nominal -- MaxRenderIndex == data.Length -1
-        Assert.That(range.Max, Is.EqualTo(data.Length-1)); // nominal -- MaxRenderIndex == data.Length -1
+        Assert.That(range.Max, Is.EqualTo(data.Length - 1)); // nominal -- MaxRenderIndex == data.Length -1
         Assert.That(range.Length, Is.EqualTo(data.Length));
         Assert.That(range.Length, Is.EqualTo(data.GetRenderIndexCount()));
 
@@ -249,7 +249,7 @@ internal class DataSourceUtilitiesTests
         Assert.That(range.Length, Is.EqualTo(11));
         Assert.That(range.Length, Is.EqualTo(data.GetRenderIndexCount()));
 
-        data.MinRenderIndex= 5;
+        data.MinRenderIndex = 5;
         range = data.GetRenderIndexRange();
         Assert.That(range.Min, Is.EqualTo(5));
         Assert.That(range.Max, Is.EqualTo(10));
@@ -274,9 +274,9 @@ internal class DataSourceUtilitiesTests
         var ds = new CoordinateDataSource(Cs);
         if (scaling)
         {
-            ds.YOffset = YOffSet; 
-            ds.XOffset = XOffSet; 
-            ds.XScale = XScaling; 
+            ds.YOffset = YOffSet;
+            ds.XOffset = XOffSet;
+            ds.XScale = XScaling;
             ds.YScale = YScaling;
         }
         Test_IDataSource(ds, scaling ? ScottPlot.DataSourceUtilities.ScaleCoordinate(MouseLocation, XScaling, XOffSet, YScaling, YOffSet) : MouseLocation);
@@ -328,9 +328,9 @@ internal class DataSourceUtilitiesTests
 
     [TestCase(false, false)]
     [TestCase(false, true)]
-    [TestCase(true, true)]    
+    [TestCase(true, true)]
     [TestCase(true, false)]
-    [Test] 
+    [Test]
     public void Test_SignalXYSourceDoubleArray(bool rotation, bool scaling)
         => TestSignalXY(new SignalXYSourceDoubleArray(Xs, Ys) { Rotated = rotation }, rotation, scaling);
 
@@ -338,10 +338,11 @@ internal class DataSourceUtilitiesTests
     [TestCase(false, true)]
     [TestCase(true, true)]
     [TestCase(true, false)]
-    [Test] public void Test_SignalXYSourceGenericArray(bool rotation, bool scaling) 
-        => TestSignalXY(new SignalXYSourceGenericArray<int, float>(GenericXs, GenericYs) { Rotated = rotation}, rotation, scaling);
+    [Test]
+    public void Test_SignalXYSourceGenericArray(bool rotation, bool scaling)
+        => TestSignalXY(new SignalXYSourceGenericArray<int, float>(GenericXs, GenericYs) { Rotated = rotation }, rotation, scaling);
 
-    private static void TestSignalXY<T>(T signalXYSource, bool rotation, bool scaling) where T: ISignalXYSource, IDataSource
+    private static void TestSignalXY<T>(T signalXYSource, bool rotation, bool scaling) where T : ISignalXYSource, IDataSource
     {
         var mouse = MouseLocation;
         if (scaling)
@@ -399,7 +400,7 @@ internal class DataSourceUtilitiesTests
         var plot = GetPlot();
 
         var scatter = plot.Add.Scatter(scatterSource);
-        
+
         if (scaling)
         {
             scatter.OffsetX = XOffSet;
@@ -430,7 +431,7 @@ internal class DataSourceUtilitiesTests
     private static void Test_IDataSource(IDataSource dataSource, Coordinates mouseLocation, bool isRotated = false)
     {
         Assert.That(dataSource, Is.Not.Null);
-        
+
         // If using the supplied dataset, all are sorted!
         Assert.That(dataSource.IsSorted(), Is.True);
 
@@ -451,7 +452,7 @@ internal class DataSourceUtilitiesTests
 
         // GetXY Scaled
         var scaledCoordinate = dataSource.GetCoordinateScaled(IndexToCheck); // cannot check that scaling occurred, only that all values return same result
-        Assert.That( dataSource.GetXScaled(IndexToCheck), Is.EqualTo(scaledCoordinate.X), $"{nameof(IDataSource)}.{nameof(IDataSource.GetXScaled)} returned a different result than the scaled coordinate at same index");
+        Assert.That(dataSource.GetXScaled(IndexToCheck), Is.EqualTo(scaledCoordinate.X), $"{nameof(IDataSource)}.{nameof(IDataSource.GetXScaled)} returned a different result than the scaled coordinate at same index");
         Assert.That(dataSource.GetYScaled(IndexToCheck), Is.EqualTo(scaledCoordinate.Y), $"{nameof(IDataSource)}.{nameof(IDataSource.GetYScaled)} returned a different result than scaled coordinate at same index");
 
         // GetClosestIndex
@@ -469,7 +470,7 @@ internal class DataSourceUtilitiesTests
         Assert.That(nearestX.Index, Is.EqualTo(IndexToCheck), $"{dataSource.GetType().Name} failed to get correct index using {nameof(IGetNearest)}.{nameof(IGetNearest.GetNearestX)}");
         nearestX.X.Should().BeApproximately(mouseLocation.X, .001);
         nearestX.Y.Should().BeApproximately(mouseLocation.Y, .001);
-        
+
         var nearest = dataSource.GetNearest(mouseLocation, plot.LastRender, maxDistance);
         Assert.That(nearest.Index, Is.EqualTo(IndexToCheck), $"{dataSource.GetType().Name} failed to get correct index using {nameof(IGetNearest)}.{nameof(IGetNearest.GetNearest)}");
         nearest.X.Should().BeApproximately(mouseLocation.X, .001);
@@ -477,6 +478,6 @@ internal class DataSourceUtilitiesTests
 
     }
 
-    
+
 }
 

@@ -9,7 +9,7 @@ public class ScatterSourceCoordinatesList(List<Coordinates> coordinates) : IScat
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
-    
+
     bool IDataSource.PreferCoordinates => true;
     int IDataSource.Length => Coordinates.Count;
 

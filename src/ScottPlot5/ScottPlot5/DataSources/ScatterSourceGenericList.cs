@@ -10,7 +10,7 @@ public class ScatterSourceGenericList<T1, T2>(List<T1> xs, List<T2> ys) : IScatt
 
     public int MinRenderIndex { get; set; } = 0;
     public int MaxRenderIndex { get; set; } = int.MaxValue;
-    
+
     int IDataSource.Length => Math.Min(Xs.Count, Ys.Count);
     bool IDataSource.PreferCoordinates => false;
     bool IDataSource.IsSorted() => Xs.IsAscending(GenericComparer<T1>.Default);
