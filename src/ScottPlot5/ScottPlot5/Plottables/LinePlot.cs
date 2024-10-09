@@ -4,6 +4,18 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
 {
     public Coordinates Start { get; set; }
     public Coordinates End { get; set; }
+    public CoordinateLine Line
+    {
+        get
+        {
+            return new CoordinateLine(Start, End);
+        }
+        set
+        {
+            Start = value.Start;
+            End = value.End;
+        }
+    }
 
     public MarkerStyle MarkerStyle { get; set; } = new() { Size = 0 };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
