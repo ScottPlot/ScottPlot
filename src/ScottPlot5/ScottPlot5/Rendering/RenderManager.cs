@@ -24,7 +24,7 @@ public class RenderManager(Plot plot)
         new RenderActions.RegenerateTicks(),
         new RenderActions.RenderStartingEvent(),
         new RenderActions.RenderDataBackground(),
-        new RenderActions.StoreGLState(),
+        new RenderActions.StoreGLState(), // https://github.com/ScottPlot/ScottPlot/pull/4298
         new RenderActions.RenderGridsBelowPlottables(),
         new RenderActions.RestoreGLState(),
         new RenderActions.RenderPlottables(),
