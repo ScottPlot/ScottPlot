@@ -22,7 +22,7 @@ public class Full : IAxisLimitManager
             ? dataRangeX.Max + dataRangeX.Span * ExpansionRatio
             : viewRangeX.Max;
 
-        return dataRangeX with { Max = xMax };
+        return new(dataRangeX.Min, xMax);
     }
 
     public CoordinateRange GetRangeY(CoordinateRange viewRangeY, CoordinateRange dataRangeY)
