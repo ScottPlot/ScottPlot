@@ -13,6 +13,7 @@ _Not yet on NuGet..._
 * Controls: Added strong naming by signing assemblies for the WPF, Maui, and Eto controls (#4295) @RFBomb
 * OpenGL: Improve behavior of plots when grid lines are rendered beneath plottables (#4298) @StendProg
 * OpenGL: Improve support for OpenGL controls on modern .NET using platform-specific OpenTK versions (#4301) @StendProg
+* Coxcomb: Improved first slice orientation consistency (#4304, #4305) @johndoh
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
