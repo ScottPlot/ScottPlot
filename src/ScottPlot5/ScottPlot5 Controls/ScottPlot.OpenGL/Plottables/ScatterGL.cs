@@ -4,6 +4,9 @@ using ScottPlot.OpenGL;
 using ScottPlot.OpenGL.GLPrograms;
 using SkiaSharp;
 using System;
+#if NETCOREAPP || NET
+using OpenTK.Mathematics;
+#endif
 
 namespace ScottPlot.Plottables;
 
@@ -71,36 +74,28 @@ public class ScatterGL : Scatter, IPlottableGL
         return translate * scale;
     }
 
-    public new void Render(RenderPack rp)
-    {
-        System.Diagnostics.Debug.WriteLine("WARNING: Software rendering (not OpenGL) is being used");
-        base.Render(rp);
-    }
 
-    public void Render(SKSurface surface)
+    public override void Render(RenderPack rp)
     {
-        if (PlotControl.GRContext is not null && surface.Context is not null)
+        if (PlotControl.GRContext is not null)
         {
-            RenderWithOpenGL(surface, PlotControl.GRContext);
+            RenderWithOpenGL(rp.Canvas, PlotControl.GRContext);
             return;
         }
 
         if (Fallback == GLFallbackRenderStrategy.Software)
         {
-            surface.Canvas.ClipRect(Axes.DataRect.ToSKRect());
-            PixelSize figureSize = new(surface.Canvas.LocalClipBounds.Width, surface.Canvas.LocalClipBounds.Height);
+            rp.Canvas.ClipRect(Axes.DataRect.ToSKRect());
+            PixelSize figureSize = new(rp.Canvas.LocalClipBounds.Width, rp.Canvas.LocalClipBounds.Height);
             PixelRect rect = new(0, figureSize.Width, figureSize.Height, 0);
-            RenderPack rp = new(PlotControl.Plot, rect, surface.Canvas);
-            Render(rp);
+            RenderPack rp1 = new(PlotControl.Plot, rect, rp.Canvas);
+            base.Render(rp1);
         }
     }
 
-    protected virtual void RenderWithOpenGL(SKSurface surface, GRContext context)
+    protected virtual void RenderWithOpenGL(SKCanvas canvas, GRContext context)
     {
-        int height = (int)surface.Canvas.LocalClipBounds.Height;
-
-        context.Flush();
-        context.ResetContext();
+        int height = (int)canvas.LocalClipBounds.Height;
 
         if (!GLHasBeenInitialized)
             InitializeGL();
@@ -125,7 +120,7 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected void RenderMarkers()
     {
-        if (MarkerStyle.Shape == MarkerShape.None || MarkerStyle.Size == 0)
+        if (MarkerStyle.Shape == MarkerShape.None || MarkerStyle.Size == 0 || MarkerStyle.IsVisible == false)
             return;
 
         IMarkersDrawProgram? newProgram = MarkerStyle.Shape switch
@@ -158,4 +153,18 @@ public class ScatterGL : Scatter, IPlottableGL
     }
 
     public void GLFinish() => LinesProgram?.GLFinish();
+    public void StoreGLState()
+    {
+        if (PlotControl.GRContext is not null)
+            GL.PushAttrib(AttribMask.AllAttribBits);
+    }
+    public void RestoreGLState()
+    {
+        if (PlotControl.GRContext is not null)
+        {
+            PlotControl.GRContext.Flush();
+            PlotControl.GRContext.ResetContext();
+            GL.PopAttrib();
+        }
+    }
 }

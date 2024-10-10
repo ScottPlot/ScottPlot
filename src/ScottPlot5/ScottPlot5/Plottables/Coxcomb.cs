@@ -46,6 +46,7 @@ public class Coxcomb : PieBase
         rp.Canvas.Translate(origin.X, origin.Y);
         rp.Canvas.RotateDegrees(startAngle);
 
+        rp.Canvas.RotateDegrees(-rotationPerSlice);
         for (int i = 0; i < Slices.Count; i++)
         {
             rp.Canvas.RotateDegrees(rotationPerSlice);
@@ -73,7 +74,7 @@ public class Coxcomb : PieBase
             }
 
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
-            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * (i + 1) - startAngle));
+            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
             rp.Canvas.DrawPath(path, paint);
 
             LineStyle.ApplyToPaint(paint);
@@ -81,7 +82,7 @@ public class Coxcomb : PieBase
 
             path.Reset();
 
-            double cumulativeRotation = (i + 1) * rotationPerSlice;
+            double cumulativeRotation = i * rotationPerSlice;
             double x = SliceLabelDistance * maxRadius * Math.Cos(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
             double y = SliceLabelDistance * maxRadius * Math.Sin(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
             Pixel px = Axes.GetPixel(new Coordinates(x, y));

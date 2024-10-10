@@ -44,4 +44,17 @@ internal class PieTests
         plt.Legend.IsVisible = true;
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_FirstSlice_AlwaysStartsAtSamePlace()
+    {
+        for (int sliceCount = 3; sliceCount <= 5; sliceCount++)
+        {
+            Plot plot = new();
+            plot.Add.Coxcomb(Generate.Ones(sliceCount));
+            plot.Axes.Frameless();
+            plot.HideGrid();
+            plot.SaveTestImage(400, 400, $"{sliceCount}");
+        }
+    }
 }

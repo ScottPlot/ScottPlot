@@ -11,6 +11,11 @@ _Not yet on NuGet..._
 * Pie: Slices now have distinct `Label` and `LegendText` properties (#3295, #4280) @LeaFrock @sterenas @Martin12350
 * SignalXY: Fixed bug introduced in the last version that caused off-screen data to throw an ascending value exception (#4261, #4286) @RFBomb @StendProg
 * Controls: Added strong naming by signing assemblies for the WPF, Maui, and Eto controls (#4295) @RFBomb
+* OpenGL: Improve behavior of plots when grid lines are rendered beneath plottables (#4298) @StendProg
+* OpenGL: Improve support for OpenGL controls on modern .NET using platform-specific OpenTK versions (#4301) @StendProg
+* Coxcomb: Improved first slice orientation consistency (#4304, #4305) @johndoh
+* Grid: Improved alternating fill grid appearance for live and interactive graphs (#4302, #4307) @StendProg @bradcb212
+* SignalXY: Fixed bug causing plots with inverted horizontal axes to crash under specific conditions (#4313, #4315) @StendProg @lguelat
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
