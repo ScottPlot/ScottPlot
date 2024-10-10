@@ -14,8 +14,8 @@ public class NumericFixedInterval(double interval = 1) : ITickGenerator
     {
         List<Tick> ticks = [];
 
-        double lowest = range.TrueMin - range.TrueMin % Interval - Interval;
-        double highest = range.TrueMax - range.TrueMax % Interval + Interval;
+        double lowest = range.Min - range.Min % Interval - Interval;
+        double highest = range.Max - range.Max % Interval + Interval;
         int tickCount = (int)((highest - lowest) / Interval);
         tickCount = Math.Min(tickCount, MaxTickCount);
 

@@ -2,7 +2,7 @@
 
 public class FunctionSource(Func<double, double> func) : IFunctionSource
 {
-    public CoordinateRange RangeX { get; set; } = CoordinateRange.Infinity;
+    public CoordinateRange RangeX { get; set; } = new(double.NegativeInfinity, double.PositiveInfinity);
     public Func<double, double> Function { get; set; } = func;
     public Func<CoordinateRange, CoordinateRange>? GetRangeYFunc { get; set; } = null;
 

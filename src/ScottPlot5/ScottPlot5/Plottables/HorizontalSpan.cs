@@ -58,7 +58,7 @@ public class HorizontalSpan : AxisSpan, IPlottable
             spanUnderMouse.ResizeEdge2 = true;
             return spanUnderMouse;
         }
-        else if (IsDraggable && rect.XRange.Intersects(XRange))
+        else if (IsDraggable && rect.XRange.Overlaps(XRange))
         {
             return spanUnderMouse;
         }

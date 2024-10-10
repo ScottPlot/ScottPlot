@@ -37,13 +37,13 @@ public class ScatterSourceGenericArray<T1, T2>(T1[] xs, T2[] ys) : IScatterSourc
     public CoordinateRange GetLimitsX()
     {
         double[] values = NumericConversion.GenericToDoubleArray(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
-        return CoordinateRange.MinMaxNan(values);
+        return CoordinateRange.Extrema(values);
     }
 
     public CoordinateRange GetLimitsY()
     {
         double[] values = NumericConversion.GenericToDoubleArray(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
-        return CoordinateRange.MinMaxNan(values);
+        return CoordinateRange.Extrema(values);
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
