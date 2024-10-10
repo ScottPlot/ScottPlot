@@ -18,7 +18,7 @@ namespace ScottPlot.Plottables
         public IAxes Axes { get; set; } = new Axes();
         public AxisLimits GetAxisLimits() => Data.GetLimits();
         public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
-        public double MinorInterval { get; set; } = 1;
+        public double MinorInterval { get; set; } = 0.25;
         public double MajorInterval { get; set; } = 5;
         public TINSourceCoordinates3dArray Data { get; } = data;
 
@@ -66,7 +66,7 @@ namespace ScottPlot.Plottables
 
         #region ContourLineStyle
 
-        public LineStyle ContourLineStyle { get; set; } = new() { Width = 0, Color = Colors.Red };
+        public LineStyle ContourLineStyle { get; set; } = new() { Width = 1, Color = Colors.Red };
         public float ContourLineWidth { get => ContourLineStyle.Width; set => ContourLineStyle.Width = value; }
         public LinePattern ContourLinePattern { get => ContourLineStyle.Pattern; set => ContourLineStyle.Pattern = value; }
         public Color ContourLineColor { get => ContourLineStyle.Color; set => ContourLineStyle.Color = value; }
