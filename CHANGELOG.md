@@ -16,6 +16,7 @@ _Not yet on NuGet..._
 * Coxcomb: Improved first slice orientation consistency (#4304, #4305) @johndoh
 * Grid: Improved alternating fill grid appearance for live and interactive graphs (#4302, #4307) @StendProg @bradcb212
 * SignalXY: Fixed bug causing plots with inverted horizontal axes to crash under specific conditions (#4313, #4315) @StendProg @lguelat
+* CoordinateRange: Refactored to improve support for inverted ranges (#4316) @CoderPM2011
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
