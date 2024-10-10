@@ -225,4 +225,94 @@ internal class SignalTests
 
         plt.Should().ThrowOnRender<InvalidDataException>();
     }
+
+    [Test]
+    public void SignalXY_DoubleArray_RendersOutsideAxisView()
+    {
+        double[] xs = Generate.Consecutive(1000);
+        double[] ys = Generate.Sin(xs.Length);
+
+        ScottPlot.Plot plt = new();
+        var sig = plt.Add.SignalXY(xs, ys);
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void SignalXY_Generic_RendersOutsideAxisView()
+    {
+        float[] xs = Generate.Consecutive(1000).Select(x => (float)x).ToArray();
+        float[] ys = Generate.Sin(xs.Length).Select(x => (float)x).ToArray();
+
+        ScottPlot.Plot plt = new();
+        var sig = plt.Add.SignalXY(xs, ys);
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void SignalXY_DoubleArrayRotated_RendersOutsideAxisView()
+    {
+        double[] xs = Generate.Consecutive(1000);
+        double[] ys = Generate.Sin(xs.Length);
+
+        ScottPlot.Plot plt = new();
+        var sig = plt.Add.SignalXY(xs, ys);
+        sig.Data.Rotated = true;
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
+
+    [Test]
+    public void SignalXY_GenericRotated_RendersOutsideAxisView()
+    {
+        float[] xs = Generate.Consecutive(1000).Select(x => (float)x).ToArray();
+        float[] ys = Generate.Sin(xs.Length).Select(x => (float)x).ToArray();
+
+        ScottPlot.Plot plt = new();
+        var sig = plt.Add.SignalXY(xs, ys);
+        sig.Data.Rotated = true;
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, 100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(-100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+
+        plt.Axes.SetLimits(sig.GetAxisLimits().WithPan(100_000, -100_000));
+        plt.Should().RenderInMemoryWithoutThrowing();
+    }
 }

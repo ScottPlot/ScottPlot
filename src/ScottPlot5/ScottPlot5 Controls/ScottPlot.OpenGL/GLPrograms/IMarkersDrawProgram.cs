@@ -1,5 +1,8 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
+#if NETCOREAPP || NET
+using OpenTK.Mathematics;
+#endif
 
 namespace ScottPlot.OpenGL.GLPrograms;
 

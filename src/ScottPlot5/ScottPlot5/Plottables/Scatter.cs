@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottables;
 
-public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
+public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -296,4 +296,134 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         return pixelsStep;
     }
+
+
+    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        if (Data is IDataSource ds && ds.IsSorted())
+            return DataSourceUtilities.GetNearest(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+        else
+            return DataSourceUtilities.GetNearest(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+    }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        if (Data is IDataSource ds && ds.IsSorted())
+            return DataSourceUtilities.GetNearestXFast(this, mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+        else
+            return DataSourceUtilities.GetNearestX(GetIDataSource(), mouseLocation, renderInfo, maxDistance, Axes.XAxis);
+    }
+
+    /// <summary>
+    /// Returns an optimized <see cref="IDataSource"/> to work with when having to iterate across the collection of points
+    /// </summary>
+    public IDataSource GetIDataSource()
+    {
+        if (Data is IDataSource) return this; // should be already optimized, as this just passed calls to the data directly
+
+        // benefits : wrapping the collection will handle the offset, scaling and axes whereas IScatterSource.GetNearest will not.
+        // cons : copies values to array. BUT, this should still be much better than having to get the value from the GetScatterPoints() every interface call.
+        return new DataSources.CoordinateDataSource(Data.GetScatterPoints())
+        {
+            XOffset = OffsetX,
+            XScale = ScaleX,
+            YOffset = OffsetY,
+            YScale = ScaleY,
+        };
+    }
+
+    #region IDataSource
+
+    // Data object is assumed to implement IDataSource and will provide best execution
+
+    readonly IDataSource? _dataSource = data as IDataSource;
+    bool IDataSource.IsSorted() => _dataSource?.IsSorted() ?? false;
+    bool IDataSource.PreferCoordinates => _dataSource?.PreferCoordinates ?? true;
+    int IDataSource.Length => _dataSource?.Length ?? Data.GetScatterPoints().Count;
+    int IDataSource.MinRenderIndex => Data.MinRenderIndex;
+    int IDataSource.MaxRenderIndex => Data.MaxRenderIndex;
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
+    {
+        if (OffsetX == 0 && ScaleX == 1 && Data is IDataSource ds)
+            return ds.GetXClosestIndex(mouseLocation);
+
+        var points = Data.GetScatterPoints();
+        if (points.IsAscending(BinarySearchComparer.Instance))
+        {
+            return DataSourceUtilities.GetClosestIndex(
+                points,
+                DataSourceUtilities.UnScaleCoordinate(mouseLocation, ScaleX, OffsetX, ScaleY, OffsetY),
+                new IndexRange(0, points.Count - 1),
+                BinarySearchComparer.Instance
+                );
+        }
+        else
+        {
+            int closestIndex = -1;
+            double closestDistance = double.PositiveInfinity;
+            mouseLocation = DataSourceUtilities.UnScaleCoordinate(mouseLocation, ScaleX, OffsetX, ScaleY, OffsetY);
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                double dx = mouseLocation.X - points[i].X;
+
+                if (dx < closestDistance)
+                {
+                    if (dx == 0) return i;
+                    closestDistance = dx;
+                    closestIndex = i;
+                }
+            }
+            return closestIndex;
+        }
+    }
+
+    Coordinates IDataSource.GetCoordinate(int index)
+    {
+        return _dataSource?.GetCoordinate(index) ?? Data.GetScatterPoints()[index];
+    }
+
+    Coordinates IDataSource.GetCoordinateScaled(int index)
+    {
+        IDataSource ds = this;
+        if (ds.PreferCoordinates)
+        {
+            return DataSourceUtilities.ScaleCoordinate(ds.GetCoordinate(index), ScaleX, OffsetX, ScaleY, OffsetY);
+        }
+        return new Coordinates()
+        {
+            X = ds.GetXScaled(index),
+            Y = ds.GetYScaled(index)
+        };
+    }
+
+    double IDataSource.GetX(int index)
+    {
+        return _dataSource?.GetX(index) ?? Data.GetScatterPoints()[index].X;
+    }
+
+    double IDataSource.GetXScaled(int index)
+    {
+        return DataSourceUtilities.ScaleXY(
+            value: _dataSource?.GetX(index) ?? Data.GetScatterPoints()[index].X,
+            scalingFactor: ScaleX,
+            offset: OffsetX
+            );
+    }
+
+    double IDataSource.GetY(int index)
+    {
+        return _dataSource?.GetY(index) ?? Data.GetScatterPoints()[index].Y;
+    }
+
+    double IDataSource.GetYScaled(int index)
+    {
+        return DataSourceUtilities.ScaleXY(
+            value: _dataSource?.GetY(index) ?? Data.GetScatterPoints()[index].Y,
+            scalingFactor: ScaleY,
+            offset: OffsetY
+            );
+    }
+    #endregion
 }

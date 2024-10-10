@@ -3,19 +3,21 @@
 /// <summary>
 /// This data source manages X/Y points as separate X and Y collections
 /// </summary>
-public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
+public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource, IDataSource, IGetNearest
 {
     private readonly double[] Xs = xs;
     private readonly double[] Ys = ys;
 
     public int MinRenderIndex { get; set; } = 0;
-    public int MaxRenderIndex { get; set; } = int.MaxValue;
-    private int RenderIndexCount => Math.Min(Ys.Length - 1, MaxRenderIndex) - MinRenderIndex + 1;
+    public int MaxRenderIndex { get; set; } = Math.Min(xs.Length, ys.Length) - 1;
+
+    bool IDataSource.PreferCoordinates => false;
+    int IDataSource.Length => Math.Min(Xs.Length, Ys.Length);
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
         return Enumerable
-            .Range(MinRenderIndex, RenderIndexCount)
+            .Range(MinRenderIndex, this.GetRenderIndexCount())
             .Select(i => new Coordinates(Xs[i], Ys[i]))
             .ToList();
     }
@@ -27,68 +29,28 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        return CoordinateRange.MinMaxNan(Xs.Skip(MinRenderIndex).Take(RenderIndexCount));
+        return CoordinateRange.MinMaxNan(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
     }
 
     public CoordinateRange GetLimitsY()
     {
-        return CoordinateRange.MinMaxNan(Ys.Skip(MinRenderIndex).Take(RenderIndexCount));
+        return CoordinateRange.MinMaxNan(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
     }
+
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
+        => DataSourceUtilities.GetNearestSmart(this, mouseLocation, renderInfo, maxDistance);
 
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
-
-        for (int i2 = 0; i2 < RenderIndexCount; i2++)
-        {
-            int i = MinRenderIndex + i2;
-            double dX = (Xs[i] - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = (Ys[i] - mouseLocation.Y) * renderInfo.PxPerUnitY;
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-                closestX = Xs[i];
-                closestY = Ys[i];
-                closestIndex = i;
-            }
-        }
-
-        return closestDistanceSquared <= maxDistanceSquared
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double closestDistance = double.PositiveInfinity;
+        => DataSourceUtilities.GetNearestXSmart(this, mouseLocation, renderInfo, maxDistance);
 
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
-
-        for (int i2 = 0; i2 < RenderIndexCount; i2++)
-        {
-            int i = MinRenderIndex + i2;
-            double dX = Math.Abs(Xs[i] - mouseLocation.X) * renderInfo.PxPerUnitX;
-
-            if (dX <= closestDistance)
-            {
-                closestDistance = dX;
-                closestX = Xs[i];
-                closestY = Ys[i];
-                closestIndex = i;
-            }
-        }
-
-        return closestDistance <= maxDistance
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation) => DataSourceUtilities.GetClosestIndex(Xs, mouseLocation.X, this.GetRenderIndexRange());
+    Coordinates IDataSource.GetCoordinate(int index) => new Coordinates(Xs[index], Ys[index]);
+    Coordinates IDataSource.GetCoordinateScaled(int index) => new Coordinates(Xs[index], Ys[index]);
+    double IDataSource.GetX(int index) => Xs[index];
+    double IDataSource.GetXScaled(int index) => Xs[index];
+    double IDataSource.GetY(int index) => Ys[index];
+    double IDataSource.GetYScaled(int index) => Ys[index];
+    bool IDataSource.IsSorted() => Xs.IsAscending(BinarySearchComparer.Instance);
 }

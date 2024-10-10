@@ -15,11 +15,13 @@
         <ApplicationVersion>1</ApplicationVersion>
         <ApplicationPublisher>UnoPlatform</ApplicationPublisher>
         <Description>Sandbox.UnoPlatform powered by Uno Platform.</Description>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinUI\ScottPlot.WinUI.csproj" />
-        <PackageReference Include="System.Text.Json" Version="8.0.4" />
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
     </ItemGroup>
 
 </Project>

@@ -13,11 +13,7 @@ public class Coxcomb : PieBase
     public override AxisLimits GetAxisLimits()
     {
         double maxRadius = NormalizedSlices.Max();
-
-        double radius = ShowSliceLabels
-            ? maxRadius * SliceLabelDistance + Padding
-            : maxRadius + Padding;
-
+        double radius = Math.Max(maxRadius * SliceLabelDistance, maxRadius) + Padding;
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
@@ -50,6 +46,7 @@ public class Coxcomb : PieBase
         rp.Canvas.Translate(origin.X, origin.Y);
         rp.Canvas.RotateDegrees(startAngle);
 
+        rp.Canvas.RotateDegrees(-rotationPerSlice);
         for (int i = 0; i < Slices.Count; i++)
         {
             rp.Canvas.RotateDegrees(rotationPerSlice);
@@ -77,7 +74,7 @@ public class Coxcomb : PieBase
             }
 
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
-            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * (i + 1) - startAngle));
+            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
             rp.Canvas.DrawPath(path, paint);
 
             LineStyle.ApplyToPaint(paint);
@@ -85,20 +82,16 @@ public class Coxcomb : PieBase
 
             path.Reset();
 
-            if (ShowSliceLabels)
-            {
-                double cumulativeRotation = (i + 1) * rotationPerSlice;
-                double x = SliceLabelDistance * maxRadius * Math.Cos(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
-                double y = SliceLabelDistance * maxRadius * Math.Sin(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
-                Pixel px = Axes.GetPixel(new Coordinates(x, y));
+            double cumulativeRotation = i * rotationPerSlice;
+            double x = SliceLabelDistance * maxRadius * Math.Cos(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
+            double y = SliceLabelDistance * maxRadius * Math.Sin(-(cumulativeRotation + startAngle + rotationPerSlice / 2) * Math.PI / 180);
+            Pixel px = Axes.GetPixel(new Coordinates(x, y));
 
-                using var textTransform = new SKAutoCanvasRestore(rp.Canvas);
-                rp.Canvas.RotateDegrees((float)-cumulativeRotation - startAngle);
-                rp.Canvas.Translate(-origin.X, -origin.Y);
+            using var textTransform = new SKAutoCanvasRestore(rp.Canvas);
+            rp.Canvas.RotateDegrees((float)-cumulativeRotation - startAngle);
+            rp.Canvas.Translate(-origin.X, -origin.Y);
 
-                Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
-
-            }
+            Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
         }
     }
 }

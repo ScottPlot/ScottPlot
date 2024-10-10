@@ -99,6 +99,99 @@ public readonly struct RenderDetails
         SizeChanged = !DataRect.Equals(lastRender.DataRect);
     }
 
+    /// <summary>
+    /// Search the <see cref="AxisLimitsByAxis"/> for the specified <paramref name="axis"/> and calculate the pixels per unit
+    /// </summary>
+    /// <param name="axis">the X-Axis to search for</param>
+    /// <param name="value">the pxPerUnitX</param>
+    /// <returns>
+    /// <see langword="true"/> if the axis was in the collection and a result was calculated. Otherwise <see langword="false"/>
+    /// <br/> When false, the <paramref name="value"/> will be set to <see cref="PxPerUnitX"/>
+    /// </returns>
+    public bool TryGetPixelPerUnitX(IXAxis? axis, out double value)
+    {
+        // To-DO : Convert to 'GetPixelPerUnitX' ? Throw if axis not found ?
+        if (axis is not null && AxisLimitsByAxis.TryGetValue(axis, out var range) && range.Span != 0)
+        {
+            value = DataRect.Width / range.Span;
+            return true;
+        }
+        else
+        {
+            value = PxPerUnitX;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Search the <see cref="AxisLimitsByAxis"/> for the specified <paramref name="axis"/> and calculate the pixels per unit
+    /// </summary>
+    /// <param name="axis">the Y-Axis to search for</param>
+    /// <param name="value">the pxPerUnitX</param>
+    /// <returns>
+    /// <see langword="true"/> if the axis was in the collection and a result was calculated. Otherwise <see langword="false"/>
+    /// <br/> When false, the <paramref name="value"/> will be set to <see cref="PxPerUnitY"/>
+    /// </returns>
+    public bool TryGetPixelPerUnitY(IYAxis? axis, out double value)
+    {
+        if (axis is not null && AxisLimitsByAxis.TryGetValue(axis, out var range) && range.Span != 0)
+        {
+            value = DataRect.Height / range.Span;
+            return true;
+        }
+        else
+        {
+            value = PxPerUnitY;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Search the <see cref="AxisLimitsByAxis"/> for the specified <paramref name="axis"/> and calculate the pixels per unit
+    /// </summary>
+    /// <param name="axis">the X-Axis to search for</param>
+    /// <param name="value">the pxPerUnitX</param>
+    /// <returns>
+    /// <see langword="true"/> if the axis was in the collection and a result was calculated. Otherwise <see langword="false"/>
+    /// <br/> When false, the <paramref name="value"/> will be set to <see cref="PxPerUnitX"/>
+    /// </returns>
+    public bool TryGetUnitPerPixelX(IXAxis? axis, out double value)
+    {
+        if (axis is not null && AxisLimitsByAxis.TryGetValue(axis, out var range))
+        {
+            value = range.Span / DataRect.Width;
+            return true;
+        }
+        else
+        {
+            value = PxPerUnitX;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Search the <see cref="AxisLimitsByAxis"/> for the specified <paramref name="axis"/> and calculate the pixels per unit
+    /// </summary>
+    /// <param name="axis">the Y-Axis to search for</param>
+    /// <param name="value">the pxPerUnitX</param>
+    /// <returns>
+    /// <see langword="true"/> if the axis was in the collection and a result was calculated. Otherwise <see langword="false"/>
+    /// <br/> When false, the <paramref name="value"/> will be set to <see cref="PxPerUnitY"/>
+    /// </returns>
+    public bool TryGetUnitPerPixelY(IYAxis? axis, out double value)
+    {
+        if (axis is not null && AxisLimitsByAxis.TryGetValue(axis, out var range))
+        {
+            value = range.Span / DataRect.Height;
+            return true;
+        }
+        else
+        {
+            value = PxPerUnitY;
+            return false;
+        }
+    }
+
     private bool AxisLimitsChangedChecker()
     {
         if (PreviousAxisLimitsByAxis is null)
