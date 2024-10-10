@@ -1,4 +1,4 @@
-﻿using DelaunatorSharp;
+﻿using ScottPlot.Triangulation;
 using ScottPlot.DataSources;
 using System;
 using System.Collections.Generic;
@@ -94,9 +94,9 @@ namespace ScottPlot.Plottables
             double t = (elev - startPoint.Z) / (endPoint.Z - startPoint.Z);
             double x = startPoint.X + t * (endPoint.X - startPoint.X);
             double y = startPoint.Y + t * (endPoint.Y - startPoint.Y);
-            return new DelaunatorSharp.Point(x, y, elev);
+            return new Triangulation.Point(x, y, elev);
         }
-     
+
         private void DrawTINLines(RenderPack rp, SKPaint paint, Delaunator delaunator)
         {
             if ((LineStyle != LineStyle.None) && LineWidth > 0)
@@ -108,10 +108,10 @@ namespace ScottPlot.Plottables
             }
         }
 
-        private void DrawVoronoi(RenderPack rp, SKPaint paint, Delaunator delaunator )
+        private void DrawVoronoi(RenderPack rp, SKPaint paint, Delaunator delaunator)
         {
             // If the lines AND the markers are either invisible or have no size, there is nothing to draw
-            if (((VoronoiLineStyle == LineStyle.None) || (VoronoiLineStyle.Width == 0)) && 
+            if (((VoronoiLineStyle == LineStyle.None) || (VoronoiLineStyle.Width == 0)) &&
                 ((VoronoiMarkerStyle == MarkerStyle.None) || (VoronoiMarkerStyle.Size == 0)))
                 return;
             delaunator.ForEachVoronoiCell((cell) =>
@@ -147,7 +147,7 @@ namespace ScottPlot.Plottables
                     //var zValues = t.Points.Select(p => p.Z);
                     double minZ = t.Points.Min(p => p.Z);
                     double maxZ = t.Points.Max(p => p.Z);
-                    
+
                     for (double z = Math.Floor(minZ / MinorInterval) * MinorInterval; z <= maxZ; z += MinorInterval)
                     {
                         List<Pixel> pts = new();
@@ -156,7 +156,7 @@ namespace ScottPlot.Plottables
                             // Find the points on the edge of the triangle at the current elevation.
                             // the third edge wraps around to the first point
                             IPoint? pt = FindPointAtElevation(t.Points.ElementAt(i), t.Points.ElementAt(i < 2 ? i + 1 : 0), z);
-                            
+
                             if (pt != null)
                             {
                                 pts.Add(Axes.GetPixel(new Coordinates(pt.X, pt.Y)));
@@ -176,13 +176,13 @@ namespace ScottPlot.Plottables
         {
             IReadOnlyList<Coordinates3d> points = Data.GetTINPoints();
 
-            if (points.Count == 0) 
+            if (points.Count == 0)
                 return;
 
             // convert points to an array of DelaunatorSharp.IPoint objects and create a Delaunator object
             // TODO: there has to be a more efficient way to do this, but it works
-            DelaunatorSharp.IPoint[] pts = points.Select(pt => (DelaunatorSharp.IPoint)new DelaunatorSharp.Point(pt.X, pt.Y, pt.Z)).ToArray();
-            Delaunator delaunator = new Delaunator(pts);
+            Triangulation.IPoint[] pts = points.Select(pt => (Triangulation.IPoint)new Triangulation.Point(pt.X, pt.Y, pt.Z)).ToArray();
+            Delaunator delaunator = new(pts);
             //SmoothTINSurface(ref delaunator);
             using SKPaint paint = new();
             DrawTINLines(rp, paint, delaunator);
