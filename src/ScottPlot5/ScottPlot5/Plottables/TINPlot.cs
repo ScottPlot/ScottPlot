@@ -75,7 +75,7 @@ namespace ScottPlot.Plottables
 
         #endregion
 
-        private Triangulation.Point? FindPointAtElevation(Triangulation.Point startPoint, Triangulation.Point endPoint, double elev)
+        private Triangulation.Point3D? FindPointAtElevation(Triangulation.Point3D startPoint, Triangulation.Point3D endPoint, double elev)
         {
             // If both Z values are on the same side of the contour, skip this edge
             if ((startPoint.Z < elev && endPoint.Z < elev) || (startPoint.Z > elev && endPoint.Z > elev))
@@ -87,17 +87,19 @@ namespace ScottPlot.Plottables
             double t = (elev - startPoint.Z) / (endPoint.Z - startPoint.Z);
             double x = startPoint.X + t * (endPoint.X - startPoint.X);
             double y = startPoint.Y + t * (endPoint.Y - startPoint.Y);
-            return new Triangulation.Point(x, y, elev);
+            return new Triangulation.Point3D(x, y, elev);
         }
 
         private void DrawTINLines(RenderPack rp, SKPaint paint, Triangulation.Delaunator delaunator)
         {
             if ((LineStyle != LineStyle.None) && LineWidth > 0)
             {
-                delaunator.ForEachTriangleEdge(edge =>
+                foreach (var edge in delaunator.GetEdges())
                 {
-                    Drawing.DrawLine(rp.Canvas, paint, Axes.GetPixel(new Coordinates((float)edge.P.X, (float)edge.P.Y)), Axes.GetPixel(new Coordinates((float)edge.Q.X, (float)edge.Q.Y)), LineStyle);
-                });
+                    var px1 = Axes.GetPixel(new Coordinates((float)edge.P.X, (float)edge.P.Y));
+                    var px2 = Axes.GetPixel(new Coordinates((float)edge.Q.X, (float)edge.Q.Y));
+                    Drawing.DrawLine(rp.Canvas, paint, px1, px2, LineStyle);
+                }
             }
         }
 
@@ -107,19 +109,22 @@ namespace ScottPlot.Plottables
             if (((VoronoiLineStyle == LineStyle.None) || (VoronoiLineStyle.Width == 0)) &&
                 ((VoronoiMarkerStyle == MarkerStyle.None) || (VoronoiMarkerStyle.Size == 0)))
                 return;
-            delaunator.ForEachVoronoiCell((cell) =>
+
+            foreach (var cell in delaunator.GetVoronoiCells())
             {
-                IEnumerable<Pixel> polygonPixels = Enumerable.Range(0, cell.Points.Count()).Select(x => Axes.GetPixel(new Coordinates(cell.Points[x].X, cell.Points[x].Y)));
+                IEnumerable<Pixel> polygonPixels = Enumerable.Range(0, cell.Points.Length)
+                    .Select(x => Axes.GetPixel(new Coordinates(cell.Points[x].X, cell.Points[x].Y)));
+
                 if ((VoronoiMarkerStyle != MarkerStyle.None) || (VoronoiMarkerStyle.Size > 0))
                 {
-                    // TODO: there has to be an efficient way to remove duplicates.  
-                    Drawing.DrawMarkers(rp.Canvas, paint, polygonPixels, VoronoiMarkerStyle);
+                    Drawing.DrawMarkers(rp.Canvas, paint, polygonPixels.Distinct(), VoronoiMarkerStyle);
                 }
+
                 if ((VoronoiLineStyle != LineStyle.None) || (VoronoiLineStyle.Width > 0))
                 {
                     Drawing.DrawLines(rp.Canvas, paint, polygonPixels, VoronoiLineStyle);
                 }
-            });
+            }
         }
         private void DrawMarkers(RenderPack rp, SKPaint paint, IReadOnlyList<Coordinates3d> points, MarkerStyle style)
         {
@@ -134,7 +139,7 @@ namespace ScottPlot.Plottables
         {
             if ((ContourLineStyle != LineStyle.None) && (ContourLineWidth != 0))
             {
-                delaunator.ForEachTriangle(t =>
+                foreach (var t in delaunator.GetTriangles())
                 {
                     // Find the minimum and maximum Z values of the triangle
                     //var zValues = t.Points.Select(p => p.Z);
@@ -148,7 +153,9 @@ namespace ScottPlot.Plottables
                         {
                             // Find the points on the edge of the triangle at the current elevation.
                             // the third edge wraps around to the first point
-                            Triangulation.Point? pt = FindPointAtElevation(t.Points.ElementAt(i), t.Points.ElementAt(i < 2 ? i + 1 : 0), z);
+                            var startPoint = t.Points.ElementAt(i);
+                            var endPoint = t.Points.ElementAt(i < 2 ? i + 1 : 0);
+                            Triangulation.Point3D? pt = FindPointAtElevation(startPoint, endPoint, z);
 
                             if (pt is not null)
                             {
@@ -158,13 +165,14 @@ namespace ScottPlot.Plottables
 
                         if (pts.Count > 1)
                         {
-                            // Use the index style if this is an index contour
-                            Drawing.DrawLines(rp.Canvas, paint, pts, (MajorInterval != 0) && (z % MajorInterval == 0) ? IndexContourLineStyle : ContourLineStyle);
+                            var contourLineStyle = (MajorInterval != 0) && (z % MajorInterval == 0) ? IndexContourLineStyle : ContourLineStyle;
+                            Drawing.DrawLines(rp.Canvas, paint, pts, contourLineStyle);
                         }
                     }
-                });
+                };
             }
         }
+
         public virtual void Render(RenderPack rp)
         {
             IReadOnlyList<Coordinates3d> points = Data.GetTINPoints();
@@ -174,7 +182,7 @@ namespace ScottPlot.Plottables
 
             // convert points to an array of DelaunatorSharp.Point objects and create a Delaunator object
             // TODO: there has to be a more efficient way to do this, but it works
-            Triangulation.Point[] pts = points.Select(pt => (Triangulation.Point)new Triangulation.Point(pt.X, pt.Y, pt.Z)).ToArray();
+            Triangulation.Point3D[] pts = points.Select(pt => (Triangulation.Point3D)new Triangulation.Point3D(pt.X, pt.Y, pt.Z)).ToArray();
             Triangulation.Delaunator delaunator = new(pts);
             //SmoothTINSurface(ref delaunator);
             using SKPaint paint = new();
