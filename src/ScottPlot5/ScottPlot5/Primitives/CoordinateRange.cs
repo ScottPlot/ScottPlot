@@ -18,6 +18,7 @@ public readonly record struct CoordinateRange(double Min, double Max)
     public double Center => (Min + Max) / 2;
     public double TrueMin => Math.Min(Min, Max);
     public double TrueMax => Math.Max(Min, Max);
+    public double AbsSpan => Math.Abs(Max - Min);
 
     public bool IsReal => NumericConversion.IsReal(Max) && NumericConversion.IsReal(Min);
     public bool IsInverted => Min > Max;
