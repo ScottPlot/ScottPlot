@@ -22,6 +22,11 @@ public readonly record struct CoordinateRange(double Min, double Max)
     public bool IsReal => NumericConversion.IsReal(Max) && NumericConversion.IsReal(Min);
     public bool IsInverted => Min > Max;
 
+    public override string ToString()
+    {
+        return $"Min={Min}, Max={Max}, Span={Span}";
+    }
+
     /// <summary>
     /// Returns true if the given position is within the range (inclusive)
     /// </summary>
