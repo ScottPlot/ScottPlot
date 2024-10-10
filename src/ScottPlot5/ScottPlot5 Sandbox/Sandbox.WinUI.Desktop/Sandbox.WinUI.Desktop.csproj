@@ -9,6 +9,8 @@
         <!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
         <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
         <nowarn>Uno0001,CS0436,NETSDK1206</nowarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>

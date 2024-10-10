@@ -2,7 +2,7 @@
 
 namespace ScottPlot.DataSources;
 
-public class SignalXYSourceDoubleArray : ISignalXYSource
+public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNearest
 {
     readonly double[] Xs;
     readonly double[] Ys;
@@ -18,6 +18,11 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
 
     public int MinimumIndex { get; set; } = 0;
     public int MaximumIndex { get; set; }
+
+    bool IDataSource.PreferCoordinates => false;
+    int IDataSource.Length => Xs.Length;
+    int IDataSource.MinRenderIndex => MinimumIndex;
+    int IDataSource.MaxRenderIndex => MaximumIndex;
 
     public SignalXYSourceDoubleArray(double[] xs, double[] ys)
     {
@@ -58,15 +63,16 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         // determine the range of data in view
         (Pixel[] PointBefore, int dataIndexFirst) = GetFirstPointX(axes);
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointX(axes);
+        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
-        if (Xs[dataIndexFirst] > Xs[dataIndexLast])
+        if (visibleRange.IsValid && (Xs[dataIndexFirst] > Xs[dataIndexLast]))
             throw new InvalidDataException("Xs must contain only ascending values. " +
                 $"The value at index {dataIndexFirst} ({Xs[dataIndexFirst]}) is greater than the value at index {dataIndexLast} ({Xs[dataIndexLast]})");
 
-        IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
-
         // get all points in view
-        IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
+        IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
+            ? []
+            : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Width))
             .Select(pxColumn => GetColumnPixelsX(pxColumn, visibleRange, rp, axes))
             .SelectMany(x => x);
 
@@ -97,12 +103,14 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
         (Pixel[] PointAfter, int dataIndexLast) = GetLastPointY(axes);
         IndexRange visibleRange = new(dataIndexFirst, dataIndexLast);
 
-        if (Xs[dataIndexFirst] > Xs[dataIndexLast])
+        if (visibleRange.IsValid && (Xs[dataIndexFirst] > Xs[dataIndexLast]))
             throw new InvalidDataException("Xs must contain only ascending values. " +
                 $"The value at index {dataIndexFirst} ({Xs[dataIndexFirst]}) is greater than the value at index {dataIndexLast} ({Xs[dataIndexLast]})");
 
         // get all points in view
-        IEnumerable<Pixel> VisiblePoints = Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
+        IEnumerable<Pixel> VisiblePoints = visibleRange.Length <= 0
+            ? []
+            : Enumerable.Range(0, (int)Math.Ceiling(rp.DataRect.Height))
             .Select(pxRow => GetColumnPixelsY(pxRow, visibleRange, rp, axes))
             .SelectMany(x => x);
 
@@ -394,57 +402,59 @@ public class SignalXYSourceDoubleArray : ISignalXYSource
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
-    {
-        double maxDistanceSquared = maxDistance * maxDistance;
-        double closestDistanceSquared = double.PositiveInfinity;
-
-        int closestIndex = 0;
-        double closestX = double.PositiveInfinity;
-        double closestY = double.PositiveInfinity;
-
-        for (int i = 0; i < Xs.Length; i++)
-        {
-            double dX = Rotated ?
-                 (Ys[i] * YScale + YOffset - mouseLocation.X) * renderInfo.PxPerUnitX :
-                 (Xs[i] * XScale + XOffset - mouseLocation.X) * renderInfo.PxPerUnitX;
-            double dY = Rotated ?
-                (Xs[i] * XScale + XOffset - mouseLocation.Y) * renderInfo.PxPerUnitY :
-                (Ys[i] * YScale + YOffset - mouseLocation.Y) * renderInfo.PxPerUnitY;
-
-            double distanceSquared = dX * dX + dY * dY;
-
-            if (distanceSquared <= closestDistanceSquared)
-            {
-                closestDistanceSquared = distanceSquared;
-
-                closestX = Rotated ?
-                    Ys[i] * YScale + YOffset :
-                    Xs[i] * XScale + XOffset;
-                closestY = Rotated ?
-                    Xs[i] * XScale + XOffset :
-                    Ys[i] * YScale + YOffset;
-
-                closestIndex = i;
-            }
-        }
-
-        return closestDistanceSquared <= maxDistanceSquared
-            ? new DataPoint(closestX, closestY, closestIndex)
-            : DataPoint.None;
-    }
+        => DataSourceUtilities.GetNearestFast(this, mouseLocation, renderInfo, maxDistance);
 
     public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+        => DataSourceUtilities.GetNearestXFast(this, mouseLocation, renderInfo, maxDistance);
+
+    Coordinates IDataSource.GetCoordinate(int index)
     {
-        var MousePosition = Rotated ? mouseLocation.Y : mouseLocation.X;
-        int i = GetIndex(MousePosition); // TODO: check the index after too?
-        var PxPerPositionUnit = Rotated ? renderInfo.PxPerUnitY : renderInfo.PxPerUnitX;
-
-        double distance = (Xs[i] * XScale + XOffset - MousePosition) * PxPerPositionUnit;
-        var closestX = Rotated ? Ys[i] * YScale + YOffset : Xs[i] * XScale + XOffset;
-        var closestY = Rotated ? Xs[i] * XScale + XOffset : Ys[i] * YScale + YOffset;
-
-        return Math.Abs(distance) <= maxDistance
-            ? new DataPoint(closestX, closestY, i)
-            : DataPoint.None;
+        double x = NumericConversion.GenericToDouble(Xs, index);
+        double y = NumericConversion.GenericToDouble(Ys, index);
+        return Rotated ? new Coordinates(y, x) : new Coordinates(x, y);
     }
+
+    Coordinates IDataSource.GetCoordinateScaled(int index)
+    {
+        double x = DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset);
+        double y = DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
+        return Rotated ? new Coordinates(y, x) : new Coordinates(x, y);
+    }
+
+    int IDataSource.GetXClosestIndex(Coordinates mouseLocation)
+    {
+        return Rotated
+            ? GetIndex(mouseLocation.Y)
+            : GetIndex(mouseLocation.X);
+    }
+
+    double IDataSource.GetX(int index)
+    {
+        return Rotated ?
+            NumericConversion.GenericToDouble(Ys, index) :
+            NumericConversion.GenericToDouble(Xs, index);
+    }
+
+    double IDataSource.GetXScaled(int index)
+    {
+        return Rotated ?
+            DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset) :
+            DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset);
+    }
+
+    double IDataSource.GetY(int index)
+    {
+        return Rotated ?
+            NumericConversion.GenericToDouble(Xs, index) :
+            NumericConversion.GenericToDouble(Ys, index);
+    }
+
+    double IDataSource.GetYScaled(int index)
+    {
+        return Rotated ?
+            DataSourceUtilities.ScaleXY(Xs, index, XScale, XOffset) :
+            DataSourceUtilities.ScaleXY(Ys, index, YScale, YOffset);
+    }
+    bool IDataSource.IsSorted() => true;
+
 }

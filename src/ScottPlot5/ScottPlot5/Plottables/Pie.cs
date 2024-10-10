@@ -12,10 +12,7 @@ public class Pie : PieBase
 
     public override AxisLimits GetAxisLimits()
     {
-        double radius = ShowSliceLabels
-            ? SliceLabelDistance + Padding
-            : 1 + ExplodeFraction + Padding;
-
+        double radius = Math.Max(SliceLabelDistance, 1 + ExplodeFraction) + Padding;
         return new AxisLimits(-radius, radius, -radius, radius);
     }
 
@@ -43,7 +40,8 @@ public class Pie : PieBase
         {
             using SKAutoCanvasRestore _ = new(rp.Canvas);
 
-            var sliceAngle = Angle.FromDegrees(slice.Value / totalValue * 360);
+            var percentage = slice.Value / totalValue;
+            var sliceAngle = Angle.FromDegrees(percentage * 360);
             Angle centerAngle = totalAngle + sliceAngle / 2;
 
             Coordinates explosionOffset = new PolarCoordinates(ExplodeFraction * outerRadius, centerAngle).ToCartesian();
@@ -91,19 +89,15 @@ public class Pie : PieBase
                 path.Close();
             }
 
-            slice.Fill.ApplyToPaint(paint, new PixelRect(origin, outerRadius));
-            rp.Canvas.DrawPath(path, paint);
+            PixelRect rect = new(origin, outerRadius);
+            Drawing.DrawPath(rp.Canvas, paint, path, slice.Fill, rect);
 
-            LineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
+            Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
 
-            if (ShowSliceLabels)
-            {
-                Coordinates polar = new PolarCoordinates(1.0 * SliceLabelDistance, centerAngle).ToCartesian();
-                polar.Y = -polar.Y;
-                Pixel px = Axes.GetPixel(polar) - origin;
-                slice.LabelStyle.Render(rp.Canvas, px, paint);
-            }
+            Coordinates polar = new PolarCoordinates(1.0 * SliceLabelDistance, centerAngle).ToCartesian();
+            polar.Y = -polar.Y;
+            Pixel px = Axes.GetPixel(polar) - origin;
+            slice.LabelStyle.Render(rp.Canvas, px, paint);
 
             totalAngle += sliceAngle;
             path.Reset();

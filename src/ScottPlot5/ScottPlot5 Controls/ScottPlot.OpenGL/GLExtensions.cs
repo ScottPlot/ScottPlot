@@ -1,9 +1,13 @@
 ﻿namespace ScottPlot;
+using OpenTK.Graphics;
+#if NETCOREAPP || NET
+using OpenTK.Mathematics;
+#endif
 
 public static class GLExtensions
 {
-    public static OpenTK.Graphics.Color4 ToTkColor(this ScottPlot.Color color)
+    public static Color4 ToTkColor(this ScottPlot.Color color)
     {
-        return new OpenTK.Graphics.Color4(color.Red, color.Green, color.Blue, color.Alpha);
+        return new Color4(color.Red, color.Green, color.Blue, color.Alpha);
     }
 }

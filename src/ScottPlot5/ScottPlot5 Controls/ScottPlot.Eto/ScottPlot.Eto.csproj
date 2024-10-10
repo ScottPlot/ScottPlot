@@ -30,7 +30,9 @@
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
-        <NoWarn>CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
+        <NoWarn>CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584, CS8002</NoWarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
         
     </PropertyGroup>
 
@@ -43,11 +45,11 @@
 
     <!-- Package dependencies -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Eto.Forms" Version="2.*" />
+        <PackageReference Include="Eto.Forms" Version="2.8.3" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 

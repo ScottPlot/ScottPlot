@@ -9,7 +9,7 @@ namespace ScottPlot;
 /// </summary>
 public static class NumericConversion
 {
-    private const MethodImplOptions ImplOptions =
+    internal const MethodImplOptions ImplOptions =
 #if NETCOREAPP
         MethodImplOptions.AggressiveOptimization |
 #endif
@@ -127,6 +127,13 @@ public static class NumericConversion
             v = (T)(object)DateTime.FromOADate(value);
         else
             v = (T)Convert.ChangeType(value, typeof(T));
+    }
+
+    [MethodImpl(ImplOptions)]
+    public static T DoubleToGeneric<T>(double value)
+    {
+        DoubleToGeneric(value, out T converted);
+        return converted;
     }
 
     public static T[] DoubleToGeneric<T>(this double[] input)
