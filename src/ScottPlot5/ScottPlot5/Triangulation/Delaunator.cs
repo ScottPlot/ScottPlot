@@ -27,84 +27,31 @@ SOFTWARE.
 
 namespace ScottPlot.Triangulation;
 
-public interface IEdge
+public struct Edge(int e, Point p, Point q)
 {
-    IPoint P { get; }
-    IPoint Q { get; }
-    int Index { get; }
+    public Point P { get; set; } = p;
+    public Point Q { get; set; } = q;
+    public int Index { get; set; } = e;
 }
 
-public interface IPoint
+public struct Point(double x, double y, double z = 0)
 {
-    double X { get; set; }
-    double Y { get; set; }
-    double Z { get; set; }
+    public double X { get; set; } = x;
+    public double Y { get; set; } = y;
+    public double Z { get; set; } = z;
 }
 
-public interface ITriangle
+public struct Triangle(int t, IEnumerable<Point> points)
 {
-    IEnumerable<IPoint> Points { get; }
-    int Index { get; }
+    public int Index { get; set; } = t;
+    public IEnumerable<Point> Points { get; set; } = points;
 }
 
-public interface IVoronoiCell
+public struct VoronoiCell(int triangleIndex, Point[] points)
 {
-    IPoint[] Points { get; }
-    int Index { get; }
+    public Point[] Points { get; set; } = points;
+    public int Index { get; set; } = triangleIndex;
 }
-public struct Edge : IEdge
-{
-    public IPoint P { get; set; }
-    public IPoint Q { get; set; }
-    public int Index { get; set; }
-
-    public Edge(int e, IPoint p, IPoint q)
-    {
-        Index = e;
-        P = p;
-        Q = q;
-    }
-}
-
-public struct Point : IPoint
-{
-    public double X { get; set; }
-    public double Y { get; set; }
-    public double Z { get; set; }
-
-    public Point(double x, double y, double z = 0)
-    {
-        X = x;
-        Y = y;
-        Z = z;
-    }
-    public override string ToString() => $"{X},{Y},{Z}";
-}
-
-public struct Triangle : ITriangle
-{
-    public int Index { get; set; }
-
-    public IEnumerable<IPoint> Points { get; set; }
-
-    public Triangle(int t, IEnumerable<IPoint> points)
-    {
-        Points = points;
-        Index = t;
-    }
-}
-
-public struct VoronoiCell : IVoronoiCell
-{
-    public IPoint[] Points { get; set; }
-    public int Index { get; set; }
-    public VoronoiCell(int triangleIndex, IPoint[] points)
-    {
-        Points = points;
-        Index = triangleIndex;
-    }
-}
-
 
 public class Delaunator
 {
@@ -124,7 +71,7 @@ public class Delaunator
     /// <summary>
     /// The initial points Delaunator was constructed with.
     /// </summary>
-    public IPoint[] Points { get; private set; }
+    public Point[] Points { get; private set; }
 
     /// <summary>
     /// A list of point indices that traverses the hull of the points.
@@ -145,7 +92,7 @@ public class Delaunator
     private readonly int hullStart;
     private readonly int hullSize;
 
-    public Delaunator(IPoint[] points)
+    public Delaunator(Point[] points)
     {
         if (points.Length < 3)
         {
@@ -634,14 +581,14 @@ public class Delaunator
     #endregion CreationLogic
 
     #region GetMethods
-    public IEnumerable<ITriangle> GetTriangles()
+    public IEnumerable<Triangle> GetTriangles()
     {
         for (var t = 0; t < Triangles.Length / 3; t++)
         {
             yield return new Triangle(t, GetTrianglePoints(t));
         }
     }
-    public IEnumerable<IEdge> GetEdges()
+    public IEnumerable<Edge> GetEdges()
     {
         for (var e = 0; e < Triangles.Length; e++)
         {
@@ -653,7 +600,7 @@ public class Delaunator
             }
         }
     }
-    public IEnumerable<IEdge> GetVoronoiEdges(Func<int, IPoint>? triangleVerticeSelector = null)
+    public IEnumerable<Edge> GetVoronoEdges(Func<int, Point>? triangleVerticeSelector = null)
     {
         if (triangleVerticeSelector == null) triangleVerticeSelector = x => GetCentroid(x);
         for (var e = 0; e < Triangles.Length; e++)
@@ -667,15 +614,15 @@ public class Delaunator
         }
     }
 
-    public IEnumerable<IEdge> GetVoronoiEdgesBasedOnCircumCenter() => GetVoronoiEdges(GetTriangleCircumcenter);
-    public IEnumerable<IEdge> GetVoronoiEdgesBasedOnCentroids() => GetVoronoiEdges(GetCentroid);
+    public IEnumerable<Edge> GetVoronoEdgesBasedOnCircumCenter() => GetVoronoEdges(GetTriangleCircumcenter);
+    public IEnumerable<Edge> GetVoronoEdgesBasedOnCentroids() => GetVoronoEdges(GetCentroid);
 
-    public IEnumerable<IVoronoiCell> GetVoronoiCells(Func<int, IPoint>? triangleVerticeSelector = null)
+    public IEnumerable<VoronoiCell> GetVoronoiCells(Func<int, Point>? triangleVerticeSelector = null)
     {
-        if (triangleVerticeSelector == null) triangleVerticeSelector = x => GetCentroid(x);
+        triangleVerticeSelector ??= x => GetCentroid(x);
 
         var seen = new HashSet<int>();
-        var vertices = new List<IPoint>(10);    // Keep it outside the loop, reuse capacity, less resizes.
+        var vertices = new List<Point>(10);    // Keep it outside the loop, reuse capacity, less resizes.
 
         for (var e = 0; e < Triangles.Length; e++)
         {
@@ -694,16 +641,16 @@ public class Delaunator
         }
     }
 
-    public IEnumerable<IVoronoiCell> GetVoronoiCellsBasedOnCircumcenters() => GetVoronoiCells(GetTriangleCircumcenter);
-    public IEnumerable<IVoronoiCell> GetVoronoiCellsBasedOnCentroids() => GetVoronoiCells(GetCentroid);
+    public IEnumerable<VoronoiCell> GetVoronoiCellsBasedOnCircumcenters() => GetVoronoiCells(GetTriangleCircumcenter);
+    public IEnumerable<VoronoiCell> GetVoronoiCellsBasedOnCentroids() => GetVoronoiCells(GetCentroid);
 
-    public IEnumerable<IEdge> GetHullEdges() => CreateHull(GetHullPoints());
+    public IEnumerable<Edge> GetHullEdges() => CreateHull(GetHullPoints());
 
-    public IPoint[] GetHullPoints() => Array.ConvertAll<int, IPoint>(Hull, (x) => Points[x]);
+    public Point[] GetHullPoints() => Array.ConvertAll<int, Point>(Hull, (x) => Points[x]);
 
-    public IPoint[] GetTrianglePoints(int t)
+    public Point[] GetTrianglePoints(int t)
     {
-        var points = new List<IPoint>();
+        var points = new List<Point>();
         foreach (var p in PointsOfTriangle(t))
         {
             points.Add(Points[p]);
@@ -711,9 +658,9 @@ public class Delaunator
         return points.ToArray();
     }
 
-    public IPoint[] GetRellaxedPoints()
+    public Point[] GetRellaxedPoints()
     {
-        var points = new List<IPoint>();
+        var points = new List<Point>();
         foreach (var cell in GetVoronoiCellsBasedOnCircumcenters())
         {
             points.Add(GetCentroid(cell.Points));
@@ -721,31 +668,31 @@ public class Delaunator
         return points.ToArray();
     }
 
-    public IEnumerable<IEdge> GetEdgesOfTriangle(int t) => CreateHull(EdgesOfTriangle(t).Select(p => Points[p]));
+    public IEnumerable<Edge> GetEdgesOfTriangle(int t) => CreateHull(EdgesOfTriangle(t).Select(p => Points[p]));
 
     // This was reritten below to compile against .NET Framework
-    //public static IEnumerable<IEdge> CreateHull(IEnumerable<IPoint> points) => points.Zip(points.Skip(1).Append(points.FirstOrDefault()), (a, b) => new Edge(0, a, b)).OfType<IEdge>();
-    public static IEnumerable<IEdge> CreateHull(IEnumerable<IPoint> points)
+    //public static IEnumerable<Edge> CreateHull(IEnumerable<Point> points) => points.Zip(points.Skip(1).Append(points.FirstOrDefault()), (a, b) => new Edge(0, a, b)).OfType<Edge>();
+    public static IEnumerable<Edge> CreateHull(IEnumerable<Point> points)
     {
         var firstPoint = points.Take(1);
         var restPoints = points.Skip(1);
         var closedPoints = restPoints.Concat(firstPoint);
-        return points.Zip(closedPoints, (a, b) => new Edge(0, a, b)).OfType<IEdge>();
+        return points.Zip(closedPoints, (a, b) => new Edge(0, a, b)).OfType<Edge>();
     }
 
-    public IPoint GetTriangleCircumcenter(int t)
+    public Point GetTriangleCircumcenter(int t)
     {
         var vertices = GetTrianglePoints(t);
         return GetCircumcenter(vertices[0], vertices[1], vertices[2]);
     }
-    public IPoint GetCentroid(int t)
+    public Point GetCentroid(int t)
     {
         var vertices = GetTrianglePoints(t);
         return GetCentroid(vertices);
     }
-    public static IPoint GetCircumcenter(IPoint a, IPoint b, IPoint c) => Circumcenter(a.X, a.Y, b.X, b.Y, c.X, c.Y);
+    public static Point GetCircumcenter(Point a, Point b, Point c) => Circumcenter(a.X, a.Y, b.X, b.Y, c.X, c.Y);
 
-    public static IPoint GetCentroid(IPoint[] points)
+    public static Point GetCentroid(Point[] points)
     {
         double accumulatedArea = 0.0f;
         double centerX = 0.0f;
@@ -769,28 +716,28 @@ public class Delaunator
     #endregion GetMethods
 
     #region ForEachMethods
-    public void ForEachTriangle(Action<ITriangle> callback)
+    public void ForEachTriangle(Action<Triangle> callback)
     {
         foreach (var triangle in GetTriangles())
         {
             callback?.Invoke(triangle);
         }
     }
-    public void ForEachTriangleEdge(Action<IEdge> callback)
+    public void ForEachTriangleEdge(Action<Edge> callback)
     {
         foreach (var edge in GetEdges())
         {
             callback?.Invoke(edge);
         }
     }
-    public void ForEachVoronoiEdge(Action<IEdge> callback)
+    public void ForEachVoronoEdge(Action<Edge> callback)
     {
-        foreach (var edge in GetVoronoiEdges())
+        foreach (var edge in GetVoronoEdges())
         {
             callback?.Invoke(edge);
         }
     }
-    public void ForEachVoronoiCellBasedOnCentroids(Action<IVoronoiCell> callback)
+    public void ForEachVoronoiCellBasedOnCentroids(Action<VoronoiCell> callback)
     {
         foreach (var cell in GetVoronoiCellsBasedOnCentroids())
         {
@@ -798,7 +745,7 @@ public class Delaunator
         }
     }
 
-    public void ForEachVoronoiCellBasedOnCircumcenters(Action<IVoronoiCell> callback)
+    public void ForEachVoronoiCellBasedOnCircumcenters(Action<VoronoiCell> callback)
     {
         foreach (var cell in GetVoronoiCellsBasedOnCircumcenters())
         {
@@ -806,7 +753,7 @@ public class Delaunator
         }
     }
 
-    public void ForEachVoronoiCell(Action<IVoronoiCell> callback, Func<int, IPoint>? triangleVertexSelector = null)
+    public void ForEachVoronoiCell(Action<VoronoiCell> callback, Func<int, Point>? triangleVertexSelector = null)
     {
         foreach (var cell in GetVoronoiCells(triangleVertexSelector))
         {
