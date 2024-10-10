@@ -10,11 +10,13 @@
 
         <!-- This package may not be fully compatible with your project -->
         <NoWarn>NU1701</NoWarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Eto.Forms" Version="2.8.2" />
-        <PackageReference Include="Eto.Platform.WPF" Version="2.8.2" />
+        <PackageReference Include="Eto.Forms" Version="2.8.3" />
+        <PackageReference Include="Eto.Platform.WPF" Version="2.8.3" />
     </ItemGroup>
 
     <ItemGroup>

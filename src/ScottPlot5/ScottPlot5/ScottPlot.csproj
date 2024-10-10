@@ -43,12 +43,12 @@
 
     <!-- NuGet package dependencies -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="SkiaSharp" Version="2.*" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.*" />
+        <PackageReference Include="SkiaSharp" Version="2.88.8" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
     </ItemGroup>
 
     <!-- Packages allowing modern C# language features to be used in .NET Framework project -->

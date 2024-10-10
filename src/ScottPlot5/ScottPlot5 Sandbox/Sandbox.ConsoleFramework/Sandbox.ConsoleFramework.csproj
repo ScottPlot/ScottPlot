@@ -4,6 +4,8 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net462</TargetFramework>
         <NoWarn>MSB3277</NoWarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>

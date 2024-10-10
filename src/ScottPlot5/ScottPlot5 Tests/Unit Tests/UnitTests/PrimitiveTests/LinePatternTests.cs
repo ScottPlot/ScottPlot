@@ -3,12 +3,25 @@
 public class LinePatternTests
 {
     [Test]
-    public void Test_EveryLinePattern_HasPathEffect()
+    public void Test_EveryLinePattern_CanBeRendered()
     {
-        foreach (LinePattern pattern in Enum.GetValues<LinePattern>())
+        List<LinePattern> patterns = [];
+        patterns.AddRange(LinePattern.GetAllPatterns());
+        patterns.Add(new([2, 2, 5, 10], 0, "Custom"));
+
+        Plot plot = new();
+        for (int i = 0; i < patterns.Count; i++)
         {
-            Action act = () => pattern.GetPathEffect();
-            act.Should().NotThrow();
+            var line = plot.Add.Line(0, i - 1, 10, i);
+            line.LinePattern = patterns[i];
+            line.LineWidth = 2;
+            plot.Add.Text(patterns[i].Name, 10, i);
         }
+
+        plot.Axes.Frameless();
+        plot.HideGrid();
+        plot.Axes.SetLimitsX(-1, 15);
+
+        plot.SaveTestImage();
     }
 }

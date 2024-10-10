@@ -229,6 +229,9 @@ public class LabelStyle
         if (!IsVisible)
             return;
 
+        if (string.IsNullOrEmpty(Text))
+            return;
+
         ApplyToPaint(paint);
         MeasuredText measured = Measure(Text, paint);
         PixelRect textRect = measured.Rect(Alignment);

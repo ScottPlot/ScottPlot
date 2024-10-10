@@ -6,6 +6,8 @@
         <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>11</LangVersion>
         <NoWarn>MSB3277</NoWarn>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
