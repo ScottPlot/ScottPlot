@@ -50,7 +50,7 @@ public readonly record struct CoordinateRange(double Min, double Max)
     /// </summary>
     public static CoordinateRange MinMax(IEnumerable<double> values)
     {
-        if (values.Any())
+        if (values is null || !values.Any())
             return NotSet;
 
         double min = double.MaxValue;
