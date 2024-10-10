@@ -2,6 +2,9 @@
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System;
+#if NETCOREAPP || NET
+using OpenTK.Mathematics;
+#endif
 
 namespace ScottPlot.OpenGL.GLPrograms;
 

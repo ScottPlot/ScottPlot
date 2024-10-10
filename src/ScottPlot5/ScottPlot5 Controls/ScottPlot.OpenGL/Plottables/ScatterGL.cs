@@ -4,6 +4,9 @@ using ScottPlot.OpenGL;
 using ScottPlot.OpenGL.GLPrograms;
 using SkiaSharp;
 using System;
+#if NETCOREAPP || NET
+using OpenTK.Mathematics;
+#endif
 
 namespace ScottPlot.Plottables;
 
