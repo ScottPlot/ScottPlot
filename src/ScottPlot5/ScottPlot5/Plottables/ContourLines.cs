@@ -1,5 +1,4 @@
-﻿
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 public class ContourLines : IPlottable, IHasLine
 {
@@ -10,12 +9,26 @@ public class ContourLines : IPlottable, IHasLine
     private AxisLimits AxisLimits = AxisLimits.NoLimits;
     public AxisLimits GetAxisLimits() => AxisLimits;
 
-    public CoordinatePath[]? Lines { get; private set; } = null;
+    public List<ContourLine> Lines { get; } = [];
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1, Color = Colors.Black };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+
+    public IColormap? Colormap { get; set; } = null;
+    public double MinZ { get; private set; }
+    public double MaxZ { get; private set; }
+
+    /// <summary>
+    /// If defined, contour lines will be drawn at this height and <see cref="ContourLineCount"/> will be ignored.
+    /// </summary>
+    public int ContourLineCount = 10;
+
+    /// <summary>
+    /// If defined, contour lines will be drawn at this height and <see cref="ContourLineCount"/> will be ignored.
+    /// </summary>
+    public double[]? ContourLineLevels = null;
 
     /// <summary>
     /// Update contour lines from arbitrarily placed data points.
@@ -23,7 +36,11 @@ public class ContourLines : IPlottable, IHasLine
     public void Update(IEnumerable<Coordinates3d> coordinates)
     {
         Triangulation.TriangulatedIrregularNetwork tin = new(coordinates);
-        Lines = tin.GetContourLines(.25).Where(x => x.Points.Length > 1).ToArray();
+        MinZ = tin.MinZ;
+        MaxZ = tin.MaxZ;
+        double[] zs = ContourLineLevels ?? tin.GetZsByCount(ContourLineCount);
+        Lines.Clear();
+        Lines.AddRange(tin.GetContourLines(zs));
         UpdateAxisLimits();
     }
 
@@ -48,7 +65,11 @@ public class ContourLines : IPlottable, IHasLine
         }
 
         Triangulation.TriangulatedIrregularNetwork tin = new(coordinates);
-        Lines = tin.GetContourLines(.25).Where(x => x.Points.Length > 1).ToArray();
+        MinZ = tin.MinZ;
+        MaxZ = tin.MaxZ;
+        double[] zs = ContourLineLevels ?? tin.GetZsByCount(ContourLineCount);
+        Lines.Clear();
+        Lines.AddRange(tin.GetContourLines(zs));
         UpdateAxisLimits();
     }
 
@@ -63,7 +84,7 @@ public class ContourLines : IPlottable, IHasLine
         ExpandingAxisLimits limits = new();
         foreach (var line in Lines)
         {
-            foreach (var point in line.Points)
+            foreach (var point in line.Path.Points)
             {
                 limits.Expand(point);
             }
@@ -74,13 +95,21 @@ public class ContourLines : IPlottable, IHasLine
 
     public void Render(RenderPack rp)
     {
-        if (IsVisible == false || Lines is null || Lines.Length == 0)
+        if (IsVisible == false || Lines is null || Lines.Count == 0)
             return;
 
-        using SkiaSharp.SKPaint paint = new();
+        using SKPaint paint = new();
 
-        foreach (PixelPath path in Axes.GetPixelPaths(Lines))
+        for (int i = 0; i < Lines.Count; i++)
         {
+            PixelPath path = Axes.GetPixelPath(Lines[i].Path);
+
+            if (Colormap is not null)
+            {
+                double fraction = (Lines[i].Z - MinZ) / (MaxZ - MinZ);
+                LineStyle.Color = Colormap.GetColor(fraction);
+            }
+
             Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
         }
     }

@@ -209,17 +209,17 @@ public class PlottableAdder(Plot plot)
         return colorBar;
     }
 
-    public ContourLines ContourLines(Coordinates3d[,] coordinates)
+    public ContourLines ContourLines(Coordinates3d[,] coordinates, int count = 10)
     {
-        ContourLines contour = new();
+        ContourLines contour = new() { ContourLineCount = count };
         contour.Update(coordinates);
         Plot.PlottableList.Add(contour);
         return contour;
     }
 
-    public ContourLines ContourLines(Coordinates3d[] coordinates)
+    public ContourLines ContourLines(Coordinates3d[] coordinates, int count = 10)
     {
-        ContourLines contour = new();
+        ContourLines contour = new() { ContourLineCount = count };
         contour.Update(coordinates);
         Plot.PlottableList.Add(contour);
         return contour;

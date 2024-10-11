@@ -5,6 +5,8 @@ public class TriangulatedIrregularNetwork
     public AxisLimits3d AxisLimits { get; private set; }
 
     public Coordinates3d[] Points3D { get; private set; } = [];
+    public double MinZ { get; private set; }
+    public double MaxZ { get; private set; }
 
     private Delaunator Delaunator = null!;
 
@@ -17,24 +19,38 @@ public class TriangulatedIrregularNetwork
     {
         AxisLimits = AxisLimits3d.FromPoints(coordinates);
         Points3D = coordinates.ToArray();
+        MinZ = coordinates.Select(x => x.Z).Min();
+        MaxZ = coordinates.Select(x => x.Z).Max();
         Delaunator = new Delaunator(Points3D);
+    }
+
+    public double[] GetZsByCount(int count)
+    {
+        double interval = (MaxZ - MinZ) / (count + 1);
+        return GetZsByInterval(interval);
+    }
+
+    public double[] GetZsByInterval(double interval)
+    {
+        int count = (int)((MaxZ - MinZ) / interval) + 1;
+        return Enumerable.Range(0, count).Select(x => MinZ + interval * x).ToArray();
     }
 
     public CoordinateLine[] GetLines() => Delaunator.GetEdges().Select(x => x.CoordinateLine).ToArray();
 
     public CoordinatePath[] GetCells() => Delaunator.GetVoronoiCells().Select(cell => cell.Path).ToArray();
 
-    public CoordinatePath[] GetContourLines(double zInterval)
+    public ContourLine[] GetContourLines(double[] zs)
     {
-        List<CoordinatePath> paths = [];
+        List<ContourLine> paths = [];
 
         foreach (Triangle3D triangle in Delaunator.GetTriangles())
         {
-            double zMin = Math.Floor(triangle.MinZ / zInterval) * zInterval;
-            double zMax = triangle.MaxZ;
-
-            for (double z = zMin; z <= zMax; z += zInterval)
+            foreach (double z in zs)
             {
+                if (z < triangle.MinZ || z > triangle.MaxZ)
+                    continue;
+
                 List<Coordinates> pts = [];
                 for (int i = 0; i < triangle.Points.Count(); i++)
                 {
@@ -48,7 +64,11 @@ public class TriangulatedIrregularNetwork
                     }
                 }
 
-                paths.Add(CoordinatePath.Open(pts));
+                if (pts.Count > 0)
+                {
+                    CoordinatePath path = CoordinatePath.Open(pts);
+                    paths.Add(new(path, z));
+                }
             }
         };
 

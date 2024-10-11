@@ -58,9 +58,10 @@ public class TINPlot : IPlottable
 
     private void DrawContours(RenderPack rp, SKPaint paint)
     {
-        foreach (CoordinatePath line in TIN.GetContourLines(ContourLineInterval))
+        double[] zs = TIN.GetZsByInterval(ContourLineInterval);
+        foreach (ContourLine line in TIN.GetContourLines(zs))
         {
-            Pixel[] pixels = line.Points.Select(Axes.GetPixel).ToArray();
+            Pixel[] pixels = line.Path.Points.Select(Axes.GetPixel).ToArray();
             Drawing.DrawLines(rp.Canvas, paint, pixels, ContourLineStyle);
         };
     }
