@@ -1,195 +1,113 @@
-﻿using ScottPlot.DataSources;
+﻿using ScottPlot.Triangulation;
 
-namespace ScottPlot.Plottables
+namespace ScottPlot.Plottables;
+
+public class TINPlot : IPlottable, IHasLegendText
 {
-    public class TINPlot(TINSourceCoordinates3dArray data) : IPlottable, IHasLine, IHasMarker, IHasLegendText
+    public string LegendText { get; set; } = string.Empty;
+    public bool IsVisible { get; set; } = true;
+    public IAxes Axes { get; set; } = new Axes();
+
+    private AxisLimits AxisLimits;
+    public AxisLimits GetAxisLimits() => AxisLimits;
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
+
+    Coordinates3d[] Points3D = [];
+    Delaunator Delaunator = null!;
+
+    public double ContourLineInterval { get; set; } = 0.25;
+
+    public TINPlot(IEnumerable<Coordinates3d> coordinates)
     {
-        // TODO: the outer boundary (convex hull) can be easily added with its own style, as can the voronoi points and lines
+        Update(coordinates);
+    }
 
-        public string LegendText { get; set; } = string.Empty;
-        public bool IsVisible { get; set; } = true;
-        public IAxes Axes { get; set; } = new Axes();
-        public AxisLimits GetAxisLimits() => Data.GetLimits();
-        public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
-        public double MinorInterval { get; set; } = 0.25;
-        public double MajorInterval { get; set; } = 5;
-        public TINSourceCoordinates3dArray Data { get; } = data;
+    public void Update(IEnumerable<Coordinates3d> coordinates)
+    {
+        AxisLimits = new(coordinates);
+        Points3D = coordinates.ToArray();
+        Delaunator = new Delaunator(Points3D);
+    }
 
-        #region MarkerStyle
+    public MarkerStyle MarkerStyle { get; set; } = new(MarkerShape.FilledCircle, 5, Colors.Red);
+    public LineStyle NetworkLineStyle { get; set; } = new(1, Colors.Red);
+    public MarkerStyle VoronoiMarkerStyle { get; set; } = new(MarkerShape.FilledCircle, 5, Colors.Blue);
+    public LineStyle VoronoiLineStyle { get; set; } = new(1, Colors.Blue);
+    public LineStyle ContourLineStyle { get; set; } = new(1, Colors.Gray, LinePattern.DenselyDashed);
 
-        public MarkerStyle MarkerStyle { get; set; } = new() { LineWidth = 1, Size = 3, Shape = MarkerShape.Eks, MarkerColor = Colors.Red };
-        public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
-        public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-        public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-        public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
-        public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
-        public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
+    private static Coordinates3d? FindPointAtZ(Coordinates3d startPoint, Coordinates3d endPoint, double z)
+    {
+        bool bothValuesOnSameSideOfContour = (startPoint.Z < z && endPoint.Z < z) || (startPoint.Z > z && endPoint.Z > z);
+        if (bothValuesOnSameSideOfContour)
+            return null;
 
-        #endregion
+        double t = (z - startPoint.Z) / (endPoint.Z - startPoint.Z);
+        double x = startPoint.X + t * (endPoint.X - startPoint.X);
+        double y = startPoint.Y + t * (endPoint.Y - startPoint.Y);
+        return new Coordinates3d(x, y, z);
+    }
 
-        #region LineStyle
-
-        public LineStyle LineStyle { get; set; } = new() { Width = 1, Color = Colors.LightGray };
-        public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
-        public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
-        public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
-
-        #endregion
-
-        #region VoronoiMarkerStyle
-
-        public MarkerStyle VoronoiMarkerStyle { get; set; } = new() { LineWidth = 1, Size = 0, Shape = MarkerShape.OpenCircle, MarkerColor = Colors.Blue };
-        public MarkerShape VoronoiMarkerShape { get => VoronoiMarkerStyle.Shape; set => VoronoiMarkerStyle.Shape = value; }
-        public float VoronoiMarkerSize { get => VoronoiMarkerStyle.Size; set => VoronoiMarkerStyle.Size = value; }
-        public Color VoronoiMarkerFillColor { get => VoronoiMarkerStyle.FillColor; set => VoronoiMarkerStyle.FillColor = value; }
-        public Color VoronoiMarkerLineColor { get => VoronoiMarkerStyle.LineColor; set => VoronoiMarkerStyle.LineColor = value; }
-        public Color VoronoiMarkerColor { get => VoronoiMarkerStyle.MarkerColor; set => VoronoiMarkerStyle.MarkerColor = value; }
-        public float VoronoiMarkerLineWidth { get => VoronoiMarkerStyle.LineWidth; set => VoronoiMarkerStyle.LineWidth = value; }
-
-        #endregion
-
-        #region VoronoiLineStyle
-
-        public LineStyle VoronoiLineStyle { get; set; } = new() { Width = 0, Color = Colors.Black };
-        public float VoronoiLineWidth { get => VoronoiLineStyle.Width; set => VoronoiLineStyle.Width = value; }
-        public LinePattern VoronoiLinePattern { get => VoronoiLineStyle.Pattern; set => VoronoiLineStyle.Pattern = value; }
-        public Color VoronoiLineColor { get => VoronoiLineStyle.Color; set => VoronoiLineStyle.Color = value; }
-
-        #endregion       
-
-        #region ContourLineStyle
-
-        public LineStyle ContourLineStyle { get; set; } = new() { Width = 1, Color = Colors.Red };
-        public float ContourLineWidth { get => ContourLineStyle.Width; set => ContourLineStyle.Width = value; }
-        public LinePattern ContourLinePattern { get => ContourLineStyle.Pattern; set => ContourLineStyle.Pattern = value; }
-        public Color ContourLineColor { get => ContourLineStyle.Color; set => ContourLineStyle.Color = value; }
-
-        #endregion
-
-        #region IndexContourLineStyle
-
-        public LineStyle IndexContourLineStyle { get; set; } = new() { Width = 0, Color = Colors.Green };
-        public float IndexContourLineWidth { get => IndexContourLineStyle.Width; set => IndexContourLineStyle.Width = value; }
-        public LinePattern IndexContourLinePattern { get => IndexContourLineStyle.Pattern; set => IndexContourLineStyle.Pattern = value; }
-        public Color IndexContourLineColor { get => IndexContourLineStyle.Color; set => IndexContourLineStyle.Color = value; }
-
-        #endregion
-
-        private Triangulation.Point3D? FindPointAtElevation(Triangulation.Point3D startPoint, Triangulation.Point3D endPoint, double elev)
+    private void DrawNetworkLines(RenderPack rp, SKPaint paint)
+    {
+        foreach (var edge in Delaunator.GetEdges())
         {
-            // If both Z values are on the same side of the contour, skip this edge
-            if ((startPoint.Z < elev && endPoint.Z < elev) || (startPoint.Z > elev && endPoint.Z > elev))
-            {
-                return null;
-            }
-
-            // Otherwise, find the point on the edge at the elevation
-            double t = (elev - startPoint.Z) / (endPoint.Z - startPoint.Z);
-            double x = startPoint.X + t * (endPoint.X - startPoint.X);
-            double y = startPoint.Y + t * (endPoint.Y - startPoint.Y);
-            return new Triangulation.Point3D(x, y, elev);
+            Pixel px1 = Axes.GetPixel(edge.PCoordinates);
+            Pixel px2 = Axes.GetPixel(edge.QCoordinates);
+            Drawing.DrawLine(rp.Canvas, paint, px1, px2, NetworkLineStyle);
         }
+    }
 
-        private void DrawTINLines(RenderPack rp, SKPaint paint, Triangulation.Delaunator delaunator)
+    private void DrawVoronoi(RenderPack rp, SKPaint paint)
+    {
+        foreach (var cell in Delaunator.GetVoronoiCells())
         {
-            if ((LineStyle != LineStyle.None) && LineWidth > 0)
-            {
-                foreach (var edge in delaunator.GetEdges())
-                {
-                    var px1 = Axes.GetPixel(new Coordinates((float)edge.P.X, (float)edge.P.Y));
-                    var px2 = Axes.GetPixel(new Coordinates((float)edge.Q.X, (float)edge.Q.Y));
-                    Drawing.DrawLine(rp.Canvas, paint, px1, px2, LineStyle);
-                }
-            }
+            IEnumerable<Pixel> polygonPixels = cell.Points.Select(x => Axes.GetPixel(x.Coordinates2d()));
+            Drawing.DrawMarkers(rp.Canvas, paint, polygonPixels.Distinct(), VoronoiMarkerStyle);
+            Drawing.DrawLines(rp.Canvas, paint, polygonPixels, VoronoiLineStyle);
         }
+    }
 
-        private void DrawVoronoi(RenderPack rp, SKPaint paint, Triangulation.Delaunator delaunator)
+    private void DrawMarkers(RenderPack rp, SKPaint paint)
+    {
+        IEnumerable<Pixel> markerPixels = Points3D.Select(x => Axes.GetPixel(x.Coordinates2d()));
+        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
+    }
+
+    private void DrawContours(RenderPack rp, SKPaint paint)
+    {
+        foreach (Triangle3D triangle in Delaunator.GetTriangles())
         {
-            // If the lines AND the markers are either invisible or have no size, there is nothing to draw
-            if (((VoronoiLineStyle == LineStyle.None) || (VoronoiLineStyle.Width == 0)) &&
-                ((VoronoiMarkerStyle == MarkerStyle.None) || (VoronoiMarkerStyle.Size == 0)))
-                return;
+            double zMin = Math.Floor(triangle.MinZ / ContourLineInterval) * ContourLineInterval;
+            double zMax = triangle.MaxZ;
 
-            foreach (var cell in delaunator.GetVoronoiCells())
+            for (double z = zMin; z <= zMax; z += ContourLineInterval)
             {
-                IEnumerable<Pixel> polygonPixels = Enumerable.Range(0, cell.Points.Length)
-                    .Select(x => Axes.GetPixel(new Coordinates(cell.Points[x].X, cell.Points[x].Y)));
-
-                if ((VoronoiMarkerStyle != MarkerStyle.None) || (VoronoiMarkerStyle.Size > 0))
+                List<Pixel> pts = [];
+                for (int i = 0; i < triangle.Points.Count(); i++)
                 {
-                    Drawing.DrawMarkers(rp.Canvas, paint, polygonPixels.Distinct(), VoronoiMarkerStyle);
-                }
+                    // Find the points on the edge of the triangle at the current elevation.
+                    // the third edge wraps around to the first point
+                    Coordinates3d startPoint = triangle.Points.ElementAt(i);
+                    Coordinates3d endPoint = triangle.Points.ElementAt(i < 2 ? i + 1 : 0);
+                    Coordinates3d? pt = TINPlot.FindPointAtZ(startPoint, endPoint, z);
 
-                if ((VoronoiLineStyle != LineStyle.None) || (VoronoiLineStyle.Width > 0))
-                {
-                    Drawing.DrawLines(rp.Canvas, paint, polygonPixels, VoronoiLineStyle);
-                }
-            }
-        }
-        private void DrawMarkers(RenderPack rp, SKPaint paint, IReadOnlyList<Coordinates3d> points, MarkerStyle style)
-        {
-            if ((style != MarkerStyle.None) && (style.Size > 0))
-            {
-                IEnumerable<Pixel> markerPixels = Enumerable.Range(0, points.Count).Select(x => Axes.GetPixel(new Coordinates(points[x].X, points[x].Y)));
-                Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, style);
-            }
-        }
-
-        private void DrawContours(RenderPack rp, SKPaint paint, Triangulation.Delaunator delaunator)
-        {
-            if ((ContourLineStyle != LineStyle.None) && (ContourLineWidth != 0))
-            {
-                foreach (var t in delaunator.GetTriangles())
-                {
-                    // Find the minimum and maximum Z values of the triangle
-                    //var zValues = t.Points.Select(p => p.Z);
-                    double minZ = t.Points.Min(p => p.Z);
-                    double maxZ = t.Points.Max(p => p.Z);
-
-                    for (double z = Math.Floor(minZ / MinorInterval) * MinorInterval; z <= maxZ; z += MinorInterval)
+                    if (pt is not null)
                     {
-                        List<Pixel> pts = new();
-                        for (int i = 0; i < t.Points.Count(); i++)
-                        {
-                            // Find the points on the edge of the triangle at the current elevation.
-                            // the third edge wraps around to the first point
-                            var startPoint = t.Points.ElementAt(i);
-                            var endPoint = t.Points.ElementAt(i < 2 ? i + 1 : 0);
-                            Triangulation.Point3D? pt = FindPointAtElevation(startPoint, endPoint, z);
-
-                            if (pt is not null)
-                            {
-                                pts.Add(Axes.GetPixel(new Coordinates(pt.Value.X, pt.Value.Y)));
-                            }
-                        }
-
-                        if (pts.Count > 1)
-                        {
-                            var contourLineStyle = (MajorInterval != 0) && (z % MajorInterval == 0) ? IndexContourLineStyle : ContourLineStyle;
-                            Drawing.DrawLines(rp.Canvas, paint, pts, contourLineStyle);
-                        }
+                        pts.Add(Axes.GetPixel(new Coordinates(pt.Value.X, pt.Value.Y)));
                     }
-                };
+                }
+
+                Drawing.DrawLines(rp.Canvas, paint, pts, ContourLineStyle);
             }
-        }
+        };
+    }
 
-        public virtual void Render(RenderPack rp)
-        {
-            IReadOnlyList<Coordinates3d> points = Data.GetTINPoints();
-
-            if (points.Count == 0)
-                return;
-
-            // convert points to an array of DelaunatorSharp.Point objects and create a Delaunator object
-            // TODO: there has to be a more efficient way to do this, but it works
-            Triangulation.Point3D[] pts = points.Select(pt => (Triangulation.Point3D)new Triangulation.Point3D(pt.X, pt.Y, pt.Z)).ToArray();
-            Triangulation.Delaunator delaunator = new(pts);
-            //SmoothTINSurface(ref delaunator);
-            using SKPaint paint = new();
-            DrawTINLines(rp, paint, delaunator);
-            DrawMarkers(rp, paint, points, MarkerStyle);
-            DrawVoronoi(rp, paint, delaunator);
-            DrawContours(rp, paint, delaunator);
-        }
+    public virtual void Render(RenderPack rp)
+    {
+        using SKPaint paint = new();
+        DrawNetworkLines(rp, paint);
+        DrawMarkers(rp, paint);
+        DrawVoronoi(rp, paint);
+        DrawContours(rp, paint);
     }
 }

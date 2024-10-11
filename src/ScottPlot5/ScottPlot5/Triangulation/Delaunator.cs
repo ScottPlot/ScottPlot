@@ -27,14 +27,20 @@ SOFTWARE.
 
 namespace ScottPlot.Triangulation;
 
-public record struct Edge3D(int Index, Point3D P, Point3D Q);
-public record struct Point3D(double X, double Y, double Z);
-public record struct Triangle3D(int Index, IEnumerable<Point3D> Points);
-public record struct VoronoiCell(int Index, Point3D[] Points);
+public record struct Edge3D(int Index, Coordinates3d P, Coordinates3d Q)
+{
+    public readonly Coordinates PCoordinates => new(P.X, P.Y);
+    public readonly Coordinates QCoordinates => new(Q.X, Q.Y);
+};
 
-/// <summary>
-/// 
-/// </summary>
+public record struct Triangle3D(int Index, IEnumerable<Coordinates3d> Points)
+{
+    public readonly double MinZ => Points.Min(p => p.Z);
+    public readonly double MaxZ => Points.Max(p => p.Z);
+}
+
+public record struct VoronoiCell(int Index, Coordinates3d[] Points);
+
 public class Delaunator
 {
     private readonly double EPSILON = Math.Pow(2, -52);
@@ -53,7 +59,7 @@ public class Delaunator
     /// <summary>
     /// The initial points Delaunator was constructed with.
     /// </summary>
-    public Point3D[] Points { get; private set; }
+    public Coordinates3d[] Points { get; private set; }
 
     /// <summary>
     /// A list of point indices that traverses the hull of the points.
@@ -78,7 +84,7 @@ public class Delaunator
     /// Delaunator triangulation is an efficient algorithm for computing the Delaunay triangulation of a set of points, 
     /// which connects points to form triangles with the property that no point lies inside the circumcircle of any triangle.
     /// </summary>
-    public Delaunator(Point3D[] points)
+    public Delaunator(Coordinates3d[] points)
     {
         if (points.Length < 3)
         {
@@ -552,7 +558,7 @@ public class Delaunator
         return x * x + y * y;
     }
 
-    private static Point3D Circumcenter(double ax, double ay, double bx, double by, double cx, double cy)
+    private static Coordinates3d Circumcenter(double ax, double ay, double bx, double by, double cx, double cy)
     {
         var dx = bx - ax;
         var dy = by - ay;
@@ -564,7 +570,7 @@ public class Delaunator
         var x = ax + (ey * bl - dy * cl) * d;
         var y = ay + (dx * cl - ex * bl) * d;
 
-        return new Point3D(x, y, 0);
+        return new Coordinates3d(x, y, 0);
     }
 
     private static double Dist(double ax, double ay, double bx, double by)
@@ -595,7 +601,7 @@ public class Delaunator
         }
     }
 
-    public IEnumerable<Edge3D> GetVoronoEdges(Func<int, Point3D>? triangleVerticeSelector = null)
+    public IEnumerable<Edge3D> GetVoronoEdges(Func<int, Coordinates3d>? triangleVerticeSelector = null)
     {
         if (triangleVerticeSelector == null) triangleVerticeSelector = x => GetCentroid(x);
         for (var e = 0; e < Triangles.Length; e++)
@@ -613,12 +619,12 @@ public class Delaunator
 
     public IEnumerable<Edge3D> GetVoronoEdgesBasedOnCentroids() => GetVoronoEdges(GetCentroid);
 
-    public IEnumerable<VoronoiCell> GetVoronoiCells(Func<int, Point3D>? triangleVerticeSelector = null)
+    public IEnumerable<VoronoiCell> GetVoronoiCells(Func<int, Coordinates3d>? triangleVerticeSelector = null)
     {
         triangleVerticeSelector ??= x => GetCentroid(x);
 
         var seen = new HashSet<int>();
-        var vertices = new List<Point3D>(10);    // Keep it outside the loop, reuse capacity, less resizes.
+        var vertices = new List<Coordinates3d>(10);    // Keep it outside the loop, reuse capacity, less resizes.
 
         for (var e = 0; e < Triangles.Length; e++)
         {
@@ -643,11 +649,11 @@ public class Delaunator
 
     public IEnumerable<Edge3D> GetHullEdges() => CreateHull(GetHullPoints());
 
-    public Point3D[] GetHullPoints() => Array.ConvertAll<int, Point3D>(Hull, (x) => Points[x]);
+    public Coordinates3d[] GetHullPoints() => Array.ConvertAll<int, Coordinates3d>(Hull, (x) => Points[x]);
 
-    public Point3D[] GetTrianglePoints(int t)
+    public Coordinates3d[] GetTrianglePoints(int t)
     {
-        var points = new List<Point3D>();
+        var points = new List<Coordinates3d>();
         foreach (var p in PointsOfTriangle(t))
         {
             points.Add(Points[p]);
@@ -655,9 +661,9 @@ public class Delaunator
         return points.ToArray();
     }
 
-    public Point3D[] GetRelaxedPoints()
+    public Coordinates3d[] GetRelaxedPoints()
     {
-        var points = new List<Point3D>();
+        var points = new List<Coordinates3d>();
         foreach (var cell in GetVoronoiCellsBasedOnCircumcenters())
         {
             points.Add(GetCentroid(cell.Points));
@@ -667,7 +673,7 @@ public class Delaunator
 
     public IEnumerable<Edge3D> GetEdgesOfTriangle(int t) => CreateHull(EdgesOfTriangle(t).Select(p => Points[p]));
 
-    public static IEnumerable<Edge3D> CreateHull(IEnumerable<Point3D> points)
+    public static IEnumerable<Edge3D> CreateHull(IEnumerable<Coordinates3d> points)
     {
         var firstPoint = points.Take(1);
         var restPoints = points.Skip(1);
@@ -675,21 +681,21 @@ public class Delaunator
         return points.Zip(closedPoints, (a, b) => new Edge3D(0, a, b)).OfType<Edge3D>();
     }
 
-    public Point3D GetTriangleCircumcenter(int t)
+    public Coordinates3d GetTriangleCircumcenter(int t)
     {
         var vertices = GetTrianglePoints(t);
         return GetCircumcenter(vertices[0], vertices[1], vertices[2]);
     }
 
-    public Point3D GetCentroid(int t)
+    public Coordinates3d GetCentroid(int t)
     {
         var vertices = GetTrianglePoints(t);
         return GetCentroid(vertices);
     }
 
-    public static Point3D GetCircumcenter(Point3D a, Point3D b, Point3D c) => Circumcenter(a.X, a.Y, b.X, b.Y, c.X, c.Y);
+    public static Coordinates3d GetCircumcenter(Coordinates3d a, Coordinates3d b, Coordinates3d c) => Circumcenter(a.X, a.Y, b.X, b.Y, c.X, c.Y);
 
-    public static Point3D GetCentroid(Point3D[] points)
+    public static Coordinates3d GetCentroid(Coordinates3d[] points)
     {
         double accumulatedArea = 0.0f;
         double centerX = 0.0f;
@@ -704,10 +710,10 @@ public class Delaunator
         }
 
         if (Math.Abs(accumulatedArea) < 1E-7f)
-            return new Point3D();
+            return new Coordinates3d();
 
         accumulatedArea *= 3f;
-        return new Point3D(centerX / accumulatedArea, centerY / accumulatedArea, 0);
+        return new Coordinates3d(centerX / accumulatedArea, centerY / accumulatedArea, 0);
     }
 
     /// <summary>

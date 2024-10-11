@@ -18,8 +18,8 @@ public class Contour : ICategory
         [Test]
         public override void Execute()
         {
-            Coordinates3d[] cs = new Coordinates3d[500];
-            for (int i = 0; i < 500; i++)
+            Coordinates3d[] cs = new Coordinates3d[50];
+            for (int i = 0; i < cs.Length; i++)
             {
                 double x = Generate.RandomNumber(0, Math.PI * 2);
                 double y = Generate.RandomNumber(0, Math.PI * 2);
@@ -27,8 +27,7 @@ public class Contour : ICategory
                 cs[i] = new(x, y, z);
             }
 
-            TINSourceCoordinates3dArray data = new(cs.ToArray());
-            ScottPlot.Plottables.TINPlot contour = new(data);
+            ScottPlot.Plottables.TINPlot contour = new(cs);
             myPlot.PlottableList.Add(contour);
 
             myPlot.HideGrid();
