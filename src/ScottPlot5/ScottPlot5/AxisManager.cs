@@ -885,6 +885,14 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Auto-scale to tightly fit the data so there is no spacing between data points and the edge of the data area
+    /// </summary>
+    public void TightMargins()
+    {
+        Margins(0, 0);
+    }
+
+    /// <summary>
     /// Define the amount of whitespace to place around the data area when calling <see cref="AutoScale()"/>.
     /// Values are a fraction from 0 (tightly fit the data) to 1 (lots of whitespace).
     /// </summary>
