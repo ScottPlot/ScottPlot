@@ -131,4 +131,16 @@ internal class AxisTicksTests
 
         plt.Should().RenderInMemoryWithoutThrowing();
     }
+
+    [Test]
+    public void Test_Ticks_InvertedAxis()
+    {
+        Plot plt = new();
+        plt.Axes.SetLimitsX(10, -10); // inverted
+        plt.Axes.SetLimitsY(10, -10); // inverted
+
+        plt.RenderInMemory();
+
+        plt.SaveTestImage();
+    }
 }

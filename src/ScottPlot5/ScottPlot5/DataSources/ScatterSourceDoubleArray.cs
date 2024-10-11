@@ -29,12 +29,12 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        return CoordinateRange.MinMaxNan(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
+        return CoordinateRange.Extrema(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
     }
 
     public CoordinateRange GetLimitsY()
     {
-        return CoordinateRange.MinMaxNan(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
+        return CoordinateRange.Extrema(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
     }
 
 

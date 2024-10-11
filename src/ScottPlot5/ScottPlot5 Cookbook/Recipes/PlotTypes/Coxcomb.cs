@@ -25,7 +25,8 @@ public class Coxcomb : ICategory
                 new() { Value = 8, Label = "Blue",  FillColor = Colors.Blue.WithOpacity(0.5) },
             };
 
-            myPlot.Add.Coxcomb(slices);
+            var cox = myPlot.Add.Coxcomb(slices);
+            cox.SliceLabelDistance = 1.5;
 
             myPlot.Axes.Frameless();
             myPlot.ShowLegend();

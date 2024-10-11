@@ -206,7 +206,7 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
 
         if (pointsInRange > 2)
         {
-            CoordinateRange yRange = GetRangeY(startIndex, lastIndex); //YOffset is added in GetRangeY
+            CoordinateRange yRange = GetRangeY(firstIndex, lastIndex); //YOffset is added in GetRangeY
             if (Ys[firstIndex] > Ys[lastIndex])
             { //signal amplitude is decreasing, so we'll return the maximum before the minimum
                 yield return new Pixel(xPixel, axes.GetPixelY(yRange.Max)); // max

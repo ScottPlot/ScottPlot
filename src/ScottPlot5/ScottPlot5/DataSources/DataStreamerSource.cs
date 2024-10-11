@@ -116,7 +116,7 @@ public class DataStreamerSource
         double xMin = OffsetX;
         double xMax = xMin + Data.Length * SamplePeriod;
         CoordinateRange xRange = new(xMin, xMax);
-        CoordinateRange yRange = tight ? CoordinateRange.MinMaxNan(Data) : new(DataMin, DataMax);
+        CoordinateRange yRange = tight ? CoordinateRange.Extrema(Data) : new(DataMin, DataMax);
         return new AxisLimits(xRange, yRange);
     }
 }
