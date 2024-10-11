@@ -209,6 +209,22 @@ public class PlottableAdder(Plot plot)
         return colorBar;
     }
 
+    public ContourLines ContourLines(Coordinates3d[,] coordinates)
+    {
+        ContourLines contour = new();
+        contour.Update(coordinates);
+        Plot.PlottableList.Add(contour);
+        return contour;
+    }
+
+    public ContourLines ContourLines(Coordinates3d[] coordinates)
+    {
+        ContourLines contour = new();
+        contour.Update(coordinates);
+        Plot.PlottableList.Add(contour);
+        return contour;
+    }
+
     public Coxcomb Coxcomb(IList<PieSlice> slices)
     {
         Coxcomb coxcomb = new(slices);
@@ -379,6 +395,21 @@ public class PlottableAdder(Plot plot)
         Heatmap heatmap = new(intensities);
         Plot.PlottableList.Add(heatmap);
         return heatmap;
+    }
+
+    public Heatmap Heatmap(Coordinates3d[,] values)
+    {
+        int height = values.GetLength(0);
+        int width = values.GetLength(1);
+        double[,] intensities = new double[height, width];
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                intensities[y, x] = values[y, x].Z;
+            }
+        }
+        return Heatmap(intensities);
     }
 
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = default)
