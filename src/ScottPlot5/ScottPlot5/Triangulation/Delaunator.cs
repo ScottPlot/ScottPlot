@@ -31,15 +31,22 @@ public record struct Edge3D(int Index, Coordinates3d P, Coordinates3d Q)
 {
     public readonly Coordinates PCoordinates => new(P.X, P.Y);
     public readonly Coordinates QCoordinates => new(Q.X, Q.Y);
+    public readonly CoordinateLine CoordinateLine => new(PCoordinates, QCoordinates);
 };
 
 public record struct Triangle3D(int Index, IEnumerable<Coordinates3d> Points)
 {
     public readonly double MinZ => Points.Min(p => p.Z);
     public readonly double MaxZ => Points.Max(p => p.Z);
+    public readonly Coordinates[] Points2d => Points.Select(x => x.Coordinates2d()).ToArray();
+    public readonly CoordinatePath Path => CoordinatePath.Closed(Points2d);
 }
 
-public record struct VoronoiCell(int Index, Coordinates3d[] Points);
+public record struct VoronoiCell(int Index, Coordinates3d[] Points)
+{
+    public readonly Coordinates[] Points2d => Points.Select(x => x.Coordinates2d()).ToArray();
+    public readonly CoordinatePath Path => CoordinatePath.Closed(Points2d);
+}
 
 public class Delaunator
 {

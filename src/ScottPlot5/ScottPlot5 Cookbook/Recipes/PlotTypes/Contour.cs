@@ -1,6 +1,4 @@
-﻿using ScottPlot.DataSources;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Contour : ICategory
 {
