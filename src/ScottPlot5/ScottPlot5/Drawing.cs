@@ -78,6 +78,16 @@ public static class Drawing
         DrawPath(canvas, paint, path, lineStyle);
     }
 
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle)
+    {
+        DrawPath(canvas, paint, path.Pixels, lineStyle);
+    }
+
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, FillStyle fillStyle)
+    {
+        DrawPath(canvas, paint, path.Pixels, fillStyle);
+    }
+
     public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
     {
         if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
