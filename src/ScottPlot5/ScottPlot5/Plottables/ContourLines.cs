@@ -93,7 +93,7 @@ public class ContourLines : IPlottable, IHasLine
         AxisLimits = limits.AxisLimits;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (IsVisible == false || Lines is null || Lines.Count == 0)
             return;
