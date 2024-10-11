@@ -161,7 +161,7 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         if (other is null)
             return false;
 
-        return Equals(Min, other.Min) && Equals(Min, other.Min);
+        return Equals(Min, other.Min) && Equals(Max, other.Max);
     }
 
     public override bool Equals(object? obj)
