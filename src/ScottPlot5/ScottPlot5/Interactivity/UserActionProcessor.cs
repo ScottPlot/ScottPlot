@@ -49,6 +49,7 @@ public class UserInputProcessor
         Plot = plot;
         KeyState = new();
         Reset();
+        IsEnabled = true;
     }
 
     /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Control;
+﻿using System.Reflection.Emit;
+
+namespace ScottPlot.Control;
 
 /// <summary>
 /// This class contains logic to perform plot manipulations in response to UI actions.
@@ -7,11 +9,19 @@
 /// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
 [Obsolete("Deprecated. Use IPlotControl.UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-public class Interaction(IPlotControl control) : IPlotInteraction
+public class Interaction : IPlotInteraction
 {
-    public IPlotControl PlotControl { get; private set; } = control;
+    public IPlotControl PlotControl { get; }
 
     private bool Disabled = false;
+
+    public Interaction(IPlotControl control)
+    {
+        PlotControl = control;
+
+        // disable by default
+        IsEnabled = false;
+    }
 
     /// <summary>
     /// Controls whether events will be processed by this class.
