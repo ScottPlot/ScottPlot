@@ -161,8 +161,8 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
 
         return clockwise
-            ? Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], -Spokes[x].Angle)).ToArray()
-            : Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], Spokes[x].Angle)).ToArray();
+            ? Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], Spokes[x].Angle)).ToArray()
+            : Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], -Spokes[x].Angle)).ToArray();
     }
 
     public AxisLimits GetAxisLimits()
