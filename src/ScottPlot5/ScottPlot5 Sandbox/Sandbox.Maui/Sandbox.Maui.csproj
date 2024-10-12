@@ -20,6 +20,7 @@
 		<ApplicationVersion>1</ApplicationVersion>
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+		<NoWarn>CS8002</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
