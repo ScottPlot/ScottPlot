@@ -12,6 +12,7 @@ public class ContourLines : IPlottable, IHasLine
     public List<ContourLine> Lines { get; } = [];
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1, Color = Colors.Black };
+    public LabelStyle LabelStyle { get; set; } = new();
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
@@ -30,11 +31,14 @@ public class ContourLines : IPlottable, IHasLine
     /// </summary>
     public double[]? ContourLineLevels = null;
 
+    private bool rectangularGrid = false;
+
     /// <summary>
     /// Update contour lines from arbitrarily placed data points.
     /// </summary>
     public void Update(IEnumerable<Coordinates3d> coordinates)
     {
+        rectangularGrid = false;
         Triangulation.TriangulatedIrregularNetwork tin = new(coordinates);
         MinZ = tin.MinZ;
         MaxZ = tin.MaxZ;
@@ -49,27 +53,14 @@ public class ContourLines : IPlottable, IHasLine
     /// </summary>
     public void Update(Coordinates3d[,] coordinateGrid)
     {
-        // TODO: use bilinear filtering directly on the rectangles that make up the heatmap.
-        // The present implementation assumes an irregular network and is not best for grids.
+        rectangularGrid = true;
 
-        int count = coordinateGrid.GetLength(0) * coordinateGrid.GetLength(1);
-        Coordinates3d[] coordinates = new Coordinates3d[count];
+        MinZ = coordinateGrid.Cast<Coordinates3d>().Min(p => p.Z);
+        MaxZ = coordinateGrid.Cast<Coordinates3d>().Max(p => p.Z);
+        double[] zs = ContourLineLevels ?? Enumerable.Range(0, ContourLineCount + 2).Select(x => MinZ + (MaxZ - MinZ) * (x) / (ContourLineCount + 1)).ToArray();
 
-        int i = 0;
-        for (int y = 0; y < coordinateGrid.GetLength(0); y++)
-        {
-            for (int x = 0; x < coordinateGrid.GetLength(1); x++)
-            {
-                coordinates[i++] = coordinateGrid[y, x];
-            }
-        }
-
-        Triangulation.TriangulatedIrregularNetwork tin = new(coordinates);
-        MinZ = tin.MinZ;
-        MaxZ = tin.MaxZ;
-        double[] zs = ContourLineLevels ?? tin.GetZsByCount(ContourLineCount);
         Lines.Clear();
-        Lines.AddRange(tin.GetContourLines(zs));
+        Lines.AddRange(Triangulation.RectangularGrid.GetContourLines(coordinateGrid, zs));
         UpdateAxisLimits();
     }
 
@@ -110,7 +101,10 @@ public class ContourLines : IPlottable, IHasLine
                 LineStyle.Color = Colormap.GetColor(fraction);
             }
 
-            Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
+            if (rectangularGrid)
+                Drawing.DrawPath(rp.Canvas, paint, path, LineStyle, Lines[i].Z.ToString("0.###"), LabelStyle);
+            else
+                Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
         }
     }
 }

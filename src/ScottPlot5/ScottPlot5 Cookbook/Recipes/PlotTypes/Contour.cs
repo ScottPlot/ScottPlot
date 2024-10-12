@@ -77,7 +77,9 @@ public class Contour : ICategory
                 }
             }
 
-            myPlot.Add.Heatmap(cs);
+            var heatmap = myPlot.Add.Heatmap(cs);
+            heatmap.FlipVertically = true;
+
             myPlot.Add.ContourLines(cs);
 
             myPlot.Axes.TightMargins();
