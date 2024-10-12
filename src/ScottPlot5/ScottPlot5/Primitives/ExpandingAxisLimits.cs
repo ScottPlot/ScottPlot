@@ -134,6 +134,17 @@ public class ExpandingAxisLimits : IEquatable<ExpandingAxisLimits>
         }
     }
 
+    /// <summary>
+    /// Expanded limits to include the given <paramref name="coordinates"/>.
+    /// </summary>
+    public void Expand(IEnumerable<Coordinates3d> coordinates)
+    {
+        foreach (Coordinates3d coordinate in coordinates)
+        {
+            Expand(coordinate.X, coordinate.Y);
+        }
+    }
+
     public void Expand(CoordinateRect rect)
     {
         Expand(rect.Left, rect.Top);

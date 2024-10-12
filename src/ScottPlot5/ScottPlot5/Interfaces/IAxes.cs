@@ -45,4 +45,15 @@ public static class IAxesExtensions
         double yMax = axes.YAxis.Range.Center + span / 2;
         axes.YAxis.Range.Set(yMin, yMax);
     }
+
+    public static PixelPath GetPixelPath(this IAxes axis, CoordinatePath path)
+    {
+        Pixel[] pixels = path.Points.Select(axis.GetPixel).ToArray();
+        return path.Close ? PixelPath.Closed(pixels) : PixelPath.Open(pixels);
+    }
+
+    public static PixelPath[] GetPixelPaths(this IAxes axis, CoordinatePath[] paths)
+    {
+        return paths.Select(axis.GetPixelPath).ToArray();
+    }
 }
