@@ -38,6 +38,16 @@ public class UserInputProcessor
     private bool _IsEnabled = false;
 
     /// <summary>
+    /// Enable processing of user input events.
+    /// </summary>
+    public void Enable() => IsEnabled = true;
+
+    /// <summary>
+    /// Disable processing of user input events. Effectively makes this control non-interactive.
+    /// </summary>
+    public void Disable() => IsEnabled = false;
+
+    /// <summary>
     /// A list of user input responses that processes all incoming events in order.
     /// Users may manipulate this list to change the default behavior and
     /// add custom behaviors.
