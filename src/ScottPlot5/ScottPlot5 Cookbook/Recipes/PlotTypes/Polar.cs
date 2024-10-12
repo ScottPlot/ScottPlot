@@ -43,7 +43,7 @@ public class Polar : ICategory
         public override void Execute()
         {
             var polarAxis = myPlot.Add.PolarAxis(radius: 100);
-            polarAxis.RotationDegrees = -90;
+            polarAxis.Rotation = Angle.FromDegrees(-90);
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
             foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
@@ -148,7 +148,7 @@ public class Polar : ICategory
         public override void Execute()
         {
             var polarAxis = myPlot.Add.PolarAxis();
-            polarAxis.RotationDegrees = -90;
+            polarAxis.Rotation = Angle.FromDegrees(-90);
 
             double[] ticksPositions = { 5, 10, 15, 20 };
             string[] tickLabels = { "A", "B", "C", "D" };
@@ -205,7 +205,7 @@ public class Polar : ICategory
         public override void Execute()
         {
             var polarAxis = myPlot.Add.PolarAxis();
-            polarAxis.RotationDegrees = -90;
+            polarAxis.Rotation = Angle.FromDegrees(-90);
 
             // add labeled spokes
             string[] labels = { "Alpha", "Beta", "Gamma", "Delta", "Epsilon" };

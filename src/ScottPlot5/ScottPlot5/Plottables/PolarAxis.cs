@@ -24,7 +24,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Rotates the axis clockwise from its default position (where 0 points right)
     /// </summary>
-    public double RotationDegrees { get; set; } = 0;
+    public Angle Rotation { get; set; } = Angle.FromDegrees(0);
 
     /// <summary>
     /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
@@ -130,10 +130,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(double radius, double degrees)
     {
-        degrees -= RotationDegrees;
-        double x = radius * Math.Cos(degrees * Math.PI / 180);
-        double y = radius * Math.Sin(degrees * Math.PI / 180);
-        return new Coordinates(x, y);
+        return GetCoordinates(radius, Angle.FromDegrees(degrees));
     }
 
     /// <summary>
@@ -141,7 +138,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(double radius, Angle angle)
     {
-        return GetCoordinates(radius, angle.Degrees);
+        return GetCoordinates(new PolarCoordinates(radius, angle));
     }
 
     /// <summary>
@@ -149,7 +146,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
-        return GetCoordinates(point.Radius, point.Angle.Degrees);
+        return point.WithAngle(point.Angle + Rotation).ToCartesian();
     }
 
     /// <summary>
@@ -161,8 +158,8 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
 
         return clockwise
-            ? Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], -Spokes[x].Angle)).ToArray()
-            : Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], Spokes[x].Angle)).ToArray();
+            ? Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], Spokes[x].Angle)).ToArray()
+            : Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], -Spokes[x].Angle)).ToArray();
     }
 
     public AxisLimits GetAxisLimits()
@@ -209,7 +206,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
-        rp.Canvas.RotateDegrees((float)RotationDegrees);
+        rp.Canvas.RotateDegrees(-(float)Rotation.Degrees);
 
         foreach (var spoke in Spokes)
         {
@@ -218,7 +215,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
-            spoke.LabelStyle.Rotation = -(float)RotationDegrees;
+            spoke.LabelStyle.Rotation = (float)Rotation.Degrees;
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);

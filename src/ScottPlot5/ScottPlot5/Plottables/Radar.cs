@@ -5,7 +5,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
     /// <summary>
     /// The polar axis drawn beneath each radar series polygon
     /// </summary>
-    public PolarAxis PolarAxis { get; set; } = new() { RotationDegrees = -90 };
+    public PolarAxis PolarAxis { get; set; } = new() { Rotation = Angle.FromDegrees(90) };
 
     /// <summary>
     /// A collection of RadarSeries, each of which hold a set of values and the styling information that controls how the shape is rendered
