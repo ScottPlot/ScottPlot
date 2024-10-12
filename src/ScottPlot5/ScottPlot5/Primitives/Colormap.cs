@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Colormaps;
+
+namespace ScottPlot;
 
 public static class Colormap
 {
@@ -38,5 +40,10 @@ public static class Colormap
         bmp.Encode(ms, SKEncodedImageFormat.Jpeg, quality: 85);
         byte[] bytes = ms.ToArray();
         return new ScottPlot.Image(bytes);
+    }
+
+    public static IColormap FromColors(Color[] colors)
+    {
+        return new LinearSegmented(colors);
     }
 }

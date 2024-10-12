@@ -261,4 +261,22 @@ public class Styling : ICategory
             myPlot.YLabel("number of colors");
         }
     }
+
+    public class ColormapFromColors : RecipeBase
+    {
+        public override string Name => "Colormap Gradient from Colors";
+        public override string Description => "Colormaps can be created as a gradient between a collection of colors.";
+
+        [Test]
+        public override void Execute()
+        {
+            Color[] colors = [Colors.Red, Colors.Magenta, Colors.DarkGreen];
+            IColormap myColormap = Colormap.FromColors(colors);
+
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+            var markers = myPlot.Add.Markers(xs, ys);
+            markers.Colormap = myColormap;
+        }
+    }
 }
