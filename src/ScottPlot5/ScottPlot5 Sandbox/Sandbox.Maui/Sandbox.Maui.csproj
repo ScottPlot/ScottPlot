@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<WindowsSdkPackageVersion>10.0.19041.34</WindowsSdkPackageVersion>
+
 		<!-- improve build speed by only building for Windows -->
 		<TargetFrameworks>net8.0-windows10.0.19041.0</TargetFrameworks>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
@@ -18,6 +20,7 @@
 		<ApplicationVersion>1</ApplicationVersion>
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+		<NoWarn>CS8002</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

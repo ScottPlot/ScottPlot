@@ -1,112 +1,96 @@
-﻿using ScottPlot.Control;
+﻿using Microsoft.Maui.Platform;
+using ScottPlot.Control;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
+using System.Diagnostics;
 
 namespace ScottPlot.Maui;
 
-public partial class MauiPlot : ContentPage, IPlotControl
+public class MauiPlot : SKCanvasView, IPlotControl
 {
-    private readonly SKCanvasView _canvas = CreateRenderTarget();
-
     public Plot Plot { get; internal set; } = new();
-
-    private ContentPage? XamlRoot = null;
-
     public SkiaSharp.GRContext? GRContext => null;
-
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
-
     public float DisplayScale { get; set; } = 1;
-
-    SKPaint skPaint = new SKPaint()
-    {
-        Style = SKPaintStyle.Stroke,
-        Color = SKColors.DeepPink,
-        StrokeWidth = 10,
-        IsAntialias = true,
-    };
 
     public MauiPlot()
     {
+        DisplayScale = DetectDisplayScale();
+        Plot = new Plot() { PlotControl = this };
         Interaction = new Interaction(this);
         UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
+
+        PanGestureRecognizer panGestureRecognizer = new PanGestureRecognizer();
         PointerGestureRecognizer pointerGestureRecognizer = new PointerGestureRecognizer();
-        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer()
+        { Buttons = ButtonsMask.Secondary };
+        TapGestureRecognizer twoTapGestureRecognizer = new TapGestureRecognizer()
+        { Buttons = ButtonsMask.Primary, NumberOfTapsRequired = 2 };
+        PinchGestureRecognizer pinchGestureRecognizer = new PinchGestureRecognizer();
 
-        Background = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Gray);
-
-        _canvas.PaintSurface += (s, e) =>
+        panGestureRecognizer.PanUpdated += (s, e) =>
         {
-            var surface = e.Surface;
-            var canvas = surface.Canvas;
+            switch (e.StatusType)
+            {
+                case GestureStatus.Started:
+                    Interaction.MouseDown(Pixel.Zero, MouseButton.Left);
+                    break;
 
-            SKRect skRectangle = new SKRect();
-            skRectangle.Size = new SKSize(100, 100);
-            skRectangle.Location = new SKPoint(-100f / 2, -100f / 2);
+                case GestureStatus.Running:
+                    Interaction.OnMouseMove(new Pixel(e.TotalX, e.TotalY));
+                    break;
 
-            canvas.DrawRect(skRectangle, skPaint);
+                case GestureStatus.Completed:
+                    Interaction.MouseUp(new Pixel(e.TotalX, e.TotalY), MouseButton.Left);
+                    break;
+            }
+        };
+
+        pinchGestureRecognizer.PinchUpdated += (s, e) =>
+        {
+            if (e.Status == GestureStatus.Running && e.Scale != 1)
+                Interaction.MouseWheelVertical(new Pixel(Width / 2, Height / 2), e.Scale > 1 ? 1 : -1);
         };
 
         pointerGestureRecognizer.PointerMoved += (s, e) =>
         {
-            Pixel ePixel = GetMousePos(e);
-            Interaction.OnMouseMove(ePixel);
+            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
+            Interaction.OnMouseMove(pixel);
         };
 
         pointerGestureRecognizer.PointerPressed += (s, e) =>
         {
-            Pixel ePixel = GetMousePos(e);
-            Interaction.MouseDown(ePixel, MouseButton.Left);
+            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
+            Interaction.MouseDown(pixel, MouseButton.Left);
         };
 
         pointerGestureRecognizer.PointerReleased += (s, e) =>
         {
-            Pixel ePixel = GetMousePos(e);
-            Interaction.MouseUp(ePixel, MouseButton.Left);
+            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
+            Interaction.MouseUp(pixel, MouseButton.Left);
         };
 
         tapGestureRecognizer.Tapped += (s, e) =>
         {
-            if (e.Buttons == ButtonsMask.Secondary)
-            {
-                // Do something
-                Pixel ePixel = GetMousePos(e);
-            }
+            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
+            ShowContextMenu(pixel);
         };
 
-        _canvas.GestureRecognizers.Add(pointerGestureRecognizer);
-        _canvas.GestureRecognizers.Add(tapGestureRecognizer);
-
-        /*this.Content = _canvas;*/
-    }
-
-    private Pixel GetMousePos(TappedEventArgs e)
-    {
-        Point? position = e.GetPosition(null);
-        if (position is null)
-            return Pixel.NaN;
-        Point tmpPos = new Point(position.Value.X, position.Value.X);
-        return tmpPos.ToPixel();
-    }
-    private Pixel GetMousePos(PointerEventArgs e)
-    {
-        Point? position = e.GetPosition(null);
-        if (position is null)
-            return Pixel.NaN;
-        Point tmpPos = new Point(position.Value.X, position.Value.X);
-        return tmpPos.ToPixel();
-    }
-
-    private static SKCanvasView CreateRenderTarget()
-    {
-        return new SKCanvasView
+        twoTapGestureRecognizer.Tapped += (s, e) =>
         {
-            Background = new SolidColorBrush(Microsoft.Maui.Graphics.Colors.Transparent)
+            var pixel = e.GetPosition(this)?.ToPixel() ?? Pixel.NaN;
+            Interaction.MouseWheelVertical(pixel, 1);
         };
+
+        GestureRecognizers.Add(pointerGestureRecognizer);
+        GestureRecognizers.Add(tapGestureRecognizer);
+        GestureRecognizers.Add(twoTapGestureRecognizer);
+        GestureRecognizers.Add(pinchGestureRecognizer);
+        GestureRecognizers.Add(panGestureRecognizer);
     }
 
     public void Reset()
@@ -121,7 +105,7 @@ public partial class MauiPlot : ContentPage, IPlotControl
 
     public void Refresh()
     {
-        _canvas.InvalidateSurface();
+        InvalidateSurface();
     }
 
     public void ShowContextMenu(Pixel position)
@@ -129,17 +113,22 @@ public partial class MauiPlot : ContentPage, IPlotControl
         Menu?.ShowContextMenu(position);
     }
 
-    private void OnPaintSurface(object? sender, SKPaintSurfaceEventArgs e)
+    protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface.Canvas, (int)e.Surface.Canvas.LocalClipBounds.Width, (int)e.Surface.Canvas.LocalClipBounds.Height);
+        base.OnPaintSurface(e);
+
+        var _info = e.Info;
+
+        e.Surface.Canvas.Clear();
+        Plot.Render(e.Surface.Canvas, _info.Width, _info.Height);
     }
 
     public float DetectDisplayScale()
     {
-        if (XamlRoot is not null)
+        if (Parent is VisualElement parent)
         {
-            Plot.ScaleFactor = XamlRoot.Scale;
-            DisplayScale = (float)XamlRoot.Scale;
+            Plot.ScaleFactor = parent.Scale;
+            DisplayScale = (float)parent.Scale;
         }
 
         return DisplayScale;
