@@ -23,7 +23,8 @@ _Not yet on NuGet..._
 * Radar: Improved rotational direction of labels (#4321, #4310) @CoderPM2011 @bry-decelles
 * Axes: Added `Plot.Axes.MarginsX()` and `Plot.Axes.MarginsY()` for changing margins in a single axis without changing the other (#4246)
 * Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247, #4324)
-* Colormaps: added `MellowRainbow` similar to Jet and Turbo but with mellow tones to improve appearance of thin lines on a white background (#4325)
+* Colormap: added `MellowRainbow` similar to Jet and Turbo but with mellow tones to improve appearance of thin lines on a white background (#4325)
+* ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319)
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
