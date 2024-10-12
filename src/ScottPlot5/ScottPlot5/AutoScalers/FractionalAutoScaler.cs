@@ -2,10 +2,11 @@
 
 public class FractionalAutoScaler : IAutoScaler
 {
-    public readonly double LeftFraction;
-    public readonly double RightFraction;
-    public readonly double BottomFraction;
-    public readonly double TopFraction;
+    public double LeftFraction { get; private set; }
+    public double RightFraction { get; private set; }
+    public double BottomFraction { get; private set; }
+    public double TopFraction { get; private set; }
+
     public bool InvertedX { get; set; } = false;
     public bool InvertedY { get; set; } = false;
 
@@ -31,6 +32,18 @@ public class FractionalAutoScaler : IAutoScaler
         RightFraction = right;
         BottomFraction = bottom;
         TopFraction = top;
+    }
+
+    public void SetMarginsX(double horizontal = .1)
+    {
+        LeftFraction = horizontal / 2;
+        RightFraction = horizontal / 2;
+    }
+
+    public void SetMarginsY(double vertical = .15)
+    {
+        BottomFraction = vertical / 2;
+        TopFraction = vertical / 2;
     }
 
     public void AutoScaleAll(IEnumerable<IPlottable> plottables)
