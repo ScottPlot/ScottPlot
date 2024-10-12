@@ -115,7 +115,7 @@ public class Marker : ICategory
             double[] ys = Generate.Sin(51);
 
             var markers = myPlot.Add.Markers(xs, ys);
-            markers.Colormap = new ScottPlot.Colormaps.Turbo();
+            markers.Colormap = new ScottPlot.Colormaps.MellowRainbow();
         }
     }
 
