@@ -43,7 +43,7 @@ public partial class SelectPoints : Form, IDemoWindow
         MouseIsDown = true;
         RectanglePlot.IsVisible = true;
         MouseDownCoordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
-        formsPlot1.Interaction.Disable(); // disable the default click-drag-pan behavior
+        formsPlot1.UserInputProcessor.Disable(); // disable the default click-drag-pan behavior
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
@@ -77,7 +77,7 @@ public partial class SelectPoints : Form, IDemoWindow
 
         // update the plot
         formsPlot1.Refresh();
-        formsPlot1.Interaction.Enable(); // re-enable the default click-drag-pan behavior
+        formsPlot1.UserInputProcessor.Enable(); // re-enable the default click-drag-pan behavior
     }
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)

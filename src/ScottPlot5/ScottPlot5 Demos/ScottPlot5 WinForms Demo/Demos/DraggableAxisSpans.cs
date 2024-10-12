@@ -42,14 +42,14 @@ public partial class DraggableAxisSpans : Form, IDemoWindow
         if (thingUnderMouse is not null)
         {
             SpanBeingDragged = thingUnderMouse;
-            formsPlot1.Interaction.Disable(); // disable panning while dragging
+            formsPlot1.UserInputProcessor.Disable(); // disable panning while dragging
         }
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
     {
         SpanBeingDragged = null;
-        formsPlot1.Interaction.Enable(); // enable panning
+        formsPlot1.UserInputProcessor.Enable(); // enable panning
         formsPlot1.Refresh();
     }
 

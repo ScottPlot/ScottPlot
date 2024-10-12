@@ -13,8 +13,8 @@ public interface IPlotControl
     void Refresh();
 
     /// <summary>
-    /// Options for configuring user inputs.
-    /// This functionality is being replaced by <see cref="UserInputProcessor"/>.
+    /// Legacy options for plot manipulation in response to user inputs.
+    /// This functionality has been replaced by <see cref="UserInputProcessor"/>.
     /// </summary>
     [Obsolete("Deprecated. Use IPlotControl.UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     IPlotInteraction Interaction { get; set; }
