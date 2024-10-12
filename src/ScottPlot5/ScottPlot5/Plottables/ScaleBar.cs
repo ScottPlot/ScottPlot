@@ -35,7 +35,7 @@ public class ScaleBar : IPlottable, IHasLine
     public string XLabel { get; set; } = string.Empty;
     public string YLabel { get; set; } = string.Empty;
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         Pixel corner = Axes.GetPixel(new(Axes.XAxis.Max, Axes.YAxis.Min));
 
