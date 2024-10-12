@@ -34,6 +34,29 @@ public class LineStyle
 
     public static LineStyle None => new() { Width = 0 };
 
+    public LineStyle()
+    {
+
+    }
+
+    public LineStyle(float width)
+    {
+        Width = width;
+    }
+
+    public LineStyle(float width, Color color)
+    {
+        Width = width;
+        Color = color;
+    }
+
+    public LineStyle(float width, Color color, LinePattern pattern)
+    {
+        Width = width;
+        Color = color;
+        Pattern = pattern;
+    }
+
     public bool CanBeRendered
     {
         get

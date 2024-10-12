@@ -83,6 +83,17 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
         Top = limits.Top;
     }
 
+    public AxisLimits(IEnumerable<Coordinates3d> coordinates)
+    {
+        ExpandingAxisLimits limits = new();
+        limits.Expand(coordinates);
+
+        Left = limits.Left;
+        Right = limits.Right;
+        Bottom = limits.Bottom;
+        Top = limits.Top;
+    }
+
     public AxisLimits InvertedVertically() => new(Left, Right, Top, Bottom);
     public AxisLimits InvertedHorizontally() => new(Right, Left, Bottom, Top);
 
