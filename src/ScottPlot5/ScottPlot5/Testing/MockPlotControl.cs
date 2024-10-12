@@ -29,7 +29,11 @@ public class MockPlotControl : IPlotControl
     public MockPlotControl()
     {
         Plot = new() { PlotControl = this };
-        Interaction = new Control.Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot) { IsEnabled = true };
 
         // force a render on startup so we can immediately use pixel drag actions

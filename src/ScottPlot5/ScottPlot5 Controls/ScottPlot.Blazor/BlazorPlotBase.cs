@@ -23,7 +23,11 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     {
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-        Interaction = new Control.Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot) { IsEnabled = true };
         Menu = new BlazorPlotMenu();
     }

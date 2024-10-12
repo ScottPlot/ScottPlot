@@ -1,9 +1,7 @@
 ﻿using Microsoft.Maui.Platform;
 using ScottPlot.Control;
-using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
-using System.Diagnostics;
 
 namespace ScottPlot.Maui;
 
@@ -20,7 +18,11 @@ public class MauiPlot : SKCanvasView, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Plot = new Plot() { PlotControl = this };
-        Interaction = new Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
 

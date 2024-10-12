@@ -1,5 +1,4 @@
-﻿using ScottPlot.Control;
-using ScottPlot.Interactivity;
+﻿using ScottPlot.Interactivity;
 using SkiaSharp;
 using System;
 using System.Diagnostics;
@@ -24,7 +23,11 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-        Interaction = new Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot);
         Menu = new FormsPlotMenu(this);
 

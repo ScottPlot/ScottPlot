@@ -5,7 +5,6 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Threading;
-using ScottPlot.Control;
 using SkiaSharp;
 
 using Controls = Avalonia.Controls;
@@ -29,7 +28,11 @@ public class AvaPlot : Controls.Control, IPlotControl
         Plot = new() { PlotControl = this };
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
-        Interaction = new Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot);
         Menu = new AvaPlotMenu(this);
         Focusable = true; // Required for keyboard events

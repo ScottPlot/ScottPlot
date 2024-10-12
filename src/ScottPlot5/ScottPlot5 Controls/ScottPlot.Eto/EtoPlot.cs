@@ -1,6 +1,4 @@
 ﻿using Eto.Forms;
-using System;
-using ScottPlot.Control;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
@@ -20,7 +18,11 @@ public class EtoPlot : Drawable, IPlotControl
     {
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-        Interaction = new Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot);
         Menu = new EtoPlotMenu(this);
 

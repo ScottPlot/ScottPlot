@@ -16,6 +16,7 @@ public interface IPlotControl
     /// Options for configuring user inputs.
     /// This functionality is being replaced by <see cref="UserInputProcessor"/>.
     /// </summary>
+    [Obsolete("Deprecated. Use IPlotControl.UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     IPlotInteraction Interaction { get; set; }
 
     /// <summary>

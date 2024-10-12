@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot.Interactivity;
 
+#pragma warning disable CS0618 // disable obsolete Interaction warning
+
 /// <summary>
 /// This class collects user inputs and performs responses to manipulate a Plot.
 /// Custom user input actions may be supplied, and the list of responses can be 

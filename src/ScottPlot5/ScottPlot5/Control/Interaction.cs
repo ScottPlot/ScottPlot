@@ -6,6 +6,7 @@
 /// To customize behavior of actions, replace properties of <see cref="Actions"/> with custom delegates.
 /// To customize UI inputs, assign desired button and key properties of <see cref="Inputs"/>.
 /// </summary>
+[Obsolete("Deprecated. Use IPlotControl.UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
 public class Interaction(IPlotControl control) : IPlotInteraction
 {
     public IPlotControl PlotControl { get; private set; } = control;

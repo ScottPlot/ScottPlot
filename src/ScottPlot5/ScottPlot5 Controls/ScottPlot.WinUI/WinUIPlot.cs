@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
-using ScottPlot.Control;
 
 namespace ScottPlot.WinUI;
 
@@ -22,7 +21,11 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         Plot = new() { PlotControl = this };
-        Interaction = new Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot);
         Menu = new WinUIPlotMenu(this);
 

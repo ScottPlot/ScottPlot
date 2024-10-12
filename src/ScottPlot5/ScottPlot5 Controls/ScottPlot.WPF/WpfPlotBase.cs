@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using ScottPlot.Control;
 using SkiaSharp;
 
 namespace ScottPlot.WPF;
@@ -29,7 +28,11 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     {
         Plot = new Plot() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-        Interaction = new Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot);
         Menu = new WpfPlotMenu(this);
         Focusable = true;
