@@ -22,7 +22,7 @@ namespace WinForms_Demo.Demos
             InitializeComponent();
 
             // disable interactivity by default
-            formsPlot.Interaction.Disable();
+            formsPlot.UserInputProcessor.Disable();
 
             InitPlots();
         }

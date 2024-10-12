@@ -1,16 +1,17 @@
-﻿using Microsoft.Maui.Platform;
-using ScottPlot.Control;
-using SkiaSharp;
+﻿using ScottPlot.Control;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
-using System.Diagnostics;
 
 namespace ScottPlot.Maui;
+
+#pragma warning disable CS0618 // disable obsolete warnings
 
 public class MauiPlot : SKCanvasView, IPlotControl
 {
     public Plot Plot { get; internal set; } = new();
     public SkiaSharp.GRContext? GRContext => null;
+
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -20,7 +21,7 @@ public class MauiPlot : SKCanvasView, IPlotControl
     {
         DisplayScale = DetectDisplayScale();
         Plot = new Plot() { PlotControl = this };
-        Interaction = new Interaction(this);
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
 

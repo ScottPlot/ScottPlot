@@ -2,6 +2,7 @@
 
 namespace ScottPlot.Control;
 
+#pragma warning disable CS0618 // disable obsolete Interaction warning
 public static class StandardActions
 {
     public static void ZoomIn(IPlotControl control, Pixel pixel, LockedAxes locked)

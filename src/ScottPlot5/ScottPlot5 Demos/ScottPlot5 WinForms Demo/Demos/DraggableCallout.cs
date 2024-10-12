@@ -74,7 +74,7 @@ public partial class DraggableCallout : Form, IDemoWindow
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
     {
         CalloutBeingDragged = null;
-        formsPlot1.Interaction.Enable();
+        formsPlot1.UserInputProcessor.Enable();
         formsPlot1.Refresh();
     }
 
@@ -90,7 +90,7 @@ public partial class DraggableCallout : Form, IDemoWindow
         float dY = calloutUnderMouse!.TextPixel.Y - e.Y;
         MouseDownOffset = new(dX, dY);
 
-        formsPlot1.Interaction.Disable();
+        formsPlot1.UserInputProcessor.Disable();
         FormsPlot1_MouseMove(sender, e);
     }
 

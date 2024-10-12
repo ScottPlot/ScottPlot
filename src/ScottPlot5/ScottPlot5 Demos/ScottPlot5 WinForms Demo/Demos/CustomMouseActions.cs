@@ -12,11 +12,6 @@ public partial class CustomMouseActions : Form, IDemoWindow
     {
         InitializeComponent();
 
-        // Disable the old input system and enable the new one.
-        // The new one will be enabled by default in a future release.
-        formsPlot1.Interaction.IsEnabled = false;
-        formsPlot1.UserInputProcessor.IsEnabled = true;
-
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
         formsPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
 

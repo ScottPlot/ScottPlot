@@ -29,7 +29,7 @@ public partial class DataStreamer : Form, IDemoWindow
         VLine = formsPlot1.Plot.Add.VerticalLine(0, 2, ScottPlot.Colors.Red);
 
         // disable mouse interaction by default
-        formsPlot1.Interaction.Disable();
+        formsPlot1.UserInputProcessor.Disable();
 
         // only show marker button in scroll mode
         btnMark.Visible = false;

@@ -1,16 +1,19 @@
 ﻿using Eto.Forms;
-using System;
-using ScottPlot.Control;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
+using System;
 
 namespace ScottPlot.Eto;
+
+#pragma warning disable CS0618 // disable obsolete warnings
 
 public class EtoPlot : Drawable, IPlotControl
 {
     public Plot Plot { get; internal set; }
     public GRContext? GRContext => null;
+
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public IPlotMenu? Menu { get; set; }
@@ -20,7 +23,7 @@ public class EtoPlot : Drawable, IPlotControl
     {
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-        Interaction = new Interaction(this);
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(Plot);
         Menu = new EtoPlotMenu(this);
 

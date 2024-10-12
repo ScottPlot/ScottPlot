@@ -37,13 +37,13 @@ public partial class DraggablePoints : Form, IDemoWindow
         IndexBeingDragged = nearest.IsReal ? nearest.Index : null;
 
         if (IndexBeingDragged.HasValue)
-            formsPlot1.Interaction.Disable();
+            formsPlot1.UserInputProcessor.Disable();
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
     {
         IndexBeingDragged = null;
-        formsPlot1.Interaction.Enable();
+        formsPlot1.UserInputProcessor.Enable();
         formsPlot1.Refresh();
     }
 

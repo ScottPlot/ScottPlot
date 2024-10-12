@@ -3,14 +3,18 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
-using ScottPlot.Control;
+using System;
 
 namespace ScottPlot.WinUI;
+
+#pragma warning disable CS0618 // disable obsolete warnings
 
 public partial class WinUIPlot : UserControl, IPlotControl
 {
     public Plot Plot { get; internal set; }
     public SkiaSharp.GRContext? GRContext => null;
+
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -22,7 +26,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         Plot = new() { PlotControl = this };
-        Interaction = new Interaction(this);
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(Plot);
         Menu = new WinUIPlotMenu(this);
 

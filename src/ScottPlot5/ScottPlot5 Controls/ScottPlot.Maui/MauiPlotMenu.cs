@@ -62,13 +62,14 @@ public class MauiPlotMenu : IPlotMenu
 
     private void ZoomOut(IPlotControl plotControl)
     {
-        plotControl.Interaction.MouseWheelVertical(new Pixel(MauiPlot.Width / 2, MauiPlot.Height / 2), -1);
+        plotControl.Plot.Axes.Zoom(0.5);
+        plotControl.Refresh();
     }
 
     private void ZoomIn(IPlotControl plotControl)
     {
-        plotControl.Interaction.MouseWheelVertical(new Pixel(MauiPlot.Width / 2, MauiPlot.Height / 2), 1);
-
+        plotControl.Plot.Axes.Zoom(1.5);
+        plotControl.Refresh();
     }
 
     public MenuFlyout GetContextMenu(IPlotControl plotControl)
