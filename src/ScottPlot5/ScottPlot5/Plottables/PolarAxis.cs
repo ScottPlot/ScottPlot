@@ -24,7 +24,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// <summary>
     /// Rotates the axis clockwise from its default position (where 0 points right)
     /// </summary>
-    public double RotationDegrees { get; set; } = 0;
+    public Angle Rotation { get; set; } = Angle.FromDegrees(0);
 
     /// <summary>
     /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
@@ -130,7 +130,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(double radius, double degrees)
     {
-        degrees -= RotationDegrees;
+        degrees -= Rotation.Degrees;
         double x = radius * Math.Cos(degrees * Math.PI / 180);
         double y = radius * Math.Sin(degrees * Math.PI / 180);
         return new Coordinates(x, y);
@@ -209,7 +209,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
-        rp.Canvas.RotateDegrees((float)RotationDegrees);
+        rp.Canvas.RotateDegrees((float)Rotation.Degrees);
 
         foreach (var spoke in Spokes)
         {
@@ -218,7 +218,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
-            spoke.LabelStyle.Rotation = -(float)RotationDegrees;
+            spoke.LabelStyle.Rotation = -(float)Rotation.Degrees;
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
