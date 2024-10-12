@@ -7,12 +7,15 @@ using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
+#pragma warning disable CS0618 
+
 public abstract class FormsPlotBase : UserControl, IPlotControl
 {
     public abstract GRContext GRContext { get; }
 
     public Plot Plot { get; internal set; }
 
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public UserInputProcessor UserInputProcessor { get; }
@@ -23,11 +26,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-
-#pragma warning disable CS0618 
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-#pragma warning restore CS0618
-
         UserInputProcessor = new(Plot);
         Menu = new FormsPlotMenu(this);
 

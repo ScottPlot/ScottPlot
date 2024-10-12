@@ -8,13 +8,17 @@ using Avalonia.Threading;
 using SkiaSharp;
 
 using Controls = Avalonia.Controls;
+using System;
 
 namespace ScottPlot.Avalonia;
+
+#pragma warning disable CS0618 // disable obsolete warnings
 
 public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; internal set; }
 
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -28,11 +32,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         Plot = new() { PlotControl = this };
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
-
-#pragma warning disable CS0618 
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-#pragma warning restore CS0618
-
         UserInputProcessor = new(Plot);
         Menu = new AvaPlotMenu(this);
         Focusable = true; // Required for keyboard events

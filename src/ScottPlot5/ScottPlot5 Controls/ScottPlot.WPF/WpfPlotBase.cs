@@ -1,9 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using SkiaSharp;
 
 namespace ScottPlot.WPF;
+
+#pragma warning disable CS0618 
 
 public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotControl
 {
@@ -11,6 +14,8 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public abstract void Refresh();
 
     public Plot Plot { get; internal set; }
+
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
     public float DisplayScale { get; set; }
     public IPlotMenu? Menu { get; set; }
@@ -28,11 +33,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     {
         Plot = new Plot() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-
-#pragma warning disable CS0618 
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-#pragma warning restore CS0618
-
         UserInputProcessor = new(Plot);
         Menu = new WpfPlotMenu(this);
         Focusable = true;

@@ -14,6 +14,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public Plot Plot { get; private set; }
 
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
 
     public IPlotMenu? Menu { get; set; }
