@@ -22,6 +22,7 @@ _Not yet on NuGet..._
 * Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013) @KosmosWerner @ByteSore
 * Radar: Improved rotational direction of labels (#4321, #4310) @CoderPM2011 @bry-decelles
 * Axes: Added `Plot.Axes.MarginsX()` and `Plot.Axes.MarginsY()` for changing margins in a single axis without changing the other (#4246)
+* Colormaps: added `MellowRainbow` which is similar to Jet and Turbo but has more mellow tones (less dark edges, less bright center) to improve appearance of thin lines on a white background
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
