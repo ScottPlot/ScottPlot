@@ -130,10 +130,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(double radius, double degrees)
     {
-        degrees -= Rotation.Degrees;
-        double x = radius * Math.Cos(degrees * Math.PI / 180);
-        double y = radius * Math.Sin(degrees * Math.PI / 180);
-        return new Coordinates(x, y);
+        return GetCoordinates(radius, Angle.FromDegrees(degrees));
     }
 
     /// <summary>
@@ -141,7 +138,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(double radius, Angle angle)
     {
-        return GetCoordinates(radius, angle.Degrees);
+        return GetCoordinates(new PolarCoordinates(radius, angle));
     }
 
     /// <summary>
@@ -149,7 +146,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
-        return GetCoordinates(point.Radius, point.Angle.Degrees);
+        return point.WithAngle(point.Angle - Rotation).ToCartesian();
     }
 
     /// <summary>
