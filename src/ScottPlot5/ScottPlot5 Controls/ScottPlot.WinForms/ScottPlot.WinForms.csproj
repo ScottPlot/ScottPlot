@@ -17,6 +17,7 @@
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright (c) Scott Harden / Harden Technologies, LLC</Copyright>
         <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
         <description>User controls for displaying interactive plots in Windows Forms applications</description>
         <PackageIcon>icon.png</PackageIcon>
