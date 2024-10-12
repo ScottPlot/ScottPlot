@@ -21,6 +21,7 @@ _Not yet on NuGet..._
 * ContourLines: New plot type for displaying lines that mark points of equal elevation given a collection of 3D points (#4296, #2330, #3795) @jon-rizzo @StendProg
 * Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013) @KosmosWerner @ByteSore
 * Radar: Improved rotational direction of labels (#4321, #4310) @CoderPM2011 @bry-decelles
+* Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247)
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
