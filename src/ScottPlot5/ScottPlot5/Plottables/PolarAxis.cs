@@ -146,7 +146,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
-        return point.WithAngle(point.Angle - Rotation).ToCartesian();
+        return point.WithAngle(point.Angle + Rotation).ToCartesian();
     }
 
     /// <summary>
@@ -206,7 +206,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
-        rp.Canvas.RotateDegrees((float)Rotation.Degrees);
+        rp.Canvas.RotateDegrees(-(float)Rotation.Degrees);
 
         foreach (var spoke in Spokes)
         {
@@ -215,7 +215,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
-            spoke.LabelStyle.Rotation = -(float)Rotation.Degrees;
+            spoke.LabelStyle.Rotation = (float)Rotation.Degrees;
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
