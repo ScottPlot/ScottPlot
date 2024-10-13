@@ -1,10 +1,34 @@
 ﻿namespace ScottPlot.Triangulation
 {
     public record Vertex(int i, int j);
-    public record EdgeLine(IEdge first, IEdge second);
+    public class EdgeLine
+    {
+        public IEdge first { get; }
+        public IEdge second { get; }
+        public int CellID { get; set; }
+
+        public EdgeLine(IEdge first, IEdge second, int cellId)
+        {
+            this.first = first;
+            this.second = second;
+            CellID = cellId;
+        }
+    }
+
+    public class EdgeLinePair : EdgeLine
+    {
+        public IEdge first1 { get; }
+        public IEdge second1 { get; }
+        public EdgeLinePair(IEdge first, IEdge second, IEdge first1, IEdge second1, int cellId) : base(first, second, cellId)
+        {
+            this.first1 = first1;
+            this.second1 = second1;
+        }
+    }
 
     public interface IEdge
     {
+        Vertex First { get; }
         Coordinates Interpolate(Coordinates3d[,] coordinateGrid, double Z);
     }
 
@@ -23,6 +47,7 @@
 
             return this.First.i == other.First.i && this.First.j == other.First.j;
         }
+
 
         public override int GetHashCode()
         {

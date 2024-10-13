@@ -16,20 +16,22 @@
                         edgeLines.AddRange(LookupSquare(coordinateGrid, i, j, z));
                     }
 
-                var groupedEdges = GroupEdges(edgeLines);
-                paths.AddRange(groupedEdges.Select(elem => new ContourLine(CoordinatePath.Open(elem.Select(edge => edge.Interpolate(coordinateGrid, z)).ToList()), z)));
+                var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(0));
+                paths.AddRange(mergedPaths.Select(elem => new ContourLine(CoordinatePath.Open(elem.Select(edge => edge.Interpolate(coordinateGrid, z)).ToList()), z)));
             }
             return paths.Where(p => p.Path.Points.Length > 0).ToArray();
         }
         private static EdgeLine[] LookupSquare(Coordinates3d[,] CoordinateGrid, int i, int j, double Z)
         {
-            int index = 0;
-
             // lb - LeftBottom, lt - leftTop, rb - RightBottom, rt - RightTop
             Vertex lb = new(i, j);
             Vertex lt = new(i, j + 1);
             Vertex rb = new(i + 1, j);
             Vertex rt = new(i + 1, j + 1);
+
+            int cellID = j * CoordinateGrid.GetLength(0) + i;
+
+            int index = 0;
 
             if (CoordinateGrid[lb.j, lb.i].Z > Z)
                 index += 1;
@@ -65,75 +67,136 @@
             return index switch
             {
                 0 => [],
-                1 => [new(l, b)],
-                2 => [new(b, r)],
-                3 => [new(l, r)],
-                4 => [new(t, r)],
-                5 => [new(l, t), new(b, r)],
-                6 => [new(b, t)],
-                7 => [new(l, t)],
-                8 => [new(l, t)],
-                9 => [new(b, t)],
-                10 => [new(l, b), new(t, r)],
-                11 => [new(t, r)],
-                12 => [new(l, r)],
-                13 => [new(b, r)],
-                14 => [new(l, b)],
+                1 => [new(l, b, cellID)],
+                2 => [new(b, r, cellID)],
+                3 => [new(l, r, cellID)],
+                4 => [new(t, r, cellID)],
+                5 => [new EdgeLinePair(l, t, b, r, cellID)],
+                6 => [new(b, t, cellID)],
+                7 => [new(l, t, cellID)],
+                8 => [new(l, t, cellID)],
+                9 => [new(b, t, cellID)],
+                10 => [new EdgeLinePair(l, b, t, r, cellID)],
+                11 => [new(t, r, cellID)],
+                12 => [new(l, r, cellID)],
+                13 => [new(b, r, cellID)],
+                14 => [new(l, b, cellID)],
                 15 => [],
                 _ => throw new Exception("Unexpected case"),
             };
         }
-        private static List<List<IEdge>> GroupEdges(List<EdgeLine> edgeLinesArg)
+        private static List<List<IEdge>> MergeContourParts(List<EdgeLine> edgeLines, int GridHeight)
         {
-            var edgeLines = edgeLinesArg.ToList();
+            var edgeLineLookup = edgeLines.ToDictionary(el => el.CellID);
+            int Count = edgeLines.Count;
+
             List<List<IEdge>> result = new List<List<IEdge>>();
-            while (edgeLines.Count > 0)
+            while (Count > 0)
             {
                 List<IEdge> currentPath = new List<IEdge>();
-                currentPath.Add(edgeLines[0].first);
-                currentPath.Add(edgeLines[0].second);
 
-                var current = edgeLines[0].second;
-                edgeLines.RemoveAt(0);
-                int candidateIndex;
-                // search for a right side neighbors
-                while ((candidateIndex = edgeLines.FindIndex(e => e.first.Equals(current) || e.second.Equals(current))) != -1)
-                {
-                    var candidate = edgeLines[candidateIndex];
-                    edgeLines.RemoveAt(candidateIndex);
-                    if (candidate.first.Equals(current))
-                    {
-                        current = candidate.second;
-                        currentPath.Add(current);
-                    }
-                    else
-                    {
-                        current = candidate.first;
-                        currentPath.Add(current);
-                    }
-                }
-                current = currentPath[0];
-                // search for a left side neighbors
-                while ((candidateIndex = edgeLines.FindIndex(e => e.first.Equals(current) || e.second.Equals(current))) != -1)
-                {
-                    var candidate = edgeLines[candidateIndex];
-                    edgeLines.RemoveAt(candidateIndex);
-                    if (candidate.first.Equals(current))
-                    {
-                        current = candidate.second;
-                        currentPath.Insert(0, current);
-                    }
-                    else
-                    {
-                        current = candidate.first;
-                        currentPath.Insert(0, current);
-                    }
-                }
+                var startELEntry = edgeLineLookup.First();
+                var startEL = startELEntry.Value;
+
+                edgeLineLookup.Remove(startELEntry.Key);
+                Count--;
+
+                var rightSearch = FindNeigbhorsChain(startEL.second, startEL.CellID, edgeLineLookup, GridHeight, ref Count);
+                var leftSearch = FindNeigbhorsChain(startEL.first, startEL.CellID, edgeLineLookup, GridHeight, ref Count);
+
+                leftSearch.Reverse();
+                currentPath.AddRange(leftSearch);
+                currentPath.Add(startEL.first);
+                currentPath.Add(startEL.second);
+                currentPath.AddRange(rightSearch);
+
                 result.Add(currentPath);
             }
-
             return result;
         }
 
+        private static List<IEdge> FindNeigbhorsChain(IEdge startEdge, int startCellId, Dictionary<int, EdgeLine> edgeLineLookup, int GridHeight, ref int Count)
+        {
+            List<IEdge> currentPath = new List<IEdge>();
+            IEdge current = startEdge;
+            int currentCellId = startCellId;
+            bool found = false;
+            do
+            {
+                EdgeLine? candidate;
+                var key = GetNeigbhorCell(current, currentCellId, GridHeight);
+                found = edgeLineLookup.TryGetValue(key, out candidate);
+                if (found)
+                {
+                    edgeLineLookup.Remove(key);
+                    Count--;
+                    if (candidate is EdgeLinePair candidatePair)
+                    {
+                        if (candidate.first.Equals(current))
+                        {
+                            current = candidate.second;
+                            currentPath.Add(current);
+                            edgeLineLookup.Add(key, new EdgeLine(candidatePair.first1, candidatePair.second1, candidatePair.CellID));
+                            Count++;
+                        }
+                        else if (candidate.second.Equals(current))
+                        {
+                            current = candidate.first;
+                            currentPath.Add(current);
+                            edgeLineLookup.Add(key, new EdgeLine(candidatePair.first1, candidatePair.second1, candidatePair.CellID));
+                            Count++;
+                        }
+                        else if (candidatePair.first1.Equals(current))
+                        {
+                            current = candidatePair.second1;
+                            currentPath.Add(current);
+                            edgeLineLookup.Add(key, new EdgeLine(candidatePair.first, candidatePair.second, candidatePair.CellID));
+                            Count++;
+                        }
+                        else if (candidatePair.second1.Equals(current))
+                        {
+                            current = candidatePair.first1;
+                            currentPath.Add(current);
+                            edgeLineLookup.Add(key, new EdgeLine(candidatePair.first, candidatePair.second, candidatePair.CellID));
+                            Count++;
+                        }
+                    }
+
+                    if (candidate.first.Equals(current))
+                    {
+                        current = candidate.second;
+                        currentPath.Add(current);
+                    }
+                    else
+                    {
+                        current = candidate.first;
+                        currentPath.Add(current);
+                    }
+                    currentCellId = candidate.CellID;
+                }
+            } while (found);
+            return currentPath;
+        }
+
+        private static int GetNeigbhorCell(IEdge edge, int edgeCell, int GridHeight)
+        {
+            if (edge is VerticalEdge)
+            {
+                var edgeInCell = edge.First.j * GridHeight + edge.First.i;
+                if (edgeInCell == edgeCell)
+                    return edgeCell - 1;
+                else
+                    return edgeCell + 1;
+            }
+            if (edge is HorizontalEdge)
+            {
+                var edgeInCell = edge.First.j * GridHeight + edge.First.i;
+                if (edgeInCell == edgeCell)
+                    return edgeCell - GridHeight;
+                else
+                    return edgeCell + GridHeight;
+            }
+            return 0;
+        }
     }
 }
