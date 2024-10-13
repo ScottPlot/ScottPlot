@@ -88,10 +88,9 @@
         private static List<List<IEdge>> MergeContourParts(List<EdgeLine> edgeLines, int GridHeight)
         {
             var edgeLineLookup = edgeLines.ToDictionary(el => el.CellID);
-            int Count = edgeLines.Count;
 
             List<List<IEdge>> result = new List<List<IEdge>>();
-            while (Count > 0)
+            while (edgeLineLookup.Count > 0)
             {
                 List<IEdge> currentPath = new List<IEdge>();
 
@@ -99,10 +98,9 @@
                 var startEL = startELEntry.Value;
 
                 edgeLineLookup.Remove(startELEntry.Key);
-                Count--;
 
-                var rightSearch = FindNeigbhorsChain(startEL.second, startEL.CellID, edgeLineLookup, GridHeight, ref Count);
-                var leftSearch = FindNeigbhorsChain(startEL.first, startEL.CellID, edgeLineLookup, GridHeight, ref Count);
+                var rightSearch = FindNeigbhorsChain(startEL.second, startEL.CellID, edgeLineLookup, GridHeight);
+                var leftSearch = FindNeigbhorsChain(startEL.first, startEL.CellID, edgeLineLookup, GridHeight);
 
                 leftSearch.Reverse();
                 currentPath.AddRange(leftSearch);
@@ -115,7 +113,7 @@
             return result;
         }
 
-        private static List<IEdge> FindNeigbhorsChain(IEdge startEdge, int startCellId, Dictionary<int, EdgeLine> edgeLineLookup, int GridHeight, ref int Count)
+        private static List<IEdge> FindNeigbhorsChain(IEdge startEdge, int startCellId, Dictionary<int, EdgeLine> edgeLineLookup, int GridHeight)
         {
             List<IEdge> currentPath = new List<IEdge>();
             IEdge current = startEdge;
@@ -129,7 +127,6 @@
                 if (found)
                 {
                     edgeLineLookup.Remove(key);
-                    Count--;
                     if (candidate is EdgeLinePair candidatePair)
                     {
                         if (candidate.first.Equals(current))
@@ -137,28 +134,24 @@
                             current = candidate.second;
                             currentPath.Add(current);
                             edgeLineLookup.Add(key, new EdgeLine(candidatePair.first1, candidatePair.second1, candidatePair.CellID));
-                            Count++;
                         }
                         else if (candidate.second.Equals(current))
                         {
                             current = candidate.first;
                             currentPath.Add(current);
                             edgeLineLookup.Add(key, new EdgeLine(candidatePair.first1, candidatePair.second1, candidatePair.CellID));
-                            Count++;
                         }
                         else if (candidatePair.first1.Equals(current))
                         {
                             current = candidatePair.second1;
                             currentPath.Add(current);
                             edgeLineLookup.Add(key, new EdgeLine(candidatePair.first, candidatePair.second, candidatePair.CellID));
-                            Count++;
                         }
                         else if (candidatePair.second1.Equals(current))
                         {
                             current = candidatePair.first1;
                             currentPath.Add(current);
                             edgeLineLookup.Add(key, new EdgeLine(candidatePair.first, candidatePair.second, candidatePair.CellID));
-                            Count++;
                         }
                     }
 
