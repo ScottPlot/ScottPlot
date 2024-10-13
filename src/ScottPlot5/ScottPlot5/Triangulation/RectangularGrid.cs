@@ -1,4 +1,5 @@
-﻿namespace ScottPlot.Triangulation
+﻿#nullable disable
+namespace ScottPlot.Triangulation
 {
     public static class RectangularGrid
     {
@@ -121,7 +122,7 @@
             bool found = false;
             do
             {
-                EdgeLine? candidate;
+                EdgeLine candidate;
                 var key = GetNeigbhorCell(current, currentCellId, GridHeight);
                 found = edgeLineLookup.TryGetValue(key, out candidate);
                 if (found)
