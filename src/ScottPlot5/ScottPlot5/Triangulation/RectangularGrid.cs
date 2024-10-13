@@ -6,7 +6,7 @@
         {
             List<ContourLine> paths = new List<ContourLine>();
 
-            foreach ( double z in zs)
+            foreach (double z in zs)
             {
                 List<Coordinates> pts = [];
                 List<EdgeLine> edgeLines = [];
@@ -56,10 +56,10 @@
                 }
             }
 
-            Edge l = new VerticalEdge(lb, lt); // Left edge
-            Edge r = new VerticalEdge(rb, rt); // Right edge
-            Edge b = new HorizontalEdge(lb, rb); // Bottom edge
-            Edge t = new HorizontalEdge(lt, rt); // Top edge
+            IEdge l = new VerticalEdge(lb); // Left edge
+            IEdge r = new VerticalEdge(rb); // Right edge
+            IEdge b = new HorizontalEdge(lb); // Bottom edge
+            IEdge t = new HorizontalEdge(lt); // Top edge
 
             // all cases described in https://en.wikipedia.org/wiki/Marching_squares
             return index switch
@@ -83,13 +83,13 @@
                 _ => throw new Exception("Unexpected case"),
             };
         }
-        private static List<List<Edge>> GroupEdges(List<EdgeLine> edgeLinesArg)
+        private static List<List<IEdge>> GroupEdges(List<EdgeLine> edgeLinesArg)
         {
             var edgeLines = edgeLinesArg.ToList();
-            List<List<Edge>> result = new List<List<Edge>>();
+            List<List<IEdge>> result = new List<List<IEdge>>();
             while (edgeLines.Count > 0)
             {
-                List<Edge> currentPath = new List<Edge>();
+                List<IEdge> currentPath = new List<IEdge>();
                 currentPath.Add(edgeLines[0].first);
                 currentPath.Add(edgeLines[0].second);
 
