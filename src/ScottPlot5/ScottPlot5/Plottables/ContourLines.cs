@@ -9,7 +9,7 @@ public class ContourLines : IPlottable, IHasLine
     private AxisLimits AxisLimits = AxisLimits.NoLimits;
     public AxisLimits GetAxisLimits() => AxisLimits;
 
-    public List<ContourLine> Lines { get; } = [];
+    public List<ContourLine> Lines { get; private set; } = [];
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1, Color = Colors.Black };
     public LabelStyle LabelStyle { get; set; } = new();
@@ -59,8 +59,7 @@ public class ContourLines : IPlottable, IHasLine
         MaxZ = coordinateGrid.Cast<Coordinates3d>().Max(p => p.Z);
         double[] zs = ContourLineLevels ?? Enumerable.Range(0, ContourLineCount + 2).Select(x => MinZ + (MaxZ - MinZ) * (x) / (ContourLineCount + 1)).ToArray();
 
-        Lines.Clear();
-        Lines.AddRange(Triangulation.RectangularGrid.GetContourLines(coordinateGrid, zs));
+        Lines = Triangulation.RectangularGrid.GetContourLines(coordinateGrid, zs);
         UpdateAxisLimits();
     }
 

@@ -3,17 +3,17 @@ namespace ScottPlot.Triangulation
 {
     public static class RectangularGrid
     {
-        public static ContourLine[] GetContourLines(Coordinates3d[,] coordinateGrid, double[] zs, bool fixContourDirections = true)
+        public static List<ContourLine> GetContourLines(Coordinates3d[,] coordinateGrid, double[] zs, bool fixContourDirections = true)
         {
-            ContourLine[] result;
-            result =  zs.Select(z =>
+            List<ContourLine> result;
+            result = zs.Select(z =>
             {
                 var edgeLines = MarchingSquares(coordinateGrid, z).ToDictionary(e => e.CellID);
                 var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(0));
                 return mergedPaths.Select(elem => new ContourLine(CoordinatePath.Open(elem.Select(edge => edge.Interpolate(coordinateGrid, z))), z));
             })
             .SelectMany(elem => elem)
-            .ToArray();
+            .ToList();
 
             if (fixContourDirections)
                 return FixContourDirections(result);
@@ -21,20 +21,20 @@ namespace ScottPlot.Triangulation
                 return result;
         }
 
-        public static ContourLine[] FixContourDirections(ContourLine[] contours)
+        public static List<ContourLine> FixContourDirections(List<ContourLine> contours)
         {
-            for (int i = 0; i < contours.Length; i++)
+            for (int i = 0; i < contours.Count; i++)
             {
                 // closed contour, make it starts from a top 
                 if (Math.Abs(contours[i].Path.Points[0].X - contours[i].Path.Points[^1].X) < 0.0000000001
-                    && Math.Abs(contours[i].Path.Points[0].Y - contours[i].Path.Points[^1].Y) < 0.0000000001 )
+                    && Math.Abs(contours[i].Path.Points[0].Y - contours[i].Path.Points[^1].Y) < 0.0000000001)
                 {
                     var points = contours[i].Path.Points;
                     var max = points[0].Y;
                     var maxIndex = 0;
-                    for(int j = 0; j < points.Length; j++ )
+                    for (int j = 0; j < points.Length; j++)
                     {
-                        if (points[j].Y > max )
+                        if (points[j].Y > max)
                         {
                             max = points[j].Y;
                             maxIndex = j;
