@@ -100,8 +100,9 @@ public static class Drawing
 
         labelStyle.ApplyToPaint(paint);
 
+        var measuredText = paint.MeasureText(label);
         using (SKPathMeasure pathMeasure = new SKPathMeasure(path, false, 1))
-            DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 5, 0);
+            DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
     }
 
     public static void DrawTextOnPath(SKCanvas canvas, SKPaint paint, SKPath path, string text, float hOffset = 0, float vOffset = 0)

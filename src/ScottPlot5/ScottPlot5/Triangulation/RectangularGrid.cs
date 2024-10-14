@@ -3,9 +3,10 @@ namespace ScottPlot.Triangulation
 {
     public static class RectangularGrid
     {
-        public static ContourLine[] GetContourLines(Coordinates3d[,] coordinateGrid, double[] zs)
+        public static ContourLine[] GetContourLines(Coordinates3d[,] coordinateGrid, double[] zs, bool fixContourDirections = true)
         {
-            return zs.Select(z =>
+            ContourLine[] result;
+            result =  zs.Select(z =>
             {
                 var edgeLines = MarchingSquares(coordinateGrid, z).ToDictionary(e => e.CellID);
                 var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(0));
@@ -13,6 +14,43 @@ namespace ScottPlot.Triangulation
             })
             .SelectMany(elem => elem)
             .ToArray();
+
+            if (fixContourDirections)
+                return FixContourDirections(result);
+            else
+                return result;
+        }
+
+        public static ContourLine[] FixContourDirections(ContourLine[] contours)
+        {
+            for (int i = 0; i < contours.Length; i++)
+            {
+                // closed contour, make it starts from a top 
+                if (Math.Abs(contours[i].Path.Points[0].X - contours[i].Path.Points[^1].X) < 0.0000000001
+                    && Math.Abs(contours[i].Path.Points[0].Y - contours[i].Path.Points[^1].Y) < 0.0000000001 )
+                {
+                    var points = contours[i].Path.Points;
+                    var max = points[0].Y;
+                    var maxIndex = 0;
+                    for(int j = 0; j < points.Length; j++ )
+                    {
+                        if (points[j].Y > max )
+                        {
+                            max = points[j].Y;
+                            maxIndex = j;
+                        }
+                    }
+                    var rotatedPoints = points.Skip(maxIndex).Concat(points.Skip(1).Take(maxIndex - 1)).Concat([points[maxIndex]]).ToArray();
+                    contours[i] = new ContourLine(CoordinatePath.Open(rotatedPoints), contours[i].Z);
+                }
+                else
+                {
+                    // open contour, make it starts from left
+                    if (contours[i].Path.Points[0].X > contours[i].Path.Points[^1].X)
+                        contours[i] = new ContourLine(CoordinatePath.Open(contours[i].Path.Points.Reverse().ToArray()), contours[i].Z);
+                }
+            }
+            return contours;
         }
 
         private static IEnumerable<EdgeLine> MarchingSquares(Coordinates3d[,] CoordinateGrid, double Z)
