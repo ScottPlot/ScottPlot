@@ -47,29 +47,34 @@ public class ScaleBar : IPlottable, IHasLine
         PixelSize yLabelSize = YLabelStyle.Measure(YLabel).Size;
         corner = corner.WithOffset(-yLabelSize.Width, -xLabelSize.Height);
 
-        double pxPerUnitX = rp.DataRect.Width / Axes.XAxis.Width;
-        double pxPerUnitY = rp.DataRect.Height / Axes.YAxis.Height;
-        double pxWidth = pxPerUnitX * Width;
-        double pxHeight = pxPerUnitY * Height;
-        PixelLine hLine = new(corner, new(corner.X - pxWidth, corner.Y));
-        PixelLine vLine = new(corner, new(corner.X, corner.Y - pxHeight));
-
         using SKPaint paint = new();
-
-        // TODO: use a path instead of two distinct lines to prevent artifacts at the corner
+        SKPath path = new();
+        path.MoveTo(corner.ToSKPoint());
 
         if (Width > 0)
         {
-            Drawing.DrawLine(rp.Canvas, paint, hLine, LineStyle);
-            Pixel xCenter = new((hLine.X1 + hLine.X2) / 2, hLine.Y1 + LabelPadding.Top);
+            double pxPerUnitX = rp.DataRect.Width / Axes.XAxis.Width;
+            double pxWidth = pxPerUnitX * Width;
+
+            path.RLineTo(new SKPoint((float)-pxWidth, 0));
+            path.RLineTo(new SKPoint((float)+pxWidth, 0));
+
+            Pixel xCenter = new(corner.X - pxWidth / 2, corner.Y + LabelPadding.Top);
             XLabelStyle.Render(rp.Canvas, xCenter, paint, XLabel);
         }
 
         if (Height > 0)
         {
-            Drawing.DrawLine(rp.Canvas, paint, vLine, LineStyle);
-            Pixel yCenter = new(vLine.X1 + LabelPadding.Right, (vLine.Y1 + vLine.Y2) / 2);
+            double pxPerUnitY = rp.DataRect.Height / Axes.YAxis.Height;
+            double pxHeight = pxPerUnitY * Height;
+
+            path.RLineTo(new SKPoint(0, (float)-pxHeight));
+            path.RLineTo(new SKPoint(0, (float)+pxHeight));
+
+            Pixel yCenter = new(corner.X + LabelPadding.Right, corner.Y - pxHeight / 2);
             YLabelStyle.Render(rp.Canvas, yCenter, paint, YLabel);
         }
+
+        Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
     }
 }
