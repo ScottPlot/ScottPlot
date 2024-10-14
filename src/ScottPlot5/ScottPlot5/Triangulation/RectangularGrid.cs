@@ -7,7 +7,7 @@ namespace ScottPlot.Triangulation
         {
             return zs.Select(z =>
             {
-                var edgeLines = LookupSquare(coordinateGrid, z).ToDictionary(e => e.CellID);
+                var edgeLines = MarchingSquares(coordinateGrid, z).ToDictionary(e => e.CellID);
                 var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(0));
                 return mergedPaths.Select(elem => new ContourLine(CoordinatePath.Open(elem.Select(edge => edge.Interpolate(coordinateGrid, z))), z));
             })
@@ -15,7 +15,7 @@ namespace ScottPlot.Triangulation
             .ToArray();
         }
 
-        private static IEnumerable<EdgeLine> LookupSquare(Coordinates3d[,] CoordinateGrid, double Z)
+        private static IEnumerable<EdgeLine> MarchingSquares(Coordinates3d[,] CoordinateGrid, double Z)
         {
             for (int j = 0; j < CoordinateGrid.GetLength(0) - 1; j++)
                 for (int i = 0; i < CoordinateGrid.GetLength(1) - 1; i++)
