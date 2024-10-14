@@ -5,13 +5,14 @@ namespace ScottPlot.Triangulation
     {
         public static ContourLine[] GetContourLines(Coordinates3d[,] coordinateGrid, double[] zs)
         {
-            var paths = zs.Select(z =>
+            return zs.Select(z =>
             {
                 var edgeLines = LookupSquare(coordinateGrid, z).ToDictionary(e => e.CellID);
                 var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(0));
                 return mergedPaths.Select(elem => new ContourLine(CoordinatePath.Open(elem.Select(edge => edge.Interpolate(coordinateGrid, z))), z));
-            });
-            return paths.SelectMany(elem => elem).ToArray();
+            })
+            .SelectMany(elem => elem)
+            .ToArray();
         }
 
         private static IEnumerable<EdgeLine> LookupSquare(Coordinates3d[,] CoordinateGrid, double Z)
@@ -19,11 +20,10 @@ namespace ScottPlot.Triangulation
             for (int j = 0; j < CoordinateGrid.GetLength(0) - 1; j++)
                 for (int i = 0; i < CoordinateGrid.GetLength(1) - 1; i++)
                 {
-                    // lb - LeftBottom, lt - leftTop, rb - RightBottom, rt - RightTop
-                    Vertex lb = new(i, j);
-                    Vertex lt = new(i, j + 1);
-                    Vertex rb = new(i + 1, j);
-                    Vertex rt = new(i + 1, j + 1);
+                    Vertex lb = new(i, j);         // LeftBottom
+                    Vertex lt = new(i, j + 1);     // LeftTop
+                    Vertex rb = new(i + 1, j);     // RigthtBottom
+                    Vertex rt = new(i + 1, j + 1); // RightTop
 
                     int cellID = j * CoordinateGrid.GetLength(0) + i;
 
@@ -47,10 +47,7 @@ namespace ScottPlot.Triangulation
                         midpoint /= 4;
                         if (midpoint <= Z)
                         {
-                            if (index == 5)
-                                index = 10;
-                            else
-                                index = 5;
+                            index = 15 - index; // swap 5 <-> 10
                         }
                     }
 
@@ -60,64 +57,28 @@ namespace ScottPlot.Triangulation
                     IEdge t = new HorizontalEdge(lt); // Top edge
 
                     // all cases described in https://en.wikipedia.org/wiki/Marching_squares
-                    switch (index)
+                    if (index == 0 || index == 15) // empty cell
                     {
-                        case 0:
-                            break;
-                        case 1:
-                            yield return new(l, b, cellID);
-                            break;
-                        case 2:
-                            yield return new(b, r, cellID);
-                            break;
-                        case 3:
-                            yield return new(l, r, cellID);
-                            break;
-                        case 4:
-                            yield return new(t, r, cellID);
-                            break;
-                        case 5:
-                            yield return new EdgeLinePair(l, t, b, r, cellID);
-                            break;
-                        case 6:
-                            yield return new(b, t, cellID);
-                            break;
-                        case 7:
-                            yield return new(l, t, cellID);
-                            break;
-                        case 8:
-                            yield return new(l, t, cellID);
-                            break;
-                        case 9:
-                            yield return new(b, t, cellID);
-                            break;
-                        case 10:
-                            yield return new EdgeLinePair(l, b, t, r, cellID);
-                            break;
-                        case 11:
-                            yield return new(t, r, cellID);
-                            break;
-                        case 12:
-                            yield return new(l, r, cellID);
-                            break;
-                        case 13:
-                            yield return new(b, r, cellID);
-                            break;
-                        case 14:
-                            yield return new(l, b, cellID);
-                            break;
-                        case 15:
-                            break;
-                        default: throw new Exception("Unexpected case");
+                        continue;
                     }
+                    yield return index switch
+                    {
+                        1 or 14 => new EdgeLine(l, b, cellID),
+                        2 or 13 => new EdgeLine(b, r, cellID),
+                        3 or 12 => new EdgeLine(l, r, cellID),
+                        4 or 11 => new EdgeLine(t, r, cellID),
+                        5 => new EdgeLinePair(l, t, b, r, cellID),
+                        6 or 9 => new EdgeLine(b, t, cellID),
+                        7 or 8 => new EdgeLine(l, t, cellID),
+                        10 => new EdgeLinePair(l, b, t, r, cellID),
+                        _ => throw new Exception("Unexpected case"),
+                    };
                 }
         }
         private static IEnumerable<IEnumerable<IEdge>> MergeContourParts(Dictionary<int, EdgeLine> edgeLines, int GridHeight)
         {
             while (edgeLines.Count > 0)
             {
-                List<IEdge> currentPath = new List<IEdge>();
-
                 var startELEntry = edgeLines.First();
                 var startEL = startELEntry.Value;
 
@@ -136,10 +97,9 @@ namespace ScottPlot.Triangulation
 
         private static IEnumerable<IEdge> FindNeigbhorsChain(IEdge startEdge, int startCellId, Dictionary<int, EdgeLine> edgeLineLookup, int GridHeight)
         {
-            List<IEdge> currentPath = new List<IEdge>();
             IEdge current = startEdge;
             int currentCellId = startCellId;
-            bool found = false;
+            bool found;
             do
             {
                 EdgeLine candidate;
@@ -148,7 +108,7 @@ namespace ScottPlot.Triangulation
                 if (found)
                 {
                     edgeLineLookup.Remove(key);
-                    if (candidate is EdgeLinePair candidatePair)
+                    if (candidate is EdgeLinePair candidatePair) // 2 lines in cell. We take the right one, and we put the other one back.
                     {
                         if (candidate.first.Equals(current))
                         {
@@ -170,20 +130,17 @@ namespace ScottPlot.Triangulation
                             current = candidatePair.first1;
                             edgeLineLookup.Add(key, new EdgeLine(candidatePair.first, candidatePair.second, candidatePair.CellID));
                         }
-                        currentCellId = candidate.CellID;
 
                     }
-                    else
+                    else // single line in cell
                     {
                         if (candidate.first.Equals(current))
                         {
                             current = candidate.second;
-                            currentPath.Add(current);
                         }
                         else
                         {
                             current = candidate.first;
-                            currentPath.Add(current);
                         }
                     }
 
