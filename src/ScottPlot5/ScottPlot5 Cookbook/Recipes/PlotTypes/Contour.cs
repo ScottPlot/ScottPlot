@@ -27,7 +27,9 @@ public class Contour : ICategory
                 }
             }
 
-            myPlot.Add.ContourLines(cs);
+            var contour = myPlot.Add.ContourLines(cs);
+            contour.LineColor = Colors.Black.WithAlpha(.5);
+            contour.LinePattern = LinePattern.Dotted;
 
             myPlot.Axes.TightMargins();
             myPlot.HideGrid();
@@ -43,7 +45,8 @@ public class Contour : ICategory
         [Test]
         public override void Execute()
         {
-            Coordinates3d[] cs = new Coordinates3d[50];
+            // generate irregularly spaced X/Y/Z data points
+            Coordinates3d[] cs = new Coordinates3d[1000];
             for (int i = 0; i < cs.Length; i++)
             {
                 double x = Generate.RandomNumber(0, Math.PI * 2);
@@ -52,8 +55,23 @@ public class Contour : ICategory
                 cs[i] = new(x, y, z);
             }
 
-            myPlot.Add.ContourLines(cs);
+            // place markers at each data point
+            double minZ = cs.Select(x => x.Z).Min();
+            double maxZ = cs.Select(x => x.Z).Max();
+            double spanZ = maxZ - minZ;
+            IColormap cmap = new ScottPlot.Colormaps.MellowRainbow();
+            for (int i = 0; i < cs.Length; i++)
+            {
+                double fraction = (cs[i].Z - minZ) / (spanZ);
+                var marker = myPlot.Add.Marker(cs[i].X, cs[i].Y);
+                marker.Color = cmap.GetColor(fraction).WithAlpha(.8);
+                marker.Size = 5;
+            }
 
+            // show contour lines
+            var contour = myPlot.Add.ContourLines(cs);
+
+            // style the plot
             myPlot.Axes.TightMargins();
             myPlot.HideGrid();
         }
@@ -79,8 +97,12 @@ public class Contour : ICategory
 
             var heatmap = myPlot.Add.Heatmap(cs);
             heatmap.FlipVertically = true;
+            heatmap.Colormap = new ScottPlot.Colormaps.MellowRainbow();
 
-            myPlot.Add.ContourLines(cs);
+            var contour = myPlot.Add.ContourLines(cs);
+            contour.LabelStyle.Bold = true;
+            contour.LinePattern = LinePattern.DenselyDashed;
+            contour.LineColor = Colors.Black.WithAlpha(.5);
 
             myPlot.Axes.TightMargins();
             myPlot.HideGrid();
@@ -107,8 +129,9 @@ public class Contour : ICategory
             }
 
             var cl = myPlot.Add.ContourLines(cs, count: 25);
-            cl.Colormap = new ScottPlot.Colormaps.Turbo();
+            cl.Colormap = new ScottPlot.Colormaps.MellowRainbow();
             cl.LineWidth = 3;
+            cl.LabelStyle.IsVisible = false;
 
             myPlot.Axes.TightMargins();
             myPlot.HideGrid();
