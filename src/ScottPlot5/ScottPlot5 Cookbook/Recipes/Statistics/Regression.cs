@@ -8,7 +8,7 @@ public class Regression : ICategory
 
     public class Linear : RecipeBase
     {
-        public override string Name => "LinearRegression";
+        public override string Name => "Linear Regression";
         public override string Description => "Fit a line to a collection of X/Y data points.";
 
         [Test]
