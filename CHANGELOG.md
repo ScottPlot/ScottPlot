@@ -25,6 +25,7 @@ _Not yet on NuGet..._
 * Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247, #4324)
 * Colormap: added `MellowRainbow` similar to Jet and Turbo but with mellow tones to improve appearance of thin lines on a white background (#4325)
 * ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319)
+* PixelLine: Added `Center` property (#4335, #4318) @brokoli777
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
