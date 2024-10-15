@@ -18,13 +18,14 @@ _Not yet on NuGet..._
 * SignalXY: Fixed bug causing plots with inverted horizontal axes to crash under specific conditions (#4313, #4315) @StendProg @lguelat
 * CoordinateRange: Refactored to improve support for inverted ranges (#4316) @CoderPM2011
 * Axes: Added a `Plot.Axes.TightMargins()` shortcut for setting autoscale margins to tightly fit the data
-* ContourLines: New plot type for displaying lines that mark points of equal elevation given a collection of 3D points (#4296, #2330, #3795) @jon-rizzo @StendProg
+* ContourLines: New plot type for displaying lines that mark points of equal elevation given a collection of 3D points (#4296, #2330, #3795, #4326) @jon-rizzo @StendProg
 * Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013, #4342) @KosmosWerner @ByteSore
 * Radar: Improved rotational direction of labels (#4321, #4310) @CoderPM2011 @bry-decelles
 * Axes: Added `Plot.Axes.MarginsX()` and `Plot.Axes.MarginsY()` for changing margins in a single axis without changing the other (#4246)
 * Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247, #4324)
 * Colormap: added `MellowRainbow` similar to Jet and Turbo but with mellow tones to improve appearance of thin lines on a white background (#4325)
-* ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319)
+* ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319, #4337, #4329) @CoderPM2011
+* PixelLine: Added `Center` property (#4335, #4318) @brokoli777
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_

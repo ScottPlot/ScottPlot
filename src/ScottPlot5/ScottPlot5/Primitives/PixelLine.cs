@@ -25,6 +25,8 @@ public readonly struct PixelLine
 
     public Pixel Pixel2 => new(X2, Y2);
 
+    public Pixel Center => new((X1 + X2) / 2, (Y1 + Y2) / 2);
+
     public PixelLine(float x1, float y1, float x2, float y2)
     {
         X1 = x1;
