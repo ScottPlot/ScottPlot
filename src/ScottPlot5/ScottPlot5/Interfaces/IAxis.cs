@@ -9,7 +9,7 @@
 public interface IAxis : IPanel
 {
     /// <summary>
-    /// Min/Max range currently displayed by this axis
+    /// Value1/Value2 range currently displayed by this axis
     /// </summary>
     CoordinateRangeMutable Range { get; } // TODO: don't expose this
 

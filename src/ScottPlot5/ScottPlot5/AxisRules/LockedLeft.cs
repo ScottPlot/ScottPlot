@@ -7,6 +7,6 @@ public class LockedLeft(IXAxis xAxis, double xMin) : IAxisRule
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        XAxis.Range.Min = XMin;
+        XAxis.Range.Value1 = XMin;
     }
 }

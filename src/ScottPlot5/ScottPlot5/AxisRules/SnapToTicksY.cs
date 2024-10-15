@@ -15,8 +15,8 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         var oldTop = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Max;
         var oldBottom = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Min;
         var newLimits = YAxis.Range;
-        double newTop = newLimits.Max;
-        double newBottom = newLimits.Min;
+        double newTop = newLimits.Value2;
+        double newBottom = newLimits.Value1;
 
         // do not attempt to set limits if they have not changed
         if (newTop == oldTop & newBottom == oldBottom)
@@ -89,7 +89,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         }
 
         //This is to handle panning, which can be jumpy if we snap before it has panned more than half the tick interval
-        if (isPanning & Math.Abs(newLimits.Max - oldTop) < tickDelta / 2)
+        if (isPanning & Math.Abs(newLimits.Value2 - oldTop) < tickDelta / 2)
         {
             newTop = oldTop;
             newBottom = oldBottom;

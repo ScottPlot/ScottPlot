@@ -39,10 +39,10 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
 
     public CoordinateRect(CoordinateRangeMutable xRange, CoordinateRangeMutable yRange)
     {
-        Left = xRange.Min;
-        Right = xRange.Max;
-        Bottom = yRange.Min;
-        Top = yRange.Max;
+        Left = xRange.Value1;
+        Right = xRange.Value2;
+        Bottom = yRange.Value1;
+        Top = yRange.Value2;
     }
 
     public CoordinateRect(IAxes axes) : this(axes.XAxis.Range, axes.YAxis.Range)

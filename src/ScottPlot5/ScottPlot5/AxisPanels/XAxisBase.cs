@@ -124,6 +124,6 @@ public abstract class XAxisBase : AxisBase, IXAxis
     {
         using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
-        TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
+        TickGenerator.Regenerate(Range.ToCoordinateRange(), Edge, size, paint, TickLabelStyle);
     }
 }

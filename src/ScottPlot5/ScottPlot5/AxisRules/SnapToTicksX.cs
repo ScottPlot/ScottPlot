@@ -17,8 +17,8 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         var oldRight = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
         var oldLeft = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
         var newLimits = XAxis.Range;
-        double newRight = newLimits.Max;
-        double newLeft = newLimits.Min;
+        double newRight = newLimits.Value2;
+        double newLeft = newLimits.Value1;
 
         // do not attempt to set limits if they have not changed
         if (newRight == oldRight & newLeft == oldLeft)
@@ -91,7 +91,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         }
 
         //This is to handle panning, which can be jumpy if we snap before it has panned more than half the tick interval
-        if (isPanning & Math.Abs(newLimits.Max - oldRight) < tickDelta / 2)
+        if (isPanning & Math.Abs(newLimits.Value2 - oldRight) < tickDelta / 2)
         {
             newRight = oldRight;
             newLeft = oldLeft;

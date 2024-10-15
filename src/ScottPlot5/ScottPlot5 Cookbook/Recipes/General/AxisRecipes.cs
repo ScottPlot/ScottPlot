@@ -293,7 +293,7 @@ public class AxisAndTicks : ICategory
                 new ScottPlot.TickGenerators.TimeUnits.Hour(), 1,
                 // Here we provide a delegate to override when the ticks start. In this case, we want the majors to be
                 // 00:00, 06:00, 12:00, etc. and the minors to be on the hour, every hour, so we start at midnight.
-                // If you do not provide this delegate, the ticks will start at whatever the Min on the x-axis is.
+                // If you do not provide this delegate, the ticks will start at whatever the Value1 on the x-axis is.
                 // The major ticks might end up as 1:30am, 7:30am, etc, and the tick positions will be fixed on the plot
                 // when it is panned around.
                 dt => new DateTime(dt.Year, dt.Month, dt.Day));

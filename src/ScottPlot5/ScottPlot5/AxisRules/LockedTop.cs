@@ -7,6 +7,6 @@ public class LockedTop(IYAxis yAxis, double yMax) : IAxisRule
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        YAxis.Range.Max = YMax;
+        YAxis.Range.Value2 = YMax;
     }
 }

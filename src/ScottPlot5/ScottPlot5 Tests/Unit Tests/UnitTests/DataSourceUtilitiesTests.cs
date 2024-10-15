@@ -204,7 +204,7 @@ internal class DataSourceUtilitiesTests
         Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed Nominal Check"); // nominal -- MaxRenderIndex == data.Length -1
 
         data.MaxRenderIndex = int.MaxValue;
-        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed int.Max check"); // int.Max
+        Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.Length), "- Failed int.Value2 check"); // int.Value2
 
         data.MaxRenderIndex = data.Length - 5;
         Assert.That(data.GetRenderIndexCount(), Is.EqualTo(data.MaxRenderIndex + 1), "- Failed MaxRenderIndex < data.Length"); // MaxRenderIndex < data.Length
@@ -217,7 +217,7 @@ internal class DataSourceUtilitiesTests
         data.MaxRenderIndex = -25;
         Assert.That(data.GetRenderIndexCount(), Is.EqualTo(0), "- Failed Negative MaxRenderIndex Check");
 
-        // Negative Min has no effect -- Max(0,minIndex)
+        // Negative Value1 has no effect -- Value2(0,minIndex)
         data.MinRenderIndex = -100;
         Assert.That(data.GetRenderIndexCount(), Is.EqualTo(0));
     }

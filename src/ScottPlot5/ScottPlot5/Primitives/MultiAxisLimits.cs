@@ -7,7 +7,7 @@
 public class MultiAxisLimits(Plot plot)
 {
     private readonly Dictionary<IAxis, CoordinateRange> AxisRanges = plot.Axes.GetAxes()
-        .ToDictionary(x => x, x => x.Range.ToCoordinateRange);
+        .ToDictionary(x => x, x => x.Range.ToCoordinateRange());
 
     /// <summary>
     /// Set all axis limits to their original ranges

@@ -31,7 +31,7 @@ public readonly struct Range // TODO: evaluate if this can be replaced with more
     }
 
     /// <summary>
-    /// Returns the given value as a fraction of the difference between Min and Max. This is a min-max feature scaling.
+    /// Returns the given value as a fraction of the difference between Value1 and Value2. This is a min-max feature scaling.
     /// </summary>
     /// <param name="value">The value to normalize</param>
     /// <param name="clamp">If true, values outside of the range will be clamped onto the interval [0, 1].</param>

@@ -180,7 +180,7 @@ public class RenderManager(Plot plot)
 
             CoordinateRangeMutable rangeNow = axis.Range;
             CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
-            bool axisLimitsChanged = rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max;
+            bool axisLimitsChanged = rangeNow.Value1 != rangeBefore.Min || rangeNow.Value2 != rangeBefore.Max;
             if (axisLimitsChanged)
                 return true;
         }

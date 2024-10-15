@@ -113,6 +113,6 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
                 MaxObservedRangeY = MaxObservedRangeY.Expanded(max);
         }
 
-        LastRenderHorizontalSpan = Axes.XAxis.Range.ToCoordinateRange;
+        LastRenderHorizontalSpan = Axes.XAxis.Range.ToCoordinateRange();
     }
 }

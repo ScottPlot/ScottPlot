@@ -92,7 +92,7 @@ public readonly struct RenderDetails
         AxisLimits = rp.Plot.Axes.GetLimits();
         PreviousAxisLimits = lastRender.AxisLimits;
         PreviousAxisLimitsByAxis = lastRender.AxisLimitsByAxis;
-        AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange);
+        AxisLimitsByAxis = rp.Plot.Axes.GetAxes().ToDictionary(x => x, x => x.Range.ToCoordinateRange());
         Layout = rp.Layout;
         Count = lastRender.Count + 1;
         AxisLimitsChanged = AxisLimitsChangedChecker();

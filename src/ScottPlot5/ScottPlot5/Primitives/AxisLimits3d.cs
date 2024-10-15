@@ -35,6 +35,6 @@ public readonly struct AxisLimits3d
             zRange.Expand(c.Z);
         }
 
-        return new AxisLimits3d(xRange.Min, xRange.Max, yRange.Min, yRange.Max, zRange.Min, zRange.Max);
+        return new AxisLimits3d(xRange.Value1, xRange.Value2, yRange.Value1, yRange.Value2, zRange.Value1, zRange.Value2);
     }
 }

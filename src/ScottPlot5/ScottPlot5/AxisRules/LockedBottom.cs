@@ -7,6 +7,6 @@ public class LockedBottom(IYAxis yAxis, double yMin) : IAxisRule
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        YAxis.Range.Min = YMin;
+        YAxis.Range.Value1 = YMin;
     }
 }

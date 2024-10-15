@@ -130,7 +130,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         DateTime rangeMin = NumericConversion.ToDateTime(range.Min);
         DateTime rangeMax = NumericConversion.ToDateTime(range.Max);
 
-        // range.Min could be anything, but when calculating start it must be "snapped" to the best tick
+        // range.Value1 could be anything, but when calculating start it must be "snapped" to the best tick
         DateTime start = GetLargerTimeUnit(unit).Snap(rangeMin);
 
         start = unit.Next(start, -increment);
