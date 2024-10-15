@@ -19,7 +19,7 @@ _Not yet on NuGet..._
 * CoordinateRange: Refactored to improve support for inverted ranges (#4316) @CoderPM2011
 * Axes: Added a `Plot.Axes.TightMargins()` shortcut for setting autoscale margins to tightly fit the data
 * ContourLines: New plot type for displaying lines that mark points of equal elevation given a collection of 3D points (#4296, #2330, #3795) @jon-rizzo @StendProg
-* Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013) @KosmosWerner @ByteSore
+* Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013, #4342) @KosmosWerner @ByteSore
 * Radar: Improved rotational direction of labels (#4321, #4310) @CoderPM2011 @bry-decelles
 * Axes: Added `Plot.Axes.MarginsX()` and `Plot.Axes.MarginsY()` for changing margins in a single axis without changing the other (#4246)
 * Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247, #4324)
