@@ -821,6 +821,18 @@ public class PlottableAdder(Plot plot)
         return rp;
     }
 
+    public ScaleBar ScaleBar(double width, double height)
+    {
+        ScaleBar scalebar = new()
+        {
+            Width = width,
+            Height = height,
+        };
+
+        Plot.PlottableList.Add(scalebar);
+        return scalebar;
+    }
+
     public Scatter Scatter(IScatterSource source, Color? color = null)
     {
         Color nextColor = color ?? GetNextColor();
