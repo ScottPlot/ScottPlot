@@ -19,7 +19,7 @@ public class MauiPlotMenu : IPlotMenu
         ContextMenuItem saveImage = new()
         {
             Label = "Save Image",
-            OnInvoke = OpenSaveImageDialog,
+            OnInvoke = SaveImageDialog,
         };
 
         // TODO: ContextMenuItem copyImage
@@ -52,7 +52,7 @@ public class MauiPlotMenu : IPlotMenu
         };
     }
 
-    public async void OpenSaveImageDialog(IPlotControl plotControl)
+    public async void SaveImageDialog(IPlotControl plotControl)
     {
         if (plotControl is not MauiPlot mauiPlot) return;
 
