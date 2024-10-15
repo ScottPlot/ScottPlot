@@ -78,9 +78,47 @@ public static class Drawing
         DrawPath(canvas, paint, path, lineStyle);
     }
 
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        using SKPath path = new();
+        path.MoveTo(pixels.First().ToSKPoint());
+        foreach (Pixel px in pixels.Skip(1))
+        {
+            path.LineTo(px.ToSKPoint());
+        }
+
+        if (close)
+        {
+            path.LineTo(pixels.First().ToSKPoint());
+        }
+        DrawPath(canvas, paint, path, lineStyle);
+
+        if (labelStyle.IsVisible == false)
+            return;
+
+        labelStyle.ApplyToPaint(paint);
+
+        var measuredText = paint.MeasureText(label);
+        using (SKPathMeasure pathMeasure = new SKPathMeasure(path, false, 1))
+            DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
+    }
+
+    public static void DrawTextOnPath(SKCanvas canvas, SKPaint paint, SKPath path, string text, float hOffset = 0, float vOffset = 0)
+    {
+        if (string.IsNullOrEmpty(text))
+            return;
+        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint);
+    }
+
     public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle)
     {
         DrawPath(canvas, paint, path.Pixels, lineStyle);
+    }
+    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle, string text, LabelStyle labelStyle)
+    {
+        DrawPath(canvas, paint, path.Pixels, lineStyle, text, labelStyle);
     }
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, FillStyle fillStyle)

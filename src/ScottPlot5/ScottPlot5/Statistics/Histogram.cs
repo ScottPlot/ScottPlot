@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace ScottPlot.Statistics;
+﻿namespace ScottPlot.Statistics;
 
 public class Histogram
 {
@@ -66,6 +62,14 @@ public class Histogram
     /// Number of values that were greater than the upper edge of the last bin.
     /// </summary>
     public int MaxOutlierCount { get; private set; } = 0;
+
+    /// <summary>
+    /// Create a histogram with the given number of bins arranged to contain the full range of data values
+    /// </summary>
+    public Histogram(IEnumerable<double> values, int binCount = 10) : this(values.Min(), values.Max(), binCount)
+    {
+        AddRange(values);
+    }
 
     /// <summary>
     /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="AddRange(IEnumerable{double})"/>
