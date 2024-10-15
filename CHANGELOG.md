@@ -24,7 +24,7 @@ _Not yet on NuGet..._
 * Axes: Added `Plot.Axes.MarginsX()` and `Plot.Axes.MarginsY()` for changing margins in a single axis without changing the other (#4246)
 * Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247, #4324)
 * Colormap: added `MellowRainbow` similar to Jet and Turbo but with mellow tones to improve appearance of thin lines on a white background (#4325)
-* ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319)
+* ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319, #4337, #4329) @CoderPM2011
 * PixelLine: Added `Center` property (#4335, #4318) @brokoli777
 
 ## ScottPlot 5.0.39
