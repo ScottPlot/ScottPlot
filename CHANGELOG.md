@@ -27,6 +27,7 @@ _Not yet on NuGet..._
 * ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319, #4337, #4329) @CoderPM2011
 * PixelLine: Added `Center` property (#4335, #4318) @brokoli777
 * MultiPlot: New class for creating composite figures containing multiple distinct `Plot` figures (#3948)
+* Plot: Deprecated `GetImageHtml()` in favor of `GetPngHtml()` and `GetSvgHtml()` (#4347)
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_
