@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -10,7 +10,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.Blazor</PackageId>
-        <Version>5.0.39</Version>
+        <Version>5.0.40</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
