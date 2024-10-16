@@ -60,6 +60,25 @@ public class SignalXY : ICategory
         }
     }
 
+    public class SignalXYDateTime : RecipeBase
+    {
+        public override string Name => "SignalXY DateTime Axis";
+        public override string Description => "SignalXY plots can display unevenly spaced " +
+            "time series data using a DateTime horizontal axis.";
+
+        [Test]
+        public override void Execute()
+        {
+            DateTime start = new(2024, 01, 01);
+            DateTime[] xs = Generate.ConsecutiveDays(100, start);
+
+            double[] ys = Generate.RandomWalk(100);
+
+            myPlot.Add.SignalXY(xs, ys);
+            myPlot.Axes.DateTimeTicksBottom();
+        }
+    }
+
     public class SignalXYRenderIndexes : RecipeBase
     {
         public override string Name => "Partial SignalXY Rendering";
