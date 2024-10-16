@@ -21,9 +21,19 @@ class MultiPlotTests
     [Test]
     public void Test_Multiplot_Basic()
     {
+        Plot plot1 = new();
+        var sig1 = plot1.Add.Signal(Generate.Sin());
+        sig1.Color = Colors.Blue;
+        sig1.LineWidth = 5;
+
+        Plot plot2 = new();
+        var sig2 = plot2.Add.Signal(Generate.Cos());
+        sig2.Color = Colors.Red;
+        sig2.LineWidth = 5;
+
         MultiPlot mp = new();
-        mp.AddSubplot(MakePlot("one"), 0, 2, 0, 1);
-        mp.AddSubplot(MakePlot("two"), 1, 2, 0, 1);
+        mp.AddSubplot(plot1, 0, 2, 0, 1);
+        mp.AddSubplot(plot2, 1, 2, 0, 1);
         mp.SaveTestImage();
     }
 }
