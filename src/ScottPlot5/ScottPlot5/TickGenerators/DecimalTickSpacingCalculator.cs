@@ -22,7 +22,7 @@ public class DecimalTickSpacingCalculator
         {
             double tickBelow = range.Min - firstTickOffset;
             double firstTick = majorTickPositions.Length > 0 ? majorTickPositions[0] : tickBelow;
-            double nextTick = tickBelow + tickSpacing;
+            double nextTick = firstTick + tickSpacing;
             majorTickPositions = [firstTick, nextTick];
         }
 
