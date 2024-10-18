@@ -20,8 +20,9 @@ public class MultiplotRecipes : ICategory
             ScottPlot.Plot plot2 = new();
             plot2.Add.Signal(Generate.Cos());
 
-            multiplot.AddSubplot(plot1, 0, 2, 0, 1);
-            multiplot.AddSubplot(plot2, 1, 2, 0, 1);
+            multiplot.AddPlot(plot1);
+            multiplot.AddPlot(plot2);
+            multiplot.LayoutRows();
         }
     }
 }
