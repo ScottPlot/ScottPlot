@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.41
 _Not yet on NuGet..._
+* Ticks: Improved automatic tick generation for axes of extremely small plots (#4353, #4354) @StendProg @Cassar17
 
 ## ScottPlot 5.0.40
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_
