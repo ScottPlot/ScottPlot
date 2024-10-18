@@ -20,6 +20,11 @@ public readonly struct CoordinateRange(double value1, double value2)
     public double Span => Value2 - Value1;
 
     /// <summary>
+    /// Value located in the center of the range, between <see cref="Value1"/> and <see cref="Value2"/> (may be negative)
+    /// </summary>
+    public double Center => (Value1 + Value2) / 2;
+
+    /// <summary>
     /// Distance from <see cref="Min"/> to <see cref="Max"/> (always positive)
     /// </summary>
     public double Length => Math.Abs(Span);
