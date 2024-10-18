@@ -1,5 +1,4 @@
-﻿using ScottPlotCookbook.Recipes;
-using ScottPlotCookbook.Website;
+﻿using ScottPlotCookbook.Website;
 
 namespace ScottPlotCookbook;
 
@@ -11,11 +10,14 @@ public class SourceDatabase
     public readonly List<RecipeInfo> Recipes = new();
 
     private readonly Dictionary<ICategory, IEnumerable<IRecipe>> RecipesByCategory = Query.GetRecipesByCategory();
+    private readonly Dictionary<string, string> MultiplotDescriptions = Query.GetMultiplotDescriptions();
 
     public SourceDatabase()
     {
         foreach (string sourceFilePath in GetRecipeSourceFilePaths())
         {
+            if (sourceFilePath.EndsWith("Base.cs"))
+                continue;
             IEnumerable<RecipeInfo> recipes = GetRecipeSources(sourceFilePath);
             Recipes.AddRange(recipes);
         }
@@ -90,7 +92,7 @@ public class SourceDatabase
                 continue;
             }
 
-            if (trimmedLine.StartsWith("public class") && trimmedLine.EndsWith(": RecipeBase"))
+            if (trimmedLine.StartsWith("public class") && trimmedLine.EndsWith("RecipeBase"))
             {
                 recipeClassName = trimmedLine.Split(" ")[2];
                 continue;
@@ -130,14 +132,30 @@ public class SourceDatabase
                 string shortVersionString = ScottPlot.Version.VersionString.Replace(".", ", ").Split("-")[0];
 
                 StringBuilder sb = new();
-                //sb.AppendLine($"ScottPlot.Version.ShouldBe({shortVersionString});");
-                sb.AppendLine("ScottPlot.Plot myPlot = new();");
+                if (categoryClassName.Contains("Multiplot"))
+                {
+                    sb.AppendLine("ScottPlot.Multiplot multiplot = new();");
+                }
+                else
+                {
+                    sb.AppendLine("ScottPlot.Plot myPlot = new();");
+                }
                 sb.AppendLine();
                 sb.AppendLine(source.ToString().Trim());
                 sb.AppendLine();
-                sb.AppendLine($"myPlot.SavePng(\"demo.png\", 400, 300);");
+                if (categoryClassName.Contains("Multiplot"))
+                {
+                    sb.AppendLine($"multiplot.SavePng(\"demo.png\", 400, 400);");
+                }
+                else
+                {
+                    sb.AppendLine($"myPlot.SavePng(\"demo.png\", 400, 300);");
+                }
 
-                string description = GetDescription(recipeName);
+                string description = categoryClassName.Contains("Multiplot")
+                    ? MultiplotDescriptions[recipeName]
+                    : GetDescription(recipeName);
+
                 RecipeInfo thisRecipe = new(chapter, category, recipeName, description, sb.ToString(), categoryClassName, recipeClassName, sourceFilePath);
                 recipes.Add(thisRecipe);
 
@@ -154,6 +172,13 @@ public class SourceDatabase
 
                 source.AppendLine(newSourceLine);
             }
+        }
+
+
+
+        if (sourceFilePath.Contains("Multiplot"))
+        {
+            Console.WriteLine($"RECIPES FOUND {recipes.Count}");
         }
 
         return recipes;

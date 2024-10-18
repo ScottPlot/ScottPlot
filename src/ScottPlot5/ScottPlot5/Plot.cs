@@ -271,14 +271,28 @@ public class Plot : IDisposable
         return new Image(surface);
     }
 
+    [Obsolete("This method is deprecated. Use GetPngHtml() or GetSvgHtml()", true)]
+    public string GetImageHtml(int width, int height)
+    {
+        return GetPngHtml(width, height);
+    }
+
     /// <summary>
     /// Render the plot and return an HTML img element containing a Base64-encoded PNG
     /// </summary>
-    public string GetImageHtml(int width, int height)
+    public string GetPngHtml(int width, int height)
     {
         Image img = GetImage(width, height);
         byte[] bytes = img.GetImageBytes();
         return ImageOperations.GetImageHtml(bytes);
+    }
+
+    /// <summary>
+    /// Render the plot and return a plain text SVG element suitable for insertion into HTML
+    /// </summary>
+    public string GetSvgHtml(int width, int height)
+    {
+        return GetSvgXml(width, height);
     }
 
     public SavedImageInfo SaveJpeg(string filePath, int width, int height, int quality = 85)

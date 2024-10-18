@@ -1,7 +1,11 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Colormaps;
+
+namespace ScottPlot;
 
 public static class Colormap
 {
+    public static IColormap Default { get; set; } = new MellowRainbow();
+
     /// <summary>
     /// Return an array containing every available colormap
     /// </summary>
@@ -38,5 +42,10 @@ public static class Colormap
         bmp.Encode(ms, SKEncodedImageFormat.Jpeg, quality: 85);
         byte[] bytes = ms.ToArray();
         return new ScottPlot.Image(bytes);
+    }
+
+    public static IColormap FromColors(Color[] colors)
+    {
+        return new LinearSegmented(colors);
     }
 }

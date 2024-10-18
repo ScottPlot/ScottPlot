@@ -1,4 +1,4 @@
-﻿using ScottPlot.Control;
+using ScottPlot.Control;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 
@@ -16,80 +16,52 @@ public class MauiPlot : SKCanvasView, IPlotControl
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public float DisplayScale { get; set; } = 1;
-
+    internal Pixel LastPixel { get; set; }
     public MauiPlot()
     {
-        DisplayScale = DetectDisplayScale();
         Plot = new Plot() { PlotControl = this };
+        DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
 
-        PanGestureRecognizer panGestureRecognizer = new PanGestureRecognizer();
-        PointerGestureRecognizer pointerGestureRecognizer = new PointerGestureRecognizer();
-        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer()
-        { Buttons = ButtonsMask.Secondary };
-        TapGestureRecognizer twoTapGestureRecognizer = new TapGestureRecognizer()
-        { Buttons = ButtonsMask.Primary, NumberOfTapsRequired = 2 };
-        PinchGestureRecognizer pinchGestureRecognizer = new PinchGestureRecognizer();
+        var panGestureRecognizer = new PanGestureRecognizer();
+        var pointerGestureRecognizer = new PointerGestureRecognizer();
+        var tapGestureRecognizer = new TapGestureRecognizer() { Buttons = ButtonsMask.Secondary };
+        var pinchGestureRecognizer = new PinchGestureRecognizer();
 
         panGestureRecognizer.PanUpdated += (s, e) =>
         {
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    Interaction.MouseDown(Pixel.Zero, MouseButton.Left);
-                    break;
-
-                case GestureStatus.Running:
-                    Interaction.OnMouseMove(new Pixel(e.TotalX, e.TotalY));
-                    break;
-
-                case GestureStatus.Completed:
-                    Interaction.MouseUp(new Pixel(e.TotalX, e.TotalY), MouseButton.Left);
-                    break;
-            }
+            UserInputProcessor.ProcessPanUpdated(this, e);
         };
 
         pinchGestureRecognizer.PinchUpdated += (s, e) =>
         {
-            if (e.Status == GestureStatus.Running && e.Scale != 1)
-                Interaction.MouseWheelVertical(new Pixel(Width / 2, Height / 2), e.Scale > 1 ? 1 : -1);
+            UserInputProcessor.ProcessPinchUpdated(this, e);
         };
 
         pointerGestureRecognizer.PointerMoved += (s, e) =>
         {
-            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
-            Interaction.OnMouseMove(pixel);
+            UserInputProcessor.ProcessPointerMoved(this, e);
         };
 
         pointerGestureRecognizer.PointerPressed += (s, e) =>
         {
-            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
-            Interaction.MouseDown(pixel, MouseButton.Left);
+            UserInputProcessor.ProcessPointerPressed(this, e);
         };
 
         pointerGestureRecognizer.PointerReleased += (s, e) =>
         {
-            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
-            Interaction.MouseUp(pixel, MouseButton.Left);
+            UserInputProcessor.ProcessPointerReleased(this, e);
         };
 
         tapGestureRecognizer.Tapped += (s, e) =>
         {
-            var pixel = e.GetPosition(null)?.ToPixel() ?? Pixel.NaN;
-            ShowContextMenu(pixel);
+            UserInputProcessor.ProcessContext(this, e);
         };
 
-        twoTapGestureRecognizer.Tapped += (s, e) =>
-        {
-            var pixel = e.GetPosition(this)?.ToPixel() ?? Pixel.NaN;
-            Interaction.MouseWheelVertical(pixel, 1);
-        };
-
-        GestureRecognizers.Add(pointerGestureRecognizer);
         GestureRecognizers.Add(tapGestureRecognizer);
-        GestureRecognizers.Add(twoTapGestureRecognizer);
+        GestureRecognizers.Add(pointerGestureRecognizer);
         GestureRecognizers.Add(pinchGestureRecognizer);
         GestureRecognizers.Add(panGestureRecognizer);
     }
@@ -118,10 +90,8 @@ public class MauiPlot : SKCanvasView, IPlotControl
     {
         base.OnPaintSurface(e);
 
-        var _info = e.Info;
-
         e.Surface.Canvas.Clear();
-        Plot.Render(e.Surface.Canvas, _info.Width, _info.Height);
+        Plot.Render(e.Surface.Canvas, e.Info.Width, e.Info.Height);
     }
 
     public float DetectDisplayScale()
@@ -133,5 +103,13 @@ public class MauiPlot : SKCanvasView, IPlotControl
         }
 
         return DisplayScale;
+    }
+
+    internal static Page? GetFirstPageParent(Element element)
+    {
+        if (element.Parent is null) return null;
+        else if (element.Parent is Page parent) return parent;
+        else if (element.Parent is Element e) return GetFirstPageParent(e);
+        else return null;
     }
 }

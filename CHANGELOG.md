@@ -1,5 +1,13 @@
-## ScottPlot 5.0.40
+## ScottPlot 5.0.41
 _Not yet on NuGet..._
+* Ticks: Improved automatic tick generation for axes of extremely small plots (#4353, #4354) @StendProg @Cassar17
+* CoordinateRange: Added a `Center` property to return the value halfway between the range boundary values (#4316, #4357) @idotta
+* Multiplot: Improve support for advanced layouts and add examples to cookbook (#4345)
+* Colormap: Added `Default` property to provide quick access to a customizable standard colormap (defaults to `MellowRainbow`)
+* Palette: Added `Default` property to provide quick access to a customizable standard Palette (defaults to `Category10`)
+
+## ScottPlot 5.0.40
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_
 * DataLogger: Added `Add()` overloads to be consistent the original DataLogger API (#4243, #4114) @drolevar @jpgarza93
 * Fonts: Improve typeface caching to significantly improve Avalonia performance on Linux (#3439, #4250) @kebox7
 * Generate: Improved `RandomNumbers()` to include lower boundary as described in XML docs (#4251, #4252) @aespitia @LeaFrock @ArchieCoder
@@ -18,9 +26,16 @@ _Not yet on NuGet..._
 * SignalXY: Fixed bug causing plots with inverted horizontal axes to crash under specific conditions (#4313, #4315) @StendProg @lguelat
 * CoordinateRange: Refactored to improve support for inverted ranges (#4316) @CoderPM2011
 * Axes: Added a `Plot.Axes.TightMargins()` shortcut for setting autoscale margins to tightly fit the data
-* ContourLines: New plot type for displaying lines that mark points of equal elevation given a collection of 3D points (#4296, #2330, #3795) @jon-rizzo @StendProg
-* Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013) @KosmosWerner @ByteSore
+* ContourLines: New plot type for displaying lines that mark points of equal elevation given a collection of 3D points (#4296, #2330, #3795, #4326) @jon-rizzo @StendProg
+* Maui: Improved the .NET MAUI ScottPlot control and added quickstart documentation to the website (#4320, #4023, #4013, #4342) @KosmosWerner @ByteSore
 * Radar: Improved rotational direction of labels (#4321, #4310) @CoderPM2011 @bry-decelles
+* Axes: Added `Plot.Axes.MarginsX()` and `Plot.Axes.MarginsY()` for changing margins in a single axis without changing the other (#4246)
+* Colormap: Added `Colormap.FromColors()` to generate colormaps using interpolated gradients between a user defined collection of colors (#4247, #4324)
+* Colormap: added `MellowRainbow` similar to Jet and Turbo but with mellow tones to improve appearance of thin lines on a white background (#4325)
+* ScaleBar: New plot type for communicating scale as a concise alternative to the axis frame (#4319, #4337, #4329) @CoderPM2011
+* PixelLine: Added `Center` property (#4335, #4318) @brokoli777
+* MultiPlot: New class for creating composite figures containing multiple distinct `Plot` figures (#3948)
+* Plot: Deprecated `GetImageHtml()` in favor of `GetPngHtml()` and `GetSvgHtml()` (#4347)
 
 ## ScottPlot 5.0.39
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-08-02_

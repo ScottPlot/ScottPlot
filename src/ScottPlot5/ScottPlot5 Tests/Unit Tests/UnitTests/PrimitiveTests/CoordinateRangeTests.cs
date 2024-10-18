@@ -54,4 +54,40 @@ internal class CoordinateRangeTests
         new CoordinateRange(2, 4).Rectified().Should().Be(new CoordinateRange(2, 4));
         new CoordinateRange(4, 2).Rectified().Should().Be(new CoordinateRange(2, 4));
     }
+
+    [Test]
+    public void Test_CoordinateRange_Span()
+    {
+        new CoordinateRange(2, 10).Span.Should().Be(8);
+        new CoordinateRange(-10, 2).Span.Should().Be(12);
+        new CoordinateRange(-2, 10).Span.Should().Be(12);
+
+        new CoordinateRange(10, 2).Span.Should().Be(-8);
+        new CoordinateRange(2, -10).Span.Should().Be(-12);
+        new CoordinateRange(10, -2).Span.Should().Be(-12);
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Center()
+    {
+        new CoordinateRange(2, 10).Center.Should().Be(6);
+        new CoordinateRange(-10, 2).Center.Should().Be(-4);
+        new CoordinateRange(-2, 10).Center.Should().Be(4);
+
+        new CoordinateRange(10, 2).Center.Should().Be(6);
+        new CoordinateRange(2, -10).Center.Should().Be(-4);
+        new CoordinateRange(10, -2).Center.Should().Be(4);
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Length()
+    {
+        new CoordinateRange(2, 10).Length.Should().Be(8);
+        new CoordinateRange(-10, 2).Length.Should().Be(12);
+        new CoordinateRange(-2, 10).Length.Should().Be(12);
+
+        new CoordinateRange(10, 2).Length.Should().Be(8);
+        new CoordinateRange(2, -10).Length.Should().Be(12);
+        new CoordinateRange(10, -2).Length.Should().Be(12);
+    }
 }

@@ -44,7 +44,7 @@ internal class FileFormatTests
         Plot plt = new();
         plt.Add.Signal(Generate.Sin(51));
         plt.Add.Signal(Generate.Cos(51));
-        string img = plt.GetImageHtml(300, 200);
+        string img = plt.GetPngHtml(300, 200);
         string html = $"<html><body>{img}</body></html>";
         html.SaveTestString();
     }
@@ -66,6 +66,25 @@ internal class FileFormatTests
         plt.Add.Signal(Generate.Cos(51));
         var svgXml = plt.GetSvgXml(400, 300);
         Assert.That(!string.IsNullOrEmpty(svgXml), Is.True);
+    }
+
+    [Test]
+    public void Test_Get_SvgHtml()
+    {
+        Plot plt = new();
+        plt.Add.Signal(Generate.Sin(51));
+        plt.Add.Signal(Generate.Cos(51));
+        string html = $"""
+            <html>
+            <body>
+            <h1>SVG</h1>
+            {plt.GetSvgXml(600, 400)}
+            </body>
+            </html>
+            """;
+        string saveAs = Path.GetFullPath("html-test-svg.html");
+        Console.WriteLine(saveAs);
+        File.WriteAllText(saveAs, html);
     }
 
     [Test]

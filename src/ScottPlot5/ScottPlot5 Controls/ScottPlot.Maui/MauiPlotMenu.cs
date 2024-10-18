@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-using ScottPlot.Control;
-using System.Text;
+﻿using ScottPlot.Control;
 
 namespace ScottPlot.Maui;
 
@@ -11,27 +9,21 @@ public class MauiPlotMenu : IPlotMenu
 
     public MauiPlotMenu(MauiPlot plot)
     {
-        this.MauiPlot = plot;
+        MauiPlot = plot;
         Reset();
     }
 
     public ContextMenuItem[] GetDefaultContextMenuItems()
     {
-        /*
+
         ContextMenuItem saveImage = new()
         {
             Label = "Save Image",
-            OnInvoke = OpenSaveImageDialog,
+            OnInvoke = SaveImageDialog,
         };
-       
 
-        TODO: Unable to assign an image to the clipboard using Clipboard.SetImage
-        ContextMenuItem copyImage = new()
-        {
-            Label = "Copy to Clipboard",
-            OnInvoke = CopyImageToClipboard,
-        };
-         */
+        // TODO: ContextMenuItem copyImage
+
         ContextMenuItem autoscale = new()
         {
             Label = "Autoscale",
@@ -40,35 +32,84 @@ public class MauiPlotMenu : IPlotMenu
 
         ContextMenuItem zoomIn = new()
         {
-            Label = "ZoomIn",
+            Label = "Zoom In",
             OnInvoke = ZoomIn,
         };
 
         ContextMenuItem zoomOut = new()
         {
-            Label = "ZoomOut",
+            Label = "Zoom Out",
             OnInvoke = ZoomOut,
         };
 
 
         return new ContextMenuItem[] {
-            //saveImage,
-            //copyImage,
+            saveImage,
+            new() { IsSeparator = true },
             autoscale,
             zoomIn,
             zoomOut,
         };
     }
 
-    private void ZoomOut(IPlotControl plotControl)
+    public async void SaveImageDialog(IPlotControl plotControl)
     {
-        plotControl.Plot.Axes.Zoom(0.5);
+        if (plotControl is not MauiPlot mauiPlot) return;
+
+        var page = MauiPlot.GetFirstPageParent(mauiPlot);
+        if (page == null) return;
+
+        string[] formats = [
+            "PNG Files .png",
+            "JPEG Files .jpg",
+            "BMP Files .bmp",
+            "WebP Files .webp",
+            "SVG Files .svg"
+        ];
+
+        try
+        {
+            var format = await page.DisplayActionSheet("Select a format", null, null, formats);
+            if (format is null) return;
+            ImageFormat imgformat = ImageFormats.FromFilename(format);
+
+
+            string tempFileName = $"Plot_{DateTime.Now:yyyyMMdd_HHmmss}";
+            var name = await page.DisplayPromptAsync("File name", "Enter the file name", placeholder: tempFileName);
+            if (name is null) return;
+            if (name.Length == 0) name = tempFileName;
+
+
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
+            plotControl.Plot.Save(Path.Combine(folder, $"{name}{format}"), (int)lastRenderSize.Width, (int)lastRenderSize.Height, imgformat);
+
+            await page.DisplayAlert("Success", $"Image saved to {folder}", "OK");
+        }
+
+        catch (Exception)
+        {
+            await page.DisplayAlert("Error", $"Image save failed", "OK");
+            return;
+        }
+
+    }
+
+    public void Autoscale(IPlotControl plotControl)
+    {
+        plotControl.Plot.Axes.AutoScale();
         plotControl.Refresh();
     }
 
-    private void ZoomIn(IPlotControl plotControl)
+    public void ZoomIn(IPlotControl plotControl)
     {
-        plotControl.Plot.Axes.Zoom(1.5);
+        plotControl.Plot.Axes.Zoom(1.5, 1.5);
+        plotControl.Refresh();
+    }
+
+    public void ZoomOut(IPlotControl plotControl)
+    {
+        plotControl.Plot.Axes.Zoom(0.5, 0.5);
         plotControl.Refresh();
     }
 
@@ -76,43 +117,21 @@ public class MauiPlotMenu : IPlotMenu
     {
         MenuFlyout flyout = new();
 
-        foreach (var curr in ContextMenuItems)
+        foreach (var item in ContextMenuItems)
         {
-            if (curr.IsSeparator)
+            if (item.IsSeparator)
             {
                 flyout.Add(new MenuFlyoutSeparator());
             }
             else
             {
-                var menuItem = new MenuFlyoutItem { Text = curr.Label };
-                menuItem.Clicked += (s, e) => curr.OnInvoke(plotControl);
+                var menuItem = new MenuFlyoutItem { Text = item.Label };
+                menuItem.Clicked += (s, e) => item.OnInvoke(plotControl);
                 flyout.Add(menuItem);
             }
         }
 
         return flyout;
-    }
-
-    public void OpenSaveImageDialog(IPlotControl plotControl)
-    {
-
-    }
-
-    public void CopyImageToClipboard(IPlotControl plotControl)
-    {
-        /* TODO
-        PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-        Image bmp = plotControl.Plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
-        byte[] bmpBytes = bmp.GetImageBytes();
-
-        Clipboard.SetTextAsync(Encoding.UTF8.GetString(bmpBytes, 0, bmpBytes.Length));
-        */
-    }
-
-    public void Autoscale(IPlotControl plotControl)
-    {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)
@@ -141,6 +160,4 @@ public class MauiPlotMenu : IPlotMenu
         Clear();
         ContextMenuItems.AddRange(GetDefaultContextMenuItems());
     }
-
-
 }

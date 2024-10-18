@@ -14,8 +14,6 @@ internal class FrontPage : PageBase
         SB.AppendLine($"# ScottPlot 5.0 Cookbook");
         SB.AppendLine();
 
-        AddVersionInformation();
-
         // table of contents
         foreach (string chapter in CB.Chapters)
         {

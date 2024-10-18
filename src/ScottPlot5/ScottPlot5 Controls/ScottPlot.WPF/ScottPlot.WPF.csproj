@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
@@ -10,10 +10,11 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WPF</PackageId>
-        <Version>5.0.39</Version>
+        <Version>5.0.40</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright (c) Scott Harden / Harden Technologies, LLC</Copyright>
         <PackageTags>plot graph data chart signal line bar heatmap scatter</PackageTags>
         <description>User controls for displaying interactive plots in WPF applications</description>
         <PackageIcon>icon.png</PackageIcon>

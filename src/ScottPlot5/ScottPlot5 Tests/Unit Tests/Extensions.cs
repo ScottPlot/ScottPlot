@@ -136,4 +136,25 @@ internal static class Extensions
     {
         return new PlotAssertions(plot);
     }
+
+    internal static void SaveTestImage(this Multiplot multiplot, int width = 600, int height = 600, string subName = "")
+    {
+        StackTrace stackTrace = new();
+        StackFrame frame = stackTrace.GetFrame(1) ?? throw new InvalidOperationException("unknown caller");
+        MethodBase method = frame.GetMethod() ?? throw new InvalidDataException("unknown method");
+        string callingMethod = method.Name;
+
+        if (!string.IsNullOrWhiteSpace(subName))
+            subName = "_" + subName;
+
+        string saveFolder = Path.Combine(TestContext.CurrentContext.TestDirectory, "test-images");
+        if (!Directory.Exists(saveFolder))
+            Directory.CreateDirectory(saveFolder);
+
+        string fileName = callingMethod + subName + ".png";
+        string filePath = Path.Combine(saveFolder, fileName);
+        Console.WriteLine(filePath);
+
+        multiplot.SavePng(filePath, width, height);
+    }
 }

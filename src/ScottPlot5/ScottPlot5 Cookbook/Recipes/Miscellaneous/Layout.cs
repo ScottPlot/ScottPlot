@@ -2,7 +2,7 @@
 
 public class Layout : ICategory
 {
-    public string Chapter => "Layout";
+    public string Chapter => "Miscellaneous";
     public string CategoryName => "Layout Options";
     public string CategoryDescription => "How to customize the layout of a plot";
 
