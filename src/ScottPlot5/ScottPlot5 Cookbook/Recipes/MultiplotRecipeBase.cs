@@ -11,7 +11,7 @@ public abstract class MultiplotRecipeBase
     public abstract string Description { get; }
 
     // keep this lowercase because it should be lowercase in recipe source code
-    public MultiPlot multiplot { get; private set; } = new();
+    public Multiplot multiplot { get; private set; } = new();
 
     /// <summary>
     /// This function is called from within the test system

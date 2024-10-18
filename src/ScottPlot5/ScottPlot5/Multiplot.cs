@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public class MultiPlot
+public class Multiplot
 {
     // TODO: refactor the private classes inside this class then expose them
 
@@ -51,7 +51,7 @@ public class MultiPlot
     private class SizedPlot(Plot plot, PixelSize size)
     {
         public Plot? Plot { get; } = plot;
-        public MultiPlot? MultiPlot { get; } = null;
+        public Multiplot? MultiPlot { get; } = null;
         public PixelSize Size { get; } = size;
     }
 
@@ -59,13 +59,13 @@ public class MultiPlot
 
     public Plot[] Plots => SubPlots.Select(x => x.Plot).ToArray();
 
-    public MultiPlot()
+    public Multiplot()
     {
     }
 
-    public static MultiPlot WithGrid(Plot[,] plots)
+    public static Multiplot WithGrid(Plot[,] plots)
     {
-        MultiPlot mp = new();
+        Multiplot mp = new();
 
         int rows = plots.GetLength(0);
         int cols = plots.GetLength(1);
@@ -81,9 +81,9 @@ public class MultiPlot
         return mp;
     }
 
-    public static MultiPlot WithSinglePlot(Plot plot)
+    public static Multiplot WithSinglePlot(Plot plot)
     {
-        MultiPlot mp = new();
+        Multiplot mp = new();
         SubPlot sp = SubPlot.FullSize(plot);
         mp.SubPlots.Add(sp);
         return mp;

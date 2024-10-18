@@ -31,7 +31,7 @@ class MultiPlotTests
         sig2.Color = Colors.Red;
         sig2.LineWidth = 5;
 
-        MultiPlot mp = new();
+        Multiplot mp = new();
         mp.AddSubplot(plot1, 0, 2, 0, 1);
         mp.AddSubplot(plot2, 1, 2, 0, 1);
         mp.SaveTestImage();
