@@ -13,9 +13,6 @@ internal class RecipePage : PageBase
     {
         SB.AppendLine($"# {Recipe.Name}");
         SB.AppendLine();
-
-        AddVersionInformation();
-
         SB.AppendLine();
         SB.AppendLine(Recipe.Description);
         SB.AppendLine();

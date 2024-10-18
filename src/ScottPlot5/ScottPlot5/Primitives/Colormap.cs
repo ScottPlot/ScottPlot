@@ -4,6 +4,8 @@ namespace ScottPlot;
 
 public static class Colormap
 {
+    public static IColormap Default { get; set; } = new MellowRainbow();
+
     /// <summary>
     /// Return an array containing every available colormap
     /// </summary>

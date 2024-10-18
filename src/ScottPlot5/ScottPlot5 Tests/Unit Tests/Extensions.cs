@@ -137,7 +137,7 @@ internal static class Extensions
         return new PlotAssertions(plot);
     }
 
-    internal static void SaveTestImage(this MultiPlot multiplot, int width = 600, int height = 600, string subName = "")
+    internal static void SaveTestImage(this Multiplot multiplot, int width = 600, int height = 600, string subName = "")
     {
         StackTrace stackTrace = new();
         StackFrame frame = stackTrace.GetFrame(1) ?? throw new InvalidOperationException("unknown caller");

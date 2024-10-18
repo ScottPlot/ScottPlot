@@ -16,8 +16,6 @@ internal class CategoryPage : PageBase
         SB.AppendLine($"# {Category.Name}");
         SB.AppendLine();
 
-        AddVersionInformation();
-
         foreach (var recipe in CB.Recipes.Where(x => x.Category == Category.Name))
         {
             SB.AppendLine();
