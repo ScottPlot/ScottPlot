@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.41
 _Not yet on NuGet..._
+* Controls: Added `Obsolete` attribute to `Interaction` but left it functional as an opt-in alternative to `UserInputProcessor` (#4322, #4224, #3186, #4053)
 * Ticks: Improved automatic tick generation for axes of extremely small plots (#4353, #4354) @StendProg @Cassar17
 * CoordinateRange: Added a `Center` property to return the value halfway between the range boundary values (#4316, #4357) @idotta
 * Multiplot: Improve support for advanced layouts and add examples to cookbook (#4345)
