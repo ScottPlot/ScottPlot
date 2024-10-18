@@ -66,4 +66,33 @@ public class MultiplotRecipes : ICategory
             multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2);
         }
     }
+
+    public class MultiplotCustom : MultiplotRecipeBase
+    {
+        public override string Name => "Multiplot Custom";
+        public override string Description => "The Multiplot's Layout property " +
+            "may be configured to achieve a fully custom layout.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create 3 plots
+            for (int i = 0; i < 3; i++)
+            {
+                ScottPlot.Plot plot = new();
+                double[] ys = Generate.Sin(oscillations: i + 1);
+                plot.Add.Signal(ys);
+                multiplot.AddPlot(plot);
+            }
+
+            // create 3 rectangles (one per plot)
+            FractionRect[] rectangles = [
+                FractionRect.GridCell(0, 0, 2, 2), // top left
+                FractionRect.GridCell(1, 0, 2, 2), // top right
+                FractionRect.GridCell(0, 1, 1, 2), // full bottom
+            ];
+
+            multiplot.Layout = new ScottPlot.MultiplotLayouts.Custom(rectangles);
+        }
+    }
 }

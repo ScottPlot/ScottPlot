@@ -3,19 +3,18 @@
 /// <summary>
 /// Arranges plots from left to right according to the number of <paramref name="columns"/>, 
 /// wrapping to the next row as needed to accommodate the total number of plots.
-public class Grid(int columns) : IMultiplotLayout
+public class Custom(IEnumerable<FractionRect> rectangles) : IMultiplotLayout
 {
-    public int Columns { get; } = columns;
+    FractionRect[] Rectangles { get; } = rectangles.ToArray();
 
     public IEnumerable<(FractionRect, Plot)> GetLayout(IReadOnlyList<Plot> plots)
     {
-        int rows = (int)Math.Ceiling((float)plots.Count / Columns);
+        if (plots.Count != Rectangles.Length)
+            throw new InvalidOperationException($"Attempting to arrange {plots.Count} plots using a custom layout with {Rectangles.Length} rectangles");
+
         for (int i = 0; i < plots.Count; i++)
         {
-            int x = i % Columns;
-            int y = i / Columns;
-            FractionRect rect = FractionRect.GridCell(x, y, Columns, rows);
-            yield return (rect, plots[i]);
+            yield return (Rectangles[i], plots[i]);
         }
     }
 }
