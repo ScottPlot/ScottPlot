@@ -121,4 +121,15 @@ internal class RecipeTests
             recipeClassInfo.IsVisible.Should().BeTrue($"{recipeClassInfo.Namespace}.{recipeClassInfo.Name} should be public");
         }
     }
+
+    [Test]
+    public static void Test_MultiplotRecipes_AreFound()
+    {
+        var ds = Query.GetMultiplotDescriptions();
+        ds.Should().NotBeEmpty();
+        foreach (var recipe in ds)
+        {
+            Console.WriteLine($"{recipe.Key} - {recipe.Value}");
+        }
+    }
 }

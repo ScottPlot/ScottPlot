@@ -1,4 +1,8 @@
-﻿namespace ScottPlotCookbook;
+﻿using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Recipes.Miscellaneous;
+using System.Reflection;
+
+namespace ScottPlotCookbook;
 
 public static class Query
 {
@@ -31,10 +35,9 @@ public static class Query
         {
             "Introduction",
             "Axis",
-            "Layout",
             "Plot Types",
             "Statistics",
-            "Miscellaneous"
+            "Miscellaneous",
         };
     }
 
@@ -77,5 +80,15 @@ public static class Query
         }
 
         return recipesByCategory;
+    }
+
+    public static Dictionary<string, string> GetMultiplotDescriptions()
+    {
+        return typeof(MultiplotRecipes)
+            .GetNestedTypes()
+            .Where(type => type.IsSubclassOf(typeof(MultiplotRecipeBase)))
+            .Select(type => Activator.CreateInstance(type))
+            .Cast<MultiplotRecipeBase>()
+            .ToDictionary(x => x.Name, x => x.Description);
     }
 }

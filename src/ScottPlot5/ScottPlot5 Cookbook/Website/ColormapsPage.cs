@@ -20,7 +20,6 @@ internal class ColormapsPage : PageBase
     {
         string className = colormap.ToString()!.Split(".").Last();
         string filename = $"Colormap_{className}.png";
-        Console.WriteLine(filename);
         Image img = ScottPlot.Colormap.GetImage(colormap, 1000, 100);
         string filePath = Path.Combine(Paths.OutputImageFolder, filename);
         img.SavePng(filePath);
