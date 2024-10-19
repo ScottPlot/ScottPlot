@@ -1,4 +1,5 @@
-﻿using SkiaSharp.Views.Maui;
+using ScottPlot.Control;
+using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 
 namespace ScottPlot.Maui;
@@ -21,7 +22,7 @@ public class MauiPlot : SKCanvasView, IPlotControl
         Plot = new Plot() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(Plot) { IsEnabled = true };
+        UserInputProcessor = new(Plot);
         Menu = new MauiPlotMenu(this);
 
         var panGestureRecognizer = new PanGestureRecognizer();

@@ -21,7 +21,7 @@ public partial class DataLogger : Form, IDemoWindow
         InitializeComponent();
 
         // disable interactivity by default
-        formsPlot1.Interaction.Disable();
+        formsPlot1.UserInputProcessor.Disable();
 
         // create two loggers and add them to the plot
         Logger1 = formsPlot1.Plot.Add.DataLogger();

@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot.Interactivity;
 
+#pragma warning disable CS0618 // disable obsolete Interaction warning
+
 /// <summary>
 /// This class stores logic for changing axis limits according to mouse inputs in pixel units.
 /// Methods here are similar to those in <see cref="Plot.Axes"/> except their inputs are all mouse events.

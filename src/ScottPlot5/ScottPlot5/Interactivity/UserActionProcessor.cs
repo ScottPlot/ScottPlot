@@ -1,5 +1,7 @@
 ﻿namespace ScottPlot.Interactivity;
 
+#pragma warning disable CS0618 // disable obsolete Interaction warning
+
 /// <summary>
 /// This class collects user inputs and performs responses to manipulate a Plot.
 /// Custom user input actions may be supplied, and the list of responses can be 
@@ -36,6 +38,16 @@ public class UserInputProcessor
     private bool _IsEnabled = false;
 
     /// <summary>
+    /// Enable processing of user input events.
+    /// </summary>
+    public void Enable() => IsEnabled = true;
+
+    /// <summary>
+    /// Disable processing of user input events. Effectively makes this control non-interactive.
+    /// </summary>
+    public void Disable() => IsEnabled = false;
+
+    /// <summary>
     /// A list of user input responses that processes all incoming events in order.
     /// Users may manipulate this list to change the default behavior and
     /// add custom behaviors.
@@ -47,6 +59,7 @@ public class UserInputProcessor
         Plot = plot;
         KeyState = new();
         Reset();
+        IsEnabled = true;
     }
 
     /// <summary>

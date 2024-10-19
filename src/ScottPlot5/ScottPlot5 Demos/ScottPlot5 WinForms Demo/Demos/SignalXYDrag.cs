@@ -47,14 +47,14 @@ public partial class SignalXYDrag : Form, IDemoWindow
         PlottableBeingDragged = sigXY;
         StartingDragPosition = dataPoint;
         StartingDragOffset = sigXY.Data.XOffset;
-        formsPlot1.Interaction.Disable(); // disable panning while dragging
+        formsPlot1.UserInputProcessor.Disable(); // disable panning while dragging
     }
 
     private void FormsPlot1_MouseUp(object? sender, MouseEventArgs e)
     {
         PlottableBeingDragged = null;
         StartingDragPosition = DataPoint.None;
-        formsPlot1.Interaction.Enable(); // enable panning again
+        formsPlot1.UserInputProcessor.Enable(); // enable panning again
         formsPlot1.Refresh();
     }
 

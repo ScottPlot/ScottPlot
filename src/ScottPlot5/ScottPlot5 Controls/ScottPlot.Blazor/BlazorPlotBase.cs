@@ -14,6 +14,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public Plot Plot { get; private set; }
 
+    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
 
     public IPlotMenu? Menu { get; set; }
@@ -23,7 +24,11 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     {
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
-        Interaction = new Control.Interaction(this);
+
+#pragma warning disable CS0618 
+        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+#pragma warning restore CS0618
+
         UserInputProcessor = new(Plot) { IsEnabled = true };
         Menu = new BlazorPlotMenu();
     }
