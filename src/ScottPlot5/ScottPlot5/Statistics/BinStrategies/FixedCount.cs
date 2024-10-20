@@ -2,7 +2,7 @@
 
 public class FixedCount : IBinStrategy
 {
-    public double[] Bins { get; }
+    public double[] Edges { get; }
 
     /// <summary>
     /// A collection of <paramref name="count"/> evenly sized bins between <paramref name="minValue"/> and <paramref name="maxValue"/>
@@ -14,7 +14,7 @@ public class FixedCount : IBinStrategy
 
         double binSize = (maxValue - minValue) / count;
 
-        Bins = [.. Enumerable.Range(0, count).Select(x => minValue + x * binSize), maxValue];
+        Edges = [.. Enumerable.Range(0, count).Select(x => minValue + x * binSize), maxValue];
     }
 
     /// <summary>

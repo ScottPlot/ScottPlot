@@ -3,8 +3,7 @@
 public interface IBinStrategy
 {
     /// <summary>
-    /// An array containing the ordered lower edges of each bin
-    /// plus a final value representing the upper edge of the last bin
+    /// Lower edges of each bin plus a final value representing the upper edge of the last bin
     /// </summary>
-    public double[] Bins { get; }
+    public double[] Edges { get; }
 }

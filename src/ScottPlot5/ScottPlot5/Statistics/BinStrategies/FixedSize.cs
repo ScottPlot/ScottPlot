@@ -2,7 +2,7 @@
 
 public class FixedSize : IBinStrategy
 {
-    public double[] Bins { get; }
+    public double[] Edges { get; }
 
     /// <summary>
     /// A collection of bins of size <paramref name="binSize"/> starting from <paramref name="minValue"/> and 
@@ -17,7 +17,7 @@ public class FixedSize : IBinStrategy
         int count = (int)Math.Ceiling(span / binSize);
         double maxBin = minValue + count * binSize;
 
-        Bins = [.. Enumerable.Range(0, count).Select(x => minValue + x * binSize), maxBin];
+        Edges = [.. Enumerable.Range(0, count).Select(x => minValue + x * binSize), maxBin];
     }
 
     /// <summary>
