@@ -146,4 +146,14 @@ public static class SampleData
 
         return dk(x);
     }
+
+    public static double[] MaleHeights(int count = 1234)
+    {
+        return Generate.RandomNormal(count, mean: 178.4, stdDev: 7.6);
+    }
+
+    public static double[] FemaleHeights(int count = 1234)
+    {
+        return Generate.RandomNormal(count, mean: 164.7, stdDev: 7.1);
+    }
 }

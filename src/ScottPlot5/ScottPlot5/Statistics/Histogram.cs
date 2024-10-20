@@ -21,6 +21,11 @@ public class Histogram
     public double[] Edges { get; }
 
     /// <summary>
+    /// Size of the first bin (distance between the first pair of bin edges)
+    /// </summary>
+    public double FirstBinSize => Edges[1] - Edges[0];
+
+    /// <summary>
     /// If enabled, values below or above the bin range will be accumulated in the lowest or highest bin
     /// </summary>
     public bool IncludeOutliers { get; set; } = false;

@@ -16,8 +16,8 @@ public class Histograms : ICategory
         public override void Execute()
         {
             // Create a histogram from a collection of values
-            double[] heights = Generate.RandomNormal(count: 1000, mean: 160, stdDev: 20);
-            ScottPlot.Statistics.HistogramOld hist = new(heights, 20);
+            double[] heights = SampleData.MaleHeights();
+            var hist = ScottPlot.Statistics.Histogram.WithBinCount(10, heights);
 
             // Display the histogram as a bar plot
             var barPlot = myPlot.Add.Bars(hist.Bins, hist.Counts);
@@ -25,7 +25,67 @@ public class Histograms : ICategory
             // Size each bar slightly less than the width of a bin
             foreach (var bar in barPlot.Bars)
             {
-                bar.Size = hist.BinSize * .8;
+                bar.Size = hist.FirstBinSize * .8;
+            }
+
+            // Customize plot style
+            myPlot.Axes.Margins(bottom: 0);
+            myPlot.YLabel("Number of People");
+            myPlot.XLabel("Height (cm)");
+        }
+    }
+
+    public class HistogramFixedSizeBins : RecipeBase
+    {
+        public override string Name => "Histogram with Fixed Size Bins";
+        public override string Description => "A histogram can be created from a collection of values.";
+
+        [Test]
+        public override void Execute()
+        {
+            // Create a histogram from a collection of values
+            double[] heights = SampleData.MaleHeights();
+            var hist = ScottPlot.Statistics.Histogram.WithBinSize(2, heights);
+
+            // Display the histogram as a bar plot
+            var barPlot = myPlot.Add.Bars(hist.Bins, hist.Counts);
+
+            // Size each bar slightly less than the width of a bin
+            foreach (var bar in barPlot.Bars)
+            {
+                bar.Size = hist.FirstBinSize * .8;
+            }
+
+            // Customize plot style
+            myPlot.Axes.Margins(bottom: 0);
+            myPlot.YLabel("Number of People");
+            myPlot.XLabel("Height (cm)");
+        }
+    }
+
+    public class HistogramFilled : RecipeBase
+    {
+        public override string Name => "Filled Histogram";
+        public override string Description => "A filled histogram (one with no visible gaps between bars) can be achieved " +
+            "by setting the bar width to the bin size. However, anti-aliasing artifacts may cause white lines to appear between bars. " +
+            "Disable anti-aliasing for each bar to improve appearance of such plots.";
+
+        [Test]
+        public override void Execute()
+        {
+            // Create a histogram from a collection of values
+            double[] heights = SampleData.MaleHeights();
+            var hist = ScottPlot.Statistics.Histogram.WithBinSize(1, heights);
+
+            // Display the histogram as a bar plot
+            var barPlot = myPlot.Add.Bars(hist.Bins, hist.Counts);
+
+            // Size each bar slightly less than the width of a bin
+            foreach (var bar in barPlot.Bars)
+            {
+                bar.Size = hist.FirstBinSize;
+                bar.LineWidth = 0;
+                bar.FillStyle.AntiAlias = false;
             }
 
             // Customize plot style
