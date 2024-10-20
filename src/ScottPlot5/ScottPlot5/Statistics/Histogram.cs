@@ -1,5 +1,8 @@
 ﻿namespace ScottPlot.Statistics;
 
+/// <summary>
+/// A histogram that accumulates the number of values observed in a continuous range of user defined bins
+/// </summary>
 public class Histogram
 {
     /// <summary>
@@ -27,6 +30,11 @@ public class Histogram
     /// </summary>
     public double BinMax { get; }
 
+    /// <summary>
+    /// If enabled, values added outside the range of bins will be counted in the nearest bin
+    /// </summary>
+    public bool CountOutliers = false;
+
     public Histogram(double[] binEdges)
     {
         Edges = binEdges;
@@ -48,26 +56,33 @@ public class Histogram
     {
         // TODO: improve performance using binary search
 
+        if (value <= BinMin)
+        {
+            if (CountOutliers)
+            {
+                Counts[0] += 1;
+            }
+            return;
+        }
+
+        if (value >= BinMax)
+        {
+            if (CountOutliers)
+            {
+                Counts[^1] += 1;
+            }
+            return;
+        }
+
         for (int i = 0; i < Counts.Length; i++)
         {
             double lower = Edges[i];
             double upper = Edges[i + 1];
             bool isLastBin = i == Edges.Length - 2;
-            if (isLastBin)
+            if (value >= lower && value < upper)
             {
-                if (value >= lower && value <= upper)
-                {
-                    Counts[i] += 1;
-                    break;
-                }
-            }
-            else
-            {
-                if (value >= lower && value < upper)
-                {
-                    Counts[i] += 1;
-                    break;
-                }
+                Counts[i] += 1;
+                break;
             }
         }
     }
