@@ -1,4 +1,6 @@
-﻿namespace ScottPlotTests.Statistics;
+﻿using ScottPlot.Statistics;
+
+namespace ScottPlotTests.Statistics;
 
 internal class HistogramTests
 {
@@ -160,5 +162,32 @@ internal class HistogramTests
             .Invoking(() => ScottPlot.Statistics.Histogram.WithFixedBinCount(min: 0, max: 1, binCount: 0))
             .Should()
             .Throw<ArgumentException>();
+    }
+
+    private static void WriteLine(IBinStrategy bs)
+    {
+        Console.WriteLine(string.Join(", ", bs.Bins.Select(x => x.ToString())));
+    }
+
+    [Test]
+    public void Test_HistogramBinStrategy_FixedCount()
+    {
+        double[] values = [7, 5, 6, 10, 9];
+        ScottPlot.Statistics.BinStrategies.FixedCount bs = new(10, values);
+        bs.Bins.Length.Should().Be(11);
+
+        double[] expectedBins = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
+        bs.Bins.Should().BeEquivalentTo(expectedBins);
+    }
+
+    [Test]
+    public void Test_HistogramBinStrategy_FixedSize()
+    {
+        double[] values = [7, 5, 6, 9.9, 9];
+        ScottPlot.Statistics.BinStrategies.FixedSize bs = new(0.5, values);
+        bs.Bins.Length.Should().Be(11);
+
+        double[] expectedBins = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10];
+        bs.Bins.Should().BeEquivalentTo(expectedBins);
     }
 }
