@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ScottPlot.Statistics;
+﻿namespace ScottPlot.Statistics;
 
 /// <summary>
 /// A histogram that accumulates the number of values observed in a continuous range of user defined bins
@@ -23,47 +21,30 @@ public class Histogram
     public double[] Edges { get; }
 
     /// <summary>
-    /// Lower edge of the smallest bin
+    /// If enabled, values below or above the bin range will be accumulated in the lowest or highest bin
     /// </summary>
-    public double BinMin { get; }
-
-    /// <summary>
-    /// Upper edge of the largest bin
-    /// </summary>
-    public double BinMax { get; }
-
-    /// <summary>
-    /// If enabled, values outside the range of bins will be ignored as they are added.
-    /// Otherwise outliers will be accumulated in the edge bins.
-    /// </summary>
-    public bool IgnoreOutliers = false;
+    public bool IncludeOutliers { get; set; } = false;
 
     private Histogram(IEnumerable<double> edges)
     {
         Edges = [.. edges];
         Bins = Edges.Take(Edges.Length - 1).ToArray();
-        BinMin = Edges[0];
-        BinMax = Edges[^1];
         Counts = new int[Edges.Length - 1];
     }
 
     /// <summary>
-    /// A collection of bins of size <paramref name="binSize"/> starting from <paramref name="minValue"/> and 
-    /// increasing to include <paramref name="maxValue"/>
+    /// A collection of bins of size <paramref name="binSize"/> 
+    /// where the first bin's left edge is <paramref name="firstBin"/> 
+    /// and the last bin's left edge is <paramref name="lastBin"/>
     /// </summary>
-    public static Histogram WithBinSize(double binSize, double minValue, double maxValue)
+    public static Histogram WithBinSize(double binSize, double firstBin, double lastBin)
     {
-        if (maxValue <= minValue)
-            throw new ArgumentException($"{maxValue} must be greater than {nameof(minValue)}");
+        if (lastBin <= firstBin)
+            throw new ArgumentException($"{lastBin} must be greater than {nameof(firstBin)}");
 
-        List<double> edges = [];
-        for (double x = minValue; x <= maxValue; x += binSize)
-        {
-            edges.Add(x);
-        }
-
-        edges.Add(edges.Last() + binSize);
-
+        double span = lastBin - firstBin;
+        int binCount = (int)(span / binSize);
+        double[] edges = Enumerable.Range(0, binCount + 1).Select(x => firstBin + x * binSize).ToArray();
         return new Histogram(edges);
     }
 
@@ -88,13 +69,13 @@ public class Histogram
         if (maxValue <= minValue)
             throw new ArgumentException($"{maxValue} must be greater than {nameof(minValue)}");
 
-        double binSize = (maxValue - minValue) / count;
-
         double[] edges = new double[count + 1];
+
         for (int i = 0; i < count; i++)
         {
-            edges[i] = minValue + i * binSize;
+            edges[i] = minValue + i * (maxValue - minValue) / count;
         }
+
         edges[^1] = maxValue;
 
         return new Histogram(edges);
@@ -120,36 +101,37 @@ public class Histogram
 
     public void Add(double value)
     {
-        // TODO: improve performance using binary search
-
-        if (value <= BinMin)
+        if (value < Edges[0])
         {
-            if (!IgnoreOutliers)
+            if (IncludeOutliers)
             {
                 Counts[0] += 1;
             }
             return;
         }
 
-        if (value >= BinMax)
+        if (value > Edges[^1])
         {
-            if (!IgnoreOutliers)
+            if (IncludeOutliers)
             {
                 Counts[^1] += 1;
             }
             return;
         }
 
+        // TODO: improve performance using binary search
         for (int i = 0; i < Counts.Length; i++)
         {
-            double lower = Edges[i];
-            double upper = Edges[i + 1];
-            bool isLastBin = i == Edges.Length - 2;
-            if (value >= lower && value < upper)
+            if (value >= Edges[i] && value < Edges[i + 1])
             {
                 Counts[i] += 1;
                 break;
             }
+        }
+
+        if (value == Edges[^1])
+        {
+            Counts[^1] += 1;
         }
     }
 
