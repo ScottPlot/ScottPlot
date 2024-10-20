@@ -17,7 +17,7 @@ public class Histograms : ICategory
         {
             // Create a histogram from a collection of values
             double[] heights = Generate.RandomNormal(count: 1000, mean: 160, stdDev: 20);
-            ScottPlot.Statistics.LiveHistogram hist = new(heights, 20);
+            ScottPlot.Statistics.HistogramOld hist = new(heights, 20);
 
             // Display the histogram as a bar plot
             var barPlot = myPlot.Add.Bars(hist.Bins, hist.Counts);

@@ -5,7 +5,7 @@ internal class HistogramTests
     [Test]
     public void Test_Histogram_IgnoringOutliers()
     {
-        ScottPlot.Statistics.LiveHistogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: false, addFinalBin: false);
+        ScottPlot.Statistics.HistogramOld hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: false, addFinalBin: false);
 
         hist.Min.Should().Be(100);
         hist.Max.Should().Be(200);
@@ -41,7 +41,7 @@ internal class HistogramTests
     [Test]
     public void Test_Histogram_IncludingOutliers()
     {
-        ScottPlot.Statistics.LiveHistogram hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: true, addFinalBin: false);
+        ScottPlot.Statistics.HistogramOld hist = new(min: 100, max: 200, binCount: 5, addOutliersToEdgeBins: true, addFinalBin: false);
 
         hist.Counts.Should().BeEquivalentTo(new double[] { 0, 0, 0, 0, 0 });
 
@@ -57,7 +57,7 @@ internal class HistogramTests
     [Test]
     public void Test_Histogram_Normalization()
     {
-        ScottPlot.Statistics.LiveHistogram hist = new(min: 100, max: 200, binCount: 5, addFinalBin: false);
+        ScottPlot.Statistics.HistogramOld hist = new(min: 100, max: 200, binCount: 5, addFinalBin: false);
 
         hist.Add(125);
         hist.Add(145);
@@ -75,7 +75,7 @@ internal class HistogramTests
     [Test]
     public void Test_Histogram_CPH()
     {
-        ScottPlot.Statistics.LiveHistogram hist = new(min: 100, max: 200, binCount: 5, addFinalBin: false);
+        ScottPlot.Statistics.HistogramOld hist = new(min: 100, max: 200, binCount: 5, addFinalBin: false);
 
         hist.Add(125);
         hist.Add(145);
@@ -94,7 +94,7 @@ internal class HistogramTests
         // Extending conversation in #2403, this test confirms bins meet expectations
         // https://github.com/ScottPlot/ScottPlot/issues/2403
 
-        var hist1 = ScottPlot.Statistics.LiveHistogram.WithFixedBinSize(min: 0, max: 10, binSize: 1);
+        var hist1 = ScottPlot.Statistics.HistogramOld.WithFixedBinSize(min: 0, max: 10, binSize: 1);
 
         hist1.BinSize.Should().Be(1);
 
@@ -111,7 +111,7 @@ internal class HistogramTests
         // Extending conversation in #2403, this test confirms bins meet expectations
         // https://github.com/ScottPlot/ScottPlot/issues/2403
 
-        var hist1 = ScottPlot.Statistics.LiveHistogram.WithFixedBinCount(min: 0, max: 10, binCount: 10);
+        var hist1 = ScottPlot.Statistics.HistogramOld.WithFixedBinCount(min: 0, max: 10, binCount: 10);
 
         hist1.BinSize.Should().Be(1);
 
@@ -127,7 +127,7 @@ internal class HistogramTests
     {
         // https://github.com/ScottPlot/ScottPlot/issues/2490
 
-        var hist1 = ScottPlot.Statistics.LiveHistogram.WithFixedBinCount(min: 0, max: 1, binCount: 10);
+        var hist1 = ScottPlot.Statistics.HistogramOld.WithFixedBinCount(min: 0, max: 1, binCount: 10);
 
         hist1.BinSize.Should().Be(0.1);
 
@@ -142,22 +142,22 @@ internal class HistogramTests
     public void Test_Histogram_MinMaxValidation()
     {
         FluentActions
-            .Invoking(() => ScottPlot.Statistics.LiveHistogram.WithFixedBinCount(min: 0, max: 1, binCount: 1))
+            .Invoking(() => ScottPlot.Statistics.HistogramOld.WithFixedBinCount(min: 0, max: 1, binCount: 1))
             .Should()
             .NotThrow();
 
         FluentActions
-            .Invoking(() => ScottPlot.Statistics.LiveHistogram.WithFixedBinCount(min: 1, max: 0, binCount: 10))
+            .Invoking(() => ScottPlot.Statistics.HistogramOld.WithFixedBinCount(min: 1, max: 0, binCount: 10))
             .Should()
             .Throw<ArgumentException>();
 
         FluentActions
-            .Invoking(() => ScottPlot.Statistics.LiveHistogram.WithFixedBinCount(min: 1, max: 1, binCount: 10))
+            .Invoking(() => ScottPlot.Statistics.HistogramOld.WithFixedBinCount(min: 1, max: 1, binCount: 10))
             .Should()
             .Throw<ArgumentException>();
 
         FluentActions
-            .Invoking(() => ScottPlot.Statistics.LiveHistogram.WithFixedBinCount(min: 0, max: 1, binCount: 0))
+            .Invoking(() => ScottPlot.Statistics.HistogramOld.WithFixedBinCount(min: 0, max: 1, binCount: 0))
             .Should()
             .Throw<ArgumentException>();
     }

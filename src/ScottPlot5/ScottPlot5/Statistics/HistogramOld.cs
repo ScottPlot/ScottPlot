@@ -4,7 +4,7 @@
 /// This class holds data for "live" histograms that may continue to increase bin counts 
 /// in response to new data being added after the histogram is initialized.
 /// </summary>
-public class LiveHistogram
+public class HistogramOld
 {
     /// <summary>
     /// Number of values counted for each bin.
@@ -70,7 +70,7 @@ public class LiveHistogram
     /// <summary>
     /// Create a histogram with the given number of bins arranged to contain the full range of data values
     /// </summary>
-    public LiveHistogram(IEnumerable<double> values, int binCount = 10) : this(values.Min(), values.Max(), binCount)
+    public HistogramOld(IEnumerable<double> values, int binCount = 10) : this(values.Min(), values.Max(), binCount)
     {
         AddRange(values);
     }
@@ -88,7 +88,7 @@ public class LiveHistogram
     /// properties will be <paramref name="min"/> - 0.5 and <paramref name="max"/> + 0.5, respectively. This is to handle an edge
     /// case where all values of an array are exactly the same, producing an identical min and max.
     /// </remarks>
-    public LiveHistogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
+    public HistogramOld(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
     {
         if (min >= max)
             throw new ArgumentException($"{nameof(max)} must be greater than {nameof(min)}");
@@ -120,19 +120,19 @@ public class LiveHistogram
     /// <summary>
     /// Create a histogram with bins that can count data from <paramref name="min"/> to <paramref name="max"/> (inclusive)
     /// </summary>
-    public static LiveHistogram WithFixedBinSize(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
+    public static HistogramOld WithFixedBinSize(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
     {
         int binCount = (int)Math.Ceiling((max - min) / binSize) + 1;
         max = binCount * binSize + min;
-        return new LiveHistogram(min, max, binCount, addOutliersToEdgeBins, addFinalBin: false);
+        return new HistogramOld(min, max, binCount, addOutliersToEdgeBins, addFinalBin: false);
     }
 
     /// <summary>
     /// Create a histogram with bins that can count data from <paramref name="min"/> to <paramref name="max"/> (inclusive)
     /// </summary>
-    public static LiveHistogram WithFixedBinCount(double min, double max, int binCount, bool addOutliersToEdgeBins = false)
+    public static HistogramOld WithFixedBinCount(double min, double max, int binCount, bool addOutliersToEdgeBins = false)
     {
-        return new LiveHistogram(min, max, binCount, addOutliersToEdgeBins);
+        return new HistogramOld(min, max, binCount, addOutliersToEdgeBins);
     }
 
     /// <summary>
