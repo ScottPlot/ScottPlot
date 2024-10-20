@@ -1,9 +1,6 @@
 ﻿namespace ScottPlot.Statistics;
 
-/// <summary>
-/// This class holds data for "live" histograms that may continue to increase bin counts 
-/// in response to new data being added after the histogram is initialized.
-/// </summary>
+[Obsolete("This class is deprecated")]
 public class HistogramOld
 {
     /// <summary>
