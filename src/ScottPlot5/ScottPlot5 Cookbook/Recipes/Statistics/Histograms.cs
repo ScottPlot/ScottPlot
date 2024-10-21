@@ -38,7 +38,7 @@ public class Histograms : ICategory
     public class HistogramFixedSizeBins : RecipeBase
     {
         public override string Name => "Histogram with Fixed Size Bins";
-        public override string Description => "A histogram can be created from a collection of values.";
+        public override string Description => "A histogram can be created using manually defined bin sizes.";
 
         [Test]
         public override void Execute()
