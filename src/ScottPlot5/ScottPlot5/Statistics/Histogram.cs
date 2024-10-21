@@ -151,10 +151,10 @@ public class Histogram
     /// <summary>
     /// Return counts normalized so the sum of all values equals 1
     /// </summary>
-    public double[] GetProbability()
+    public double[] GetProbability(double scale = 1)
     {
         int valuesCounted = Counts.Sum();
-        return Counts.Select(x => (double)x / valuesCounted).ToArray();
+        return Counts.Select(x => scale * x / valuesCounted).ToArray();
     }
 
     /// <summary>
