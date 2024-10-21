@@ -242,8 +242,8 @@ public class Histograms : ICategory
                 // Plot the probability curve on top the histogram
                 ScottPlot.Statistics.ProbabilityDensity pd = new(heights);
                 double[] xs = Generate.Range(heights.Min(), heights.Max(), 1);
-                double sumBins = hist.Bins.Select(x => pd.GetY(x)).Sum();
-                double[] ys = pd.GetYs(xs, 1.0 / sumBins);
+                double scale = 1.0 / hist.Bins.Select(x => pd.GetY(x)).Sum();
+                double[] ys = pd.GetYs(xs, scale);
 
                 var curve = myPlot.Add.ScatterLine(xs, ys);
                 curve.LineWidth = 2;
@@ -258,6 +258,40 @@ public class Histograms : ICategory
             myPlot.YLabel("Probability (%)");
             myPlot.XLabel("Height (cm)");
             myPlot.HideGrid();
+        }
+    }
+
+    public class HistogramCPH : RecipeBase
+    {
+        public override string Name => "Cumulative Probability Histogram";
+        public override string Description => "A cumulative probability histogram represents the cumulative sum of probabilities " +
+            "or relative frequencies up to each bin, providing a running total of the probability distribution. " +
+            "It is especially useful for evaluating and comparing the distribution of multiple populations.";
+
+        [Test]
+        public override void Execute()
+        {
+            // Create a histogram from a collection of values
+            double[][] heightsByGroup = { SampleData.MaleHeights(100), SampleData.FemaleHeights(100) };
+            string[] groupNames = { "Male", "Female" };
+            Color[] groupColors = { Colors.Blue, Colors.Red };
+
+            for (int i = 0; i < 2; i++)
+            {
+                var hist = ScottPlot.Statistics.Histogram.WithBinSize(1, firstBin: 140, lastBin: 200);
+                hist.AddRange(heightsByGroup[i]);
+
+                var curve = myPlot.Add.ScatterLine(hist.Bins, hist.GetCumulativeProbability(100));
+                curve.LineWidth = 1.5f;
+                curve.LineColor = groupColors[i];
+                curve.LegendText = groupNames[i];
+                curve.ConnectStyle = ConnectStyle.StepVertical;
+            }
+
+            // Customize plot style
+            myPlot.Legend.Alignment = Alignment.LowerRight;
+            myPlot.YLabel("Cumulative Probability (%)");
+            myPlot.XLabel("Height (cm)");
         }
     }
 }
