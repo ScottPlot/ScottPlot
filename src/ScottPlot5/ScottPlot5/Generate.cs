@@ -159,7 +159,7 @@ public static class Generate
     /// <summary>
     /// Return <paramref name="n"/> values evenly spaced between <paramref name="start"/> to <paramref name="stop"/> (inclusive)
     /// </summary>
-    public static IEnumerable<double> Range(double start, double stop, int n)
+    private static IEnumerable<double> Range(double start, double stop, int n)
     {
         return Enumerable.Range(0, n).Select(i => (stop - start) * i / (n - 1) + start);
     }

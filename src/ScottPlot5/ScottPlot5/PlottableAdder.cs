@@ -112,6 +112,12 @@ public class PlottableAdder(Plot plot)
         return Bars(positions, values);
     }
 
+    public BarPlot Bars<T>(IEnumerable<double> positions, IEnumerable<T> values)
+    {
+        double[] values2 = NumericConversion.GenericToDoubleArray(values);
+        return Bars(positions, values2);
+    }
+
     public BarPlot Bars(IEnumerable<double> positions, IEnumerable<double> values)
     {
         if (positions.Count() != values.Count())

@@ -1,177 +1,178 @@
 ﻿namespace ScottPlot.Statistics;
 
+/// <summary>
+/// A histogram that accumulates the number of values observed in a continuous range of user defined bins
+/// </summary>
 public class Histogram
 {
     /// <summary>
-    /// Number of values counted for each bin.
+    /// Number of values in each bin
     /// </summary>
-    public readonly double[] Counts;
+    public int[] Counts { get; }
 
     /// <summary>
-    /// Number of bins.
-    /// </summary>
-    public readonly int BinCount;
-
-    /// <summary>
-    /// Running total of all values counted.
-    /// </summary>
-    public double Sum { get; private set; }
-
-    /// <summary>
-    /// Total number of values accumulated.
-    /// </summary>
-    public int ValuesCounted { get; private set; }
-
-    /// <summary>
-    /// Lower edge for each bin.
+    /// Lower edge of each bin
     /// </summary>
     public double[] Bins { get; }
 
     /// <summary>
-    /// Center of each bin.
+    /// Lower edge of each bin plus a final value representing the upper edge of the last bin
     /// </summary>
-    public double[] BinCenters { get; }
+    public double[] Edges { get; }
 
     /// <summary>
-    /// Default behavior is that outlier values are not counted.
-    /// If this is enabled, min/max outliers will be counted in the first/last bin.
+    /// Size of the first bin (distance between the first pair of bin edges)
     /// </summary>
-    public bool AddOutliersToEdgeBins { get; }
+    public double FirstBinSize => Edges[1] - Edges[0];
 
     /// <summary>
-    /// Lower edge of the first bin
+    /// If enabled, values below or above the bin range will be accumulated in the lowest or highest bin
     /// </summary>
-    public double Min { get; }
+    public bool IncludeOutliers { get; set; } = false;
 
-    /// <summary>
-    /// Upper edge of the last bin
-    /// </summary>
-    public double Max { get; }
-
-    /// <summary>
-    /// The calculated bin size.
-    /// </summary>
-    public double BinSize { get; }
-
-    /// <summary>
-    /// Number of values that were smaller than the lower edge of the first bin.
-    /// </summary>
-    public int MinOutlierCount { get; private set; } = 0;
-
-    /// <summary>
-    /// Number of values that were greater than the upper edge of the last bin.
-    /// </summary>
-    public int MaxOutlierCount { get; private set; } = 0;
-
-    /// <summary>
-    /// Create a histogram with the given number of bins arranged to contain the full range of data values
-    /// </summary>
-    public Histogram(IEnumerable<double> values, int binCount = 10) : this(values.Min(), values.Max(), binCount)
+    private Histogram(IEnumerable<double> edges)
     {
-        AddRange(values);
+        Edges = [.. edges];
+        Bins = Edges.Take(Edges.Length - 1).ToArray();
+        Counts = new int[Edges.Length - 1];
     }
 
     /// <summary>
-    /// Create a histogram which will count values supplied by <see cref="Add(double)"/> and <see cref="AddRange(IEnumerable{double})"/>
+    /// A collection of bins of size <paramref name="binSize"/> 
+    /// where the first bin's left edge is <paramref name="firstBin"/> 
+    /// and the last bin's left edge is <paramref name="lastBin"/>
     /// </summary>
-    /// <param name="min">minimum value to be counted</param>
-    /// <param name="max">maximum value to be counted</param>
-    /// <param name="binCount">number of bins between <paramref name="min"/> and <paramref name="max"/></param>
-    /// <param name="addOutliersToEdgeBins">if false, outliers will not be counted</param>
-    /// <param name="addFinalBin">if true, one more bin will be added so values equal to <paramref name="max"/> can be counted too</param>
-    /// <remarks>
-    /// If <paramref name="min"/> and <paramref name="max"/> are the same value, the <paramref name="min"/> and <paramref name="max"/>
-    /// properties will be <paramref name="min"/> - 0.5 and <paramref name="max"/> + 0.5, respectively. This is to handle an edge
-    /// case where all values of an array are exactly the same, producing an identical min and max.
-    /// </remarks>
-    public Histogram(double min, double max, int binCount, bool addOutliersToEdgeBins = false, bool addFinalBin = true)
+    public static Histogram WithBinSize(double binSize, double firstBin, double lastBin)
     {
-        if (min >= max)
-            throw new ArgumentException($"{nameof(max)} must be greater than {nameof(min)}");
+        if (lastBin <= firstBin)
+            throw new ArgumentException($"{lastBin} must be greater than {nameof(firstBin)}");
 
-        if (binCount < 1)
-            throw new ArgumentException($"must have at least 1 bin");
+        double span = lastBin - firstBin;
+        int binCount = (int)(span / binSize);
+        double[] edges = Enumerable.Range(0, binCount + 1).Select(x => firstBin + x * binSize).ToArray();
+        return new Histogram(edges);
+    }
 
-        BinSize = (max - min) / binCount;
-        AddOutliersToEdgeBins = addOutliersToEdgeBins;
+    /// <summary>
+    /// A collection of bins of size <paramref name="binSize"/> starting from the smallest value in <paramref name="values"/>
+    /// and increasing to include the largest value in <paramref name="values"/>
+    /// </summary>
+    public static Histogram WithBinSize(double binSize, IEnumerable<double> values)
+    {
+        Histogram hist = WithBinSize(binSize, values.Min(), values.Max());
+        hist.AddRange(values);
+        return hist;
+    }
 
-        if (addFinalBin)
-            binCount += 1;
+    /// <summary>
+    /// A collection of <paramref name="count"/> evenly sized bins.
+    /// <paramref name="minValue"/> is the lower edge of the first bin.
+    /// <paramref name="maxValue"/> is the lower edge of the last bin.
+    /// </summary>
+    public static Histogram WithBinCount(int count, double minValue, double maxValue)
+    {
+        if (maxValue <= minValue)
+            throw new ArgumentException($"{maxValue} must be greater than {nameof(minValue)}");
 
-        BinCount = binCount;
+        double[] edges = new double[count + 1];
 
-        Min = min == max ? min - 0.5 : min;
-        Max = min == max ? max + 0.5 : min + BinSize * binCount;
-
-        Counts = new double[binCount];
-        Bins = new double[binCount];
-        BinCenters = new double[binCount];
-        for (int i = 0; i < binCount; i++)
+        for (int i = 0; i < count; i++)
         {
-            Bins[i] = Min + BinSize * i;
-            BinCenters[i] = Bins[i] + BinSize / 2;
+            edges[i] = minValue + i * (maxValue - minValue) / count;
+        }
+
+        edges[^1] = maxValue;
+
+        return new Histogram(edges);
+    }
+
+    /// <summary>
+    /// A collection of <paramref name="count"/> evenly sized bins spaced to include the full range of <paramref name="values"/>
+    /// </summary>
+    public static Histogram WithBinCount(int count, IEnumerable<double> values)
+    {
+        Histogram hist = WithBinCount(count, values.Min(), values.Max());
+        hist.AddRange(values);
+        return hist;
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < Counts.Length; i++)
+        {
+            Counts[i] = 0;
+        }
+    }
+
+    public void Add(double value)
+    {
+        if (value < Edges[0])
+        {
+            if (IncludeOutliers)
+            {
+                Counts[0] += 1;
+            }
+            return;
+        }
+
+        if (value > Edges[^1])
+        {
+            if (IncludeOutliers)
+            {
+                Counts[^1] += 1;
+            }
+            return;
+        }
+
+        // TODO: improve performance using binary search
+        for (int i = 0; i < Counts.Length; i++)
+        {
+            if (value >= Edges[i] && value < Edges[i + 1])
+            {
+                Counts[i] += 1;
+                break;
+            }
+        }
+
+        if (value == Edges[^1])
+        {
+            Counts[^1] += 1;
+        }
+    }
+
+    public void AddRange(IEnumerable<double> values)
+    {
+        foreach (double value in values)
+        {
+            Add(value);
         }
     }
 
     /// <summary>
-    /// Create a histogram with bins that can count data from <paramref name="min"/> to <paramref name="max"/> (inclusive)
+    /// Return counts normalized so the sum of all values equals 1
     /// </summary>
-    public static Histogram WithFixedBinSize(double min, double max, double binSize, bool addOutliersToEdgeBins = false)
+    public double[] GetProbability(double scale = 1)
     {
-        int binCount = (int)Math.Ceiling((max - min) / binSize) + 1;
-        max = binCount * binSize + min;
-        return new Histogram(min, max, binCount, addOutliersToEdgeBins, addFinalBin: false);
+        int valuesCounted = Counts.Sum();
+        return Counts.Select(x => scale * x / valuesCounted).ToArray();
     }
 
     /// <summary>
-    /// Create a histogram with bins that can count data from <paramref name="min"/> to <paramref name="max"/> (inclusive)
-    /// </summary>
-    public static Histogram WithFixedBinCount(double min, double max, int binCount, bool addOutliersToEdgeBins = false)
-    {
-        return new Histogram(min, max, binCount, addOutliersToEdgeBins);
-    }
-
-    /// <summary>
-    /// Return counts normalized so the sum of all counts equals 1
-    /// </summary>
-    public double[] GetProbability()
-    {
-        return Counts.Select(x => x / ValuesCounted).ToArray();
-    }
-
-    /// <summary>
-    /// Return a function describing the probability function (a Gaussian curve fitted to the histogram probabilities).
-    /// </summary>
-    public Func<double, double?> GetProbabilityCurve(double[] values, bool scaleToBinnedProbability = false)
-    {
-        double mean = Statistics.Descriptive.Mean(values);
-        double stDev = Statistics.Descriptive.StandardDeviation(values);
-
-        double? unscaled(double x) => Math.Exp(-.5 * Math.Pow((x - mean) / stDev, 2));
-        if (!scaleToBinnedProbability)
-            return unscaled;
-
-        double sum = Bins.Select(x => unscaled(x)).Sum()!.Value;
-        double? scaled(double x) => Math.Exp(-.5 * Math.Pow((x - mean) / stDev, 2)) / sum;
-        return scaled;
-    }
-
-    /// <summary>
-    /// Return counts normalized so the maximum value equals the given value
+    /// Return the probability of each bin scaled so the peak is <paramref name="maxValue"/>
     /// </summary>
     public double[] GetNormalized(double maxValue = 1)
     {
-        double mult = maxValue / Counts.Max();
-        return Counts.Select(x => x * mult).ToArray();
+        double scale = maxValue / Counts.Max();
+        return Counts.Select(x => x * scale).ToArray();
     }
 
     /// <summary>
-    /// Return the cumulative histogram counts.
-    /// Each value is the number of counts in that bin and all bins below it.
+    /// Return the cumulative sum of all counts.
+    /// Each value is the number of counts in that bin plus all bins below it.
     /// </summary>
-    public double[] GetCumulative()
+    public int[] GetCumulativeCounts()
     {
-        double[] cumulative = new double[Counts.Length];
+        int[] cumulative = new int[Counts.Length];
         cumulative[0] = Counts[0];
         for (int i = 1; i < Counts.Length; i++)
         {
@@ -182,72 +183,12 @@ public class Histogram
 
     /// <summary>
     /// Return the cumulative probability histogram.
-    /// Each value is the fraction of counts in that bin and all bins below it.
+    /// Each value is the fraction of counts in that bin plus all bins below it.
     /// </summary>
-    public double[] GetCumulativeProbability()
+    public double[] GetCumulativeProbability(double scale = 1.0)
     {
-        double[] cumulative = GetCumulative();
+        int[] cumulative = GetCumulativeCounts();
         double final = cumulative.Last();
-        return cumulative.Select(x => x / final).ToArray();
-    }
-
-    /// <summary>
-    /// Add a single value to the histogram
-    /// </summary>
-    public void Add(double value)
-    {
-        if (value < Min)
-        {
-            MinOutlierCount += 1;
-            if (AddOutliersToEdgeBins)
-            {
-                Counts[0] += 1;
-                Sum += value;
-                ValuesCounted += 1;
-            }
-            return;
-        }
-
-        if (value >= Max)
-        {
-            MaxOutlierCount += 1;
-            if (AddOutliersToEdgeBins)
-            {
-                Counts[Counts.Length - 1] += 1;
-                Sum += value;
-                ValuesCounted += 1;
-            }
-            return;
-        }
-
-        double distanceFromMin = value - Min;
-        int binsFromMin = (int)(distanceFromMin / BinSize);
-        Counts[binsFromMin] += 1;
-        Sum += value;
-        ValuesCounted += 1;
-    }
-
-    /// <summary>
-    /// Add multiple values to the histogram
-    /// </summary>
-    public void AddRange(IEnumerable<double> values)
-    {
-        foreach (double value in values)
-            Add(value);
-    }
-
-    /// <summary>
-    /// Reset the histogram, setting all counts and values to zero
-    /// </summary>
-    public void Clear()
-    {
-        MinOutlierCount = 0;
-        MaxOutlierCount = 0;
-        Sum = 0;
-        ValuesCounted = 0;
-        for (int i = 0; i < Counts.Length; i++)
-        {
-            Counts[i] = 0;
-        }
+        return cumulative.Select(x => scale * x / final).ToArray();
     }
 }
