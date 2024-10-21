@@ -19,14 +19,14 @@ public class ProbabilityDensity
         StDev = stDev;
     }
 
-    public double GetY(double x, double mult = 1)
+    public double GetY(double x, double scale = 1)
     {
         double u = (x - Mean) / StDev;
-        return Math.Exp(-0.5 * u * u) * mult;
+        return Math.Exp(-0.5 * u * u) * scale;
     }
 
-    public double[] GetYs(double[] xs, double mult = 1)
+    public double[] GetYs(double[] xs, double scale = 1)
     {
-        return xs.Select(x => GetY(x, mult)).ToArray();
+        return xs.Select(x => GetY(x, scale)).ToArray();
     }
 }
