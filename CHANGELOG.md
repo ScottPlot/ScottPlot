@@ -7,6 +7,7 @@ _Not yet on NuGet..._
 * Colormap: Added `Default` property to provide quick access to a customizable standard colormap (defaults to `MellowRainbow`)
 * Palette: Added `Default` property to provide quick access to a customizable standard Palette (defaults to `Category10`)
 * Bar: Use `LineStyle` and `FillStyle` similar to other plottables and deprecate old property names
+* Histogram: Refactored to simplify creation of creating probability curves and cumulative probability histograms (#4287, #4367)
 
 ## ScottPlot 5.0.40
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_
