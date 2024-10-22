@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * Bar: Use `LineStyle` and `FillStyle` similar to other plottables and deprecate old property names
 * Histogram: Refactored to simplify creation of creating probability curves and cumulative probability histograms (#4287, #4367)
 * Colormap: Refactor all `ScottPlot.Colormaps` to favor composition over inheritance and add extension methods to `IColormap` (#4248)
+* WinUI: Improve support for .NET 8 platform targets (#4288, #4374) @vilgotf
 
 ## ScottPlot 5.0.40
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_

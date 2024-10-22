@@ -81,11 +81,10 @@ public class WinUIPlotMenu : IPlotMenu
         dialog.FileTypeChoices.Add("WebP Files", new List<string>() { ".webp" });
         dialog.FileTypeChoices.Add("SVG Files", new List<string>() { ".svg" });
 
-#if NET6_0_WINDOWS10_0_18362 // https://github.com/microsoft/CsWinRT/blob/master/docs/interop.md#windows-sdk
+        // https://github.com/microsoft/CsWinRT/blob/master/docs/interop.md#windows-sdk
         // TODO: launch a pop-up window or otherwise inform if AppWindow is not set before using save-dialog
         var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(ThisControl.AppWindow);
         WinRT.Interop.InitializeWithWindow.Initialize(dialog, hwnd);
-#endif
 
         var file = await dialog.PickSaveFileAsync();
 
