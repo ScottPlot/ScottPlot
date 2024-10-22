@@ -274,7 +274,7 @@ public class Speed : IColormap
             new( 23, 35, 19 ),
         ];
 
-            Colormap = new CustomPalette(colors);
+        Colormap = new CustomPalette(colors);
     }
 }
 

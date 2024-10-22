@@ -13,7 +13,7 @@ public class Solar : IColormap
 
     public Solar()
     {
-        Color[] colors = 
+        Color[] colors =
         [
             new( 51, 20, 24 ),
             new( 53, 20, 24 ),

@@ -13,7 +13,7 @@ public class Deep : IColormap
 
     public Deep()
     {
-        Color[] colors = 
+        Color[] colors =
         [
             new( 253, 254, 204 ),
             new( 251, 253, 203 ),

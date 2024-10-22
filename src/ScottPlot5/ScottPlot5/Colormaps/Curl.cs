@@ -13,7 +13,7 @@ public class Curl : IColormap
 
     public Curl()
     {
-        Color[] colors = 
+        Color[] colors =
         [
             new( 21, 29, 68 ),
             new( 21, 31, 69 ),

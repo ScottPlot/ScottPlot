@@ -13,7 +13,7 @@ public class Tempo : IColormap
 
     public Tempo()
     {
-        Color[] colors = 
+        Color[] colors =
         [
             new( 255, 246, 244 ),
             new( 253, 245, 243 ),
