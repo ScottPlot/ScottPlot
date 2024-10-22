@@ -4,7 +4,7 @@
 /// Connect points with straight lines.
 /// NaN values will be skipped, producing a gap in the path.
 /// </summary>
-internal class Straight : IPathStrategy
+public class Straight : IPathStrategy
 {
     public SKPath GetPath(IEnumerable<Pixel> pixels)
     {
