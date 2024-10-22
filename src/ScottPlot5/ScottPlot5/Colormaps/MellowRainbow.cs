@@ -7,7 +7,9 @@
 /// </summary>
 public class MellowRainbow : IColormap
 {
+    public string Name => "Mellow Rainbow";
     readonly CustomInterpolated Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
 
     public MellowRainbow()
     {
@@ -18,10 +20,4 @@ public class MellowRainbow : IColormap
 
         Colormap = new(colors);
     }
-
-    public string Name => "Mellow Rainbow";
-
-    public Color GetColor(double position) => Colormap.GetColor(position);
-
-    public Color GetColor(double position, Range range) => Colormap.GetColor(position, range);
 }
