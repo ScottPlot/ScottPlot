@@ -44,8 +44,10 @@ public static class Colormap
         return new ScottPlot.Image(bytes);
     }
 
-    public static IColormap FromColors(Color[] colors)
+    public static IColormap FromColors(Color[] colors, bool smooth = true)
     {
-        return new CustomInterpolated(colors);
+        return smooth
+            ? new CustomInterpolated(colors)
+            : new CustomPalette(colors);
     }
 }
