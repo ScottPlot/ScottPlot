@@ -6,16 +6,18 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Inferno : IColormap
 {
-    public class Inferno : ArgbColormapBase
+    public string Name => "Inferno";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Inferno()
     {
-        public override string Name => "Inferno";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly int[] rgbs =
-        {
+        int[] rgbColors =
+        [
             00000003, 00000004, 00000006, 00065543, 00065801, 00065803, 00131342, 00131600,
             00197138, 00262932, 00262934, 00328728, 00394267, 00460061, 00525855, 00591393,
             00657187, 00722726, 00854056, 00919594, 00985389, 01050927, 01182258, 01247796,
@@ -48,8 +50,10 @@ namespace ScottPlot.Colormaps
             16046923, 16047183, 15982162, 15982678, 15983193, 15918173, 15918688, 15853668,
             15853928, 15854444, 15854960, 15855220, 15855737, 15856253, 15922049, 15922309,
             15988361, 16054157, 16119953, 16186005, 16251801, 16383133, 16448928, 16580260,
-        };
+        ];
 
-        private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).ToArray();
+        Color[] colors = rgbColors.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

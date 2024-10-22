@@ -1,14 +1,16 @@
 ﻿// This colormap was created by Scott Harden on 2020-06-16 and is released under a MIT license.
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Greens : IColormap
 {
-    public class Greens : ArgbColormapBase
+    public string Name => "Greens";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Greens()
     {
-        public override string Name => "Greens";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly int[] rgbs =
+        int[] rgbColors =
         {
             -16761088, -16760832, -16760575, -16760318, -16760061, -16759804, -16759547, -16759290,
             -16759033, -16758776, -16758519, -16758006, -16757749, -16757492, -16757235, -16756979,
@@ -44,6 +46,8 @@ namespace ScottPlot.Colormaps
             -00394516, -00328977, -00263183, -00197388, -00197385, -00131591, -00065796, -00000001,
         };
 
-        private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).ToArray();
+        Color[] colors = rgbColors.Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

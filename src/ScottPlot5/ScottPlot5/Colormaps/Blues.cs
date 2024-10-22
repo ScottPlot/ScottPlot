@@ -1,14 +1,17 @@
 ﻿// This colormap was created by Scott Harden on 2020-06-16 and is released under a MIT license.
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Blues : IColormap
 {
-    public class Blues : ArgbColormapBase
+    public string Name => "Blues";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Blues()
     {
-        public override string Name => "Blues";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly uint[] _argbs = new int[] {
+        int[] rgbColors =
+        [
             -16767403, -16767402, -16767144, -16766887, -16701093, -16700835, -16700578, -16634784,
             -16634527, -16634269, -16568476, -16568218, -16568216, -16567959, -16502165, -16501908,
             -16501650, -16435856, -16435599, -16435341, -16369548, -16369290, -16369033, -16303495,
@@ -41,6 +44,10 @@ namespace ScottPlot.Colormaps
             -02168070, -02102278, -01970950, -01905158, -01839621, -01708293, -01642501, -01511173,
             -01445381, -01314052, -01248260, -01182468, -01051140, -00985604, -00854275, -00788483,
             -00657155, -00591363, -00525571, -00394242, -00328450, -00197122, -00131330, -00000001,
-        }.Select(argb => (uint)argb).ToArray();
+        ];
+
+        Color[] colors = rgbColors.Select(argb => (uint)argb).Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

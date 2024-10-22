@@ -6,15 +6,18 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-namespace ScottPlot.Colormaps
-{
-    public class Viridis : ArgbColormapBase
-    {
-        public override string Name => "Viridis";
-        public override uint[] Argbs => _argbs;
+namespace ScottPlot.Colormaps;
 
-        private static readonly uint[] rgbs =
-        {
+public class Viridis : IColormap
+{
+    public string Name => "Viridis";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Viridis()
+    {
+        uint[] rgbColors =
+        [
             04456788, 04457045, 04457303, 04523352, 04523610, 04524123, 04589916, 04590430,
             04590687, 04591201, 04656994, 04657507, 04657765, 04658278, 04658535, 04658793,
             04659306, 04725099, 04725356, 04725870, 04726127, 04726384, 04726897, 04727154,
@@ -47,8 +50,10 @@ namespace ScottPlot.Colormaps
             12771106, 12967713, 13099039, 13295646, 13492253, 13623580, 13820187, 13951258,
             14148121, 14344728, 14475800, 14672664, 14803736, 15000344, 15197209, 15328281,
             15524890, 15656219, 15852828, 15983902, 16180767, 16311841, 16442914, 16639780,
-        };
+        ];
 
-        private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | rgb)).ToArray();
+        Color[] colors = rgbColors.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

@@ -6,15 +6,17 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Magma : IColormap
 {
-    public class Magma : ArgbColormapBase
+    public string Name => "Magma";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Magma()
     {
-        public override string Name => "Magma";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly int[] rgbs =
+        int[] rgbColors =
         {
             00000003, 00000004, 00000006, 00065543, 00065801, 00065803, 00131597, 00131599,
             00197393, 00262931, 00263189, 00328727, 00394521, 00460059, 00525853, 00591647,
@@ -50,6 +52,8 @@ namespace ScottPlot.Colormaps
             16576689, 16576947, 16577461, 16577975, 16512953, 16513467, 16513725, 16514239,
         };
 
-        private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).ToArray();
+        Color[] colors = rgbColors.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

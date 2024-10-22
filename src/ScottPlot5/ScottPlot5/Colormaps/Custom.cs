@@ -1,20 +1,11 @@
 ﻿namespace ScottPlot.Colormaps;
 
-public class Custom : ColormapBase
+/// <summary>
+/// A custom colormap created from a collection of colors
+/// </summary>
+public class Custom(Color[] colors, bool smooth = true) : IColormap
 {
-    public override string Name { get; }
-
-    private readonly Color[] Colors;
-
-    public Custom(Color[] colors, string name = "custom")
-    {
-        Colors = colors;
-        Name = name;
-    }
-
-    public override Color GetColor(double position)
-    {
-        int index = (int)((Colors.Length - 1) * position);
-        return Colors[index];
-    }
+    readonly IColormap Cmap = smooth ? new CustomInterpolated(colors) : new CustomPalette(colors);
+    public string Name => Cmap.Name;
+    public Color GetColor(double position) => Cmap.GetColor(position);
 }

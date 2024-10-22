@@ -5,15 +5,17 @@
  * https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html
  */
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Jet : IColormap
 {
-    public class Jet : ArgbColormapBase
+    public string Name => "Jet";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Jet()
     {
-        public override string Name => "Jet";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly int[] rgbs =
+        int[] rgbColors =
         {
             00000127, 00000132, 00000136, 00000141, 00000145, 00000150, 00000154, 00000159,
             00000163, 00000168, 00000172, 00000177, 00000182, 00000186, 00000191, 00000195,
@@ -49,6 +51,8 @@ namespace ScottPlot.Colormaps
             10420224, 10092544, 09830400, 09502720, 09240576, 08912896, 08650752, 08323072,
         };
 
-        private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).ToArray();
+        Color[] colors = rgbColors.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

@@ -1,9 +1,11 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.Colormaps;
+
+namespace ScottPlot;
 
 public interface IColormap
 {
     /// <summary>
-    /// Full name for this colormap
+    /// Human readable name for this colormap
     /// </summary>
     string Name { get; }
 
@@ -12,17 +14,8 @@ public interface IColormap
     /// Returns transparent if NaN.
     /// Positions outside the range will be clamped.
     /// </summary>
-    /// <param name="position">position from 0 (first color) to 1 (last color)</param>
+    /// <param name="position">Fractional distance along the colormap</param>
     Color GetColor(double position);
-
-    /// <summary>
-    /// Returns the color of a position on this colormap (according to the given range).
-    /// Returns transparent if NaN.
-    /// Positions outside the range will be clamped.
-    /// </summary>
-    /// <param name="position">position relative to the given range</param>
-    /// <param name="range">range of values spanned by this colormap</param>
-    Color GetColor(double position, Range range);
 }
 
 public static class IColormapExtensions
@@ -94,5 +87,27 @@ public static class IColormapExtensions
         fraction = fraction * fractionRange + startFraction;
 
         return cmap.GetColor(fraction);
+    }
+
+    public static Color GetColor(this IColormap cmap, double position, Range range)
+    {
+        if (double.IsNaN(position))
+        {
+            return Colors.Transparent;
+        }
+
+        if (range.Min == range.Max)
+        {
+            return cmap.GetColor(0);
+        }
+
+        double normalizedPosition = range.Normalize(position, true);
+
+        return cmap.GetColor(normalizedPosition);
+    }
+
+    public static IColormap Reversed(this IColormap cmap)
+    {
+        return new Reversed(cmap);
     }
 }

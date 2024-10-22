@@ -3,15 +3,17 @@
 // https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html
 
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Turbo : IColormap
 {
-    public class Turbo : ArgbColormapBase
+    public string Name => "Turbo";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Turbo()
     {
-        public override string Name => "Turbo";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly uint[] _argbs = new int[]
+        uint[] rgbColors = new int[]
         {
             -13559489, -13493436, -13427382, -13361328, -13295018, -13228964, -13162911, -13096857,
             -13030547, -12964493, -12898440, -12832130, -12766077, -12700023, -12633970, -12567660,
@@ -46,5 +48,9 @@ namespace ScottPlot.Colormaps
             -05561580, -05758702, -05956079, -06153200, -06350322, -06482163, -06679284, -06876662,
             -07073783, -07270904, -07468282, -07665403, -07862524, -08059902, -08257023, -08388608,
         }.Select(argb => (uint)argb).ToArray();
+
+        Color[] colors = rgbColors.Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }

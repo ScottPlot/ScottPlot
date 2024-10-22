@@ -6,15 +6,17 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-namespace ScottPlot.Colormaps
+namespace ScottPlot.Colormaps;
+
+public class Plasma : IColormap
 {
-    public class Plasma : ArgbColormapBase
+    public string Name => "Plasma";
+    private readonly CustomPalette Colormap;
+    public Color GetColor(double position) => Colormap.GetColor(position);
+
+    public Plasma()
     {
-        public override string Name => "Plasma";
-
-        public override uint[] Argbs => _argbs;
-
-        private static readonly uint[] rgbs =
+        uint[] rgbColors =
         {
             00788358, 01050503, 01246857, 01377930, 01574539, 01771148, 01902221, 02033038,
             02164111, 02295184, 02426257, 02557330, 02688403, 02819476, 02950292, 03081365,
@@ -50,6 +52,8 @@ namespace ScottPlot.Colormaps
             15985702, 15986214, 15921190, 15921446, 15856422, 15791397, 15791651, 15726625,
         };
 
-        private static readonly uint[] _argbs = rgbs.Select(rgb => unchecked((uint)(0xFF << 24) | rgb)).ToArray();
+        Color[] colors = rgbColors.Select(rgb => unchecked((uint)(0xFF << 24) | (uint)rgb)).Select(Color.FromARGB).ToArray();
+
+        Colormap = new CustomPalette(colors);
     }
 }
