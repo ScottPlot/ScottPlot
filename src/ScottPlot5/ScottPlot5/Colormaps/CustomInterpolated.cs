@@ -1,12 +1,15 @@
 ﻿namespace ScottPlot.Colormaps;
 
-public class LinearSegmented : IColormap
+/// <summary>
+/// A custom palette which smoothly blends across a collection of colors using linear interpolation
+/// </summary>
+public class CustomInterpolated : IColormap
 {
-    public string Name => "Linear Segmented";
+    public string Name => "Interpolated";
 
     private readonly Color[] Colors;
 
-    public LinearSegmented(Color[] colors)
+    public CustomInterpolated(Color[] colors)
     {
         if (colors.Length == 0)
         {

@@ -1,18 +1,11 @@
 ﻿namespace ScottPlot.Colormaps;
 
 /// <summary>
-/// A palette of colors with "hard edges" (no interpolation between colors)
+/// A custom colormap created from a collection of colors
 /// </summary>
-public class Custom(Color[] colors, string name = "custom")
+public class Custom(Color[] colors, bool smooth = true) : IColormap
 {
-    public string Name { get; } = name;
-
-    private readonly Color[] Colors = colors;
-
-    public Color GetColor(double position)
-    {
-        position = NumericConversion.Clamp(position, 0, 1);
-        int index = (int)((Colors.Length - 1) * position);
-        return Colors[index];
-    }
+    readonly IColormap Cmap = smooth ? new CustomInterpolated(colors) : new CustomPalette(colors);
+    public string Name => Cmap.Name;
+    public Color GetColor(double position) => Cmap.GetColor(position);
 }

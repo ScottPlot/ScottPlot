@@ -7,7 +7,7 @@
 /// </summary>
 public class MellowRainbow : IColormap
 {
-    readonly LinearSegmented Colormap;
+    readonly CustomInterpolated Colormap;
 
     public MellowRainbow()
     {

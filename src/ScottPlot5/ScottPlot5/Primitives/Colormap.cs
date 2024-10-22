@@ -46,6 +46,6 @@ public static class Colormap
 
     public static IColormap FromColors(Color[] colors)
     {
-        return new LinearSegmented(colors);
+        return new CustomInterpolated(colors);
     }
 }
