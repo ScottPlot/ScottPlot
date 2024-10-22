@@ -1,19 +1,17 @@
 ﻿namespace ScottPlot.Colormaps;
 
-public class Custom : ColormapBase
+/// <summary>
+/// A palette of colors with "hard edges" (no interpolation between colors)
+/// </summary>
+public class Custom(Color[] colors, string name = "custom")
 {
-    public override string Name { get; }
+    public string Name { get; } = name;
 
-    private readonly Color[] Colors;
+    private readonly Color[] Colors = colors;
 
-    public Custom(Color[] colors, string name = "custom")
+    public Color GetColor(double position)
     {
-        Colors = colors;
-        Name = name;
-    }
-
-    public override Color GetColor(double position)
-    {
+        position = NumericConversion.Clamp(position, 0, 1);
         int index = (int)((Colors.Length - 1) * position);
         return Colors[index];
     }

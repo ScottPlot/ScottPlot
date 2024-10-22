@@ -1,13 +1,11 @@
-﻿namespace ScottPlot.Colormaps
-{
-    public class GrayscaleReversed : ColormapBase
-    {
-        public override string Name => "Grayscale Reversed";
+﻿namespace ScottPlot.Colormaps;
 
-        public override Color GetColor(double normalizedIntensity)
-        {
-            byte value = (byte)(255 - (byte)(255 * normalizedIntensity));
-            return Color.Gray(value);
-        }
+public class GrayscaleReversed
+{
+    public string Name => "Grayscale Reversed";
+    public Color GetColor(double normalizedIntensity)
+    {
+        byte value = (byte)(255 - (byte)(255 * normalizedIntensity));
+        return Color.Gray(value);
     }
 }

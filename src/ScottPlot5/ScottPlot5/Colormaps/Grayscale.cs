@@ -1,13 +1,12 @@
-﻿namespace ScottPlot.Colormaps
-{
-    public class Grayscale : ColormapBase
-    {
-        public override string Name => "Grayscale";
+﻿namespace ScottPlot.Colormaps;
 
-        public override Color GetColor(double normalizedIntensity)
-        {
-            byte value = (byte)(255 * normalizedIntensity);
-            return Color.Gray(value);
-        }
+public class Grayscale
+{
+    public string Name => "Grayscale";
+
+    public Color GetColor(double normalizedIntensity)
+    {
+        byte value = (byte)(255 * normalizedIntensity);
+        return Color.Gray(value);
     }
 }

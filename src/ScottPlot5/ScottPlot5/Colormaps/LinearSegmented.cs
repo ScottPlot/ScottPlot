@@ -1,20 +1,30 @@
 ﻿namespace ScottPlot.Colormaps;
 
-public class LinearSegmented : ColormapBase, IColormap
+public class LinearSegmented : IColormap
 {
-    public override string Name => "Linear Segmented";
+    public string Name => "Linear Segmented";
 
     private readonly Color[] Colors;
 
     public LinearSegmented(Color[] colors)
     {
-        if (colors.Length < 2)
-            throw new ArgumentException($"{nameof(colors)} must contain at least 2 colors");
-
-        Colors = colors;
+        if (colors.Length == 0)
+        {
+            // user supplied no colors so make it transparent
+            Colors = [ScottPlot.Colors.Transparent, ScottPlot.Colors.Transparent];
+        }
+        else if (colors.Length == 1)
+        {
+            // user supplied a single color to place it twice so interpolation doesn't crash
+            Colors = [colors[0], colors[0]];
+        }
+        else
+        {
+            Colors = colors;
+        }
     }
 
-    public override Color GetColor(double position)
+    public Color GetColor(double position)
     {
         if (position <= 0)
             return Colors[0];

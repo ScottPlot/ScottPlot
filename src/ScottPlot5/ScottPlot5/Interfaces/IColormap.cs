@@ -88,6 +88,24 @@ public static class IColormapExtensions
 
         return cmap.GetColor(fraction);
     }
+
+    public static Color GetColor(this IColormap cmap, double position, Range range)
+    {
+        if (double.IsNaN(position))
+        {
+            return Colors.Transparent;
+        }
+
+        if (range.Min == range.Max)
+        {
+            return cmap.GetColor(0);
+        }
+
+        double normalizedPosition = range.Normalize(position, true);
+
+        return cmap.GetColor(normalizedPosition);
+    }
+
     public static IColormap Reversed(this IColormap cmap)
     {
         return new Reversed(cmap);

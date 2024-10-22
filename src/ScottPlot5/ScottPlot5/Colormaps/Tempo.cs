@@ -7,8 +7,7 @@ namespace ScottPlot.Colormaps
 {
     public class Tempo : ByteColormapBase
     {
-        public override string Name => "Tempo";
-
+        public string Name => "Tempo";
         public override (byte r, byte g, byte b)[] Rgbs => _rgbs;
         private static readonly (byte, byte, byte)[] _rgbs = {
             ( 255, 246, 244 ),
