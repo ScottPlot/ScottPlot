@@ -3,6 +3,7 @@
 /// <summary>
 /// Recipes are collected in categories, and categories are grouped into chapters.
 /// The main purpose of this struct is to indicate whether a recipe demonstrates a plot type or not.
+/// The demo app doesn't organize categories into chapters, but the website does.
 /// </summary>
 public enum Chapter
 {

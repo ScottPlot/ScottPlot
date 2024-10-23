@@ -14,8 +14,16 @@ internal class FrontPage : PageBase
         SB.AppendLine($"# ScottPlot 5.0 Cookbook");
         SB.AppendLine();
 
+        // manage chapters manually as the simplest way to enforce ordered chapters
+        string[] chapters = ["General", "Plot Types", "Miscellaneous"];
+        if (chapters.Length != CB.Chapters.Length)
+            throw new InvalidOperationException("Chapter mismatch. Edit this area manually.");
+        foreach (string chapter in chapters)
+            if (!CB.Chapters.Contains(chapter))
+                throw new InvalidOperationException("Chapter mismatch. Edit this area manually.");
+
         // table of contents
-        foreach (string chapter in CB.Chapters)
+        foreach (string chapter in chapters)
         {
             SB.AppendLine($"<div class='mt-3 fs-4'><strong>{chapter}</strong></div>");
 
