@@ -2,7 +2,7 @@
 
 public class AdvancedAxis : ICategory
 {
-    public string Chapter => "Axis";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Advanced Axis Features";
     public string CategoryDescription => "How to further customize axes";
 

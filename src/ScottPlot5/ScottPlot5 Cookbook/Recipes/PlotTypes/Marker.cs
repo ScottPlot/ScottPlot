@@ -2,7 +2,7 @@
 
 public class Marker : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Marker";
     public string CategoryDescription => "Markers can be placed on the plot in coordinate space.";
 

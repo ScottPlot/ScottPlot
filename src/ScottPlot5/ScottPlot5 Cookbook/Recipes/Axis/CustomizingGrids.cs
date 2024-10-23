@@ -4,7 +4,7 @@ namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingGrids : ICategory
 {
-    public string Chapter => "Axis";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Customizing Grids";
     public string CategoryDescription => "Advanced customization of grid lines";
 

@@ -2,7 +2,7 @@
 
 public class Function : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Function";
     public string CategoryDescription => "Function plots are a type of line plot where Y positions " +
         "are defined by a function that depends on X rather than a collection of discrete data points.";

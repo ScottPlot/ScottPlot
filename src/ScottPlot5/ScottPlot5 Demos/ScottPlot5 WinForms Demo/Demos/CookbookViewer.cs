@@ -43,7 +43,7 @@ public partial class CookbookViewer : Form, IDemoWindow
         listView1.Items.Clear();
         listView1.Groups.Clear();
 
-        foreach (string chapter in Query.GetChapterNamesInOrder())
+        foreach (Chapter chapter in Query.GetChaptersInOrder())
         {
             IEnumerable<ICategory> categoriesInChapter = RecipesByCategory.Keys.Where(x => x.Chapter == chapter);
             foreach (ICategory category in categoriesInChapter)

@@ -2,7 +2,7 @@
 
 public class Contour : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Contour Plot";
     public string CategoryDescription => "A contour plot is a graphical representation that shows the " +
         "three-dimensional surface of a function on a two-dimensional plane " +

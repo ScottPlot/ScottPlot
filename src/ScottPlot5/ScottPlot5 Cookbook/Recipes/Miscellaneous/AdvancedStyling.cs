@@ -2,7 +2,7 @@
 
 public class AdvancedStyling : ICategory
 {
-    public string Chapter => "Miscellaneous";
+    public Chapter Chapter => Chapter.Misc;
     public string CategoryName => "Advanced Styling";
     public string CategoryDescription => "Features for users seeking extensive customization options.";
 

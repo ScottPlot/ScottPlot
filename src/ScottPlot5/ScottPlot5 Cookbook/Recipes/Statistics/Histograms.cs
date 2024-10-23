@@ -2,7 +2,7 @@
 
 public class Histograms : ICategory
 {
-    public string Chapter => "Statistics";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Histogram";
     public string CategoryDescription => "Histograms graphically represent the distribution of numerical data " +
         "by grouping values into ranges (bins) and displaying the frequency or count of points in each bin.";

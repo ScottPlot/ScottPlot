@@ -4,7 +4,7 @@ namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Shapes : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Shapes";
     public string CategoryDescription => "Basic shapes that can be added to plots";
 

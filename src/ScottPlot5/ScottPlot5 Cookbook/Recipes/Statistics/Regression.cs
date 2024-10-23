@@ -2,7 +2,7 @@
 
 public class Regression : ICategory
 {
-    public string Chapter => "Statistics";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Regression";
     public string CategoryDescription => "Statistical operations to fit lines to data";
 

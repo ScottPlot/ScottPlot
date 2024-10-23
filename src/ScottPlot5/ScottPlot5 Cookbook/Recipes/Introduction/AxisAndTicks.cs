@@ -2,7 +2,7 @@
 
 public class AxisAndTicks : ICategory
 {
-    public string Chapter => "Introduction";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Axis and Ticks";
     public string CategoryDescription => "Examples of common customizations for axis labels and ticks";
 

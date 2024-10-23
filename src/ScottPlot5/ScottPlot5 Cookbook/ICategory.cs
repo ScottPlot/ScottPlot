@@ -5,7 +5,7 @@
 /// </summary>
 public interface ICategory
 {
-    public abstract string Chapter { get; }
+    public abstract Chapter Chapter { get; }
     public abstract string CategoryName { get; } // keep this redundant name to distinguish it from recipe names
     public abstract string CategoryDescription { get; } // keep this redundant name to distinguish it from recipe names
 }

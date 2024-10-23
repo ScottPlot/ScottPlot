@@ -2,7 +2,7 @@
 
 public class Annotation : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Annotation";
     public string CategoryDescription => "Annotations are always-visible text labels positioned over the data area.";
 

@@ -5,7 +5,7 @@ namespace ScottPlotCookbook.Recipes.Axis;
 
 public class DateTimeAxes : ICategory
 {
-    public string Chapter => "Axis";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "DateTime Axes";
     public string CategoryDescription => "Plot data values on a DataTime axes";
 
