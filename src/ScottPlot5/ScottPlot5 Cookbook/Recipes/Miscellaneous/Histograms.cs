@@ -1,8 +1,8 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.Miscellaneous;
 
 public class Histograms : ICategory
 {
-    public Chapter Chapter => Chapter.PlotTypes;
+    public Chapter Chapter => Chapter.Misc;
     public string CategoryName => "Histogram";
     public string CategoryDescription => "Histograms graphically represent the distribution of numerical data " +
         "by grouping values into ranges (bins) and displaying the frequency or count of points in each bin.";
