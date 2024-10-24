@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace ScottPlotCookbook.Recipes.Axis;
+﻿namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingGrids : ICategory
 {

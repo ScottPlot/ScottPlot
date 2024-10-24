@@ -2,7 +2,7 @@
 
 public class MultiplotRecipes : ICategory
 {
-    public Chapter Chapter => Chapter.Misc;
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Multiplot";
     public string CategoryDescription => "Use Multiplot to create figures with multiple subplots";
 

@@ -1,12 +1,12 @@
-﻿namespace ScottPlotCookbook.Recipes.Miscellaneous;
+﻿namespace ScottPlotCookbook.Recipes.Axis;
 
-public class AdvancedStyling : ICategory
+public class Miscellaneous : ICategory
 {
-    public Chapter Chapter => Chapter.Misc;
-    public string CategoryName => "Advanced Styling";
-    public string CategoryDescription => "Features for users seeking extensive customization options.";
+    public Chapter Chapter => Chapter.General;
+    public string CategoryName => "Miscellaneous";
+    public string CategoryDescription => "Miscellaneous features and customization options";
 
-    public class AdvancedStylingDataBackground : RecipeBase
+    public class DataBackgroundImage : RecipeBase
     {
         public override string Name => "Data Area Background Image";
         public override string Description => "An image can be used for the background of the data area.";
@@ -29,7 +29,7 @@ public class AdvancedStyling : ICategory
         }
     }
 
-    public class AdvancedStylingFigureBackground : RecipeBase
+    public class FigureBackgroundImage : RecipeBase
     {
         public override string Name => "Figure Background Image";
         public override string Description => "An image can be used for the background of a figure.";

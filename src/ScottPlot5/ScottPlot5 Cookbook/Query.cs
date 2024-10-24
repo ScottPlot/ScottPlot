@@ -34,7 +34,6 @@ public static class Query
         [
             Chapter.General,
             Chapter.PlotTypes,
-            Chapter.Misc,
         ];
     }
 

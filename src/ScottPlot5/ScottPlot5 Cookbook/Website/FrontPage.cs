@@ -15,7 +15,7 @@ internal class FrontPage : PageBase
         SB.AppendLine();
 
         // manage chapters manually as the simplest way to enforce ordered chapters
-        string[] chapters = ["General", "Plot Types", "Miscellaneous"];
+        string[] chapters = ["General", "Plot Types"];
         if (chapters.Length != CB.Chapters.Length)
             throw new InvalidOperationException("Chapter mismatch. Edit this area manually.");
         foreach (string chapter in chapters)
