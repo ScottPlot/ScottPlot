@@ -2,7 +2,7 @@
 
 public class Pie : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Pie";
     public string CategoryDescription => "Pie charts illustrate numerical proportions as slices of a circle.";
 

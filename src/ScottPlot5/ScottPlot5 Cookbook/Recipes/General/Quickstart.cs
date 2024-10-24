@@ -2,7 +2,7 @@
 
 public class ScottPlotQuickstart : ICategory
 {
-    public string Chapter => "Introduction";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Quickstart";
     public string CategoryDescription => "A survey of basic functionality in ScottPlot 5";
 

@@ -2,7 +2,7 @@
 
 public class Ellipse : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Ellipse";
     public string CategoryDescription => "Ellipses are curves with a defined center and distinct X and Y radii. " +
         "A circle is an ellipse with an X radius equal to its Y radius.";

@@ -98,9 +98,9 @@ public class SourceDatabase
                 continue;
             }
 
-            if (trimmedLine.StartsWith("public string Chapter =>"))
+            if (trimmedLine.StartsWith("public Chapter Chapter =>"))
             {
-                chapter = line.Split('"')[1];
+                chapter = line.Split("=>")[1].Trim();
                 continue;
             }
 

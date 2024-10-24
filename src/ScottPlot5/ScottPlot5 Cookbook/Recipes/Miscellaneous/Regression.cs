@@ -1,8 +1,8 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.Miscellaneous;
 
 public class Regression : ICategory
 {
-    public string Chapter => "Statistics";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Regression";
     public string CategoryDescription => "Statistical operations to fit lines to data";
 

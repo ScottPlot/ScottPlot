@@ -2,7 +2,7 @@
 
 public class AxisSpans : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Axis Spans";
     public string CategoryDescription => "Axis spans indicate a range of an axis.";
 

@@ -2,7 +2,7 @@
 
 public class Coxcomb : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Coxcomb Plot";
     public string CategoryDescription => "A Coxcomb chart is a pie graph " +
         "where the angle of slices is constant but the radii are not.";

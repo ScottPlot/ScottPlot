@@ -30,9 +30,9 @@ internal static class JsonFile
 
         // chapters
         writer.WriteStartArray("chapters");
-        foreach (string chatper in Query.GetChapterNamesInOrder())
+        foreach (Chapter chapter in Query.GetChaptersInOrder())
         {
-            writer.WriteStringValue(chatper);
+            writer.WriteStringValue(chapter.PrettyName());
         }
         writer.WriteEndArray();
 
@@ -41,7 +41,7 @@ internal static class JsonFile
         foreach (ICategory category in Query.GetCategories())
         {
             writer.WriteStartObject();
-            writer.WriteString("chapter", category.Chapter);
+            writer.WriteString("chapter", category.Chapter.PrettyName());
             writer.WriteString("name", category.CategoryName);
             writer.WriteString("description", category.CategoryDescription);
             writer.WriteString("url", db.Recipes.Where(x => x.Category == category.CategoryName).First().CategoryUrl);

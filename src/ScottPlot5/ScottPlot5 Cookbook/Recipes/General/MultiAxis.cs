@@ -2,7 +2,7 @@
 
 public class MultiAxis : ICategory
 {
-    public string Chapter => "Axis";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Multiple Axes";
     public string CategoryDescription => "Tick mark customization and creation of multi-Axis plots";
 

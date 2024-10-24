@@ -2,7 +2,7 @@
 
 public class LinePlot : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Line Plot";
     public string CategoryDescription => "Line plots can be placed on the plot in coordinate " +
         "space using a Start, End, and an optional LineStyle.";

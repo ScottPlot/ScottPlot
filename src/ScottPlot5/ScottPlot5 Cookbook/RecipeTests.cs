@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework.Internal;
-using ScottPlotCookbook.Recipes;
 using ScottPlotCookbook.Website;
 using System.Reflection;
 
@@ -16,7 +15,6 @@ internal class RecipeTests
 
         foreach (ICategory category in categories)
         {
-            category.Chapter.Should().NotBeNullOrWhiteSpace();
             category.CategoryName.Should().NotBeNullOrWhiteSpace();
             category.CategoryDescription.Should().NotBeNullOrWhiteSpace();
         }
@@ -71,18 +69,6 @@ internal class RecipeTests
         db.Recipes.Select(x => x.Description).Should().OnlyHaveUniqueItems();
         db.Recipes.Select(x => x.ImageUrl).Should().OnlyHaveUniqueItems();
         db.Recipes.Select(x => x.RecipeUrl).Should().OnlyHaveUniqueItems();
-    }
-
-    [Test]
-    public static void Test_ChaptersList_HasAllChapters()
-    {
-        var orderedChapterNames = Query.GetChapterNamesInOrder();
-        var recipeChapterNames = Query.GetCategories().Select(x => x.Chapter).Distinct();
-
-        foreach (string chapter in recipeChapterNames)
-        {
-            orderedChapterNames.Should().Contain(chapter);
-        }
     }
 
     [Test]

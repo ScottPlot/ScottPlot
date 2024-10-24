@@ -2,9 +2,9 @@
 
 public class Layout : ICategory
 {
-    public string Chapter => "Miscellaneous";
-    public string CategoryName => "Layout Options";
-    public string CategoryDescription => "How to customize the layout of a plot";
+    public Chapter Chapter => Chapter.General;
+    public string CategoryName => "Layout";
+    public string CategoryDescription => "How to customize data area size and figure padding";
 
     public class Frameless : RecipeBase
     {

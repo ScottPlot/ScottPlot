@@ -2,7 +2,7 @@
 
 public class Polar : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Polar Axis";
     public string CategoryDescription => "Create a polar axis and add it to the plot to display data on a circular coordinate system.";
 

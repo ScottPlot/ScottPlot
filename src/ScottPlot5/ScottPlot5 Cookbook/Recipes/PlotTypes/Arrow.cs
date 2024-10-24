@@ -2,7 +2,7 @@
 
 public class ArrowCoordinated : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Arrow";
     public string CategoryDescription => "Arrows point to a location in coordinate space.";
 

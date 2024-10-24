@@ -2,7 +2,7 @@
 
 public class FillY : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "FillY plot";
     public string CategoryDescription => "FillY plots display the vertical range between two Y values at defined X positions";
 

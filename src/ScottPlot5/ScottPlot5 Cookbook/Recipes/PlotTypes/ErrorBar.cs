@@ -2,7 +2,7 @@
 
 public class ErrorBar : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Error Bars";
     public string CategoryDescription => "Error Bars communicate the range of possible values for a measurement";
 

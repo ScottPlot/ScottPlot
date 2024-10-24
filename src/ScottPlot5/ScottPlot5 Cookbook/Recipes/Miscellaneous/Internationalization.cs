@@ -2,7 +2,7 @@
 
 public class Internationalization : ICategory
 {
-    public string Chapter => "Miscellaneous";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Internationalization";
     public string CategoryDescription => "Using ScottPlot across cultures with different text and numeric requirements.";
 

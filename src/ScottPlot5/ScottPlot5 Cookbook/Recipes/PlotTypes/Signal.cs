@@ -2,7 +2,7 @@
 
 public class Signal : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Signal Plot";
     public string CategoryDescription => "Signal plots display evenly-spaced data";
 

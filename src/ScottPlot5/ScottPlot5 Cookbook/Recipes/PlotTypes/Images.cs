@@ -2,7 +2,7 @@
 
 public class Images : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Images";
     public string CategoryDescription => "Images can be placed on plots in a variety of ways";
 

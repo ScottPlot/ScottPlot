@@ -2,7 +2,7 @@
 
 public class ScaleBar : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Scale Bar";
     public string CategoryDescription => "Scalebars display a horizontal and/or vertical range using a line segment and may be used " +
         "to convey axis scale as a minimal alternative to using axis frames, ticks, and tick labels.";

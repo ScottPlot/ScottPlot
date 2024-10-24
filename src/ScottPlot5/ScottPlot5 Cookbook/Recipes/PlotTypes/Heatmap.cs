@@ -4,7 +4,7 @@ namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Heatmap : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Heatmap";
     public string CategoryDescription => "Heatmaps display values from 2D data " +
         "as an image with cells of different intensities";

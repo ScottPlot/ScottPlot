@@ -2,7 +2,7 @@
 
 public class Text : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Text";
     public string CategoryDescription => "Text labels can be placed on the plot in coordinate space";
 

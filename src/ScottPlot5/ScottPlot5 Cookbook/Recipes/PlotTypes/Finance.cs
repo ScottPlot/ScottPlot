@@ -2,7 +2,7 @@
 
 public class Finance : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Financial Plot";
     public string CategoryDescription => "Finance plots display price data binned into time ranges";
 

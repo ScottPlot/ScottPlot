@@ -2,7 +2,7 @@
 
 public class RadialGauge : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Radial gauge";
     public string CategoryDescription => "A radial gauge chart displays scalar data as circular gauges.";
 

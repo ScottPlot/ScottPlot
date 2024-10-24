@@ -2,7 +2,7 @@
 
 public class Box : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Box Plot";
     public string CategoryDescription => "Box plots show a distribution at a glance";
 
