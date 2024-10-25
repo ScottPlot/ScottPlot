@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
+        <SignAssembly>false</SignAssembly>
     </PropertyGroup>
 
     <ItemGroup>
