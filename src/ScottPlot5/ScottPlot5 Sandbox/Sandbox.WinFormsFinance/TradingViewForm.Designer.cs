@@ -31,11 +31,10 @@ partial class TradingViewForm
         comboBoxSymbol = new ComboBox();
         comboBoxInterval = new ComboBox();
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-        button1 = new Button();
         label1 = new Label();
         label2 = new Label();
-        label3 = new Label();
-        button2 = new Button();
+        buttonClearAll = new Button();
+        checkBoxAddLine = new CheckBox();
         SuspendLayout();
         // 
         // comboBoxSymbol
@@ -65,15 +64,6 @@ partial class TradingViewForm
         formsPlot1.Size = new Size(649, 426);
         formsPlot1.TabIndex = 7;
         // 
-        // button1
-        // 
-        button1.Location = new Point(12, 150);
-        button1.Name = "button1";
-        button1.Size = new Size(45, 23);
-        button1.TabIndex = 8;
-        button1.Text = "Line";
-        button1.UseVisualStyleBackColor = true;
-        // 
         // label1
         // 
         label1.AutoSize = true;
@@ -92,35 +82,35 @@ partial class TradingViewForm
         label2.TabIndex = 10;
         label2.Text = "Interval:";
         // 
-        // label3
+        // buttonClearAll
         // 
-        label3.AutoSize = true;
-        label3.Location = new Point(12, 132);
-        label3.Name = "label3";
-        label3.Size = new Size(32, 15);
-        label3.TabIndex = 11;
-        label3.Text = "Add:";
+        buttonClearAll.Location = new Point(12, 168);
+        buttonClearAll.Name = "buttonClearAll";
+        buttonClearAll.Size = new Size(75, 31);
+        buttonClearAll.TabIndex = 12;
+        buttonClearAll.Text = "Clear All";
+        buttonClearAll.UseVisualStyleBackColor = true;
         // 
-        // button2
+        // checkBoxAddLine
         // 
-        button2.Enabled = false;
-        button2.Location = new Point(63, 150);
-        button2.Name = "button2";
-        button2.Size = new Size(40, 23);
-        button2.TabIndex = 12;
-        button2.Text = "Ray";
-        button2.UseVisualStyleBackColor = true;
+        checkBoxAddLine.Appearance = Appearance.Button;
+        checkBoxAddLine.Location = new Point(12, 131);
+        checkBoxAddLine.Name = "checkBoxAddLine";
+        checkBoxAddLine.Size = new Size(75, 31);
+        checkBoxAddLine.TabIndex = 14;
+        checkBoxAddLine.Text = "Add Line";
+        checkBoxAddLine.TextAlign = ContentAlignment.MiddleCenter;
+        checkBoxAddLine.UseVisualStyleBackColor = true;
         // 
         // TradingViewForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(800, 450);
-        Controls.Add(button2);
-        Controls.Add(label3);
+        Controls.Add(checkBoxAddLine);
+        Controls.Add(buttonClearAll);
         Controls.Add(label2);
         Controls.Add(label1);
-        Controls.Add(button1);
         Controls.Add(formsPlot1);
         Controls.Add(comboBoxInterval);
         Controls.Add(comboBoxSymbol);
@@ -136,9 +126,8 @@ partial class TradingViewForm
     private ComboBox comboBoxSymbol;
     private ComboBox comboBoxInterval;
     private ScottPlot.WinForms.FormsPlot formsPlot1;
-    private Button button1;
     private Label label1;
     private Label label2;
-    private Label label3;
-    private Button button2;
+    private Button buttonClearAll;
+    private CheckBox checkBoxAddLine;
 }
