@@ -174,13 +174,6 @@ public class SourceDatabase
             }
         }
 
-
-
-        if (sourceFilePath.Contains("Multiplot"))
-        {
-            Console.WriteLine($"RECIPES FOUND {recipes.Count}");
-        }
-
         return recipes;
     }
 }
