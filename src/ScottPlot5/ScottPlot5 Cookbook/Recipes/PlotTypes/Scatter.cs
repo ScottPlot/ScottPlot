@@ -2,7 +2,7 @@
 
 public class Scatter : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Scatter Plot";
     public string CategoryDescription => "Scatter plots display points at X/Y locations in coordinate space.";
 

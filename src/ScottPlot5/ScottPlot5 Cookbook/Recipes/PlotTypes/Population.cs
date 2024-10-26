@@ -4,7 +4,7 @@ namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Population : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Population Plot";
     public string CategoryDescription => "Population plots display collections of individual values.";
 

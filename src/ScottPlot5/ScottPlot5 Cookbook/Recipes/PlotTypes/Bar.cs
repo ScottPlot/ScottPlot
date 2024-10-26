@@ -2,7 +2,7 @@
 
 public class Bar : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Bar Plot";
     public string CategoryDescription => "Bar plots represent values as horizontal or vertical rectangles";
 

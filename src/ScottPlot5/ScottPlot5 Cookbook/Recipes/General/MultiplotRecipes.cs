@@ -2,7 +2,7 @@
 
 public class MultiplotRecipes : ICategory
 {
-    public string Chapter => "Miscellaneous";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Multiplot";
     public string CategoryDescription => "Use Multiplot to create figures with multiple subplots";
 
@@ -69,7 +69,7 @@ public class MultiplotRecipes : ICategory
 
     public class MultiplotCustom : MultiplotRecipeBase
     {
-        public override string Name => "Multiplot Custom";
+        public override string Name => "Multiplot Custom Layout";
         public override string Description => "The Multiplot's Layout property " +
             "may be configured to achieve a fully custom layout.";
 

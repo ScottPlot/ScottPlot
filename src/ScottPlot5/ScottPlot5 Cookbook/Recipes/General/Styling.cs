@@ -2,7 +2,7 @@
 
 public class Styling : ICategory
 {
-    public string Chapter => "Introduction";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Styling Plots";
     public string CategoryDescription => "How to customize appearance of plots";
 

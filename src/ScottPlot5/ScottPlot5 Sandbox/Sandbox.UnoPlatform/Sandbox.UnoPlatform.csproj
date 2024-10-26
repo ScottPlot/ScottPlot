@@ -17,6 +17,8 @@
         <Description>Sandbox.UnoPlatform powered by Uno Platform.</Description>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+
+        <NoWarn>WMC9999</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
