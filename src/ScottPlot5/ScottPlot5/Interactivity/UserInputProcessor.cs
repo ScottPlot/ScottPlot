@@ -103,6 +103,51 @@ public class UserInputProcessor
     ];
 
     /// <summary>
+    /// Helper method to enable or disable the default double-left-click benchmark behavior
+    /// </summary>
+    public void DoubleLeftClickBenchmark(bool enable)
+    {
+        RemoveAll<UserActionResponses.DoubleClickBenchmark>();
+
+        if (enable)
+        {
+            var button = StandardMouseButtons.Left;
+            var response = new UserActionResponses.DoubleClickBenchmark(button);
+            UserActionResponses.Add(response);
+        }
+    }
+
+    /// <summary>
+    /// Helper method to enable or disable the default left-click-drag pan behavior
+    /// </summary>
+    public void LeftClickDragPan(bool enable)
+    {
+        RemoveAll<UserActionResponses.MouseDragPan>();
+
+        if (enable)
+        {
+            var button = StandardMouseButtons.Left;
+            var response = new UserActionResponses.MouseDragPan(button);
+            UserActionResponses.Add(response);
+        }
+    }
+
+    /// <summary>
+    /// Helper method to enable or disable the default left-click-drag pan behavior
+    /// </summary>
+    public void RightClickDragZoom(bool enable)
+    {
+        RemoveAll<UserActionResponses.MouseDragZoom>();
+
+        if (enable)
+        {
+            var button = StandardMouseButtons.Right;
+            var response = new UserActionResponses.MouseDragZoom(button);
+            UserActionResponses.Add(response);
+        }
+    }
+
+    /// <summary>
     /// When defined, this response is the only one that gets processed
     /// until it returns a result indicating it is no longer the primary response.
     /// </summary>
