@@ -2,7 +2,7 @@
 
 public class SignalConst : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "SignalConst";
     public string CategoryDescription => "SignalConst is a type of signal plot " +
         "which contains immutable data points and occupies more memory but offers " +

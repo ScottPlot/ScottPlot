@@ -5,7 +5,7 @@ namespace ScottPlotCookbook.Recipes.Axis;
 
 public class CustomizingTicks : ICategory
 {
-    public string Chapter => "Axis";
+    public Chapter Chapter => Chapter.General;
     public string CategoryName => "Customizing Ticks";
     public string CategoryDescription => "Advanced customization of tick marks and tick labels";
 

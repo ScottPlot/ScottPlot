@@ -456,12 +456,16 @@ public class Plot : IDisposable
         toRemove.ForEach(x => PlottableList.Remove(x));
     }
 
-    [Obsolete("use MoveToFront()")]
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    /// <summary>
+    /// Move the indicated plottable to the end of the list so it is rendered last
+    /// and appears above all other plottables.
+    /// </summary>
     public void MoveToTop(IPlottable plottable) => MoveToFront(plottable);
 
-    [Obsolete("use MoveToBack()")]
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    /// <summary>
+    /// Move the indicated plottable to the start of the list so it is rendered first
+    /// and appears below all other plottables.
+    /// </summary>
     public void MoveToBottom(IPlottable plottable) => MoveToBack(plottable);
 
     /// <summary>

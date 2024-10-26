@@ -2,7 +2,7 @@
 
 public class VectorField : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Vector Field";
     public string CategoryDescription => "Vector fields display a collection of " +
         "vectors rooted at points in coordinate space";

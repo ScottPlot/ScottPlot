@@ -2,7 +2,7 @@
 
 public class Phasor : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Phasor Plot";
     public string CategoryDescription => "Phasor plots display vectors on a radial axis centered at the origin";
 

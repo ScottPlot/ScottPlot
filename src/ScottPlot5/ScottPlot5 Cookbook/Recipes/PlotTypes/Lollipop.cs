@@ -2,7 +2,7 @@
 
 public class Lollipop : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Lollipop Plot";
     public string CategoryDescription => "A lollipop chart is a variation of a bar chart that uses a line (stem) " +
         "extending from a baseline to a marker (head) to represent data points. " +

@@ -2,7 +2,7 @@
 
 public class AxisLines : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Axis Lines";
     public string CategoryDescription => "Axis lines indicate a position on an axis.";
 

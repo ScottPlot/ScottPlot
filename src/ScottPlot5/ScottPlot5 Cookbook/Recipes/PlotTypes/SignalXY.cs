@@ -2,7 +2,7 @@
 
 public class SignalXY : ICategory
 {
-    public string Chapter => "Plot Types";
+    public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "SignalXY Plot";
     public string CategoryDescription => "SignalXY are a high performance plot type " +
         "optimized for X/Y pairs where the X values are always ascending. " +
