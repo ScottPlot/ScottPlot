@@ -3,7 +3,7 @@
 public class Legend : ICategory
 {
     public Chapter Chapter => Chapter.General;
-    public string CategoryName => "Configuring Legends";
+    public string CategoryName => "Legends";
     public string CategoryDescription => "A legend is a key typically displayed in the corner of a plot";
 
     public class LegendQuickstart : RecipeBase

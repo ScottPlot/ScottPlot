@@ -69,7 +69,7 @@ public class MultiplotRecipes : ICategory
 
     public class MultiplotCustom : MultiplotRecipeBase
     {
-        public override string Name => "Multiplot Custom";
+        public override string Name => "Multiplot Custom Layout";
         public override string Description => "The Multiplot's Layout property " +
             "may be configured to achieve a fully custom layout.";
 
