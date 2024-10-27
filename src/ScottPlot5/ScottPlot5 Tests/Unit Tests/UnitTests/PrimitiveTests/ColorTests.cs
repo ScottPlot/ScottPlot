@@ -251,7 +251,7 @@ internal class ColorTests
     {
         System.Drawing.Color sdColor = System.Drawing.ColorTranslator.FromHtml("#7b2e5b6d");
         sdColor.ToArgb().Should().Be(0x7B2E5B6D);
-        Color spColor = new(sdColor);
+        Color spColor = Color.FromSDColor(sdColor);
         spColor.ARGB.Should().Be((uint)sdColor.ToArgb());
     }
 
@@ -270,7 +270,7 @@ internal class ColorTests
     public void Test_Color_ConstructedWithSKColor()
     {
         SKColor skColor = SKColor.Parse("#7b2e5b6d");
-        Color spColor = new(skColor);
+        Color spColor = Color.FromSKColor(skColor);
         spColor.Alpha.Should().Be(skColor.Alpha);
         spColor.Red.Should().Be(skColor.Red);
         spColor.Green.Should().Be(skColor.Green);
