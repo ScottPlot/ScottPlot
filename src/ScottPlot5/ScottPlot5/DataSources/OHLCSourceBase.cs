@@ -6,7 +6,7 @@ public abstract class OHLCSourceBase : IOHLCSource
 
     public AxisLimits GetLimits()
     {
-        return GetOHLCs().Any() 
+        return GetOHLCs().Any()
             ? new AxisLimits(GetLimitsX(), GetLimitsY())
             : AxisLimits.NoLimits;
     }
