@@ -54,8 +54,8 @@ public class DataLoggerSource
         WasRendered = true;
     }
 
-    public CoordinateRange GetRangeX() => Coordinates.Count == 0 
-        ? CoordinateRange.NoLimits 
+    public CoordinateRange GetRangeX() => Coordinates.Count == 0
+        ? CoordinateRange.NoLimits
         : new CoordinateRange(Coordinates[0].X + XOffset, Coordinates[^1].X + XOffset);
 
     public CoordinateRange GetRangeY(CoordinateRange newRangeX)
