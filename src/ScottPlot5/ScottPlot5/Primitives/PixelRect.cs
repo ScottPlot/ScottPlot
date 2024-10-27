@@ -398,6 +398,15 @@ public readonly struct PixelRect : IEquatable<PixelRect>
             _ => throw new NotImplementedException(),
         };
     }
+
+    public PixelRect Fraction(FractionRect frac)
+    {
+        float left = (float)frac.Left * Width + Left;
+        float right = (float)frac.Right * Width + Left;
+        float top = (float)frac.Top * Height + Top;
+        float bottom = (float)frac.Bottom * Height + Top;
+        return new PixelRect(left, right, bottom, top);
+    }
 }
 
 public static class PixelRectExtensions
