@@ -44,7 +44,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         else
         {
             var limits = Data.GetLimits();
-            List<OHLC> ohlcs = Data.GetOHLCs();
+            var ohlcs = Data.GetOHLCs();
             if (ohlcs.Count == 0)
                 return limits;
 
@@ -61,7 +61,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         using SKPath risingPath = new();
         using SKPath fallingPath = new();
 
-        IList<OHLC> ohlcs = Data.GetOHLCs();
+        var ohlcs = Data.GetOHLCs();
         for (int i = 0; i < ohlcs.Count; i++)
         {
             OHLC ohlc = ohlcs[i];
