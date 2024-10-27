@@ -12,6 +12,7 @@ _Not yet on NuGet..._
 * WinUI: Improve support for .NET 8 platform targets (#4288, #4374) @vilgotf
 * Scatter: Made all default strategies `public` to facilitate connecting line customization (#4346)
 * Interaction: Added `DoubleLeftClickBenchmark()`, `LeftClickDragPan()`, and `RightClickDragZoom()` helper methods for toggling default behavior (#4379)
+* Finance: Added `Add.BackgroundText()` methods to simplify the process of adding stock symbol information (#4396, #4395, #4385) @quantfreedom
 
 ## ScottPlot 5.0.40
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_
