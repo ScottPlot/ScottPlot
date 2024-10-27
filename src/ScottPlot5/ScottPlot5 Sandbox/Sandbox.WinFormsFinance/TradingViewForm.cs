@@ -39,12 +39,7 @@ public partial class TradingViewForm : Form
 
         // place text on the background
         // TODO: create a plot type just for background labels like this with subtitle support
-        var bgText1 = formsPlot1.Plot.Add.Annotation("MNQZ4", Alignment.MiddleCenter);
-        bgText1.LabelFontColor = Colors.White.WithAlpha(.07);
-        bgText1.LabelBackgroundColor = Colors.Transparent;
-        bgText1.LabelShadowColor = Colors.Transparent;
-        bgText1.LabelBorderColor = Colors.Transparent;
-        bgText1.LabelFontSize = 96;
+        formsPlot1.Plot.Add.BackgroundText("MNQZ4", Colors.White.WithAlpha(.07), 96);
 
         // generate sample data
         List<OHLC> ohlcs = Generate.RandomOHLCs(75);
