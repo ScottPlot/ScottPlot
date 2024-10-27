@@ -80,12 +80,12 @@ public class PlottableAdder(Plot plot)
         return Arrow(line.Start, line.End);
     }
 
-    public Annotation BackgroundText(string text, Color color, double size = 48)
+    public Annotation BackgroundText(string text, Color? color = null, double size = 48)
     {
         Annotation an = new()
         {
             Text = text,
-            LabelFontColor = color,
+            LabelFontColor = color ?? Colors.Gray.WithAlpha(.3),
             LabelFontSize = (float)size,
             LabelBackgroundColor = Colors.Transparent,
             LabelShadowColor = Colors.Transparent,
@@ -100,7 +100,7 @@ public class PlottableAdder(Plot plot)
         return an;
     }
 
-    public (Annotation line1, Annotation line2) BackgroundText(string line1, string line2, Color color, double size1 = 48, double size2 = 24)
+    public (Annotation line1, Annotation line2) BackgroundText(string line1, string line2, Color? color = null, double size1 = 48, double size2 = 24)
     {
         Annotation an1 = BackgroundText(line1, color, size1);
         an1.Alignment = Alignment.LowerCenter;
