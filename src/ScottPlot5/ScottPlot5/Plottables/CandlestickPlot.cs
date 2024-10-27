@@ -71,7 +71,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             return limits;
         }
 
-        List<OHLC> ohlcs = Data.GetOHLCs();
+        var ohlcs = Data.GetOHLCs();
         if (ohlcs.Count == 0)
             return limits;
 
@@ -85,7 +85,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
     {
         using SKPaint paint = new();
 
-        IList<OHLC> ohlcs = Data.GetOHLCs();
+        var ohlcs = Data.GetOHLCs();
         for (int i = 0; i < ohlcs.Count; i++)
         {
             OHLC ohlc = ohlcs[i];

@@ -8,7 +8,7 @@ public class SimpleMovingAverage
     public readonly DateTime[] DateTimes;
     public readonly double[] Dates;
 
-    public SimpleMovingAverage(List<OHLC> ohlcs, int N)
+    public SimpleMovingAverage(IReadOnlyList<OHLC> ohlcs, int N)
     {
         double[] prices = ohlcs.Select(x => x.Close).ToArray();
         Means = Series.MovingAverage(prices, N);

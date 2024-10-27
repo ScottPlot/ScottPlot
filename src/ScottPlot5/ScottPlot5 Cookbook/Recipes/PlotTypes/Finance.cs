@@ -1,4 +1,6 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿using System.Drawing;
+
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Finance : ICategory
 {
@@ -268,6 +270,72 @@ public class Finance : ICategory
             line2.LabelFontColor = Colors.Gray.WithAlpha(.4);
             line2.LabelFontSize = 18;
             line2.LabelBold = false;
+        }
+    }
+
+    public class FinanceDarkMode : RecipeBase
+    {
+        public override string Name => "Finance Chart Dark Mode";
+        public override string Description => "A dark mode finance plot can be achieved " +
+            "by customizing color options of the candles and figure.";
+
+        [Test]
+        public override void Execute()
+        {
+            // add sample financial data
+            OHLC[] prices = Generate.Financial.OHLCsByMinute(60);
+            var candlePlot = myPlot.Add.Candlestick(prices);
+            candlePlot.Axes.YAxis = myPlot.Axes.Right;
+
+            // setup DateTime ticks on the bottom
+            myPlot.Axes.DateTimeTicksBottom();
+
+            // use currency tick formatting on the right
+            myPlot.Axes.Right.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic()
+            {
+                LabelFormatter = (double value) => value.ToString("C")
+            };
+
+            // customize candle styling
+            candlePlot.RisingColor = ScottPlot.Color.FromHtml("#FF0000");
+            candlePlot.FallingColor = ScottPlot.Color.FromHtml("#00FF00");
+
+            // add SMA indicators
+            int[] windowSizes = { 3, 8, 20 };
+            foreach (int windowSize in windowSizes)
+            {
+                ScottPlot.Finance.SimpleMovingAverage sma = new(prices, windowSize);
+                var sp = myPlot.Add.Scatter(sma.Dates, sma.Means);
+                sp.Axes.YAxis = myPlot.Axes.Right;
+                sp.MarkerSize = 0;
+                sp.LineWidth = 1.5f;
+                sp.LinePattern = LinePattern.DenselyDashed;
+                sp.Color = Colors.Yellow.WithAlpha(1 - windowSize / 30.0);
+            }
+
+            // add symbol information and push it to the back of the plot
+            (var line1, var line2) = myPlot.Add.BackgroundText("DANK", "Recommended by Reddit");
+
+            line1.LabelFontColor = Colors.Gray.WithAlpha(.4);
+            line1.LabelFontSize = 72;
+            line1.LabelBold = true;
+            line1.Axes.YAxis = myPlot.Axes.Right;
+
+            line2.LabelFontColor = Colors.Gray.WithAlpha(.4);
+            line2.LabelFontSize = 24;
+            line2.LabelBold = false;
+            line2.Axes.YAxis = myPlot.Axes.Right;
+
+            // customize miscellaneous plot component colors
+            myPlot.FigureBackground.Color = Colors.Black;
+            myPlot.DataBackground.Color = Colors.Black;
+            myPlot.Axes.Color(ScottPlot.Color.FromHtml("#999999"));
+            myPlot.Axes.Right.MajorTickStyle.Color = Colors.Transparent;
+            myPlot.Axes.Right.MinorTickStyle.Color = Colors.Transparent;
+            myPlot.Axes.Bottom.MajorTickStyle.Color = Colors.Transparent;
+            myPlot.Axes.FrameWidth(0);
+            myPlot.Grid.MajorLineColor = ScottPlot.Color.FromHtml("#222222");
+            myPlot.Grid.YAxis = myPlot.Axes.Right;
         }
     }
 }

@@ -95,7 +95,7 @@ public class PlottableAdder(Plot plot)
             OffsetY = 0,
         };
 
-        Plot.PlottableList.Add(an);
+        Plot.PlottableList.Insert(0, an);
 
         return an;
     }
@@ -222,9 +222,17 @@ public class PlottableAdder(Plot plot)
         return callout;
     }
 
+    public CandlestickPlot Candlestick(OHLC[] ohlcs)
+    {
+        OHLCSourceArray dataSource = new(ohlcs);
+        CandlestickPlot candlestickPlot = new(dataSource);
+        Plot.PlottableList.Add(candlestickPlot);
+        return candlestickPlot;
+    }
+
     public CandlestickPlot Candlestick(List<OHLC> ohlcs)
     {
-        OHLCSource dataSource = new(ohlcs);
+        OHLCSourceList dataSource = new(ohlcs);
         CandlestickPlot candlestickPlot = new(dataSource);
         Plot.PlottableList.Add(candlestickPlot);
         return candlestickPlot;
@@ -659,7 +667,7 @@ public class PlottableAdder(Plot plot)
 
     public OhlcPlot OHLC(List<OHLC> ohlcs)
     {
-        OHLCSource dataSource = new(ohlcs);
+        OHLCSourceList dataSource = new(ohlcs);
         OhlcPlot ohlc = new(dataSource);
         Plot.PlottableList.Add(ohlc);
         return ohlc;
