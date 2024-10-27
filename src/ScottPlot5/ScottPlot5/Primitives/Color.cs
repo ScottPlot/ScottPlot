@@ -148,6 +148,8 @@ public readonly struct Color
 
     public static Color FromHex(string hex) => new(hex);
 
+    public static Color FromHtml(string html) => new(html);
+
     private static uint Hex2Argb(string hex)
     {
         uint rgba = 0;
