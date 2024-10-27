@@ -41,6 +41,24 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         Color = Color.FromHex("#f23645"),
     };
 
+    public Color RisingColor
+    {
+        set
+        {
+            RisingLineStyle.Color = value;
+            RisingFillStyle.Color = value;
+        }
+    }
+
+    public Color FallingColor
+    {
+        set
+        {
+            FallingFillStyle.Color = value;
+            FallingFillStyle.Color = value;
+        }
+    }
+
     public IEnumerable<LegendItem> LegendItems => Enumerable.Empty<LegendItem>();
 
     public AxisLimits GetAxisLimits()
