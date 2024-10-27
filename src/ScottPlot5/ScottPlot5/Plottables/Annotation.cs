@@ -14,8 +14,26 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
     public string Text { get => LabelText; set => LabelText = value; }
 
     public Alignment Alignment { get; set; } = Alignment.UpperLeft;
-    public float OffsetX { get; set; } = 10;
-    public float OffsetY { get; set; } = 10;
+
+    public PixelOffset PixelOffset { get; set; } = new(10, 10);
+
+    public float OffsetX
+    {
+        get => PixelOffset.X;
+        set => PixelOffset = PixelOffset.WithX(value);
+    }
+
+    public float OffsetY
+    {
+        get => PixelOffset.Y;
+        set => PixelOffset = PixelOffset.WithY(value);
+    }
+
+    /// <summary>
+    /// The annotation will be placed inside this fractional portion of the data area
+    /// according to <see cref="Alignment"/> and <see cref="PixelOffset"/>
+    /// </summary>
+    public FractionRect FractionRect { get; set; } = FractionRect.Full;
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
@@ -26,7 +44,8 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
 
         using SKPaint paint = new();
 
-        Pixel px = LabelStyle.GetRenderLocation(rp.DataRect, Alignment, OffsetX, OffsetY, paint);
+        PixelRect rect = rp.DataRect.Fraction(FractionRect);
+        Pixel px = LabelStyle.GetRenderLocation(rect, Alignment, OffsetX, OffsetY, paint);
 
         LabelStyle.Render(rp.Canvas, px, paint);
     }
