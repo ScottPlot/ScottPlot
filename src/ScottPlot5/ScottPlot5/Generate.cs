@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using ScottPlot.DataGenerators;
+
+namespace ScottPlot;
 
 #nullable enable
 
@@ -8,6 +10,7 @@
 public static class Generate
 {
     public static RandomDataGenerator RandomData { get; } = new(0);
+    public static FinancialDataGenerator Financial { get; } = new(0);
 
     #region numerical 1D
 

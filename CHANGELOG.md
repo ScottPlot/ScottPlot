@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Interaction: Added `DoubleLeftClickBenchmark()`, `LeftClickDragPan()`, and `RightClickDragZoom()` helper methods for toggling default behavior (#4379)
 * Finance: Added `Add.BackgroundText()` methods to simplify the process of adding stock symbol information (#4396, #4395, #4385) @quantfreedom
 * Finance: Improve support for `List<OHLC>` and `OHLC[]` data types (#4397)
+* Generate: Added `Generate.Financial.OHLCsByMinute()` to simplify creation of random financial data (#4397)
 
 ## ScottPlot 5.0.40
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_

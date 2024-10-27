@@ -95,7 +95,7 @@ public class PlottableAdder(Plot plot)
             OffsetY = 0,
         };
 
-        Plot.PlottableList.Add(an);
+        Plot.PlottableList.Insert(0, an);
 
         return an;
     }
