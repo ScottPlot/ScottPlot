@@ -38,8 +38,12 @@ public partial class TradingViewForm : Form
         formsPlot1.Plot.Clear();
 
         // place text on the background
-        // TODO: create a plot type just for background labels like this with subtitle support
-        formsPlot1.Plot.Add.BackgroundText("MNQZ4", Colors.White.WithAlpha(.07), 96);
+        formsPlot1.Plot.Add.BackgroundText(
+            line1: "MNQZ4",
+            line2: "Micro E-mini Nasdaq-100 DEC 24 CME",
+            color: Colors.White.WithAlpha(.07),
+            size1: 96,
+            size2: 36);
 
         // generate sample data
         List<OHLC> ohlcs = Generate.RandomOHLCs(75);
@@ -55,8 +59,8 @@ public partial class TradingViewForm : Form
         // add a candle plot using the right axis
         formsPlot1.Plot.Axes.DateTimeTicksBottom();
         var candlePlot = formsPlot1.Plot.Add.Candlestick(ohlcs);
-        candlePlot.RisingFillStyle.Color = new ScottPlot.Color("#37dbba");
-        candlePlot.FallingFillStyle.Color = new ScottPlot.Color("#eb602f");
+        candlePlot.RisingColor = new ScottPlot.Color("#37dbba");
+        candlePlot.FallingColor = new ScottPlot.Color("#eb602f");
 
         // add SMA lines
         int[] smaWindowSizes = { 8, 20 };
