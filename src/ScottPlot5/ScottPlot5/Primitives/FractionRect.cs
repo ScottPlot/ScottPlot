@@ -40,6 +40,8 @@ public readonly struct FractionRect
         return new PixelRect(topLeft, size);
     }
 
+    public static FractionRect Full => new(0, 0, 1, 1);
+
     public static FractionRect Column(int columnIndex, int columnCount)
     {
         double width = 1.0 / columnCount;
