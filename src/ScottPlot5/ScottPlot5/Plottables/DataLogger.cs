@@ -10,10 +10,7 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, 
         Data = new DataLoggerSource(coordinates);
     }
 
-    public DataLogger()
-    {
-        Data = new DataLoggerSource(new List<Coordinates>());
-    }
+    public DataLogger() : this([]) { }
 
     public DataLoggerSource Data { get; }
 
@@ -206,6 +203,8 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, 
             Add(coordinates[i]);
         }
     }
+
+    public void Clear() => Data.Clear();
 
     public void UpdateAxisLimits(Plot plot)
     {

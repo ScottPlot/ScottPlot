@@ -1,6 +1,4 @@
-﻿using ScottPlot.Collections;
-
-namespace ScottPlot.DataSources;
+﻿namespace ScottPlot.DataSources;
 
 public class DataLoggerSource
 {
@@ -44,13 +42,21 @@ public class DataLoggerSource
         HasNewData = true;
     }
 
+    public void Clear()
+    {
+        Coordinates.Clear();
+        HasNewData = true;
+    }
+
     public void OnRendered()
     {
         HasNewData = false;
         WasRendered = true;
     }
 
-    public CoordinateRange GetRangeX() => Coordinates.Count == 0 ? CoordinateRange.NoLimits : new CoordinateRange(Coordinates[0].X + XOffset, Coordinates[^1].X + XOffset);
+    public CoordinateRange GetRangeX() => Coordinates.Count == 0 
+        ? CoordinateRange.NoLimits 
+        : new CoordinateRange(Coordinates[0].X + XOffset, Coordinates[^1].X + XOffset);
 
     public CoordinateRange GetRangeY(CoordinateRange newRangeX)
     {
