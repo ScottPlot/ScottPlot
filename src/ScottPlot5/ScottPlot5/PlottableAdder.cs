@@ -80,6 +80,39 @@ public class PlottableAdder(Plot plot)
         return Arrow(line.Start, line.End);
     }
 
+    public Annotation BackgroundText(string text, Color? color = null, double size = 48)
+    {
+        Annotation an = new()
+        {
+            Text = text,
+            LabelFontColor = color ?? Colors.Gray.WithAlpha(.3),
+            LabelFontSize = (float)size,
+            LabelBackgroundColor = Colors.Transparent,
+            LabelShadowColor = Colors.Transparent,
+            LabelBorderColor = Colors.Transparent,
+            Alignment = Alignment.MiddleCenter,
+            OffsetX = 0,
+            OffsetY = 0,
+        };
+
+        Plot.PlottableList.Add(an);
+
+        return an;
+    }
+
+    public (Annotation line1, Annotation line2) BackgroundText(string line1, string line2, Color? color = null, double size1 = 48, double size2 = 24)
+    {
+        Annotation an1 = BackgroundText(line1, color, size1);
+        an1.Alignment = Alignment.LowerCenter;
+        an1.FractionRect = FractionRect.Row(0, 2);
+
+        Annotation an2 = BackgroundText(line2, color, size2);
+        an2.Alignment = Alignment.UpperCenter;
+        an2.FractionRect = FractionRect.Row(1, 2);
+
+        return (an1, an2);
+    }
+
     public BarPlot Bar(Bar bar)
     {
         BarPlot bp = new(bar);

@@ -67,10 +67,17 @@ internal static class SourceCodeParsing
             if (line.Replace(" ", "").Contains("{get"))
                 continue;
 
-            string[] parts = trimmed.Split(" ", 3);
-            string returnType = parts[1];
-            string methodSignature = parts[2];
-            string methodName = methodSignature.Split("(")[0].Split("<")[0];
+            string methodName;
+
+            if (trimmed.StartsWith("public ("))
+            {
+                methodName = trimmed.Split(")")[1].Split("(")[0].Trim();
+            }
+            else
+            {
+                methodName = trimmed.Split(" ", 3)[2].Split("(")[0].Split("<")[0];
+            }
+
             methodNames.Add(methodName);
         }
 

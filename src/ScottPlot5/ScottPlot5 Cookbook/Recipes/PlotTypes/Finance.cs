@@ -227,4 +227,47 @@ public class Finance : ICategory
             myPlot.Axes.Bottom.TickGenerator = tickGen;
         }
     }
+
+    public class StockSymbolBackgroundText : RecipeBase
+    {
+        public override string Name => "Stock Symbol Background";
+        public override string Description => "Stock symbol information can be displayed " +
+            "beneath the plot using the background text feature.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Candlestick(Generate.RandomOHLCs(30));
+            myPlot.Axes.DateTimeTicksBottom();
+
+            var line1 = myPlot.Add.BackgroundText("DANK");
+            line1.LabelFontColor = Colors.Gray.WithAlpha(.4);
+            line1.LabelFontSize = 96;
+            line1.LabelBold = true;
+        }
+    }
+
+    public class StockSymbolBackgroundTextMultiline : RecipeBase
+    {
+        public override string Name => "Stock Symbol Multiline";
+        public override string Description => "Stock symbol information can be displayed " +
+            "beneath the plot using the multiline background text feature.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Candlestick(Generate.RandomOHLCs(30));
+            myPlot.Axes.DateTimeTicksBottom();
+
+            (var line1, var line2) = myPlot.Add.BackgroundText("DANK", "Highest Recommendation by Reddit");
+
+            line1.LabelFontColor = Colors.Gray.WithAlpha(.4);
+            line1.LabelFontSize = 64;
+            line1.LabelBold = true;
+
+            line2.LabelFontColor = Colors.Gray.WithAlpha(.4);
+            line2.LabelFontSize = 18;
+            line2.LabelBold = false;
+        }
+    }
 }

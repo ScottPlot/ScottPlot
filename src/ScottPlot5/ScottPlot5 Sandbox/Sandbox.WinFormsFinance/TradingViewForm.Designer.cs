@@ -39,7 +39,7 @@ partial class TradingViewForm
         formsPlot1.DisplayScale = 1F;
         formsPlot1.Location = new Point(93, 12);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(695, 426);
+        formsPlot1.Size = new Size(979, 737);
         formsPlot1.TabIndex = 7;
         // 
         // buttonClearAll
@@ -64,7 +64,7 @@ partial class TradingViewForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(800, 450);
+        ClientSize = new Size(1084, 761);
         Controls.Add(button1);
         Controls.Add(buttonClearAll);
         Controls.Add(formsPlot1);
