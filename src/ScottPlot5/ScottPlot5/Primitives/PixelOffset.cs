@@ -9,4 +9,6 @@ public record struct PixelOffset(float X, float Y)
 {
     public static PixelOffset Zero => new(0, 0);
     public static PixelOffset NaN => new(float.NaN, float.NaN);
+    public readonly PixelOffset WithY(float newY) => new(X, newY);
+    public readonly PixelOffset WithX(float newX) => new(newX, Y);
 }
