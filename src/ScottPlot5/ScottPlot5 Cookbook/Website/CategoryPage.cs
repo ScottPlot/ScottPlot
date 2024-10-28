@@ -25,13 +25,13 @@ internal class CategoryPage : PageBase
             SB.AppendLine();
             SB.AppendLine($"[![]({recipe.ImageUrl})]({recipe.ImageUrl})");
             SB.AppendLine();
-            SB.AppendLine("{{< code-sp5 >}}");
+            SB.AppendLine("{{< recipe-sp5 >}}");
             SB.AppendLine();
             SB.AppendLine("```cs");
             SB.AppendLine(recipe.Source);
             SB.AppendLine("```");
             SB.AppendLine();
-            SB.AppendLine("{{< /code-sp5 >}}");
+            SB.AppendLine("{{< /recipe-sp5 >}}");
             SB.AppendLine();
             SB.AppendLine("<hr class='my-5 invisible'>");
             SB.AppendLine();
