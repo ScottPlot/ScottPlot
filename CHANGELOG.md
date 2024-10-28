@@ -1,5 +1,8 @@
-## ScottPlot 5.0.41
+## ScottPlot 5.0.42
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.41
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-27_
 * Controls: marked `Interaction` as `Obsolete` to encourage use of the newer `UserInputProcessor` documented in all the demo apps. Users may still activate the old system by calling `myPlotControl.Interaction.Enable()` (#4322, #4224, #3186, #4053)
 * Ticks: Improved automatic tick generation for axes of extremely small plots (#4353, #4354) @StendProg @Cassar17
 * CoordinateRange: Added a `Center` property to return the value halfway between the range boundary values (#4316, #4357) @idotta
@@ -16,6 +19,7 @@ _Not yet on NuGet..._
 * Finance: Improve support for `List<OHLC>` and `OHLC[]` data types (#4397)
 * Generate: Added `Generate.Financial.OHLCsByMinute()` to simplify creation of random financial data (#4397)
 * DataLogger: Add `Clear()` to the data logging plottable ands its corresponding data source (#4377) @h135558
+* Cookbook: Improved recipes, reorganized chapters, and added platform switching to the website (#4392)
 
 ## ScottPlot 5.0.40
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-16_
