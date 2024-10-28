@@ -18,13 +18,7 @@ internal class RecipePage : PageBase
         SB.AppendLine();
         SB.AppendLine($"[![]({Recipe.ImageUrl})]({Recipe.ImageUrl})");
         SB.AppendLine();
-        SB.AppendLine("{{< recipe-sp5 >}}");
-        SB.AppendLine();
-        SB.AppendLine("```cs");
-        SB.AppendLine(Recipe.Source);
-        SB.AppendLine("```");
-        SB.AppendLine();
-        SB.AppendLine("{{< /recipe-sp5 >}}");
+        SB.AppendLine("{{< recipe-sp5 >}}" + Recipe.Source + "{{< /recipe-sp5 >}}");
         SB.AppendLine();
         SB.AppendLine($"<a href='{Recipe.SourceUrl}'>{InlineIcons.GitHubIcon()} Edit on GitHub</a>");
         SB.AppendLine();
