@@ -11,17 +11,7 @@ internal class RecipePage : PageBase
 
     public void Generate(string outputFolder)
     {
-        SB.AppendLine($"# {Recipe.Name}");
-        SB.AppendLine();
-        SB.AppendLine();
-        SB.AppendLine(Recipe.Description);
-        SB.AppendLine();
-        SB.AppendLine($"[![]({Recipe.ImageUrl})]({Recipe.ImageUrl})");
-        SB.AppendLine();
-        SB.AppendLine("{{< recipe-sp5 >}}" + Recipe.Source + "{{< /recipe-sp5 >}}");
-        SB.AppendLine();
-        SB.AppendLine($"<a href='{Recipe.SourceUrl}'>{InlineIcons.GitHubIcon()} Edit on GitHub</a>");
-        SB.AppendLine();
+        SB.AppendLine(RecipeHtml.GetMarkdown(Recipe));
 
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";

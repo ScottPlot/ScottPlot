@@ -13,22 +13,12 @@ internal class CategoryPage : PageBase
 
     public void Generate(string outputFolder)
     {
-        SB.AppendLine($"# {Category.Name}");
+        SB.AppendLine($"<h1>{Category.Name}</h1>");
         SB.AppendLine();
 
         foreach (var recipe in CB.Recipes.Where(x => x.Category == Category.Name))
         {
-            SB.AppendLine();
-            SB.AppendLine($"<h2><a href='{recipe.RecipeUrl}'>{recipe.Name}</a></h2>");
-            SB.AppendLine();
-            SB.AppendLine(recipe.Description);
-            SB.AppendLine();
-            SB.AppendLine($"[![]({recipe.ImageUrl})]({recipe.ImageUrl})");
-            SB.AppendLine();
-            SB.AppendLine("{{< recipe-sp5 >}}" + recipe.Source + "{{< /recipe-sp5 >}}");
-            SB.AppendLine();
-            SB.AppendLine("<hr class='my-5 invisible'>");
-            SB.AppendLine();
+            SB.AppendLine(RecipeHtml.GetMarkdown(recipe));
         }
 
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";

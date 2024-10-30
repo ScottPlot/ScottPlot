@@ -19,7 +19,10 @@ public class JsonCookbookInfo
         string SourceUrl,
         string AnchorUrl,
         string RecipeUrl,
-        string ImageUrl);
+        string ImageUrl)
+    {
+        public readonly string CategoryUrl => AnchorUrl.Split("#")[0];
+    }
 
     public readonly string Version;
     public readonly string[] Chapters;
