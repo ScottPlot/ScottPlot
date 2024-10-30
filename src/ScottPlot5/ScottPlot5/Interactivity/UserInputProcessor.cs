@@ -12,7 +12,7 @@ public class UserInputProcessor
     /// <summary>
     /// The plot this input processor will act on
     /// </summary>
-    public Plot Plot { get; set; }
+    public IPlotControl PlotControl { get; }
 
     /// <summary>
     /// Tracks which keys are currently pressed
@@ -30,7 +30,7 @@ public class UserInputProcessor
             _IsEnabled = value;
             if (value)
             {
-                Plot.PlotControl?.Interaction.Disable();
+                PlotControl?.Interaction.Disable();
             }
         }
     }
@@ -54,9 +54,9 @@ public class UserInputProcessor
     /// </summary>
     public readonly List<IUserActionResponse> UserActionResponses = [];
 
-    public UserInputProcessor(Plot plot)
+    public UserInputProcessor(IPlotControl plotControl)
     {
-        Plot = plot;
+        PlotControl = plotControl;
         KeyState = new();
         Reset();
         IsEnabled = true;
@@ -166,7 +166,7 @@ public class UserInputProcessor
         bool refreshNeeded = ExecuteUserInputResponses(userAction);
 
         if (refreshNeeded)
-            Plot.PlotControl?.Refresh();
+            PlotControl.Refresh();
     }
 
     private void UpdateKeyboardState(IUserAction userAction)
@@ -187,7 +187,7 @@ public class UserInputProcessor
         bool refreshNeeded = false;
 
         // lock onto the sync object to prevent actions from being applied while a render is in progress
-        lock (Plot.Sync)
+        lock (PlotControl.Plot.Sync)
         {
             foreach (IUserActionResponse response in UserActionResponses)
             {
@@ -196,7 +196,7 @@ public class UserInputProcessor
                     continue;
                 }
 
-                ResponseInfo info = response.Execute(Plot, userAction, KeyState);
+                ResponseInfo info = response.Execute(PlotControl.Plot, userAction, KeyState);
                 if (info.RefreshNeeded)
                     refreshNeeded = true;
 
