@@ -1,5 +1,9 @@
-## ScottPlot 5.0.42
+## ScottPlot 5.0.43
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.42
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_
+* Controls: Refactor to allow the user input processor to function as `IPlotControl.Reset()` changes the underlying `Plot` (#4404) @Or8e4m4n
 
 ## ScottPlot 5.0.41
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-27_
