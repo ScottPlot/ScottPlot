@@ -34,7 +34,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
         Plot = new Plot() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(Plot);
+        UserInputProcessor = new(this);
         Menu = new WpfPlotMenu(this);
         Focusable = true;
     }

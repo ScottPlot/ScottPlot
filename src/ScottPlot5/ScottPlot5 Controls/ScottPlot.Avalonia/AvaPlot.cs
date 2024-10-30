@@ -33,7 +33,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(Plot);
+        UserInputProcessor = new(this);
         Menu = new AvaPlotMenu(this);
         Focusable = true; // Required for keyboard events
         Refresh();

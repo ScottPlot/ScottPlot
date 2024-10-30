@@ -9,5 +9,10 @@
         WindowStartupLocation="CenterScreen"
         Title="ScottPlot 5 - WPF Sandbox" 
         Height="600" Width="800">
-    <ScottPlot:WpfPlot Name="WpfPlot1" />
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Padding="10" Margin="10" FontSize="16" Click="Button_Click">Reset</Button>
+        </StackPanel>
+        <ScottPlot:WpfPlot Name="WpfPlot1" />
+    </DockPanel>
 </Window>

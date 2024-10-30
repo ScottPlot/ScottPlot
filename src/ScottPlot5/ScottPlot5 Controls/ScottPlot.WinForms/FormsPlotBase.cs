@@ -27,7 +27,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(Plot);
+        UserInputProcessor = new(this);
         Menu = new FormsPlotMenu(this);
 
         // TODO: replace this with an annotation instead of title

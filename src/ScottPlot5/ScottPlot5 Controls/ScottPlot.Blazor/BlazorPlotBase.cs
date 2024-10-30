@@ -29,7 +29,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
 #pragma warning restore CS0618
 
-        UserInputProcessor = new(Plot) { IsEnabled = true };
+        UserInputProcessor = new(this) { IsEnabled = true };
         Menu = new BlazorPlotMenu();
     }
 
@@ -50,9 +50,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         Plot oldPlot = Plot;
         Plot = plot;
         oldPlot?.Dispose();
-
         Plot.PlotControl = this;
-        UserInputProcessor.Plot = Plot;
     }
 
     public virtual void Refresh() { }

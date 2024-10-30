@@ -24,7 +24,7 @@ public class EtoPlot : Drawable, IPlotControl
         Plot = new() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(Plot);
+        UserInputProcessor = new(this);
         Menu = new EtoPlotMenu(this);
 
         MouseDown += OnMouseDown;
