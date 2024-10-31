@@ -29,6 +29,17 @@ public class KeyboardState
         return IsPressed(key.Name);
     }
 
+    public bool IsPressed(IEnumerable<Key> keys)
+    {
+        foreach (var key in keys)
+        {
+            if (IsPressed(key.Name))
+                return true;
+        }
+
+        return false;
+    }
+
     public bool IsPressed(string keyName)
     {
         return PressedKeyNames.Contains(keyName);

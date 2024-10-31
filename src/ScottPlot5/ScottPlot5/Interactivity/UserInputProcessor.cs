@@ -120,14 +120,18 @@ public class UserInputProcessor
     /// <summary>
     /// Helper method to enable or disable the default left-click-drag pan behavior
     /// </summary>
-    public void LeftClickDragPan(bool enable)
+    public void LeftClickDragPan(bool enable, bool horizontal = true, bool vertical = true)
     {
         RemoveAll<UserActionResponses.MouseDragPan>();
 
         if (enable)
         {
             var button = StandardMouseButtons.Left;
-            var response = new UserActionResponses.MouseDragPan(button);
+            var response = new UserActionResponses.MouseDragPan(button)
+            {
+                LockX = !horizontal,
+                LockY = !vertical,
+            };
             UserActionResponses.Add(response);
         }
     }
@@ -135,14 +139,18 @@ public class UserInputProcessor
     /// <summary>
     /// Helper method to enable or disable the default left-click-drag pan behavior
     /// </summary>
-    public void RightClickDragZoom(bool enable)
+    public void RightClickDragZoom(bool enable, bool horizontal = true, bool vertical = true)
     {
         RemoveAll<UserActionResponses.MouseDragZoom>();
 
         if (enable)
         {
             var button = StandardMouseButtons.Right;
-            var response = new UserActionResponses.MouseDragZoom(button);
+            var response = new UserActionResponses.MouseDragZoom(button)
+            {
+                LockX = !horizontal,
+                LockY = !vertical,
+            };
             UserActionResponses.Add(response);
         }
     }
