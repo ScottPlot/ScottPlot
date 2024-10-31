@@ -32,7 +32,7 @@ internal class FrontPage : PageBase
             {
                 SB.AppendLine($"<li><a href='{category.Url}'>{category.Name}</a> - {category.Description}</li>");
             }
-            if (chapter == "Miscellaneous")
+            if (chapter == "General")
             {
                 SB.AppendLine($"<li><a href='palettes'>Color Palettes</a> - Collections of colors which can be used to represent categorical data</li>");
                 SB.AppendLine($"<li><a href='colormaps'>Colormaps</a> - Color gradients available to represent continuous data</li>");
