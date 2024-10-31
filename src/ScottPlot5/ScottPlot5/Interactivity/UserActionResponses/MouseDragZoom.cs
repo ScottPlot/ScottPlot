@@ -9,6 +9,26 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     // TODO: re-implement this being more careful about allocations
     MultiAxisLimits? RememberedLimits = null;
 
+    /// <summary>
+    /// Vertical panning is disabled if any of these keys are pressed
+    /// </summary>
+    public List<Key> KeysThatLockY { get; } = [StandardKeys.Control];
+
+    /// <summary>
+    /// Horizontal panning is disabled if any of these keys are pressed
+    /// </summary>
+    public List<Key> KeysThatLockX { get; } = [StandardKeys.Shift];
+
+    /// <summary>
+    /// Vertical panning is disabled when this is set
+    /// </summary>
+    public bool LockY { get; set; } = false;
+
+    /// <summary>
+    /// Horizontal panning is disabled when this is set
+    /// </summary>
+    public bool LockX { get; set; } = false;
+
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is IMouseButtonAction mouseDownAction && mouseDownAction.Button == MouseButton && mouseDownAction.IsPressed)
@@ -39,14 +59,14 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
         return new ResponseInfo() { IsPrimary = true };
     }
 
-    private static void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyboardState keys)
+    private void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyboardState keys)
     {
-        if (keys.IsPressed(StandardKeys.Shift))
+        if (LockX || keys.IsPressed(KeysThatLockX))
         {
             px2.X = px1.X;
         }
 
-        if (keys.IsPressed(StandardKeys.Control))
+        if (LockY || keys.IsPressed(KeysThatLockY))
         {
             px2.Y = px1.Y;
         }

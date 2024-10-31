@@ -34,6 +34,10 @@ public partial class TradingViewForm : Form
 
     void InitializePlot()
     {
+        // disable vertical zoom/pan because it will always be auto-scaled
+        formsPlot1.UserInputProcessor.LeftClickDragPan(enable: true, horizontal: true, vertical: false);
+        formsPlot1.UserInputProcessor.RightClickDragZoom(enable: true, horizontal: true, vertical: false);
+
         // reset the plot so we can call this multiple times as ticker or time period options changes
         formsPlot1.Plot.Clear();
 
