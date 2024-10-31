@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.43
 _Not yet on NuGet..._
 * UserInputProcessor: Simplified how axis locking is achieved by adding `horizontal` and `vertical` arguments to `LeftClickDragPan()` and `RightClickDragZoom()`
+* Maui: Improved deployment pipeline so the latest `ScottPlot.Maui` package is always available on NuGet (#1391) @KosmosWerner @King-Taz @cosmicDustOfLightLength
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_

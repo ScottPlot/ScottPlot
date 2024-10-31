@@ -98,6 +98,15 @@ jobs:
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
 
+      - name: Package ScottPlot.Maui
+        env:
+          PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Maui"
+        run: |
+          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
+          dotnet restore "${{ env.PROJECT_FOLDER }}"
+          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
+          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
+
       - name: Package ScottPlot (version 4)
         env:
           PROJECT_FOLDER: "src/ScottPlot4/ScottPlot/"
