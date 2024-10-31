@@ -6,7 +6,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
     public IAxes Axes { get; set; } = new Axes();
 
-    private readonly IOHLCSource Data = data;
+    public IOHLCSource Data { get; } = data;
 
     /// <summary>
     /// X position of candles is sourced from the OHLC's DateTime by default.

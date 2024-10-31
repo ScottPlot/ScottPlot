@@ -50,8 +50,8 @@ public partial class TradingViewForm : Form
             size2: 36);
 
         // generate sample data
-        List<OHLC> ohlcs = Generate.RandomOHLCs(75);
-        DateTime start = new(2024, 10, 24);
+        List<OHLC> ohlcs = Generate.RandomOHLCs(365);
+        DateTime start = new(2024, 1, 1); // TODO: support dates with gaps
         TimeSpan interval = TimeSpan.FromSeconds(10);
         for (int i = 0; i < ohlcs.Count; i++)
         {
@@ -101,8 +101,29 @@ public partial class TradingViewForm : Form
         formsPlot1.Plot.Legend.OutlineColor = foregroundColor;
         formsPlot1.Plot.Legend.FontColor = foregroundColor;
 
-        // set axis limits to fit the data
+        // set axis limits to fit the data to start
         formsPlot1.Plot.Axes.AutoScale();
+
+        // TODO: improve where this logic
+
+        // autoscale vertically according to all the candles in view
+        static void VerticalAutoscaleToCandlesInView(RenderPack rp)
+        {
+            var candle = rp.Plot.GetPlottables<ScottPlot.Plottables.CandlestickPlot>().FirstOrDefault();
+            if (candle is null)
+                return;
+
+            // TODO: move this logic into the candlestick plottable or OHLC data source
+            var ohlcsInView = candle.Data.GetOHLCs().Where(ohlc => rp.Plot.Axes.Bottom.Range.Contains(ohlc.DateTime.ToOADate()));
+            if (!ohlcsInView.Any())
+                return;
+            double yMin = ohlcsInView.Select(x => x.Low).Min();
+            double yMax = ohlcsInView.Select(x => x.High).Max();
+
+            rp.Plot.Axes.Right.Range.Set(yMin, yMax);
+        }
+        formsPlot1.Plot.Axes.ContinuouslyAutoscale = true;
+        formsPlot1.Plot.Axes.ContinuousAutoscaleAction = VerticalAutoscaleToCandlesInView;
 
         // force a redraw
         formsPlot1.Refresh();
