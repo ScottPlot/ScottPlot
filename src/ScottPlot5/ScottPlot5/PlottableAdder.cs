@@ -34,7 +34,7 @@ public class PlottableAdder(Plot plot)
 
         return color;
     }
-
+    
     public Annotation Annotation(string text, Alignment alignment = Alignment.UpperLeft)
     {
         Annotation an = new()
