@@ -18,7 +18,7 @@ internal class CategoryPage : PageBase
 
         foreach (var recipe in CB.Recipes.Where(x => x.Category == Category.Name))
         {
-            SB.AppendLine(RecipeHtml.GetMarkdown(recipe));
+            SB.AppendLine(RecipeHtml.GetMarkdownForCategoryPage(recipe));
         }
 
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";

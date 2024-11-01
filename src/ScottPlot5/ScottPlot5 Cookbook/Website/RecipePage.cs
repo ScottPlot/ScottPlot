@@ -11,7 +11,7 @@ internal class RecipePage : PageBase
 
     public void Generate(string outputFolder)
     {
-        SB.AppendLine(RecipeHtml.GetMarkdown(Recipe));
+        SB.AppendLine(RecipeHtml.GetMarkdownForSingleRecipePage(Recipe));
 
         string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";
