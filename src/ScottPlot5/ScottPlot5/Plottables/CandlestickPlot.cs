@@ -67,8 +67,11 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
         if (Sequential)
         {
-            limits = new AxisLimits(0, Data.GetOHLCs().Count, limits.Bottom, limits.Top);
-            return limits;
+            return new AxisLimits(
+                left: -0.5, // extra to account for body size
+                right: Data.GetOHLCs().Count - 1 + 0.5, // extra to account for body size
+                bottom: limits.Bottom,
+                top: limits.Top);
         }
 
         var ohlcs = Data.GetOHLCs();
@@ -96,30 +99,30 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             float top = Axes.GetPixelY(ohlc.High);
             float bottom = Axes.GetPixelY(ohlc.Low);
 
-            float center, left, right;
+            float center, xPxLeft, xPxRight;
             if (Sequential == false)
             {
                 double centerNumber = NumericConversion.ToNumber(ohlc.DateTime);
                 center = Axes.GetPixelX(centerNumber);
                 double halfWidthNumber = ohlc.TimeSpan.TotalDays / 2 * SymbolWidth;
-                left = Axes.GetPixelX(centerNumber - halfWidthNumber);
-                right = Axes.GetPixelX(centerNumber + halfWidthNumber);
+                xPxLeft = Axes.GetPixelX(centerNumber - halfWidthNumber);
+                xPxRight = Axes.GetPixelX(centerNumber + halfWidthNumber);
             }
             else
             {
                 center = Axes.GetPixelX(i);
-                left = Axes.GetPixelX(i - (float)SymbolWidth / 2);
-                right = Axes.GetPixelX(i + (float)SymbolWidth / 2);
+                xPxLeft = Axes.GetPixelX(i - (float)SymbolWidth / 2);
+                xPxRight = Axes.GetPixelX(i + (float)SymbolWidth / 2);
             }
 
             // do not render OHLCs off the screen
-            if (right < rp.DataRect.Left || left > rp.DataRect.Right)
+            if (xPxRight < rp.DataRect.Left || xPxLeft > rp.DataRect.Right)
                 continue;
 
-            float open = Axes.GetPixelY(ohlc.Open);
-            float close = Axes.GetPixelY(ohlc.Close);
+            float yPxOpen = Axes.GetPixelY(ohlc.Open);
+            float yPxClose = Axes.GetPixelY(ohlc.Close);
 
-            // center line
+            // low/high line
             using SKPath path = new();
             path.MoveTo(center, top);
             path.LineTo(center, bottom);
@@ -127,17 +130,17 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             lineStyle.ApplyToPaint(paint);
             rp.Canvas.DrawPath(path, paint);
 
-            // rectangle
-            SKRect rect = new(left, Math.Max(open, close), right, Math.Min(open, close));
-            if (open != close)
+            // open/close body
+            PixelRangeX xPxRange = new(xPxLeft, xPxRight);
+            PixelRangeY yPxRange = new(Math.Min(yPxOpen, yPxClose), Math.Max(yPxOpen, yPxClose));
+            PixelRect rect = new(xPxRange, yPxRange);
+            if (yPxOpen != yPxClose)
             {
-                fillStyle.ApplyToPaint(paint, rect.ToPixelRect());
-                rp.Canvas.DrawRect(rect, paint);
+                fillStyle.Render(rp.Canvas, rect, paint);
             }
             else
             {
-                lineStyle.ApplyToPaint(paint);
-                rp.Canvas.DrawLine(left, open, right, open, paint);
+                lineStyle.Render(rp.Canvas, rect.BottomLine, paint);
             }
         }
     }
