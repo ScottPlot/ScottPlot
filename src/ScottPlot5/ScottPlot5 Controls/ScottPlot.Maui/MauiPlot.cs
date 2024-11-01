@@ -104,12 +104,4 @@ public class MauiPlot : SKCanvasView, IPlotControl
 
         return DisplayScale;
     }
-
-    internal static Page? GetFirstPageParent(Element element)
-    {
-        if (element.Parent is null) return null;
-        else if (element.Parent is Page parent) return parent;
-        else if (element.Parent is Element e) return GetFirstPageParent(e);
-        else return null;
-    }
 }
