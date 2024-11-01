@@ -6,6 +6,9 @@ public struct OHLC
     public double High { get; set; }
     public double Low { get; set; }
     public double Close { get; set; }
+
+    // TODO: deprecate this eventually. OHLC should be price information only.
+    // Perhaps create a Candle primitive that contains time information.
     public DateTime DateTime { get; set; }
     public TimeSpan TimeSpan { get; set; }
 

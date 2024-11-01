@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Candlestick Plot: Exposed `Data` for easier access to underlying `OHLC` candle data (#4385) @quantfreedom
 * Maui: Improved cursor-driven pan and zoom on Desktop platform targets (#4417, #4416) @KosmosWerner @King-Taz
 * Candlestick Plot: Improved visibility of candles with zero price movement (#3337) @Lyakabynka @bukowa
+* Ticks: Added an experimental `FinancialTickGenerator` for generating DateTime ticks from unevenly-spaced time data (#4385)
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_

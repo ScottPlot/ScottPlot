@@ -50,38 +50,24 @@ public partial class TradingViewForm : Form
             size2: 36);
 
         // generate sample data
-        List<OHLC> ohlcs = Generate.RandomOHLCs(365);
-        DateTime start = new(2024, 1, 1); // TODO: support dates with gaps
-        TimeSpan interval = TimeSpan.FromSeconds(10);
-        for (int i = 0; i < ohlcs.Count; i++)
-        {
-            ohlcs[i] = ohlcs[i]
-                .WithDate(start + interval * i)
-                .WithTimeSpan(interval);
-        }
+        OHLC[] ohlcs = Generate.RandomOHLCs(365)
+            .Select(x => x.WithDate(DateTime.MinValue) // ensure only price is used
+            .WithTimeSpan(TimeSpan.Zero)).ToArray(); // ensure only price is used
+
+        DateTime[] dates = Generate.ConsecutiveWeekdays(ohlcs.Length);
 
         // add a candle plot using the right axis
-        formsPlot1.Plot.Axes.DateTimeTicksBottom();
         var candlePlot = formsPlot1.Plot.Add.Candlestick(ohlcs);
         candlePlot.RisingColor = new ScottPlot.Color("#37dbba");
         candlePlot.FallingColor = new ScottPlot.Color("#eb602f");
 
-        // add SMA lines
-        int[] smaWindowSizes = { 8, 20 };
-        foreach (int windowSize in smaWindowSizes)
-        {
-            ScottPlot.Finance.SimpleMovingAverage sma = new(ohlcs, windowSize);
-            var sp = formsPlot1.Plot.Add.Scatter(sma.Dates, sma.Means);
-            sp.Axes.YAxis = formsPlot1.Plot.Axes.Right;
-            sp.LegendText = $"SMA {windowSize}";
-            sp.MarkerSize = 0;
-            sp.LineWidth = 1.5f;
-            sp.LinePattern = LinePattern.Dotted;
-            sp.Color = Colors.Cyan.WithAlpha(1 - windowSize / 30.0);
-        }
+        // use a special tick generator designed for financial DateTime data
+        // which may contain unevenly spaced DateTimes but is displayed using evenly spaced ticks.
+        formsPlot1.Plot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.FinancialTickGenerator(dates);
 
         // tell the candles and grid lines to use the right axis
         candlePlot.Axes.YAxis = formsPlot1.Plot.Axes.Right;
+        candlePlot.Sequential = true;
         formsPlot1.Plot.Grid.YAxis = formsPlot1.Plot.Axes.Right;
 
         // customize format of right axis tick labels
@@ -104,9 +90,8 @@ public partial class TradingViewForm : Form
         // set axis limits to fit the data to start
         formsPlot1.Plot.Axes.AutoScale();
 
-        // TODO: improve where this logic
-
         // autoscale vertically according to all the candles in view
+        /*
         static void VerticalAutoscaleToCandlesInView(RenderPack rp)
         {
             var candle = rp.Plot.GetPlottables<ScottPlot.Plottables.CandlestickPlot>().FirstOrDefault();
@@ -124,6 +109,7 @@ public partial class TradingViewForm : Form
         }
         formsPlot1.Plot.Axes.ContinuouslyAutoscale = true;
         formsPlot1.Plot.Axes.ContinuousAutoscaleAction = VerticalAutoscaleToCandlesInView;
+        */
 
         // force a redraw
         formsPlot1.Refresh();
