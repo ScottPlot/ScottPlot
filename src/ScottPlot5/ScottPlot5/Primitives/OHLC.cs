@@ -74,21 +74,3 @@ public struct OHLC
         return new OHLC(Open + delta, High + delta, Low + delta, Close + delta, DateTime, TimeSpan);
     }
 }
-
-public static class OhlcExtensions
-{
-    public static CoordinateRange GetPriceRange(this OHLC ohlc)
-    {
-        double min = ohlc.Open;
-        min = Math.Min(min, ohlc.High);
-        min = Math.Min(min, ohlc.Low);
-        min = Math.Min(min, ohlc.Close);
-
-        double max = ohlc.Open;
-        max = Math.Max(max, ohlc.High);
-        max = Math.Max(max, ohlc.Low);
-        max = Math.Max(max, ohlc.Close);
-
-        return new CoordinateRange(min, max);
-    }
-}

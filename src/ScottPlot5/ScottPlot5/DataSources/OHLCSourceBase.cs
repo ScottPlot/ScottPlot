@@ -19,7 +19,7 @@ public abstract class OHLCSourceBase : IOHLCSource
 
     public CoordinateRange GetLimitsY()
     {
-        var priceRanges = GetOHLCs().Select(x => x.GetPriceRange());
+        var priceRanges = GetOHLCs().Select(x => new Range(x.Low, x.High));
         double min = priceRanges.Select(x => x.Min).Min();
         double max = priceRanges.Select(x => x.Max).Max();
         return new CoordinateRange(min, max);
