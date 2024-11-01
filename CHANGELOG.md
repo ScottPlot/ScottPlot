@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * Maui: Improved deployment pipeline so the latest `ScottPlot.Maui` package is always available on NuGet (#1391) @KosmosWerner @King-Taz @cosmicDustOfLightLength
 * Candlestick Plot: Exposed `Data` for easier access to underlying `OHLC` candle data (#4385) @quantfreedom
 * Maui: Improved cursor-driven pan and zoom on Desktop platform targets (#4417, #4416) @KosmosWerner @King-Taz
+* Candlestick Plot: Improved visibility of candles with zero price movement (#3337) @Lyakabynka @bukowa
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_

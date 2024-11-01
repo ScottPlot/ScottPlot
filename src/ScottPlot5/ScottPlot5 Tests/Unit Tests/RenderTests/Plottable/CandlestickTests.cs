@@ -61,4 +61,27 @@ internal class CandlestickTests
 
         plot.Should().SavePngWithoutThrowing();
     }
+
+    [Test]
+    public void Test_OHLC_EqualValues()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/3337
+
+        ScottPlot.Plot plot = new();
+
+        OHLC flat = new()
+        {
+            Open = 42,
+            Close = 43,
+            High = 45,
+            Low = 40,
+        };
+
+        OHLC[] ohlcs = [flat, flat, flat, flat];
+
+        var candles = plot.Add.Candlestick(ohlcs);
+        candles.Sequential = true;
+
+        plot.Should().SavePngWithoutThrowing();
+    }
 }
