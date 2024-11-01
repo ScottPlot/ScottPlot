@@ -1,5 +1,4 @@
-﻿using ScottPlot.Control;
-using SkiaSharp.Views.Maui;
+﻿using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 
 namespace ScottPlot.Maui;
@@ -17,53 +16,54 @@ public class MauiPlot : SKCanvasView, IPlotControl
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public float DisplayScale { get; set; } = 1;
     internal Pixel LastPixel { get; set; }
+    internal Pixel LastScalePixel { get; set; }
     public MauiPlot()
     {
         Plot = new Plot() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(this);
+        UserInputProcessor = new(this) { IsEnabled = true };
         Menu = new MauiPlotMenu(this);
 
-        var panGestureRecognizer = new PanGestureRecognizer();
-        var pointerGestureRecognizer = new PointerGestureRecognizer();
-        var tapGestureRecognizer = new TapGestureRecognizer() { Buttons = ButtonsMask.Secondary };
-        var pinchGestureRecognizer = new PinchGestureRecognizer();
+        IgnorePixelScaling = true;
 
-        panGestureRecognizer.PanUpdated += (s, e) =>
+        if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
         {
-            UserInputProcessor.ProcessPanUpdated(this, e);
-        };
-
-        pinchGestureRecognizer.PinchUpdated += (s, e) =>
+            Touch += MauiPlot_Touch;
+            EnableTouchEvents = true;
+        }
+        else
         {
-            UserInputProcessor.ProcessPinchUpdated(this, e);
-        };
+            EnableTouchEvents = false;
+            var panGestureRecognizer = new PanGestureRecognizer();
+            var pinchGestureRecognizer = new PinchGestureRecognizer();
 
-        pointerGestureRecognizer.PointerMoved += (s, e) =>
+            panGestureRecognizer.PanUpdated += (s, e) => UserInputProcessor.ProcessPanUpdated(this, e);
+            pinchGestureRecognizer.PinchUpdated += (s, e) => UserInputProcessor.ProcessPinchUpdated(this, e, (float)Width, (float)Height);
+
+            GestureRecognizers.Add(pinchGestureRecognizer);
+            GestureRecognizers.Add(panGestureRecognizer);
+        }
+    }
+
+    private void MauiPlot_Touch(object? sender, SKTouchEventArgs e)
+    {
+        switch (e.ActionType)
         {
-            UserInputProcessor.ProcessPointerMoved(this, e);
-        };
-
-        pointerGestureRecognizer.PointerPressed += (s, e) =>
-        {
-            UserInputProcessor.ProcessPointerPressed(this, e);
-        };
-
-        pointerGestureRecognizer.PointerReleased += (s, e) =>
-        {
-            UserInputProcessor.ProcessPointerReleased(this, e);
-        };
-
-        tapGestureRecognizer.Tapped += (s, e) =>
-        {
-            UserInputProcessor.ProcessContext(this, e);
-        };
-
-        GestureRecognizers.Add(tapGestureRecognizer);
-        GestureRecognizers.Add(pointerGestureRecognizer);
-        GestureRecognizers.Add(pinchGestureRecognizer);
-        GestureRecognizers.Add(panGestureRecognizer);
+            case SKTouchAction.Pressed:
+                UserInputProcessor.ProcessMouseDown(this, e);
+                break;
+            case SKTouchAction.Moved:
+                UserInputProcessor.ProcessMouseMove(this, e);
+                break;
+            case SKTouchAction.Released:
+                UserInputProcessor.ProcessMouseUp(this, e);
+                break;
+            case SKTouchAction.WheelChanged:
+                UserInputProcessor.ProcessWheelChanged(this, e);
+                break;
+            default: break;
+        }
     }
 
     public void Reset()
@@ -103,13 +103,5 @@ public class MauiPlot : SKCanvasView, IPlotControl
         }
 
         return DisplayScale;
-    }
-
-    internal static Page? GetFirstPageParent(Element element)
-    {
-        if (element.Parent is null) return null;
-        else if (element.Parent is Page parent) return parent;
-        else if (element.Parent is Element e) return GetFirstPageParent(e);
-        else return null;
     }
 }

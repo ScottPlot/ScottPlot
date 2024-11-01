@@ -54,9 +54,7 @@ public class MauiPlotMenu : IPlotMenu
 
     public async void SaveImageDialog(IPlotControl plotControl)
     {
-        if (plotControl is not MauiPlot mauiPlot) return;
-
-        var page = MauiPlot.GetFirstPageParent(mauiPlot);
+        Page? page = Application.Current?.MainPage;
         if (page == null) return;
 
         string[] formats = [
@@ -70,14 +68,14 @@ public class MauiPlotMenu : IPlotMenu
         try
         {
             var format = await page.DisplayActionSheet("Select a format", null, null, formats);
-            if (format is null) return;
+            if (string.IsNullOrEmpty(format)) return;
             ImageFormat imgformat = ImageFormats.FromFilename(format);
 
 
             string tempFileName = $"Plot_{DateTime.Now:yyyyMMdd_HHmmss}";
             var name = await page.DisplayPromptAsync("File name", "Enter the file name", placeholder: tempFileName);
-            if (name is null) return;
-            if (name.Length == 0) name = tempFileName;
+            if (string.Equals(name, "Cancel")) return;
+            if (string.IsNullOrEmpty(name)) name = tempFileName;
 
 
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
