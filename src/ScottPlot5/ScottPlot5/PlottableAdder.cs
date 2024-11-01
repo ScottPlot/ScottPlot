@@ -747,7 +747,25 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(poly);
         return poly;
     }
+    
+    public TernaryAxis TernaryAxis()
+    {
+        TernaryAxis ternaryAxis = new TernaryAxis();
 
+        // Customize the ternary axis with default values if needed
+        ternaryAxis.Edges[0].LineStyle.Color = Colors.Black;
+        ternaryAxis.Edges[1].LineStyle.Color = Colors.Black;
+        ternaryAxis.Edges[2].LineStyle.Color = Colors.Black;
+
+        ternaryAxis.CornerLabels[0].LabelText = "Component A";
+        ternaryAxis.CornerLabels[1].LabelText = "Component B";
+        ternaryAxis.CornerLabels[2].LabelText = "Component C";
+
+        Plot.PlottableList.Add(ternaryAxis);
+        Plot.HideAxesAndGrid(); // Optional, to hide traditional Cartesian axes
+
+        return ternaryAxis;
+    }
     public Polygon Polygon<TX, TY>(IEnumerable<TX> xs, IEnumerable<TY> ys)
     {
         Coordinates[] coordinates = NumericConversion.GenericToCoordinates(xs, ys);
