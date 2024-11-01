@@ -50,7 +50,7 @@ public partial class TradingViewForm : Form
             size2: 36);
 
         // generate sample data
-        OHLC[] ohlcs = Generate.RandomOHLCs(365)
+        OHLC[] ohlcs = Generate.RandomOHLCs(1000)
             .Select(x => x.WithDate(DateTime.MinValue) // ensure only price is used
             .WithTimeSpan(TimeSpan.Zero)).ToArray(); // ensure only price is used
 
@@ -61,9 +61,12 @@ public partial class TradingViewForm : Form
         candlePlot.RisingColor = new ScottPlot.Color("#37dbba");
         candlePlot.FallingColor = new ScottPlot.Color("#eb602f");
 
-        // use a special tick generator designed for financial DateTime data
-        // which may contain unevenly spaced DateTimes but is displayed using evenly spaced ticks.
-        formsPlot1.Plot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.FinancialTickGenerator(dates);
+        // disable the built in tick generator and add our own
+        formsPlot1.Plot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
+        formsPlot1.Plot.Axes.Bottom.MinimumSize = 100;
+        ScottPlot.Plottables.FinancialTimeAxis financeAxis = new(dates);
+        formsPlot1.Plot.Add.Plottable(financeAxis);
+        financeAxis.LabelStyle.ForeColor = new("#6e7780");
 
         // tell the candles and grid lines to use the right axis
         candlePlot.Axes.YAxis = formsPlot1.Plot.Axes.Right;
@@ -91,15 +94,18 @@ public partial class TradingViewForm : Form
         formsPlot1.Plot.Axes.AutoScale();
 
         // autoscale vertically according to all the candles in view
-        /*
         static void VerticalAutoscaleToCandlesInView(RenderPack rp)
         {
             var candle = rp.Plot.GetPlottables<ScottPlot.Plottables.CandlestickPlot>().FirstOrDefault();
             if (candle is null)
                 return;
 
+            var ohlcs = candle.Data.GetOHLCs();
+
             // TODO: move this logic into the candlestick plottable or OHLC data source
-            var ohlcsInView = candle.Data.GetOHLCs().Where(ohlc => rp.Plot.Axes.Bottom.Range.Contains(ohlc.DateTime.ToOADate()));
+            int minViewIndex = (int)NumericConversion.Clamp(rp.Plot.Axes.Bottom.Min, 0, ohlcs.Count - 1);
+            int maxViewIndex = (int)NumericConversion.Clamp(rp.Plot.Axes.Bottom.Max, 0, ohlcs.Count - 1);
+            var ohlcsInView = ohlcs.Skip(minViewIndex).Take(maxViewIndex - minViewIndex);
             if (!ohlcsInView.Any())
                 return;
             double yMin = ohlcsInView.Select(x => x.Low).Min();
@@ -109,7 +115,6 @@ public partial class TradingViewForm : Form
         }
         formsPlot1.Plot.Axes.ContinuouslyAutoscale = true;
         formsPlot1.Plot.Axes.ContinuousAutoscaleAction = VerticalAutoscaleToCandlesInView;
-        */
 
         // force a redraw
         formsPlot1.Refresh();
@@ -123,7 +128,7 @@ public partial class TradingViewForm : Form
             AddDrawingMode = false;
 
             // this is the second click so place the second point here and release the line
-            LineBeingAdded.End = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
+            LineBeingAdded.End = formsPlot1.Plot.GetCoordinates(e.X, e.Y, formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Right);
             LineBeingAdded = null;
 
             // request a redraw
@@ -143,7 +148,7 @@ public partial class TradingViewForm : Form
             formsPlot1.UserInputProcessor.Disable();
 
             // create a new drawing where the cursor is
-            Coordinates cs = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
+            Coordinates cs = formsPlot1.Plot.GetCoordinates(e.X, e.Y, formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Right);
             LineBeingAdded = formsPlot1.Plot.Add.Line(cs, cs);
             LineBeingAdded.LineWidth = 3;
             LineBeingAdded.LinePattern = LinePattern.Solid;
@@ -151,6 +156,7 @@ public partial class TradingViewForm : Form
             LineBeingAdded.MarkerShape = MarkerShape.FilledCircle;
             LineBeingAdded.MarkerFillColor = Colors.Yellow;
             LineBeingAdded.MarkerSize = 8;
+            LineBeingAdded.Axes.YAxis = formsPlot1.Plot.Axes.Right;
 
             // request a redraw
             formsPlot1.Refresh();
@@ -162,7 +168,7 @@ public partial class TradingViewForm : Form
         if (LineBeingAdded is not null)
         {
             // the second click hasn't happened yet so place the second point where the cursor is
-            LineBeingAdded.End = formsPlot1.Plot.GetCoordinates(e.X, e.Y);
+            LineBeingAdded.End = formsPlot1.Plot.GetCoordinates(e.X, e.Y, formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Right);
 
             // request a redraw
             formsPlot1.Refresh();
