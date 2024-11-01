@@ -20,7 +20,7 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (DateTimes.Length == 0)
             return;
