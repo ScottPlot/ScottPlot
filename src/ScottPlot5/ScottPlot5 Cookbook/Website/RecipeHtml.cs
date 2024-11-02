@@ -2,18 +2,29 @@
 
 public static class RecipeHtml
 {
-    public static string GetMarkdown(JsonCookbookInfo.JsonRecipeInfo recipe)
+    public static string GetMarkdownForCategoryPage(JsonCookbookInfo.JsonRecipeInfo recipe)
+    {
+        return GetMarkdown(recipe, true, false);
+    }
+
+    public static string GetMarkdownForSingleRecipePage(JsonCookbookInfo.JsonRecipeInfo recipe)
+    {
+        return GetMarkdown(recipe, false, true);
+    }
+
+    private static string GetMarkdown(JsonCookbookInfo.JsonRecipeInfo recipe, bool newPageIcon, bool categoryButton)
     {
         StringBuilder sb = new();
         sb.AppendLine();
-        sb.AppendLine($"<h2 style='border-bottom: 0;'><a href='{recipe.RecipeUrl}'>{recipe.Name}</a></h2>");
-        sb.AppendLine();
-        sb.AppendLine($"""
-                <div class="d-flex mb-2">
-                <a class="btn btn-sm btn-primary me-1" href="{recipe.RecipeUrl}">Recipe Permalink</a>
-                <a class="btn btn-sm btn-success me-1" href="{recipe.CategoryUrl}">Category: {recipe.Category}</a>
-                </div>
-                """);
+        sb.AppendLine($"<div class='d-flex align-items-center mt-5'>");
+        sb.AppendLine($"<h1 class='me-2 text-dark my-0 border-0'>{recipe.Name}</h1>");
+        if (newPageIcon)
+        {
+            sb.AppendLine($"<a href='{recipe.RecipeUrl}' target='_blank'>");
+            sb.AppendLine($"<img src='/images/icons/new-window.svg' style='height: 2rem;' class='new-window-icon'>");
+            sb.AppendLine($"</a>");
+        }
+        sb.AppendLine($"</div>");
         sb.AppendLine();
         sb.AppendLine(recipe.Description);
         sb.AppendLine();
@@ -21,7 +32,15 @@ public static class RecipeHtml
         sb.AppendLine();
         sb.AppendLine("{{< recipe-sp5 >}}" + recipe.Source + "{{< /recipe-sp5 >}}");
         sb.AppendLine();
-        sb.AppendLine("<hr class='my-5 invisible'>");
+        if (categoryButton)
+        {
+            sb.AppendLine("<div class='my-5 text-center'>This recipe is one of many in the " +
+                $"<a href='{recipe.CategoryUrl}'>{recipe.Category}</a> category</div>");
+        }
+        else
+        {
+            sb.AppendLine("<hr class='my-5 invisible'>");
+        }
         sb.AppendLine();
         return sb.ToString();
     }
