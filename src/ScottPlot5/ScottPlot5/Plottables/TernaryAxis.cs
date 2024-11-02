@@ -205,9 +205,6 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
     }
     private void RenderTicks(RenderPack rp, SKPaint paint)
     {
-        // Define the number of ticks (e.g., 10 ticks for 10%, 20%, ..., 100%)
-        int tickCount = 10;
-
         // Set up paint properties for the ticks
         paint.Color = SKColors.Black;
         paint.StrokeWidth = 2;
