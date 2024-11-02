@@ -16,7 +16,26 @@ public class TriangularAxisEdge
 
     public static readonly AxisLimits AxisLimits = new(0, 1, 0, MaxY);
 
-    public string Label { get; set; } = string.Empty;
+    public string LabelText { get; set; } = string.Empty;
+
+    public void Title(string title)
+    {
+        LabelText = title;
+    }
+
+    public void Title(string title, Color color)
+    {
+        LabelText = title;
+        Color(color);
+    }
+
+    public void Color(Color color)
+    {
+        LabelStyle.ForeColor = color;
+        TickLabelStyle.ForeColor = color;
+        TickMarkStyle.Color = color;
+        EdgeLineStyle.Color = color;
+    }
 
     public static TriangularAxisEdge Left
     {
