@@ -33,22 +33,14 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
 
-
     // Minor grid styling properties
     public Color MinorGridColor { get; set; } = Colors.Gray;
     public float MinorGridThickness { get; set; } = 1.0f;
     public float MinorGridAlpha { get; set; } = 0.5f;  // Transparency (0.0 to 1.0)
 
-    // Tick styling properties
-    public Color TickColor { get; set; } = Colors.Black;
-    public float TickThickness { get; set; } = 1.5f;
-    public float TickAlpha { get; set; } = 1.0f;  // Transparency (0.0 to 1.0)
-
-
     // Background color property
     public Color BackgroundColor { get; set; } = Colors.LightYellow;
     public float BackgroundAlpha { get; set; } = 0.3f;
-
 
     /// <summary>
     /// Initialize the ternary axis with default edges, corner labels, and tick marks
@@ -122,6 +114,7 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         RenderTicks(rp, paint); // Render tick marks along edges
         RenderPoints(rp, paint);
     }
+
     private void RenderBackground(RenderPack rp, SKPaint paint)
     {
         // Define the coordinates for the triangle corners
@@ -144,6 +137,7 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
             rp.Canvas.DrawPath(path, paint);
         }
     }
+
     private void RenderEdges(RenderPack rp, SKPaint paint)
     {
         foreach (var edge in Edges)
@@ -159,28 +153,18 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
             if (string.IsNullOrEmpty(label.LabelText))
                 continue; // Skip if no text
 
-            // Set custom text properties for each label
-            paint.TextSize = label.TextSize;
-            paint.Color = new SKColor(label.TextColor.R, label.TextColor.G, label.TextColor.B, label.TextColor.A);
-            paint.IsAntialias = true;
-            paint.Typeface = label.IsBold
-                ? SKTypeface.FromFamilyName(null, SKFontStyle.Bold)
-                : SKTypeface.FromFamilyName(null, SKFontStyle.Normal);
+            // Assign text settings from LabelStyle
+            label.LabelStyle.Text = label.LabelText ?? string.Empty;
+            label.LabelStyle.Alignment = label.Alignment;
+            label.LabelStyle.FontSize = label.TextSize;
+            label.LabelStyle.ForeColor = label.TextColor;
+            label.LabelStyle.Bold = label.IsBold;
 
-            // Calculate the label position with offsets
+            // Calculate label position with offsets
             Pixel labelPixel = Axes.GetPixel(label.Position).WithOffset(label.OffsetX, label.OffsetY);
 
-            // Set text alignment based on user setting
-            paint.TextAlign = label.Alignment switch
-            {
-                Alignment.LowerLeft => SKTextAlign.Left,
-                Alignment.MiddleCenter => SKTextAlign.Center,
-                Alignment.UpperRight => SKTextAlign.Right,
-                _ => SKTextAlign.Center // Default if not specified
-            };
-
-            // Draw the label text
-            rp.Canvas.DrawText(label.LabelText, labelPixel.X, labelPixel.Y, paint);
+            // Render using LabelStyle
+            label.LabelStyle.Render(rp.Canvas, labelPixel, paint);
         }
     }
 
@@ -197,12 +181,7 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
             rp.Canvas.DrawCircle(px.X, px.Y, 5, paint); // Adjust point size as needed
         }
     }
-    public enum EdgeType
-    {
-        Bottom,
-        Right,
-        Left
-    }
+
     private void RenderTicks(RenderPack rp, SKPaint paint)
     {
         // Set up paint properties for the ticks
@@ -215,10 +194,16 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         RenderTicksOnEdge(rp, paint, Edges[1], 10, EdgeType.Right);  // B-C edge
         RenderTicksOnEdge(rp, paint, Edges[2], 10, EdgeType.Left);   // C-A edge
     }
+
     private SKColor ToSKColor(Color color, float alpha)
     {
         return new SKColor(color.R, color.G, color.B, (byte)(alpha * 255));
     }
+    private SKColor ToSKColor(Color color)
+    {
+        return new SKColor(color.R, color.G, color.B, color.A); // Alpha is now directly part of `color`
+    }
+
     private void RenderGridLines(RenderPack rp, SKPaint paint, int tickCount)
     {
         paint.Color = ToSKColor(MinorGridColor, MinorGridAlpha); // Use MinorGridColor and MinorGridAlpha for grid lines
@@ -270,12 +255,21 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         }
     }
 
-    private void RenderTicksOnEdge(RenderPack rp, SKPaint paint, TernaryAxisEdge edge, int tickCount, EdgeType edgeType)
+    private void RenderTicksOnEdge(RenderPack rp, SKPaint tickPaint, TernaryAxisEdge edge, int tickCount, EdgeType edgeType)
     {
-        paint.TextSize = 12;
-        paint.Color = ToSKColor(TickColor, TickAlpha); // Use TickColor and TickAlpha for ticks
-        paint.StrokeWidth = TickThickness;
-        paint.IsAntialias = true;
+        // Configure tick line paint separately
+        tickPaint.Color = ToSKColor(edge.TickLineColor);
+        tickPaint.StrokeWidth = edge.TickLineThickness;
+        tickPaint.IsAntialias = true;
+
+        // Create a separate paint for labels to avoid interference with tick lines
+        using var labelPaint = new SKPaint
+        {
+            IsAntialias = true,
+            TextSize = edge.TickLabelStyle.FontSize,
+            Color = ToSKColor(edge.TickLabelStyle.ForeColor),
+            Typeface = edge.TickLabelStyle.Bold ? SKTypeface.FromFamilyName(null, SKFontStyle.Bold) : SKTypeface.FromFamilyName(null, SKFontStyle.Normal),
+        };
 
         for (int i = 0; i <= tickCount; i++)
         {
@@ -286,6 +280,7 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
             double tickY = edge.Start.Y + fraction * (edge.End.Y - edge.Start.Y);
             var tickPosition = new Coordinates(tickX, tickY);
 
+            // Calculate perpendicular direction for tick positioning
             double dx = edge.End.Y - edge.Start.Y;
             double dy = edge.Start.X - edge.End.X;
             double length = Math.Sqrt(dx * dx + dy * dy);
@@ -294,46 +289,51 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
 
             Pixel tickStart, tickEnd, labelPosition;
 
+            // Determine tick start, end, and label positions based on edge type
             switch (edgeType)
             {
                 case EdgeType.Bottom:
                     tickStart = Axes.GetPixel(tickPosition).WithOffset(0, 0);
                     tickEnd = Axes.GetPixel(tickPosition).WithOffset(0, 10);
                     labelPosition = Axes.GetPixel(tickPosition).WithOffset(0, 20);
-                    paint.TextAlign = SKTextAlign.Center;
+                    edge.TickLabelStyle.Alignment = Alignment.MiddleCenter;
                     break;
+
                 case EdgeType.Right:
                     tickStart = Axes.GetPixel(tickPosition).WithOffset((float)(0 * dx), (float)(0 * dy));
                     tickEnd = Axes.GetPixel(tickPosition).WithOffset((float)(10 * dx), (float)(0 * dy));
-                    labelPosition = Axes.GetPixel(tickPosition).WithOffset((float)(10 * dx), (float)(0 * dy));
-                    paint.TextAlign = SKTextAlign.Left;
+                    labelPosition = Axes.GetPixel(tickPosition).WithOffset((float)(12 * dx), (float)(12 * dy));
+                    edge.TickLabelStyle.Alignment = Alignment.LowerLeft;
                     break;
+
                 case EdgeType.Left:
                     tickStart = Axes.GetPixel(tickPosition).WithOffset((float)(0 * dx), (float)(0 * dy));
                     tickEnd = Axes.GetPixel(tickPosition).WithOffset((float)(10 * dx), (float)(0 * dy));
-                    labelPosition = Axes.GetPixel(tickPosition).WithOffset((float)(10 * dx), (float)(0 * dy));
-                    paint.TextAlign = SKTextAlign.Right;
+                    labelPosition = Axes.GetPixel(tickPosition).WithOffset((float)(12 * dx), (float)(12 * dy));
+                    edge.TickLabelStyle.Alignment = Alignment.LowerRight;
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(edgeType), "Invalid edge type specified");
             }
 
-            rp.Canvas.DrawLine(tickStart.X, tickStart.Y, tickEnd.X, tickEnd.Y, paint);
-            rp.Canvas.DrawText(labelValue.ToString(), labelPosition.X, labelPosition.Y, paint);
+            // Draw tick line with tickPaint
+            rp.Canvas.DrawLine(tickStart.X, tickStart.Y, tickEnd.X, tickEnd.Y, tickPaint);
+
+            // Render tick label with separate labelPaint
+            edge.TickLabelStyle.Text = labelValue.ToString();
+            edge.TickLabelStyle.Render(rp.Canvas, labelPosition, labelPaint);
         }
 
-        RenderGridLines(rp, paint, tickCount);
+        // Render any additional grid lines if required
+        RenderGridLines(rp, tickPaint, tickCount);
     }
 
 
-    // Extension method to set alpha for color
-
-}
-
-public static class ColorExtensionsz
-{
-    public static Color WithAlpha(this Color color, float alpha)
+    public enum EdgeType
     {
-        return color.WithOpacity(alpha);
+        Bottom,
+        Right,
+        Left
     }
 }
