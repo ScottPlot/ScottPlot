@@ -30,7 +30,11 @@ public static class RecipeHtml
         sb.AppendLine();
         sb.AppendLine($"[![]({recipe.ImageUrl})]({recipe.ImageUrl})");
         sb.AppendLine();
-        sb.AppendLine("{{< recipe-sp5 >}}" + recipe.Source + "{{< /recipe-sp5 >}}");
+        sb.AppendLine(
+            "{{< recipe-sp5 sourceUrl=\"SOURCE_URL\" imageUrl=\"IMAGE_URL\" >}}SOURCE_CODE{{< /recipe-sp5 >}}"
+            .Replace("SOURCE_CODE", recipe.Source)
+            .Replace("SOURCE_URL", recipe.SourceUrl)
+            .Replace("IMAGE_URL", recipe.ImageUrl));
         sb.AppendLine();
         if (categoryButton)
         {
