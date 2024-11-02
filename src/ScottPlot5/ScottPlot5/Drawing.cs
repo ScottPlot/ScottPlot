@@ -303,6 +303,19 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
+    public static void DrawDebugPoint(SKCanvas canvas, Pixel point, Color? color = null, float size = 3)
+    {
+        color ??= Colors.Magenta;
+
+        using SKPaint paint = new()
+        {
+            Color = color.Value.ToSKColor(),
+            IsAntialias = true,
+        };
+
+        canvas.DrawCircle(point.ToSKPoint(), size, paint);
+    }
+
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
     {
         if (!lineStyle.CanBeRendered) return;
