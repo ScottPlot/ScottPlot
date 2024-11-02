@@ -32,6 +32,19 @@ public class TernaryAxisEdge : IHasLine
         set => LineStyle.Color = value;
     }
 
+    // Properties for tick lines
+    public Color TickLineColor { get; set; } = Colors.Black;
+    public float TickLineThickness { get; set; } = 1.5f;
+    public float TickLength { get; set; } = 10.0f; // Length of each tick line
+
+    // Properties for tick labels
+    public LabelStyle TickLabelStyle { get; set; } = new LabelStyle
+    {
+        FontSize = 12f,
+        ForeColor = Colors.Black,
+        Alignment = Alignment.MiddleCenter
+    };
+
     public TernaryAxisEdge(Coordinates start, Coordinates end)
     {
         Start = start;
