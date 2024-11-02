@@ -1118,9 +1118,9 @@ public class PlottableAdder(Plot plot)
         return txt;
     }
 
-    public TriangularAxis TriangularAxis(bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
+    public TriangularAxis TriangularAxis(bool clockwise = true, bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
     {
-        TriangularAxis ta = new();
+        TriangularAxis ta = new(clockwise);
         Plot.PlottableList.Add(ta);
 
         if (hideAxisAndGrid)
