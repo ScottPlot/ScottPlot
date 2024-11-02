@@ -21,6 +21,7 @@ public readonly struct CoordinateLine
 
     public Coordinates Start => new(X1, Y1);
     public Coordinates End => new(X2, Y2);
+    public Coordinates Center => new((X1 + X2) / 2, (Y1 + Y2) / 2);
 
     public CoordinateLine(double x1, double y1, double x2, double y2)
     {
