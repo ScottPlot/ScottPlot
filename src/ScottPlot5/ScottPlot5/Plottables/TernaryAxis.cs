@@ -155,13 +155,10 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
 
             // Assign text settings from LabelStyle
             label.LabelStyle.Text = label.LabelText ?? string.Empty;
-            label.LabelStyle.Alignment = label.Alignment;
-            label.LabelStyle.FontSize = label.TextSize;
-            label.LabelStyle.ForeColor = label.TextColor;
-            label.LabelStyle.Bold = label.IsBold;
+            label.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             // Calculate label position with offsets
-            Pixel labelPixel = Axes.GetPixel(label.Position).WithOffset(label.OffsetX, label.OffsetY);
+            Pixel labelPixel = Axes.GetPixel(label.Position).WithOffset(0, 0);
 
             // Render using LabelStyle
             label.LabelStyle.Render(rp.Canvas, labelPixel, paint);
