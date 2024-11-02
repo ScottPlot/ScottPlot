@@ -1,9 +1,9 @@
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
-/// Represents an edge of the ternary plot triangle and includes styling information.
+/// Represents an edge of the triangular plot triangle and includes styling information.
 /// </summary>
-public class TernaryAxisEdge : IHasLine
+public class TriangularAxisEdge : IHasLine
 {
     public Coordinates Start { get; set; }
     public Coordinates End { get; set; }
@@ -44,7 +44,7 @@ public class TernaryAxisEdge : IHasLine
         Alignment = Alignment.MiddleCenter
     };
 
-    public TernaryAxisEdge(Coordinates start, Coordinates end)
+    public TriangularAxisEdge(Coordinates start, Coordinates end)
     {
         Start = start;
         End = end;

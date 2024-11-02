@@ -1,25 +1,24 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-public class TernaryAxis : ICategory
+public class TriangularAxis : ICategory
 {
     public Chapter Chapter => Chapter.PlotTypes;
-    public string CategoryName => "Ternary Axis";
-    public string CategoryDescription => "Create a ternary axis and add it to the plot " +
+    public string CategoryName => "Triangular Axis";
+    public string CategoryDescription => "Create a triangular axis and add it to the plot " +
         "to display data on a triangular coordinate system.";
 
-    public class TernaryAxisQuickStart : RecipeBase
+    public class TriangularAxisQuickStart : RecipeBase
     {
-        public override string Name => "Ternary Axis Quickstart";
-        public override string Description => "A ternary axis is a coordinate system " +
-            "used to represent compositions of three components that sum to a constant, " +
-            "typically shown as a triangular graph where each corner represents 100% of one component, " +
-            "and any point within the triangle shows the relative proportions of all three.";
+        public override string Name => "Triangular Axis Quickstart";
+        public override string Description => "Create a triangular axis and add it to the plot " +
+            "to display data on a triangular grid, and interact with it to convert triangular " +
+            "units into Cartesian coordinates that can be used for placing any plot type on top.";
 
         [Test]
         public override void Execute()
         {
-            // Add a ternary axis to the plot
-            var ta = myPlot.Add.TernaryAxis();
+            // Add a triangular axis to the plot
+            var ta = myPlot.Add.TriangularAxis();
 
             // Get coordinates for points on the triangular axis
             Coordinates[] points = [

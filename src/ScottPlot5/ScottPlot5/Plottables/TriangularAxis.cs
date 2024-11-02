@@ -1,11 +1,10 @@
 ﻿namespace ScottPlot.Plottables;
 
 /// <summary>
-/// A ternary axis uses triangular coordinates to describe a ternary coordinate system
-/// where points are represented by three components A, B, and C that sum to a constant (usually 1 or 100).
-/// This class draws a ternary axis and has options to customize edges and points.
+/// This plot type places a triangular axis on the plot 
+/// and has methods to convert between triangular and Cartesian coordinates.
 /// </summary>
-public class TernaryAxis : IPlottable
+public class TriangularAxis : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -20,15 +19,9 @@ public class TernaryAxis : IPlottable
     public AxisLimits GetAxisLimits() => new AxisLimits(0, 1, 0, Math.Sqrt(3) / 2)
         .WithZoom(1 - PaddingFraction, 1 - PaddingFraction);
 
-    /// <summary>
-    /// Edges of the ternary plot triangle
-    /// </summary>
-    public TernaryAxisEdge[] Edges { get; }
+    public TriangularAxisEdge[] Edges { get; }
 
-    /// <summary>
-    /// Corner labels of the ternary plot triangle
-    /// </summary>
-    public TernaryAxisCornerLabel[] CornerLabels { get; }
+    public TriangularAxisCornerLabel[] CornerLabels { get; }
 
     // Minor grid styling properties
     public Color MinorGridColor { get; set; } = Colors.Gray;
@@ -46,23 +39,23 @@ public class TernaryAxis : IPlottable
     // TODO: replace this enum with three coordinate lines
     public enum EdgeType { Bottom, Right, Left, };
 
-    public TernaryAxis()
+    public TriangularAxis()
     {
         Edges = [
-            new TernaryAxisEdge(LeftCorner, RightCorner),
-            new TernaryAxisEdge(RightCorner, TopCorner),
-            new TernaryAxisEdge(TopCorner, LeftCorner),
+            new TriangularAxisEdge(LeftCorner, RightCorner),
+            new TriangularAxisEdge(RightCorner, TopCorner),
+            new TriangularAxisEdge(TopCorner, LeftCorner),
         ];
 
         CornerLabels = [
-            new TernaryAxisCornerLabel(LeftCorner, string.Empty),
-            new TernaryAxisCornerLabel(RightCorner, string.Empty),
-            new TernaryAxisCornerLabel(TopCorner, string.Empty),
+            new TriangularAxisCornerLabel(LeftCorner, string.Empty),
+            new TriangularAxisCornerLabel(RightCorner, string.Empty),
+            new TriangularAxisCornerLabel(TopCorner, string.Empty),
         ];
     }
 
     /// <summary>
-    /// Converts ternary coordinates (A, B, C) to Cartesian coordinates (X, Y)
+    /// Converts triangular coordinates (A, B, C) to Cartesian coordinates (X, Y)
     /// </summary>
     public Coordinates GetCoordinates(double bottomFraction, double leftFraction, double rightFraction)
     {
@@ -194,7 +187,7 @@ public class TernaryAxis : IPlottable
         }
     }
 
-    private void RenderTicksOnEdge(RenderPack rp, SKPaint tickPaint, TernaryAxisEdge edge, int tickCount, EdgeType edgeType)
+    private void RenderTicksOnEdge(RenderPack rp, SKPaint tickPaint, TriangularAxisEdge edge, int tickCount, EdgeType edgeType)
     {
         // Configure tick line paint separately
         tickPaint.Color = edge.TickLineColor.ToSKColor();

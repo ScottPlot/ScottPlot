@@ -1099,10 +1099,10 @@ public class PlottableAdder(Plot plot)
         return SignalXY(source, color);
     }
 
-    public TernaryAxis TernaryAxis(bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
+    public TriangularAxis TriangularAxis(bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
     {
-        TernaryAxis ternaryAxis = new();
-        Plot.PlottableList.Add(ternaryAxis);
+        TriangularAxis ta = new();
+        Plot.PlottableList.Add(ta);
 
         if (hideAxisAndGrid)
             Plot.HideAxesAndGrid();
@@ -1110,7 +1110,7 @@ public class PlottableAdder(Plot plot)
         if (useSquareAxisUnits)
             Plot.Axes.SquareUnits();
 
-        return ternaryAxis;
+        return ta;
     }
 
     public Text Text(string text, Coordinates location)

@@ -1,9 +1,9 @@
-namespace ScottPlot;
+﻿namespace ScottPlot;
 
 /// <summary>
-/// Represents a label at a corner of the ternary plot triangle and includes styling information.
+/// Represents a label at a corner of the triangular plot triangle and includes styling information.
 /// </summary>
-public class TernaryAxisCornerLabel
+public class TriangularAxisCornerLabel
 {
     public Coordinates Position { get; set; }
 
@@ -14,7 +14,7 @@ public class TernaryAxisCornerLabel
     
     public string? LabelText { get; set; } = null;
 
-    public TernaryAxisCornerLabel(Coordinates position, string labelText)
+    public TriangularAxisCornerLabel(Coordinates position, string labelText)
     {
         Position = position;
         LabelText = labelText;
