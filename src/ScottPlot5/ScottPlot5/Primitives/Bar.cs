@@ -47,7 +47,7 @@ public class Bar : IHasFill, IHasLine
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
 
-    internal CoordinateRect Rect
+    public CoordinateRect Rect
     {
         get
         {
@@ -65,7 +65,7 @@ public class Bar : IHasFill, IHasLine
         }
     }
 
-    internal IEnumerable<CoordinateLine> ErrorLines
+    public IEnumerable<CoordinateLine> ErrorLines
     {
         get
         {
@@ -87,7 +87,7 @@ public class Bar : IHasFill, IHasLine
         }
     }
 
-    internal AxisLimits AxisLimits
+    public AxisLimits AxisLimits
     {
         get
         {
