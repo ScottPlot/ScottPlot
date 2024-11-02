@@ -22,7 +22,6 @@ public class TriangularAxis : ICategory
 
             // Get points from various locations in triangular space
             Coordinates[] points = [
-                ta.GetCoordinates(0.45, 0.30),
                 ta.GetCoordinates(0.50, 0.40),
                 ta.GetCoordinates(0.60, 0.40),
                 ta.GetCoordinates(0.65, 0.50),
@@ -48,7 +47,6 @@ public class TriangularAxis : ICategory
 
             // Get points from various locations in triangular space
             Coordinates[] points = [
-                ta.GetCoordinates(0.45, 0.30),
                 ta.GetCoordinates(0.50, 0.40),
                 ta.GetCoordinates(0.60, 0.40),
                 ta.GetCoordinates(0.65, 0.50),
@@ -79,7 +77,6 @@ public class TriangularAxis : ICategory
 
             // Add sample data
             Coordinates[] points = [
-                ta.GetCoordinates(0.45, 0.30),
                 ta.GetCoordinates(0.50, 0.40),
                 ta.GetCoordinates(0.60, 0.40),
                 ta.GetCoordinates(0.65, 0.50),
@@ -120,7 +117,6 @@ public class TriangularAxis : ICategory
 
             // Add sample data
             Coordinates[] points = [
-                ta.GetCoordinates(0.45, 0.30),
                 ta.GetCoordinates(0.50, 0.40),
                 ta.GetCoordinates(0.60, 0.40),
                 ta.GetCoordinates(0.65, 0.50),
@@ -147,7 +143,6 @@ public class TriangularAxis : ICategory
 
             // Add sample data
             Coordinates[] points = [
-                ta.GetCoordinates(0.45, 0.30),
                 ta.GetCoordinates(0.50, 0.40),
                 ta.GetCoordinates(0.60, 0.40),
                 ta.GetCoordinates(0.65, 0.50),
