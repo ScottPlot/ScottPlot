@@ -1,52 +1,84 @@
 ﻿namespace ScottPlot;
 
-/// <summary>
-/// Represents an edge of the triangular plot triangle and includes styling information.
-/// </summary>
-public class TriangularAxisEdge : IHasLine
+public class TriangularAxisEdge
 {
-    public Coordinates Start { get; set; }
-    public Coordinates End { get; set; }
+    public Coordinates Start { get; }
+    public Coordinates End { get; }
+    public CoordinateLine Line { get; }
+    public List<(Coordinates Point, string Label)> Ticks { get; } = [];
+    public LineStyle EdgeLineStyle { get; set; } = new() { IsVisible = true, Width = 1, Color = Colors.Black, };
+    public TickMarkStyle TickMarkStyle { get; set; } = new() { Length = 5, Color = Colors.Black };
+    public LabelStyle TickLabelStyle { get; set; } = new();
+    public LabelStyle LabelStyle { get; set; } = new() { FontSize = 16, Bold = true };
+    public PixelOffset TickOffset { get; set; }
 
-    public LineStyle LineStyle { get; set; } = new()
-    {
-        Width = 1,
-        Color = Colors.Black.WithAlpha(.5),
-    };
+    public static readonly double MaxY = Math.Sqrt(3) / 2;
 
-    public float LineWidth
+    public static readonly AxisLimits AxisLimits = new(0, 1, 0, MaxY);
+
+    public string Label { get; set; } = string.Empty;
+
+    public static TriangularAxisEdge Left
     {
-        get => LineStyle.Width;
-        set => LineStyle.Width = value;
+        get
+        {
+            TriangularAxisEdge ax = new(new(0.5, Math.Sqrt(3) / 2), new(0, 0));
+            ax.TickOffset = new(-5, 0);
+            ax.TickLabelStyle.Alignment = Alignment.MiddleRight;
+            ax.LabelStyle.Rotation = -60;
+            ax.LabelStyle.Alignment = Alignment.LowerCenter;
+            ax.LabelStyle.OffsetX = -10;
+            ax.LabelStyle.OffsetY = ax.LabelStyle.OffsetX * (float)Math.Sqrt(3) / 2;
+            return ax;
+        }
     }
 
-    public LinePattern LinePattern
+    public static TriangularAxisEdge Right
     {
-        get => LineStyle.Pattern;
-        set => LineStyle.Pattern = value;
+        get
+        {
+            TriangularAxisEdge ax = new(new(1, 0), new(0.5, Math.Sqrt(3) / 2));
+            ax.TickOffset = new(5, 0);
+            ax.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+            ax.LabelStyle.Rotation = 60;
+            ax.LabelStyle.Alignment = Alignment.LowerCenter;
+            ax.LabelStyle.OffsetX = 10;
+            ax.LabelStyle.OffsetY = -ax.LabelStyle.OffsetX * (float)Math.Sqrt(3) / 2;
+            return ax;
+        }
+    }
+    public static TriangularAxisEdge Bottom
+    {
+        get
+        {
+            TriangularAxisEdge ax = new(new(0, 0), new(1, 0));
+            ax.TickOffset = new(0, 5);
+            ax.TickLabelStyle.Alignment = Alignment.UpperCenter;
+            ax.LabelStyle.Alignment = Alignment.UpperCenter;
+            ax.LabelStyle.OffsetY = 20;
+            return ax;
+        }
     }
 
-    public Color LineColor
+    public TriangularAxisEdge(Coordinates pt1, Coordinates pt2)
     {
-        get => LineStyle.Color;
-        set => LineStyle.Color = value;
+        Start = pt1;
+        End = pt2;
+        Line = new(pt1, pt2);
+        RegenerateTicks();
     }
 
-    // Properties for tick lines
-    public Color TickLineColor { get; set; } = Colors.Black;
-    public float TickLineThickness { get; set; } = 1.5f;
-
-    // Properties for tick labels
-    public LabelStyle TickLabelStyle { get; set; } = new LabelStyle
+    private void RegenerateTicks(int ticksPerEdge = 10)
     {
-        FontSize = 12f,
-        ForeColor = Colors.Black,
-        Alignment = Alignment.MiddleCenter
-    };
-
-    public TriangularAxisEdge(Coordinates start, Coordinates end)
-    {
-        Start = start;
-        End = end;
+        Ticks.Clear();
+        for (int i = 0; i <= ticksPerEdge; i++)
+        {
+            double fraction = i / (double)ticksPerEdge;
+            double tickX = Start.X + fraction * (End.X - Start.X);
+            double tickY = Start.Y + fraction * (End.Y - Start.Y);
+            Coordinates tickPoint = new(tickX, tickY);
+            string tickLabel = $"{fraction * 10}";
+            Ticks.Add((tickPoint, tickLabel));
+        }
     }
 }
