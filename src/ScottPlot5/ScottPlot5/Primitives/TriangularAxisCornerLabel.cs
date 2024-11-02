@@ -11,7 +11,7 @@ public class TriangularAxisCornerLabel
     {
         Alignment = Alignment.MiddleCenter,
     };
-    
+
     public string? LabelText { get; set; } = null;
 
     public TriangularAxisCornerLabel(Coordinates position, string labelText)
