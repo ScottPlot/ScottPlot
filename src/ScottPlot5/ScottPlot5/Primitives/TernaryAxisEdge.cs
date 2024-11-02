@@ -35,7 +35,6 @@ public class TernaryAxisEdge : IHasLine
     // Properties for tick lines
     public Color TickLineColor { get; set; } = Colors.Black;
     public float TickLineThickness { get; set; } = 1.5f;
-    public float TickLength { get; set; } = 10.0f; // Length of each tick line
 
     // Properties for tick labels
     public LabelStyle TickLabelStyle { get; set; } = new LabelStyle
