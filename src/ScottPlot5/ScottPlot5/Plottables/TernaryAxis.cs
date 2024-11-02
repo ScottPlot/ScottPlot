@@ -1,108 +1,74 @@
-namespace ScottPlot.Plottables;
+﻿namespace ScottPlot.Plottables;
 
 /// <summary>
 /// A ternary axis uses triangular coordinates to describe a ternary coordinate system
 /// where points are represented by three components A, B, and C that sum to a constant (usually 1 or 100).
 /// This class draws a ternary axis and has options to customize edges and points.
 /// </summary>
-public class TernaryAxis : IPlottable, IManagesAxisLimits
+public class TernaryAxis : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     /// <summary>
+    /// Fractional amount of padding between the edge of the triangle and the data area.
+    /// Increase this value to make room for large tick and corner labels.
+    /// </summary>
+    public double PaddingFraction { get; set; } = 0.25;
+
+    public AxisLimits GetAxisLimits() => new AxisLimits(0, 1, 0, Math.Sqrt(3) / 2)
+        .WithZoom(1 - PaddingFraction, 1 - PaddingFraction);
+
+    /// <summary>
     /// Edges of the ternary plot triangle
     /// </summary>
-    public List<TernaryAxisEdge> Edges { get; } = new();
+    public TernaryAxisEdge[] Edges { get; }
 
     /// <summary>
     /// Corner labels of the ternary plot triangle
     /// </summary>
-    public List<TernaryAxisCornerLabel> CornerLabels { get; } = new();
-
-    /// <summary>
-    /// Points to plot on the ternary diagram
-    /// </summary>
-    public List<Coordinates> Points { get; } = new();
-
-    /// <summary>
-    /// Enable this to modify the axis limits at render time to achieve "square axes"
-    /// where the units/px values are equal for horizontal and vertical axes, allowing
-    /// the triangle to appear equilateral.
-    /// </summary>
-    public bool ManageAxisLimits { get; set; } = true;
+    public TernaryAxisCornerLabel[] CornerLabels { get; }
 
     // Minor grid styling properties
     public Color MinorGridColor { get; set; } = Colors.Gray;
     public float MinorGridThickness { get; set; } = 1.0f;
-    public float MinorGridAlpha { get; set; } = 0.5f;  // Transparency (0.0 to 1.0)
+    public float MinorGridAlpha { get; set; } = 0.1f;
 
     // Background color property
     public Color BackgroundColor { get; set; } = Colors.LightYellow;
     public float BackgroundAlpha { get; set; } = 0.3f;
 
-    /// <summary>
-    /// Initialize the ternary axis with default edges, corner labels, and tick marks
-    /// </summary>
+    public Coordinates LeftCorner = new(0, 0);
+    public Coordinates RightCorner = new(1, 0);
+    public Coordinates TopCorner = new(0.5, Math.Sqrt(3) / 2);
+
+    // TODO: replace this enum with three coordinate lines
+    public enum EdgeType { Bottom, Right, Left, };
+
     public TernaryAxis()
     {
-        // Define the corners of the triangle
-        Coordinates cornerA = new(0, 0);
-        Coordinates cornerB = new(1, 0);
-        Coordinates cornerC = new(0.5, Math.Sqrt(3) / 2);
+        Edges = [
+            new TernaryAxisEdge(LeftCorner, RightCorner),
+            new TernaryAxisEdge(RightCorner, TopCorner),
+            new TernaryAxisEdge(TopCorner, LeftCorner),
+        ];
 
-        // Define the edges of the triangle
-        Edges.Add(new TernaryAxisEdge(cornerA, cornerB));
-        Edges.Add(new TernaryAxisEdge(cornerB, cornerC));
-        Edges.Add(new TernaryAxisEdge(cornerC, cornerA));
-
-        // Define the labels at each corner
-        CornerLabels.Add(new TernaryAxisCornerLabel(cornerA, "A"));
-        CornerLabels.Add(new TernaryAxisCornerLabel(cornerB, "B"));
-        CornerLabels.Add(new TernaryAxisCornerLabel(cornerC, "C"));
+        CornerLabels = [
+            new TernaryAxisCornerLabel(LeftCorner, string.Empty),
+            new TernaryAxisCornerLabel(RightCorner, string.Empty),
+            new TernaryAxisCornerLabel(TopCorner, string.Empty),
+        ];
     }
 
     /// <summary>
     /// Converts ternary coordinates (A, B, C) to Cartesian coordinates (X, Y)
     /// </summary>
-    public Coordinates GetCoordinates(double A, double B, double C)
+    public Coordinates GetCoordinates(double bottomFraction, double leftFraction, double rightFraction)
     {
-        if (Math.Abs(A + B + C - 1) > 1e-6)
-            throw new ArgumentException("Components A, B, and C must sum to 1");
-
-        double x = 0.5 * (2 * B + C);
-        double y = (Math.Sqrt(3) / 2) * C;
+        double x = bottomFraction;
+        double y = ((1 - leftFraction) + rightFraction) / 2 * TopCorner.Y;
         return new Coordinates(x, y);
-    }
-
-    /// <summary>
-    /// Adds a point to the ternary plot
-    /// </summary>
-    public void AddPoint(double A, double B, double C)
-    {
-        Coordinates point = GetCoordinates(A, B, C);
-        Points.Add(point);
-    }
-
-    public AxisLimits GetAxisLimits()
-    {
-        return new AxisLimits(0, 1, 0, Math.Sqrt(3) / 2);
-    }
-
-    public virtual void UpdateAxisLimits(Plot plot)
-    {
-        if (!ManageAxisLimits)
-            return;
-
-        foreach (IAxisRule rule in plot.Axes.Rules)
-        {
-            if (rule is AxisRules.SquareZoomOut)
-                return;
-        }
-
-        AxisRules.SquareZoomOut squareRule = new(Axes.XAxis, Axes.YAxis);
-        plot.Axes.Rules.Add(squareRule);
     }
 
     public virtual void Render(RenderPack rp)
@@ -112,7 +78,6 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         RenderBackground(rp, paint); // Draw the background color first
         RenderCornerLabels(rp, paint);
         RenderTicks(rp, paint); // Render tick marks along edges
-        RenderPoints(rp, paint);
     }
 
     private void RenderBackground(RenderPack rp, SKPaint paint)
@@ -128,7 +93,7 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         paint.Style = SKPaintStyle.Fill;
 
         // Draw the triangle
-        using (SKPath path = new SKPath())
+        using (SKPath path = new())
         {
             path.MoveTo(pixelA.X, pixelA.Y);
             path.LineTo(pixelB.X, pixelB.Y);
@@ -165,20 +130,6 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         }
     }
 
-    private void RenderPoints(RenderPack rp, SKPaint paint)
-    {
-        // Set up paint properties for points
-        paint.Color = SKColors.Black; // Set point color (change as needed)
-        paint.IsAntialias = true;
-        paint.Style = SKPaintStyle.Fill;
-
-        foreach (var point in Points)
-        {
-            Pixel px = Axes.GetPixel(point);
-            rp.Canvas.DrawCircle(px.X, px.Y, 5, paint); // Adjust point size as needed
-        }
-    }
-
     private void RenderTicks(RenderPack rp, SKPaint paint)
     {
         // Set up paint properties for the ticks
@@ -192,18 +143,9 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
         RenderTicksOnEdge(rp, paint, Edges[2], 10, EdgeType.Left);   // C-A edge
     }
 
-    private SKColor ToSKColor(Color color, float alpha)
-    {
-        return new SKColor(color.R, color.G, color.B, (byte)(alpha * 255));
-    }
-    private SKColor ToSKColor(Color color)
-    {
-        return new SKColor(color.R, color.G, color.B, color.A); // Alpha is now directly part of `color`
-    }
-
     private void RenderGridLines(RenderPack rp, SKPaint paint, int tickCount)
     {
-        paint.Color = ToSKColor(MinorGridColor, MinorGridAlpha); // Use MinorGridColor and MinorGridAlpha for grid lines
+        paint.Color = MinorGridColor.WithAlpha(MinorGridAlpha).ToSKColor();
         paint.StrokeWidth = MinorGridThickness;
 
         Coordinates cornerA = Edges[0].Start;
@@ -215,32 +157,32 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
             double fractionA = i / (double)tickCount;
             double fractionB = (tickCount - i) / (double)tickCount;
 
-            Coordinates tickAC = new Coordinates(
+            Coordinates tickAC = new(
                 cornerA.X + fractionA * (cornerC.X - cornerA.X),
                 cornerA.Y + fractionA * (cornerC.Y - cornerA.Y)
             );
 
-            Coordinates tickAB = new Coordinates(
+            Coordinates tickAB = new(
                 cornerA.X + fractionA * (cornerB.X - cornerA.X),
                 cornerA.Y + fractionA * (cornerB.Y - cornerA.Y)
             );
 
-            Coordinates tickBC = new Coordinates(
+            Coordinates tickBC = new(
                 cornerB.X + fractionA * (cornerC.X - cornerB.X),
                 cornerB.Y + fractionA * (cornerC.Y - cornerB.Y)
             );
 
-            Coordinates tickCA_B = new Coordinates(
+            Coordinates tickCA_B = new(
                 cornerC.X + fractionB * (cornerA.X - cornerC.X),
                 cornerC.Y + fractionB * (cornerA.Y - cornerC.Y)
             );
 
-            Coordinates tickCB_A = new Coordinates(
+            Coordinates tickCB_A = new(
                 cornerC.X + fractionB * (cornerB.X - cornerC.X),
                 cornerC.Y + fractionB * (cornerB.Y - cornerC.Y)
             );
 
-            Coordinates tickCB_C = new Coordinates(
+            Coordinates tickCB_C = new(
                 cornerC.X + fractionA * (cornerB.X - cornerC.X),
                 cornerC.Y + fractionA * (cornerB.Y - cornerC.Y)
             );
@@ -255,16 +197,16 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
     private void RenderTicksOnEdge(RenderPack rp, SKPaint tickPaint, TernaryAxisEdge edge, int tickCount, EdgeType edgeType)
     {
         // Configure tick line paint separately
-        tickPaint.Color = ToSKColor(edge.TickLineColor);
+        tickPaint.Color = edge.TickLineColor.ToSKColor();
         tickPaint.StrokeWidth = edge.TickLineThickness;
         tickPaint.IsAntialias = true;
 
         // Create a separate paint for labels to avoid interference with tick lines
-        using var labelPaint = new SKPaint
+        using SKPaint labelPaint = new()
         {
             IsAntialias = true,
             TextSize = edge.TickLabelStyle.FontSize,
-            Color = ToSKColor(edge.TickLabelStyle.ForeColor),
+            Color = edge.TickLabelStyle.ForeColor.ToSKColor(),
             Typeface = edge.TickLabelStyle.Bold ? SKTypeface.FromFamilyName(null, SKFontStyle.Bold) : SKTypeface.FromFamilyName(null, SKFontStyle.Normal),
         };
 
@@ -324,13 +266,5 @@ public class TernaryAxis : IPlottable, IManagesAxisLimits
 
         // Render any additional grid lines if required
         RenderGridLines(rp, tickPaint, tickCount);
-    }
-
-
-    public enum EdgeType
-    {
-        Bottom,
-        Right,
-        Left
     }
 }
