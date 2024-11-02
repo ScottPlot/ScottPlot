@@ -22,10 +22,34 @@ public class TriangularAxis : ICategory
 
             // Get points from various locations in triangular space
             Coordinates[] points = [
-                ta.GetCoordinates(0.50, 0.80, 0.20),
-                ta.GetCoordinates(0.50, 0.60, 0.40),
-                ta.GetCoordinates(0.65, 0.70, 0.30),
-                ta.GetCoordinates(0.80, 0.80, 0.20),
+                ta.GetCoordinates(0.50, 0.40),
+                ta.GetCoordinates(0.60, 0.40),
+                ta.GetCoordinates(0.65, 0.50),
+            ];
+
+            // Any plot type may be added on top of the triangular axis
+            myPlot.Add.Markers(points, MarkerShape.FilledCircle, 10, Colors.Red);
+        }
+    }
+
+    public class TriangularAxisReversed : RecipeBase
+    {
+        public override string Name => "Triangular Axis Reverse";
+        public override string Description => "Triangular axes typically ascend in a clockwise " +
+            "direction for general applications, but triangular plots with counterclockwise labeling " +
+            "are sometimes used for geological applications.";
+
+        [Test]
+        public override void Execute()
+        {
+            // Add a COUNTER-CLOCKWISE triangular axis to the plot
+            var ta = myPlot.Add.TriangularAxis(clockwise: false);
+
+            // Get points from various locations in triangular space
+            Coordinates[] points = [
+                ta.GetCoordinates(0.50, 0.40),
+                ta.GetCoordinates(0.60, 0.40),
+                ta.GetCoordinates(0.65, 0.50),
             ];
 
             // Any plot type may be added on top of the triangular axis
@@ -53,10 +77,9 @@ public class TriangularAxis : ICategory
 
             // Add sample data
             Coordinates[] points = [
-                ta.GetCoordinates(0.50, 0.80, 0.20),
-                ta.GetCoordinates(0.50, 0.60, 0.40),
-                ta.GetCoordinates(0.65, 0.70, 0.30),
-                ta.GetCoordinates(0.80, 0.80, 0.20),
+                ta.GetCoordinates(0.50, 0.40),
+                ta.GetCoordinates(0.60, 0.40),
+                ta.GetCoordinates(0.65, 0.50),
             ];
             myPlot.Add.Markers(points, MarkerShape.FilledCircle, 10, Colors.Red);
         }
@@ -94,10 +117,9 @@ public class TriangularAxis : ICategory
 
             // Add sample data
             Coordinates[] points = [
-                ta.GetCoordinates(0.50, 0.80, 0.20),
-                ta.GetCoordinates(0.50, 0.60, 0.40),
-                ta.GetCoordinates(0.65, 0.70, 0.30),
-                ta.GetCoordinates(0.80, 0.80, 0.20),
+                ta.GetCoordinates(0.50, 0.40),
+                ta.GetCoordinates(0.60, 0.40),
+                ta.GetCoordinates(0.65, 0.50),
             ];
             myPlot.Add.Markers(points, MarkerShape.FilledCircle, 10, Colors.Red);
         }
@@ -121,10 +143,9 @@ public class TriangularAxis : ICategory
 
             // Add sample data
             Coordinates[] points = [
-                ta.GetCoordinates(0.50, 0.80, 0.20),
-                ta.GetCoordinates(0.50, 0.60, 0.40),
-                ta.GetCoordinates(0.65, 0.70, 0.30),
-                ta.GetCoordinates(0.80, 0.80, 0.20),
+                ta.GetCoordinates(0.50, 0.40),
+                ta.GetCoordinates(0.60, 0.40),
+                ta.GetCoordinates(0.65, 0.50),
             ];
             myPlot.Add.Markers(points, MarkerShape.FilledCircle, 10, Colors.Red);
         }

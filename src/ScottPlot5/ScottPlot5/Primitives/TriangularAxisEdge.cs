@@ -2,9 +2,9 @@
 
 public class TriangularAxisEdge
 {
-    public Coordinates Start { get; }
-    public Coordinates End { get; }
     public CoordinateLine Line { get; }
+    public Coordinates Start => Line.Start;
+    public Coordinates End => Line.End;
     public List<(Coordinates Point, string Label)> Ticks { get; } = [];
     public LineStyle EdgeLineStyle { get; set; } = new() { IsVisible = true, Width = 1, Color = Colors.Black, };
     public TickMarkStyle TickMarkStyle { get; set; } = new() { Length = 5, Color = Colors.Black };
@@ -37,53 +37,50 @@ public class TriangularAxisEdge
         EdgeLineStyle.Color = color;
     }
 
-    public static TriangularAxisEdge Left
+    private static Coordinates TopCorner = new(0.5, Math.Sqrt(3) / 2);
+    private static Coordinates LeftCorner = new(0, 0);
+    private static Coordinates RightCorner = new(1, 0);
+
+    public static TriangularAxisEdge Left(bool clockwise = true)
     {
-        get
-        {
-            TriangularAxisEdge ax = new(new(0.5, Math.Sqrt(3) / 2), new(0, 0));
-            ax.TickOffset = new(-5, 0);
-            ax.TickLabelStyle.Alignment = Alignment.MiddleRight;
-            ax.LabelStyle.Rotation = -60;
-            ax.LabelStyle.Alignment = Alignment.LowerCenter;
-            ax.LabelStyle.OffsetX = -10;
-            ax.LabelStyle.OffsetY = ax.LabelStyle.OffsetX * (float)Math.Sqrt(3) / 2;
-            return ax;
-        }
+        CoordinateLine line = new(LeftCorner, TopCorner);
+        TriangularAxisEdge ax = new(clockwise ? line : line.Reversed());
+        ax.TickOffset = new(-5, 0);
+        ax.TickLabelStyle.Alignment = Alignment.MiddleRight;
+        ax.LabelStyle.Rotation = -60;
+        ax.LabelStyle.Alignment = Alignment.LowerCenter;
+        ax.LabelStyle.OffsetX = -10;
+        ax.LabelStyle.OffsetY = ax.LabelStyle.OffsetX * (float)Math.Sqrt(3) / 2;
+        return ax;
     }
 
-    public static TriangularAxisEdge Right
+    public static TriangularAxisEdge Right(bool clockwise = true)
     {
-        get
-        {
-            TriangularAxisEdge ax = new(new(1, 0), new(0.5, Math.Sqrt(3) / 2));
-            ax.TickOffset = new(5, 0);
-            ax.TickLabelStyle.Alignment = Alignment.MiddleLeft;
-            ax.LabelStyle.Rotation = 60;
-            ax.LabelStyle.Alignment = Alignment.LowerCenter;
-            ax.LabelStyle.OffsetX = 10;
-            ax.LabelStyle.OffsetY = -ax.LabelStyle.OffsetX * (float)Math.Sqrt(3) / 2;
-            return ax;
-        }
-    }
-    public static TriangularAxisEdge Bottom
-    {
-        get
-        {
-            TriangularAxisEdge ax = new(new(0, 0), new(1, 0));
-            ax.TickOffset = new(0, 5);
-            ax.TickLabelStyle.Alignment = Alignment.UpperCenter;
-            ax.LabelStyle.Alignment = Alignment.UpperCenter;
-            ax.LabelStyle.OffsetY = 20;
-            return ax;
-        }
+        CoordinateLine line = new(TopCorner, RightCorner);
+        TriangularAxisEdge ax = new(clockwise ? line : line.Reversed());
+        ax.TickOffset = new(5, 0);
+        ax.TickLabelStyle.Alignment = Alignment.MiddleLeft;
+        ax.LabelStyle.Rotation = 60;
+        ax.LabelStyle.Alignment = Alignment.LowerCenter;
+        ax.LabelStyle.OffsetX = 10;
+        ax.LabelStyle.OffsetY = -ax.LabelStyle.OffsetX * (float)Math.Sqrt(3) / 2;
+        return ax;
     }
 
-    public TriangularAxisEdge(Coordinates pt1, Coordinates pt2)
+    public static TriangularAxisEdge Bottom(bool clockwise = true)
     {
-        Start = pt1;
-        End = pt2;
-        Line = new(pt1, pt2);
+        CoordinateLine line = new(RightCorner, LeftCorner);
+        TriangularAxisEdge ax = new(clockwise ? line : line.Reversed());
+        ax.TickOffset = new(0, 5);
+        ax.TickLabelStyle.Alignment = Alignment.UpperCenter;
+        ax.LabelStyle.Alignment = Alignment.UpperCenter;
+        ax.LabelStyle.OffsetY = 20;
+        return ax;
+    }
+
+    public TriangularAxisEdge(CoordinateLine line)
+    {
+        Line = line;
         RegenerateTicks();
     }
 
@@ -99,5 +96,15 @@ public class TriangularAxisEdge
             string tickLabel = $"{fraction * 10}";
             Ticks.Add((tickPoint, tickLabel));
         }
+    }
+
+    /// <summary>
+    /// Return the point along this axis a given fraction between 0 and 1
+    /// </summary>
+    public Coordinates GetCoordinates(double fraction)
+    {
+        double x = Start.X + (End.X - Start.X) * fraction;
+        double y = Start.Y + (End.Y - Start.Y) * fraction;
+        return new Coordinates(x, y);
     }
 }

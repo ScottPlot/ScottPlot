@@ -100,4 +100,9 @@ public readonly struct CoordinateLine
     {
         return new CoordinateLine(X1 + dX, Y1 + dY, X2 + dX, Y2 + dY);
     }
+
+    public CoordinateLine Reversed()
+    {
+        return new CoordinateLine(X2, Y2, X1, Y1);
+    }
 }

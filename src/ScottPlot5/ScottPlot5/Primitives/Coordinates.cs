@@ -112,4 +112,9 @@ public struct Coordinates : IEquatable<Coordinates>
     }
 
     public readonly (double X, double Y) Deconstruct() => (X, Y);
+
+    public static Coordinates operator +(Coordinates a, Coordinates b)
+    {
+        return new(a.X + b.X, a.Y + b.Y);
+    }
 }

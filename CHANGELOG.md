@@ -7,7 +7,7 @@ _Not yet on NuGet..._
 * Candlestick Plot: Improved visibility of candles with zero price movement (#3337) @Lyakabynka @bukowa
 * Ticks: Added an experimental `FinancialTickGenerator` for generating DateTime ticks from unevenly-spaced time data (#4385)
 * Financial Charting: Added experimental `FinancialTimeAxis` plottable as an alternative to using custom axes or tick generators (#4385) @quantfreedom @vladislavpweetsoft
-* Triangular Axis: Users may now `Add.TriangularAxis()` and use its methods to get Cartesian coordinates from points in triangular space (#4421, #4413) @manaruto
+* Triangular Axis: Users may now `Add.TriangularAxis()` and use its methods to get Cartesian coordinates from points in triangular space (#4421, #4413, #4424) @manaruto
 * Bar: Exposed `Rect`, `ErrorLines`, and `AxisLimits` properties (#4423) @tiger2014
 
 ## ScottPlot 5.0.42

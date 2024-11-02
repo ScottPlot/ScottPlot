@@ -4,8 +4,9 @@
 /// This plot type places a triangular axis on the plot 
 /// and has methods to convert between triangular and Cartesian coordinates.
 /// </summary>
-public class TriangularAxis : IPlottable
+public class TriangularAxis(bool clockwise) : IPlottable
 {
+    public bool Clockwise { get; } = clockwise;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
@@ -16,15 +17,34 @@ public class TriangularAxis : IPlottable
     public FillStyle FillStyle { get; set; } = new() { IsVisible = true, Color = Colors.Yellow.WithAlpha(.1), };
     public LineStyle GridLineStyle { get; set; } = new() { IsVisible = true, Width = 1, Color = Colors.Gray.WithAlpha(.2) };
 
-    public TriangularAxisEdge Left { get; } = TriangularAxisEdge.Left;
-    public TriangularAxisEdge Right { get; } = TriangularAxisEdge.Right;
-    public TriangularAxisEdge Bottom { get; } = TriangularAxisEdge.Bottom;
+    public TriangularAxisEdge Left { get; } = TriangularAxisEdge.Left(clockwise);
+    public TriangularAxisEdge Right { get; } = TriangularAxisEdge.Right(clockwise);
+    public TriangularAxisEdge Bottom { get; } = TriangularAxisEdge.Bottom(clockwise);
 
+    /// <summary>
+    /// Return coordinates for a point on the triangle for a fractional distance 
+    /// (0 through 1, inclusive) along the bottom and left axes.
+    /// </summary>
+    public Coordinates GetCoordinates(double bottomFraction, double leftFraction)
+    {
+        double x = Bottom.GetCoordinates(bottomFraction).X;
+        double y = Left.GetCoordinates(leftFraction).Y;
+        return new Coordinates(x, y);
+    }
+
+    /// <summary>
+    /// Return coordinates for a point on the triangle for a fractional distance 
+    /// (0 through 1, inclusive) along all three axes. This overload requires
+    /// the sum of <paramref name="leftFraction"/> and <paramref name="rightFraction"/> to equal 1.
+    /// </summary>
     public Coordinates GetCoordinates(double bottomFraction, double leftFraction, double rightFraction)
     {
-        double x = bottomFraction;
-        double y = ((1 - leftFraction) + rightFraction) / 2 * Left.Start.Y;
-        return new Coordinates(x, y);
+        if (leftFraction + rightFraction != 1)
+        {
+            throw new ArgumentException("sum of left and right fractions must equal 1");
+        }
+
+        return GetCoordinates(bottomFraction, leftFraction);
     }
 
     public virtual void Render(RenderPack rp)
