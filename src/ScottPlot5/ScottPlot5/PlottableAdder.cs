@@ -1118,6 +1118,20 @@ public class PlottableAdder(Plot plot)
         return txt;
     }
 
+    public TriangularAxis TriangularAxis(bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
+    {
+        TriangularAxis ta = new();
+        Plot.PlottableList.Add(ta);
+
+        if (hideAxisAndGrid)
+            Plot.HideAxesAndGrid();
+
+        if (useSquareAxisUnits)
+            Plot.Axes.SquareUnits();
+
+        return ta;
+    }
+
     public VectorField VectorField(IList<RootedCoordinateVector> vectors, Color? color = null)
     {
         VectorFieldDataSourceCoordinatesList vs = new(vectors);

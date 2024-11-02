@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-public class Polar : ICategory
+public class PolarAxis : ICategory
 {
     public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Polar Axis";
@@ -11,7 +11,7 @@ public class Polar : ICategory
         public override string Name => "Polar Axis";
         public override string Description => "A polar axis can be added to the plot, " +
             "then other plot types (marker, line, scatter, etc.) can be placed on top of it " +
-            "using ints helper methods to translate polar coordinates to Cartesian units.";
+            "using its helper methods to translate polar coordinates to Cartesian units.";
 
         [Test]
         public override void Execute()

@@ -12,6 +12,16 @@ public class FillStyle
     public bool HasValue => Color != Colors.Transparent || Hatch is not null && HatchColor != Colors.Transparent;
     public bool AntiAlias { get; set; } = true;
     public bool IsVisible { get; set; } = true;
+    public bool CanBeRendered
+    {
+        get
+        {
+            if (IsVisible == false) return false;
+            if (Color.Alpha == 0) return false;
+            if (Color == Colors.Transparent) return false;
+            return true;
+        }
+    }
 
     public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint)
     {
