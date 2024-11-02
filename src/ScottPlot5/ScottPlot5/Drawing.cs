@@ -78,6 +78,21 @@ public static class Drawing
         DrawPath(canvas, paint, path, lineStyle);
     }
 
+    public static void FillPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle, PixelRect rect)
+    {
+        if (!fillStyle.CanBeRendered) return;
+
+        using SKPath path = new();
+        path.MoveTo(pixels.First().ToSKPoint());
+        foreach (Pixel px in pixels.Skip(1))
+        {
+            path.LineTo(px.ToSKPoint());
+        }
+
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawPath(path, paint);
+    }
+
     public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
