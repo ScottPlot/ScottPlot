@@ -65,7 +65,7 @@ public class TriangularAxis : IPlottable
         }
 
         // label
-        edge.LabelStyle.Render(rp.Canvas, Axes.GetPixel(edge.Line.Center), paint, "TEST");
+        edge.LabelStyle.Render(rp.Canvas, Axes.GetPixel(edge.Line.Center), paint, edge.LabelText);
     }
 
     private void RenderGridLines(RenderPack rp, SKPaint paint, TriangularAxisEdge edge1, TriangularAxisEdge edge2, bool reverse = true)
