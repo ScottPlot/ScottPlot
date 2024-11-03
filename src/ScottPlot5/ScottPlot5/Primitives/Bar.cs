@@ -125,17 +125,25 @@ public class Bar : IHasFill, IHasLine
             }
         }
 
+        if (CenterLabel)
+        {
+            labelStyle.Alignment = Alignment.MiddleCenter;
+            labelStyle.Render(rp.Canvas, rect.Center, paint);
+            return;
+        }
+
         if (Orientation == Orientation.Vertical)
         {
             float xPx = rect.HorizontalCenter;
-            float yPx = CenterLabel ? rect.VerticalCenter : rect.Top;
-            labelStyle.Alignment = CenterLabel ? Alignment.MiddleCenter : Alignment.LowerCenter;
+            float yPx = rect.Top;
+            labelStyle.Alignment = Alignment.LowerCenter;
             Pixel labelPixel = new(xPx, yPx - LabelOffset);
             labelStyle.Render(rp.Canvas, labelPixel, paint);
         }
         else
         {
             MeasuredText measured = labelStyle.Measure(labelStyle.Text, paint);
+
             if (Value < 0)
             {
                 float xPx = rect.LeftCenter.X - (LabelOffset + measured.Width / 2);
