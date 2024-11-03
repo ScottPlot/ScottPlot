@@ -175,6 +175,39 @@ public class Bar : ICategory
         }
     }
 
+    public class BarFillStyle : RecipeBase
+    {
+        public override string Name => "Bar Fill Style";
+        public override string Description => "Each bar may be individually styled.";
+
+        [Test]
+        public override void Execute()
+        {
+            // add bars with sample data
+            double[] values = { 3, 7, 9 };
+            var barPlot = myPlot.Add.Bars(values);
+
+            // bars may be styled after they have been added
+            barPlot.Bars[0].FillColor = Colors.Orange;
+            barPlot.Bars[1].FillColor = Colors.Green;
+            barPlot.Bars[2].FillColor = Colors.Navy;
+
+            barPlot.Bars[0].FillHatch = new ScottPlot.Hatches.Striped();
+            barPlot.Bars[1].FillHatch = new ScottPlot.Hatches.Dots();
+            barPlot.Bars[2].FillHatch = new ScottPlot.Hatches.Checker();
+
+            foreach(var bar in barPlot.Bars)
+            {
+                bar.LineWidth = 2;
+                bar.LineColor = bar.FillColor.Darken(0.5);
+                bar.FillHatchColor = bar.FillColor.Lighten(0.1);
+            }
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Axes.Margins(bottom: 0);
+        }
+    }
+
     public class BarStackVertically : RecipeBase
     {
         public override string Name => "Stacked Bar Plot";
