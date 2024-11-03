@@ -196,7 +196,7 @@ public class Bar : ICategory
             barPlot.Bars[1].FillHatch = new ScottPlot.Hatches.Dots();
             barPlot.Bars[2].FillHatch = new ScottPlot.Hatches.Checker();
 
-            foreach(var bar in barPlot.Bars)
+            foreach (var bar in barPlot.Bars)
             {
                 bar.LineWidth = 2;
                 bar.LineColor = bar.FillColor.Darken(0.5);
