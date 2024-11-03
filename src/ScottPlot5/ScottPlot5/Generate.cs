@@ -40,6 +40,22 @@ public static class Generate
     }
 
     /// <summary>
+    /// Return an array for a sigmoidal curve that rises from zero to <paramref name="mult"/>
+    /// </summary>
+    public static double[] Sigmoidal(int count, double mult = 1.0, double steepness = 1.0)
+    {
+        double[] ys = new double[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            double x = (double)i / count * 10 - 5;
+            ys[i] = 1 / (1 + Math.Exp(-x* steepness));
+        }
+
+        return ys;
+    }
+
+    /// <summary>
     /// Return an array of cosine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
