@@ -36,7 +36,7 @@ public class FloatingAxis : IPlottable
         TickLabelStyle.Alignment = Alignment.MiddleRight;
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (IsVertical)
         {
