@@ -56,6 +56,8 @@ public struct Coordinates : IEquatable<Coordinates>
 
     public static Coordinates NaN => new(double.NaN, double.NaN);
 
+    public static Coordinates Zero => new(0, 0);
+
     public static Coordinates Origin => new(0, 0);
 
     public static Coordinates Infinity => new(double.PositiveInfinity, double.PositiveInfinity);
