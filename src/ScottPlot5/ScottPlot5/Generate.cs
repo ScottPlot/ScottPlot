@@ -454,6 +454,28 @@ public static class Generate
         RandomData.AddNoiseInPlace(values, magnitude);
     }
 
+    /// <summary>
+    /// Modify the array to add a sine wave with the given parameters
+    /// </summary>
+    public static double[] AddSinInPlace(double[] values, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    {
+        double sinScale = 2 * Math.PI * oscillations / (values.Length - 1);
+        for (int i = 0; i < values.Length; i++)
+            values[i] += Math.Sin(i * sinScale + phase * Math.PI * 2) * mult + offset;
+        return values;
+    }
+
+    /// <summary>
+    /// Return a new array containing the given one plus a sine wave with the given parameters
+    /// </summary>
+    public static double[] AddSin(double[] values, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    {
+        double[] values2 = new double[values.Length];
+        Array.Copy(values, values2, values.Length);
+        AddSinInPlace(values2, mult, offset, oscillations, phase);
+        return values2;
+    }
+
     #endregion
 
     #region text
