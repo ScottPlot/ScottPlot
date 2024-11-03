@@ -506,4 +506,38 @@ public class Scatter : ICategory
             myPlot.Axes.Margins(0, 0, 0, 0.1);
         }
     }
+
+    public class ScatterStackedShading : RecipeBase
+    {
+        public override string Name => "Stacked Scatter with Shading";
+        public override string Description => "Demonstrates how to combine filled scatter plots " +
+            "with vertical and horizontal offsets to achieve an interesting visual effect.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = ScottPlot.Generate.Consecutive(100);
+            ScottPlot.Colormaps.MellowRainbow cmap = new();
+
+            for (int i = 0; i < 10; i++)
+            {
+                double yOffset = 9 - i * 0.5;
+                double[] ys = Generate.Sigmoidal(xs.Length)
+                    .Select(y => y + yOffset)
+                    .ToArray();
+
+                Generate.AddNoiseInPlace(ys, 0.1);
+
+                var sig = myPlot.Add.ScatterLine(xs, ys);
+                sig.LineColor = Colors.Black;
+                sig.LineWidth = 1.5f;
+                sig.FillY = true;
+                sig.FillYValue = yOffset;
+                sig.FillYAboveColor = cmap.GetColor(i, 10);
+            }
+
+            myPlot.HideGrid();
+            myPlot.Axes.MarginsX(0);
+        }
+    }
 }
