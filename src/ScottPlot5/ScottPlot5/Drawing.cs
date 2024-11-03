@@ -218,11 +218,6 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
-    {
-        canvas.DrawRect(rect.ToSKRect(), paint);
-    }
-
     public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
         if (color == Colors.Transparent)

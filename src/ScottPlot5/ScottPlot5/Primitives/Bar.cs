@@ -23,8 +23,8 @@ public class Bar : IHasFill, IHasLine
     public bool IsVisible { get; set; } = true;
 
     public FillStyle FillStyle { get; set; } = new() { Color = Colors.Gray, IsVisible = true };
-    public Color FillHatchColor { get; set; } = Colors.Black;
-    public IHatch? FillHatch { get; set; } = null;
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
 
     public LineStyle LineStyle { get; set; } = new() { Color = Colors.Black, Width = 1, IsVisible = true };

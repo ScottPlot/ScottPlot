@@ -10,6 +10,7 @@ _Not yet on NuGet..._
 * Triangular Axis: Users may now `Add.TriangularAxis()` and use its methods to get Cartesian coordinates from points in triangular space (#4421, #4413, #4424) @manaruto
 * Bar: Exposed `Rect`, `ErrorLines`, and `AxisLimits` properties (#4423) @tiger2014
 * Axes: `SquareUnits()` now uses `SquareZoomOut` for console apps and `SquarePreserveX` for interactive apps (#4422) @King-Taz @KosmosWerner
+* Bar: Improved support for bat plots with custom hatch patterns (#3386)
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_

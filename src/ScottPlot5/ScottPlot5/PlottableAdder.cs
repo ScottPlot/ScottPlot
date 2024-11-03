@@ -115,7 +115,8 @@ public class PlottableAdder(Plot plot)
 
     public BarPlot Bar(Bar bar)
     {
-        BarPlot bp = new(bar);
+        List<Bar> bars = [bar];
+        BarPlot bp = new(bars);
         Plottable(bp);
         return bp;
     }
@@ -132,9 +133,16 @@ public class PlottableAdder(Plot plot)
         return Bar(bar);
     }
 
-    public BarPlot Bars(IEnumerable<Bar> bars)
+    public BarPlot Bars(List<Bar> bars)
     {
         BarPlot bp = new(bars);
+        Plottable(bp);
+        return bp;
+    }
+
+    public BarPlot Bars(Bar[] bars)
+    {
+        BarPlot bp = new([.. bars]);
         Plottable(bp);
         return bp;
     }
