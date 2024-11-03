@@ -322,4 +322,30 @@ public class AxisAndTicks : ICategory
             };
         }
     }
+
+    public class FloatingAxis : RecipeBase
+    {
+        public override string Name => "Floating Axis";
+        public override string Description => "A floating or centered axis may be realized by " +
+            "hiding the default axes which appear at the edges of the plot and creating a new " +
+            "floating axis and adding it to the plot.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create floating X and Y axes using one of the existing axes for reference
+            ScottPlot.Plottables.FloatingAxis floatingX = new(myPlot.Axes.Bottom);
+            ScottPlot.Plottables.FloatingAxis floatingY = new(myPlot.Axes.Left);
+
+            // hide the default axes and add the custom ones to the plot
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+            myPlot.Add.Plottable(floatingX);
+            myPlot.Add.Plottable(floatingY);
+
+            // add sample data last so it appears on top
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+        }
+    }
 }
