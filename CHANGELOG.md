@@ -11,6 +11,7 @@ _Not yet on NuGet..._
 * Bar: Exposed `Rect`, `ErrorLines`, and `AxisLimits` properties (#4423) @tiger2014
 * Axes: `SquareUnits()` now uses `SquareZoomOut` for console apps and `SquarePreserveX` for interactive apps (#4422) @King-Taz @KosmosWerner
 * Bar: Improved support for bat plots with custom hatch patterns (#3386)
+* Floating Axis: New plot type for displaying axes anywhere inside the data area (#3377) @ZTaiIT1025
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_
