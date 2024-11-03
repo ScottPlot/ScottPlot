@@ -1,5 +1,8 @@
-## ScottPlot 5.0.43
+## ScottPlot 5.0.44
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.43
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
 * UserInputProcessor: Simplified how axis locking is achieved by adding `horizontal` and `vertical` arguments to `LeftClickDragPan()` and `RightClickDragZoom()`
 * Maui: Improved deployment pipeline so the latest `ScottPlot.Maui` package is always available on NuGet (#1391) @KosmosWerner @King-Taz @cosmicDustOfLightLength
 * Candlestick Plot: Exposed `Data` for easier access to underlying `OHLC` candle data (#4385) @quantfreedom
