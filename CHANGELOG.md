@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * Financial Charting: Added experimental `FinancialTimeAxis` plottable as an alternative to using custom axes or tick generators (#4385) @quantfreedom @vladislavpweetsoft
 * Triangular Axis: Users may now `Add.TriangularAxis()` and use its methods to get Cartesian coordinates from points in triangular space (#4421, #4413, #4424) @manaruto
 * Bar: Exposed `Rect`, `ErrorLines`, and `AxisLimits` properties (#4423) @tiger2014
+* FormsPlot: Improved the Visual Studio design time experience for users working on .NET Framework projects (#4425, #4362) @CoderPM2011
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_
