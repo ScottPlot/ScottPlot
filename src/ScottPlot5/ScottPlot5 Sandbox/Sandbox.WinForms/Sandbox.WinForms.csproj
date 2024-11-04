@@ -1,18 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+
+        <!-- 
+        NOTE FOR TESTING THIS APP ON .NET FRAMEWORK
+        The designer may crash or not display the control in the toolbox unless you 
+        temporarially edit the ScottPlot.WinForm project file to only target a single
+        target framework and match it to the one this application targets.
+        -->
+        <TargetFramework>net462</TargetFramework>
+
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>false</IsPackable>
         <SignAssembly>True</SignAssembly>
+        <LangVersion>Latest</LangVersion>
         <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.OpenGL\ScottPlot.OpenGL.csproj" />
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
