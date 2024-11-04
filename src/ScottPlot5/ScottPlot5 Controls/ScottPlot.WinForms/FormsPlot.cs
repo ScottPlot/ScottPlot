@@ -9,18 +9,20 @@ namespace ScottPlot.WinForms;
 [ToolboxItem(true)]
 public class FormsPlot : FormsPlotBase
 {
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public SKControl? SKControl { get; private set; }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public override GRContext GRContext => null!;
 
-    public FormsPlot()
+    public FormsPlot() : base()
     {
-
-#if NETFRAMEWORK
-        // do not attempt renders inside visual studio at design time
-        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+        if (IsDesignerAlternative)
+        {
             return;
-#endif
+        }
 
         HandleCreated += (s, e) => SetupSKControl();
         HandleDestroyed += (s, e) => TeardownSKControl();
@@ -52,7 +54,7 @@ public class FormsPlot : FormsPlotBase
         if (SKControl is null)
             return;
 
-        SKControl.PaintSurface -= SKElement_PaintSurface; ;
+        SKControl.PaintSurface -= SKElement_PaintSurface;
         SKControl.MouseDown -= SKElement_MouseDown;
         SKControl.MouseUp -= SKElement_MouseUp;
         SKControl.MouseMove -= SKElement_MouseMove;
