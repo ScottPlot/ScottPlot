@@ -38,13 +38,11 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
             bottom: panels.Where(x => x.Edge == Edge.Bottom).Select(x => panelSizes[x]).Sum(),
             top: panels.Where(x => x.Edge == Edge.Top).Select(x => panelSizes[x]).Sum());
 
-        PixelRect dataRect = new(
-            left: paddingNeededForPanels.Left,
-            right: figureRect.Width - paddingNeededForPanels.Right,
-            bottom: figureRect.Height - paddingNeededForPanels.Bottom,
-            top: paddingNeededForPanels.Top);
-
-        dataRect = dataRect.WithPan(figureRect.Left, figureRect.Top);
+        float dataRectWidth = Math.Max(0, figureRect.Width - paddingNeededForPanels.Horizontal);
+        float dataRectHeight = Math.Max(0, figureRect.Height - paddingNeededForPanels.Vertical);
+        PixelSize dataRectSize = new(dataRectWidth, dataRectHeight);
+        Pixel dataRectLocation = new(paddingNeededForPanels.Left, paddingNeededForPanels.Top);
+        PixelRect dataRect = new(dataRectLocation, dataRectSize);
 
         return new Layout(figureRect, dataRect, panelSizes, panelOffsets);
     }

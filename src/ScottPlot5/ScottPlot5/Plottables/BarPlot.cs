@@ -12,7 +12,7 @@ public class BarPlot : IPlottable, IHasLegendText
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public IEnumerable<Bar> Bars { get; set; } // TODO: bars data source
+    public List<Bar> Bars { get; } // TODO: bar plot data source?
 
     public LabelStyle ValueLabelStyle { get; set; } = new()
     {
@@ -49,12 +49,7 @@ public class BarPlot : IPlottable, IHasLegendText
         }
     }
 
-    public BarPlot(Bar bar)
-    {
-        Bars = new Bar[] { bar };
-    }
-
-    public BarPlot(IEnumerable<Bar> bars)
+    public BarPlot(List<Bar> bars)
     {
         Bars = bars;
     }
@@ -63,7 +58,7 @@ public class BarPlot : IPlottable, IHasLegendText
     {
         get
         {
-            if (!Bars.Any())
+            if (Bars.Count == 0)
             {
                 return LegendItem.None;
             }

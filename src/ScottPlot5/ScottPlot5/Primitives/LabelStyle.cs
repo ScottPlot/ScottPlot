@@ -74,6 +74,8 @@ public class LabelStyle
     public float BorderRadiusX = 0;
     public float BorderRadiusY = 0;
 
+    public static LabelStyle Default => new() { IsVisible = true, ForeColor = Colors.Black };
+
     /// <summary>
     /// Use the characters in <see cref="Text"/> to determine an installed
     /// system font most likely to support this character set.

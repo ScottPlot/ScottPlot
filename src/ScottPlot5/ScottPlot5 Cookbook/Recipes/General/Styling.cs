@@ -6,31 +6,29 @@ public class Styling : ICategory
     public string CategoryName => "Styling Plots";
     public string CategoryDescription => "How to customize appearance of plots";
 
-    public class StyleClass : RecipeBase
+    public class BackgroundColors : RecipeBase
     {
-        public override string Name => "Style Helper Functions";
-        public override string Description => "Plots contain many objects which can be customized individually " +
-            "by assigning to their public properties, but helper methods exist in the Plot's Style object " +
-            "that make it easier to customize many items at once using a simpler API.";
+        public override string Name => "Background Colors";
+        public override string Description => "Background color for the entire figure or just the " +
+            "data area may be individually controlled. When using dark figure backgrounds it may be " +
+            "necessary to configure axes to use light colors";
 
         [Test]
         public override void Execute()
         {
+            // setup a plot with sample data
             myPlot.Add.Signal(Generate.Sin(51));
             myPlot.Add.Signal(Generate.Cos(51));
-
-            // visible items have public properties that can be customized
-            myPlot.Axes.Bottom.Label.Text = "Horizontal Axis";
-            myPlot.Axes.Left.Label.Text = "Vertical Axis";
-            myPlot.Axes.Title.Label.Text = "Plot Title";
+            myPlot.XLabel("Horizontal Axis");
+            myPlot.YLabel("Vertical Axis");
 
             // some items must be styled directly
-            myPlot.Grid.MajorLineColor = Color.FromHex("#0e3d54");
-            myPlot.FigureBackground.Color = Color.FromHex("#07263b");
-            myPlot.DataBackground.Color = Color.FromHex("#0b3049");
+            myPlot.FigureBackground.Color = Colors.Navy;
+            myPlot.DataBackground.Color = Colors.Navy.Darken(0.1);
+            myPlot.Grid.MajorLineColor = Colors.Navy.Lighten(0.1);
 
-            // the Style object contains helper methods to style many items at once
-            myPlot.Axes.Color(Color.FromHex("#a0acb5"));
+            // some items have helper methods to configure multiple properties at once
+            myPlot.Axes.Color(Colors.Navy.Lighten(0.8));
         }
     }
 

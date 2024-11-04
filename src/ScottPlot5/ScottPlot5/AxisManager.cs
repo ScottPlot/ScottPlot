@@ -941,7 +941,10 @@ public class AxisManager
     /// </summary>
     public void SquareUnits()
     {
-        AxisRules.SquareZoomOut rule = new(Bottom, Left);
+        IAxisRule rule = Plot.PlotControl is null
+            ? new AxisRules.SquareZoomOut(Bottom, Left) // best for console apps
+            : new AxisRules.SquarePreserveX(Bottom, Left); // best for interactive apps
+
         Rules.Add(rule);
     }
 
