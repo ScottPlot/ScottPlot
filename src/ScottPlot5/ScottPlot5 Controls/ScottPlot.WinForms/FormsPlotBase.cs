@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Windows.Forms;
 
@@ -37,14 +38,18 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public float DisplayScale { get; set; }
 
-    protected bool NotFoundSkiaDll { get; }
+    /// <summary>
+    /// A design time alternative view is displayed for instances where the plot control
+    /// is loaded inside Visual Studio and the SkiaSharp DLL cannot be properly loaded.
+    /// </summary>
+    protected bool IsDesignerAlternative { get; }
 
     public FormsPlotBase()
     {
-        NotFoundSkiaDll = false;
         Plot = null!;
         Interaction = null!;
         UserInputProcessor = null!;
+        bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
         try
         {
@@ -53,43 +58,22 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
             Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
             UserInputProcessor = new(this);
             Menu = new FormsPlotMenu(this);
-
-            // TODO: replace this with an annotation instead of title
-            bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
             Plot.Title(isDesignMode ? $"ScottPlot {Version.VersionString}" : string.Empty);
         }
         catch (Exception exception)
         {
             for (Exception? ex = exception; ex is not null; ex = ex.InnerException)
             {
-                if (ex is DllNotFoundException dllNotFound &&
-                    dllNotFound.Message.Contains("libSkiaSharp"))
+                if (ex is DllNotFoundException dllNotFound && dllNotFound.Message.Contains("libSkiaSharp") && isDesignMode)
                 {
-                    NotFoundSkiaDll = true;
-                    FileVersionInfo fileVerInfo = FileVersionInfo.GetVersionInfo(
-                        Assembly.GetExecutingAssembly().Location);
-
-                    StringBuilder msg = new();
-                    msg.AppendLine($"{fileVerInfo.InternalName} v{fileVerInfo.ProductVersion}");
-                    msg.Append(dllNotFound.Message);
-
-                    System.Windows.Forms.Label label = new()
-                    {
-                        BorderStyle = BorderStyle.FixedSingle,
-                        Parent = this,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        Dock = DockStyle.Fill,
-                        Text = msg.ToString(),
-                    };
-                    Controls.Add(label);
-                    break;
+                    IsDesignerAlternative = true;
+                    FormsPlotDesignerAlternative altControl = new() { Dock = DockStyle.Fill };
+                    Controls.Add(altControl);
+                    return;
                 }
             }
 
-            if (!NotFoundSkiaDll)
-            {
-                throw;
-            }
+            throw;
         }
     }
 

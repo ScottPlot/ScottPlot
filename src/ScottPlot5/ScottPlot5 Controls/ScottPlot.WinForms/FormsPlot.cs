@@ -19,7 +19,7 @@ public class FormsPlot : FormsPlotBase
 
     public FormsPlot() : base()
     {
-        if (NotFoundSkiaDll)
+        if (IsDesignerAlternative)
         {
             return;
         }
