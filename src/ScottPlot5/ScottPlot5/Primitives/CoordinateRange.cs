@@ -102,14 +102,19 @@ public readonly struct CoordinateRange(double value1, double value2)
         return new(min, max);
     }
 
+    public bool Equals(CoordinateRange other)
+    {
+        return Equals(Value1, other.Value1) && Equals(Value2, other.Value2);
+    }
+
     public static bool operator ==(CoordinateRange a, CoordinateRange b)
     {
-        return a.GetHashCode() == b.GetHashCode();
+        return a.Equals(b);
     }
 
     public static bool operator !=(CoordinateRange a, CoordinateRange b)
     {
-        return a.GetHashCode() != b.GetHashCode();
+        return !a.Equals(b);
     }
 
     public override bool Equals(object? obj)
@@ -119,7 +124,7 @@ public readonly struct CoordinateRange(double value1, double value2)
 
         if (obj is CoordinateRange other)
         {
-            return this == other;
+            return Equals(other);
         }
 
         return false;
