@@ -5,7 +5,7 @@ namespace ScottPlot.Plottables;
 public class SignalConst<T>(T[] ys, double period) : IPlottable, IHasLine, IHasMarker, IHasLegendText
     where T : struct, IComparable
 {
-    readonly SignalConstSource<T> Data = new(ys, period);
+    public SignalConstSource<T> Data { get; } = new(ys, period);
 
     public MarkerStyle MarkerStyle { get; set; } = new();
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
