@@ -277,4 +277,42 @@ public class Styling : ICategory
             markers.Colormap = myColormap;
         }
     }
+
+    public class HandDrawn : RecipeBase
+    {
+        public override string Name => "Hand Drawn Line Style";
+        public override string Description => "Enabling hand-drawn line style allows creation " +
+            "of charts that mimic XKCD style graphs which use squiggly lines for comedic effect.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(100);
+            double[] values1 = Generate.Sigmoidal(xs.Length, -1, 2);
+
+            // create a hand drawn scatter plot
+            var sp = myPlot.Add.ScatterLine(xs, values1);
+            sp.LineStyle.HandDrawn = true;
+            sp.LineStyle.HandDrawnJitter = 2;
+            sp.LineWidth = 3;
+            sp.LineColor = Colors.Black;
+
+            // configure axis frames to appear hand drawn
+            myPlot.HideGrid();
+            myPlot.Axes.GetAxes().ToList().ForEach(x => x.FrameLineStyle.HandDrawn = true);
+
+            // use a comedic font for axis titles and tick labels
+            myPlot.Title("Answers");
+            myPlot.YLabel("Utility");
+            myPlot.XLabel("Time Taken to Respond");
+            myPlot.Axes.Title.Label.FontName = "Comic Sans MS";
+            myPlot.Axes.Left.Label.FontName = "Comic Sans MS";
+            myPlot.Axes.Bottom.Label.FontName = "Comic Sans MS";
+            myPlot.Axes.Bottom.TickLabelStyle.FontName = "Comic Sans MS";
+
+            // use manually placed horizontal axis ticks
+            myPlot.Axes.Left.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
+            myPlot.Axes.Bottom.SetTicks([10, 50, 75], ["Minutes", "Days", "Weeks"]);
+        }
+    }
 }
