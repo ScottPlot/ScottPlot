@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * FormsPlot: Improved the Visual Studio design time experience for users working on .NET Framework projects (#4425, #4362) @CoderPM2011
 * CoordinateRange: Improve equality checking for infinite spans with reversed limits (#4441, #4436) @sunefred
 * SVG: Significantly reduced the size of exported XML by preventing duplicate renders (#4441, #4436) @sunefred
+* LineStyle: Added a `HandDrawn` flag with customizable `` and `` to create XKCD-style plots (#4435, #3239) @sdpenner
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_

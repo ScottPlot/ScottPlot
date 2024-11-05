@@ -16,6 +16,13 @@ public class LineStyle
     /// </summary>
     public bool Hairline { get; set; } = false;
 
+    /// <summary>
+    /// If enabled will make this line appear hand drawn.
+    /// </summary>
+    public bool HandDrawn { get; set; } = false;
+    public double HandDrawnSegmentLength { get; set; } = 7;
+    public double HandDrawnJitter { get; set; } = 1.2;
+
     public Color Color { get; set; } = Colors.Black;
 
     public LinePattern Pattern { get; set; } = LinePattern.Solid;
@@ -151,5 +158,21 @@ public class LineStyle
         paint.StrokeCap = StrokeCap;
         paint.StrokeJoin = StrokeJoin;
         paint.StrokeMiter = StrokeMiter;
+
+        if (HandDrawn)
+        {
+            // Should we be concerned about a memory leak here?
+            //     Creates a "jitter" path effect by chopping a path into discrete segments, and
+            //     randomly displacing them.
+            SKPathEffect handDrawnEffect = SKPathEffect.CreateDiscrete((float)HandDrawnSegmentLength, (float)HandDrawnJitter);
+            if (paint.PathEffect is null)
+            {
+                paint.PathEffect = handDrawnEffect;
+            }
+            else
+            {
+                paint.PathEffect = SKPathEffect.CreateCompose(paint.PathEffect, handDrawnEffect);
+            }
+        }
     }
 }
