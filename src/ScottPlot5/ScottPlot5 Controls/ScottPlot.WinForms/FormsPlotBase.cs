@@ -1,8 +1,12 @@
 ﻿using ScottPlot.Interactivity;
 using SkiaSharp;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -11,28 +15,66 @@ namespace ScottPlot.WinForms;
 
 public abstract class FormsPlotBase : UserControl, IPlotControl
 {
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public abstract GRContext GRContext { get; }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public Plot Plot { get; internal set; }
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IPlotInteraction Interaction { get; set; }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IPlotMenu? Menu { get; set; }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public UserInputProcessor UserInputProcessor { get; }
 
     public float DisplayScale { get; set; }
 
+    /// <summary>
+    /// A design time alternative view is displayed for instances where the plot control
+    /// is loaded inside Visual Studio and the SkiaSharp DLL cannot be properly loaded.
+    /// </summary>
+    protected bool IsDesignerAlternative { get; }
+
     public FormsPlotBase()
     {
-        Plot = new() { PlotControl = this };
-        DisplayScale = DetectDisplayScale();
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(this);
-        Menu = new FormsPlotMenu(this);
-
-        // TODO: replace this with an annotation instead of title
+        Plot = null!;
+        Interaction = null!;
+        UserInputProcessor = null!;
         bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
-        Plot.Title(isDesignMode ? $"ScottPlot {Version.VersionString}" : string.Empty);
+
+        try
+        {
+            Plot = new() { PlotControl = this };
+            DisplayScale = DetectDisplayScale();
+            Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+            UserInputProcessor = new(this);
+            Menu = new FormsPlotMenu(this);
+            Plot.Title(isDesignMode ? $"ScottPlot {Version.VersionString}" : string.Empty);
+        }
+        catch (Exception exception)
+        {
+            for (Exception? ex = exception; ex is not null; ex = ex.InnerException)
+            {
+                if (ex is DllNotFoundException dllNotFound && dllNotFound.Message.Contains("libSkiaSharp") && isDesignMode)
+                {
+                    IsDesignerAlternative = true;
+                    FormsPlotDesignerAlternative altControl = new() { Dock = DockStyle.Fill };
+                    Controls.Add(altControl);
+                    return;
+                }
+            }
+
+            throw;
+        }
     }
 
     // make it so changing the background color of the control changes background color of the plot too

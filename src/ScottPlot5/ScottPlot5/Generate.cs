@@ -49,7 +49,7 @@ public static class Generate
         for (int i = 0; i < count; i++)
         {
             double x = (double)i / count * 10 - 5;
-            ys[i] = 1 / (1 + Math.Exp(-x * steepness));
+            ys[i] = mult / (1 + Math.Exp(-x * steepness));
         }
 
         return ys;
