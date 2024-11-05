@@ -53,6 +53,7 @@
 
     <ItemGroup>
         <PackageReference Include="eto.platform.wpf" Version="2.8.2" />
+        <PackageReference Include="NAudio" Version="2.2.1" />
     </ItemGroup>
 
     <ItemGroup>
