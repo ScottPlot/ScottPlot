@@ -49,6 +49,22 @@ internal class CoordinateRangeTests
     }
 
     [Test]
+    public void Test_CoordinateRange_InfinityEquality()
+    {
+        CoordinateRange range1 = new(double.NegativeInfinity, double.PositiveInfinity);
+        CoordinateRange range2 = new(double.NegativeInfinity, double.PositiveInfinity);
+        range1.Should().Be(range2);
+    }
+
+    [Test]
+    public void Test_CoordinateRange_InfinityInequality()
+    {
+        CoordinateRange range1 = new(double.NegativeInfinity, double.PositiveInfinity);
+        CoordinateRange range2 = new(double.PositiveInfinity, double.NegativeInfinity);
+        range1.Should().NotBe(range2);
+    }
+
+    [Test]
     public void Test_CoordinateRange_Rectification()
     {
         new CoordinateRange(2, 4).Rectified().Should().Be(new CoordinateRange(2, 4));

@@ -115,7 +115,8 @@ public class PlottableAdder(Plot plot)
 
     public BarPlot Bar(Bar bar)
     {
-        BarPlot bp = new(bar);
+        List<Bar> bars = [bar];
+        BarPlot bp = new(bars);
         Plottable(bp);
         return bp;
     }
@@ -132,9 +133,16 @@ public class PlottableAdder(Plot plot)
         return Bar(bar);
     }
 
-    public BarPlot Bars(IEnumerable<Bar> bars)
+    public BarPlot Bars(List<Bar> bars)
     {
         BarPlot bp = new(bars);
+        Plottable(bp);
+        return bp;
+    }
+
+    public BarPlot Bars(Bar[] bars)
+    {
+        BarPlot bp = new([.. bars]);
         Plottable(bp);
         return bp;
     }
@@ -1116,6 +1124,20 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(txt);
 
         return txt;
+    }
+
+    public TriangularAxis TriangularAxis(bool clockwise = true, bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
+    {
+        TriangularAxis ta = new(clockwise);
+        Plot.PlottableList.Add(ta);
+
+        if (hideAxisAndGrid)
+            Plot.HideAxesAndGrid();
+
+        if (useSquareAxisUnits)
+            Plot.Axes.SquareUnits();
+
+        return ta;
     }
 
     public VectorField VectorField(IList<RootedCoordinateVector> vectors, Color? color = null)

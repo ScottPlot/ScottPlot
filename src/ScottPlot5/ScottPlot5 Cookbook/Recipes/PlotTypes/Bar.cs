@@ -72,7 +72,6 @@ public class Bar : ICategory
         }
     }
 
-
     public class BarValuesHorizontal : RecipeBase
     {
         public override string Name => "Bar with Value Labels (horizontal)";
@@ -101,7 +100,6 @@ public class Bar : ICategory
             myPlot.Add.VerticalLine(0, 1, Colors.Black);
         }
     }
-
 
     public class BarPosition : RecipeBase
     {
@@ -169,6 +167,39 @@ public class Bar : ICategory
             myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(ticks);
             myPlot.Axes.Bottom.MajorTickStyle.Length = 0;
             myPlot.HideGrid();
+
+            // tell the plot to autoscale with no padding beneath the bars
+            myPlot.Axes.Margins(bottom: 0);
+        }
+    }
+
+    public class BarFillStyle : RecipeBase
+    {
+        public override string Name => "Bar Fill Style";
+        public override string Description => "Each bar may be individually styled.";
+
+        [Test]
+        public override void Execute()
+        {
+            // add bars with sample data
+            double[] values = { 3, 7, 9 };
+            var barPlot = myPlot.Add.Bars(values);
+
+            // bars may be styled after they have been added
+            barPlot.Bars[0].FillColor = Colors.Orange;
+            barPlot.Bars[1].FillColor = Colors.Green;
+            barPlot.Bars[2].FillColor = Colors.Navy;
+
+            barPlot.Bars[0].FillHatch = new ScottPlot.Hatches.Striped();
+            barPlot.Bars[1].FillHatch = new ScottPlot.Hatches.Dots();
+            barPlot.Bars[2].FillHatch = new ScottPlot.Hatches.Checker();
+
+            foreach (var bar in barPlot.Bars)
+            {
+                bar.LineWidth = 2;
+                bar.LineColor = bar.FillColor.Darken(0.5);
+                bar.FillHatchColor = bar.FillColor.Lighten(0.1);
+            }
 
             // tell the plot to autoscale with no padding beneath the bars
             myPlot.Axes.Margins(bottom: 0);
@@ -347,6 +378,55 @@ public class Bar : ICategory
 
             // tell the plot to autoscale with no padding beneath the bars
             myPlot.Axes.Margins(bottom: 0, top: .3);
+        }
+    }
+
+    public class BarWithCustomText : RecipeBase
+    {
+        public override string Name => "Bar with Custom Text";
+        public override string Description => "Full control over bar labels may be achieved by " +
+            "placing fully customizable text objects on top of bars according to their dimensions.";
+
+        [Test]
+        public override void Execute()
+        {
+            ScottPlot.Palettes.Category10 palette = new();
+
+            // create 5 groups of stacked bars
+            for (int i = 0; i < 5; i++)
+            {
+                // create 3 individual bars with stacking
+                List<ScottPlot.Bar> bars = [];
+                double valueBase = 0;
+                for (int j = 0; j < 3; j++)
+                {
+                    double barSize = Generate.RandomInteger(10, 20);
+                    ScottPlot.Bar bar1 = new()
+                    {
+                        FillColor = palette.GetColor(j),
+                        Position = i,
+                        ValueBase = valueBase,
+                        Value = valueBase + barSize,
+                        Label = $"{barSize}",
+                        CenterLabel = true,
+                    };
+
+                    bars.Add(bar1);
+                    valueBase += barSize;
+                }
+
+                // plot the stacked bars
+                var barPlot = myPlot.Add.Bars(bars);
+                barPlot.Horizontal = true;
+            }
+
+            // style the plot so the bars start on the left edge
+            myPlot.Axes.Margins(left: 0);
+
+            // add custom group labels
+            double[] tickPositions = Generate.Consecutive(5);
+            string[] tickLabels = Enumerable.Range(1, 5).Select(x => $"Worker #{x}").ToArray();
+            myPlot.Axes.Left.SetTicks(tickPositions, tickLabels);
         }
     }
 }

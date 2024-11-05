@@ -40,6 +40,22 @@ public static class Generate
     }
 
     /// <summary>
+    /// Return an array for a sigmoidal curve that rises from zero to <paramref name="mult"/>
+    /// </summary>
+    public static double[] Sigmoidal(int count, double mult = 1.0, double steepness = 1.0)
+    {
+        double[] ys = new double[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            double x = (double)i / count * 10 - 5;
+            ys[i] = 1 / (1 + Math.Exp(-x * steepness));
+        }
+
+        return ys;
+    }
+
+    /// <summary>
     /// Return an array of cosine waves between -1 and 1.
     /// Values are multiplied by <paramref name="mult"/> then shifted by <paramref name="offset"/>.
     /// Phase shifts the sine wave horizontally between 0 and 2 Pi.
@@ -436,6 +452,28 @@ public static class Generate
     public static void AddNoiseInPlace(double[] values, double magnitude = 1)
     {
         RandomData.AddNoiseInPlace(values, magnitude);
+    }
+
+    /// <summary>
+    /// Modify the array to add a sine wave with the given parameters
+    /// </summary>
+    public static double[] AddSinInPlace(double[] values, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    {
+        double sinScale = 2 * Math.PI * oscillations / (values.Length - 1);
+        for (int i = 0; i < values.Length; i++)
+            values[i] += Math.Sin(i * sinScale + phase * Math.PI * 2) * mult + offset;
+        return values;
+    }
+
+    /// <summary>
+    /// Return a new array containing the given one plus a sine wave with the given parameters
+    /// </summary>
+    public static double[] AddSin(double[] values, double mult = 1, double offset = 0, double oscillations = 1, double phase = 0)
+    {
+        double[] values2 = new double[values.Length];
+        Array.Copy(values, values2, values.Length);
+        AddSinInPlace(values2, mult, offset, oscillations, phase);
+        return values2;
     }
 
     #endregion

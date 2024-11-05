@@ -78,6 +78,21 @@ public static class Drawing
         DrawPath(canvas, paint, path, lineStyle);
     }
 
+    public static void FillPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle, PixelRect rect)
+    {
+        if (!fillStyle.CanBeRendered) return;
+
+        using SKPath path = new();
+        path.MoveTo(pixels.First().ToSKPoint());
+        foreach (Pixel px in pixels.Skip(1))
+        {
+            path.LineTo(px.ToSKPoint());
+        }
+
+        fillStyle.ApplyToPaint(paint, rect);
+        canvas.DrawPath(path, paint);
+    }
+
     public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
@@ -203,11 +218,6 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
-    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
-    {
-        canvas.DrawRect(rect.ToSKRect(), paint);
-    }
-
     public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
     {
         if (color == Colors.Transparent)
@@ -286,6 +296,19 @@ public static class Drawing
         paint.IsStroke = false;
         paint.Color = paint.Color.WithAlpha(20);
         canvas.DrawRect(rect.ToSKRect(), paint);
+    }
+
+    public static void DrawDebugPoint(SKCanvas canvas, Pixel point, Color? color = null, float size = 3)
+    {
+        color ??= Colors.Magenta;
+
+        using SKPaint paint = new()
+        {
+            Color = color.Value.ToSKColor(),
+            IsAntialias = true,
+        };
+
+        canvas.DrawCircle(point.ToSKPoint(), size, paint);
     }
 
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)

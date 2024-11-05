@@ -1,8 +1,4 @@
-﻿using System;
-
-namespace ScottPlot;
-
-#nullable enable
+﻿namespace ScottPlot;
 
 public static class DataOperations
 {
@@ -75,5 +71,22 @@ public static class DataOperations
                 values[i, j] *= mult;
             }
         }
+    }
+
+    public static double[] SumVertically(IEnumerable<double[]> arrays)
+    {
+        double[] result = new double[arrays.First().Length];
+        foreach (double[] array in arrays)
+        {
+            if (array.Length != result.Length)
+                throw new InvalidDataException("All arrays must have equal length");
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] += array[i];
+            }
+        }
+
+        return result;
     }
 }

@@ -1,5 +1,13 @@
-## ScottPlot 5.0.43
+## ScottPlot 5.0.44
 _Not yet on NuGet..._
+* Rendering: Prevent inversion of data area for extremely small plots (#3607)
+* Generate: Created `AddSin()` and `AddSinInPlace()` methods to facilitate test data generation (#3682)
+* FormsPlot: Improved the Visual Studio design time experience for users working on .NET Framework projects (#4425, #4362) @CoderPM2011
+* CoordinateRange: Improve equality checking for infinite spans with reversed limits (#4441, #4436) @sunefred
+* SVG: Significantly reduced the size of exported XML by preventing duplicate renders (#4441, #4436) @sunefred
+
+## ScottPlot 5.0.43
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
 * UserInputProcessor: Simplified how axis locking is achieved by adding `horizontal` and `vertical` arguments to `LeftClickDragPan()` and `RightClickDragZoom()`
 * Maui: Improved deployment pipeline so the latest `ScottPlot.Maui` package is always available on NuGet (#1391) @KosmosWerner @King-Taz @cosmicDustOfLightLength
 * Candlestick Plot: Exposed `Data` for easier access to underlying `OHLC` candle data (#4385) @quantfreedom
@@ -7,6 +15,13 @@ _Not yet on NuGet..._
 * Candlestick Plot: Improved visibility of candles with zero price movement (#3337) @Lyakabynka @bukowa
 * Ticks: Added an experimental `FinancialTickGenerator` for generating DateTime ticks from unevenly-spaced time data (#4385)
 * Financial Charting: Added experimental `FinancialTimeAxis` plottable as an alternative to using custom axes or tick generators (#4385) @quantfreedom @vladislavpweetsoft
+* Triangular Axis: Users may now `Add.TriangularAxis()` and use its methods to get Cartesian coordinates from points in triangular space (#4421, #4413, #4424) @manaruto
+* Bar: Exposed `Rect`, `ErrorLines`, and `AxisLimits` properties (#4423) @tiger2014
+* Axes: `SquareUnits()` now uses `SquareZoomOut` for console apps and `SquarePreserveX` for interactive apps (#4422) @King-Taz @KosmosWerner
+* Bar: Improved support for bat plots with custom hatch patterns (#3386)
+* Floating Axis: New plot type for displaying axes anywhere inside the data area (#3377) @ZTaiIT1025
+* Bar: Improved behavior of horizontal bar plots with the `CenterLabel` flag enabled (#3533) @TheFizz
+* Generate: added `Sigmoidal()` method for creating sample data with a sigmoidal shape
 
 ## ScottPlot 5.0.42
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-10-29_

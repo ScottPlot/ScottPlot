@@ -8,12 +8,17 @@ namespace ScottPlot.WinForms;
 [ToolboxItem(false)]
 public class FormsPlotGL : FormsPlotBase
 {
-    public SKGLControl SKElement { get; }
+    public SKGLControl SKElement { get; } = null!;
 
     public override GRContext GRContext => SKElement.GRContext;
 
-    public FormsPlotGL()
+    public FormsPlotGL() : base()
     {
+        if (IsDesignerAlternative)
+        {
+            return;
+        }
+
         SKElement = new() { Dock = DockStyle.Fill, VSync = true };
         SKElement.PaintSurface += SKControl_PaintSurface;
         SKElement.MouseDown += SKElement_MouseDown;
