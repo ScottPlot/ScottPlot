@@ -20,6 +20,8 @@ public class LineStyle
     /// If enabled will make this line appear hand drawn.
     /// </summary>
     public bool HandDrawn { get; set; } = false;
+    public double HandDrawnSegmentLength { get; set; } = 7;
+    public double HandDrawnJitter { get; set; } = 1.2;
 
     public Color Color { get; set; } = Colors.Black;
 
@@ -162,7 +164,7 @@ public class LineStyle
             // Should we be concerned about a memory leak here?
             //     Creates a "jitter" path effect by chopping a path into discrete segments, and
             //     randomly displacing them.
-            SKPathEffect handDrawnEffect = SKPathEffect.CreateDiscrete(7, 1);
+            SKPathEffect handDrawnEffect = SKPathEffect.CreateDiscrete((float)HandDrawnSegmentLength, (float)HandDrawnJitter);
             if (paint.PathEffect is null)
             {
                 paint.PathEffect = handDrawnEffect;
