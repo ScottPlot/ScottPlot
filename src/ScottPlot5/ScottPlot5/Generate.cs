@@ -799,7 +799,7 @@ public static class Generate
 
     #region Data Generators
 
-    public readonly static DataGenerators.RandomWalker RandomWalker = new();
+    public readonly static DataGenerators.RandomWalker RandomWalker = new(0);
 
     #endregion
 }
