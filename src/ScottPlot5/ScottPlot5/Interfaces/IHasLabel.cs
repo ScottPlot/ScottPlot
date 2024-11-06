@@ -24,6 +24,7 @@ interface IHasLabel
 
     float LabelBorderWidth { get; set; }
     Color LabelBorderColor { get; set; }
+    float LabelBorderRadius { get; set; }
 
     Color LabelShadowColor { get; set; }
     PixelOffset LabelShadowOffset { get; set; }

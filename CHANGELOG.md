@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * SignalConst: Exposed `Data` so users may access offset configuration settings (#4440, #4253) @matej-mnoucek
 * VectorField: Added `MaximumArrowLength` property to allow arrow lengths to be customized (#3763) @hnMel
 * Signal: Reduced render artifacts for high density overlapping data by reducing pixel overlap (#4050, #3665) @StendProg
+* Label: Added border radius properties to customize corner curvature of labels and plottables with label styles (#4099)
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
