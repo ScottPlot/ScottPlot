@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-public class LiveData
+public class LiveData : ICategory
 {
     public Chapter Chapter => Chapter.PlotTypes;
     public string CategoryName => "Live Data";
