@@ -70,9 +70,17 @@ public class LabelStyle
     public float OffsetX = 0; // TODO: automatic padding support for arbitrary rotations
     public float OffsetY = 0; // TODO: automatic padding support for arbitrary rotations
 
-    public float BorderRadius { get => BorderRadiusX; set { BorderRadiusX = value; BorderRadiusY = value; } }
     public float BorderRadiusX = 0;
     public float BorderRadiusY = 0;
+    public float BorderRadius
+    {
+        get => BorderRadiusX;
+        set
+        {
+            BorderRadiusX = value;
+            BorderRadiusY = value;
+        }
+    }
 
     public static LabelStyle Default => new() { IsVisible = true, ForeColor = Colors.Black };
 

@@ -24,6 +24,8 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
     int IDataSource.MinRenderIndex => MinimumIndex;
     int IDataSource.MaxRenderIndex => MaximumIndex;
 
+    public bool UsePixelOverlap { get; } = false; // https://github.com/ScottPlot/ScottPlot/issues/3665
+
     public SignalXYSourceDoubleArray(double[] xs, double[] ys)
     {
         if (xs.Length != ys.Length)
@@ -186,10 +188,10 @@ public class SignalXYSourceDoubleArray : ISignalXYSource, IDataSource, IGetNeare
         double start = axes.XAxis.Min + unitsPerPixelX * pixelColumnIndex;
         double end = start + unitsPerPixelX;
 
-        // add slight overlap to prevent floating point errors from missing points
-        // https://github.com/ScottPlot/ScottPlot/issues/3665
-        double overlap = unitsPerPixelX * .01;
-        end += overlap;
+        if (UsePixelOverlap)
+        {
+            end += unitsPerPixelX * .01;
+        }
 
         var (startIndex, _) = SearchIndex(start, rng);
         var (endIndex, _) = SearchIndex(end, rng);

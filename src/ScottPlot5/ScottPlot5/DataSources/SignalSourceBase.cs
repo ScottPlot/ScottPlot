@@ -11,6 +11,8 @@ public abstract class SignalSourceBase
     public int MinRenderIndex => Math.Max(0, MinimumIndex);
     public int MaxRenderIndex => Math.Min(Length - 1, MaximumIndex);
 
+    public bool UsePixelOverlap { get; } = false; // https://github.com/ScottPlot/ScottPlot/issues/3665
+
     public double XOffset { get; set; } = 0;
     public double YOffset { get; set; } = 0;
     public double YScale { get; set; } = 1;

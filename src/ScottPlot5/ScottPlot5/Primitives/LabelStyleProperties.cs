@@ -26,6 +26,9 @@ public abstract class LabelStyleProperties : IHasLabel
 
     public Color LabelFontColor { get => LabelStyle.ForeColor; set => LabelStyle.ForeColor = value; }
     public Color LabelBackgroundColor { get => LabelStyle.BackgroundColor; set => LabelStyle.BackgroundColor = value; }
+    public float LabelBorderRadius { get => LabelStyle.BorderRadius; set => LabelStyle.BorderRadius = value; }
+    public float LabelBorderRadiusX { get => LabelStyle.BorderRadiusX; set => LabelStyle.BorderRadiusX = value; }
+    public float LabelBorderRadiusY { get => LabelStyle.BorderRadiusY; set => LabelStyle.BorderRadiusY = value; }
 
     public float LabelBorderWidth { get => LabelStyle.BorderWidth; set => LabelStyle.BorderWidth = value; }
     public Color LabelBorderColor { get => LabelStyle.BorderColor; set => LabelStyle.BorderColor = value; }
