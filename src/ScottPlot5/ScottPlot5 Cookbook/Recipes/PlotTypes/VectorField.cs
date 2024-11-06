@@ -59,4 +59,19 @@ public class VectorField : ICategory
             vf.Colormap = new ScottPlot.Colormaps.Turbo();
         }
     }
+
+    public class VectorFieldArrowLength : RecipeBase
+    {
+        public override string Name => "Vector Field Arrow Length";
+        public override string Description => "Length of arrows in a vector field may be customized by " +
+            "defining length (in pixel units) to display the longest vector.";
+
+        [Test]
+        public override void Execute()
+        {
+            RootedCoordinateVector[] vectors = Generate.SampleVectors();
+            var vf = myPlot.Add.VectorField(vectors);
+            vf.MaximumArrowLength = 15;
+        }
+    }
 }
