@@ -32,7 +32,7 @@ public static class RecipeHtml
         sb.AppendLine();
         sb.AppendLine(
             "{{< recipe-sp5 sourceUrl=\"SOURCE_URL\" imageUrl=\"IMAGE_URL\" >}}SOURCE_CODE{{< /recipe-sp5 >}}"
-            .Replace("SOURCE_CODE", recipe.Source)
+            .Replace("SOURCE_CODE", CodeToHtml(recipe.Source))
             .Replace("SOURCE_URL", recipe.SourceUrl)
             .Replace("IMAGE_URL", recipe.ImageUrl));
         sb.AppendLine();
@@ -47,5 +47,13 @@ public static class RecipeHtml
         }
         sb.AppendLine();
         return sb.ToString();
+    }
+
+    private static string CodeToHtml(string code)
+    {
+        return code
+            .Replace("&", "&amp;")
+            .Replace("<", "&lt;")
+            .Replace(">", "&gt;");
     }
 }
