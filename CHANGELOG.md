@@ -7,6 +7,7 @@ _Not yet on NuGet..._
 * SVG: Significantly reduced the size of exported XML by preventing duplicate renders (#4441, #4436) @sunefred
 * LineStyle: Added a `HandDrawn` flag with customizable `HandDrawnJitter` and `HandDrawnSegmentLength` to create XKCD-style plots (#4435, #3239) @sdpenner
 * SignalConst: Exposed `Data` so users may access offset configuration settings (#4440, #4253) @matej-mnoucek
+* VectorField: Added `MaximumArrowLength` property to allow arrow lengths to be customized (#3763) @hnMel
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_

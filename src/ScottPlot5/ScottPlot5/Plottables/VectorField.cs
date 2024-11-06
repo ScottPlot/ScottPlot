@@ -30,12 +30,17 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
 
     public AxisLimits GetAxisLimits() => Source.GetLimits();
 
+    /// <summary>
+    /// Length (in pixels) of the longest arrow
+    /// </summary>
+    public float MaximumArrowLength { get; set; } = 25;
+
     public virtual void Render(RenderPack rp)
     {
         if (!IsVisible)
             return;
 
-        float maxLength = 25;
+        float maxLength = MaximumArrowLength;
 
         // TODO: Filter out those that are off-screen? This is subtle, an arrow may be fully off-screen except for its arrowhead, if the blades are long enough.
         var vectors = Source.GetRootedVectors().Select(v => new RootedPixelVector(Axes.GetPixel(v.Point), v.Vector)).ToArray();
