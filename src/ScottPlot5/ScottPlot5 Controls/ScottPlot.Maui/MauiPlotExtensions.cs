@@ -18,12 +18,14 @@ internal static class MauiPlotExtensions
     {
         IUserAction action = e.StatusType switch
         {
-            GestureStatus.Started => new Interactivity.UserActions.LeftMouseDown(Pixel.Zero),
+            GestureStatus.Started => new Interactivity.UserActions.LeftMouseDown(new(1, 1)),
             GestureStatus.Running => new Interactivity.UserActions.MouseMove(e.ToPixel()),
             GestureStatus.Completed => new Interactivity.UserActions.LeftMouseUp(plot.LastPixel),
+            GestureStatus.Canceled => new Interactivity.UserActions.LeftMouseUp(plot.LastPixel),
             _ => new Interactivity.UserActions.Unknown(),
         };
-        plot.LastPixel = e.ToPixel();
+
+        if (e.StatusType == GestureStatus.Running) plot.LastPixel = e.ToPixel();
 
         processor.Process(action);
     }
@@ -34,11 +36,8 @@ internal static class MauiPlotExtensions
         {
             Pixel pixel = e.ScaleOrigin.ToPixelScaled(width, height);
 
-            IUserAction action = e.Scale > 1
-                ? new ScottPlot.Interactivity.UserActions.MouseWheelUp(pixel)
-                : new ScottPlot.Interactivity.UserActions.MouseWheelDown(pixel);
-
-            processor.Process(action);
+            MouseAxisManipulation.MouseWheelZoom(plot.Plot, e.Scale, e.Scale, pixel, false);
+            plot.Refresh();
         }
     }
 
@@ -87,5 +86,11 @@ internal static class MauiPlotExtensions
           : new ScottPlot.Interactivity.UserActions.MouseWheelDown(pixel);
 
         processor.Process(action);
+    }
+
+    internal static void ProcessZoomAll(this UserInputProcessor processor, MauiPlot plot, TappedEventArgs e)
+    {
+        plot.Plot.Axes.AutoScale();
+        plot.Refresh();
     }
 }
