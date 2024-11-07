@@ -32,6 +32,12 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
     /// </summary>
     public Key VerticalLockKey { get; set; } = StandardKeys.Shift;
 
+    public void Abort(Plot plot)
+    {
+        MouseDownPixel = Pixel.NaN;
+        plot.ZoomRectangle.IsVisible = false;
+    }
+
     public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction buttonAction && buttonAction.IsPressed)

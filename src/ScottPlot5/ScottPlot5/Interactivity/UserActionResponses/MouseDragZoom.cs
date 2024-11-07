@@ -29,6 +29,11 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     /// </summary>
     public bool LockX { get; set; } = false;
 
+    public void Abort()
+    {
+        RememberedLimits = null;
+    }
+
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is IMouseButtonAction mouseDownAction && mouseDownAction.Button == MouseButton && mouseDownAction.IsPressed)
