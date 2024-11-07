@@ -80,6 +80,11 @@ public static class FormsPlotExtensions
         processor.Process(action);
     }
 
+    public static void ProcessLostFocus(this Interactivity.UserInputProcessor processor)
+    {
+        processor.ProcessLostFocus();
+    }
+
     internal static Interactivity.Key GetKey(this KeyEventArgs e)
     {
         return GetKey(e.KeyCode);
