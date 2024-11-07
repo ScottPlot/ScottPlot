@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -97,6 +98,11 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     {
         Interaction.KeyUp(e.OldToKey());
         UserInputProcessor.ProcessKeyUp(e);
+    }
+
+    internal void SKElement_LostFocus(object sender, RoutedEventArgs e)
+    {
+        UserInputProcessor.ProcessLostFocus();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)

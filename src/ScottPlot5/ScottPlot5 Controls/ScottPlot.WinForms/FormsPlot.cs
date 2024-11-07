@@ -45,6 +45,7 @@ public class FormsPlot : FormsPlotBase
         SKControl.MouseWheel += SKElement_MouseWheel;
         SKControl.KeyDown += SKElement_KeyDown;
         SKControl.KeyUp += SKElement_KeyUp;
+        SKControl.LostFocus += SKElement_LostFocus;
 
         Controls.Add(SKControl);
     }
@@ -62,6 +63,7 @@ public class FormsPlot : FormsPlotBase
         SKControl.MouseWheel -= SKElement_MouseWheel;
         SKControl.KeyDown -= SKElement_KeyDown;
         SKControl.KeyUp -= SKElement_KeyUp;
+        SKControl.LostFocus -= SKElement_LostFocus;
 
         Controls.Remove(SKControl);
 

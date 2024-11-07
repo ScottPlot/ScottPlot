@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Interactivity;
+﻿using ScottPlot.Interactivity.UserActionResponses;
+
+namespace ScottPlot.Interactivity;
 
 #pragma warning disable CS0618 // disable obsolete Interaction warning
 
@@ -175,6 +177,33 @@ public class UserInputProcessor
 
         if (refreshNeeded)
             PlotControl.Refresh();
+    }
+
+    public Action<IPlotControl> LostFocusAction = (IPlotControl plotControl) =>
+    {
+        var uiResponses = plotControl.UserInputProcessor.UserActionResponses;
+
+        foreach (var r in uiResponses.OfType<MouseDragZoomRectangle>())
+        {
+            r.Abort(plotControl.Plot);
+        }
+
+        foreach (var r in uiResponses.OfType<MouseDragPan>())
+        {
+            r.Abort();
+        }
+
+        foreach (var r in uiResponses.OfType<MouseDragZoom>())
+        {
+            r.Abort();
+        }
+
+        plotControl.Refresh();
+    };
+
+    public void ProcessLostFocus()
+    {
+        LostFocusAction.Invoke(PlotControl);
     }
 
     private void UpdateKeyboardState(IUserAction userAction)

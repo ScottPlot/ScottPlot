@@ -28,6 +28,7 @@ public class FormsPlotGL : FormsPlotBase
         SKElement.MouseWheel += SKElement_MouseWheel;
         SKElement.KeyDown += SKElement_KeyDown;
         SKElement.KeyUp += SKElement_KeyUp;
+        SKElement.LostFocus += SKElement_LostFocus;
 
         Controls.Add(SKElement);
 
