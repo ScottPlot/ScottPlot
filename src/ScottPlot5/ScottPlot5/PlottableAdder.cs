@@ -321,7 +321,13 @@ public class PlottableAdder(Plot plot)
 
     public DataLogger DataLogger()
     {
-        DataLogger logger = new()
+        List<Coordinates> coordinates = [];
+        return DataLogger(coordinates);
+    }
+
+    public DataLogger DataLogger(List<Coordinates> coordinates)
+    {
+        DataLogger logger = new(coordinates)
         {
             Color = GetNextColor(),
         };
