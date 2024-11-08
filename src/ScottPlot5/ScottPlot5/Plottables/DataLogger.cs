@@ -204,6 +204,10 @@ public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, 
         }
     }
 
+    public void LimitByX(double minX) => Data.LimitByX(minX);
+
+    public void LimitByCount(int maxCount) => Data.LimitByCount(maxCount);
+
     public void Clear() => Data.Clear();
 
     public void UpdateAxisLimits(Plot plot)

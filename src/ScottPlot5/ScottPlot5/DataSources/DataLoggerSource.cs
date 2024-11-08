@@ -42,6 +42,24 @@ public class DataLoggerSource
         HasNewData = true;
     }
 
+    public void LimitByX(double minX)
+    {
+        while ((Coordinates.Count > 0) && (Coordinates[0].X < minX))
+        {
+            Coordinates.RemoveAt(0);
+        }
+        HasNewData = true;
+    }
+
+    public void LimitByCount(int maxCount)
+    {
+        while (Coordinates.Count > maxCount)
+        {
+            Coordinates.RemoveAt(0);
+        }
+        HasNewData = true;
+    }
+
     public void Clear()
     {
         Coordinates.Clear();
@@ -260,7 +278,7 @@ public class DataLoggerSource
     }
 
     /// <summary>
-    /// If data is off to the screen to the left, 
+    /// If data is off to the screen to the left,
     /// returns information about the closest point off the screen
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointX(IAxes axes)
@@ -282,7 +300,7 @@ public class DataLoggerSource
     }
 
     /// <summary>
-    /// If data is off to the screen to the bottom, 
+    /// If data is off to the screen to the bottom,
     /// returns information about the closest point off the screen
     /// </summary>
     private (Pixel[] pointsBefore, int firstIndex) GetFirstPointY(IAxes axes)
@@ -304,7 +322,7 @@ public class DataLoggerSource
     }
 
     /// <summary>
-    /// If data is off to the screen to the right, 
+    /// If data is off to the screen to the right,
     /// returns information about the closest point off the screen
     /// </summary>
     private (Pixel[] pointsAfter, int lastIndex) GetLastPointX(IAxes axes)
@@ -326,7 +344,7 @@ public class DataLoggerSource
     }
 
     /// <summary>
-    /// If data is off to the screen to the top, 
+    /// If data is off to the screen to the top,
     /// returns information about the closest point off the screen
     /// </summary>
     private (Pixel[] pointsAfter, int lastIndex) GetLastPointY(IAxes axes)
