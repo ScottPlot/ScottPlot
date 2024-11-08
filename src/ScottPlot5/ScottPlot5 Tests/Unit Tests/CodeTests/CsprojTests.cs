@@ -65,7 +65,16 @@ internal class CsprojTests
                     continue;
 
                 string version = line.Split("Version=")[1].Split('"')[1];
-                versionsByFile[file] = version;
+
+                if (versionsByFile.ContainsKey(file))
+                {
+                    if (versionsByFile[file] != version)
+                        throw new InvalidDataException($"SkiaSharp has conflicting versions in {file}");
+                }
+                else
+                {
+                    versionsByFile[file] = version;
+                }
             }
         }
 
