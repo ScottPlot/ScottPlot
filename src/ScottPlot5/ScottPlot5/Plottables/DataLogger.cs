@@ -3,9 +3,16 @@ using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
-public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
+public class DataLogger : IPlottable, IManagesAxisLimits, IHasLine, IHasMarker, IHasLegendText
 {
-    public DataLoggerSource Data { get; } = new(coordinates ?? []);
+    public DataLogger(IList<Coordinates> coordinates)
+    {
+        Data = new DataLoggerSource(coordinates);
+    }
+
+    public DataLogger() : this([]) { }
+
+    public DataLoggerSource Data { get; }
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
