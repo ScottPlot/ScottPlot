@@ -206,6 +206,44 @@ public class Bar : ICategory
         }
     }
 
+    public class BarCustomSingle : RecipeBase
+    {
+        public override string Name => "Customized Bar Plot";
+        public override string Description => "Ultimate control of bar plot styling and positioning " +
+            "may be achieved by creating each bar individually, styling it as desired, and setting " +
+            "its exact size and location. This level of customization may be used to create extremely " +
+            "advanced stacked or grouped bar plots.";
+
+        [Test]
+        public override void Execute()
+        {
+            ScottPlot.Bar bar1 = new()
+            {
+                Position = 2,
+                Value = 5,
+            };
+
+            myPlot.Add.Bar(bar1);
+
+            ScottPlot.Bar bar2 = new()
+            {
+                Position = 5,
+                Value = 7,
+                ValueBase = 2,
+                Error = 1,
+                FillColor = Colors.Magenta,
+                LineWidth = 3,
+                LineColor = Colors.Navy,
+                FillHatch = new ScottPlot.Hatches.Striped(),
+                FillHatchColor = Colors.Magenta.Lighten(.2),
+            };
+
+            myPlot.Add.Bar(bar2);
+
+            myPlot.HideGrid();
+        }
+    }
+
     public class BarStackVertically : RecipeBase
     {
         public override string Name => "Stacked Bar Plot";
