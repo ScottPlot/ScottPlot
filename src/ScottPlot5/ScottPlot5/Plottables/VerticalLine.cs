@@ -11,6 +11,9 @@ public class VerticalLine : AxisLine
         set => Position = value;
     }
 
+    public double Minimum { get; set; } = double.NegativeInfinity;
+    public double Maximum { get; set; } = double.PositiveInfinity;
+
     public VerticalLine()
     {
         LabelStyle.ForeColor = Colors.White;
@@ -28,23 +31,14 @@ public class VerticalLine : AxisLine
 
     public override void Render(RenderPack rp)
     {
-        if (!IsVisible)
+        if (!IsVisible || !Axes.XAxis.Range.Contains(X))
             return;
 
-        // determine location
-        float y1 = rp.DataRect.Bottom;
-        float y2 = rp.DataRect.Top;
-        float x = Axes.GetPixelX(X);
-
-        // do not render if the axis line is outside the data area
-        if (!rp.DataRect.ContainsX(x))
-            return;
-
-        // draw line inside the data area
-        PixelLine line = new(x, y1, x, y2);
-
-        using SKPaint paint = new();
-        LineStyle.Render(rp.Canvas, line, paint);
+        Coordinates pt1 = new(X, Math.Max(Minimum, Axes.YAxis.Min));
+        Coordinates pt2 = new(X, Math.Min(Maximum, Axes.YAxis.Max));
+        CoordinateLine line = new(pt1, pt2);
+        PixelLine pxLine = Axes.GetPixelLine(line);
+        LineStyle.Render(rp.Canvas, pxLine, rp.Paint);
     }
 
     public override void RenderLast(RenderPack rp)
