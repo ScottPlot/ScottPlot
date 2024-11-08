@@ -18,6 +18,7 @@ _Not yet on NuGet..._
 * DataLogger: Narrowed the underlying data type from `IList<Coordinates>` to `List<Coordinates>` to allow `RemoveRange()` as seen in the cookbook (#4460) @Fruchtzwerg94
 * Maui: Improve visual appearance of plots during panning (#4416, #4417, #4447) @King-Taz @KosmosWerner
 * WinUI: Improved support for Windows platforms by upgrading to the latest SkiaSharp dependency and building for `windows10.0.19041` (#4258) @ArchieCoder @ProgrammerGuy76 @agneszitte @AzureGulf @Treppon
+* Callout: Improved automatic axis limit detection (#4358) @endeffects
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_

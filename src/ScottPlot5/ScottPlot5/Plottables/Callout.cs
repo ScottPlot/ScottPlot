@@ -73,8 +73,8 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     public AxisLimits GetAxisLimits()
     {
         ExpandingAxisLimits expandingLimits = new();
-        expandingLimits.Expand(LabelPlottable);
-        expandingLimits.Expand(ArrowPlottable);
+        expandingLimits.Expand(TipCoordinates);
+        expandingLimits.Expand(TextCoordinates);
         return expandingLimits.AxisLimits;
     }
 
