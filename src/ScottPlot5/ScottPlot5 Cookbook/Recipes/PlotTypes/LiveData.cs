@@ -79,10 +79,12 @@ public class LiveData : ICategory
             logger.Add(Generate.RandomSample(10));
 
             // remove the oldest five values
-            for (int i=0; i<5; i++)
-            {
-                logger.Data.Coordinates.RemoveAt(0);
-            }
+            logger.Data.Coordinates.RemoveRange(0, 5);
+
+            // WARNING: Removing data in one thread while a render is occurring in
+            // another thread may cause indexing errors. See the ScottPlot FAQ webpage
+            // about async and multithreading considerations to learn how 'lock' the plot
+            // to prevent rendering while data is being modified.
         }
     }
 }
