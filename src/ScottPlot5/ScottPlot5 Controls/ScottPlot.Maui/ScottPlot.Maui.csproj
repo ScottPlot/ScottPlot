@@ -60,8 +60,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.8" />
-        <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.8" />
+        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9" />
+        <PackageReference Include="SkiaSharp.Views.Maui.Core" Version="2.88.9" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
