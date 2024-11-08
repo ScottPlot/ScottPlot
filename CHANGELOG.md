@@ -12,6 +12,7 @@ _Not yet on NuGet..._
 * Label: Added border radius properties to customize corner curvature of labels and plottables with label styles (#4099)
 * Controls: Added `LostFocusAction` to abort mouse drags if they are interrupted by Alt+Tab or other events that lose window focus (#4103) @Max-i-m
 * Polygon: Improved performance and reduced anti-alias artifacts by preventing multiple overlapping drawings of identical lines (#4141) @HandsomeGoldenKnight
+* Title: Added `FullFigureCenter` flag to allow titles to be centered in the figure instead of over the data area (#4455, #364) @jaguarxii
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
