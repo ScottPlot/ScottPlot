@@ -79,10 +79,7 @@ public class LiveData : ICategory
             logger.Add(Generate.RandomSample(10));
 
             // remove the oldest five values
-            for (int i=0; i<5; i++)
-            {
-                logger.Data.Coordinates.RemoveAt(0);
-            }
+            logger.Data.Coordinates.RemoveRange(0, 5);
         }
     }
 }
