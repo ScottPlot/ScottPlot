@@ -176,4 +176,27 @@ public class AxisLines : ICategory
             hSpan.EnableAutoscale = false;
         }
     }
+
+    public class AxisLineLimits : RecipeBase
+    {
+        public override string Name => "Axis Line with Limits";
+        public override string Description => "Axis lines extend infinitely in both directions by default, " +
+            "but upper and lower limits may be specified to limit the dimensions of axis lines.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            var vLine = myPlot.Add.VerticalLine(24);
+            vLine.Minimum = -.5;
+            vLine.Maximum = 0.5;
+
+            var hLine = myPlot.Add.HorizontalLine(0.73);
+            hLine.Minimum = 10;
+            hLine.Maximum = 40;
+        }
+    }
+
 }
