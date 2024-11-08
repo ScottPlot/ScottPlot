@@ -13,17 +13,27 @@ public struct OHLC
     public TimeSpan TimeSpan { get; set; }
 
     public OHLC(double open, double high, double low, double close)
+        : this(open, high, low, close, DateTime.MinValue, TimeSpan.FromDays(1))
     {
-        Open = open;
-        High = high;
-        Low = low;
-        Close = close;
-        DateTime = DateTime.MinValue;
-        TimeSpan = TimeSpan.FromDays(1);
     }
 
     public OHLC(double open, double high, double low, double close, DateTime start, TimeSpan span)
     {
+        if (low > high)
+        {
+            throw new ArgumentException($"{nameof(high)} must be equal to or greater than {nameof(low)}");
+        }
+
+        if (open < low || close < low)
+        {
+            throw new ArgumentException($"{nameof(low)} must be equal to or less than {nameof(open)} and {nameof(close)}");
+        }
+
+        if (high < open || high < close)
+        {
+            throw new ArgumentException($"{nameof(high)} must be equal to or greater than {nameof(open)} and {nameof(close)}");
+        }
+
         Open = open;
         High = high;
         Low = low;
