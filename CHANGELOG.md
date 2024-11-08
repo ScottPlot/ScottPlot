@@ -15,6 +15,7 @@ _Not yet on NuGet..._
 * Title: Added `FullFigureCenter` flag to allow titles to be centered in the figure instead of over the data area (#4455, #364) @jaguarxii
 * OHLC: Added check in initializer to force valid high/low range state (#4454) @CBrauer
 * WpfPlot: Re-implemented `GetPlotPixelPosition()` and `GetCurrentPlotPixelPosition()` (#4214, #3622) @wellsw @KroMignon
+* MAUI: Improve visual appearance of plots during panning (#4416, #4417, #4447) @King-Taz @KosmosWerner
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
