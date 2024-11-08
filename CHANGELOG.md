@@ -15,6 +15,7 @@ _Not yet on NuGet..._
 * Title: Added `FullFigureCenter` flag to allow titles to be centered in the figure instead of over the data area (#4455, #364) @jaguarxii
 * OHLC: Added check in initializer to force valid high/low range state (#4454) @CBrauer
 * WpfPlot: Re-implemented `GetPlotPixelPosition()` and `GetCurrentPlotPixelPosition()` (#4214, #3622) @wellsw @KroMignon
+* DataLogger: Data source now uses `List<Coordinates>` allowing `RemoveRange()` as demonstrated in the cookbook (#4460) @Fruchtzwerg94
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
