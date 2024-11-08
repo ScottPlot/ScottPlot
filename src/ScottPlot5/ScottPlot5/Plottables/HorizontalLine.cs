@@ -11,6 +11,9 @@ public class HorizontalLine : AxisLine
         set => Position = value;
     }
 
+    public double Minimum { get; set; } = double.NegativeInfinity;
+    public double Maximum { get; set; } = double.PositiveInfinity;
+
     public HorizontalLine()
     {
         LabelStyle.Rotation = -90;
@@ -30,22 +33,14 @@ public class HorizontalLine : AxisLine
 
     public override void Render(RenderPack rp)
     {
-        if (!IsVisible)
+        if (!IsVisible || !Axes.YAxis.Range.Contains(Y))
             return;
 
-        // determine location
-        float x1 = rp.DataRect.Left;
-        float x2 = rp.DataRect.Right;
-        float y = Axes.GetPixelY(Y);
-
-        // do not render if the axis line is outside the data area
-        if (!rp.DataRect.ContainsY(y))
-            return;
-
-        // draw line inside the data area
-        PixelLine line = new(x1, y, x2, y);
-        using SKPaint paint = new();
-        LineStyle.Render(rp.Canvas, line, paint);
+        Coordinates pt1 = new(Math.Max(Minimum, Axes.XAxis.Min), Y);
+        Coordinates pt2 = new(Math.Min(Maximum, Axes.XAxis.Max), Y);
+        CoordinateLine line = new(pt1, pt2);
+        PixelLine pxLine = Axes.GetPixelLine(line);
+        LineStyle.Render(rp.Canvas, pxLine, rp.Paint);
     }
 
     public override void RenderLast(RenderPack rp)
