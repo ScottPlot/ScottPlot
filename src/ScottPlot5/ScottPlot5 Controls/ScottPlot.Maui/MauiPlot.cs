@@ -22,7 +22,7 @@ public class MauiPlot : SKCanvasView, IPlotControl
         Plot = new Plot() { PlotControl = this };
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-        UserInputProcessor = new(this) { IsEnabled = true };
+        UserInputProcessor = new(this);
         Menu = new MauiPlotMenu(this);
 
         IgnorePixelScaling = true;
@@ -37,12 +37,15 @@ public class MauiPlot : SKCanvasView, IPlotControl
             EnableTouchEvents = false;
             var panGestureRecognizer = new PanGestureRecognizer();
             var pinchGestureRecognizer = new PinchGestureRecognizer();
+            var tapGestureRecognizer = new TapGestureRecognizer() { NumberOfTapsRequired = 2 };
 
             panGestureRecognizer.PanUpdated += (s, e) => UserInputProcessor.ProcessPanUpdated(this, e);
             pinchGestureRecognizer.PinchUpdated += (s, e) => UserInputProcessor.ProcessPinchUpdated(this, e, (float)Width, (float)Height);
+            tapGestureRecognizer.Tapped += (s, e) => UserInputProcessor.ProcessZoomAll(this, e);
 
             GestureRecognizers.Add(pinchGestureRecognizer);
             GestureRecognizers.Add(panGestureRecognizer);
+            GestureRecognizers.Add(tapGestureRecognizer);
         }
     }
 

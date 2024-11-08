@@ -16,6 +16,7 @@ _Not yet on NuGet..._
 * OHLC: Added check in initializer to force valid high/low range state (#4454) @CBrauer
 * WpfPlot: Re-implemented `GetPlotPixelPosition()` and `GetCurrentPlotPixelPosition()` (#4214, #3622) @wellsw @KroMignon
 * DataLogger: Narrowed the underlying data type from `IList<Coordinates>` to `List<Coordinates>` to allow `RemoveRange()` as seen in the cookbook (#4460) @Fruchtzwerg94
+* Maui: Improve visual appearance of plots during panning (#4416, #4417, #4447) @King-Taz @KosmosWerner
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
