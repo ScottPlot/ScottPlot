@@ -82,6 +82,26 @@ public class Pie : ICategory
         }
     }
 
+    public class PieSliceHatch : RecipeBase
+    {
+        public override string Name => "Pie Slice with Hatch";
+        public override string Description => "Individual slices may be given a custom hatch style";
+
+        [Test]
+        public override void Execute()
+        {
+            var pie = myPlot.Add.Pie([5, 4, 6]);
+
+            // customize the hatch style for a single slice
+            pie.Slices[0].Fill.Hatch = new ScottPlot.Hatches.Striped();
+            pie.Slices[0].Fill.HatchColor = pie.Slices[0].Fill.Color.Lighten(.2);
+
+            // hide unnecessary plot components
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+        }
+    }
+
     public class PieRotation : RecipeBase
     {
         public override string Name => "Pie Chart Rotation";
