@@ -62,4 +62,27 @@ public class LiveData : ICategory
             streamer.ViewWipeRight();
         }
     }
+
+    public class DataLoggerEditing : RecipeBase
+    {
+        public override string Name => "DataLogger Editing";
+        public override string Description => "Values accumulated by a data logger " +
+            "may be edited after they are acquired.";
+
+        [Test]
+        public override void Execute()
+        {
+            // setup a logger that will grow as data is added
+            var logger = myPlot.Add.DataLogger();
+
+            // add ten values
+            logger.Add(Generate.RandomSample(10));
+
+            // remove the oldest five values
+            for (int i=0; i<5; i++)
+            {
+                logger.Data.Coordinates.RemoveAt(0);
+            }
+        }
+    }
 }
