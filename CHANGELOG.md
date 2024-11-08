@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Polygon: Improved performance and reduced anti-alias artifacts by preventing multiple overlapping drawings of identical lines (#4141) @HandsomeGoldenKnight
 * Title: Added `FullFigureCenter` flag to allow titles to be centered in the figure instead of over the data area (#4455, #364) @jaguarxii
 * OHLC: Added check in initializer to force valid high/low range state (#4454) @CBrauer
+* WpfPlot: Re-implemented `GetPlotPixelPosition()` and `GetCurrentPlotPixelPosition()` (#4214, #3622) @wellsw @KroMignon
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
