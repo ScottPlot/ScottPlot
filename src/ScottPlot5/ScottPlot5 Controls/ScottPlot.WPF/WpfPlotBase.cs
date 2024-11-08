@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -99,6 +100,11 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
         UserInputProcessor.ProcessKeyUp(e);
     }
 
+    internal void SKElement_LostFocus(object sender, RoutedEventArgs e)
+    {
+        UserInputProcessor.ProcessLostFocus();
+    }
+
     protected override void OnKeyDown(KeyEventArgs e)
     {
         Interaction.KeyDown(e.OldToKey());
@@ -116,5 +122,24 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public float DetectDisplayScale()
     {
         return (float)VisualTreeHelper.GetDpi(this).DpiScaleX;
+    }
+
+    /// <summary>
+    /// Returns the position of the mouse pointer relative to Plot drawing surface.
+    /// </summary>
+    /// <param name="e">Provides data for mouse related routed events</param>
+    /// <returns>The x and y coordinates in pixel of the mouse pointer position relative to Plot. The point (0,0) is the upper-left corner of the plot.</returns>
+    public Pixel GetPlotPixelPosition(MouseEventArgs e)
+    {
+        return e.ToPixel(PlotFrameworkElement);
+    }
+
+    /// <summary>
+    /// Returns the current position of the mouse pointer relative to Plot drawing surface
+    /// </summary>
+    /// <returns>The x and y coordinates in pixel of the mouse pointer position relative to Plot. The point (0,0) is the upper-left corner of the plot.</returns>
+    public Pixel GetCurrentPlotPixelPosition()
+    {
+        return PlotFrameworkElement.ToPixel(Mouse.GetPosition(PlotFrameworkElement));
     }
 }

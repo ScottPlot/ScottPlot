@@ -31,6 +31,11 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
     /// </summary>
     public bool LockX { get; set; } = false;
 
+    public void Abort()
+    {
+        RememberedLimits = null;
+    }
+
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         // mouse down starts drag

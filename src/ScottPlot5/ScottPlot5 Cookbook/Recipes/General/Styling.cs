@@ -315,4 +315,19 @@ public class Styling : ICategory
             myPlot.Axes.Bottom.SetTicks([10, 50, 75], ["Minutes", "Days", "Weeks"]);
         }
     }
+
+    public class TitleAlignment : RecipeBase
+    {
+        public override string Name => "Title Alignment";
+        public override string Description => "The title is centered over the data area by default, " +
+            "but a flag allows users to center it relative to the figure instead";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51, mult: 1e9));
+            myPlot.Title("This title is centered in the figure");
+            myPlot.Axes.Title.FullFigureCenter = true;
+        }
+    }
 }

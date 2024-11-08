@@ -158,6 +158,12 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         base.OnKeyUp(e);
     }
 
+    internal void SKElement_LostFocus(object? sender, System.EventArgs e)
+    {
+        FormsPlotExtensions.ProcessLostFocus(UserInputProcessor);
+        base.OnLostFocus(e);
+    }
+
     public float DetectDisplayScale()
     {
         using Graphics gfx = CreateGraphics();

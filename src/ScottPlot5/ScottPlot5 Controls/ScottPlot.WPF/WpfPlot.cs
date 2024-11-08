@@ -43,6 +43,8 @@ namespace ScottPlot.WPF
             SKElement.MouseWheel += SKElement_MouseWheel;
             SKElement.KeyDown += SKElement_KeyDown;
             SKElement.KeyUp += SKElement_KeyUp;
+            SKElement.LostMouseCapture += SKElement_LostFocus;
+            SKElement.LostKeyboardFocus += SKElement_LostFocus;
         }
 
         public override void Refresh()

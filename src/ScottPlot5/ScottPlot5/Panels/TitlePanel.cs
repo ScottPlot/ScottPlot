@@ -10,6 +10,12 @@ public class TitlePanel : IPanel
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
+    /// <summary>
+    /// Enable this to center the panel using the full width of the figure rather than
+    /// centering it over the width of the data area.
+    /// </summary>
+    public bool FullFigureCenter { get; set; } = false;
+
     public TitlePanel()
     {
         Label.Rotation = 0;
@@ -58,6 +64,11 @@ public class TitlePanel : IPanel
         using SKPaint paint = new();
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+
+        if (FullFigureCenter)
+        {
+            panelRect = new(rp.FigureRect.Left, rp.DataRect.Right, panelRect.Bottom, panelRect.Top);
+        }
 
         Pixel labelPoint = new(panelRect.HorizontalCenter, panelRect.Bottom);
 

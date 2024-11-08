@@ -8,7 +8,7 @@
         temporarially edit the ScottPlot.WinForm project file to only target a single
         target framework and match it to the one this application targets.
         -->
-        <TargetFramework>net462</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
 
         <OutputType>WinExe</OutputType>
         <Nullable>enable</Nullable>

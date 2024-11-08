@@ -8,8 +8,6 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.UserInputProcessor.IsEnabled = true;
-
         formsPlot1.Plot.Add.Signal(Generate.Sin());
         formsPlot1.Plot.Add.Signal(Generate.Cos());
     }

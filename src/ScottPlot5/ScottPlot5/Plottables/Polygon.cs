@@ -140,9 +140,6 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
 
         if (LineStyle is { IsVisible: true, Width: > 0 })
         {
-            paint.Style = SKPaintStyle.Stroke;
-            LineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
             Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
         }
 

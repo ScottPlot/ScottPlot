@@ -10,6 +10,11 @@ _Not yet on NuGet..._
 * VectorField: Added `MaximumArrowLength` property to allow arrow lengths to be customized (#3763) @hnMel
 * Signal: Reduced render artifacts for high density overlapping data by reducing pixel overlap (#4050, #3665) @StendProg
 * Label: Added border radius properties to customize corner curvature of labels and plottables with label styles (#4099)
+* Controls: Added `LostFocusAction` to abort mouse drags if they are interrupted by Alt+Tab or other events that lose window focus (#4103) @Max-i-m
+* Polygon: Improved performance and reduced anti-alias artifacts by preventing multiple overlapping drawings of identical lines (#4141) @HandsomeGoldenKnight
+* Title: Added `FullFigureCenter` flag to allow titles to be centered in the figure instead of over the data area (#4455, #364) @jaguarxii
+* OHLC: Added check in initializer to force valid high/low range state (#4454) @CBrauer
+* WpfPlot: Re-implemented `GetPlotPixelPosition()` and `GetCurrentPlotPixelPosition()` (#4214, #3622) @wellsw @KroMignon
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
