@@ -19,15 +19,4 @@ public class MultiAxisLimits(Plot plot)
             axisAndRange.Key.Range.Set(axisAndRange.Value);
         }
     }
-
-    /// <summary>
-    /// Set limits of the given axis to its original range
-    /// </summary>
-    public void Recall(IAxis axis)
-    {
-        if (AxisRanges.TryGetValue(axis, out CoordinateRange range))
-        {
-            axis.Range.Set(range);
-        }
-    }
 }
