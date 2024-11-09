@@ -24,6 +24,7 @@ _Not yet on NuGet..._
 * Axes: Added `Plot.Axes.NumericTicksButton()` to revert changes made by `DateTimeTicksBottom()` (#4438) @Cassar17
 * Colormap: Added `GetImage()` to return a `ScottPlot.Image` of custom dimensions which may be returned as a byte array or saved to disk (#4371)
 * Tick Generator: Added `DateTimeManual` for placing ticks manually on `DateTime` axes without having to use `ToOADate()` (#4383)
+* Grid: Added `Color`, `LineWidth`, and `LinePattern` properties for quickly setting major line styles of primary X and Y axes grid lines (#4384)
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
