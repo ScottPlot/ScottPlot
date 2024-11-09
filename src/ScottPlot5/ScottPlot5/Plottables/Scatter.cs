@@ -238,7 +238,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             PixelRect dataPxRect = new(markerPixels);
 
             PixelRect rect = new(linePixels);
-            float yValuePixel = Axes.YAxis.GetPixel(FillYValue, rp.DataRect);
+            float yValuePixel = Axes.YAxis.GetPixel(FillYValue + OffsetY, rp.DataRect);
 
             using SKPath fillPath = new(path);
             fillPath.LineTo(rect.Right, yValuePixel);
