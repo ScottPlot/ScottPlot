@@ -47,8 +47,8 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     {
         set
         {
-            MarkerStyle.LineWidth = value;  
-            MarkerStyle.OutlineWidth = value;  
+            MarkerStyle.LineWidth = value;
+            MarkerStyle.OutlineWidth = value;
         }
     }
     public MarkerShape Shape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
