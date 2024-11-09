@@ -29,6 +29,7 @@ _Not yet on NuGet..._
 * Marker: Improved support for filled markers with opt-in outlines (#4387)
 * Generate: Added `RangeWithStep()` and `RangeWithCount()` as more explicit alternatives to the ambiguously named `Range()` method
 * Scatter: Filled areas previously only respected `OffsetX` but now respect `OffsetY` too (#4433)
+* Controls: Modified `MouseDragZoom` to expose sensitivity properties to improve click-drag experiments for different platforms (#4443, #4416) @King-Taz @KosmosWerner
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
