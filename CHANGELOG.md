@@ -26,6 +26,7 @@ _Not yet on NuGet..._
 * Tick Generator: Added `DateTimeManual` for placing ticks manually on `DateTime` axes without having to use `ToOADate()` (#4383)
 * Grid: Added `Color`, `LineWidth`, and `LinePattern` properties for quickly setting major line styles of primary X and Y axes grid lines (#4384)
 * DataLogger: Exposed `HasNewData` to allow signaling that new renders are required after manually editing logger data (#4470, #4460) @Fruchtzwerg94
+* Marker: Improved support for filled markers with opt-in outlines (#4387)
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_

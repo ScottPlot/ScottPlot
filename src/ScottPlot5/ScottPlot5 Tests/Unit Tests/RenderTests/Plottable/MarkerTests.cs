@@ -54,4 +54,17 @@ internal class MarkerTests
         plt.Layout.Frameless();
         plt.SaveTestImage(400, 800);
     }
+
+    [Test]
+    public void Test_Marker_FillAndLine()
+    {
+        Plot plot = new();
+        var marker = plot.Add.Marker(0, 0);
+        marker.Size = 30;
+        marker.MarkerFillColor = Colors.Yellow;
+        marker.LineWidth = 5;
+        marker.MarkerLineColor = Colors.Blue;
+        marker.Shape = MarkerShape.FilledCircle;
+        plot.SaveTestImage();
+    }
 }
