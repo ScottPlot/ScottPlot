@@ -183,6 +183,7 @@ public static class Generate
         return Enumerable.Range(0, n).Select(i => (stop - start) * i / (n - 1) + start);
     }
 
+    // TODO: obsolete this
     /// <summary>
     /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
     /// </summary>
@@ -190,6 +191,23 @@ public static class Generate
     {
         int n = (int)Math.Round((stop - start) / step) + 1;
         return Range(start, stop, n).ToArray();
+    }
+    
+    /// <summary>
+    /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
+    /// </summary>
+    public static double[] RangeWithStep(double start, double stop, double step = 1)
+    {
+        int n = (int)Math.Round((stop - start) / step) + 1;
+        return Range(start, stop, n).ToArray();
+    }
+
+    /// <summary>
+    /// Return <paramref name="count"/> values from <paramref name="start"/> to <paramref name="stop"/> (inclusive)
+    /// </summary>
+    public static double[] RangeWithCount(double start, double stop, int count)
+    {
+        return Range(start, stop, count).ToArray();
     }
 
     #endregion
