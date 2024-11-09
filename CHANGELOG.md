@@ -1,5 +1,8 @@
-## ScottPlot 5.0.44
+## ScottPlot 5.0.45
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.44
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-09_
 * Rendering: Prevent inversion of data area for extremely small plots (#3607)
 * Generate: Created `AddSin()` and `AddSinInPlace()` methods to facilitate test data generation (#3682)
 * FormsPlot: Improved the Visual Studio design time experience for users working on .NET Framework projects (#4425, #4362) @CoderPM2011
