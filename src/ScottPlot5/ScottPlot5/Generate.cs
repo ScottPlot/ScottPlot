@@ -192,7 +192,7 @@ public static class Generate
         int n = (int)Math.Round((stop - start) / step) + 1;
         return Range(start, stop, n).ToArray();
     }
-    
+
     /// <summary>
     /// Return values from <paramref name="start"/> to <paramref name="stop"/> (inclusive) separated by <paramref name="step"/>
     /// </summary>
