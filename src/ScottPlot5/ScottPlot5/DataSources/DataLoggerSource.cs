@@ -15,7 +15,7 @@ public class DataLoggerSource(List<Coordinates> coordinates)
     public bool HasNewData
     {
         get => hasNewData;
-        private set => hasNewData = value;
+        set => hasNewData = value;
     }
 
     public bool WasRendered
