@@ -20,6 +20,7 @@ _Not yet on NuGet..._
 * WinUI: Improved support for Windows platforms by upgrading to the latest SkiaSharp dependency and building for `windows10.0.19041` (#4258) @ArchieCoder @ProgrammerGuy76 @agneszitte @AzureGulf @Treppon
 * Callout: Improved automatic axis limit detection (#4358) @endeffects
 * Axis Lines: Add `Minimum` and `Maximum` properties to limit the size of the line along its axis (#4368) @nRoger-Env
+* Axes: Added `Plot.Axes.NumericTicksButton()` to revert changes made by `DateTimeTicksBottom()` (#4438) @Cassar17
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
