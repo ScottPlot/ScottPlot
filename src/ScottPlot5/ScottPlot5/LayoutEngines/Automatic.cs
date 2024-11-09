@@ -42,7 +42,8 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
         float dataRectHeight = Math.Max(0, figureRect.Height - paddingNeededForPanels.Vertical);
         PixelSize dataRectSize = new(dataRectWidth, dataRectHeight);
         Pixel dataRectLocation = new(paddingNeededForPanels.Left, paddingNeededForPanels.Top);
-        PixelRect dataRect = new(dataRectLocation, dataRectSize);
+        PixelRect dataRect = new PixelRect(dataRectLocation, dataRectSize)
+            .WithPan(figureRect.Left, figureRect.Top);
 
         return new Layout(figureRect, dataRect, panelSizes, panelOffsets);
     }
