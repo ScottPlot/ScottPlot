@@ -31,6 +31,7 @@ _Not yet on NuGet..._
 * Scatter: Filled areas previously only respected `OffsetX` but now respect `OffsetY` too (#4433)
 * Controls: Modified `MouseDragZoom` to expose sensitivity properties to improve click-drag experiments for different platforms (#4443, #4416) @King-Taz @KosmosWerner
 * Controls: Improved mouse interactivity behavior for plots with inverted axes (#4471, #4110) @wi-fr
+* Population: Use deterministic randomness for horizontal spread of makers to support pixel perfect reproducibility (#4477)
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
