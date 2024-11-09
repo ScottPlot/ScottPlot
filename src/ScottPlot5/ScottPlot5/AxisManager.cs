@@ -255,10 +255,45 @@ public class AxisManager
         // setup the grid to use the new bottom axis
         Plot.Axes.DefaultGrid.XAxis = dateAxis;
 
+        // update plottables to use the new axis
+        foreach (IPlottable plottable in Plot.GetPlottables())
+        {
+            if (plottable.Axes.XAxis is not null)
+                plottable.Axes.XAxis = dateAxis;
+        }
+
         // autoscale the new axis to fit data already on the plot
         AutoScale();
 
         return dateAxis;
+    }
+
+    /// <summary>
+    /// Remove all bottom axes, create a numeric bottom axis, add it to the plot, and return it.
+    /// </summary>
+    public BottomAxis NumericTicksBottom()
+    {
+        // remove all bottom axes
+        Plot.Axes.Remove(Edge.Bottom);
+
+        // create a new bottom axis and add it
+        BottomAxis numericAxis = new();
+        Plot.Axes.XAxes.Add(numericAxis);
+
+        // setup the grid to use the new bottom axis
+        Plot.Axes.DefaultGrid.XAxis = numericAxis;
+
+        // update plottables to use the new axis
+        foreach (IPlottable plottable in Plot.GetPlottables())
+        {
+            if (plottable.Axes.XAxis is not null)
+                plottable.Axes.XAxis = numericAxis;
+        }
+
+        // autoscale the new axis to fit data already on the plot
+        AutoScale();
+
+        return numericAxis;
     }
 
     public void AddYAxis(IYAxis axis)
