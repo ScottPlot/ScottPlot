@@ -42,7 +42,15 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
     public float Size { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
-    public float LineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
+
+    public float LineWidth
+    {
+        set
+        {
+            MarkerStyle.LineWidth = value;  
+            MarkerStyle.OutlineWidth = value;  
+        }
+    }
     public MarkerShape Shape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public Color Color
     {
