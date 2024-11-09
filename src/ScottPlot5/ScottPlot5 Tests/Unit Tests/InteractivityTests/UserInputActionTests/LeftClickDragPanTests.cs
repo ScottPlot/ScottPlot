@@ -57,4 +57,21 @@ internal class LeftClickDragPanTests
         newLimits.HorizontalSpan.Should().Be(originalLimits.HorizontalSpan);
         newLimits.VerticalSpan.Should().Be(originalLimits.VerticalSpan);
     }
+
+    [Test]
+    public void Test_LeftClickDragPan_PreservesInvertedAxes()
+    {
+        ScottPlot.Testing.MockPlotControl plotControl = new();
+        plotControl.Plot.Add.Signal(Generate.Sin());
+
+        // setup inverted axes
+        plotControl.Plot.Axes.SetLimitsY(1, -1);
+        plotControl.Plot.Axes.GetLimits().YRange.Span.Should().BeNegative();
+
+        // pan with the mouse
+        plotControl.LeftClickDrag(plotControl.Center, plotControl.Center.MovedLeft(50).MovedDown(50));
+
+        // axes should still be inverted
+        plotControl.Plot.Axes.GetLimits().YRange.Span.Should().BeNegative();
+    }
 }
