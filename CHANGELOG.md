@@ -21,6 +21,7 @@ _Not yet on NuGet..._
 * Callout: Improved automatic axis limit detection (#4358) @endeffects
 * Axes: Added `SquareUnits(false)` overload to allow restoring default axis scaling behavior (#4366) @cvdevol
 * Axis Lines: Add `Minimum` and `Maximum` properties to limit the size of the line along its axis (#4368) @nRoger-Env
+* Colormap: Added `GetImage()` to return a `ScottPlot.Image` of custom dimensions which may be returned as a byte array or saved to disk (#4371)
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
