@@ -261,6 +261,27 @@ public class AxisManager
         return dateAxis;
     }
 
+    /// <summary>
+    /// Remove all bottom axes, create a numeric bottom axis, add it to the plot, and return it.
+    /// </summary>
+    public BottomAxis NumericTicksBottom()
+    {
+        // remove all bottom axes
+        Plot.Axes.Remove(Edge.Bottom);
+
+        // create a new bottom axis and add it
+        BottomAxis numericAxis = new();
+        Plot.Axes.XAxes.Add(numericAxis);
+
+        // setup the grid to use the new bottom axis
+        Plot.Axes.DefaultGrid.XAxis = numericAxis;
+
+        // autoscale the new axis to fit data already on the plot
+        AutoScale();
+
+        return numericAxis;
+    }
+
     public void AddYAxis(IYAxis axis)
     {
         YAxes.Add(axis);
