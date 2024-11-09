@@ -23,6 +23,7 @@ _Not yet on NuGet..._
 * Axis Lines: Add `Minimum` and `Maximum` properties to limit the size of the line along its axis (#4368) @nRoger-Env
 * Axes: Added `Plot.Axes.NumericTicksButton()` to revert changes made by `DateTimeTicksBottom()` (#4438) @Cassar17
 * Colormap: Added `GetImage()` to return a `ScottPlot.Image` of custom dimensions which may be returned as a byte array or saved to disk (#4371)
+* Tick Generator: Added `DateTimeManual` for placing ticks manually on `DateTime` axes without having to use `ToOADate()` (#4383)
 
 ## ScottPlot 5.0.43
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_

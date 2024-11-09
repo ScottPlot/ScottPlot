@@ -1,5 +1,4 @@
-﻿using ScottPlot.TickGenerators;
-using SkiaSharp;
+﻿using SkiaSharp;
 
 namespace ScottPlotCookbook.Recipes.Axis;
 
@@ -73,7 +72,7 @@ public class CustomizingTicks : ICategory
             }
 
             // apply our custom tick formatter
-            DateTimeAutomatic tickGen = (DateTimeAutomatic)axis.TickGenerator;
+            var tickGen = (ScottPlot.TickGenerators.DateTimeAutomatic)axis.TickGenerator;
             tickGen.LabelFormatter = CustomFormatter;
         }
     }
@@ -150,6 +149,40 @@ public class CustomizingTicks : ICategory
 
             // tell the horizontal axis to use the custom tick generator
             myPlot.Axes.Bottom.TickGenerator = ticks;
+        }
+    }
+
+    public class CustomTicksDateTime : RecipeBase
+    {
+        public override string Name => "Custom Tick DateTimes";
+        public override string Description => "Users may define custom ticks using DateTime units";
+
+        [Test]
+        public override void Execute()
+        {
+            DateTime[] dates = Generate.ConsecutiveDays(100);
+            double[] values = Generate.RandomWalk(100);
+            myPlot.Add.Scatter(dates, values);
+
+            // create a manual DateTime tick generator and add ticks
+            ScottPlot.TickGenerators.DateTimeManual ticks = new();
+
+            // add ticks for Mondays only
+            foreach (DateTime date in dates)
+            {
+                if (date.DayOfWeek == DayOfWeek.Monday)
+                {
+                    string label = date.DayOfYear.ToString();
+                    ticks.AddMajor(date, label);
+                }
+            }
+
+            // tell the horizontal axis to use the custom tick generator
+            myPlot.Axes.Bottom.TickGenerator = ticks;
+
+            // style the plot
+            myPlot.Title("Monday Ticks");
+            myPlot.XLabel("Day of the Year");
         }
     }
 
