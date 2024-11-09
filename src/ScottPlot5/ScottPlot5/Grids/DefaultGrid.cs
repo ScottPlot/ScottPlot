@@ -9,6 +9,10 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
     public GridStyle XAxisStyle { get; set; } = new();
     public GridStyle YAxisStyle { get; set; } = new();
 
+    public Color LineColor { set { MajorLineColor = value; } }
+    public float LineWidth { set { MajorLineWidth = value; } }
+    public LinePattern LinePattern { set { MajorLinePattern = value; } }
+
     public Color MajorLineColor
     {
         get => XAxisStyle.MajorLineStyle.Color;
@@ -43,6 +47,15 @@ public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
         {
             XAxisStyle.MinorLineStyle.Width = value;
             YAxisStyle.MinorLineStyle.Width = value;
+        }
+    }
+
+    public LinePattern MajorLinePattern
+    {
+        set
+        {
+            XAxisStyle.MajorLineStyle.Pattern = value;
+            YAxisStyle.MajorLineStyle.Pattern = value;
         }
     }
 

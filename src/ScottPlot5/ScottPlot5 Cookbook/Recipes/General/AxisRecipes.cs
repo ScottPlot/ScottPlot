@@ -348,4 +348,21 @@ public class AxisAndTicks : ICategory
             myPlot.Add.Signal(Generate.Cos(51));
         }
     }
+
+    public class CustomGridLineStyle : RecipeBase
+    {
+        public override string Name => "Grid Line Style";
+        public override string Description => "Grid lines have many options " +
+            "to allow extensive customization.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            myPlot.Grid.LineColor = Colors.Blue.WithAlpha(.2);
+            myPlot.Grid.LinePattern = LinePattern.Dotted;
+        }
+    }
 }
