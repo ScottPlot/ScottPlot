@@ -244,4 +244,30 @@ internal class ScatterTests
 
         plt.Should().SavePngWithoutThrowing();
     }
+
+    [Test]
+    public void Test_Scatter_FillAndOffset()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/4433
+
+        // create data points that resemble a "hump"
+        double[] ys = Generate.Cos(100, oscillations: 0.5, phase: -0.25);
+        double[] xs = Generate.RangeWithCount(0, 1, ys.Length);
+
+        Plot plot = new();
+
+        var sp1 = plot.Add.ScatterLine(xs, ys);
+        sp1.LineWidth = 3;
+        sp1.LineColor = Colors.Black;
+        sp1.FillY = true;
+
+        var sp2 = plot.Add.ScatterLine(xs, ys);
+        sp2.LineWidth = 3;
+        sp2.LineColor = Colors.Black;
+        sp2.FillY = true;
+        sp2.OffsetX = 2;
+        sp2.OffsetY = 2;
+
+        plot.SaveTestImage();
+    }
 }
