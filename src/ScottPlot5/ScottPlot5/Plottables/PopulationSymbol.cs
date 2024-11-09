@@ -29,6 +29,8 @@ public class PopulationSymbol(Population population) : IPlottable
 
     public Func<Box, Population, Population> BoxValueConfig { get; set; } = BoxValueConfigurator_MedianQuantileExtrema;
 
+    private ScottPlot.RandomDataGenerator Rand = new(0);
+
     private CoordinateRect GetRect()
     {
         double left = X - Width / 2;
@@ -93,7 +95,7 @@ public class PopulationSymbol(Population population) : IPlottable
             return;
 
         CoordinateRect rect = GetMarkerRect();
-        double[] xs = Generate.RandomSample(Population.Count, rect.Left, rect.Right);
+        double[] xs = Rand.RandomSample(Population.Count, rect.Width, rect.Left);
         for (int i = 0; i < Population.Count; i++)
         {
             Coordinates location = new(xs[i], Population.Values[i]);
