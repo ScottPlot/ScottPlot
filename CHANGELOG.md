@@ -19,6 +19,7 @@ _Not yet on NuGet..._
 * Maui: Improve visual appearance of plots during panning (#4416, #4417, #4447) @King-Taz @KosmosWerner
 * WinUI: Improved support for Windows platforms by upgrading to the latest SkiaSharp dependency and building for `windows10.0.19041` (#4258) @ArchieCoder @ProgrammerGuy76 @agneszitte @AzureGulf @Treppon
 * Callout: Improved automatic axis limit detection (#4358) @endeffects
+* Axes: Added `SquareUnits(false)` overload to allow restoring default axis scaling behavior (#4366) @cvdevol
 * Axis Lines: Add `Minimum` and `Maximum` properties to limit the size of the line along its axis (#4368) @nRoger-Env
 * Axes: Added `Plot.Axes.NumericTicksButton()` to revert changes made by `DateTimeTicksBottom()` (#4438) @Cassar17
 

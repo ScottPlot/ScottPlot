@@ -970,6 +970,7 @@ public class AxisManager
         AutoScaler = new AutoScalers.FractionalAutoScaler(left, right, bottom, top);
         AutoScale();
     }
+
     /// <summary>
     /// Force pixels to have a 1:1 scale ratio.
     /// This allows circles to always appear as circles and not stretched ellipses.
@@ -981,6 +982,27 @@ public class AxisManager
             : new AxisRules.SquarePreserveX(Bottom, Left); // best for interactive apps
 
         Rules.Add(rule);
+    }
+
+    /// <summary>
+    /// If true, force pixels to have a 1:1 scale ratio.
+    /// This allows circles to always appear as circles and not stretched ellipses.
+    /// If false, disable axis rules related to square units and restore default behavior.
+    /// </summary>
+    public void SquareUnits(bool enable)
+    {
+        if (enable)
+        {
+            SquareUnits();
+            return;
+        }
+
+        List<IAxisRule> rulesToRemove = [];
+        rulesToRemove.AddRange(Rules.OfType<AxisRules.SquareZoomOut>());
+        rulesToRemove.AddRange(Rules.OfType<AxisRules.SquarePreserveX>());
+        rulesToRemove.AddRange(Rules.OfType<AxisRules.SquarePreserveY>());
+        rulesToRemove.ForEach(x => Rules.Remove(x));
+        AutoScale();
     }
 
     /// <summary>
