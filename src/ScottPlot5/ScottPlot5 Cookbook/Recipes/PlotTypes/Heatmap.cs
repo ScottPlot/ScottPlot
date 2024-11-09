@@ -120,6 +120,7 @@ public class Heatmap : ICategory
 
             var hm = myPlot.Add.Heatmap(data);
             var cb = myPlot.Add.ColorBar(hm);
+            cb.MinimumSize = 80; // reserve space for the colorbar and tick labels
 
             // create a static function containing the string formatting logic
             static string CustomFormatter(double position)
