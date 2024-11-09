@@ -255,6 +255,13 @@ public class AxisManager
         // setup the grid to use the new bottom axis
         Plot.Axes.DefaultGrid.XAxis = dateAxis;
 
+        // update plottables to use the new axis
+        foreach (IPlottable plottable in Plot.GetPlottables())
+        {
+            if (plottable.Axes.XAxis is not null)
+                plottable.Axes.XAxis = dateAxis;
+        }
+
         // autoscale the new axis to fit data already on the plot
         AutoScale();
 
@@ -275,6 +282,13 @@ public class AxisManager
 
         // setup the grid to use the new bottom axis
         Plot.Axes.DefaultGrid.XAxis = numericAxis;
+
+        // update plottables to use the new axis
+        foreach (IPlottable plottable in Plot.GetPlottables())
+        {
+            if (plottable.Axes.XAxis is not null)
+                plottable.Axes.XAxis = numericAxis;
+        }
 
         // autoscale the new axis to fit data already on the plot
         AutoScale();
