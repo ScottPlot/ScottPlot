@@ -29,6 +29,18 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     /// </summary>
     public bool LockX { get; set; } = false;
 
+    /// <summary>
+    /// Scale the horizontal mouse sensitivity by this value.
+    /// Larger numbers result in more zooming for the same drag distance.
+    /// </summary>
+    public double SensitivityX { get; set; } = 1.0;
+
+    /// <summary>
+    /// Scale the vertical mouse sensitivity by this value.
+    /// Larger numbers result in more zooming for the same drag distance.
+    /// </summary>
+    public double SensitivityY { get; set; } = 1.0;
+
     public void Abort()
     {
         RememberedLimits = null;
@@ -66,15 +78,33 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
 
     private void ApplyToPlot(Plot plot, Pixel px1, Pixel px2, KeyboardState keys)
     {
+        float x1 = px1.X;
+        float y1 = px1.Y;
+
+        float x2 = px2.X;
+        float y2 = px2.Y;
+
         if (LockX || keys.IsPressed(KeysThatLockX))
         {
-            px2.X = px1.X;
+            x2 = x1;
         }
 
         if (LockY || keys.IsPressed(KeysThatLockY))
         {
-            px2.Y = px1.Y;
+            y2 = y1;
         }
+
+        if (SensitivityX != 1.0)
+        {
+            x2 = x1 + (x2 - x1) * (float)SensitivityX;
+        }
+
+        if (SensitivityY != 1.0)
+        {
+            y2 = y1 + (y2 - y1) * (float)SensitivityY;
+        }
+
+        px2 = new(x2, y2);
 
         MouseAxisManipulation.DragZoom(plot, px1, px2);
     }
