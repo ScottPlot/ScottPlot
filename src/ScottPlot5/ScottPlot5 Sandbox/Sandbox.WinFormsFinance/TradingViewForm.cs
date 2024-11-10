@@ -197,10 +197,9 @@ public partial class TradingViewForm : Form
         }
 
         // TODO: move this logic inside the plottable
-        var ohlcs = CandlePlot.Data.GetOHLCs();
-        int ohlcIndex = (int)Math.Round(mouseCoordinates.X);
+        var mouseCandle = CandlePlot.GetOhlcNearX(mouseCoordinates.X);
 
-        if (ohlcIndex < 0 || ohlcIndex >= ohlcs.Count)
+        if (mouseCandle is null)
         {
             bool refreshNeeded = Crosshair.IsVisible;
             Crosshair.IsVisible = false;
@@ -209,15 +208,12 @@ public partial class TradingViewForm : Form
             return;
         }
 
-        ohlcIndex = NumericConversion.Clamp(ohlcIndex, 0, ohlcs.Count() - 1);
-        OHLC ohlcUnderMouse = ohlcs[ohlcIndex];
-
         // TODO: use the axis to format the date using the same units as the ticks
         var fa = formsPlot1.Plot.GetPlottables<FinancialTimeAxis>().First();
-        DateTime dateUnderMouse = fa.DateTimes[ohlcIndex];
+        DateTime dateUnderMouse = fa.DateTimes[mouseCandle.Value.index];
 
         Crosshair.IsVisible = true;
-        Crosshair.Position = new(ohlcIndex, mouseCoordinates.Y);
+        Crosshair.Position = new(mouseCandle.Value.index, mouseCoordinates.Y);
         Crosshair.VerticalLine.LabelText = dateUnderMouse.ToShortDateString();
         Crosshair.HorizontalLine.LabelText = $"{mouseCoordinates.Y:N2}";
         formsPlot1.Refresh();

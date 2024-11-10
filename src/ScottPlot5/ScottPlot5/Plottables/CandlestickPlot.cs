@@ -95,6 +95,14 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         return Data.GetPriceRange(minIndexInView, maxIndexInView);
     }
 
+    public (int index, OHLC ohlc)? GetOhlcNearX(double x)
+    {
+        int ohlcIndex = (int)Math.Round(x);
+        return (ohlcIndex >= 0 && ohlcIndex < Data.Count)
+            ? (ohlcIndex, Data.GetOHLCs()[ohlcIndex])
+            : null ;
+    }
+
     public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
