@@ -123,24 +123,24 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             float yPxClose = Axes.GetPixelY(ohlc.Close);
 
             // low/high line
-            using SKPath path = new();
-            path.MoveTo(center, top);
-            path.LineTo(center, bottom);
-
-            lineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
+            PixelLine verticalLine = new(center, top, center, bottom);
+            Drawing.DrawLine(rp.Canvas, paint, verticalLine, lineStyle);
 
             // open/close body
-            PixelRangeX xPxRange = new(xPxLeft, xPxRight);
-            PixelRangeY yPxRange = new(Math.Min(yPxOpen, yPxClose), Math.Max(yPxOpen, yPxClose));
-            PixelRect rect = new(xPxRange, yPxRange);
-            if (yPxOpen != yPxClose)
+            bool barIsAtLeastOnePixelWide = xPxRight - xPxLeft > 1;
+            if (barIsAtLeastOnePixelWide)
             {
-                fillStyle.Render(rp.Canvas, rect, paint);
-            }
-            else
-            {
-                lineStyle.Render(rp.Canvas, rect.BottomLine, paint);
+                PixelRangeX xPxRange = new(xPxLeft, xPxRight);
+                PixelRangeY yPxRange = new(Math.Min(yPxOpen, yPxClose), Math.Max(yPxOpen, yPxClose));
+                PixelRect rect = new(xPxRange, yPxRange);
+                if (yPxOpen != yPxClose)
+                {
+                    fillStyle.Render(rp.Canvas, rect, paint);
+                }
+                else
+                {
+                    lineStyle.Render(rp.Canvas, rect.BottomLine, paint);
+                }
             }
         }
     }

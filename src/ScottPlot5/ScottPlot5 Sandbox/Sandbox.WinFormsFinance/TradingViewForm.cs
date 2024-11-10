@@ -28,7 +28,7 @@ public partial class TradingViewForm : Form
         buttonClearAll.Click += (s, e) =>
         {
             Text = "All drawings cleared";
-            formsPlot1.Plot.Remove<ScottPlot.Plottables.LinePlot>();
+            formsPlot1.Plot.Remove<LinePlot>();
             formsPlot1.Refresh();
         };
 
@@ -45,6 +45,9 @@ public partial class TradingViewForm : Form
         // reset the plot so we can call this multiple times as ticker or time period options changes
         formsPlot1.Plot.Clear();
 
+        // disable left ticks
+        formsPlot1.Plot.Axes.Left.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
+
         // place text on the background
         formsPlot1.Plot.Add.BackgroundText(
             line1: "MNQZ4",
@@ -54,11 +57,11 @@ public partial class TradingViewForm : Form
             size2: 36);
 
         // generate sample data
-        OHLC[] ohlcs = Generate.RandomOHLCs(1000)
+        OHLC[] ohlcs = Generate.RandomOHLCs(50_000)
             .Select(x => x.WithDate(DateTime.MinValue) // ensure only price is used
             .WithTimeSpan(TimeSpan.Zero)).ToArray(); // ensure only price is used
 
-        DateTime[] dates = Generate.ConsecutiveWeekdays(ohlcs.Length);
+        DateTime[] dates = Generate.ConsecutiveHours(ohlcs.Length, new(2024, 01, 01));
 
         // add a candle plot using the right axis
         CandlePlot = formsPlot1.Plot.Add.Candlestick(ohlcs);
@@ -110,7 +113,7 @@ public partial class TradingViewForm : Form
         // autoscale vertically according to all the candles in view
         static void VerticalAutoscaleToCandlesInView(RenderPack rp)
         {
-            var candle = rp.Plot.GetPlottables<ScottPlot.Plottables.CandlestickPlot>().FirstOrDefault();
+            var candle = rp.Plot.GetPlottables<CandlestickPlot>().FirstOrDefault();
             if (candle is null)
                 return;
 
@@ -127,6 +130,7 @@ public partial class TradingViewForm : Form
 
             rp.Plot.Axes.Right.Range.Set(yMin, yMax);
         }
+
         formsPlot1.Plot.Axes.ContinuouslyAutoscale = true;
         formsPlot1.Plot.Axes.ContinuousAutoscaleAction = VerticalAutoscaleToCandlesInView;
 
@@ -181,6 +185,11 @@ public partial class TradingViewForm : Form
     {
         if (CandlePlot is null)
             return;
+
+        double candleWidthPx = formsPlot1.Plot.LastRender.DataRect.Width / formsPlot1.Plot.Axes.Bottom.Range.Span;
+        double sec = formsPlot1.Plot.LastRender.Elapsed.TotalSeconds;
+        formsPlot1.Plot.Title($"Render time: {sec * 1000:0} ms ({1 / sec:0.0} FPS)\n" +
+            $"Candle width: {candleWidthPx:0.00} px");
 
         Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y, formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Right);
 
