@@ -1,10 +1,9 @@
-﻿using System.Runtime.InteropServices;
-
-namespace ScottPlot.DataSources;
+﻿namespace ScottPlot.DataSources;
 
 public abstract class OHLCSourceBase : IOHLCSource
 {
     public abstract IReadOnlyList<OHLC> GetOHLCs();
+    public abstract int Count { get; }
 
     public AxisLimits GetLimits()
     {
