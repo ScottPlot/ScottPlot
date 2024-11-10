@@ -2,8 +2,10 @@
 
 public interface IOHLCSource
 {
+    int Count { get; }
     IReadOnlyList<OHLC> GetOHLCs();
-    public CoordinateRange GetLimitsX();
-    public CoordinateRange GetLimitsY();
+    CoordinateRange GetLimitsX();
+    CoordinateRange GetLimitsY();
     AxisLimits GetLimits();
+    CoordinateRange GetPriceRange(int index1, int index2);
 }

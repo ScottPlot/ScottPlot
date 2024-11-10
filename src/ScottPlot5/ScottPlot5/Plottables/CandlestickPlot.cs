@@ -84,6 +84,25 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         return new(left, right, limits.Bottom, limits.Top);
     }
 
+    public CoordinateRange GetPriceRangeInView()
+    {
+        var ohlcs = Data.GetOHLCs();
+        if (ohlcs.Count == 0)
+            return CoordinateRange.NoLimits;
+
+        int minIndexInView = (int)NumericConversion.Clamp(Axes.XAxis.Min, 0, ohlcs.Count - 1);
+        int maxIndexInView = (int)NumericConversion.Clamp(Axes.XAxis.Max, 0, ohlcs.Count - 1);
+        return Data.GetPriceRange(minIndexInView, maxIndexInView);
+    }
+
+    public (int index, OHLC ohlc)? GetOhlcNearX(double x)
+    {
+        int ohlcIndex = (int)Math.Round(x);
+        return (ohlcIndex >= 0 && ohlcIndex < Data.Count)
+            ? (ohlcIndex, Data.GetOHLCs()[ohlcIndex])
+            : null ;
+    }
+
     public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
@@ -123,24 +142,24 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
             float yPxClose = Axes.GetPixelY(ohlc.Close);
 
             // low/high line
-            using SKPath path = new();
-            path.MoveTo(center, top);
-            path.LineTo(center, bottom);
-
-            lineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
+            PixelLine verticalLine = new(center, top, center, bottom);
+            Drawing.DrawLine(rp.Canvas, paint, verticalLine, lineStyle);
 
             // open/close body
-            PixelRangeX xPxRange = new(xPxLeft, xPxRight);
-            PixelRangeY yPxRange = new(Math.Min(yPxOpen, yPxClose), Math.Max(yPxOpen, yPxClose));
-            PixelRect rect = new(xPxRange, yPxRange);
-            if (yPxOpen != yPxClose)
+            bool barIsAtLeastOnePixelWide = xPxRight - xPxLeft > 1;
+            if (barIsAtLeastOnePixelWide)
             {
-                fillStyle.Render(rp.Canvas, rect, paint);
-            }
-            else
-            {
-                lineStyle.Render(rp.Canvas, rect.BottomLine, paint);
+                PixelRangeX xPxRange = new(xPxLeft, xPxRight);
+                PixelRangeY yPxRange = new(Math.Min(yPxOpen, yPxClose), Math.Max(yPxOpen, yPxClose));
+                PixelRect rect = new(xPxRange, yPxRange);
+                if (yPxOpen != yPxClose)
+                {
+                    fillStyle.Render(rp.Canvas, rect, paint);
+                }
+                else
+                {
+                    lineStyle.Render(rp.Canvas, rect.BottomLine, paint);
+                }
             }
         }
     }

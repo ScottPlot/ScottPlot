@@ -31,6 +31,7 @@ partial class TradingViewForm
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
         buttonClearAll = new Button();
         button1 = new Button();
+        checkBoxLockScale = new CheckBox();
         SuspendLayout();
         // 
         // formsPlot1
@@ -60,11 +61,23 @@ partial class TradingViewForm
         button1.Text = "Line";
         button1.UseVisualStyleBackColor = true;
         // 
+        // checkBoxLockScale
+        // 
+        checkBoxLockScale.Appearance = Appearance.Button;
+        checkBoxLockScale.AutoSize = true;
+        checkBoxLockScale.Location = new Point(14, 120);
+        checkBoxLockScale.Name = "checkBoxLockScale";
+        checkBoxLockScale.Size = new Size(72, 25);
+        checkBoxLockScale.TabIndex = 14;
+        checkBoxLockScale.Text = "Lock Scale";
+        checkBoxLockScale.UseVisualStyleBackColor = true;
+        // 
         // TradingViewForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1084, 761);
+        Controls.Add(checkBoxLockScale);
         Controls.Add(button1);
         Controls.Add(buttonClearAll);
         Controls.Add(formsPlot1);
@@ -72,10 +85,12 @@ partial class TradingViewForm
         StartPosition = FormStartPosition.CenterScreen;
         Text = "ScottPlot Financial Charting Sandbox (TradingView)";
         ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion
     private ScottPlot.WinForms.FormsPlot formsPlot1;
     private Button buttonClearAll;
     private Button button1;
+    private CheckBox checkBoxLockScale;
 }

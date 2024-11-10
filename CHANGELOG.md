@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.45
 _Not yet on NuGet..._
+* Candlestick: Improved performance for plots with large numbers of candles less than one pixel wide (#4483) @quantfreedom @VladislavPustovarov
 
 ## ScottPlot 5.0.44
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-09_
@@ -44,7 +45,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-03_
 * Maui: Improved cursor-driven pan and zoom on Desktop platform targets (#4417, #4416) @KosmosWerner @King-Taz
 * Candlestick Plot: Improved visibility of candles with zero price movement (#3337) @Lyakabynka @bukowa
 * Ticks: Added an experimental `FinancialTickGenerator` for generating DateTime ticks from unevenly-spaced time data (#4385)
-* Financial Charting: Added experimental `FinancialTimeAxis` plottable as an alternative to using custom axes or tick generators (#4385) @quantfreedom @vladislavpweetsoft
+* Financial Charting: Added experimental `FinancialTimeAxis` plottable as an alternative to using custom axes or tick generators (#4385) @quantfreedom @VladislavPustovarov
 * Triangular Axis: Users may now `Add.TriangularAxis()` and use its methods to get Cartesian coordinates from points in triangular space (#4421, #4413, #4424) @manaruto
 * Bar: Exposed `Rect`, `ErrorLines`, and `AxisLimits` properties (#4423) @tiger2014
 * Axes: `SquareUnits()` now uses `SquareZoomOut` for console apps and `SquarePreserveX` for interactive apps (#4422) @King-Taz @KosmosWerner
