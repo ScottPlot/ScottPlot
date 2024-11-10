@@ -84,6 +84,17 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         return new(left, right, limits.Bottom, limits.Top);
     }
 
+    public CoordinateRange GetPriceRangeInView()
+    {
+        var ohlcs = Data.GetOHLCs();
+        if (ohlcs.Count == 0)
+            return CoordinateRange.NoLimits;
+
+        int minIndexInView = (int)NumericConversion.Clamp(Axes.XAxis.Min, 0, ohlcs.Count - 1);
+        int maxIndexInView = (int)NumericConversion.Clamp(Axes.XAxis.Max, 0, ohlcs.Count - 1);
+        return Data.GetPriceRange(minIndexInView, maxIndexInView);
+    }
+
     public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();

@@ -6,4 +6,5 @@ public interface IOHLCSource
     public CoordinateRange GetLimitsX();
     public CoordinateRange GetLimitsY();
     AxisLimits GetLimits();
+    public CoordinateRange GetPriceRange(int index1, int index2);
 }

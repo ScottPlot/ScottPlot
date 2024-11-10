@@ -1,5 +1,6 @@
 ﻿using ScottPlot;
 using ScottPlot.Plottables;
+using System.Diagnostics;
 
 namespace Sandbox.WinFormsFinance;
 
@@ -117,18 +118,8 @@ public partial class TradingViewForm : Form
             if (candle is null)
                 return;
 
-            var ohlcs = candle.Data.GetOHLCs();
-
-            // TODO: move this logic into the candlestick plottable or OHLC data source
-            int minViewIndex = (int)NumericConversion.Clamp(rp.Plot.Axes.Bottom.Min, 0, ohlcs.Count - 1);
-            int maxViewIndex = (int)NumericConversion.Clamp(rp.Plot.Axes.Bottom.Max, 0, ohlcs.Count - 1);
-            var ohlcsInView = ohlcs.Skip(minViewIndex).Take(maxViewIndex - minViewIndex);
-            if (!ohlcsInView.Any())
-                return;
-            double yMin = ohlcsInView.Select(x => x.Low).Min();
-            double yMax = ohlcsInView.Select(x => x.High).Max();
-
-            rp.Plot.Axes.Right.Range.Set(yMin, yMax);
+            CoordinateRange priceRange = candle.GetPriceRangeInView();
+            rp.Plot.Axes.Right.Range.Set(priceRange);
         }
 
         formsPlot1.Plot.Axes.ContinuouslyAutoscale = true;
