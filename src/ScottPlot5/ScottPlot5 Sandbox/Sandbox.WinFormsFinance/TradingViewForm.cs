@@ -1,6 +1,5 @@
 ﻿using ScottPlot;
 using ScottPlot.Plottables;
-using System.Diagnostics;
 
 namespace Sandbox.WinFormsFinance;
 
@@ -35,6 +34,34 @@ public partial class TradingViewForm : Form
 
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
         formsPlot1.MouseMove += FormsPlot1_MouseMove;
+
+        checkBoxLockScale.CheckedChanged += (s, e) =>
+        {
+            if (checkBoxLockScale.Checked)
+            {
+                double pxPerUnit = formsPlot1.Plot.LastRender.DataRect.Width / formsPlot1.Plot.Axes.Bottom.Range.Span;
+                FixedHorizontalScale rule = new(formsPlot1.Plot.Axes.Bottom, pxPerUnit);
+                formsPlot1.Plot.Axes.Rules.Add(rule);
+            }
+            else
+            {
+                formsPlot1.Plot.Axes.Rules.Clear();
+            }
+        };
+    }
+
+    public class FixedHorizontalScale(IXAxis xAxis, double pxPerUnit) : IAxisRule
+    {
+        public readonly IXAxis XAxis = xAxis;
+        public double PxPerUnit = pxPerUnit;
+
+        public void Apply(RenderPack rp, bool beforeLayout)
+        {
+            double right = XAxis.Max;
+            double width = rp.DataRect.Width / PxPerUnit;
+            double left = right - width;
+            XAxis.Range.Set(left, right);
+        }
     }
 
     void InitializePlot()
@@ -58,11 +85,11 @@ public partial class TradingViewForm : Form
             size2: 36);
 
         // generate sample data
-        OHLC[] ohlcs = Generate.RandomOHLCs(50_000)
+        OHLC[] ohlcs = Generate.RandomOHLCs(5_000)
             .Select(x => x.WithDate(DateTime.MinValue) // ensure only price is used
             .WithTimeSpan(TimeSpan.Zero)).ToArray(); // ensure only price is used
 
-        DateTime[] dates = Generate.ConsecutiveHours(ohlcs.Length, new(2024, 01, 01));
+        DateTime[] dates = Generate.ConsecutiveDays(ohlcs.Length);
 
         // add a candle plot using the right axis
         CandlePlot = formsPlot1.Plot.Add.Candlestick(ohlcs);
