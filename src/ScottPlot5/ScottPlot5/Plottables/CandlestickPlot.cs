@@ -100,7 +100,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
         int ohlcIndex = (int)Math.Round(x);
         return (ohlcIndex >= 0 && ohlcIndex < Data.Count)
             ? (ohlcIndex, Data.GetOHLCs()[ohlcIndex])
-            : null ;
+            : null;
     }
 
     public virtual void Render(RenderPack rp)
