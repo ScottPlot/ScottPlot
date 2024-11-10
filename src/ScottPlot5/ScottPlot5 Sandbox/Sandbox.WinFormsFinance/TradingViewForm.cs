@@ -1,12 +1,16 @@
 ﻿using ScottPlot;
+using ScottPlot.Plottables;
 
 namespace Sandbox.WinFormsFinance;
 
 public partial class TradingViewForm : Form
 {
     // TODO: make an abstraction for click-drag placement of new technical indicators
-    ScottPlot.Plottables.LinePlot? LineBeingAdded = null;
+    LinePlot? LineBeingAdded = null;
     bool AddDrawingMode = false;
+
+    readonly Crosshair Crosshair = new();
+    CandlestickPlot? CandlePlot = null;
 
     public TradingViewForm()
     {
@@ -57,20 +61,30 @@ public partial class TradingViewForm : Form
         DateTime[] dates = Generate.ConsecutiveWeekdays(ohlcs.Length);
 
         // add a candle plot using the right axis
-        var candlePlot = formsPlot1.Plot.Add.Candlestick(ohlcs);
-        candlePlot.RisingColor = new ScottPlot.Color("#37dbba");
-        candlePlot.FallingColor = new ScottPlot.Color("#eb602f");
+        CandlePlot = formsPlot1.Plot.Add.Candlestick(ohlcs);
+        CandlePlot.RisingColor = new ScottPlot.Color("#37dbba");
+        CandlePlot.FallingColor = new ScottPlot.Color("#eb602f");
+
+        // add a crosshair to track the cursor
+        formsPlot1.Plot.Add.Plottable(Crosshair);
+        Crosshair.Axes.YAxis = formsPlot1.Plot.Axes.Right;
+        Crosshair.LineColor = Colors.Yellow;
+        Crosshair.LinePattern = LinePattern.Dashed;
+        Crosshair.IsVisible = false;
+        Crosshair.TextBackgroundColor = Colors.Yellow;
+        Crosshair.TextColor = Colors.Black;
+        Crosshair.HorizontalLine.LabelOppositeAxis = true;
 
         // disable the built in tick generator and add our own
         formsPlot1.Plot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
         formsPlot1.Plot.Axes.Bottom.MinimumSize = 100;
-        ScottPlot.Plottables.FinancialTimeAxis financeAxis = new(dates);
+        FinancialTimeAxis financeAxis = new(dates);
         formsPlot1.Plot.Add.Plottable(financeAxis);
         financeAxis.LabelStyle.ForeColor = new("#6e7780");
 
         // tell the candles and grid lines to use the right axis
-        candlePlot.Axes.YAxis = formsPlot1.Plot.Axes.Right;
-        candlePlot.Sequential = true;
+        CandlePlot.Axes.YAxis = formsPlot1.Plot.Axes.Right;
+        CandlePlot.Sequential = true;
         formsPlot1.Plot.Grid.YAxis = formsPlot1.Plot.Axes.Right;
 
         // customize format of right axis tick labels
@@ -165,13 +179,47 @@ public partial class TradingViewForm : Form
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
+        if (CandlePlot is null)
+            return;
+
+        Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y, formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Right);
+
         if (LineBeingAdded is not null)
         {
+            Crosshair.IsVisible = false;
+
             // the second click hasn't happened yet so place the second point where the cursor is
-            LineBeingAdded.End = formsPlot1.Plot.GetCoordinates(e.X, e.Y, formsPlot1.Plot.Axes.Bottom, formsPlot1.Plot.Axes.Right);
+            LineBeingAdded.End = mouseCoordinates;
 
             // request a redraw
             formsPlot1.Refresh();
+            return;
         }
+
+        // TODO: move this logic inside the plottable
+        var ohlcs = CandlePlot.Data.GetOHLCs();
+        int ohlcIndex = (int)Math.Round(mouseCoordinates.X);
+
+        if (ohlcIndex < 0 || ohlcIndex >= ohlcs.Count)
+        {
+            bool refreshNeeded = Crosshair.IsVisible;
+            Crosshair.IsVisible = false;
+            if (refreshNeeded)
+                formsPlot1.Refresh();
+            return;
+        }
+
+        ohlcIndex = NumericConversion.Clamp(ohlcIndex, 0, ohlcs.Count() - 1);
+        OHLC ohlcUnderMouse = ohlcs[ohlcIndex];
+
+        // TODO: use the axis to format the date using the same units as the ticks
+        var fa = formsPlot1.Plot.GetPlottables<FinancialTimeAxis>().First();
+        DateTime dateUnderMouse = fa.DateTimes[ohlcIndex];
+
+        Crosshair.IsVisible = true;
+        Crosshair.Position = new(ohlcIndex, mouseCoordinates.Y);
+        Crosshair.VerticalLine.LabelText = dateUnderMouse.ToShortDateString();
+        Crosshair.HorizontalLine.LabelText = $"{mouseCoordinates.Y:N2}";
+        formsPlot1.Refresh();
     }
 }
