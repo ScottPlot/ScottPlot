@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using ScottPlot.Control;
 using SkiaSharp;
 
 namespace ScottPlot.Blazor;
@@ -57,10 +58,46 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
 
     public void ShowContextMenu(Pixel position) => Menu?.ShowContextMenu(position);
 
-    public void OnPointerMoved(PointerEventArgs e) => UserInputProcessor.ProcessMouseMove(e);
-    public void OnPointerPressed(PointerEventArgs e) => UserInputProcessor.ProcessMouseDown(e);
-    public void OnPointerReleased(PointerEventArgs e) => UserInputProcessor.ProcessMouseUp(e);
-    public void OnPointerWheelChanged(WheelEventArgs e) => UserInputProcessor.ProcessMouseWheel(e);
-    public void OnKeyDown(KeyboardEventArgs e) => UserInputProcessor.ProcessKeyDown(e);
-    public void OnKeyUp(KeyboardEventArgs e) => UserInputProcessor.ProcessKeyUp(e);
+    public EventHandler<Pixel>? MouseMoved;
+    public EventHandler<(Pixel, ScottPlot.Interactivity.MouseButton)>? MouseButtonPressed;
+    public EventHandler<(Pixel, ScottPlot.Interactivity.MouseButton)>? MouseButtonReleased;
+    public EventHandler<(Pixel, double)>? MouseWheelChanged;
+    public EventHandler<ScottPlot.Interactivity.Key>? KeyPressed;
+    public EventHandler<ScottPlot.Interactivity.Key>? KeyReleased;
+
+    public void OnPointerMoved(PointerEventArgs e)
+    {
+        UserInputProcessor.ProcessMouseMove(e);
+        MouseMoved?.Invoke(this, e.ToPixel());
+    }
+
+    public void OnPointerPressed(PointerEventArgs e)
+    {
+        UserInputProcessor.ProcessMouseDown(e);
+        MouseButtonPressed?.Invoke(this, (e.ToPixel(), e.ToScottPlotButton()));
+    }
+
+    public void OnPointerReleased(PointerEventArgs e)
+    {
+        UserInputProcessor.ProcessMouseUp(e);
+        MouseButtonReleased?.Invoke(this, (e.ToPixel(), e.ToScottPlotButton()));
+    }
+
+    public void OnPointerWheelChanged(WheelEventArgs e)
+    {
+        UserInputProcessor.ProcessMouseWheel(e);
+        MouseWheelChanged?.Invoke(this, (e.ToPixel(), e.DeltaY));
+    }
+
+    public void OnKeyDown(KeyboardEventArgs e)
+    {
+        UserInputProcessor.ProcessKeyDown(e);
+        KeyPressed?.Invoke(this, e.ToKey());
+    }
+
+    public void OnKeyUp(KeyboardEventArgs e)
+    {
+        UserInputProcessor.ProcessKeyUp(e);
+        KeyReleased?.Invoke(this, e.ToKey());
+    }
 }
