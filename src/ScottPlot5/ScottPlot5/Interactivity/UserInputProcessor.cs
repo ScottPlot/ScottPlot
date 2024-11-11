@@ -34,6 +34,10 @@ public class UserInputProcessor
             {
                 PlotControl?.Interaction.Disable();
             }
+            else
+            {
+                ProcessLostFocus();
+            }
         }
     }
 
