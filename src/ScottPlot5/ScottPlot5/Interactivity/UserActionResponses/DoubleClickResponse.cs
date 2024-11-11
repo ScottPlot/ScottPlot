@@ -23,6 +23,12 @@ public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action)
 
     private DateTime PreviousMouseDownTime = DateTime.MinValue;
 
+    public void ResetState(Plot plot)
+    {
+        LatestMouseDownTime = DateTime.MinValue;
+        PreviousMouseDownTime = DateTime.MinValue;
+    }
+
     public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction mouseAction && mouseAction.Button == MouseButton)
