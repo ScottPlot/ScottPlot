@@ -2,16 +2,21 @@
 @using SkiaSharp;
 @inherits BlazorPlotBase
 
-
-
-<div oncontextmenu="return false;" onmousewheel="return false;" onmousedown="return false;" style=@Style>
-    <SKCanvasView @ref="SKView" style="width:inherit; height:inherit;" OnPaintSurface="OnPaintSurface" IgnorePixelScaling="true" EnableRenderLoop="EnableRenderLoop"
-    @onpointerdown="OnPointerPressed"
-    @onpointermove="OnPointerMoved"
-    @onpointerup="OnPointerReleased"
-    @onwheel="OnPointerWheelChanged"
-    @onkeydown="OnKeyDown"
-    @onkeyup="OnKeyUp" />
+<div oncontextmenu="return false;"
+     onmousewheel="return false;"
+     onmousedown="return false;"
+     style=@Style>
+    <SKCanvasView @ref="SKView"
+                  style="width:inherit; height:inherit;"
+                  OnPaintSurface="OnPaintSurface"
+                  IgnorePixelScaling="true"
+                  EnableRenderLoop="EnableRenderLoop"
+                  @onpointerdown="OnPointerPressed"
+                  @onpointermove="OnPointerMoved"
+                  @onpointerup="OnPointerReleased"
+                  @onwheel="OnPointerWheelChanged"
+                  @onkeydown="OnKeyDown"
+                  @onkeyup="OnKeyUp" />
 </div>
 
 @code {

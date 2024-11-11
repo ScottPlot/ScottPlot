@@ -36,6 +36,17 @@ public static class BlazorPlotExtensions
         processor.Process(action);
     }
 
+    public static ScottPlot.Interactivity.MouseButton ToScottPlotButton(this PointerEventArgs e)
+    {
+        return e.Button switch
+        {
+            0 => ScottPlot.Interactivity.StandardMouseButtons.Left,
+            1 => ScottPlot.Interactivity.StandardMouseButtons.Middle,
+            2 => ScottPlot.Interactivity.StandardMouseButtons.Right,
+            _ => new ScottPlot.Interactivity.MouseButton(e.Button.ToString())
+        };
+    }
+
     public static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, PointerEventArgs e)
     {
         Pixel pixel = e.ToPixel();
