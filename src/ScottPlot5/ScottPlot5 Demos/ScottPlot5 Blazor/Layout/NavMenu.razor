@@ -7,7 +7,7 @@
 
     @if (!IsMenuCollapsed)
     {
-        <img src="favicon.svg" height="36px" class="" />
+        <img src="favicon.svg" height="36" class="" />
         <div class="text-light fs-5">ScottPlot Blazor Demo</div>
     }
     <div class="burger">
@@ -165,8 +165,8 @@
 
     private IEnumerable<Query.RecipeInfo> AllRecipes = Query.GetRecipes().Where(x => x.Recipe.Name != "Signal Plot Performance");
     private IEnumerable<Query.RecipeInfo> FilteredRecipes = [];
-    private IEnumerable<string> GetFilteredRecipeChapters() => FilteredRecipes.Select(x => x.Chapter).Distinct();
-    private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter == chapter).Select(x => x.Category).Distinct();
+    private IEnumerable<string> GetFilteredRecipeChapters() => FilteredRecipes.Select(x => x.Chapter.PrettyName()).Distinct();
+    private IEnumerable<ICategory> GetFilteredRecipeCategories(string chapter) => FilteredRecipes.Where(x => x.Chapter.PrettyName() == chapter).Select(x => x.Category).Distinct();
     private IEnumerable<IRecipe> GetFilteredRecipes(ICategory category) => FilteredRecipes.Where(x => x.Category.CategoryName == category.CategoryName).Select(x => x.Recipe);
 
     /// <summary>
