@@ -196,7 +196,7 @@ public class UserInputProcessor
     /// </summary>
     public static void ResetState(IPlotControl plotControl)
     {
-        foreach(var response in plotControl.UserInputProcessor.UserActionResponses)
+        foreach (var response in plotControl.UserInputProcessor.UserActionResponses)
         {
             response.ResetState(plotControl.Plot);
         }
