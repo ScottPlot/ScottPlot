@@ -20,10 +20,15 @@ public class SignalConstSource<T>
         SegmentedTree.SourceArray = ys;
         MaxRenderIndex = ys.Length - 1;
     }
+
     public AxisLimits GetAxisLimits()
     {
         SegmentedTree.MinMaxRangeQuery(0, Ys.Length - 1, out double low, out double high);
-        return new AxisLimits(0, Ys.Length * Period, low, high);
+        return new AxisLimits(
+            left: 0 + XOffset,
+            right: Ys.Length * Period + XOffset,
+            bottom: low + YOffset,
+            top: high + YOffset);
     }
 
     public int GetIndex(double x, bool visibleDataOnly)
