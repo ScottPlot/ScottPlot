@@ -39,33 +39,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot Unit Tests", "Sco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Maui", "ScottPlot5 Controls\ScottPlot.Maui\ScottPlot.Maui.csproj", "{8635283C-4CA6-4C35-A3A7-39DFDD7A6196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interactivity Inspector", "ScottPlot5 Tests\InteractivityInspector\Interactivity Inspector.csproj", "{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interactivity Inspector", "ScottPlot5 Tests\InteractivityInspector\Interactivity Inspector.csproj", "{A45822CE-201C-4E92-99D9-5AFEEFA1A22B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{FE2AD947-D789-4A89-94CF-CFA5252E0579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Avalonia.Desktop", "ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\Sandbox.Avalonia.Desktop.csproj", "{6AA3DD67-F571-4942-B909-B6330C63C2C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Avalonia.Desktop", "ScottPlot5 Sandbox\Sandbox.Avalonia.Desktop\Sandbox.Avalonia.Desktop.csproj", "{6AA3DD67-F571-4942-B909-B6330C63C2C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Blazor.WebAssembly", "ScottPlot5 Sandbox\Sandbox.Blazor.WebAssembly\Sandbox.Blazor.WebAssembly.csproj", "{39E4A162-60F9-4030-B2A4-116EB0260552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Blazor.WebAssembly", "ScottPlot5 Sandbox\Sandbox.Blazor.WebAssembly\Sandbox.Blazor.WebAssembly.csproj", "{39E4A162-60F9-4030-B2A4-116EB0260552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Console", "ScottPlot5 Sandbox\Sandbox.Console\Sandbox.Console.csproj", "{D5BBB4D3-DFFA-4D0A-9801-5832114E2BDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Console", "ScottPlot5 Sandbox\Sandbox.Console\Sandbox.Console.csproj", "{D5BBB4D3-DFFA-4D0A-9801-5832114E2BDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Eto", "ScottPlot5 Sandbox\Sandbox.Eto\Sandbox.Eto.csproj", "{3D2CCC38-4772-4C7A-8751-B48BAD2BBC56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Eto", "ScottPlot5 Sandbox\Sandbox.Eto\Sandbox.Eto.csproj", "{3D2CCC38-4772-4C7A-8751-B48BAD2BBC56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Maui", "ScottPlot5 Sandbox\Sandbox.Maui\Sandbox.Maui.csproj", "{DACAF8CE-4F39-45F3-8B74-28BD9EE8F0E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Maui", "ScottPlot5 Sandbox\Sandbox.Maui\Sandbox.Maui.csproj", "{DACAF8CE-4F39-45F3-8B74-28BD9EE8F0E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.UnoPlatform", "ScottPlot5 Sandbox\Sandbox.UnoPlatform\Sandbox.UnoPlatform.csproj", "{B9302077-80E3-41CA-BD6C-AB309100D050}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.UnoPlatform", "ScottPlot5 Sandbox\Sandbox.UnoPlatform\Sandbox.UnoPlatform.csproj", "{B9302077-80E3-41CA-BD6C-AB309100D050}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WebApi", "ScottPlot5 Sandbox\Sandbox.WebApi\Sandbox.WebApi.csproj", "{192486BD-52BC-40C7-9A5B-6954EF833F40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WebApi", "ScottPlot5 Sandbox\Sandbox.WebApi\Sandbox.WebApi.csproj", "{192486BD-52BC-40C7-9A5B-6954EF833F40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\Sandbox.WinForms\Sandbox.WinForms.csproj", "{E271611E-DE1A-4DCC-9282-16DC65A50642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms", "ScottPlot5 Sandbox\Sandbox.WinForms\Sandbox.WinForms.csproj", "{E271611E-DE1A-4DCC-9282-16DC65A50642}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WinForms3D", "ScottPlot5 Sandbox\Sandbox.WinForms3D\Sandbox.WinForms3D.csproj", "{332BA229-271C-4AE2-B609-B3CC8570DCAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinForms3D", "ScottPlot5 Sandbox\Sandbox.WinForms3D\Sandbox.WinForms3D.csproj", "{332BA229-271C-4AE2-B609-B3CC8570DCAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WinUI.Desktop", "ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\Sandbox.WinUI.Desktop.csproj", "{A73C1B6D-9D0B-49DB-B919-B9DBEF532F30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinUI.Desktop", "ScottPlot5 Sandbox\Sandbox.WinUI.Desktop\Sandbox.WinUI.Desktop.csproj", "{A73C1B6D-9D0B-49DB-B919-B9DBEF532F30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WPF", "ScottPlot5 Sandbox\Sandbox.WPF\Sandbox.WPF.csproj", "{5B99FA47-23C1-45A0-BDE0-2F60A5B638B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WPF", "ScottPlot5 Sandbox\Sandbox.WPF\Sandbox.WPF.csproj", "{5B99FA47-23C1-45A0-BDE0-2F60A5B638B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.WinFormsFinance", "ScottPlot5 Sandbox\Sandbox.WinFormsFinance\Sandbox.WinFormsFinance.csproj", "{2C0B012F-36F4-416C-AC6C-BBF824343F2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.WinFormsFinance", "ScottPlot5 Sandbox\Sandbox.WinFormsFinance\Sandbox.WinFormsFinance.csproj", "{2C0B012F-36F4-416C-AC6C-BBF824343F2A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Blazor", "ScottPlot5 Sandbox\Sandbox.Blazor\Sandbox.Blazor.csproj", "{9648FD23-5093-49BF-ACD1-B2173A7DF856}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,6 +169,10 @@ Global
 		{2C0B012F-36F4-416C-AC6C-BBF824343F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C0B012F-36F4-416C-AC6C-BBF824343F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C0B012F-36F4-416C-AC6C-BBF824343F2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9648FD23-5093-49BF-ACD1-B2173A7DF856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9648FD23-5093-49BF-ACD1-B2173A7DF856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9648FD23-5093-49BF-ACD1-B2173A7DF856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9648FD23-5093-49BF-ACD1-B2173A7DF856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +203,7 @@ Global
 		{A73C1B6D-9D0B-49DB-B919-B9DBEF532F30} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 		{5B99FA47-23C1-45A0-BDE0-2F60A5B638B9} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 		{2C0B012F-36F4-416C-AC6C-BBF824343F2A} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
+		{9648FD23-5093-49BF-ACD1-B2173A7DF856} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
