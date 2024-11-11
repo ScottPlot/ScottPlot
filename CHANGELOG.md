@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.45
 _Not yet on NuGet..._
 * Candlestick: Improved performance for plots with large numbers of candles less than one pixel wide (#4483) @quantfreedom @VladislavPustovarov
+* Blazor: Added UI event handlers with names consistent with those of other controls (#4480) @Saklut
 
 ## ScottPlot 5.0.44
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-09_
