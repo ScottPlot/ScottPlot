@@ -16,6 +16,8 @@ public class MouseWheelZoom(Key horizontalLockKey, Key verticalLockKey) : IUserA
 
     Key LockVerticalKey { get; } = verticalLockKey;
 
+    public void ResetState(Plot plot) { }
+
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is UserActions.MouseWheelUp mouseDownInput)

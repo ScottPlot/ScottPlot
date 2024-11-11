@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Interactivity.UserActionResponses;
+using System.Reflection.Emit;
 
 namespace ScottPlot.Interactivity;
 
@@ -185,25 +186,23 @@ public class UserInputProcessor
 
     public Action<IPlotControl> LostFocusAction = (IPlotControl plotControl) =>
     {
-        var uiResponses = plotControl.UserInputProcessor.UserActionResponses;
-
-        foreach (var r in uiResponses.OfType<MouseDragZoomRectangle>())
-        {
-            r.Abort(plotControl.Plot);
-        }
-
-        foreach (var r in uiResponses.OfType<MouseDragPan>())
-        {
-            r.Abort();
-        }
-
-        foreach (var r in uiResponses.OfType<MouseDragZoom>())
-        {
-            r.Abort();
-        }
-
+        ResetState(plotControl);
         plotControl.Refresh();
     };
+
+    /// <summary>
+    /// Reset state of all user action responses to do things like 
+    /// abort mouse-down-drag actions or key press-and-hold actions
+    /// </summary>
+    public static void ResetState(IPlotControl plotControl)
+    {
+        foreach(var response in plotControl.UserInputProcessor.UserActionResponses)
+        {
+            response.ResetState(plotControl.Plot);
+        }
+
+        plotControl.UserInputProcessor.KeyState.Reset();
+    }
 
     public void ProcessLostFocus()
     {

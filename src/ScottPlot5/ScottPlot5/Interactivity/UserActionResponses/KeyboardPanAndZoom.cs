@@ -29,6 +29,8 @@ public class KeyboardPanAndZoom : IUserActionResponse
     public double DeltaZoomIn { get; set; } = 0.85f;
     public double DeltaZoomOut { get; set; } = 1.15f;
 
+    public void ResetState(Plot plot) { }
+
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is UserActions.KeyDown keyDown)

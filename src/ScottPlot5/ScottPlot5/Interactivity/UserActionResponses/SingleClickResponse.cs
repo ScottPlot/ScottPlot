@@ -17,6 +17,11 @@ public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action)
     /// </summary>
     private Pixel MouseDownPixel = Pixel.NaN;
 
+    public void ResetState(Plot plot)
+    {
+        MouseDownPixel = Pixel.NaN;
+    }
+
     public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction buttonAction && buttonAction.Button == MouseButton)

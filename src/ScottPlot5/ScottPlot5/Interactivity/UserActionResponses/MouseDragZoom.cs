@@ -41,9 +41,10 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     /// </summary>
     public double SensitivityY { get; set; } = 1.0;
 
-    public void Abort()
+    public void ResetState(Plot plot)
     {
         RememberedLimits = null;
+        MouseDownPixel = Pixel.NaN;
     }
 
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
