@@ -23,6 +23,8 @@ public class FastSignalSourceDouble : SignalSourceBase, ISignalSource, IDataSour
 
     public IEnumerable<double> GetYs(int i1, int i2)
     {
+        i1 = Math.Max(i1, MinRenderIndex);
+        i2 = Math.Min(i2, MaxRenderIndex);
         for (int i = i1; i <= i2; i++)
         {
             yield return Ys[i];
