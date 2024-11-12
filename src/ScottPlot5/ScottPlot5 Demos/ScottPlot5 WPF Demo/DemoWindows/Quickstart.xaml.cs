@@ -12,12 +12,7 @@ public partial class Quickstart : Window, IDemoWindow
     {
         InitializeComponent();
 
-        LabelStyle.RTLSupport = true;
-        var sig1 = WpfPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
-        var sig2 = WpfPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
-        sig1.LegendText = "אמת";
-        sig2.LegendText = "Engish";
-        WpfPlot1.Plot.Legend.FontSize = 40;
-        WpfPlot1.Plot.ShowLegend();
+        WpfPlot1.Plot.Add.Signal(ScottPlot.Generate.Sin());
+        WpfPlot1.Plot.Add.Signal(ScottPlot.Generate.Cos());
     }
 }

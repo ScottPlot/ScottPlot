@@ -25,6 +25,26 @@ public class Legend : ICategory
         }
     }
 
+    public class LegendWithRTLText : RecipeBase
+    {
+        public override string Name => "RTL text Legend Item";
+        public override string Description => "Enabling RTL support correctly renders text in RTL languages.";
+
+        [Test]
+        public override void Execute()
+        {
+            LabelStyle.RTLSupport = true;
+
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "אמת";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "English";
+
+            myPlot.ShowLegend();
+        }
+    }
+
     public class ManualLegend : RecipeBase
     {
         public override string Name => "Manual Legend Items";
