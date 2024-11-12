@@ -17,7 +17,8 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
+          dotnet-quality: "preview"
       - name: Build
         run: bash .github/workflows/scripts/check-build.sh
       - name: ScottPlot5 Unit Tests
