@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ScottPlot;
+using System.Windows;
 
 namespace WPF_Demo.DemoWindows;
 

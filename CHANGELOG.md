@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * Controls: Improve interactivity behavior by resetting drag events when interactivity is disabled (#4481) @hljlishen
 * SignalConst: Deprecated the `SignalConst` type in favor of a `Signal` with a `SignalConstSource` data source (#4492)
 * Signal: Refactored multiple signal plot and data source types for improved performance, increased customization, and better consistency (#4492) @StendProg
+* Text: Added a static `LabelStyle.RTLSupport` flag to enable support for right-to-left (RTL) languages (#4500, #4306) @StendProg @moranmono
 
 ## ScottPlot 5.0.44
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-09_
