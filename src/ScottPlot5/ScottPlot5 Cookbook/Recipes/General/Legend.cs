@@ -27,19 +27,20 @@ public class Legend : ICategory
 
     public class LegendWithRTLText : RecipeBase
     {
-        public override string Name => "RTL text Legend Item";
-        public override string Description => "Enabling RTL support correctly renders text in RTL languages.";
+        public override string Name => "Right To Left (RTL) text support";
+        public override string Description => "Enabling Right To Left (RTL) support " +
+            "correctly renders text in RTL languages.";
 
         [Test]
         public override void Execute()
         {
-            LabelStyle.RTLSupport = true;
+            LabelStyle.RTLSupport = true; // enable right-to-left text support
 
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
-            sig1.LegendText = "אמת";
+            sig1.LegendText = "אמת"; // example right-to-left text
 
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
-            sig2.LegendText = "English";
+            sig2.LegendText = "English"; // example left-to-right text
 
             myPlot.ShowLegend();
         }
