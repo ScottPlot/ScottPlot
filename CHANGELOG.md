@@ -4,6 +4,8 @@ _Not yet on NuGet..._
 * Blazor: Added UI event handlers with names consistent with those of other controls (#4480) @Saklut
 * SignalConst: Improve automatic axis limit detection when X and Y data offsets are used (#4485) @matej-mnoucek
 * Controls: Improve interactivity behavior by resetting drag events when interactivity is disabled (#4481) @hljlishen
+* SignalConst: Deprecated the `SignalConst` type in favor of a `Signal` with a `SignalConstSource` data source (#4492)
+* Signal: Refactored multiple signal plot and data source types for improved performance, increased customization, and better consistency (#4492) @StendProg
 
 ## ScottPlot 5.0.44
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-09_
