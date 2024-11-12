@@ -7,6 +7,9 @@ public class Label : LabelStyle { }
 
 public class LabelStyle
 {
+    /// <summary>
+    /// Set this to globally enable support for right-to-left (RTL) languages
+    /// </summary>
     public static bool RTLSupport { get; set; } = false;
     public bool IsVisible { get; set; } = true;
 
