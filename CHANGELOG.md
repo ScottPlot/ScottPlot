@@ -1,5 +1,8 @@
-## ScottPlot 5.0.45
+## ScottPlot 5.0.46
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.45
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-12_
 * Candlestick: Improved performance for plots with large numbers of candles less than one pixel wide (#4483) @quantfreedom @VladislavPustovarov
 * Blazor: Added UI event handlers with names consistent with those of other controls (#4480) @Saklut
 * SignalConst: Improve automatic axis limit detection when X and Y data offsets are used (#4485) @matej-mnoucek
