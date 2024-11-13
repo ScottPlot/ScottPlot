@@ -9,7 +9,13 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
 
     private Pixel MouseDownPixel = Pixel.NaN;
 
+    private Pixel LatestPixel = Pixel.NaN;
+
     private MultiAxisLimits? RememberedLimits = null;
+
+    private bool KeysThatLockXPressed { get; set; }
+
+    private bool KeysThatLockYPressed { get; set; }
 
     /// <summary>
     /// Vertical panning is disabled if any of these keys are pressed
@@ -45,8 +51,10 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             && mouseDownAction.IsPressed)
         {
             MouseDownPixel = mouseDownAction.Pixel;
+            LatestPixel = mouseDownAction.Pixel;
             RememberedLimits = new(plot);
 
+            UpdateLockKeyPressedState(keys);
             return ResponseInfo.NoActionRequired;
         }
 
@@ -58,9 +66,22 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
         {
             RememberedLimits.Recall();
             RememberedLimits = null;
+            LatestPixel = Pixel.NaN;
             ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
 
+            UpdateLockKeyPressedState(keys);
             return ResponseInfo.Refresh;
+        }
+
+        // Lock y or lock x axis key is pressed/unpressed while mouse down
+        if (RememberedLimits is not null && (KeysThatLockXPressed != keys.IsPressed(KeysThatLockX) ||
+            KeysThatLockYPressed != keys.IsPressed(KeysThatLockY)))
+        {
+            MouseDownPixel = LatestPixel;
+            RememberedLimits = new(plot);
+
+            UpdateLockKeyPressedState(keys);
+            return ResponseInfo.NoActionRequired;
         }
 
         // mouse move while dragging
@@ -78,7 +99,9 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             }
 
             RememberedLimits.Recall();
+            LatestPixel = mouseAction.Pixel;
             ApplyToPlot(plot, MouseDownPixel, mouseAction.Pixel, keys);
+            UpdateLockKeyPressedState(keys);
             return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }
 
@@ -98,5 +121,11 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
         }
 
         MouseAxisManipulation.DragPan(plot, px1, px2);
+    }
+
+    private void UpdateLockKeyPressedState(KeyboardState keys)
+    {
+        KeysThatLockXPressed = keys.IsPressed(KeysThatLockX);
+        KeysThatLockYPressed = keys.IsPressed(KeysThatLockY);
     }
 }
