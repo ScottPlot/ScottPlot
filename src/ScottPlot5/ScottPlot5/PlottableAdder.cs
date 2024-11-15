@@ -352,6 +352,18 @@ public class PlottableAdder(Plot plot)
         return streamer;
     }
 
+    public DataStreamerXY DataStreamerXY(int capacity)
+    {
+        DataStreamerXY streamer = new(capacity)
+        {
+            Color = GetNextColor(),
+        };
+
+        Plot.PlottableList.Add(streamer);
+
+        return streamer;
+    }
+
     public Ellipse Ellipse(Coordinates center, double radiusX, double radiusY, float rotation = 0)
     {
         Color color = GetNextColor();

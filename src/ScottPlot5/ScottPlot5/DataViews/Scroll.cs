@@ -34,5 +34,6 @@ public class Scroll : IDataStreamerView
 
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, points, Streamer.LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, points, Streamer.MarkerStyle);
     }
 }
