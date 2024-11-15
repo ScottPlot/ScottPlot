@@ -66,7 +66,7 @@ public class DataStreamerXY(int capacity) : IPlottable, IManagesAxisLimits, IHas
         Buffer.Add(point);
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         // TODO: move this logic inside the buffer and make it more effecient
         var pixels = Buffer._buffer.Select(Axes.GetPixel).OrderBy(pt => pt.X);
