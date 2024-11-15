@@ -1,6 +1,7 @@
 ## ScottPlot 5.0.46
 _Not yet on NuGet..._
 * Axes: Added support for displaying bitmaps as axis labels allowing rich text to be rendered using a third party package and displayed in any plot (#4503, #3222, #2905) @Liwr9537 @CBrauer @DaveMartel
+* DataStreamerXY: A new type of plottable for displaying streaming Y with unevenly spaced, user-defined X values (#4507, #4460) @dlampa
 
 ## ScottPlot 5.0.45
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-12_
