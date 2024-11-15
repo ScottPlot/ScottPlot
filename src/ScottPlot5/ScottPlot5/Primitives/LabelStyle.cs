@@ -88,6 +88,11 @@ public class LabelStyle
         }
     }
 
+    /// <summary>
+    /// If supplied, this label will be displayed as an image and its text and styling properties will be ignored
+    /// </summary>
+    public Image? Image { get; set; } = null;
+
     public static LabelStyle Default => new() { IsVisible = true, ForeColor = Colors.Black };
 
     /// <summary>
@@ -169,6 +174,18 @@ public class LabelStyle
 
     public MeasuredText Measure(string text, SKPaint paint)
     {
+        if (Image is not null)
+        {
+            return new MeasuredText()
+            {
+                Size = Image.Size,
+                LineHeight = Image.Height,
+                LineWidths = [Image.Width],
+                VerticalOffset = 0,
+                Bottom = 0,
+            };
+        }
+
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
@@ -245,7 +262,7 @@ public class LabelStyle
         if (!IsVisible)
             return;
 
-        if (string.IsNullOrEmpty(Text))
+        if (string.IsNullOrEmpty(Text) && Image is null)
             return;
 
         ApplyToPaint(paint);
@@ -258,10 +275,17 @@ public class LabelStyle
         canvas.Translate(px.X + OffsetX, px.Y + OffsetY);
         canvas.RotateDegrees(Rotation);
 
-        DrawBackground(canvas, px, paint, textRect);
-        DrawText(canvas, measured, paint, textRect, bottom);
-        DrawBorder(canvas, px, paint, textRect);
-        DrawPoint(canvas, px, paint);
+        if (Image is null)
+        {
+            DrawBackground(canvas, px, paint, textRect);
+            DrawText(canvas, measured, paint, textRect, bottom);
+            DrawBorder(canvas, px, paint, textRect);
+            DrawPoint(canvas, px, paint);
+        }
+        else
+        {
+            Image.Render(canvas, textRect, paint, false);
+        }
 
         canvasState.Restore();
     }
