@@ -1,6 +1,5 @@
 ﻿using ScottPlot.AxisLimitManagers;
 using ScottPlot.DataSources;
-using System.Runtime.CompilerServices;
 
 namespace ScottPlot.Plottables;
 
