@@ -12,7 +12,22 @@ public class SignalConst<T> : Signal, IPlottable, IHasLine, IHasMarker, IHasLege
     {
     }
 
-    public SignalConst(T[] ys, double period) : this(new SignalConstSource<T>(ys, period))
+    /// <summary>
+    /// Setting this flag causes lines to be drawn between every visible point
+    /// (similar to scatter plots) to improve anti-aliasing in static images.
+    /// Setting this will decrease performance for large datasets 
+    /// and is not recommended for interactive environments.
+    /// </summary>
+    public bool AlwaysUseLowDensityMode { get; set; } = false;
+
+    public bool IsVisible { get; set; } = true;
+    public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
+
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this,LegendText, MarkerStyle, LineStyle);
+
+    public AxisLimits GetAxisLimits() => Data.GetAxisLimits();
+
+    public virtual void Render(RenderPack rp)
     {
     }
 }

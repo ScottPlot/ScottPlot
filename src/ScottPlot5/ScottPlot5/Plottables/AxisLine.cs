@@ -74,6 +74,7 @@ public abstract class AxisLine : LabelStyleProperties, IPlottable, IRenderLast, 
         {
             return LegendItem.Single(new LegendItem()
             {
+                Parent = this,
                 LabelText = ExcludeFromLegend ? string.Empty : LegendText,
                 LineStyle = LineStyle,
                 MarkerStyle = MarkerStyle.None,
