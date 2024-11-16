@@ -45,12 +45,19 @@ public class FormsPlotMenu : IPlotMenu
             OnInvoke = OpenInNewWindow,
         };
 
+         ContextMenuItem detachLegend = new()
+        {
+            Label = "Detach Legend",
+            OnInvoke = DetachLegend,
+        };
+
         return new List<ContextMenuItem>()
         {
             saveImage,
             copyImage,
             autoscale,
             newWindow,
+            detachLegend,
         };
     }
 
@@ -64,6 +71,12 @@ public class FormsPlotMenu : IPlotMenu
     public void OpenInNewWindow(IPlotControl plotControl)
     {
         FormsPlotViewer.Launch(plotControl.Plot, "Interactive Plot");
+        plotControl.Refresh();
+    }
+
+    public void DetachLegend(IPlotControl plotControl)
+    {
+        FormsPlotLegendViewer fplv = new FormsPlotLegendViewer(plotControl, "Detached Legend");
         plotControl.Refresh();
     }
 
