@@ -54,7 +54,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
     {
         set
         {
-            FallingFillStyle.Color = value;
+            FallingLineStyle.Color = value;
             FallingFillStyle.Color = value;
         }
     }
