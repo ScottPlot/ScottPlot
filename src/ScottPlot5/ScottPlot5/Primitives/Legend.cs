@@ -6,6 +6,8 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     public bool IsVisible { get; set; } = true;
 
+    public bool IsDetached { get; set; } = false;
+
     /// <summary>
     /// Position of the legend relative to the data area
     /// </summary>
@@ -123,7 +125,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         if (DisplayPlottableLegendItems)
         {
             var plottableLegendItems = Plot.PlottableList
-                        .Where(item => item.IsVisible)
+                        // .Where(item => item.IsVisible)
                         .SelectMany(x => x.LegendItems)
                         .Where(x => !string.IsNullOrEmpty(x.LabelText));
 
@@ -132,7 +134,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
         items.AddRange(ManualItems);
 
-        items = items.Where(x => x.IsVisible).ToList();
+        items = items.Where(x => x.IsVisible || x.IsToggled).ToList();
 
         if (SetBestFontOnEachRender)
         {
