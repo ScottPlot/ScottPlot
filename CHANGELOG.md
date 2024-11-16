@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * DataLogger: Added `InvertX` and `InvertY` flags to control automatic axis limit management behavior (#4513) @Jofstera
 * Controls: Updated mouse wheel scroll fractions so zoom-out wheel events more accurately reverse zoom-in wheel events (#4516) @quantfreedom
 * Candlestick: Updated `FallingColor` property to change both the fill and line colors with one assignment (#4521) @czastack
+* Interactivity: Mouse click times in double-click events no longer resets after losing focus, improving double-click behavior in WPF controls (#4524) @onur-akaydin
 
 ## ScottPlot 5.0.45
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-12_

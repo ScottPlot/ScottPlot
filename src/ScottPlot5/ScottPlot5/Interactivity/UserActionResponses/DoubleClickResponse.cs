@@ -25,8 +25,9 @@ public class DoubleClickResponse(MouseButton button, Action<Plot, Pixel> action)
 
     public void ResetState(Plot plot)
     {
-        LatestMouseDownTime = DateTime.MinValue;
-        PreviousMouseDownTime = DateTime.MinValue;
+        // Don't reset mouse click times because resets may occur after MouseUp events
+        // and double-clicks are unlikely to last long enouigh to persist through legitimate resets.
+        // https://github.com/ScottPlot/ScottPlot/issues/4524
     }
 
     public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
