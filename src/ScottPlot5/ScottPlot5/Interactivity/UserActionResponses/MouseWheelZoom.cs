@@ -18,20 +18,28 @@ public class MouseWheelZoom(Key horizontalLockKey, Key verticalLockKey) : IUserA
 
     public void ResetState(Plot plot) { }
 
+    /// <summary>
+    /// Fraction of the axis range to change when zooming in and out.
+    /// </summary>
+    public double ZoomFraction { get; set; } = 0.15;
+
+    private double ZoomInFraction => 1 + ZoomFraction;
+    private double ZoomOutFraction => 1 / ZoomInFraction;
+
     public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is UserActions.MouseWheelUp mouseDownInput)
         {
-            double xFrac = keys.IsPressed(LockHorizontalKey) ? 1 : 1.15;
-            double yFrac = keys.IsPressed(LockVerticalKey) ? 1 : 1.15;
+            double xFrac = keys.IsPressed(LockHorizontalKey) ? 1 : ZoomInFraction;
+            double yFrac = keys.IsPressed(LockVerticalKey) ? 1 : ZoomInFraction;
             MouseAxisManipulation.MouseWheelZoom(plot, xFrac, yFrac, mouseDownInput.Pixel, LockParallelAxes);
             return new ResponseInfo() { RefreshNeeded = true };
         }
 
         if (userInput is UserActions.MouseWheelDown mouseUpInput)
         {
-            double xFrac = keys.IsPressed(LockHorizontalKey) ? 1 : 0.85;
-            double yFrac = keys.IsPressed(LockVerticalKey) ? 1 : 0.85;
+            double xFrac = keys.IsPressed(LockHorizontalKey) ? 1 : ZoomOutFraction;
+            double yFrac = keys.IsPressed(LockVerticalKey) ? 1 : ZoomOutFraction;
             MouseAxisManipulation.MouseWheelZoom(plot, xFrac, yFrac, mouseUpInput.Pixel, LockParallelAxes);
             return new ResponseInfo() { RefreshNeeded = true };
         }

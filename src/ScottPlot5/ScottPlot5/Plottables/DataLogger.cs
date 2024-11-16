@@ -26,6 +26,9 @@ public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IMa
 
     public bool HasNewData => Data.HasNewData;
 
+    public bool InvertX { get; set; } = false;
+    public bool InvertY { get; set; } = false;
+
     /// <summary>
     /// The style of lines to use when connecting points.
     /// </summary>
@@ -226,12 +229,12 @@ public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IMa
             (newRangeX, newRangeY) = (newRangeY, newRangeX);
         }
 
-        if (Axes.XAxis.IsInverted())
+        if (InvertX)
         {
             newRangeX = new(newRangeX.Max, newRangeX.Min);
         }
 
-        if (Axes.YAxis.IsInverted())
+        if (InvertY)
         {
             newRangeY = new(newRangeY.Max, newRangeY.Min);
         }
