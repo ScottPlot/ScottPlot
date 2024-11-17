@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.47
 _Not yet on NuGet..._
+* Reporting: Created to `ScottPlot.Reporting` to work toward enabling reports (plots paired with information) which may be viewed interactively in GUI environments or exported as static images in HTML, Markdown, or PDF documents
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
