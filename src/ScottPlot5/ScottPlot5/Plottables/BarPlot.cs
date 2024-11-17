@@ -65,7 +65,7 @@ public class BarPlot : IPlottable, IHasLegendText
 
             LegendItem item = new()
             {
-                Parent = this,
+                Plottable = this,
                 LabelText = LegendText,
                 FillColor = Bars.First().FillColor,
             };

@@ -3,7 +3,12 @@
 public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, IHasArrow, IHasLabel
 {
     public bool IsVisible { get; set; } = true;
-    public IPlottable? Parent ;
+
+    /// <summary>
+    /// Plottable this legend item is associated with
+    /// </summary>
+    public IPlottable? Plottable { get; set; } = null;
+
     public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
 
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
@@ -58,11 +63,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
 
     public static IEnumerable<LegendItem> Single(LegendItem item) => [item];
 
-    public static IEnumerable<LegendItem> Single(IPlottable parent, string label, MarkerStyle markerStyle)
+    public static IEnumerable<LegendItem> Single(IPlottable plottable, string label, MarkerStyle markerStyle)
     {
         LegendItem item = new()
         {
-            Parent = parent,
+            Plottable = plottable,
             LabelText = label,
             MarkerStyle = markerStyle,
             LineStyle = LineStyle.None,
@@ -71,11 +76,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
         return Single(item);
     }
 
-    public static IEnumerable<LegendItem> Single(IPlottable parent, string label, MarkerStyle markerStyle, LineStyle lineStyle)
+    public static IEnumerable<LegendItem> Single(IPlottable plottable, string label, MarkerStyle markerStyle, LineStyle lineStyle)
     {
         LegendItem item = new()
         {
-            Parent = parent,
+            Plottable = plottable,
             LabelText = label,
             MarkerStyle = markerStyle,
             LineStyle = lineStyle,
@@ -84,11 +89,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
         return Single(item);
     }
 
-    public static IEnumerable<LegendItem> Single(IPlottable parent, string label, LineStyle lineStyle)
+    public static IEnumerable<LegendItem> Single(IPlottable plottable, string label, LineStyle lineStyle)
     {
         LegendItem item = new()
         {
-            Parent = parent,
+            Plottable = plottable,
             LabelText = label,
             MarkerStyle = MarkerStyle.None,
             LineStyle = lineStyle,
@@ -97,11 +102,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
         return Single(item);
     }
 
-    public static IEnumerable<LegendItem> Single(IPlottable parent, string label, FillStyle fillStyle)
+    public static IEnumerable<LegendItem> Single(IPlottable plottable, string label, FillStyle fillStyle)
     {
         LegendItem item = new()
         {
-            Parent = parent,
+            Plottable = plottable,
             LabelText = label,
             MarkerStyle = MarkerStyle.None,
             FillStyle = fillStyle,
@@ -111,11 +116,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
         return Single(item);
     }
 
-    public static IEnumerable<LegendItem> Single(IPlottable parent, string label, FillStyle fillStyle, LineStyle lineStyle)
+    public static IEnumerable<LegendItem> Single(IPlottable plottable, string label, FillStyle fillStyle, LineStyle lineStyle)
     {
         LegendItem item = new()
         {
-            Parent = parent,
+            Plottable = plottable,
             LabelText = label,
             MarkerStyle = MarkerStyle.None,
             FillStyle = fillStyle,
@@ -125,11 +130,11 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
         return Single(item);
     }
 
-    public static IEnumerable<LegendItem> Single(IPlottable parent, string label, LineStyle lineStyle, MarkerStyle markerStyle)
+    public static IEnumerable<LegendItem> Single(IPlottable plottable, string label, LineStyle lineStyle, MarkerStyle markerStyle)
     {
         LegendItem item = new()
         {
-            Parent = parent,
+            Plottable = plottable,
             LabelText = label,
             MarkerStyle = markerStyle,
             LineStyle = lineStyle,
