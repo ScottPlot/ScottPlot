@@ -6,8 +6,6 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     public bool IsVisible { get; set; } = true;
 
-    public bool IsDetached { get; set; } = false;
-
     /// <summary>
     /// Position of the legend relative to the data area
     /// </summary>
