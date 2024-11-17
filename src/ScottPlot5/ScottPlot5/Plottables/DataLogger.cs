@@ -51,7 +51,7 @@ public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IMa
     public string Label { get => LegendText; set => LegendText = value; }
     public string LegendText { get; set; } = string.Empty;
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this,LegendText, LineStyle, MarkerStyle);
 
     public AxisLimits GetAxisLimits()
     {
