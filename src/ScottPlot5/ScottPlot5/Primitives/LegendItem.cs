@@ -3,7 +3,6 @@
 public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, IHasArrow, IHasLabel
 {
     public bool IsVisible { get; set; } = true;
-    public bool IsToggled {get;set;} = true;
     public IPlottable? Parent ;
     public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
 
