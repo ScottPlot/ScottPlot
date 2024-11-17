@@ -45,7 +45,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
         }
     }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this,LegendText, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle);
 
     public AxisLimits GetAxisLimits()
     {

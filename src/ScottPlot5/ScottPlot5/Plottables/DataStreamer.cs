@@ -7,7 +7,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this,LegendText, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle);
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
