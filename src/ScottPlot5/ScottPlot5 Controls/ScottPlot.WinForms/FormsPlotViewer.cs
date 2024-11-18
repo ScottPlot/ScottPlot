@@ -6,6 +6,7 @@ public static class FormsPlotViewer
 {
     public static Form CreateForm(Plot plot, string title = "", int width = 600, int height = 400)
     {
+        IPlotControl? originControl = plot.PlotControl;
         FormsPlot formsPlot = new() { Dock = DockStyle.Fill };
         formsPlot.Reset(plot);
 
@@ -16,7 +17,8 @@ public static class FormsPlotViewer
             Height = height,
             Text = title,
         };
-
+        form.FormClosed += (s, e) => plot.PlotControl = originControl;
+        
         form.Controls.Add(formsPlot);
 
         return form;
