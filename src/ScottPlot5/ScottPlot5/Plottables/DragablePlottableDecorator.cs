@@ -10,7 +10,7 @@
             {
                 _ = GetOffset();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ArgumentOutOfRangeException($"Unsupported plottable to drag: {plottable}");
             }
