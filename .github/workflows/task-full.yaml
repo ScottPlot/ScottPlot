@@ -24,8 +24,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0"
-          dotnet-quality: "preview"
+          dotnet-version: "8.0"
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Setup Java

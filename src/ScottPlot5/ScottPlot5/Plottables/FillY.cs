@@ -8,7 +8,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, FillStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, FillStyle, LineStyle);
 
     private Polygon Poly { get; set; } = Polygon.Empty;
 

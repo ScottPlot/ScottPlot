@@ -12,7 +12,7 @@ public class BoxPlot : IPlottable, IHasLegendText
     public string Label { get => LegendText; set => LegendText = value; }
     public string LegendText { get; set; } = string.Empty;
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, Boxes.First().FillStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, Boxes.First().FillStyle);
 
     public readonly List<Box> Boxes = [];
 

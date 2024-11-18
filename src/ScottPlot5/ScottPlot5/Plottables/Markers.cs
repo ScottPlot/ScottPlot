@@ -32,7 +32,7 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, MarkerStyle);
 
     public virtual void Render(RenderPack rp)
     {

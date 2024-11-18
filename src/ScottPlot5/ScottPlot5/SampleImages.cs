@@ -1,4 +1,6 @@
-﻿namespace ScottPlot;
+﻿using System.Runtime.InteropServices;
+
+namespace ScottPlot;
 
 public class SampleImages
 {
@@ -84,5 +86,49 @@ public class SampleImages
 
         fillStyle.ApplyToPaint(paint, canvasRect);
         canvas.DrawPath(path, paint);
+    }
+
+    public static Image NoiseGrayscale(int width, int height, int seed = 0)
+    {
+        RandomDataGenerator gen = new(seed);
+
+        byte[,] noise = new byte[height, width];
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                noise[y, x] = gen.RandomByte();
+            }
+        }
+
+        return new Image(noise);
+    }
+
+    public static Image NoisyText(string text, int width, int height)
+    {
+        PixelRect rect = new(0, width, height, 0);
+        using SKSurface surface = Drawing.CreateSurface((int)rect.Width, (int)rect.Height);
+        using SKCanvas canvas = surface.Canvas;
+        using SKPaint paint = new();
+
+        Image noiseImage = NoiseGrayscale(width, height);
+        noiseImage.Render(canvas, rect, paint, false);
+
+        paint.Color = Colors.LightBlue.WithAlpha(.5).ToSKColor();
+        Drawing.DrawRectangle(canvas, rect, paint);
+        Drawing.DrawDebugRectangle(canvas, rect);
+
+        LabelStyle label = new()
+        {
+            Alignment = Alignment.MiddleCenter,
+            ForeColor = Colors.Navy,
+            FontSize = 36,
+            Bold = true,
+        };
+
+        label.Render(canvas, rect.Center, paint, text);
+
+        Image img = new(surface);
+        return img;
     }
 }

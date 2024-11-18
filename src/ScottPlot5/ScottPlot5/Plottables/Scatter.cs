@@ -124,7 +124,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             top: limits.Top * ScaleY + OffsetY);
     }
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, MarkerStyle, LineStyle);
 
     private Gradient CreateXAxisGradient(RenderPack rp)
     {

@@ -9,7 +9,7 @@ public class TINPlot : IPlottable
     public IAxes Axes { get; set; } = new Axes();
 
     public AxisLimits GetAxisLimits() => TIN.AxisLimits.AxisLimits2d;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, MarkerStyle);
 
     public double ContourLineInterval { get; set; } = 0.25;
 

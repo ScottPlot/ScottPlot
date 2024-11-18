@@ -1,14 +1,13 @@
 ﻿using ScottPlot.AxisLimitManagers;
 using ScottPlot.DataSources;
-using System.Runtime.CompilerServices;
 
 namespace ScottPlot.Plottables;
 
-public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendText
+public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegendText, IHasMarker
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = ScottPlot.Axes.Default;
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle);
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -19,7 +18,23 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
-    public Color Color { get => LineStyle.Color; set => LineStyle.Color = value; }
+    public MarkerStyle MarkerStyle { get; set; } = new(MarkerShape.FilledCircle, 0);
+    public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
+    public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
+    public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
+    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
+    public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
+    public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
+
+    public Color Color
+    {
+        get => LineStyle.Color;
+        set
+        {
+            LineColor = value;
+            MarkerFillColor = value;
+        }
+    }
 
     public DataStreamerSource Data { get; set; }
     public int Count => Data.Length;
