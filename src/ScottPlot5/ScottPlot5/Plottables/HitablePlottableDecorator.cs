@@ -38,7 +38,7 @@
             return false;
         }
 
-        public void Render(RenderPack rp)
+        public virtual void Render(RenderPack rp)
         {
             Source.Render(rp);
             _bitmap?.Dispose();
