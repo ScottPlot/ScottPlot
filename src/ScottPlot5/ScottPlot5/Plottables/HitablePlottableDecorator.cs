@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottables
+﻿using System.Threading.Tasks;
+
+namespace ScottPlot.Plottables
 {
     public class HitablePlottableDecorator : IPlottable, IDisposable
     {
@@ -42,23 +44,26 @@
         public virtual void Render(RenderPack rp)
         {
             Source.Render(rp);
-            SKBitmap bitmapBuf = new SKBitmap((int)rp.FigureRect.Width, (int)rp.FigureRect.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            using (var hitCanvas = new SKCanvas(bitmapBuf))
+            Task.Run(() =>
             {
-                hitCanvas.Clear(new SKColor(255, 255, 255, 0));
-                using (RenderPack rpHitable = new RenderPack(rp.Plot, rp.FigureRect, hitCanvas))
+                SKBitmap bitmapBuf = new SKBitmap((int)rp.FigureRect.Width, (int)rp.FigureRect.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
+                using (var hitCanvas = new SKCanvas(bitmapBuf))
                 {
-                    rpHitable.CalculateLayout();
-                    rpHitable.CanvasState.Clip(rpHitable.DataRect);
-                    Source.Render(rpHitable);
-                    rpHitable.CanvasState.DisableClipping();
+                    hitCanvas.Clear(new SKColor(255, 255, 255, 0));
+                    using (RenderPack rpHitable = new RenderPack(rp.Plot, rp.FigureRect, hitCanvas))
+                    {
+                        rpHitable.CalculateLayout();
+                        rpHitable.CanvasState.Clip(rpHitable.DataRect);
+                        Source.Render(rpHitable);
+                        rpHitable.CanvasState.DisableClipping();
+                    }
                 }
-            }
-            lock (_lock)
-            {
-                _bitmap?.Dispose();
-                _bitmap = bitmapBuf;
-            }
+                lock (_lock)
+                {
+                    _bitmap?.Dispose();
+                    _bitmap = bitmapBuf;
+                }
+            });
         }
 
         public void Dispose()
