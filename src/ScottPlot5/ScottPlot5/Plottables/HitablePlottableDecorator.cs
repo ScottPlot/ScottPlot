@@ -26,15 +26,16 @@ namespace ScottPlot.Plottables
 
             lock (_lock)
             {
-                for (int i = (int)(mouseX - span / 2); i < mouseX + span / 2; i++)
+                int fromX = Math.Max(0, (int)(mouseX - span / 2));
+                int toX = Math.Min(_bitmap.Width, (int)(mouseX + span / 2));
+                int fromY = Math.Max(0, (int)(mouseY - span / 2));
+                int toY = Math.Min(_bitmap.Height, (int)(mouseY + span / 2));
+                for (int i = fromX; i < toX; i++)
                 {
-                    for (int j = (int)(mouseY - span / 2); j < mouseY + span / 2; j++)
+                    for (int j = fromY; j < toY; j++)
                     {
-                        if (i >= 0 && i < _bitmap.Width && j >= 0 && j < _bitmap.Height)
-                        {
-                            if (_bitmap.GetPixel(i, j).Alpha != 0)
-                                return true;
-                        }
+                        if (_bitmap.GetPixel(i, j).Alpha != 0)
+                            return true;
                     }
                 }
                 return false;
