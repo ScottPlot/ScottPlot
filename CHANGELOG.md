@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.47
 _Not yet on NuGet..._
+* Controls: Fix issue preventing the context menu from appearing after it was used to open a new window (#4529) @david3951445
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
