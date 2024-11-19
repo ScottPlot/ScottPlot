@@ -31,110 +31,66 @@
 
         private Coordinates GetOffset()
         {
-            if (Source is Signal s)
+            return Source switch
             {
-                return new Coordinates(s.Data.XOffset, s.Data.YOffset);
-            }
-            if (Source is SignalXY sxy)
-            {
-                return new Coordinates(sxy.Data.XOffset, sxy.Data.YOffset);
-            }
-            if (Source is Arrow arrow)
-            {
-                return new Coordinates(arrow.Base.X, arrow.Base.Y);
-            }
-            if (Source is DataLogger dataLogger)
-            {
-                return new Coordinates(dataLogger.Data.XOffset, dataLogger.Data.YOffset);
-            }
-            if (Source is DataStreamer dataStreamer)
-            {
-                return new Coordinates(dataStreamer.Data.OffsetX, dataStreamer.Data.OffsetY);
-            }
-            if (Source is Ellipse ellipse)
-            {
-                return new Coordinates(ellipse.Center.X, ellipse.Center.Y);
-            }
-            if (Source is ImageMarker imageMarker)
-            {
-                return new Coordinates(imageMarker.Location.X, imageMarker.Location.Y);
-            }
-            if (Source is Marker marker)
-            {
-                return new Coordinates(marker.X, marker.Y);
-            }
-            if (Source is Scatter scatter)
-            {
-                return new Coordinates(scatter.OffsetX, scatter.OffsetY);
-            }
-            if (Source is Text text)
-            {
-                return text.Location;
-            }
-
-            throw new Exception($"Unsupported Source plotttable {Source}");
+                Signal s => new Coordinates(s.Data.XOffset, s.Data.YOffset),
+                SignalXY sxy => new Coordinates(sxy.Data.XOffset, sxy.Data.YOffset),
+                Arrow arrow => new Coordinates(arrow.Base.X, arrow.Base.Y),
+                DataLogger dataLogger => new Coordinates(dataLogger.Data.XOffset, dataLogger.Data.YOffset),
+                DataStreamer dataStreamer => new Coordinates(dataStreamer.Data.OffsetX, dataStreamer.Data.OffsetY),
+                Ellipse ellipse => new Coordinates(ellipse.Center.X, ellipse.Center.Y),
+                ImageMarker imageMarker => new Coordinates(imageMarker.Location.X, imageMarker.Location.Y),
+                Marker marker => new Coordinates(marker.X, marker.Y),
+                Scatter scatter => new Coordinates(scatter.OffsetX, scatter.OffsetY),
+                Text text => text.Location,
+                _ => throw new Exception($"Unsupported Source plotttable {Source}")
+            };
         }
 
         private void SetOffset(double offsetX, double offsetY)
         {
-            if (Source is Signal s)
+            switch (Source)
             {
-                s.Data.XOffset = offsetX;
-                s.Data.YOffset = offsetY;
-                return;
+                case Signal s:
+                    s.Data.XOffset = offsetX;
+                    s.Data.YOffset = offsetY;
+                    return;
+                case SignalXY sxy:
+                    sxy.Data.XOffset = offsetX;
+                    sxy.Data.YOffset = offsetY;
+                    return;
+                case Arrow arrow:
+                    arrow.Base = new Coordinates(offsetX, offsetY);
+                    return;
+                case DataLogger dataLogger:
+                    dataLogger.Data.XOffset = offsetX;
+                    dataLogger.Data.YOffset = offsetY;
+                    return;
+                case DataStreamer dataStreamer:
+                    dataStreamer.Data.OffsetX = offsetX;
+                    dataStreamer.Data.OffsetY = offsetY;
+                    return;
+                case Ellipse ellipse:
+                    ellipse.Center.X = offsetX;
+                    ellipse.Center.Y = offsetY;
+                    return;
+                case ImageMarker imageMarker:
+                    imageMarker.Location = new Coordinates(offsetX, offsetY);
+                    return;
+                case Marker marker:
+                    marker.X = offsetX;
+                    marker.Y = offsetY;
+                    return;
+                case Scatter scatter:
+                    scatter.OffsetX = offsetX;
+                    scatter.OffsetY = offsetY;
+                    return;
+                case Text text:
+                    text.Location = new Coordinates(offsetX, offsetY);
+                    return;
+                default:
+                    throw new Exception($"Unsupported Source plotttable {Source}");
             }
-            if (Source is SignalXY sxy)
-            {
-                sxy.Data.XOffset = offsetX;
-                sxy.Data.YOffset = offsetY;
-                return;
-            }
-            if (Source is Arrow arrow)
-            {
-                arrow.Base = new Coordinates(offsetX, offsetY);
-                return;
-            }
-            if (Source is DataLogger dataLogger)
-            {
-                dataLogger.Data.XOffset = offsetX;
-                dataLogger.Data.YOffset = offsetY;
-                return;
-            }
-            if (Source is DataStreamer dataStreamer)
-            {
-                dataStreamer.Data.OffsetX = offsetX;
-                dataStreamer.Data.OffsetY = offsetY;
-                return;
-            }
-            if (Source is Ellipse ellipse)
-            {
-                ellipse.Center.X = offsetX;
-                ellipse.Center.Y = offsetY;
-                return;
-            }
-            if (Source is ImageMarker imageMarker)
-            {
-                imageMarker.Location = new Coordinates(offsetX, offsetY);
-                return;
-            }
-            if (Source is Marker marker)
-            {
-                marker.X = offsetX;
-                marker.Y = offsetY;
-                return;
-            }
-            if (Source is Scatter scatter)
-            {
-                scatter.OffsetX = offsetX;
-                scatter.OffsetY = offsetY;
-                return;
-            }
-            if (Source is Text text)
-            {
-                text.Location = new Coordinates(offsetX, offsetY);
-                return;
-            }
-            throw new Exception($"Unsupported Source plotttable {Source}");
         }
     }
 }
