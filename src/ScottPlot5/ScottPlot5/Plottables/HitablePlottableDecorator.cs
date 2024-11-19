@@ -46,12 +46,12 @@
             using (var hitCanvas = new SKCanvas(_bitmap))
             {
                 hitCanvas.Clear(new SKColor(255, 255, 255, 0));
-                using (RenderPack rpHittable = new RenderPack(rp.Plot, rp.FigureRect, hitCanvas))
+                using (RenderPack rpHitable = new RenderPack(rp.Plot, rp.FigureRect, hitCanvas))
                 {
-                    rpHittable.CalculateLayout();
-                    rpHittable.CanvasState.Clip(rp.DataRect);
-                    Source.Render(rpHittable);
-                    rpHittable.CanvasState.DisableClipping();
+                    rpHitable.CalculateLayout();
+                    rpHitable.CanvasState.Clip(rpHitable.DataRect);
+                    Source.Render(rpHitable);
+                    rpHitable.CanvasState.DisableClipping();
                 }
             }
         }
