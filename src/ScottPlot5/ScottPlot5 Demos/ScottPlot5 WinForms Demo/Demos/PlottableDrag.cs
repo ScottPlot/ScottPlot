@@ -67,7 +67,7 @@ public partial class PlottableDrag : Form, IDemoWindow
 
     private void FormsPlot1_MouseDown(object? sender, MouseEventArgs e)
     {
-        foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<HitablePlottableDecorator>().Reverse())
+        foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>().Reverse())
         {
             if (dp.IsHit(e.X, e.Y, 10))
             {
@@ -92,7 +92,7 @@ public partial class PlottableDrag : Form, IDemoWindow
         // update the cursor to reflect what is beneath it
         if (PlottableBeingDragged is null)
         {
-            foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<HitablePlottableDecorator>())
+            foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>())
             {
                 if (dp.IsHit(e.X, e.Y, 10))
                 {
