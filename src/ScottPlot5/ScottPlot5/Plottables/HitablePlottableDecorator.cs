@@ -2,6 +2,7 @@
 {
     public class HitablePlottableDecorator : IPlottable, IDisposable
     {
+        private object _lock = new object();
         private SKBitmap? _bitmap;
         public IPlottable Source { get; }
         public bool IsVisible { get => Source.IsVisible; set => Source.IsVisible = value; }
@@ -9,10 +10,7 @@
 
         public IEnumerable<LegendItem> LegendItems => Source.LegendItems;
 
-        public AxisLimits GetAxisLimits()
-        {
-            return Source.GetAxisLimits();
-        }
+        public AxisLimits GetAxisLimits() => Source.GetAxisLimits();
 
         public HitablePlottableDecorator(IPlottable plottable)
         {
@@ -24,26 +22,28 @@
             if (_bitmap == null)
                 return false;
 
-            for (int i = (int)(mouseX - span / 2); i < mouseX + span / 2; i++)
+            lock (_lock)
             {
-                for (int j = (int)(mouseY - span / 2); j < mouseY + span / 2; j++)
+                for (int i = (int)(mouseX - span / 2); i < mouseX + span / 2; i++)
                 {
-                    if (i >= 0 && i < _bitmap.Width && j >= 0 && j < _bitmap.Height)
+                    for (int j = (int)(mouseY - span / 2); j < mouseY + span / 2; j++)
                     {
-                        if (_bitmap.GetPixel(i, j).Alpha != 0)
-                            return true;
+                        if (i >= 0 && i < _bitmap.Width && j >= 0 && j < _bitmap.Height)
+                        {
+                            if (_bitmap.GetPixel(i, j).Alpha != 0)
+                                return true;
+                        }
                     }
                 }
+                return false;
             }
-            return false;
         }
 
         public virtual void Render(RenderPack rp)
         {
             Source.Render(rp);
-            _bitmap?.Dispose();
-            _bitmap = new SKBitmap((int)rp.FigureRect.Width, (int)rp.FigureRect.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            using (var hitCanvas = new SKCanvas(_bitmap))
+            SKBitmap bitmapBuf = new SKBitmap((int)rp.FigureRect.Width, (int)rp.FigureRect.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
+            using (var hitCanvas = new SKCanvas(bitmapBuf))
             {
                 hitCanvas.Clear(new SKColor(255, 255, 255, 0));
                 using (RenderPack rpHitable = new RenderPack(rp.Plot, rp.FigureRect, hitCanvas))
@@ -53,6 +53,11 @@
                     Source.Render(rpHitable);
                     rpHitable.CanvasState.DisableClipping();
                 }
+            }
+            lock (_lock)
+            {
+                _bitmap?.Dispose();
+                _bitmap = bitmapBuf;
             }
         }
 
