@@ -2,9 +2,13 @@
 
 namespace ScottPlot.Plottables
 {
+    /// <summary>
+    /// This class wraps an <see cref="IPlottable"/> to give it a 
+    /// pixel-based hit detection map that can be used for mouse interaction
+    /// </summary>
     public class HitablePlottableDecorator : IPlottable, IDisposable
     {
-        private object _lock = new object();
+        private readonly object _lock = new();
         private SKBitmap? _bitmap;
         public IPlottable Source { get; }
         public bool IsVisible { get => Source.IsVisible; set => Source.IsVisible = value; }
@@ -19,17 +23,21 @@ namespace ScottPlot.Plottables
             Source = plottable;
         }
 
-        public bool IsHit(float mouseX, float mouseY, float span)
+        /// <summary>
+        /// Returns true if the plottable is within <paramref name="radius"/> 
+        /// pixels of the given <paramref name="pixel"/>
+        /// </summary>
+        public bool IsHit(Pixel pixel, float radius)
         {
             if (_bitmap == null)
                 return false;
 
             lock (_lock)
             {
-                int fromX = Math.Max(0, (int)(mouseX - span / 2));
-                int toX = Math.Min(_bitmap.Width, (int)(mouseX + span / 2));
-                int fromY = Math.Max(0, (int)(mouseY - span / 2));
-                int toY = Math.Min(_bitmap.Height, (int)(mouseY + span / 2));
+                int fromX = Math.Max(0, (int)(pixel.X - radius / 2));
+                int toX = Math.Min(_bitmap.Width, (int)(pixel.X + radius / 2));
+                int fromY = Math.Max(0, (int)(pixel.Y - radius / 2));
+                int toY = Math.Min(_bitmap.Height, (int)(pixel.Y + radius / 2));
                 for (int i = fromX; i < toX; i++)
                 {
                     for (int j = fromY; j < toY; j++)

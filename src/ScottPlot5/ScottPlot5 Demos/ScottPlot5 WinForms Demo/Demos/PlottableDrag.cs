@@ -67,11 +67,13 @@ public partial class PlottableDrag : Form, IDemoWindow
 
     private void FormsPlot1_MouseDown(object? sender, MouseEventArgs e)
     {
+        Pixel mousePixel = new(e.X, e.Y);
+
         foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>().Reverse())
         {
-            if (dp.IsHit(e.X, e.Y, 10))
+            if (dp.IsHit(mousePixel, 10))
             {
-                var PlottableCoordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y, dp.Axes.XAxis, dp.Axes.YAxis);
+                var PlottableCoordinates = formsPlot1.Plot.GetCoordinates(mousePixel, dp.Axes.XAxis, dp.Axes.YAxis);
                 dp.StartDrag(PlottableCoordinates);
                 PlottableBeingDragged = dp;
                 formsPlot1.UserInputProcessor.Disable(); // disable panning while dragging
@@ -89,25 +91,31 @@ public partial class PlottableDrag : Form, IDemoWindow
 
     private void FormsPlot1_MouseMove(object? sender, MouseEventArgs e)
     {
-        // update the cursor to reflect what is beneath it
-        if (PlottableBeingDragged is null)
+        Pixel mousePixel = new(e.X, e.Y);
+
+        if (PlottableBeingDragged is not null)
         {
-            foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>())
-            {
-                if (dp.IsHit(e.X, e.Y, 10))
-                {
-                    Cursor = Cursors.Hand;
-                    return;
-                }
-            }
-            Cursor = Cursors.Arrow;
+            // update the position of the plottable being dragged
+            Coordinates mouseCoordinates = formsPlot1.Plot.GetCoordinates(
+                pixel: mousePixel,
+                xAxis: PlottableBeingDragged.Axes.XAxis,
+                yAxis: PlottableBeingDragged.Axes.YAxis);
+
+            PlottableBeingDragged.DragTo(mouseCoordinates);
+            formsPlot1.Refresh();
             return;
         }
-        else // update the position of the plottable being dragged
+
+        // update the cursor to reflect what is underneath it
+        foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>())
         {
-            var PlottableCoordinates = formsPlot1.Plot.GetCoordinates(e.X, e.Y, PlottableBeingDragged.Axes.XAxis, PlottableBeingDragged.Axes.YAxis);
-            PlottableBeingDragged.DragTo(PlottableCoordinates);
-            formsPlot1.Refresh();
+            if (dp.IsHit(mousePixel, 10))
+            {
+                Cursor = Cursors.Hand;
+                return;
+            }
         }
+
+        Cursor = Cursors.Arrow;
     }
 }
