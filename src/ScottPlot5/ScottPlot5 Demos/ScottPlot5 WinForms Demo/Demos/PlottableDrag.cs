@@ -7,7 +7,7 @@ public partial class PlottableDrag : Form, IDemoWindow
 {
     public string Title => "Draggable Plottables";
 
-    public string Description => "Demonstrates how to create Plottables" +
+    public string Description => "Demonstrates how to create Plottables " +
         "which can be dragged with the mouse";
 
     DragablePlottableDecorator? PlottableBeingDragged = null;
