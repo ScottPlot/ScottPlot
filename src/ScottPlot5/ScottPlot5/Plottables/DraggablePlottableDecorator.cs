@@ -1,10 +1,10 @@
 ﻿namespace ScottPlot.Plottables
 {
-    public class DragablePlottableDecorator : HitablePlottableDecorator
+    public class DraggablePlottableDecorator : HittablePlottableDecorator
     {
         private Coordinates DragFrom;
         private Coordinates BeforeDragOffset;
-        public DragablePlottableDecorator(IPlottable plottable) : base(plottable)
+        public DraggablePlottableDecorator(IPlottable plottable) : base(plottable)
         {
             try
             {

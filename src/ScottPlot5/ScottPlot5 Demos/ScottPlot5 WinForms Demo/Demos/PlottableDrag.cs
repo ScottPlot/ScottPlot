@@ -10,7 +10,7 @@ public partial class PlottableDrag : Form, IDemoWindow
     public string Description => "Demonstrates how to create Plottables " +
         "which can be dragged with the mouse";
 
-    DragablePlottableDecorator? PlottableBeingDragged = null;
+    DraggablePlottableDecorator? PlottableBeingDragged = null;
 
     public PlottableDrag()
     {
@@ -25,40 +25,40 @@ public partial class PlottableDrag : Form, IDemoWindow
 
         var signal1 = formsPlot1.Plot.Add.Signal(ys1);
         formsPlot1.Plot.Remove(signal1);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(signal1));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(signal1));
 
         var signal2 = formsPlot1.Plot.Add.Signal(ys2);
         formsPlot1.Plot.Remove(signal2);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(signal2));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(signal2));
 
         var signalXY = formsPlot1.Plot.Add.SignalXY(xsLarge, ysLarge);
         formsPlot1.Plot.Remove(signalXY);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(signalXY));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(signalXY));
 
         var scatter = formsPlot1.Plot.Add.Scatter(xs, ys2);
         formsPlot1.Plot.Remove(scatter);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(scatter));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(scatter));
 
         var ellipse = formsPlot1.Plot.Add.Ellipse(25, 2, 5, 3, 30);
         formsPlot1.Plot.Remove(ellipse);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(ellipse));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(ellipse));
 
         var arrow = formsPlot1.Plot.Add.Arrow(20, 1, 0, 0);
         formsPlot1.Plot.Remove(arrow);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(arrow));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(arrow));
 
         var imageMarker = formsPlot1.Plot.Add.ImageMarker(new Coordinates(20, 1), SampleImages.ScottPlotLogo(), 0.1f);
         formsPlot1.Plot.Remove(imageMarker);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(imageMarker));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(imageMarker));
 
         var marker = formsPlot1.Plot.Add.Marker(30, -1);
         formsPlot1.Plot.Remove(marker);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(marker));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(marker));
 
         var text = formsPlot1.Plot.Add.Text("Text", 12, 1);
         text.LabelFontSize = 50;
         formsPlot1.Plot.Remove(text);
-        formsPlot1.Plot.Add.Plottable(new DragablePlottableDecorator(text));
+        formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(text));
 
         formsPlot1.MouseDown += FormsPlot1_MouseDown;
         formsPlot1.MouseUp += FormsPlot1_MouseUp;
@@ -69,7 +69,7 @@ public partial class PlottableDrag : Form, IDemoWindow
     {
         Pixel mousePixel = new(e.X, e.Y);
 
-        foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>().Reverse())
+        foreach (DraggablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DraggablePlottableDecorator>().Reverse())
         {
             if (dp.IsHit(mousePixel, 10))
             {
@@ -107,7 +107,7 @@ public partial class PlottableDrag : Form, IDemoWindow
         }
 
         // update the cursor to reflect what is underneath it
-        foreach (DragablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DragablePlottableDecorator>())
+        foreach (DraggablePlottableDecorator dp in formsPlot1.Plot.GetPlottables<DraggablePlottableDecorator>())
         {
             if (dp.IsHit(mousePixel, 10))
             {

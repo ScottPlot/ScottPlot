@@ -6,7 +6,7 @@ namespace ScottPlot.Plottables
     /// This class wraps an <see cref="IPlottable"/> to give it a 
     /// pixel-based hit detection map that can be used for mouse interaction
     /// </summary>
-    public class HitablePlottableDecorator : IPlottable, IDisposable
+    public class HittablePlottableDecorator : IPlottable, IDisposable
     {
         private readonly object _lock = new();
         private SKBitmap? _bitmap;
@@ -18,7 +18,7 @@ namespace ScottPlot.Plottables
 
         public AxisLimits GetAxisLimits() => Source.GetAxisLimits();
 
-        public HitablePlottableDecorator(IPlottable plottable)
+        public HittablePlottableDecorator(IPlottable plottable)
         {
             Source = plottable;
         }
