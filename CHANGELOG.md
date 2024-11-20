@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.47
 _Not yet on NuGet..._
+* Interactivity: Created `HitablePlottableDecorator` and `DragablePlottableDecorator` classes that wrap any `IPlottable` to add pixel-based mouse collision detection and drag capability to any plot type (#4531, #4496) @StendProg
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
