@@ -60,7 +60,10 @@
                     sxy.Data.YOffset = offsetY;
                     return;
                 case Arrow arrow:
+                    double tipDeltaX = arrow.Tip.X - arrow.Base.X;
+                    double tipDeltaY = arrow.Tip.Y - arrow.Base.Y;
                     arrow.Base = new Coordinates(offsetX, offsetY);
+                    arrow.Tip = new Coordinates(offsetX + tipDeltaX, offsetY + tipDeltaY);
                     return;
                 case DataLogger dataLogger:
                     dataLogger.Data.XOffset = offsetX;
