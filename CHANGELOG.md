@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.47
 _Not yet on NuGet..._
+* Controls: Fix issue preventing the context menu from appearing after it was used to open a new window (#4529) @david3951445
 * Interactivity: Created `HitablePlottableDecorator` and `DragablePlottableDecorator` classes that wrap any `IPlottable` to add pixel-based mouse collision detection and drag capability to any plot type (#4531, #4496) @StendProg
 
 ## ScottPlot 5.0.46
