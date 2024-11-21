@@ -226,11 +226,12 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         RenderLayout(rp.Canvas, layout);
     }
 
-    /// <summary>
-    /// Render the legend inside the given rectangle
-    /// </summary>
-    /// <param name="rp"></param>
     public void Render(RenderPack rp, PixelRect rect, Alignment alignment)
+    {
+        Render(rp.Canvas, rect, alignment);
+    }
+
+    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment)
     {
         LegendItem[] items = GetItems();
         if (items.Length == 0)
@@ -247,7 +248,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
         };
 
-        RenderLayout(rp.Canvas, layout);
+        RenderLayout(canvs, layout);
     }
 
     private void RenderLayout(SKCanvas canvas, LegendLayout layout)
