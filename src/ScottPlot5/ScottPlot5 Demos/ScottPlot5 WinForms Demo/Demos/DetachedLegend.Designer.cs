@@ -28,10 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            SuspendLayout();
+            // 
+            // formsPlot2
+            // 
+            formsPlot1.DisplayScale = 1F;
+            formsPlot1.Dock = DockStyle.Fill;
+            formsPlot1.Location = new Point(0, 0);
+            formsPlot1.Name = "formsPlot2";
+            formsPlot1.Size = new Size(800, 450);
+            formsPlot1.TabIndex = 0;
+            // 
+            // DetachedLegend
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(formsPlot1);
+            Name = "DetachedLegend";
             Text = "Form1";
+            ResumeLayout(false);
         }
 
         #endregion
