@@ -2,8 +2,12 @@
 
 namespace WinForms_Demo.Demos
 {
-    public partial class DetachedLegend : Form
+    public partial class DetachedLegend : Form, IDemoWindow
     {
+        public string Title => "Detachable Legend";
+
+        public string Description => "Add an option to the right-click menu to display the legend in a pop-up window";
+
         public DetachedLegend()
         {
             InitializeComponent();
