@@ -1,4 +1,6 @@
 ﻿using ScottPlot;
+using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 
 namespace WinForms_Demo.Demos
 {
@@ -22,19 +24,31 @@ namespace WinForms_Demo.Demos
                 sig.LegendText = $"Line #{i + 1}";
             }
 
-            formsPlot1.Plot.Legend.OutlineWidth = 0;
-            formsPlot1.Plot.Legend.BackgroundColor = ScottPlot.Color.FromColor(SystemColors.Control);
-            ScottPlot.Image legendImage = formsPlot1.Plot.GetLegendImage();
-            byte[] legendBitmapBytes = legendImage.GetImageBytes(ImageFormat.Bmp);
-            MemoryStream ms = new(legendBitmapBytes);
-            Bitmap bmp = new(ms);
+            formsPlot1.Menu?.Add("Detach Legend", LaunchDetachedLegend);
+        }
 
-            // add menu items with custom actions
-            formsPlot1.Menu?.Add("Detached Legend", (formsplot1) =>
+        private void LaunchDetachedLegend(IPlotControl plotControl)
+        {
+            Form form = new()
             {
-               // To be replaced with 
-            });
+                Text = "Detached Legend",
+                StartPosition = FormStartPosition.CenterScreen,
+            };
 
+            SKControl skControl = new()
+            {
+                Dock = DockStyle.Fill
+            };
+
+            skControl.PaintSurface += (s, e) =>
+            {
+                PixelSize size = new(skControl.Width, skControl.Height);
+                PixelRect rect = new(Pixel.Zero, size);
+                formsPlot1.Plot.Legend.Render(e.Surface.Canvas, rect, Alignment.MiddleCenter);
+            };
+
+            form.Controls.Add(skControl);
+            form.Show();
         }
     }
 }
