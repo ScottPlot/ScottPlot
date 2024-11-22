@@ -35,7 +35,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
         float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text) && LabelStyle.Image is null
             ? EmptyLabelPadding.Horizontal
-            : LabelStyle.Measure(LabelText, paint).LineHeight
+            : LabelStyle.Measure(LabelText, paint).Height
                 + PaddingBetweenTickAndAxisLabels.Horizontal
                 + PaddingOutsideAxisLabels.Horizontal;
 
