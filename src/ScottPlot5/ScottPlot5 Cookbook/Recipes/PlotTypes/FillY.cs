@@ -94,12 +94,10 @@ public class FillY : ICategory
         [Test]
         public override void Execute()
         {
-            RandomDataGenerator dataGen = new(0);
-
             int count = 20;
             double[] xs = Generate.Consecutive(count);
-            double[] ys1 = dataGen.RandomWalk(count, offset: -5);
-            double[] ys2 = dataGen.RandomWalk(count, offset: 5);
+            double[] ys1 = Generate.RandomWalk(count, offset: -5);
+            double[] ys2 = Generate.RandomWalk(count, offset: 5);
 
             var fill = myPlot.Add.FillY(xs, ys1, ys2);
             fill.MarkerShape = MarkerShape.FilledDiamond;
@@ -114,6 +112,43 @@ public class FillY : ICategory
             fill.LegendText = "Filled Area";
 
             myPlot.ShowLegend();
+        }
+    }
+
+    public class FilledError : RecipeBase
+    {
+        public override string Name => "Filled Error";
+        public override string Description => "A line plot with shaded error range may be achieved by " +
+            "layering a FillY beneath a ScatterLine.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create sample Y values
+            double[] xs = Generate.Range(0, Math.PI, 0.05);
+            double[] ys = xs.Select(x => Math.Sin(x) + Generate.RandomNumber(0.1)).ToArray();
+
+            // create sample error data
+            double[] yErr = ys.Select(x => x * Generate.RandomNumber(0.5) + 0.05).ToArray();
+
+            // calculate Y ± error
+            double[] yErrNeg = Enumerable.Range(0, ys.Length).Select(x => ys[x] - yErr[x]).ToArray();
+            double[] yErrPos = Enumerable.Range(0, ys.Length).Select(x => ys[x] + yErr[x]).ToArray();
+
+            // add a shaded area between the error limits
+            var errFill = myPlot.Add.FillY(xs, yErrNeg, yErrPos);
+            errFill.LineWidth = 0;
+            errFill.FillColor = Colors.Blue.WithAlpha(0.2);
+            errFill.LegendText = "Error";
+
+            // add the Y values as a line plot
+            var meanLine = myPlot.Add.ScatterLine(xs, ys);
+            meanLine.LineColor = Colors.Blue;
+            meanLine.LineWidth = 2;
+            meanLine.LegendText = "Mean";
+
+            // configure the location of the legend
+            myPlot.Legend.Alignment = Alignment.UpperRight;
         }
     }
 }
