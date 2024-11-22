@@ -2,6 +2,7 @@
 _Not yet on NuGet..._
 * Controls: Fix issue preventing the context menu from appearing after it was used to open a new window (#4529) @david3951445
 * Interactivity: Created `HitablePlottableDecorator` and `DragablePlottableDecorator` classes that wrap any `IPlottable` to add pixel-based mouse collision detection and drag capability to any plot type (#4531, #4496) @StendProg
+* Ticks: Created a plottable for displaying multiplier notation and added the `Plot.Axes.SetupMultiplierNotation()` helper method for rapidly enabling it with typical options (#4530) @Paraplegia
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
