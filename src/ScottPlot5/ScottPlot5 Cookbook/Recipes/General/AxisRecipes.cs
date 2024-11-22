@@ -395,4 +395,27 @@ public class AxisAndTicks : ICategory
             myPlot.Axes.Left.Label.Image = img2;
         }
     }
+
+    public class MultiplierNotation : RecipeBase
+    {
+        public override string Name => "Multiplier Notation";
+        public override string Description => "Numeric tick labels may be displayed using multiplier notation " +
+            "(where tick labels are displayed using scientific notation with the eponent displayed in the corner of the plot). " +
+            "A helper method is available to set-up multiplier notation with a single statement, but users can " +
+            "interact with the object this method returns (not shown here) or inspect the code inside of that method " +
+            "to learn how to achieve enhanced customization abilities.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot sample data with extremely large values
+            double[] xs = Generate.RandomSample(50, -1e10, 1e10);
+            double[] ys = Generate.RandomSample(50, -1e20, 1e20);
+            myPlot.Add.Scatter(xs, ys);
+
+            // enable multiplier notation on both primary axes
+            myPlot.Axes.SetupMultiplierNotation(myPlot.Axes.Left);
+            myPlot.Axes.SetupMultiplierNotation(myPlot.Axes.Bottom);
+        }
+    }
 }
