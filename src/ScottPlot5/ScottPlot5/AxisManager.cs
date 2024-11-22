@@ -296,6 +296,37 @@ public class AxisManager
         return numericAxis;
     }
 
+    public Plottables.TickModifierLabel SetupMultiplierNotation(IAxis axis)
+    {
+        // ignore multiple requests to setup multiplier notation on the same axis
+        var existing = Plot.GetPlottables<Plottables.TickModifierLabel>().Where(x => x.Axes.XAxis == axis || x.Axes.YAxis == axis);
+        if (existing.Any())
+            return existing.First();
+
+        // use a custom tick formatter to create properly sized placeholder tick labels
+        TickGenerators.NumericAutomatic tickGen = new();
+        axis.TickGenerator = tickGen;
+        tickGen.LabelFormatter = (x) => "-00.00";
+
+        // create tick modifier labels and add them to the plot
+        Plottables.TickModifierLabel tickModifier = new(axis);
+        Plot.Add.Plottable(tickModifier);
+
+        // add extra space on the bottom to make room for the label
+        if (axis is BottomAxis)
+        {
+            axis.MinimumSize = 50;
+        }
+
+        // add a pre-render hook to modify tick labels just before each render
+        Plot.RenderManager.RenderStarting += (s, e) =>
+        {
+            tickModifier.UpdateTickLabels();
+        };
+
+        return tickModifier;
+    }
+
     public void AddYAxis(IYAxis axis)
     {
         YAxes.Add(axis);
