@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * Interactivity: Created `HitablePlottableDecorator` and `DragablePlottableDecorator` classes that wrap any `IPlottable` to add pixel-based mouse collision detection and drag capability to any plot type (#4531, #4496) @StendProg
 * Ticks: Created a plottable for displaying multiplier notation and added the `Plot.Axes.SetupMultiplierNotation()` helper method for rapidly enabling it with typical options (#4530) @Paraplegia
 * Axes: Improve layout support for axes with multi-line axis labels (#4535) @CBrauer
+* Heatmap: Added `Rectangle` property to simplify rendering a heatmap within the edges of a user-defined rectangle in coordinate space (#4552, #4550) @ecrocombe
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
