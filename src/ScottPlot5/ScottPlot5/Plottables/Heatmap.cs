@@ -69,9 +69,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             double cellWidth = rect.Width / Intensities.GetLength(1);
             double cellHeight = rect.Height / Intensities.GetLength(0);
             Extent = new(
-                rect.Left + cellWidth / 2, 
-                rect.Right - cellWidth / 2, 
-                rect.Bottom + cellHeight / 2, 
+                rect.Left + cellWidth / 2,
+                rect.Right - cellWidth / 2,
+                rect.Bottom + cellHeight / 2,
                 rect.Top - cellHeight / 2);
         }
     }
