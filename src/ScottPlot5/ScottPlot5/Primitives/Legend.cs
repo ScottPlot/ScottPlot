@@ -116,14 +116,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     public bool DisplayPlottableLegendItems { get; set; } = true;
 
-    public LegendItem[] GetItems()
+    public LegendItem[] GetItems(bool VisibleOnly=true)
     {
         List<LegendItem> items = [];
 
         if (DisplayPlottableLegendItems)
         {
             var plottableLegendItems = Plot.PlottableList
-                        .Where(item => item.IsVisible)
+                        .Where(item => (VisibleOnly ? item.IsVisible : true))
                         .SelectMany(x => x.LegendItems)
                         .Where(x => !string.IsNullOrEmpty(x.LabelText));
 
@@ -153,6 +153,11 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         }
 
         return items.ToArray();
+    }
+
+    public LegendLayout GetLayout( PixelSize size, bool VisibleOnly = true)
+    {
+        return Layout.GetLayout(this, GetItems(VisibleOnly), size);
     }
 
     /// <summary>
@@ -226,14 +231,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         RenderLayout(rp.Canvas, layout);
     }
 
-    public void Render(RenderPack rp, PixelRect rect, Alignment alignment)
+    public void Render(RenderPack rp, PixelRect rect, Alignment alignment, bool VisibleOnly=true)
     {
-        Render(rp.Canvas, rect, alignment);
+        Render(rp.Canvas, rect, alignment, VisibleOnly);
     }
 
-    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment)
+    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment, bool VisibleOnly=true)
     {
-        LegendItem[] items = GetItems();
+        LegendItem[] items = GetItems(VisibleOnly);
         if (items.Length == 0)
             return;
 
