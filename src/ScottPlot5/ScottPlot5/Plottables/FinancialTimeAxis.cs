@@ -11,6 +11,8 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+    double widthOfCandleInPixels;
+    const string labelFormat = "   HH:mm:ss   ";
 
     public LabelStyle LabelStyle { get; set; } = new()
     {
@@ -33,6 +35,7 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
         int maxIndexInView = (int)(Math.Min(DateTimes.Length - 1, Axes.XAxis.Range.Max));
         if (maxIndexInView <= minIndexInView) return;
         TimeSpan timeSpanInView = DateTimes[maxIndexInView] - DateTimes[minIndexInView];
+        widthOfCandleInPixels = rp.DataRect.Width / Axes.XAxis.Range.Span;
         IFinancialTickGenerator tickGenerator = GetBestTickGenerator(timeSpanInView, rp.DataRect.Width);
         List<(int, string)> ticks = tickGenerator.GetTicks(DateTimes, minIndexInView, maxIndexInView);
 
@@ -45,22 +48,14 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
         }
     }
 
-    private static IFinancialTickGenerator GetBestTickGenerator(TimeSpan timeSpan, float widthInPixels)
+    private IFinancialTickGenerator GetBestTickGenerator(TimeSpan timeSpan, float widthInPixels)
     {
-        // adjust the scale so small plots show fewer ticks
-        double scaledViewDays = timeSpan.TotalDays * 600 / widthInPixels;
-
-        if (scaledViewDays < 180)
+        var maxWidth = LabelStyle.Measure(labelFormat).Size.Width;
+        if (widthOfCandleInPixels == 0)
         {
-            return new TickGenerators.Financial.MonthsAndMondays();
+            widthOfCandleInPixels = 1;
         }
-        else if (scaledViewDays < 360 * 2)
-        {
-            return new TickGenerators.Financial.Months();
-        }
-        else
-        {
-            return new TickGenerators.Financial.Years();
-        }
+        var candlesToSkip = maxWidth / widthOfCandleInPixels;
+        return new TickGenerators.Financial.EveryNthUnit((int)Math.Ceiling(candlesToSkip));
     }
 }
