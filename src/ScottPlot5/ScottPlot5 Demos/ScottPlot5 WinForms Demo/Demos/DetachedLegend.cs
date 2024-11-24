@@ -176,9 +176,11 @@ namespace WinForms_Demo.Demos
             customMenu.Show(Cursor.Position);
         }
 
-        private void DeletePlottable(IPlottable ClickedPlottable)
+        private void DeletePlottable(IPlottable ClickedPlottable, SKControl skControl)
         {
             formsPlot1.Plot.Remove(ClickedPlottable);
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
         private void ChangeLinePattern(object? sender, IPlottable ClickedPlottable, SKControl skControl)
@@ -198,6 +200,9 @@ namespace WinForms_Demo.Demos
                     }
                 }
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
         private void ChangeLineColor(object? sender, IPlottable ClickedPlottable, SKControl skControl)
@@ -214,6 +219,9 @@ namespace WinForms_Demo.Demos
                     line.LineColor = ScottPlot.Color.FromColor(colorDialog.Color);
                 }
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
         private void ChangeLineWidth(object? sender, IPlottable ClickedPlottable, SKControl skControl)
