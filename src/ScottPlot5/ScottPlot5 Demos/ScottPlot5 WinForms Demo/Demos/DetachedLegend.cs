@@ -1,4 +1,4 @@
-using ScottPlot;
+﻿using ScottPlot;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
@@ -42,7 +42,9 @@ namespace WinForms_Demo.Demos
             skControl.PaintSurface += (s, e) => { PaintDetachedLegend((SKControl)s, (SKPaintSurfaceEventArgs)e); };
             skControl.MouseClick += (s, e) => {LegendControl_MouseClick((SKControl)s, e); };
             form.Controls.Add(skControl);
-            formsPlot1.Plot.Legend.IsVisible = formsPlot1.Plot.Legend.IsVisible && false;
+            bool initialLegendState = formsPlot1.Plot.Legend.IsVisible;
+            formsPlot1.Plot.Legend.IsVisible = false;
+            form.FormClosing += (s, e) => { formsPlot1.Plot.Legend.IsVisible = initialLegendState; formsPlot1.Refresh(); };
             form.Show();
         }
 
@@ -165,7 +167,6 @@ namespace WinForms_Demo.Demos
         private void DeletePlottable(IPlottable ClickedPlottable)
         {
             formsPlot1.Plot.Remove(ClickedPlottable);
-            formsPlot1.Refresh();
         }
 
         private void ChangeLinePattern(object sender, IPlottable ClickedPlottable)
