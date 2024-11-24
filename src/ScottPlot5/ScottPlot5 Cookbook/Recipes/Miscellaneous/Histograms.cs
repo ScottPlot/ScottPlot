@@ -95,6 +95,28 @@ public class Histograms : ICategory
         }
     }
 
+    public class HistogramBars : RecipeBase
+    {
+        public override string Name => "Histogram Bars";
+        public override string Description => "A helper method and plot type has been created " +
+            "to simplify creating a bar plot that displays histogram counts. " +
+            "Note that updates the histogram may appear in real time and the plot will " +
+            "automatically update to display the latest data.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create an empty histogram and display it as a bar plot
+            var hist = ScottPlot.Statistics.Histogram.WithBinCount(count: 20, minValue: 140, maxValue: 220);
+            var histPlot = myPlot.Add.Histogram(hist);
+            histPlot.BarWidthFraction = 0.8;
+
+            // histogram counts are updated automatically as new data is added
+            double[] newData = SampleData.MaleHeights();
+            hist.AddRange(newData);
+        }
+    }
+
     public class HistogramProbability : RecipeBase
     {
         public override string Name => "Histogram of Probabilities";

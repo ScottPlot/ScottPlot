@@ -27,7 +27,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text) && LabelStyle.Image is null
             ? EmptyLabelPadding.Vertical
-            : LabelStyle.Measure(LabelText, paint).LineHeight
+            : LabelStyle.Measure(LabelText, paint).Height
                 + PaddingBetweenTickAndAxisLabels.Vertical
                 + PaddingOutsideAxisLabels.Vertical;
 

@@ -338,4 +338,33 @@ public class Finance : ICategory
             myPlot.Grid.YAxis = myPlot.Axes.Right;
         }
     }
+
+    public class FinancialDateTimeAxis : RecipeBase
+    {
+        public override string Name => "Financial DateTime Axis";
+        public override string Description => "A special axis system has been created for financial charts. " +
+            "Unlike standard DateTime axes which assume the horizontal scale is linearly spaced time, the financial " +
+            "DateTime system allows for dates to be skipped. This is ideal for financial charts where date ranges are " +
+            "skipped such as after-hours trading or non-trading days.";
+
+        [Test]
+        public override void Execute()
+        {
+            // generate sample data using a collection of dates and price ranges
+            DateTime[] dates = Generate.ConsecutiveHours(100);
+            List<OHLC> candles = Generate.RandomOHLCs(30);
+            var candlestickPlot = myPlot.Add.Candlestick(candles);
+
+            // enable sequential mode so candles are placed 1 unit apart (0, 1, 2, etc.)
+            candlestickPlot.Sequential = true;
+
+            // disable the default tick generator (and grid) and make space for the new one
+            myPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
+            myPlot.Axes.Bottom.MinimumSize = 30;
+
+            // add the financial DateTime tick generator
+            ScottPlot.Plottables.FinancialTimeAxis financeAxis = new(dates);
+            myPlot.Add.Plottable(financeAxis);
+        }
+    }
 }

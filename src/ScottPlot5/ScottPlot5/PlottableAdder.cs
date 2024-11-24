@@ -1,6 +1,8 @@
 ﻿using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using ScottPlot.Statistics;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -198,6 +200,32 @@ public class PlottableAdder(Plot plot)
         bp.FillColor = GetNextColor();
         Plot.PlottableList.Add(bp);
         return bp;
+    }
+
+    public Bracket Bracket(Coordinates point1, Coordinates point2, string? label = null)
+    {
+        Bracket bracket = new()
+        {
+            Point1 = point1,
+            Point2 = point2,
+            Text = label ?? string.Empty,
+        };
+
+        Plot.PlottableList.Add(bracket);
+
+        return bracket;
+    }
+
+    public Bracket Bracket(double x1, double y1, double x2, double y2, string? label = null)
+    {
+        Coordinates point1 = new(x1, y1);
+        Coordinates point2 = new(x2, y2);
+        return Bracket(point1, point2, label);
+    }
+
+    public Bracket Bracket(CoordinateLine line, string? label = null)
+    {
+        return Bracket(line.Start, line.End, label);
     }
 
     public Callout Callout(string text, double textX, double textY, double tipX, double tipY)
@@ -483,6 +511,24 @@ public class PlottableAdder(Plot plot)
             }
         }
         return Heatmap(intensities);
+    }
+
+    public HistogramBars Histogram(Histogram histogram, Color? color = null, bool disableBottomPadding = true)
+    {
+        HistogramBars hb = new(histogram);
+        Plot.PlottableList.Add(hb);
+
+        foreach (var bar in hb.Bars)
+        {
+            bar.LineWidth = 0;
+            bar.FillStyle.AntiAlias = false;
+            bar.FillColor = color ?? Palette.GetColor(0);
+        }
+
+        if (disableBottomPadding)
+            Plot.Axes.Margins(bottom: 0);
+
+        return hb;
     }
 
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = default)
@@ -872,6 +918,43 @@ public class PlottableAdder(Plot plot)
         return radialGaugePlot;
     }
 
+    /// <summary>
+    /// Create a bar plot to represent a collection of named ranges
+    /// </summary>
+    public BarPlot Ranges(List<(string name, CoordinateRange range)> ranges, Color? color = null, bool horizontal = false)
+    {
+        Color barColor = color ?? GetNextColor();
+
+        // create a bar plot from the collection of ranges
+        Bar[] bars = new Bar[ranges.Count];
+        for (int i = 0; i < ranges.Count; i++)
+        {
+            bars[i] = new()
+            {
+                ValueBase = ranges[i].range.Min,
+                Value = ranges[i].range.Max,
+                Position = i,
+                FillColor = barColor,
+            };
+        }
+        BarPlot bp = Bars(bars);
+        bp.Horizontal = horizontal;
+
+        // use manaul tick labels displaying category names
+        double[] positions = bars.Select(x => x.Position).ToArray();
+        string[] labels = ranges.Select(x => x.name).ToArray();
+        if (horizontal)
+        {
+            Plot.Axes.Left.SetTicks(positions, labels);
+        }
+        else
+        {
+            Plot.Axes.Bottom.SetTicks(positions, labels);
+        }
+
+        return bp;
+    }
+
     public Rectangle Rectangle(CoordinateRect rect)
     {
         return Rectangle(rect.Left, rect.Right, rect.Top, rect.Bottom);
@@ -1117,6 +1200,45 @@ public class PlottableAdder(Plot plot)
     {
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
         return SignalXY(source, color);
+    }
+
+    /// <summary>
+    /// Place a stacked bar chart at a single position
+    /// </summary>
+    public BarPlot[] StackedRanges(List<(string name, double[] edgeValues)> ranges, IPalette? palette = null, bool horizontal = false)
+    {
+        BarPlot[] bps = new BarPlot[ranges.Count];
+        for (int i = 0; i < ranges.Count; i++)
+        {
+            double[] edgeValues = ranges[i].edgeValues;
+            Bar[] bars = new Bar[edgeValues.Length - 1];
+            for (int j = 0; j < bars.Length; j++)
+            {
+                bars[j] = new()
+                {
+                    ValueBase = edgeValues[j],
+                    Value = edgeValues[j + 1],
+                    Position = i,
+                    FillColor = (palette ?? Palette).GetColor(j),
+                };
+            }
+
+            bps[i] = Bars(bars);
+            bps[i].Horizontal = horizontal;
+        }
+
+        string[] labels = ranges.Select(x => x.name).ToArray();
+        double[] positions = Generate.Consecutive(labels.Length);
+        if (horizontal)
+        {
+            Plot.Axes.Left.SetTicks(positions, labels);
+        }
+        else
+        {
+            Plot.Axes.Bottom.SetTicks(positions, labels);
+        }
+
+        return bps;
     }
 
     public Text Text(string text, Coordinates location)

@@ -467,4 +467,131 @@ public class Bar : ICategory
             myPlot.Axes.Left.SetTicks(tickPositions, tickLabels);
         }
     }
+
+    public class RangeChart : RecipeBase
+    {
+        public override string Name => "Range Chart";
+        public override string Description => "A range chart displays a discrete set of named value ranges";
+
+        [Test]
+        public override void Execute()
+        {
+            List<(string name, CoordinateRange range)> ranges =
+            [
+                ("Africa", new(-35, 37)),
+                ("Antarctica", new(-90, -60)),
+                ("Asia", new(-11, 81)),
+                ("Europe", new(-36, 71)),
+                ("North America", new(-7, 83)),
+                ("South America", new(-56, 13)),
+                ("Australia", new(-47, -28)),
+            ];
+            myPlot.Add.Ranges(ranges);
+
+            // style the axes
+            myPlot.Title("Latitude Range of the Continents");
+            myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
+            myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
+            myPlot.Axes.Bottom.MinimumSize = 100;
+
+            // use tick labels with a degree symbol
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new();
+            myPlot.Axes.Left.TickGenerator = tickGen;
+            tickGen.LabelFormatter = (x) => $"{x}º";
+
+            // add a horizontal line at zero and push it beneath the range plot
+            var hl = myPlot.Add.HorizontalLine(0, 1, Colors.Black, LinePattern.DenselyDashed);
+            myPlot.MoveToBack(hl);
+        }
+    }
+
+    public class RangeChartHozontal : RecipeBase
+    {
+        public override string Name => "Horizontal Range Chart";
+        public override string Description => "Range charts may be created using horizontally oriented bars";
+
+        [Test]
+        public override void Execute()
+        {
+            List<(string name, CoordinateRange range)> ranges =
+            [
+                ("Ontario", new(-9, 51)),
+                ("England", new(0, 63)),
+                ("Kentucky", new(-4, 72)),
+            ];
+
+            myPlot.Add.Ranges(ranges, horizontal: true);
+
+            myPlot.XLabel("Temperature (ºF)");
+        }
+    }
+
+    public class StackedRangeChart : RecipeBase
+    {
+        public override string Name => "Stacked Range Chart";
+        public override string Description => "Stacked range charts depict multiple ranges for a discrete set of items";
+
+        [Test]
+        public override void Execute()
+        {
+            // prepare a custom color palette
+            string[] colorCodes = ["#3369cc", "#95bce3", "#f4a861", "#fd8d00"];
+            ScottPlot.Palettes.Custom palette = new(colorCodes);
+
+            // create a stacked bar chart with a collection of named ranges
+            string[] rangeNames = ["Yearly Low", "Mean Daily Low", "Mean Daily High", "Yearly High"];
+            List<(string name, double[] edges)> ranges =
+            [
+                ("Ontario", [-9, 3, 7, 13, 27]),
+                ("England", [4, 7, 12, 16, 24]),
+                ("Kentucky", [-4, 7, 13, 20, 30]),
+            ];
+            myPlot.Add.StackedRanges(ranges, palette);
+
+            // use tick labels with a degree symbol
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new();
+            myPlot.Axes.Left.TickGenerator = tickGen;
+            tickGen.LabelFormatter = (x) => $"{x}º";
+
+            // display the legend outside the data area
+            myPlot.ShowLegend(Edge.Right);
+
+            // add items to the legend manually
+            for (int i = 0; i < rangeNames.Length; i++)
+            {
+                LegendItem item = new()
+                {
+                    LabelText = rangeNames[i],
+                    FillColor = palette.GetColor(i),
+                };
+                myPlot.Legend.ManualItems.Add(item);
+            }
+            myPlot.Legend.ManualItems.Reverse();
+
+            // improve styling and alignment
+            myPlot.Legend.OutlineStyle.IsVisible = false;
+            myPlot.Legend.ShadowColor = Colors.Transparent;
+            myPlot.Legend.Padding = new(0);
+            myPlot.Axes.Right.MaximumSize = 0;
+        }
+    }
+
+    public class StackedRangeHorizontal : RecipeBase
+    {
+        public override string Name => "Stacked Horizontal Range Chart";
+        public override string Description => "Horizontally oriented stacked range charts may be created";
+
+        [Test]
+        public override void Execute()
+        {
+            List<(string name, double[] edges)> ranges =
+            [
+                ("Ontario", [-9, 3, 7, 13, 27]),
+                ("England", [4, 7, 12, 16, 24]),
+                ("Kentucky", [-4, 7, 13, 20, 30]),
+            ];
+
+            myPlot.Add.StackedRanges(ranges, horizontal: true);
+        }
+    }
 }
