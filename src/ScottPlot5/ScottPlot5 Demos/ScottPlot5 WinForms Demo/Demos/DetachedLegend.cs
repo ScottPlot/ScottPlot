@@ -22,6 +22,7 @@ namespace WinForms_Demo.Demos
                 sig.Color = Colors.Category20[i];
                 sig.LineWidth = 2;
                 sig.LegendText = $"Line #{i + 1}";
+                sig.IsVisible = i % 5 > 0; // hide every 5th line
             }
 
             formsPlot1.Menu?.Add("Detach Legend", LaunchDetachedLegend);
@@ -31,6 +32,7 @@ namespace WinForms_Demo.Demos
         {
             // hide the legend in the original plot
             plotControl.Plot.Legend.IsVisible = false;
+            plotControl.Plot.Legend.ShowItemsFromHiddenPlottables = true;
             plotControl.Refresh();
 
             // create a form that displays a SkiaSharp canvas the legend can be drawn on
@@ -44,6 +46,7 @@ namespace WinForms_Demo.Demos
             {
                 // un-hide the legend in the original plot when the legend viewer is closed
                 plotControl.Plot.Legend.IsVisible = true;
+                plotControl.Plot.Legend.ShowItemsFromHiddenPlottables = false;
                 plotControl.Refresh();
             };
 
@@ -66,7 +69,7 @@ namespace WinForms_Demo.Demos
             PixelSize size = new(skControl.Width, skControl.Height);
             PixelRect rect = new(Pixel.Zero, size);
             SKCanvas canvas = e.Surface.Canvas;
-            formsPlot1.Plot.Legend.Render(canvas, rect, Alignment.UpperLeft, false);
+            formsPlot1.Plot.Legend.Render(canvas, rect, Alignment.UpperLeft);
         }
 
         private void LegendControl_MouseClick(SKControl sender, EventArgs ee)
@@ -98,8 +101,8 @@ namespace WinForms_Demo.Demos
         private LegendItem? GetLegendItemUnderMouse(SKControl sender, Point e)
         {
             PixelSize size = new(sender.Width, sender.Height);
-            LegendItem[] items = formsPlot1.Plot.Legend.GetItems(false);
-            LegendLayout layout = formsPlot1.Plot.Legend.GetLayout(size, false);
+            LegendItem[] items = formsPlot1.Plot.Legend.GetItems();
+            LegendLayout layout = formsPlot1.Plot.Legend.GetLayout(size);
             if (items.Count() == 0)
                 return null;
 

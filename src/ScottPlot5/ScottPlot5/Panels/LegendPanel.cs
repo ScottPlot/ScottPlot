@@ -22,7 +22,7 @@ public class LegendPanel(Legend legend) : PanelBase
         PixelRect rect = GetPanelRect(rp.DataRect, size, offset);
         bool originalVisibility = Legend.IsVisible;
         Legend.IsVisible = true;
-        Legend.Render(rp, rect, Alignment);
+        Legend.Render(rp.Canvas, rect, Alignment);
         Legend.IsVisible = originalVisibility;
     }
 }
