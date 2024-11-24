@@ -578,7 +578,7 @@ public class Bar : ICategory
 
     public class StackedRangeHorizontal : RecipeBase
     {
-        public override string Name => "Stacked Range Chart";
+        public override string Name => "Stacked Horizontal Range Chart";
         public override string Description => "Horizontally oriented stacked range charts may be created";
 
         [Test]
