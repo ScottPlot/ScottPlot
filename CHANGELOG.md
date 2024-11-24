@@ -1,5 +1,8 @@
-## ScottPlot 5.0.47
+## ScottPlot 5.0.48
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.47
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_
 * Controls: Fix issue preventing the context menu from appearing after it was used to open a new window (#4529) @david3951445
 * Interactivity: Created `HitablePlottableDecorator` and `DragablePlottableDecorator` classes that wrap any `IPlottable` to add pixel-based mouse collision detection and drag capability to any plot type (#4531, #4496) @StendProg
 * Ticks: Created a plottable for displaying multiplier notation and added the `Plot.Axes.SetupMultiplierNotation()` helper method for rapidly enabling it with typical options (#4530) @Paraplegia
@@ -11,8 +14,8 @@ _Not yet on NuGet..._
 * Financial Charting: Improved `FinancialTimeAxis` tick generation behavior (#4483, #4551, #4385) @VladislavPustovarov @quantfreedom
 * Histogram: Created `Add.Histogram()` which accepts a `Histogram` and returns a `HistogramBars` plottable designed for displaying continuously updated histogram counts (#4557) @jpgarza93
 * Legend: Added support for paring each `LegendItem` with its parent `IPlottable` to facilitate mouse interaction (#4533) @BambOoxX
-* Reporting: Created to `ScottPlot.Reporting` to work toward enabling reports (plots paired with information) which may be viewed interactively in GUI environments or exported as static images in HTML, Markdown, or PDF documents
 * Plot: Modified `GetPngHtml()` to add optional `classContent` and `styleContent` arguments to allow CSS style injection
+* Reporting: New `ScottPlot.Reporting` classes support creating multi-figure reports which may be viewed interactively or exported as HTML documents (#4526)
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
