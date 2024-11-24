@@ -99,9 +99,15 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     public void Reset(Plot plot)
     {
+        Reset(plot, disposeOldPlot: true);
+    }
+
+    public void Reset(Plot plot, bool disposeOldPlot)
+    {
         Plot oldPlot = Plot;
         Plot = plot;
-        oldPlot?.Dispose();
+        if (disposeOldPlot)
+            oldPlot?.Dispose();
         Plot.PlotControl = this;
     }
 
