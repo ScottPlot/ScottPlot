@@ -200,6 +200,32 @@ public class PlottableAdder(Plot plot)
         return bp;
     }
 
+    public Bracket Bracket(Coordinates point1, Coordinates point2, string? label = null)
+    {
+        Bracket bracket = new()
+        {
+            Point1 = point1,
+            Point2 = point2,
+            Text = label ?? string.Empty,
+        };
+
+        Plot.PlottableList.Add(bracket);
+
+        return bracket;
+    }
+
+    public Bracket Bracket(double x1, double y1, double x2, double y2, string? label = null)
+    {
+        Coordinates point1 = new(x1, y1);
+        Coordinates point2 = new(x2, y2);
+        return Bracket(point1, point2, label);
+    }
+
+    public Bracket Bracket(CoordinateLine line, string? label = null)
+    {
+        return Bracket(line.Start, line.End, label);
+    }
+
     public Callout Callout(string text, double textX, double textY, double tipX, double tipY)
     {
         Coordinates labelCoordinates = new(textX, textY);
