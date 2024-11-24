@@ -75,12 +75,12 @@ public class Heatmap : ICategory
             double[,] data = SampleData.MonaLisa();
 
             var hm1 = myPlot.Add.Heatmap(data);
-            hm1.Extent = new(0, 1, 0, 1);
+            hm1.Rectangle = new(0, 1, 0, 1);
             hm1.Colormap = new ScottPlot.Colormaps.Turbo();
             myPlot.Add.ColorBar(hm1);
 
             var hm2 = myPlot.Add.Heatmap(data);
-            hm2.Extent = new(1.5, 2.5, 0, 1);
+            hm2.Rectangle = new(1.5, 2.5, 0, 1);
             hm2.Colormap = new ScottPlot.Colormaps.Viridis();
             myPlot.Add.ColorBar(hm2);
         }
@@ -351,6 +351,30 @@ public class Heatmap : ICategory
             hm.CellAlignment = Alignment.LowerLeft;
             hm.CellWidth = 100;
             hm.CellHeight = 10;
+        }
+    }
+
+    public class HeatmapRectangle : RecipeBase
+    {
+        public override string Name => "Heatmap Rectangle";
+        public override string Description => "Dimensions of a heatmap may be set by defining a " +
+            "rectangle that the heatmap will be rendered inside.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create a heatmap of any size
+            double[,] data = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 },
+            };
+
+            // add the heatmap to the plot
+            var hm = myPlot.Add.Heatmap(data);
+
+            // place the heatmap in a rectangle defined in coordinate space
+            hm.Rectangle = new CoordinateRect(-5, 5, -5, 5);
         }
     }
 

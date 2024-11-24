@@ -25,9 +25,9 @@ public abstract class XAxisBase : AxisBase, IXAxis
             ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Height).Max()
             : 0;
 
-        float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text)
+        float axisLabelHeight = string.IsNullOrEmpty(LabelStyle.Text) && LabelStyle.Image is null
             ? EmptyLabelPadding.Vertical
-            : LabelStyle.Measure(LabelText, paint).LineHeight
+            : LabelStyle.Measure(LabelText, paint).Height
                 + PaddingBetweenTickAndAxisLabels.Vertical
                 + PaddingOutsideAxisLabels.Vertical;
 

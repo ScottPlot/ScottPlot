@@ -39,8 +39,8 @@ public partial class DemoWindowInfo : UserControl
         form.Icon = Properties.Resources.scottplot_icon_rounded_border;
         form.StartPosition = FormStartPosition.CenterScreen;
         form.Text = title;
-        ParentForm.Hide();
+        ParentForm?.Hide();
         form.ShowDialog();
-        ParentForm.Show();
+        ParentForm?.Show();
     }
 }

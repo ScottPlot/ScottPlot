@@ -57,10 +57,10 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public AxisLimits(CoordinateRange xRange, CoordinateRange yRange)
     {
-        Left = xRange.Min;
-        Right = xRange.Max;
-        Bottom = yRange.Min;
-        Top = yRange.Max;
+        Left = xRange.IsInverted ? xRange.Max : xRange.Min;
+        Right = xRange.IsInverted ? xRange.Min : xRange.Max;
+        Bottom = yRange.IsInverted ? yRange.Max : yRange.Min;
+        Top = yRange.IsInverted ? yRange.Min : yRange.Max;
     }
 
     public AxisLimits(IEnumerable<IPlottable> plottables)

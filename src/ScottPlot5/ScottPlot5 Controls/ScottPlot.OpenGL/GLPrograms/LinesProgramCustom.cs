@@ -13,7 +13,7 @@ namespace ScottPlot.OpenGL.GLPrograms;
 public class LinesProgramCustom : GLProgramBase, ILinesDrawProgram
 {
     protected override string VertexShaderSource =>
-    @"# version 430 core
+    @"#version 430 core
         layout(location = 0) in dvec2 aPosition;
         layout(location = 0) uniform dmat4 transform;
 
@@ -25,7 +25,7 @@ public class LinesProgramCustom : GLProgramBase, ILinesDrawProgram
         }";
 
     protected override string GeometryShaderSource =>
-    @"# version 430 core
+    @"#version 430 core
         layout(lines) in;
         layout(triangle_strip, max_vertices=4) out;
 

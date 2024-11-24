@@ -365,4 +365,57 @@ public class AxisAndTicks : ICategory
             myPlot.Grid.LinePattern = LinePattern.Dotted;
         }
     }
+
+    public class ImageAxisLabel : RecipeBase
+    {
+        public override string Name => "Image Axis Label";
+        public override string Description => "For cases where axis label font styling " +
+            "does not provide the desired level of customization, a bitmap image may be " +
+            "displayed as an axis label. This strategy allows rich text to be realized " +
+            "using any third party tool that can render that text as a bitmap. It also " +
+            "enables users to place icons or images in their axis labels.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin(51));
+            myPlot.Add.Signal(Generate.Cos(51));
+
+            // This array holds the bytes of a bitmap. Here it's generated,
+            // but it could be a byte array read from a bitmap file on disk.
+            byte[] bytes1 = SampleImages.NoisyText("Horiz", 150, 50).GetImageBytes();
+            byte[] bytes2 = SampleImages.NoisyText("Vert", 150, 50).GetImageBytes();
+
+            // Create a ScottPlot.Image from the bitmap bytes
+            ScottPlot.Image img1 = new(bytes1);
+            ScottPlot.Image img2 = new(bytes2);
+
+            // Display the image for the bottom axis label
+            myPlot.Axes.Bottom.Label.Image = img1;
+            myPlot.Axes.Left.Label.Image = img2;
+        }
+    }
+
+    public class MultiplierNotation : RecipeBase
+    {
+        public override string Name => "Multiplier Notation";
+        public override string Description => "Numeric tick labels may be displayed using multiplier notation " +
+            "(where tick labels are displayed using scientific notation with the eponent displayed in the corner of the plot). " +
+            "A helper method is available to set-up multiplier notation with a single statement, but users can " +
+            "interact with the object this method returns (not shown here) or inspect the code inside of that method " +
+            "to learn how to achieve enhanced customization abilities.";
+
+        [Test]
+        public override void Execute()
+        {
+            // plot sample data with extremely large values
+            double[] xs = Generate.RandomSample(50, -1e10, 1e10);
+            double[] ys = Generate.RandomSample(50, -1e20, 1e20);
+            myPlot.Add.Scatter(xs, ys);
+
+            // enable multiplier notation on both primary axes
+            myPlot.Axes.SetupMultiplierNotation(myPlot.Axes.Left);
+            myPlot.Axes.SetupMultiplierNotation(myPlot.Axes.Bottom);
+        }
+    }
 }

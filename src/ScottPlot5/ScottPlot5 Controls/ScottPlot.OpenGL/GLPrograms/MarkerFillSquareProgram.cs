@@ -3,7 +3,7 @@
 public class MarkerFillSquareProgram : MarkersProgram
 {
     protected override string VertexShaderSource =>
-    @"# version 430 core
+    @"#version 430 core
         layout(location = 0) in dvec2 aPosition;
         uniform dmat4 transform;
 
@@ -15,7 +15,7 @@ public class MarkerFillSquareProgram : MarkersProgram
         }";
 
     protected override string GeometryShaderSource =>
-    @"# version 430 core
+    @"#version 430 core
         layout(points) in;
         layout(triangle_strip, max_vertices=4) out;
 

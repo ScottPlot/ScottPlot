@@ -54,7 +54,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
 
     public AxisLimits GetAxisLimits() => Data.GetLimits();
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, MarkerStyle, LineStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, MarkerStyle, LineStyle);
 
     private CoordinateRange GetVisibleXRange(PixelRect dataRect)
     {
@@ -73,7 +73,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
 
     public virtual void Render(RenderPack rp)
     {
-        if (!Data.GetYs().Any())
+        if (!Data.GetYs(MinRenderIndex, MaxRenderIndex).Any())
         {
             return;
         }

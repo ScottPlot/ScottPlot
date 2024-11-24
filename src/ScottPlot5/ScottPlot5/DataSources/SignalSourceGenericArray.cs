@@ -2,7 +2,7 @@
 
 public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDataSource
 {
-    private readonly T[] Ys;
+    protected readonly T[] Ys;
     public override int Length => Ys.Length;
 
     bool IDataSource.PreferCoordinates => false;
@@ -20,6 +20,8 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDat
 
     public IEnumerable<double> GetYs(int i1, int i2)
     {
+        i1 = Math.Max(i1, MinRenderIndex);
+        i2 = Math.Min(i2, MaxRenderIndex);
         for (int i = i1; i <= i2; i++)
         {
             yield return NumericConversion.GenericToDouble(ref Ys[i]);
@@ -68,16 +70,9 @@ public class SignalSourceGenericArray<T> : SignalSourceBase, ISignalSource, IDat
         float yExit = axes.GetPixelY(NumericConversion.GenericToDouble(Ys, i2) * YScale + YOffset);
 
         // determine column span vertically
-        double yMin = double.PositiveInfinity;
-        double yMax = double.NegativeInfinity;
-        for (int i = i1; i <= i2; i++)
-        {
-            double value = NumericConversion.GenericToDouble(Ys, i);
-            yMin = Math.Min(yMin, value);
-            yMax = Math.Max(yMax, value);
-        }
-        yMin = yMin * YScale + YOffset;
-        yMax = yMax * YScale + YOffset;
+        SignalRangeY rangeY = GetLimitsY(i1, i2);
+        double yMin = rangeY.Min * YScale + YOffset;
+        double yMax = rangeY.Max * YScale + YOffset;
 
         float yBottom = axes.GetPixelY(yMin);
         float yTop = axes.GetPixelY(yMax);

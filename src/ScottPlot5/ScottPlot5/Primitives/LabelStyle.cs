@@ -1,10 +1,16 @@
-﻿namespace ScottPlot;
+﻿using SkiaSharp.HarfBuzz;
+
+namespace ScottPlot;
 
 [Obsolete("Label has been renamed to LabelStyle", true)]
 public class Label : LabelStyle { }
 
 public class LabelStyle
 {
+    /// <summary>
+    /// Set this to globally enable support for right-to-left (RTL) languages
+    /// </summary>
+    public static bool RTLSupport { get; set; } = false;
     public bool IsVisible { get; set; } = true;
 
     // TODO: deprecate this and pass text into the render method
@@ -81,6 +87,11 @@ public class LabelStyle
             BorderRadiusY = value;
         }
     }
+
+    /// <summary>
+    /// If supplied, this label will be displayed as an image and its text and styling properties will be ignored
+    /// </summary>
+    public Image? Image { get; set; } = null;
 
     public static LabelStyle Default => new() { IsVisible = true, ForeColor = Colors.Black };
 
@@ -163,6 +174,18 @@ public class LabelStyle
 
     public MeasuredText Measure(string text, SKPaint paint)
     {
+        if (Image is not null)
+        {
+            return new MeasuredText()
+            {
+                Size = Image.Size,
+                LineHeight = Image.Height,
+                LineWidths = [Image.Width],
+                VerticalOffset = 0,
+                Bottom = 0,
+            };
+        }
+
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
         float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
@@ -239,7 +262,7 @@ public class LabelStyle
         if (!IsVisible)
             return;
 
-        if (string.IsNullOrEmpty(Text))
+        if (string.IsNullOrEmpty(Text) && Image is null)
             return;
 
         ApplyToPaint(paint);
@@ -252,10 +275,17 @@ public class LabelStyle
         canvas.Translate(px.X + OffsetX, px.Y + OffsetY);
         canvas.RotateDegrees(Rotation);
 
-        DrawBackground(canvas, px, paint, textRect);
-        DrawText(canvas, measured, paint, textRect, bottom);
-        DrawBorder(canvas, px, paint, textRect);
-        DrawPoint(canvas, px, paint);
+        if (Image is null)
+        {
+            DrawBackground(canvas, px, paint, textRect);
+            DrawText(canvas, measured, paint, textRect, bottom);
+            DrawBorder(canvas, px, paint, textRect);
+            DrawPoint(canvas, px, paint);
+        }
+        else
+        {
+            Image.Render(canvas, textRect, paint, false);
+        }
 
         canvasState.Restore();
     }
@@ -295,14 +325,26 @@ public class LabelStyle
 
                 float xPx = textRect.Left + dX;
                 float yPx = textRect.Top + (1 + i) * lineHeight + dY;
-                canvas.DrawText(lines[i], xPx, yPx, paint);
+                if (LabelStyle.RTLSupport)
+                {
+                    using (var shaper = new SKShaper(paint.Typeface))
+                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint);
+                }
+                else
+                    canvas.DrawText(lines[i], xPx, yPx, paint);
             }
         }
         else
         {
             float xPx = textRect.Left;
             float yPx = textRect.Bottom + dY;
-            canvas.DrawText(Text, xPx, yPx, paint);
+            if (LabelStyle.RTLSupport)
+            {
+                using (var shaper = new SKShaper(paint.Typeface))
+                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint);
+            }
+            else
+                canvas.DrawText(Text, xPx, yPx, paint);
         }
     }
 

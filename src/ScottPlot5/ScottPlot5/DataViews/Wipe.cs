@@ -60,5 +60,7 @@ public class Wipe : IDataStreamerView
         using SKPaint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, oldest, Streamer.LineStyle);
         Drawing.DrawLines(rp.Canvas, paint, newest, Streamer.LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, oldest, Streamer.MarkerStyle);
+        Drawing.DrawMarkers(rp.Canvas, paint, newest, Streamer.MarkerStyle);
     }
 }

@@ -36,7 +36,7 @@
             YErrorNegative = yErrorsNegative;
         }
 
-        public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle);
+        public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle);
 
         [Obsolete("use LegendText")]
         public string Label { get => LegendText; set => LegendText = value; }

@@ -13,7 +13,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.WinForms</PackageId>
-        <Version>5.0.44</Version>
+        <Version>5.0.46</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

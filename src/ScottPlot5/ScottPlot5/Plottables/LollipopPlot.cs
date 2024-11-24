@@ -8,7 +8,7 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
 
     public string LegendText { get; set; } = string.Empty;
 
-    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(LegendText, LineStyle, MarkerStyle);
+    public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle, MarkerStyle);
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
