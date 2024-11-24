@@ -122,7 +122,7 @@ namespace WinForms_Demo.Demos
         {
             ContextMenuStrip customMenu = new();
 
-            customMenu.Items.Add(new ToolStripMenuItem("Delete", null, new EventHandler((s, e) => DeletePlottable(ClickedPlottable))));
+            customMenu.Items.Add(new ToolStripMenuItem("Delete", null, new EventHandler((s, e) => DeletePlottable(ClickedPlottable, skControl))));
 
             if (ClickedPlottable is IHasLine)
             {
