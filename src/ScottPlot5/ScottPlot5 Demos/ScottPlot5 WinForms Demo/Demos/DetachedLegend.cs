@@ -29,18 +29,31 @@ namespace WinForms_Demo.Demos
 
         private void LaunchDetachedLegend(IPlotControl plotControl)
         {
+            // hide the legend in the original plot
+            plotControl.Plot.Legend.IsVisible = false;
+            plotControl.Refresh();
+
+            // create a form that displays a SkiaSharp canvas the legend can be drawn on
             Form form = new()
             {
                 Text = "Detached Legend",
                 StartPosition = FormStartPosition.CenterScreen,
             };
 
+            form.FormClosed += (s, e) =>
+            {
+                // un-hide the legend in the original plot when the legend viewer is closed
+                plotControl.Plot.Legend.IsVisible = true;
+                plotControl.Refresh();
+            };
+
             SKControl skControl = new()
             {
                 Dock = DockStyle.Fill
             };
+
             skControl.PaintSurface += (s, e) => { PaintDetachedLegend((SKControl)s, (SKPaintSurfaceEventArgs)e); };
-            skControl.MouseClick += (s, e) => {LegendControl_MouseClick((SKControl)s, e); };
+            skControl.MouseClick += (s, e) => { LegendControl_MouseClick((SKControl)s, e); };
             form.Controls.Add(skControl);
             bool initialLegendState = formsPlot1.Plot.Legend.IsVisible;
             formsPlot1.Plot.Legend.IsVisible = false;
@@ -61,7 +74,7 @@ namespace WinForms_Demo.Demos
             var e = (MouseEventArgs)ee;
 
             var item = GetLegendItemUnderMouse(sender, e.Location);
-            var ClickedPlottable = item != null ? item.Plottable: null;
+            var ClickedPlottable = item != null ? item.Plottable : null;
 
             if (e.Button == MouseButtons.Left)
             {
@@ -94,13 +107,13 @@ namespace WinForms_Demo.Demos
             // mouse hit logic must go here because Legend doesn't know about image stretching or display scaling
             var itemslayout = Enumerable.Zip(items, layout.LabelRects, layout.SymbolRects);
             foreach (var il in itemslayout)
-                {
+            {
                 var item = il.First;
                 var lrect = il.Second;
                 var srect = il.Third;
                 if (lrect.Contains(e.X, e.Y) || srect.Contains(e.X, e.Y))
                 {
-                        return item;
+                    return item;
                 }
             }
             return null;
@@ -110,7 +123,7 @@ namespace WinForms_Demo.Demos
         {
             ContextMenuStrip customMenu = new();
 
-            customMenu.Items.Add(new ToolStripMenuItem("Delete", null, new EventHandler((s,e) => DeletePlottable(ClickedPlottable))));
+            customMenu.Items.Add(new ToolStripMenuItem("Delete", null, new EventHandler((s, e) => DeletePlottable(ClickedPlottable))));
 
             if (ClickedPlottable is IHasLine)
             {
@@ -299,29 +312,29 @@ namespace WinForms_Demo.Demos
         }
 
 
-private float LineWidthCoefficient(string lwstring)
-{
-    return lwstring switch
-    {
-        "much thinner" => 1 / 2f,
-        "thinner" => 2 / 3f,
-        "thicker" => 3 / 2f,
-        "much thicker" => 2,
-        _ => throw new NotImplementedException(),
-    };
-}
+        private float LineWidthCoefficient(string lwstring)
+        {
+            return lwstring switch
+            {
+                "much thinner" => 1 / 2f,
+                "thinner" => 2 / 3f,
+                "thicker" => 3 / 2f,
+                "much thicker" => 2,
+                _ => throw new NotImplementedException(),
+            };
+        }
 
-private float MarkerSizeCoefficient(string lwstring)
-{
-    return lwstring switch
-    {
-        "much smaller" => 1 / 2f,
-        "smaller" => 1 / 1.5f,
-        "bigger" => 1.5f,
-        "much bigger" => 2,
-        _ => throw new NotImplementedException(),
-    };
+        private float MarkerSizeCoefficient(string lwstring)
+        {
+            return lwstring switch
+            {
+                "much smaller" => 1 / 2f,
+                "smaller" => 1 / 1.5f,
+                "bigger" => 1.5f,
+                "much bigger" => 2,
+                _ => throw new NotImplementedException(),
+            };
+        }
+
     }
-
-}
 }
