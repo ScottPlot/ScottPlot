@@ -280,11 +280,11 @@ public class Plot : IDisposable
     /// <summary>
     /// Render the plot and return an HTML img element containing a Base64-encoded PNG
     /// </summary>
-    public string GetPngHtml(int width, int height)
+    public string GetPngHtml(int width, int height, string classContent = "", string styleContent = "")
     {
         Image img = GetImage(width, height);
         byte[] bytes = img.GetImageBytes();
-        return ImageOperations.GetImageHtml(bytes);
+        return ImageOperations.GetImageHtml(bytes, "png", classContent, styleContent);
     }
 
     /// <summary>

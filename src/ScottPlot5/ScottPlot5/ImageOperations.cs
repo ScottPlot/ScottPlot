@@ -1,14 +1,10 @@
-﻿using System;
-
-namespace ScottPlot;
-
-#nullable enable
+﻿namespace ScottPlot;
 
 public static class ImageOperations
 {
-    public static string GetImageHtml(byte[] bytes, string imageType = "png")
+    public static string GetImageHtml(byte[] bytes, string imageType = "png", string classContent = "", string styleContent = "")
     {
         string b64 = Convert.ToBase64String(bytes);
-        return $"<img src=\"data:image/{imageType};base64,{b64}\"></img>";
+        return $"<img class='{classContent}' style='{styleContent}' src=\"data:image/{imageType};base64,{b64}\"></img>";
     }
 }
