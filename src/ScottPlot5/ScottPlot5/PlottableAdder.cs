@@ -872,6 +872,43 @@ public class PlottableAdder(Plot plot)
         return radialGaugePlot;
     }
 
+    /// <summary>
+    /// Create a bar plot to represent a collection of named ranges
+    /// </summary>
+    public BarPlot RangePlot(List<(string name, CoordinateRange range)> ranges, Color? color = null, bool horizontal = false)
+    {
+        Color barColor = color ?? GetNextColor();
+
+        // create a bar plot from the collection of ranges
+        Bar[] bars = new Bar[ranges.Count];
+        for (int i = 0; i < ranges.Count; i++)
+        {
+            bars[i] = new()
+            {
+                ValueBase = ranges[i].range.Min,
+                Value = ranges[i].range.Max,
+                Position = i,
+                FillColor = barColor,
+            };
+        }
+        BarPlot bp = Bars(bars);
+        bp.Horizontal = horizontal;
+
+        // use manaul tick labels displaying category names
+        double[] positions = bars.Select(x => x.Position).ToArray();
+        string[] labels = ranges.Select(x => x.name).ToArray();
+        if (horizontal)
+        {
+            Plot.Axes.Left.SetTicks(positions, labels);
+        }
+        else
+        {
+            Plot.Axes.Bottom.SetTicks(positions, labels);
+        }
+
+        return bp;
+    }
+
     public Rectangle Rectangle(CoordinateRect rect)
     {
         return Rectangle(rect.Left, rect.Right, rect.Top, rect.Bottom);

@@ -467,4 +467,62 @@ public class Bar : ICategory
             myPlot.Axes.Left.SetTicks(tickPositions, tickLabels);
         }
     }
+
+    public class RangeChart : RecipeBase
+    {
+        public override string Name => "Range Chart";
+        public override string Description => "A range chart displays a discrete set of named value ranges";
+
+        [Test]
+        public override void Execute()
+        {
+            List<(string, CoordinateRange)> ranges =
+            [
+                ("Africa", new(-35, 37)),
+                ("Antarctica", new(-90, -60)),
+                ("Asia", new(-11, 81)),
+                ("Europe", new(-36, 71)),
+                ("North America", new(-7, 83)),
+                ("South America", new(-56, 13)),
+                ("Australia", new(-47, -28)),
+            ];
+            myPlot.Add.RangePlot(ranges);
+
+            // style the axes
+            myPlot.Title("Latitude Range of the Continents");
+            myPlot.Axes.Bottom.TickLabelStyle.Rotation = -45;
+            myPlot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
+            myPlot.Axes.Bottom.MinimumSize = 100;
+
+            // use tick labels with a degree symbol
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new();
+            myPlot.Axes.Left.TickGenerator = tickGen;
+            tickGen.LabelFormatter = (x) => $"{x}º";
+
+            // add a horizontal line at zero and push it beneath the range plot
+            var hl = myPlot.Add.HorizontalLine(0, 1, Colors.Black, LinePattern.DenselyDashed);
+            myPlot.MoveToBack(hl);
+        }
+    }
+
+    public class RangeChartHozontal : RecipeBase
+    {
+        public override string Name => "Horizontal Range Chart";
+        public override string Description => "Range charts may be created using horizontally oriented bars";
+
+        [Test]
+        public override void Execute()
+        {
+            List<(string, CoordinateRange)> ranges =
+            [
+                ("Ontario", new(-9, 51)),
+                ("England", new(0, 63)),
+                ("Kentucky", new(-4, 72)),
+            ];
+
+            myPlot.Add.RangePlot(ranges, horizontal: true);
+
+            myPlot.XLabel("Temperature (ºF)");
+        }
+    }
 }
