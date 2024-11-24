@@ -1,6 +1,8 @@
 ﻿using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using ScottPlot.Statistics;
+using System.Linq;
 
 namespace ScottPlot;
 
@@ -509,6 +511,24 @@ public class PlottableAdder(Plot plot)
             }
         }
         return Heatmap(intensities);
+    }
+
+    public HistogramBars Histogram(Histogram histogram, Color? color = null, bool disableBottomPadding = true)
+    {
+        HistogramBars hb = new(histogram);
+        Plot.PlottableList.Add(hb);
+
+        foreach (var bar in hb.Bars)
+        {
+            bar.LineWidth = 0;
+            bar.FillStyle.AntiAlias = false;
+            bar.FillColor = color ?? Palette.GetColor(0);
+        }
+
+        if (disableBottomPadding)
+            Plot.Axes.Margins(bottom: 0);
+
+        return hb;
     }
 
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = default)
