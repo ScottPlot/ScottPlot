@@ -116,7 +116,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     public bool DisplayPlottableLegendItems { get; set; } = true;
 
-    public LegendItem[] GetItems(bool VisibleOnly=true)
+    public LegendItem[] GetItems(bool VisibleOnly = true)
     {
         List<LegendItem> items = [];
 
@@ -155,7 +155,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         return items.ToArray();
     }
 
-    public LegendLayout GetLayout( PixelSize size, bool VisibleOnly = true)
+    public LegendLayout GetLayout(PixelSize size, bool VisibleOnly = true)
     {
         return Layout.GetLayout(this, GetItems(VisibleOnly), size);
     }
@@ -231,12 +231,12 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         RenderLayout(rp.Canvas, layout);
     }
 
-    public void Render(RenderPack rp, PixelRect rect, Alignment alignment, bool VisibleOnly=true)
+    public void Render(RenderPack rp, PixelRect rect, Alignment alignment, bool VisibleOnly = true)
     {
         Render(rp.Canvas, rect, alignment, VisibleOnly);
     }
 
-    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment, bool VisibleOnly=true)
+    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment, bool VisibleOnly = true)
     {
         LegendItem[] items = GetItems(VisibleOnly);
         if (items.Length == 0)
@@ -300,8 +300,11 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             item.ArrowStyle.Render(canvas, symbolLine, paint);
 
             // Partially hide legend item to reflect that plottable is invisible
-            if (!item.Plottable.IsVisible)
+            if (item.Plottable is not null)
             {
+                if (!item.Plottable.IsVisible)
+                    continue;
+
                 PixelRect itemRect = new PixelRect(symbolRect.TopLeft, labelRect.BottomRight);
                 Drawing.FillRectangle(canvas, itemRect, Colors.White.WithAlpha(.5));
             }

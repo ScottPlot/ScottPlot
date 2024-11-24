@@ -52,8 +52,8 @@ namespace WinForms_Demo.Demos
                 Dock = DockStyle.Fill
             };
 
-            skControl.PaintSurface += (s, e) => { PaintDetachedLegend((SKControl)s, (SKPaintSurfaceEventArgs)e); };
-            skControl.MouseClick += (s, e) => { LegendControl_MouseClick((SKControl)s, e); };
+            skControl.PaintSurface += (s, e) => { PaintDetachedLegend((SKControl)s!, (SKPaintSurfaceEventArgs)e); };
+            skControl.MouseClick += (s, e) => { LegendControl_MouseClick((SKControl)s!, e); };
             form.Controls.Add(skControl);
             bool initialLegendState = formsPlot1.Plot.Legend.IsVisible;
             formsPlot1.Plot.Legend.IsVisible = false;
@@ -182,8 +182,11 @@ namespace WinForms_Demo.Demos
             formsPlot1.Plot.Remove(ClickedPlottable);
         }
 
-        private void ChangeLinePattern(object sender, IPlottable ClickedPlottable)
+        private void ChangeLinePattern(object? sender, IPlottable ClickedPlottable)
         {
+            if (sender is null)
+                return;
+
             string lpstring = ((ToolStripMenuItem)sender).Text;
             if (ClickedPlottable is IHasLine line)
             {
@@ -198,7 +201,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeLineColor(object sender, IPlottable ClickedPlottable)
+        private void ChangeLineColor(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
@@ -214,7 +217,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeLineWidth(object sender, IPlottable ClickedPlottable)
+        private void ChangeLineWidth(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
@@ -227,7 +230,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeMarkerLineWidth(object sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerLineWidth(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
@@ -240,7 +243,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeMarkerShape(object sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerShape(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
@@ -266,7 +269,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeMarkerSize(object sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerSize(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
@@ -279,7 +282,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeMarkerColor(object sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerColor(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
@@ -295,7 +298,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeMarkerLineColor(object sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerLineColor(object? sender, IPlottable ClickedPlottable)
         {
             if (sender is null)
             {
