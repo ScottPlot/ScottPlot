@@ -116,6 +116,18 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
     public bool DisplayPlottableLegendItems { get; set; } = true;
 
+    /// <summary>
+    /// If enabled, the legend will include items from hidden plottables.
+    /// They will be partially painted over using the background color to simulate semitransparency.
+    /// </summary>
+    public bool ShowItemsFromHiddenPlottables { get; set; } = false;
+
+    /// <summary>
+    /// This property controls how visible legend items are when their parent control's visibility is disabled.
+    /// This property is only used when <see cref="ShowItemsFromHiddenPlottables"/> is enabled.
+    /// </summary>
+    public double HiddenItemOpacity { get; set; } = 0.25;
+
     public LegendItem[] GetItems()
     {
         List<LegendItem> items = [];
@@ -123,7 +135,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         if (DisplayPlottableLegendItems)
         {
             var plottableLegendItems = Plot.PlottableList
-                        .Where(item => item.IsVisible)
+                        .Where(item => (ShowItemsFromHiddenPlottables || item.IsVisible))
                         .SelectMany(x => x.LegendItems)
                         .Where(x => !string.IsNullOrEmpty(x.LabelText));
 
@@ -153,6 +165,11 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         }
 
         return items.ToArray();
+    }
+
+    public LegendLayout GetLayout(PixelSize size)
+    {
+        return Layout.GetLayout(this, GetItems(), size);
     }
 
     /// <summary>
@@ -226,11 +243,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         RenderLayout(rp.Canvas, layout);
     }
 
-    /// <summary>
-    /// Render the legend inside the given rectangle
-    /// </summary>
-    /// <param name="rp"></param>
-    public void Render(RenderPack rp, PixelRect rect, Alignment alignment)
+    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment)
     {
         LegendItem[] items = GetItems();
         if (items.Length == 0)
@@ -247,7 +260,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
         };
 
-        RenderLayout(rp.Canvas, layout);
+        RenderLayout(canvs, layout);
     }
 
     private void RenderLayout(SKCanvas canvas, LegendLayout layout)
@@ -292,6 +305,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);
+
+            // Partially hide legend item to reflect that plottable is invisible
+            if (item.Plottable is not null && !item.Plottable.IsVisible)
+            {
+                PixelRect itemRect = new(symbolRect.TopLeft, labelRect.BottomRight);
+                Drawing.FillRectangle(canvas, itemRect, BackgroundColor.WithAlpha(1.0 - HiddenItemOpacity));
+            }
         }
 
         canvasState.Restore();

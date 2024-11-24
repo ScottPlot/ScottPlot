@@ -9,6 +9,8 @@ _Not yet on NuGet..._
 * Bar: Created `Add.Ranges()` and `Add.StackedRanges()` to simplify creation of stacked range charts (#4548) @quantfreedom @wellcaffeinated
 * Bracket: New plot type for annotating ranges of linear lines in coordinate space (#4547, #1863) @FULL69 @bclehmann
 * Financial Charting: Improved `FinancialTimeAxis` tick generation behavior (#4483, #4551, #4385) @VladislavPustovarov @quantfreedom
+* Histogram: Created `Add.Histogram()` which accepts a `Histogram` and returns a `HistogramBars` plottable designed for displaying continuously updated histogram counts (#4557) @jpgarza93
+* Legend: Added support for paring each `LegendItem` with its parent `IPlottable` to facilitate mouse interaction (#4533) @BambOoxX
 * Reporting: Created to `ScottPlot.Reporting` to work toward enabling reports (plots paired with information) which may be viewed interactively in GUI environments or exported as static images in HTML, Markdown, or PDF documents
 
 ## ScottPlot 5.0.46
