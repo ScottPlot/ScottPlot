@@ -875,7 +875,7 @@ public class PlottableAdder(Plot plot)
     /// <summary>
     /// Create a bar plot to represent a collection of named ranges
     /// </summary>
-    public BarPlot RangePlot(List<(string name, CoordinateRange range)> ranges, Color? color = null, bool horizontal = false)
+    public BarPlot Ranges(List<(string name, CoordinateRange range)> ranges, Color? color = null, bool horizontal = false)
     {
         Color barColor = color ?? GetNextColor();
 
@@ -1154,6 +1154,37 @@ public class PlottableAdder(Plot plot)
     {
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
         return SignalXY(source, color);
+    }
+
+    /// <summary>
+    /// Place a stacked bar chart at a single position
+    /// </summary>
+    public BarPlot[] StackedRanges(List<(string name, double[] edgeValues)> ranges, IPalette? palette = null)
+    {
+        BarPlot[] bps = new BarPlot[ranges.Count];
+        for (int i = 0; i < ranges.Count; i++)
+        {
+            double[] edgeValues = ranges[i].edgeValues;
+            Bar[] bars = new Bar[edgeValues.Length - 1];
+            for (int j = 0; j < bars.Length; j++)
+            {
+                bars[j] = new()
+                {
+                    ValueBase = edgeValues[j],
+                    Value = edgeValues[j + 1],
+                    Position = i,
+                    FillColor = (palette ?? Palette).GetColor(j),
+                };
+            }
+
+            bps[i] = Bars(bars);
+        }
+
+        string[] labels = ranges.Select(x => x.name).ToArray();
+        double[] positions = Generate.Consecutive(labels.Length);
+        Plot.Axes.Bottom.SetTicks(positions, labels);
+
+        return bps;
     }
 
     public Text Text(string text, Coordinates location)
