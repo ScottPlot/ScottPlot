@@ -14,6 +14,24 @@ public class Report
         ComponentList.Add(new Components.PlotComponent(plot));
     }
 
+    public void AddPlot(Plot plot, int width, int height)
+    {
+        ComponentList.Add(new Components.PlotComponent(plot)
+        {
+            Width = width,
+            Height = height,
+        });
+    }
+
+    public void AddPlot(Plot plot, string title, string description)
+    {
+        ComponentList.Add(new Components.PlotComponent(plot)
+        {
+            Title = title,
+            Description = description,
+        });
+    }
+
     public void AddText(string text)
     {
         ComponentList.Add(new Components.TextComponent(text));
