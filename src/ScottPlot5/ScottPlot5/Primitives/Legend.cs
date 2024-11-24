@@ -298,6 +298,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);
+
+            // Partially hide legend item to reflect that plottable is invisible
+            if (!item.Plottable.IsVisible)
+            {
+                PixelRect itemRect = new PixelRect(symbolRect.TopLeft, labelRect.BottomRight);
+                Drawing.FillRectangle(canvas, itemRect, Colors.White.WithAlpha(.5));
+            }
         }
 
         canvasState.Restore();

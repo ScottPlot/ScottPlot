@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
@@ -52,20 +52,6 @@ namespace WinForms_Demo.Demos
             PixelRect rect = new(Pixel.Zero, size);
             SKCanvas canvas = e.Surface.Canvas;
             formsPlot1.Plot.Legend.Render(canvas, rect, Alignment.UpperLeft, false);
-            LegendLayout layout = formsPlot1.Plot.Legend.GetLayout(size, false);
-
-            using SKPaint paint = new();
-            for (int i = 0; i < layout.LegendItems.Length; i++)
-            {
-                LegendItem item = layout.LegendItems[i];
-                PixelRect symbolRect = layout.SymbolRects[i];
-
-                if (!item.IsVisible)
-                {
-                    Drawing.DrawRectangle(canvas, symbolRect, Colors.Red.WithAlpha(.2));
-                    // TODO : How to trigger visible updates of the canvas ?
-                }
-            }
         }
 
         private void LegendControl_MouseClick(SKControl sender, EventArgs ee)
