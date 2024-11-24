@@ -872,6 +872,43 @@ public class PlottableAdder(Plot plot)
         return radialGaugePlot;
     }
 
+    /// <summary>
+    /// Create a bar plot to represent a collection of named ranges
+    /// </summary>
+    public BarPlot Ranges(List<(string name, CoordinateRange range)> ranges, Color? color = null, bool horizontal = false)
+    {
+        Color barColor = color ?? GetNextColor();
+
+        // create a bar plot from the collection of ranges
+        Bar[] bars = new Bar[ranges.Count];
+        for (int i = 0; i < ranges.Count; i++)
+        {
+            bars[i] = new()
+            {
+                ValueBase = ranges[i].range.Min,
+                Value = ranges[i].range.Max,
+                Position = i,
+                FillColor = barColor,
+            };
+        }
+        BarPlot bp = Bars(bars);
+        bp.Horizontal = horizontal;
+
+        // use manaul tick labels displaying category names
+        double[] positions = bars.Select(x => x.Position).ToArray();
+        string[] labels = ranges.Select(x => x.name).ToArray();
+        if (horizontal)
+        {
+            Plot.Axes.Left.SetTicks(positions, labels);
+        }
+        else
+        {
+            Plot.Axes.Bottom.SetTicks(positions, labels);
+        }
+
+        return bp;
+    }
+
     public Rectangle Rectangle(CoordinateRect rect)
     {
         return Rectangle(rect.Left, rect.Right, rect.Top, rect.Bottom);
@@ -1117,6 +1154,45 @@ public class PlottableAdder(Plot plot)
     {
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
         return SignalXY(source, color);
+    }
+
+    /// <summary>
+    /// Place a stacked bar chart at a single position
+    /// </summary>
+    public BarPlot[] StackedRanges(List<(string name, double[] edgeValues)> ranges, IPalette? palette = null, bool horizontal = false)
+    {
+        BarPlot[] bps = new BarPlot[ranges.Count];
+        for (int i = 0; i < ranges.Count; i++)
+        {
+            double[] edgeValues = ranges[i].edgeValues;
+            Bar[] bars = new Bar[edgeValues.Length - 1];
+            for (int j = 0; j < bars.Length; j++)
+            {
+                bars[j] = new()
+                {
+                    ValueBase = edgeValues[j],
+                    Value = edgeValues[j + 1],
+                    Position = i,
+                    FillColor = (palette ?? Palette).GetColor(j),
+                };
+            }
+
+            bps[i] = Bars(bars);
+            bps[i].Horizontal = horizontal;
+        }
+
+        string[] labels = ranges.Select(x => x.name).ToArray();
+        double[] positions = Generate.Consecutive(labels.Length);
+        if (horizontal)
+        {
+            Plot.Axes.Left.SetTicks(positions, labels);
+        }
+        else
+        {
+            Plot.Axes.Bottom.SetTicks(positions, labels);
+        }
+
+        return bps;
     }
 
     public Text Text(string text, Coordinates location)

@@ -5,6 +5,8 @@ _Not yet on NuGet..._
 * Ticks: Created a plottable for displaying multiplier notation and added the `Plot.Axes.SetupMultiplierNotation()` helper method for rapidly enabling it with typical options (#4530) @Paraplegia
 * Axes: Improve layout support for axes with multi-line axis labels (#4535) @CBrauer
 * Heatmap: Added `Rectangle` property to simplify rendering a heatmap within the edges of a user-defined rectangle in coordinate space (#4552, #4550) @ecrocombe
+* Palette: Exposed `ScottPlot.Palettes.Custom` as an alternative to `ScottPlot.Palette.FromColors()` for creating palettes with user-defined collections of colors
+* Bar: Created `Add.Ranges()` and `Add.StackedRanges()` to simplify creation of stacked range charts (#4548) @quantfreedom @wellcaffeinated
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
