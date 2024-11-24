@@ -47,12 +47,7 @@ public class HistogramBars : IPlottable
             top: Histogram.Counts.Max());
     }
 
-    public void Add(double value)
-    {
-        Histogram.Add(value);
-    }
-
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 
