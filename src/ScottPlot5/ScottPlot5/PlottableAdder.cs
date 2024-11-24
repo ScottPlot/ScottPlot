@@ -1159,7 +1159,7 @@ public class PlottableAdder(Plot plot)
     /// <summary>
     /// Place a stacked bar chart at a single position
     /// </summary>
-    public BarPlot[] StackedRanges(List<(string name, double[] edgeValues)> ranges, IPalette? palette = null)
+    public BarPlot[] StackedRanges(List<(string name, double[] edgeValues)> ranges, IPalette? palette = null, bool horizontal = false)
     {
         BarPlot[] bps = new BarPlot[ranges.Count];
         for (int i = 0; i < ranges.Count; i++)
@@ -1178,11 +1178,19 @@ public class PlottableAdder(Plot plot)
             }
 
             bps[i] = Bars(bars);
+            bps[i].Horizontal = horizontal;
         }
 
         string[] labels = ranges.Select(x => x.name).ToArray();
         double[] positions = Generate.Consecutive(labels.Length);
-        Plot.Axes.Bottom.SetTicks(positions, labels);
+        if (horizontal)
+        {
+            Plot.Axes.Left.SetTicks(positions, labels);
+        }
+        else
+        {
+            Plot.Axes.Bottom.SetTicks(positions, labels);
+        }
 
         return bps;
     }

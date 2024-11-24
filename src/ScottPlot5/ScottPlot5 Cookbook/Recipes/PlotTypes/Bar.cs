@@ -575,4 +575,23 @@ public class Bar : ICategory
             myPlot.Axes.Right.MaximumSize = 0;
         }
     }
+
+    public class StackedRangeHorizontal : RecipeBase
+    {
+        public override string Name => "Stacked Range Chart";
+        public override string Description => "Horizontally oriented stacked range charts may be created";
+
+        [Test]
+        public override void Execute()
+        {
+            List<(string name, double[] edges)> ranges =
+            [
+                ("Ontario", [-9, 3, 7, 13, 27]),
+                ("England", [4, 7, 12, 16, 24]),
+                ("Kentucky", [-4, 7, 13, 20, 30]),
+            ];
+
+            myPlot.Add.StackedRanges(ranges, horizontal: true);
+        }
+    }
 }
