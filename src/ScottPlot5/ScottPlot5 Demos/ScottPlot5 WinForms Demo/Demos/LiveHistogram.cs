@@ -23,7 +23,7 @@ public partial class LiveHistogram : Form, IDemoWindow
         BarPlot bp = formsPlot1.Plot.Add.Bars(initialHeights);
 
         // style bars so there are no gaps between them
-        foreach(var bar in bp.Bars)
+        foreach (var bar in bp.Bars)
         {
             bar.LineWidth = 0;
             bar.Size = 1;
