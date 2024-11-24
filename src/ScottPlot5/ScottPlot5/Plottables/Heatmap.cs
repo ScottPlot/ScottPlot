@@ -39,15 +39,40 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// <summary>
     /// If defined, the this rectangle sets the axis boundaries of heatmap data.
     /// Note that the actual heatmap area is 1 cell larger than this rectangle.
+    /// Assign <see cref="Rectangle"/> to set the edges of the heatmap rectangle.
     /// </summary>
     private CoordinateRect? _extent;
-    public CoordinateRect? Extent // TODO: obsolete this
+    public CoordinateRect? Extent
     {
         get { return _extent; }
         set
         {
             _extent = value;
             Update();
+        }
+    }
+
+    /// <summary>
+    /// If defined, the heatmap will be rendered within the edges of this rectangle.
+    /// </summary>
+    public CoordinateRect? Rectangle
+    {
+        set
+        {
+            if (value is null)
+            {
+                Extent = null;
+                return;
+            }
+
+            CoordinateRect rect = value.Value;
+            double cellWidth = rect.Width / Intensities.GetLength(1);
+            double cellHeight = rect.Height / Intensities.GetLength(0);
+            Extent = new(
+                rect.Left + cellWidth / 2,
+                rect.Right - cellWidth / 2,
+                rect.Bottom + cellHeight / 2,
+                rect.Top - cellHeight / 2);
         }
     }
 
@@ -110,15 +135,12 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// <summary>
     /// Actual extent of the heatmap bitmap after alignment has been applied
     /// </summary>
-    private CoordinateRect AlignedExtent
+    private CoordinateRect GetAlignedExtent()
     {
-        get
-        {
-            double xOffset = Math.Abs(CellWidth) * CellAlignment.HorizontalFraction();
-            double yOffset = Math.Abs(CellHeight) * CellAlignment.VerticalFraction();
-            Coordinates cellOffset = new(-xOffset, -yOffset);
-            return ExtentOrDefault.WithTranslation(cellOffset);
-        }
+        double xOffset = Math.Abs(CellWidth) * CellAlignment.HorizontalFraction();
+        double yOffset = Math.Abs(CellHeight) * CellAlignment.VerticalFraction();
+        Coordinates cellOffset = new(-xOffset, -yOffset);
+        return GetExtentOrDefault().WithTranslation(cellOffset);
     }
 
     /// <summary>
@@ -126,30 +148,27 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// Supplies the user-provided extent if available, 
     /// otherwise a heatmap centered at the origin with cell size 1.
     /// </summary>
-    private CoordinateRect ExtentOrDefault
+    private CoordinateRect GetExtentOrDefault()
     {
-        get
+        if (Extent.HasValue)
         {
-            if (Extent.HasValue)
-            {
-                var extent = Extent.Value;
-                //user will provide the extends to the data. The image will be one cell wider and taller so we need to add that on (it is being added on in teh default case).
-                double cellwidth = extent.Width / (Intensities.GetLength(1) - 1);
-                double cellheight = extent.Height / (Intensities.GetLength(0) - 1);
-                if (extent.Left < extent.Right) extent.Right += cellwidth;
-                if (extent.Left > extent.Right) extent.Left -= cellwidth; //cellwidth will be negative if extent is flipped
-                if (extent.Bottom < extent.Top) extent.Top += cellheight;
-                if (extent.Bottom > extent.Top) extent.Bottom -= cellheight; //cellheight will be negative if extent is inverted
+            var extent = Extent.Value;
+            //user will provide the extends to the data. The image will be one cell wider and taller so we need to add that on (it is being added on in teh default case).
+            double cellwidth = extent.Width / (Intensities.GetLength(1) - 1);
+            double cellheight = extent.Height / (Intensities.GetLength(0) - 1);
+            if (extent.Left < extent.Right) extent.Right += cellwidth;
+            if (extent.Left > extent.Right) extent.Left -= cellwidth; //cellwidth will be negative if extent is flipped
+            if (extent.Bottom < extent.Top) extent.Top += cellheight;
+            if (extent.Bottom > extent.Top) extent.Bottom -= cellheight; //cellheight will be negative if extent is inverted
 
-                return extent;
-            }
-
-            return new CoordinateRect(
-                left: 0,
-                right: Intensities.GetLength(1),
-                bottom: 0,
-                top: Intensities.GetLength(0));
+            return extent;
         }
+
+        return new CoordinateRect(
+            left: 0,
+            right: Intensities.GetLength(1),
+            bottom: 0,
+            top: Intensities.GetLength(0));
     }
 
     /// <summary>
@@ -159,14 +178,15 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     {
         get
         {
-            return ExtentOrDefault.Width / Intensities.GetLength(1);
+            return GetExtentOrDefault().Width / Intensities.GetLength(1);
         }
         set
         {
-            double left = ExtentOrDefault.Left;
-            double right = ExtentOrDefault.Left + value * Intensities.GetLength(1);
-            double bottom = ExtentOrDefault.Bottom;
-            double top = ExtentOrDefault.Top;
+            var rect = GetExtentOrDefault();
+            double left = rect.Left;
+            double right = rect.Left + value * Intensities.GetLength(1);
+            double bottom = rect.Bottom;
+            double top = rect.Top;
             Extent = new(left, right, bottom, top);
         }
     }
@@ -178,14 +198,15 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     {
         get
         {
-            return ExtentOrDefault.Height / Intensities.GetLength(0);
+            return GetExtentOrDefault().Height / Intensities.GetLength(0);
         }
         set
         {
-            double left = ExtentOrDefault.Left;
-            double right = ExtentOrDefault.Right;
-            double bottom = ExtentOrDefault.Bottom;
-            double top = ExtentOrDefault.Bottom + value * Intensities.GetLength(0);
+            var rect = GetExtentOrDefault();
+            double left = rect.Left;
+            double right = rect.Right;
+            double bottom = rect.Bottom;
+            double top = rect.Bottom + value * Intensities.GetLength(0);
             Extent = new(left, right, bottom, top);
         }
     }
@@ -273,8 +294,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         uint[] argb = new uint[Intensities.Length];
 
         // the XOR here disables flipping when the flip property and the extent is inverted.
-        bool FlipY = FlipVertically ^ ExtentOrDefault.IsInvertedY;
-        bool FlipX = FlipHorizontally ^ ExtentOrDefault.IsInvertedX;
+        CoordinateRect rect = GetExtentOrDefault();
+        bool FlipY = FlipVertically ^ rect.IsInvertedY;
+        bool FlipX = FlipHorizontally ^ rect.IsInvertedX;
 
         uint nanCellArgb = NaNCellColor.PremultipliedARGB;
 
@@ -320,7 +342,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public AxisLimits GetAxisLimits()
     {
-        return new(AlignedExtent);
+        return new(GetAlignedExtent());
     }
 
     /// <summary>
@@ -328,7 +350,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     public (int x, int y) GetIndexes(Coordinates coordinates)
     {
-        CoordinateRect rect = AlignedExtent;
+        CoordinateRect rect = GetAlignedExtent();
 
         double distanceFromLeft = coordinates.X - rect.Left;
         int xIndex = (int)(distanceFromLeft / CellWidth);
@@ -345,7 +367,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     public double GetValue(Coordinates coordinates)
     {
-        CoordinateRect rect = AlignedExtent;
+        CoordinateRect rect = GetAlignedExtent();
 
         if (!rect.Contains(coordinates))
             return double.NaN;
@@ -390,7 +412,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
         };
 
-        SKRect rect = Axes.GetPixelRect(AlignedExtent).ToSKRect();
+        SKRect rect = Axes.GetPixelRect(GetAlignedExtent()).ToSKRect();
 
         rp.Canvas.DrawBitmap(Bitmap, rect, paint);
     }

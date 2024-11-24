@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Palettes;
 
-internal class Custom : IPalette
+public class Custom : IPalette
 {
     public Color[] Colors { get; }
 
@@ -8,19 +8,14 @@ internal class Custom : IPalette
 
     public string Description { get; }
 
-    public Custom(Color[] colors, string name, string description)
+    public Custom(Color[] colors, string? name, string? description = null)
     {
         Colors = colors;
-        Name = name;
-        Description = description;
+        Name = name ?? "unnamed";
+        Description = description ?? "no description";
     }
 
-    public Custom(string[] hex, string name, string description)
-    {
-        Colors = Color.FromHex(hex);
-        Name = name;
-        Description = description;
-    }
+    public Custom(string[] hex, string? name = null, string? description = null) : this(Color.FromHex(hex), name, description) { }
 
     public Color GetColor(int index)
     {

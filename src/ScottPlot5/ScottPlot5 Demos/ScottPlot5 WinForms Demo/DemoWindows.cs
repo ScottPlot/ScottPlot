@@ -12,7 +12,7 @@ public static class DemoWindows
             .Where(x => !x.IsAbstract)
             .Where(x => x.IsSubclassOf(typeof(Form)))
             .Where(x => x.GetInterfaces().Contains(typeof(IDemoWindow)))
-            .Select(x => (IDemoWindow)FormatterServices.GetUninitializedObject(x))
+            .Select(x => (IDemoWindow)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(x))
             .ToList();
 
         void MoveToTop(Type targetType)

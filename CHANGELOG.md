@@ -1,5 +1,14 @@
 ## ScottPlot 5.0.47
 _Not yet on NuGet..._
+* Controls: Fix issue preventing the context menu from appearing after it was used to open a new window (#4529) @david3951445
+* Interactivity: Created `HitablePlottableDecorator` and `DragablePlottableDecorator` classes that wrap any `IPlottable` to add pixel-based mouse collision detection and drag capability to any plot type (#4531, #4496) @StendProg
+* Ticks: Created a plottable for displaying multiplier notation and added the `Plot.Axes.SetupMultiplierNotation()` helper method for rapidly enabling it with typical options (#4530) @Paraplegia
+* Axes: Improve layout support for axes with multi-line axis labels (#4535) @CBrauer
+* Heatmap: Added `Rectangle` property to simplify rendering a heatmap within the edges of a user-defined rectangle in coordinate space (#4552, #4550) @ecrocombe
+* Palette: Exposed `ScottPlot.Palettes.Custom` as an alternative to `ScottPlot.Palette.FromColors()` for creating palettes with user-defined collections of colors
+* Bar: Created `Add.Ranges()` and `Add.StackedRanges()` to simplify creation of stacked range charts (#4548) @quantfreedom @wellcaffeinated
+* Bracket: New plot type for annotating ranges of linear lines in coordinate space (#4547, #1863) @FULL69 @bclehmann
+* Financial Charting: Improved `FinancialTimeAxis` tick generation behavior (#4483, #4551, #4385) @VladislavPustovarov @quantfreedom
 * Reporting: Created to `ScottPlot.Reporting` to work toward enabling reports (plots paired with information) which may be viewed interactively in GUI environments or exported as static images in HTML, Markdown, or PDF documents
 
 ## ScottPlot 5.0.46
