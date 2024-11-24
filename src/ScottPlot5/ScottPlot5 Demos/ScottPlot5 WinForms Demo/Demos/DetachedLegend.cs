@@ -88,13 +88,12 @@ namespace WinForms_Demo.Demos
             {
                 if (ClickedPlottable != null)
                 {
-                    OpenRightClickMenu(ClickedPlottable);
+                    OpenRightClickMenu(sender, ClickedPlottable);
                 }
             }
             formsPlot1.Refresh();
-            // TODO : How to trigger legend repaint ?
+            sender.Invalidate();
         }
-
 
         private LegendItem? GetLegendItemUnderMouse(SKControl sender, Point e)
         {
@@ -119,7 +118,7 @@ namespace WinForms_Demo.Demos
             return null;
         }
 
-        private void OpenRightClickMenu(IPlottable ClickedPlottable)
+        private void OpenRightClickMenu(SKControl skControl, IPlottable ClickedPlottable)
         {
             ContextMenuStrip customMenu = new();
 
@@ -131,16 +130,16 @@ namespace WinForms_Demo.Demos
                 var LinePatternMenu = new ToolStripMenuItem("Pattern");
                 foreach (LinePattern lp in LinePattern.GetAllPatterns())
                 {
-                    LinePatternMenu.DropDownItems.Add(new ToolStripMenuItem(lp.Name, null, new EventHandler((s, e) => ChangeLinePattern(s, ClickedPlottable))));
+                    LinePatternMenu.DropDownItems.Add(new ToolStripMenuItem(lp.Name, null, new EventHandler((s, e) => ChangeLinePattern(s, ClickedPlottable, skControl))));
                 }
                 LineMenu.DropDownItems.Add(LinePatternMenu);
                 var LineWidthMenu = new ToolStripMenuItem("Thickness");
                 foreach (string lw in new string[] { "much thinner", "thinner", "thicker", "much thicker" })
                 {
-                    LineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler((s, e) => ChangeLineWidth(s, ClickedPlottable))));
+                    LineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler((s, e) => ChangeLineWidth(s, ClickedPlottable, skControl))));
                 }
                 LineMenu.DropDownItems.Add(LineWidthMenu);
-                var LineColorMenu = new ToolStripMenuItem("Color", null, new EventHandler((s, e) => ChangeLineColor(s, ClickedPlottable)));
+                var LineColorMenu = new ToolStripMenuItem("Color", null, new EventHandler((s, e) => ChangeLineColor(s, ClickedPlottable, skControl)));
                 LineMenu.DropDownItems.Add(LineColorMenu);
                 customMenu.Items.Add(LineMenu);
             }
@@ -151,25 +150,25 @@ namespace WinForms_Demo.Demos
                 var MarkerShapeMenu = new ToolStripMenuItem("Shape");
                 foreach (MarkerShape ms in (MarkerShape[])Enum.GetValues(typeof(MarkerShape)))
                 {
-                    MarkerShapeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler((s, e) => ChangeMarkerShape(s, ClickedPlottable))));
+                    MarkerShapeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler((s, e) => ChangeMarkerShape(s, ClickedPlottable, skControl))));
                 }
                 MarkerMenu.DropDownItems.Add(MarkerShapeMenu);
                 var MarkerSizeMenu = new ToolStripMenuItem("Size");
                 foreach (string ms in new string[] { "much smaller", "smaller", "bigger", "much bigger" })
                 {
-                    MarkerSizeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler((s, e) => ChangeMarkerSize(s, ClickedPlottable))));
+                    MarkerSizeMenu.DropDownItems.Add(new ToolStripMenuItem(ms.ToString(), null, new EventHandler((s, e) => ChangeMarkerSize(s, ClickedPlottable, skControl))));
                 }
                 MarkerMenu.DropDownItems.Add(MarkerSizeMenu);
                 customMenu.Items.Add(MarkerMenu);
                 var MarkerLineWidthMenu = new ToolStripMenuItem("Thickness");
                 foreach (string lw in new string[] { "much thinner", "thinner", "thicker", "much thicker" })
                 {
-                    MarkerLineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler((s, e) => ChangeMarkerLineWidth(s, ClickedPlottable))));
+                    MarkerLineWidthMenu.DropDownItems.Add(new ToolStripMenuItem(lw, null, new EventHandler((s, e) => ChangeMarkerLineWidth(s, ClickedPlottable, skControl))));
                 }
                 MarkerMenu.DropDownItems.Add(MarkerLineWidthMenu);
-                var MarkerColorMenu = new ToolStripMenuItem("Marker Color", null, new EventHandler((s, e) => ChangeMarkerColor(s, ClickedPlottable)));
+                var MarkerColorMenu = new ToolStripMenuItem("Marker Color", null, new EventHandler((s, e) => ChangeMarkerColor(s, ClickedPlottable, skControl)));
                 MarkerMenu.DropDownItems.Add(MarkerColorMenu);
-                var MarkerLineColorMenu = new ToolStripMenuItem("Marker Line Color", null, new EventHandler((s, e) => ChangeMarkerLineColor(s, ClickedPlottable)));
+                var MarkerLineColorMenu = new ToolStripMenuItem("Marker Line Color", null, new EventHandler((s, e) => ChangeMarkerLineColor(s, ClickedPlottable, skControl)));
                 MarkerMenu.DropDownItems.Add(MarkerLineColorMenu);
                 customMenu.Items.Add(MarkerMenu);
             }
@@ -182,7 +181,7 @@ namespace WinForms_Demo.Demos
             formsPlot1.Plot.Remove(ClickedPlottable);
         }
 
-        private void ChangeLinePattern(object? sender, IPlottable ClickedPlottable)
+        private void ChangeLinePattern(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
                 return;
@@ -201,7 +200,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeLineColor(object? sender, IPlottable ClickedPlottable)
+        private void ChangeLineColor(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -217,7 +216,7 @@ namespace WinForms_Demo.Demos
             }
         }
 
-        private void ChangeLineWidth(object? sender, IPlottable ClickedPlottable)
+        private void ChangeLineWidth(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -228,9 +227,12 @@ namespace WinForms_Demo.Demos
             {
                 line.LineWidth *= lwcoeff;
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
-        private void ChangeMarkerLineWidth(object? sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerLineWidth(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -241,9 +243,12 @@ namespace WinForms_Demo.Demos
             {
                 marker.MarkerLineWidth *= lwcoeff;
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
-        private void ChangeMarkerShape(object? sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerShape(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -267,9 +272,12 @@ namespace WinForms_Demo.Demos
                     }
                 }
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
-        private void ChangeMarkerSize(object? sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerSize(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -280,9 +288,12 @@ namespace WinForms_Demo.Demos
                 float coeff = MarkerSizeCoefficient(((ToolStripMenuItem)sender).Text);
                 marker.MarkerSize *= coeff;
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
-        private void ChangeMarkerColor(object? sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerColor(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -296,9 +307,12 @@ namespace WinForms_Demo.Demos
                     marker.MarkerColor = ScottPlot.Color.FromColor(colorDialog.Color);
                 }
             }
+
+            formsPlot1.Refresh();
+            skControl.Invalidate();
         }
 
-        private void ChangeMarkerLineColor(object? sender, IPlottable ClickedPlottable)
+        private void ChangeMarkerLineColor(object? sender, IPlottable ClickedPlottable, SKControl skControl)
         {
             if (sender is null)
             {
@@ -312,8 +326,10 @@ namespace WinForms_Demo.Demos
                     marker.MarkerLineColor = ScottPlot.Color.FromColor(colorDialog.Color);
                 }
             }
-        }
 
+            formsPlot1.Refresh();
+            skControl.Invalidate();
+        }
 
         private float LineWidthCoefficient(string lwstring)
         {
@@ -338,6 +354,5 @@ namespace WinForms_Demo.Demos
                 _ => throw new NotImplementedException(),
             };
         }
-
     }
 }
