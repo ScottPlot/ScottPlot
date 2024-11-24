@@ -34,7 +34,7 @@ public class Bracket : IPlottable
 
     public AxisLimits GetAxisLimits() => new([Point1, Point2]);
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         double x1 = Point1.X;
         double y1 = Point1.Y;
