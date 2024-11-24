@@ -33,6 +33,9 @@ namespace WinForms_Demo.Demos
             // hide the legend in the original plot
             plotControl.Plot.Legend.IsVisible = false;
             plotControl.Plot.Legend.ShowItemsFromHiddenPlottables = true;
+            plotControl.Plot.Legend.OutlineWidth = 0;
+            plotControl.Plot.Legend.BackgroundColor = ScottPlot.Color.FromSDColor(SystemColors.Control);
+            plotControl.Plot.Legend.ShadowColor = Colors.Transparent;
             plotControl.Refresh();
 
             // create a form that displays a SkiaSharp canvas the legend can be drawn on
@@ -40,6 +43,7 @@ namespace WinForms_Demo.Demos
             {
                 Text = "Detached Legend",
                 StartPosition = FormStartPosition.CenterScreen,
+                FormBorderStyle = FormBorderStyle.SizableToolWindow,
             };
 
             form.FormClosed += (s, e) =>
@@ -47,6 +51,9 @@ namespace WinForms_Demo.Demos
                 // un-hide the legend in the original plot when the legend viewer is closed
                 plotControl.Plot.Legend.IsVisible = true;
                 plotControl.Plot.Legend.ShowItemsFromHiddenPlottables = false;
+                plotControl.Plot.Legend.OutlineWidth = 1;
+                plotControl.Plot.Legend.BackgroundColor = ScottPlot.Colors.White;
+                plotControl.Plot.Legend.ShadowColor = Colors.Black.WithOpacity(.2);
                 plotControl.Refresh();
             };
 
