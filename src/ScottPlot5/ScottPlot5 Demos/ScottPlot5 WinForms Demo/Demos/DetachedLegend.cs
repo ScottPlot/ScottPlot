@@ -198,7 +198,7 @@ namespace WinForms_Demo.Demos
             if (sender is null)
                 return;
 
-            string lpstring = ((ToolStripMenuItem)sender).Text;
+            string lpstring = ((ToolStripMenuItem)sender).Text ?? string.Empty;
             if (ClickedPlottable is IHasLine line)
             {
                 // TODO: streamline this
@@ -240,7 +240,7 @@ namespace WinForms_Demo.Demos
             {
                 return;
             }
-            var lwcoeff = LineWidthCoefficient(((ToolStripMenuItem)sender).Text);
+            var lwcoeff = LineWidthCoefficient(((ToolStripMenuItem)sender).Text ?? string.Empty);
             if (ClickedPlottable is IHasLine line)
             {
                 line.LineWidth *= lwcoeff;
@@ -256,7 +256,7 @@ namespace WinForms_Demo.Demos
             {
                 return;
             }
-            var lwcoeff = LineWidthCoefficient(((ToolStripMenuItem)sender).Text);
+            var lwcoeff = LineWidthCoefficient(((ToolStripMenuItem)sender).Text ?? string.Empty);
             if (ClickedPlottable is IHasMarker marker)
             {
                 marker.MarkerLineWidth *= lwcoeff;
@@ -272,7 +272,7 @@ namespace WinForms_Demo.Demos
             {
                 return;
             }
-            string msstring = ((ToolStripMenuItem)sender).Text;
+            string msstring = ((ToolStripMenuItem)sender).Text ?? string.Empty;
             if (ClickedPlottable is IHasMarker marker)
             {
                 if (msstring != "None")
@@ -303,7 +303,7 @@ namespace WinForms_Demo.Demos
             }
             if (ClickedPlottable is IHasMarker marker)
             {
-                float coeff = MarkerSizeCoefficient(((ToolStripMenuItem)sender).Text);
+                float coeff = MarkerSizeCoefficient(((ToolStripMenuItem)sender).Text ?? string.Empty);
                 marker.MarkerSize *= coeff;
             }
 
