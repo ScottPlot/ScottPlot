@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * Palette: Exposed `ScottPlot.Palettes.Custom` as an alternative to `ScottPlot.Palette.FromColors()` for creating palettes with user-defined collections of colors
 * Bar: Created `Add.Ranges()` and `Add.StackedRanges()` to simplify creation of stacked range charts (#4548) @quantfreedom @wellcaffeinated
 * Bracket: New plot type for annotating ranges of linear lines in coordinate space (#4547, #1863) @FULL69 @bclehmann
+* Financial Charting: Improved `FinancialTimeAxis` tick generation behavior (#4483, #4551, #4385) @VladislavPustovarov @quantfreedom
 
 ## ScottPlot 5.0.46
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-17_
