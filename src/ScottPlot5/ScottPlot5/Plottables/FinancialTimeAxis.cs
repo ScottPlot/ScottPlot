@@ -7,6 +7,8 @@
 /// </summary>
 public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
 {
+    private int startIndex = -1;
+    private int candlesToSkip = 0;
     public DateTime[] DateTimes { get; set; } = dateTimes;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -38,6 +40,7 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
         widthOfCandleInPixels = rp.DataRect.Width / Axes.XAxis.Range.Span;
         IFinancialTickGenerator tickGenerator = GetBestTickGenerator(timeSpanInView, rp.DataRect.Width);
         List<(int, string)> ticks = tickGenerator.GetTicks(DateTimes, minIndexInView, maxIndexInView);
+        startIndex = ticks.First().Item1;
 
         // render each tick label
         using SKPaint paint = new();
@@ -51,11 +54,12 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
     private IFinancialTickGenerator GetBestTickGenerator(TimeSpan timeSpan, float widthInPixels)
     {
         var maxWidth = LabelStyle.Measure(labelFormat).Size.Width;
-        if (widthOfCandleInPixels == 0)
+        var newCandlesToSkip = (int)Math.Ceiling(maxWidth / widthOfCandleInPixels);
+        if (candlesToSkip != newCandlesToSkip)
         {
-            widthOfCandleInPixels = 1;
+            startIndex = -1;
+            candlesToSkip = newCandlesToSkip;
         }
-        var candlesToSkip = maxWidth / widthOfCandleInPixels;
-        return new TickGenerators.Financial.EveryNthUnit((int)Math.Ceiling(candlesToSkip));
+        return new TickGenerators.Financial.EveryNthUnit(candlesToSkip, startIndex);
     }
 }

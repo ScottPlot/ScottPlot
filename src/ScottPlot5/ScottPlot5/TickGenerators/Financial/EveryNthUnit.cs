@@ -1,44 +1,59 @@
-﻿namespace ScottPlot.TickGenerators.Financial
+﻿namespace ScottPlot.TickGenerators.Financial;
+
+public class EveryNthUnit : IFinancialTickGenerator
 {
-    public class EveryNthUnit : IFinancialTickGenerator
+    private int PlaceEveryNthUnit { get; }
+    private int StartIndex { get; set; }
+
+    public EveryNthUnit(int placeEveryNthUnit, int startIndex)
     {
-        private int PlaceEveryNthUnit { get; }
+        PlaceEveryNthUnit = placeEveryNthUnit;
+        StartIndex = startIndex;
+    }
 
-        public EveryNthUnit(int placeEveryNthUnit)
+    public List<(int, string)> GetTicks(DateTime[] DateTimes, int minIndexInView, int maxIndexInView)
+    {
+        List<(int, string)> ticks = [];
+
+        if (StartIndex == -1)
         {
-            PlaceEveryNthUnit = placeEveryNthUnit;
+            StartIndex = minIndexInView;
         }
 
-        public List<(int, string)> GetTicks(DateTime[] DateTimes, int minIndexInView, int maxIndexInView)
+        while (StartIndex < minIndexInView)
         {
-            List<(int, string)> ticks = [];
-            var initialIndex = minIndexInView % PlaceEveryNthUnit == 0
-                ? minIndexInView
-                : minIndexInView + (minIndexInView % PlaceEveryNthUnit);
-            for (int i = initialIndex; i <= maxIndexInView; i += PlaceEveryNthUnit)
+            StartIndex += PlaceEveryNthUnit;
+        }
+
+        if ((StartIndex - minIndexInView) > PlaceEveryNthUnit)
+        {
+            var multiplier = (StartIndex - minIndexInView) / PlaceEveryNthUnit;
+            StartIndex -= multiplier * PlaceEveryNthUnit;
+        }
+
+        for (int i = StartIndex; i <= maxIndexInView; i += PlaceEveryNthUnit)
+        {
+            DateTime dt = DateTimes[i];
+            try
             {
-                DateTime dt = DateTimes[i];
-                try
-                {
-                    var idx = i - PlaceEveryNthUnit;
-                    if (idx < 0)
+                var idx = i - PlaceEveryNthUnit;
+                if (idx < 0)
+                    ticks.Add((i, dt.ToString("MMM - MM")));
+                else if (dt.Day > DateTimes[idx].Day)
+                    if (dt.Month > DateTimes[idx].Month)
                         ticks.Add((i, dt.ToString("MMM - MM")));
-                    else if (dt.Day > DateTimes[idx].Day)
-                        if (dt.Month > DateTimes[idx].Month)
-                            ticks.Add((i, dt.ToString("MMM - MM")));
-                        else
-                            ticks.Add((i, dt.ToString("ddd - dd")));
                     else
-                        ticks.Add((i, dt.ToString("HH:mm:ss")));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                        ticks.Add((i, dt.ToString("ddd - dd")));
+                else
+                    ticks.Add((i, dt.ToString("HH:mm:ss")));
             }
-
-            return ticks;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
+
+        return ticks;
     }
 }
