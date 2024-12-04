@@ -125,7 +125,7 @@ public class RenderManager(Plot plot)
         // TODO: make this an object
         List<(string, TimeSpan)> actionTimes = [];
 
-        RenderPack rp = new(Plot, rect, canvas);
+        using RenderPack rp = new(Plot, rect, canvas);
 
         Stopwatch sw = new();
         foreach (IRenderAction action in RenderActions)
