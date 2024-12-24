@@ -1,9 +1,7 @@
 ﻿using ScottPlot.AxisPanels;
-using ScottPlot.Control;
 using ScottPlot.Grids;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
-using System.ComponentModel;
 
 namespace ScottPlot;
 
@@ -71,7 +69,7 @@ public class Plot : IDisposable
         RenderManager = new(this);
         Legend = new(this);
         Layout = new(this);
-        ZoomRectangle = new StandardZoomRectangle(this);
+        ZoomRectangle = new Plottables.ZoomRectangle(this);
     }
 
     public void Dispose()

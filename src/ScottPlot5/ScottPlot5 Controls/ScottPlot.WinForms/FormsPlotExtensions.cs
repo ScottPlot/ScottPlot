@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using ScottPlot.Control;
 
 namespace ScottPlot.WinForms;
 
@@ -48,11 +47,6 @@ public static class FormsPlotExtensions
         Pixel mousePixel = new(e.X, e.Y);
         Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(mousePixel);
         processor.Process(action);
-    }
-
-    [Obsolete("Double-clicks do not require processing. They are inferred from delay between single clicks.", true)]
-    public static void ProcessDoubleClick(this Interactivity.UserInputProcessor processor, EventArgs e)
-    {
     }
 
     public static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
@@ -121,28 +115,6 @@ public static class FormsPlotExtensions
             : new Interactivity.Key($"Unknown modifier key {keyName}");
     }
 
-    internal static Control.MouseButton Button(this MouseEventArgs e)
-    {
-        return e.Button switch
-        {
-            System.Windows.Forms.MouseButtons.Left => Control.MouseButton.Left,
-            System.Windows.Forms.MouseButtons.Right => Control.MouseButton.Right,
-            System.Windows.Forms.MouseButtons.Middle => Control.MouseButton.Middle,
-            _ => Control.MouseButton.Unknown,
-        };
-    }
-
-    internal static Key Key(this KeyEventArgs e)
-    {
-        return e.KeyCode switch
-        {
-            Keys.ControlKey => Control.Key.Ctrl,
-            Keys.Menu => Control.Key.Alt,
-            Keys.ShiftKey => Control.Key.Shift,
-            _ => Control.Key.Unknown,
-        };
-    }
-
     internal static Bitmap GetBitmap(this Plot plot, int width, int height)
     {
         byte[] bytes = plot.GetImage(width, height).GetImageBytes();
@@ -155,11 +127,5 @@ public static class FormsPlotExtensions
     {
         using MemoryStream ms = new(img.GetImageBytes(ImageFormat.Bmp));
         return new Bitmap(ms);
-    }
-
-    public static void CopyToClipboard(this SavedImageInfo info)
-    {
-        System.Drawing.Bitmap bmp = new(info.Path);
-        Clipboard.SetImage(bmp);
     }
 }
