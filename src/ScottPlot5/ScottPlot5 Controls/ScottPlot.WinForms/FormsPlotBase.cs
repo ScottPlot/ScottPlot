@@ -8,8 +8,6 @@ using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
 
-#pragma warning disable CS0618 
-
 public abstract class FormsPlotBase : UserControl, IPlotControl
 {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -23,11 +21,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public Multiplot Multiplot { get; internal set; }
-
-    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    [Browsable(false)]
-    public IPlotInteraction Interaction { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
@@ -49,7 +42,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     {
         Plot = null!;
         Multiplot = null!;
-        Interaction = null!;
         UserInputProcessor = null!;
         bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
@@ -58,7 +50,6 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
             Plot = new() { PlotControl = this };
             Multiplot = new(Plot);
             DisplayScale = DetectDisplayScale();
-            Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
             UserInputProcessor = new(this);
             Menu = new FormsPlotMenu(this);
 
@@ -126,48 +117,41 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     internal void SKElement_MouseDown(object? sender, MouseEventArgs e)
     {
-        Interaction.MouseDown(e.Pixel(), e.Button());
         UserInputProcessor.ProcessMouseDown(e);
         base.OnMouseDown(e);
     }
 
     internal void SKElement_MouseUp(object? sender, MouseEventArgs e)
     {
-        Interaction.MouseUp(e.Pixel(), e.Button());
         UserInputProcessor.ProcessMouseUp(e);
         base.OnMouseUp(e);
     }
 
     internal void SKElement_MouseMove(object? sender, MouseEventArgs e)
     {
-        Interaction.OnMouseMove(e.Pixel());
         UserInputProcessor.ProcessMouseMove(e);
         base.OnMouseMove(e);
     }
 
     internal void SKElement_DoubleClick(object? sender, EventArgs e)
     {
-        Interaction.DoubleClick();
         base.OnDoubleClick(e);
     }
 
     internal void SKElement_MouseWheel(object? sender, MouseEventArgs e)
     {
-        Interaction.MouseWheelVertical(e.Pixel(), e.Delta);
         UserInputProcessor.ProcessMouseWheel(e);
         base.OnMouseWheel(e);
     }
 
     internal void SKElement_KeyDown(object? sender, KeyEventArgs e)
     {
-        Interaction.KeyDown(e.Key());
         UserInputProcessor.ProcessKeyDown(e);
         base.OnKeyDown(e);
     }
 
     internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
     {
-        Interaction.KeyUp(e.Key());
         UserInputProcessor.ProcessKeyUp(e);
         base.OnKeyUp(e);
     }

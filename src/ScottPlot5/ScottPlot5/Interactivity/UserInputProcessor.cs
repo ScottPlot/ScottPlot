@@ -31,11 +31,7 @@ public class UserInputProcessor
         get => _IsEnabled; set
         {
             _IsEnabled = value;
-            if (value)
-            {
-                PlotControl?.Interaction.Disable();
-            }
-            else
+            if (!value)
             {
                 ProcessLostFocus();
             }

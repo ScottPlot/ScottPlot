@@ -31,6 +31,11 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
     /// </summary>
     public bool LockX { get; set; } = false;
 
+    /// <summary>
+    /// If enabled, mouse interactions over a single axis will be applied to all axes with the same orientation.
+    /// </summary>
+    public bool ChangeOpposingAxesTogether { get; set; } = false;
+
     public void ResetState(Plot plot)
     {
         RememberedLimits = null;
@@ -97,6 +102,6 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             px2.Y = px1.Y;
         }
 
-        MouseAxisManipulation.DragPan(plot, px1, px2);
+        MouseAxisManipulation.DragPan(plot, px1, px2, ChangeOpposingAxesTogether);
     }
 }

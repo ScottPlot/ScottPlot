@@ -41,6 +41,11 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     /// </summary>
     public double SensitivityY { get; set; } = 1.0;
 
+    /// <summary>
+    /// If enabled, mouse interactions over a single axis will be applied to all axes with the same orientation.
+    /// </summary>
+    public bool ChangeOpposingAxesTogether { get; set; } = false;
+
     public void ResetState(Plot plot)
     {
         RememberedLimits = null;
@@ -107,6 +112,6 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
 
         px2 = new(x2, y2);
 
-        MouseAxisManipulation.DragZoom(plot, px1, px2);
+        MouseAxisManipulation.DragZoom(plot, px1, px2, ChangeOpposingAxesTogether);
     }
 }

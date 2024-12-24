@@ -19,7 +19,6 @@ public class MockPlotControl : IPlotControl
     public Multiplot Multiplot { get; private set; }
     public GRContext? GRContext => null;
 
-    public IPlotInteraction Interaction { get; set; }
     public UserInputProcessor UserInputProcessor { get; }
 
     public IPlotMenu? Menu // TODO: mock menu
@@ -32,11 +31,6 @@ public class MockPlotControl : IPlotControl
     {
         Plot = new() { PlotControl = this };
         Multiplot = new(Plot);
-
-#pragma warning disable CS0618 
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-#pragma warning restore CS0618
-
         UserInputProcessor = new(this) { IsEnabled = true };
 
         // force a render on startup so we can immediately use pixel drag actions
