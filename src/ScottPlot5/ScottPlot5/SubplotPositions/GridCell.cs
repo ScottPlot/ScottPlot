@@ -2,7 +2,7 @@
 
 public class GridCell : ISubplotPosition
 {
-    public FractionRect FractionRect { get; } 
+    public FractionRect FractionRect { get; }
 
     public GridCell(int rowIndex, int colIndex, int rowCount, int colCount)
     {
