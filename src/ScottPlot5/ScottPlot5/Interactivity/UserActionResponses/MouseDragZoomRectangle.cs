@@ -7,6 +7,8 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
 {
     Pixel MouseDownPixel = Pixel.NaN;
 
+    Plot? PlotBeingDragged = null;
+
     /// <summary>
     /// A zoom rectangle is started when this button is pressed and dragged
     /// </summary>
@@ -32,13 +34,19 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
     /// </summary>
     public Key VerticalLockKey { get; set; } = StandardKeys.Shift;
 
-    public void ResetState(Plot plot)
+    public void ResetState(IPlotControl plotControl)
     {
         MouseDownPixel = Pixel.NaN;
-        plot.ZoomRectangle.IsVisible = false;
+
+        if (PlotBeingDragged is not null)
+        {
+            PlotBeingDragged.ZoomRectangle.IsVisible = false;
+        }
+
+        PlotBeingDragged = null;
     }
 
-    public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
+    public ResponseInfo Execute(IPlotControl plotControl, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction buttonAction && buttonAction.IsPressed)
         {
@@ -46,12 +54,22 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
             bool isSecondaryButtonAndKey = buttonAction.Button == SecondaryMouseButton && keys.IsPressed(SecondaryKey);
             if (isPrimaryButton || isSecondaryButtonAndKey)
             {
-                MouseDownPixel = buttonAction.Pixel;
-                return new ResponseInfo() { IsPrimary = isSecondaryButtonAndKey };
+                Plot? plotUnderMouse = plotControl.GetPlotAtPixel(buttonAction.Pixel);
+                if (plotUnderMouse is not null)
+                {
+                    MouseDownPixel = buttonAction.Pixel;
+                    PlotBeingDragged = plotUnderMouse;
+                    return new ResponseInfo() { IsPrimary = isSecondaryButtonAndKey };
+                }
             }
         }
 
         if (MouseDownPixel == Pixel.NaN)
+        {
+            return ResponseInfo.NoActionRequired;
+        }
+
+        if (PlotBeingDragged is null)
         {
             return ResponseInfo.NoActionRequired;
         }
@@ -63,8 +81,8 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
 
             if (dX < 5 && dY < 5)
             {
-                bool zoomRectWasPreviouslyVisible = plot.ZoomRectangle.IsVisible;
-                plot.ZoomRectangle.IsVisible = false;
+                bool zoomRectWasPreviouslyVisible = PlotBeingDragged.ZoomRectangle.IsVisible;
+                PlotBeingDragged.ZoomRectangle.IsVisible = false;
 
                 return new ResponseInfo()
                 {
@@ -73,10 +91,10 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
                 };
             }
 
-            plot.ZoomRectangle.IsVisible = true;
-            plot.ZoomRectangle.HorizontalSpan = keys.IsPressed(VerticalLockKey);
-            plot.ZoomRectangle.VerticalSpan = keys.IsPressed(HorizontalLockKey);
-            MouseAxisManipulation.PlaceZoomRectangle(plot, MouseDownPixel, mouseMoveAction.Pixel);
+            PlotBeingDragged.ZoomRectangle.IsVisible = true;
+            PlotBeingDragged.ZoomRectangle.HorizontalSpan = keys.IsPressed(VerticalLockKey);
+            PlotBeingDragged.ZoomRectangle.VerticalSpan = keys.IsPressed(HorizontalLockKey);
+            MouseAxisManipulation.PlaceZoomRectangle(PlotBeingDragged, MouseDownPixel, mouseMoveAction.Pixel);
 
             return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }
@@ -85,11 +103,11 @@ public class MouseDragZoomRectangle(MouseButton button) : IUserActionResponse
         {
             MouseDownPixel = Pixel.NaN;
 
-            if (plot.ZoomRectangle.IsVisible)
+            if (PlotBeingDragged.ZoomRectangle.IsVisible)
             {
-                plot.Axes.GetAxes().OfType<IXAxis>().ToList().ForEach(plot.ZoomRectangle.Apply);
-                plot.Axes.GetAxes().OfType<IYAxis>().ToList().ForEach(plot.ZoomRectangle.Apply);
-                plot.ZoomRectangle.IsVisible = false;
+                PlotBeingDragged.Axes.GetAxes().OfType<IXAxis>().ToList().ForEach(PlotBeingDragged.ZoomRectangle.Apply);
+                PlotBeingDragged.Axes.GetAxes().OfType<IYAxis>().ToList().ForEach(PlotBeingDragged.ZoomRectangle.Apply);
+                PlotBeingDragged.ZoomRectangle.IsVisible = false;
                 return ResponseInfo.Refresh;
             }
         }

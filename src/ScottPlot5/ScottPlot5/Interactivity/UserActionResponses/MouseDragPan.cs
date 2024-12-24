@@ -36,21 +36,25 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
     /// </summary>
     public bool ChangeOpposingAxesTogether { get; set; } = false;
 
-    public void ResetState(Plot plot)
+    public void ResetState(IPlotControl plotControl)
     {
         RememberedLimits = null;
         MouseDownPixel = Pixel.NaN;
     }
 
-    public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
+    public ResponseInfo Execute(IPlotControl plotControl, IUserAction userInput, KeyboardState keys)
     {
         // mouse down starts drag
         if (userInput is IMouseButtonAction mouseDownAction
             && mouseDownAction.Button == MouseButton
             && mouseDownAction.IsPressed)
         {
-            MouseDownPixel = mouseDownAction.Pixel;
-            RememberedLimits = new(plot);
+            Plot? plot = plotControl.GetPlotAtPixel(mouseDownAction.Pixel);
+            if (plot is not null)
+            {
+                RememberedLimits = new(plot);
+                MouseDownPixel = mouseDownAction.Pixel;
+            }
 
             return ResponseInfo.NoActionRequired;
         }
@@ -62,6 +66,7 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             && RememberedLimits is not null)
         {
             RememberedLimits.Recall();
+            Plot plot = RememberedLimits.Plot;
             RememberedLimits = null;
             ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
 
@@ -83,6 +88,7 @@ public class MouseDragPan(MouseButton button) : IUserActionResponse
             }
 
             RememberedLimits.Recall();
+            Plot plot = RememberedLimits.Plot;
             ApplyToPlot(plot, MouseDownPixel, mouseAction.Pixel, keys);
             return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
         }

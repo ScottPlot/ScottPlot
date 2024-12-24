@@ -10,7 +10,7 @@ public interface IPlotControl
     /// <summary>
     /// The multiplot managed by this interactive control
     /// </summary>
-    Multiplot? Multiplot { get; } // TODO: make this non-nullable
+    Multiplot Multiplot { get; }
 
     /// <summary>
     /// Render the plot and update the image
@@ -60,4 +60,12 @@ public interface IPlotControl
     /// Loads the given Plot into the control
     /// </summary>
     void Reset(Plot plot);
+}
+
+public static class IPlotControlExtensions
+{
+    public static Plot? GetPlotAtPixel(this IPlotControl plotControl, Pixel pixel)
+    {
+        return plotControl.Multiplot.GetPlotAtPixel(pixel);
+    }
 }

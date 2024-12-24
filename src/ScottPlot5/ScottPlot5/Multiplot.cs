@@ -1,9 +1,12 @@
-﻿namespace ScottPlot;
+﻿using System.Reflection.Emit;
+
+namespace ScottPlot;
 
 public class Multiplot
 {
     public List<Plot> Plots { get; } = [];
     public IMultiplotLayout Layout { get; set; } = new MultiplotLayouts.Rows();
+    private readonly List<(PixelRect, Plot)> LastRenderedRectangles = []; // TODO: replace with a custom manager
 
     public Multiplot()
     {
@@ -56,9 +59,12 @@ public class Multiplot
 
     public void Render(SKCanvas canvas, PixelRect figureRect)
     {
+        LastRenderedRectangles.Clear();
+
         foreach ((FractionRect fracRect, Plot plot) in Layout.GetLayout(Plots))
         {
             PixelRect subPlotRect = fracRect.GetPixelRect((int)figureRect.Width, (int)figureRect.Height);
+            LastRenderedRectangles.Add((subPlotRect, plot));
             plot.RenderManager.ClearCanvasBeforeEachRender = false;
             plot.Render(canvas, subPlotRect);
         }
@@ -76,5 +82,16 @@ public class Multiplot
     public SavedImageInfo SavePng(string filename, int width = 800, int height = 600)
     {
         return Render(width, height).SavePng(filename);
+    }
+
+    public Plot? GetPlotAtPixel(Pixel pixel)
+    {
+        foreach ((PixelRect rect, Plot plot) in LastRenderedRectangles)
+        {
+            if (rect.Contains(pixel))
+                return plot;
+        }
+
+        return null;
     }
 }

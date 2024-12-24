@@ -194,7 +194,7 @@ public class UserInputProcessor
     {
         foreach (var response in plotControl.UserInputProcessor.UserActionResponses)
         {
-            response.ResetState(plotControl.Plot);
+            response.ResetState(plotControl);
         }
 
         plotControl.UserInputProcessor.KeyState.Reset();
@@ -232,7 +232,7 @@ public class UserInputProcessor
                     continue;
                 }
 
-                ResponseInfo info = response.Execute(PlotControl.Plot, userAction, KeyState);
+                ResponseInfo info = response.Execute(PlotControl, userAction, KeyState);
                 if (info.RefreshNeeded)
                     refreshNeeded = true;
 
