@@ -67,6 +67,13 @@ public static class FormsPlotExtensions
         processor.Process(action);
     }
 
+    public static void ProcessKeyDown(this Interactivity.UserInputProcessor processor, PreviewKeyDownEventArgs e)
+    {
+        Interactivity.Key key = e.GetKey();
+        Interactivity.IUserAction action = new Interactivity.UserActions.KeyDown(key);
+        processor.Process(action);
+    }
+
     public static void ProcessKeyUp(this Interactivity.UserInputProcessor processor, KeyEventArgs e)
     {
         Interactivity.Key key = e.GetKey();
@@ -80,6 +87,11 @@ public static class FormsPlotExtensions
     }
 
     internal static Interactivity.Key GetKey(this KeyEventArgs e)
+    {
+        return GetKey(e.KeyCode);
+    }
+
+    internal static Interactivity.Key GetKey(this PreviewKeyDownEventArgs e)
     {
         return GetKey(e.KeyCode);
     }

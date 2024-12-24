@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Interactivity.UserActionResponses;
+﻿using ScottPlot.Interactivity.UserActions;
+
+namespace ScottPlot.Interactivity.UserActionResponses;
 
 public class KeyboardPanAndZoom : IUserActionResponse
 {
@@ -31,32 +33,41 @@ public class KeyboardPanAndZoom : IUserActionResponse
 
     public void ResetState(IPlotControl plotControl) { }
 
+    Pixel MousePixel = Pixel.Zero;
+
     public ResponseInfo Execute(IPlotControl plotControl, IUserAction userInput, KeyboardState keys)
     {
-        if (userInput is UserActions.KeyDown keyDown)
+        if (userInput is MouseMove mouseMove)
         {
-            foreach (Plot plot in plotControl.Multiplot.Plots)
-            {
-                if (keys.IsPressed(ZoomModifierKey))
-                {
-                    if (keyDown.Key == PanLeftKey) return ApplyZoom(plot, DeltaZoomIn, 1);
-                    else if (keyDown.Key == PanRightKey) return ApplyZoom(plot, DeltaZoomOut, 1);
-                    else if (keyDown.Key == PanDownKey) return ApplyZoom(plot, 1, DeltaZoomIn);
-                    else if (keyDown.Key == PanUpKey) return ApplyZoom(plot, 1, DeltaZoomOut);
-                    else return ResponseInfo.NoActionRequired;
-                }
-                else
-                {
-                    float delta = StepDistance;
-                    if (keys.IsPressed(LargeStepKey)) delta = LargeStepDistance;
-                    if (keys.IsPressed(FineStepKey)) delta = FineStepDistance;
+            MousePixel = mouseMove.Pixel;
+            return ResponseInfo.NoActionRequired;
+        }
 
-                    if (keyDown.Key == PanLeftKey) return ApplyPan(plot, -delta, 0);
-                    else if (keyDown.Key == PanRightKey) return ApplyPan(plot, delta, 0);
-                    else if (keyDown.Key == PanDownKey) return ApplyPan(plot, 0, -delta);
-                    else if (keyDown.Key == PanUpKey) return ApplyPan(plot, 0, delta);
-                    else return ResponseInfo.NoActionRequired;
-                }
+        if (userInput is KeyDown keyDown)
+        {
+            Plot? plot = plotControl.GetPlotAtPixel(MousePixel);
+            if (plot is null)
+            {
+                return ResponseInfo.NoActionRequired;
+            }
+
+            if (keys.IsPressed(ZoomModifierKey))
+            {
+                if (keyDown.Key == PanLeftKey) return ApplyZoom(plot, DeltaZoomIn, 1);
+                else if (keyDown.Key == PanRightKey) return ApplyZoom(plot, DeltaZoomOut, 1);
+                else if (keyDown.Key == PanDownKey) return ApplyZoom(plot, 1, DeltaZoomIn);
+                else if (keyDown.Key == PanUpKey) return ApplyZoom(plot, 1, DeltaZoomOut);
+            }
+            else
+            {
+                float delta = StepDistance;
+                if (keys.IsPressed(LargeStepKey)) delta = LargeStepDistance;
+                if (keys.IsPressed(FineStepKey)) delta = FineStepDistance;
+
+                if (keyDown.Key == PanLeftKey) return ApplyPan(plot, -delta, 0);
+                else if (keyDown.Key == PanRightKey) return ApplyPan(plot, delta, 0);
+                else if (keyDown.Key == PanDownKey) return ApplyPan(plot, 0, -delta);
+                else if (keyDown.Key == PanUpKey) return ApplyPan(plot, 0, delta);
             }
         }
 

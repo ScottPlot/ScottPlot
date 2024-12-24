@@ -10,13 +10,21 @@ public class KeyPressResponse(Key key, Action<IPlotControl, Pixel> action) : IUs
 
     public void ResetState(IPlotControl plotControl) { }
 
+    Pixel MousePixel = Pixel.Zero;
+
     public ResponseInfo Execute(IPlotControl plotControl, IUserAction userAction, KeyboardState keys)
     {
+        if (userAction is MouseMove mouseMove)
+        {
+            MousePixel = mouseMove.Pixel;
+            return ResponseInfo.NoActionRequired;
+        }
+
         if (userAction is KeyDown keyDownAction)
         {
             if (keyDownAction.Key == Key)
             {
-                ResponseAction.Invoke(plotControl, Pixel.NaN);
+                ResponseAction.Invoke(plotControl, MousePixel);
                 return ResponseInfo.Refresh;
             }
         }

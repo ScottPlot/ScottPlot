@@ -1,9 +1,4 @@
-﻿using ScottPlot.Interactivity.UserActionResponses;
-using System.Reflection.Emit;
-
-namespace ScottPlot.Interactivity;
-
-#pragma warning disable CS0618 // disable obsolete Interaction warning
+﻿namespace ScottPlot.Interactivity;
 
 /// <summary>
 /// This class collects user inputs and performs responses to manipulate a Plot.
@@ -20,7 +15,7 @@ public class UserInputProcessor
     /// <summary>
     /// Tracks which keys are currently pressed
     /// </summary>
-    public readonly KeyboardState KeyState;
+    public readonly KeyboardState KeyState = new();
 
     /// <summary>
     /// Controls whether new events are processed.
@@ -60,7 +55,6 @@ public class UserInputProcessor
     public UserInputProcessor(IPlotControl plotControl)
     {
         PlotControl = plotControl;
-        KeyState = new();
         Reset();
         IsEnabled = true;
     }
