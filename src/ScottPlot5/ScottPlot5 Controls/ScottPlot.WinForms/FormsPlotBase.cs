@@ -150,6 +150,12 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         base.OnKeyDown(e);
     }
 
+    internal void SKControl_PreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
+    {
+        UserInputProcessor.ProcessKeyDown(e);
+        base.OnPreviewKeyDown(e);
+    }
+
     internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
     {
         UserInputProcessor.ProcessKeyUp(e);

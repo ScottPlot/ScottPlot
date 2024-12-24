@@ -44,7 +44,7 @@ public class MockPlotControl : IPlotControl
     public void Refresh()
     {
         RefreshCount += 1;
-        Plot.RenderInMemory(Width, Height);
+        Multiplot.Render(Width, Height);
     }
 
     public void Reset()

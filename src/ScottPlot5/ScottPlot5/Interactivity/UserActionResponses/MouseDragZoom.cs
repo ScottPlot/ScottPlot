@@ -46,19 +46,24 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
     /// </summary>
     public bool ChangeOpposingAxesTogether { get; set; } = false;
 
-    public void ResetState(Plot plot)
+    public void ResetState(IPlotControl plotControl)
     {
         RememberedLimits = null;
         MouseDownPixel = Pixel.NaN;
     }
 
-    public ResponseInfo Execute(Plot plot, IUserAction userInput, KeyboardState keys)
+    public ResponseInfo Execute(IPlotControl plotControl, IUserAction userInput, KeyboardState keys)
     {
         if (userInput is IMouseButtonAction mouseDownAction && mouseDownAction.Button == MouseButton && mouseDownAction.IsPressed)
         {
             MouseDownPixel = mouseDownAction.Pixel;
-            RememberedLimits = new(plot);
-            return new ResponseInfo() { IsPrimary = false };
+            Plot? plot = plotControl.GetPlotAtPixel(mouseDownAction.Pixel);
+
+            if (plot is not null)
+            {
+                RememberedLimits = new(plot);
+                return new ResponseInfo() { IsPrimary = false };
+            }
         }
 
         if (MouseDownPixel == Pixel.NaN)
@@ -66,17 +71,23 @@ public class MouseDragZoom(MouseButton button) : IUserActionResponse
 
         if (userInput is IMouseButtonAction mouseUpAction && mouseUpAction.Button == MouseButton && !mouseUpAction.IsPressed)
         {
-            RememberedLimits?.Recall();
-            ApplyToPlot(plot, MouseDownPixel, mouseUpAction.Pixel, keys);
-            MouseDownPixel = Pixel.NaN;
-            return ResponseInfo.Refresh;
+            if (RememberedLimits is not null)
+            {
+                RememberedLimits.Recall();
+                ApplyToPlot(RememberedLimits.Plot, MouseDownPixel, mouseUpAction.Pixel, keys);
+                MouseDownPixel = Pixel.NaN;
+                return ResponseInfo.Refresh;
+            }
         }
 
         if (userInput is IMouseAction mouseMoveAction)
         {
-            RememberedLimits?.Recall();
-            ApplyToPlot(plot, MouseDownPixel, mouseMoveAction.Pixel, keys);
-            return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
+            if (RememberedLimits is not null)
+            {
+                RememberedLimits.Recall();
+                ApplyToPlot(RememberedLimits.Plot, MouseDownPixel, mouseMoveAction.Pixel, keys);
+                return new ResponseInfo() { RefreshNeeded = true, IsPrimary = true };
+            }
         }
 
         return new ResponseInfo() { IsPrimary = true };
