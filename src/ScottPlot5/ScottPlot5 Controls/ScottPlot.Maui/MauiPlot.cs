@@ -8,6 +8,7 @@ namespace ScottPlot.Maui;
 public class MauiPlot : SKCanvasView, IPlotControl
 {
     public Plot Plot { get; internal set; } = new();
+    public Multiplot Multiplot { get; internal set; }
     public SkiaSharp.GRContext? GRContext => null;
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
@@ -20,6 +21,7 @@ public class MauiPlot : SKCanvasView, IPlotControl
     public MauiPlot()
     {
         Plot = new Plot() { PlotControl = this };
+        Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
@@ -77,6 +79,8 @@ public class MauiPlot : SKCanvasView, IPlotControl
     public void Reset(Plot plot)
     {
         Plot = plot;
+        Plot.PlotControl = this;
+        Multiplot.Reset(plot);
     }
 
     public void Refresh()

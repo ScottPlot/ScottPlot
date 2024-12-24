@@ -3,9 +3,14 @@
 public interface IPlotControl
 {
     /// <summary>
-    /// The <see cref="Plot"/> displayed by this interactive control
+    /// The primary <see cref="Plot"/> displayed by this interactive control
     /// </summary>
     Plot Plot { get; }
+
+    /// <summary>
+    /// The multiplot managed by this interactive control
+    /// </summary>
+    Multiplot? Multiplot { get; } // TODO: make this non-nullable
 
     /// <summary>
     /// Render the plot and update the image

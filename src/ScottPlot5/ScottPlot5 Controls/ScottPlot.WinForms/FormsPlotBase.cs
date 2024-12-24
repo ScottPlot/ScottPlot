@@ -4,9 +4,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ScottPlot.WinForms;
@@ -22,6 +19,10 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public Plot Plot { get; internal set; }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public Multiplot Multiplot { get; internal set; }
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -47,6 +48,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     public FormsPlotBase()
     {
         Plot = null!;
+        Multiplot = null!;
         Interaction = null!;
         UserInputProcessor = null!;
         bool isDesignMode = Process.GetCurrentProcess().ProcessName == "devenv";
@@ -54,11 +56,16 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         try
         {
             Plot = new() { PlotControl = this };
+            Multiplot = new(Plot);
             DisplayScale = DetectDisplayScale();
             Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
             UserInputProcessor = new(this);
             Menu = new FormsPlotMenu(this);
-            Plot.Title(isDesignMode ? $"ScottPlot {Version.VersionString}" : string.Empty);
+
+            if (isDesignMode)
+            {
+                Plot.Title($"ScottPlot {Version.VersionString}");
+            }
         }
         catch (Exception exception)
         {
@@ -109,6 +116,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         if (disposeOldPlot)
             oldPlot?.Dispose();
         Plot.PlotControl = this;
+        Multiplot.Reset(plot);
     }
 
     public void ShowContextMenu(Pixel position)

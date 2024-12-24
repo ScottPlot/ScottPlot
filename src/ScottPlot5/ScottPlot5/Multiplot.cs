@@ -10,34 +10,66 @@ public class Multiplot
 
     }
 
-    public Multiplot(IEnumerable<Plot> plots)
+    public Multiplot(Plot initialPlot)
     {
+        Plots.Add(initialPlot);
+    }
 
+    public Multiplot(IEnumerable<Plot> initialPlots)
+    {
+        foreach (Plot plot in initialPlots)
+        {
+            Plots.Add(plot);
+        }
+    }
+
+    public void Reset(Plot plot)
+    {
+        Plots.Clear();
+        Plots.Add(plot);
     }
 
     public void AddPlot(Plot plot) => Plots.Add(plot);
 
-    public Plot AddPlot()
+    public Plot AddPlot(bool matchStyle = true)
     {
         Plot plot = new();
+
+        if (matchStyle && Plots.Count > 0)
+        {
+            Plot previous = Plots.Last();
+            plot.DataBackground.Color = previous.DataBackground.Color;
+            plot.FigureBackground.Color = previous.FigureBackground.Color;
+        }
+
         Plots.Add(plot);
+
         return plot;
     }
 
     public void AddPlots(IEnumerable<Plot> plots) => Plots.AddRange(plots);
 
+    public void Render(SKSurface surface)
+    {
+        Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
+    }
+
+    public void Render(SKCanvas canvas, PixelRect figureRect)
+    {
+        foreach ((FractionRect fracRect, Plot plot) in Layout.GetLayout(Plots))
+        {
+            PixelRect subPlotRect = fracRect.GetPixelRect((int)figureRect.Width, (int)figureRect.Height);
+            plot.RenderManager.ClearCanvasBeforeEachRender = false;
+            plot.Render(canvas, subPlotRect);
+        }
+    }
+
     public Image Render(int width, int height)
     {
         SKImageInfo imageInfo = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
         SKSurface surface = SKSurface.Create(imageInfo);
-
-        foreach ((FractionRect rect, Plot plot) in Layout.GetLayout(Plots))
-        {
-            PixelRect pxRect = rect.GetPixelRect(width, height);
-            plot.RenderManager.ClearCanvasBeforeEachRender = false;
-            plot.Render(surface.Canvas, pxRect);
-        }
-
+        PixelRect rect = new(0, width, height, 0);
+        Render(surface.Canvas, rect);
         return new(surface);
     }
 

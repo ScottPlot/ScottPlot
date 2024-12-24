@@ -15,6 +15,8 @@ public class MockPlotControl : IPlotControl
     public Pixel Center => new(Width / 2, Height / 2);
 
     public Plot Plot { get; private set; }
+
+    public Multiplot Multiplot { get; private set; }
     public GRContext? GRContext => null;
 
     public IPlotInteraction Interaction { get; set; }
@@ -29,6 +31,7 @@ public class MockPlotControl : IPlotControl
     public MockPlotControl()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
 
 #pragma warning disable CS0618 
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
@@ -61,6 +64,7 @@ public class MockPlotControl : IPlotControl
         Plot = plot;
         Plot.PlotControl = this;
         oldPlot.Dispose();
+        Multiplot.Reset(plot);
     }
 
     public int ContextMenuLaunchCount { get; private set; } = 0;

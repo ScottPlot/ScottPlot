@@ -14,6 +14,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public bool EnableRenderLoop { get; set; } = false;
 
     public Plot Plot { get; private set; }
+    public Multiplot Multiplot { get; internal set; }
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
@@ -24,6 +25,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public BlazorPlotBase()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
 
 #pragma warning disable CS0618 
@@ -52,6 +54,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         Plot = plot;
         oldPlot?.Dispose();
         Plot.PlotControl = this;
+        Multiplot.Reset(Plot);
     }
 
     public virtual void Refresh() { }

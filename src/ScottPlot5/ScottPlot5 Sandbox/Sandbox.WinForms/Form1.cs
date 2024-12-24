@@ -8,8 +8,13 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        double[,] data = ScottPlot.SampleData.MonaLisa();
-        var hm = formsPlot1.Plot.Add.Heatmap(data);
-        hm.Extent = new(-3500, 3500, -3500, 3500);
+        // default
+        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        formsPlot1.Plot.Add.Signal(Generate.Cos());
+
+        // multiplot
+        formsPlot2.Plot.Add.Signal(Generate.Sin());
+        var plot2 = formsPlot2.Multiplot.AddPlot();
+        plot2.Add.Signal(Generate.Cos());
     }
 }

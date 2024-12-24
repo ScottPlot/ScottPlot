@@ -11,6 +11,7 @@ namespace ScottPlot.Eto;
 public class EtoPlot : Drawable, IPlotControl
 {
     public Plot Plot { get; internal set; }
+    public Multiplot Multiplot { get; internal set; }
     public GRContext? GRContext => null;
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
@@ -22,6 +23,7 @@ public class EtoPlot : Drawable, IPlotControl
     public EtoPlot()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
@@ -48,6 +50,7 @@ public class EtoPlot : Drawable, IPlotControl
         Plot oldPlot = Plot;
         Plot = plot;
         oldPlot?.Dispose();
+        Multiplot.Reset(Plot);
     }
 
     public void Refresh()
