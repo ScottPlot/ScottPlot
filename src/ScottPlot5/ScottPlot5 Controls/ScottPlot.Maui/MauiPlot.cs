@@ -3,16 +3,11 @@ using SkiaSharp.Views.Maui.Controls;
 
 namespace ScottPlot.Maui;
 
-#pragma warning disable CS0618 // disable obsolete warnings
-
 public class MauiPlot : SKCanvasView, IPlotControl
 {
     public Plot Plot { get; internal set; } = new();
     public Multiplot Multiplot { get; internal set; }
     public SkiaSharp.GRContext? GRContext => null;
-
-    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public float DisplayScale { get; set; } = 1;
@@ -23,7 +18,6 @@ public class MauiPlot : SKCanvasView, IPlotControl
         Plot = new Plot() { PlotControl = this };
         Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
         Menu = new MauiPlotMenu(this);
 

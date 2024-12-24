@@ -44,7 +44,7 @@ public static class MouseAxisManipulation
         }
     }
 
-    public static void DragPan(Plot plot, Pixel mouseDown, Pixel mouseNow)
+    public static void DragPan(Plot plot, Pixel mouseDown, Pixel mouseNow, bool changeOpposingAxesTogether)
     {
         mouseDown = mouseDown.Divide(plot.ScaleFactorF);
         mouseNow = mouseNow.Divide(plot.ScaleFactorF);
@@ -62,11 +62,11 @@ public static class MouseAxisManipulation
 
         if (axisUnderMouse is not null)
         {
-            if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
+            if (changeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
                 plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.PanMouse(scaledDeltaX, dataRect.Width));
             }
-            else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+            else if (changeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
                 plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.PanMouse(scaledDeltaY, dataRect.Height));
             }
@@ -85,7 +85,7 @@ public static class MouseAxisManipulation
         }
     }
 
-    public static void DragZoom(Plot plot, Pixel mouseDown, Pixel mouseNow)
+    public static void DragZoom(Plot plot, Pixel mouseDown, Pixel mouseNow, bool changeOpposingAxesTogether)
     {
         mouseDown = mouseDown.Divide(plot.ScaleFactorF);
         mouseNow = mouseNow.Divide(plot.ScaleFactorF);
@@ -100,11 +100,11 @@ public static class MouseAxisManipulation
 
         if (axisUnderMouse is not null)
         {
-            if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
+            if (changeOpposingAxesTogether && axisUnderMouse.IsHorizontal())
             {
                 plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomMouseDelta(pixelDeltaX, lastRenderDataRect.Width));
             }
-            else if (control.Interaction.ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+            else if (changeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
                 plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomMouseDelta(pixelDeltaY, lastRenderDataRect.Height));
             }
