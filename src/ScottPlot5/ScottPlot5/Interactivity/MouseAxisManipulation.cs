@@ -48,7 +48,6 @@ public static class MouseAxisManipulation
     {
         mouseDown = mouseDown.Divide(plot.ScaleFactorF);
         mouseNow = mouseNow.Divide(plot.ScaleFactorF);
-        IPlotControl control = plot.PlotControl ?? throw new NullReferenceException();
 
         float pixelDeltaX = -(mouseNow.X - mouseDown.X);
         float pixelDeltaY = mouseNow.Y - mouseDown.Y;
@@ -89,7 +88,6 @@ public static class MouseAxisManipulation
     {
         mouseDown = mouseDown.Divide(plot.ScaleFactorF);
         mouseNow = mouseNow.Divide(plot.ScaleFactorF);
-        IPlotControl control = plot.PlotControl ?? throw new NullReferenceException();
 
         float pixelDeltaX = mouseNow.X - mouseDown.X;
         float pixelDeltaY = -(mouseNow.Y - mouseDown.Y);

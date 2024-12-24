@@ -4,7 +4,7 @@ public class SingleClickContextMenu(MouseButton button) : SingleClickResponse(bu
 {
     public static void LaunchContextMenu(Plot plot, Pixel pixel)
     {
-        plot.PlotControl?.ShowContextMenu(pixel);
+        plot.ParentControlShowContextMenu(pixel);
     }
 }
 

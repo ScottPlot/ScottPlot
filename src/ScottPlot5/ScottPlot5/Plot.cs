@@ -49,9 +49,19 @@ public class Plot : IDisposable
     public object Sync { get; } = new();
 
     /// <summary>
-    /// The user control this plot belongs to
+    /// Wire this plot to be aware of the interactive control it is part of
     /// </summary>
-    public IPlotControl? PlotControl { get; set; } = null;
+    public IPlotControl? PlotControl
+    {
+        set
+        {
+            ParentControl = value;
+        }
+    }
+
+    private IPlotControl? ParentControl = null;
+
+    public bool HasParentControl => ParentControl is not null;
 
     public Plot()
     {
@@ -675,6 +685,22 @@ public class Plot : IDisposable
         {
             panel.ShowDebugInformation = enable;
         }
+    }
+
+    #endregion
+
+    #region Interactivity
+
+    // These methods were introduced to help reduce reliance on deprecated IPlotControl.Interaction and Plot.PlotControl classes
+
+    internal void ParentControlRefresh()
+    {
+        ParentControl?.Refresh();
+    }
+
+    internal void ParentControlShowContextMenu(Pixel position)
+    {
+        ParentControl?.ShowContextMenu(position);
     }
 
     #endregion
