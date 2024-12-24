@@ -31,7 +31,7 @@ public class MouseWheelZoom(Key horizontalLockKey, Key verticalLockKey) : IUserA
         if (userInput is UserActions.MouseWheelUp mouseDownInput)
         {
             Plot? plot = plotControl.GetPlotAtPixel(mouseDownInput.Pixel);
-            if (plot is null) 
+            if (plot is null)
                 return ResponseInfo.NoActionRequired;
 
             double xFrac = keys.IsPressed(LockHorizontalKey) ? 1 : ZoomInFraction;
@@ -43,7 +43,7 @@ public class MouseWheelZoom(Key horizontalLockKey, Key verticalLockKey) : IUserA
         if (userInput is UserActions.MouseWheelDown mouseUpInput)
         {
             Plot? plot = plotControl.GetPlotAtPixel(mouseUpInput.Pixel);
-            if (plot is null) 
+            if (plot is null)
                 return ResponseInfo.NoActionRequired;
 
             double xFrac = keys.IsPressed(LockHorizontalKey) ? 1 : ZoomOutFraction;
