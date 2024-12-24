@@ -17,6 +17,7 @@ namespace ScottPlot.Avalonia;
 public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; internal set; }
+    public Multiplot Multiplot { get; internal set; }
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
@@ -30,6 +31,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     public AvaPlot()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
@@ -87,6 +89,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         Plot oldPlot = Plot;
         Plot = plot;
         oldPlot?.Dispose();
+        Multiplot.Reset(plot);
     }
 
     public void Refresh()

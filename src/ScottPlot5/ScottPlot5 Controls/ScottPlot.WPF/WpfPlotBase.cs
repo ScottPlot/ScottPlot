@@ -15,6 +15,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public abstract void Refresh();
 
     public Plot Plot { get; internal set; }
+    public Multiplot Multiplot { get; internal set; }
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
     public IPlotInteraction Interaction { get; set; }
@@ -33,6 +34,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public WpfPlotBase()
     {
         Plot = new Plot() { PlotControl = this };
+        Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
@@ -51,6 +53,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
         Plot = newPlot;
         oldPlot?.Dispose();
         Plot.PlotControl = this;
+        Multiplot.Reset(newPlot);
     }
 
     public void ShowContextMenu(Pixel position)

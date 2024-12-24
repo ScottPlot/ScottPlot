@@ -8,11 +8,13 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        // the Plot is actually the single Plot inside a Multiplot
+        // default
         formsPlot1.Plot.Add.Signal(Generate.Sin());
+        formsPlot1.Plot.Add.Signal(Generate.Cos());
 
-        // subplots can be created and added to the plot
-        var plot2 = formsPlot1.Multiplot.AddPlot();
+        // multiplot
+        formsPlot2.Plot.Add.Signal(Generate.Sin());
+        var plot2 = formsPlot2.Multiplot.AddPlot();
         plot2.Add.Signal(Generate.Cos());
     }
 }

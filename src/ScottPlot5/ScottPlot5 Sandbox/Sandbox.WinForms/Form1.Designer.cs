@@ -28,34 +28,94 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-            this.formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-            this.SuspendLayout();
-            // 
-            // formsPlot1
-            // 
-            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.formsPlot1.DisplayScale = 1F;
-            this.formsPlot1.Location = new System.Drawing.Point(12, 12);
-            this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(483, 287);
-            this.formsPlot1.TabIndex = 1;
-            // 
-            // Form1
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 311);
-            this.Controls.Add(this.formsPlot1);
-            this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ScottPlot 5 - Windows Forms Sandbox";
-            this.ResumeLayout(false);
-
+        formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+        tableLayoutPanel1 = new TableLayoutPanel();
+        groupBox1 = new GroupBox();
+        groupBox2 = new GroupBox();
+        formsPlot2 = new ScottPlot.WinForms.FormsPlot();
+        tableLayoutPanel1.SuspendLayout();
+        groupBox1.SuspendLayout();
+        groupBox2.SuspendLayout();
+        SuspendLayout();
+        // 
+        // formsPlot1
+        // 
+        formsPlot1.DisplayScale = 1F;
+        formsPlot1.Dock = DockStyle.Fill;
+        formsPlot1.Location = new Point(3, 19);
+        formsPlot1.Margin = new Padding(4, 3, 4, 3);
+        formsPlot1.Name = "formsPlot1";
+        formsPlot1.Size = new Size(536, 387);
+        formsPlot1.TabIndex = 1;
+        // 
+        // tableLayoutPanel1
+        // 
+        tableLayoutPanel1.ColumnCount = 2;
+        tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+        tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+        tableLayoutPanel1.Controls.Add(groupBox1, 0, 0);
+        tableLayoutPanel1.Controls.Add(groupBox2, 1, 0);
+        tableLayoutPanel1.Dock = DockStyle.Fill;
+        tableLayoutPanel1.Location = new Point(0, 0);
+        tableLayoutPanel1.Name = "tableLayoutPanel1";
+        tableLayoutPanel1.RowCount = 1;
+        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+        tableLayoutPanel1.Size = new Size(1096, 415);
+        tableLayoutPanel1.TabIndex = 2;
+        // 
+        // groupBox1
+        // 
+        groupBox1.Controls.Add(formsPlot1);
+        groupBox1.Dock = DockStyle.Fill;
+        groupBox1.Location = new Point(3, 3);
+        groupBox1.Name = "groupBox1";
+        groupBox1.Size = new Size(542, 409);
+        groupBox1.TabIndex = 0;
+        groupBox1.TabStop = false;
+        groupBox1.Text = "Default";
+        // 
+        // groupBox2
+        // 
+        groupBox2.Controls.Add(formsPlot2);
+        groupBox2.Dock = DockStyle.Fill;
+        groupBox2.Location = new Point(551, 3);
+        groupBox2.Name = "groupBox2";
+        groupBox2.Size = new Size(542, 409);
+        groupBox2.TabIndex = 1;
+        groupBox2.TabStop = false;
+        groupBox2.Text = "Multiplot";
+        // 
+        // formsPlot2
+        // 
+        formsPlot2.DisplayScale = 1F;
+        formsPlot2.Dock = DockStyle.Fill;
+        formsPlot2.Location = new Point(3, 19);
+        formsPlot2.Margin = new Padding(4, 3, 4, 3);
+        formsPlot2.Name = "formsPlot2";
+        formsPlot2.Size = new Size(536, 387);
+        formsPlot2.TabIndex = 2;
+        // 
+        // Form1
+        // 
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(1096, 415);
+        Controls.Add(tableLayoutPanel1);
+        Margin = new Padding(4, 3, 4, 3);
+        Name = "Form1";
+        StartPosition = FormStartPosition.CenterScreen;
+        Text = "ScottPlot 5 - Windows Forms Sandbox";
+        tableLayoutPanel1.ResumeLayout(false);
+        groupBox1.ResumeLayout(false);
+        groupBox2.ResumeLayout(false);
+        ResumeLayout(false);
     }
 
     #endregion
 
     private ScottPlot.WinForms.FormsPlot formsPlot1;
+    private TableLayoutPanel tableLayoutPanel1;
+    private GroupBox groupBox1;
+    private GroupBox groupBox2;
+    private ScottPlot.WinForms.FormsPlot formsPlot2;
 }

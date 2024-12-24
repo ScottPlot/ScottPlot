@@ -12,6 +12,7 @@ namespace ScottPlot.WinUI;
 public partial class WinUIPlot : UserControl, IPlotControl
 {
     public Plot Plot { get; internal set; }
+    public Multiplot Multiplot { get; internal set; }
     public SkiaSharp.GRContext? GRContext => null;
 
     [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
@@ -26,6 +27,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
         Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
         Menu = new WinUIPlotMenu(this);
@@ -75,6 +77,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     {
         Plot = plot;
         Plot.PlotControl = this;
+        Multiplot.Reset(plot);
     }
 
     public void Refresh()

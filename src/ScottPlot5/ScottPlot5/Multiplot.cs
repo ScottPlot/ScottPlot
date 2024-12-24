@@ -10,6 +10,25 @@ public class Multiplot
 
     }
 
+    public Multiplot(Plot initialPlot)
+    {
+        Plots.Add(initialPlot);
+    }
+
+    public Multiplot(IEnumerable<Plot> initialPlots)
+    {
+        foreach (Plot plot in initialPlots)
+        {
+            Plots.Add(plot);
+        }
+    }
+
+    public void Reset(Plot plot)
+    {
+        Plots.Clear();
+        Plots.Add(plot);
+    }
+
     public void AddPlot(Plot plot) => Plots.Add(plot);
 
     public Plot AddPlot(bool matchStyle = true)

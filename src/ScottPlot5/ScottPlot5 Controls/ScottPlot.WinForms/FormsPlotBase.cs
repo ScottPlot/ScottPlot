@@ -56,8 +56,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         try
         {
             Plot = new() { PlotControl = this };
-            Multiplot = new();
-            Multiplot.AddPlot(Plot);
+            Multiplot = new(Plot);
             DisplayScale = DetectDisplayScale();
             Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
             UserInputProcessor = new(this);
@@ -117,8 +116,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         if (disposeOldPlot)
             oldPlot?.Dispose();
         Plot.PlotControl = this;
-        Multiplot.Plots.Clear();
-        Multiplot.Plots.Add(plot);
+        Multiplot.Reset(plot);
     }
 
     public void ShowContextMenu(Pixel position)
