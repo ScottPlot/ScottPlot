@@ -12,10 +12,19 @@ public class Multiplot
 
     public void AddPlot(Plot plot) => Plots.Add(plot);
 
-    public Plot AddPlot()
+    public Plot AddPlot(bool matchStyle = true)
     {
         Plot plot = new();
+
+        if (matchStyle && Plots.Count > 0)
+        {
+            Plot previous = Plots.Last();
+            plot.DataBackground.Color = previous.DataBackground.Color;
+            plot.FigureBackground.Color = previous.FigureBackground.Color;
+        }
+
         Plots.Add(plot);
+
         return plot;
     }
 
