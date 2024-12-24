@@ -73,7 +73,7 @@ public class FormsPlot : FormsPlotBase
 
     private void SKElement_PaintSurface(object? sender, SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface);
+        Multiplot.Render(e.Surface);
     }
 
     public override void Refresh()
