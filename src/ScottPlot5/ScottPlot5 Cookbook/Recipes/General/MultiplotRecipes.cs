@@ -63,7 +63,7 @@ public class MultiplotRecipes : ICategory
                 multiplot.AddPlot(plot);
             }
 
-            multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2);
+            multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(rows: 2, columns: 3);
         }
     }
 
@@ -85,14 +85,10 @@ public class MultiplotRecipes : ICategory
                 multiplot.AddPlot(plot);
             }
 
-            // create 3 rectangles (one per plot)
-            FractionRect[] rectangles = [
-                FractionRect.GridCell(0, 0, 2, 2), // top left
-                FractionRect.GridCell(1, 0, 2, 2), // top right
-                FractionRect.GridCell(0, 1, 1, 2), // full bottom
-            ];
-
-            multiplot.Layout = new ScottPlot.MultiplotLayouts.Custom(rectangles);
+            // manually set the position for each plot
+            multiplot.PositionedPlots[0].Position = new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1);
+            multiplot.PositionedPlots[1].Position = new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2);
+            multiplot.PositionedPlots[2].Position = new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2);
         }
     }
 }

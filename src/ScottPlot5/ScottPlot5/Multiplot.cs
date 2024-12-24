@@ -1,56 +1,60 @@
-﻿using System.Reflection.Emit;
+﻿namespace ScottPlot;
 
-namespace ScottPlot;
+public class PositionedSubplot(Plot plot, ISubplotPosition position)
+{
+    public Plot Plot { get; set; } = plot;
+    public PixelRect LastRenderRect { get; set; } = PixelRect.NaN;
+    public ISubplotPosition Position { get; set; } = position;
+}
 
 public class Multiplot
 {
-    public List<Plot> Plots { get; } = [];
-    public IMultiplotLayout Layout { get; set; } = new MultiplotLayouts.Rows();
-    private readonly List<(PixelRect, Plot)> LastRenderedRectangles = []; // TODO: replace with a custom manager
+    public int Count => PositionedPlots.Count;
+    public IEnumerable<Plot> Plots => PositionedPlots.Select(x => x.Plot);
+    public List<PositionedSubplot> PositionedPlots { get; } = [];
+    bool StyleNewPlotsAutomatically { get; set; } = true;
+
+    /// <summary>
+    /// This engine is used to resize all plots automatically every time new ones are added
+    /// </summary>
+    public IMultiplotLayout? Layout { get; set; } = new ScottPlot.MultiplotLayouts.Rows();
 
     public Multiplot()
     {
 
     }
 
-    public Multiplot(Plot initialPlot)
+    public Multiplot(Plot plot)
     {
-        Plots.Add(initialPlot);
-    }
-
-    public Multiplot(IEnumerable<Plot> initialPlots)
-    {
-        foreach (Plot plot in initialPlots)
-        {
-            Plots.Add(plot);
-        }
+        AddPlot(plot);
     }
 
     public void Reset(Plot plot)
     {
-        Plots.Clear();
-        Plots.Add(plot);
+        PositionedPlots.Clear();
+        AddPlot(plot);
     }
 
-    public void AddPlot(Plot plot) => Plots.Add(plot);
-
-    public Plot AddPlot(bool matchStyle = true)
+    public Plot AddPlot()
     {
         Plot plot = new();
-
-        if (matchStyle && Plots.Count > 0)
-        {
-            Plot previous = Plots.Last();
-            plot.DataBackground.Color = previous.DataBackground.Color;
-            plot.FigureBackground.Color = previous.FigureBackground.Color;
-        }
-
-        Plots.Add(plot);
-
+        AddPlot(plot);
         return plot;
     }
 
-    public void AddPlots(IEnumerable<Plot> plots) => Plots.AddRange(plots);
+    public void AddPlot(Plot plot)
+    {
+        if (StyleNewPlotsAutomatically && PositionedPlots.Count > 0)
+        {
+            Plot lastPlot = PositionedPlots.Last().Plot;
+            plot.FigureBackground.Color = lastPlot.FigureBackground.Color;
+            plot.DataBackground.Color = lastPlot.DataBackground.Color;
+        }
+
+        PositionedSubplot positionedPlot = new(plot, new SubplotPositions.Full());
+        PositionedPlots.Add(positionedPlot);
+        Layout?.ResetAllPositions(this);
+    }
 
     public void Render(SKSurface surface)
     {
@@ -59,14 +63,12 @@ public class Multiplot
 
     public void Render(SKCanvas canvas, PixelRect figureRect)
     {
-        LastRenderedRectangles.Clear();
-
-        foreach ((FractionRect fracRect, Plot plot) in Layout.GetLayout(Plots))
+        foreach (var positionedPlot in PositionedPlots)
         {
-            PixelRect subPlotRect = fracRect.GetPixelRect((int)figureRect.Width, (int)figureRect.Height);
-            LastRenderedRectangles.Add((subPlotRect, plot));
-            plot.RenderManager.ClearCanvasBeforeEachRender = false;
-            plot.Render(canvas, subPlotRect);
+            PixelRect subPlotRect = positionedPlot.Position.GetRect(figureRect);
+            positionedPlot.LastRenderRect = subPlotRect;
+            positionedPlot.Plot.RenderManager.ClearCanvasBeforeEachRender = false;
+            positionedPlot.Plot.Render(canvas, subPlotRect);
         }
     }
 
@@ -86,10 +88,10 @@ public class Multiplot
 
     public Plot? GetPlotAtPixel(Pixel pixel)
     {
-        foreach ((PixelRect rect, Plot plot) in LastRenderedRectangles)
+        foreach (var positionedPlot in PositionedPlots)
         {
-            if (rect.Contains(pixel))
-                return plot;
+            if (positionedPlot.LastRenderRect.Contains(pixel))
+                return positionedPlot.Plot;
         }
 
         return null;
