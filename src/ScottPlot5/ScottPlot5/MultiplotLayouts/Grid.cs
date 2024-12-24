@@ -1,21 +1,18 @@
 ﻿namespace ScottPlot.MultiplotLayouts;
 
-/// <summary>
-/// Arranges plots from left to right according to the number of <paramref name="columns"/>, 
-/// wrapping to the next row as needed to accommodate the total number of plots.
-public class Grid(int columns) : IMultiplotLayout
+public class Grid(int rows, int columns) : IMultiplotLayout
 {
-    public int Columns { get; } = columns;
-
-    public IEnumerable<(FractionRect, Plot)> GetLayout(IReadOnlyList<Plot> plots)
+    public void ResetAllPositions(Multiplot multiplot)
     {
-        int rows = (int)Math.Ceiling((float)plots.Count / Columns);
-        for (int i = 0; i < plots.Count; i++)
+        double fractionPerRow = 1.0 / rows;
+        double fractionPerColumn = 1.0 / columns;
+
+        for (int i = 0; i < multiplot.PositionedPlots.Count; i++)
         {
-            int x = i % Columns;
-            int y = i / Columns;
-            FractionRect rect = FractionRect.GridCell(x, y, Columns, rows);
-            yield return (rect, plots[i]);
+            int rowIndex = columns / i;
+            int columnIndex = i % columns;
+            FractionRect fr = new(fractionPerColumn * i, fractionPerRow * i, fractionPerColumn, fractionPerRow);
+            multiplot.PositionedPlots[i].Position = new SubplotPositions.Fractional(fr);
         }
     }
 }
