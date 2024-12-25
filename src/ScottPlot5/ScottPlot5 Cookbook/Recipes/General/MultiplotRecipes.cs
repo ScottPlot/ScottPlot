@@ -86,9 +86,9 @@ public class MultiplotRecipes : ICategory
             }
 
             // manually set the position for each plot
-            multiplot.PositionedPlots[0].Position = new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1);
-            multiplot.PositionedPlots[1].Position = new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2);
-            multiplot.PositionedPlots[2].Position = new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2);
+            multiplot.SetPosition(0, new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1));
+            multiplot.SetPosition(1, new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2));
+            multiplot.SetPosition(2, new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2));
         }
     }
 }

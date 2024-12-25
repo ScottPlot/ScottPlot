@@ -8,20 +8,22 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        // work with the plot like normal
-        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        Plot[] subplots = formsPlot1.Multiplot.AddPlots(4);
 
-        // add a sub-plot and interact with it
-        var plot2 = formsPlot1.Multiplot.AddPlot();
-        plot2.Add.Signal(Generate.Cos());
+        for (int i = 0; i < subplots.Length; i++)
+        {
+            double scale = Math.Pow(10, i);
+            double[] data = Generate.RandomWalk(100, scale*2);
+            subplots[i].Add.Signal(data);
+            subplots[i].Title($"Subplot {i + 1}");
+        }
 
-        // add another sub-plot
-        var plot3 = formsPlot1.Multiplot.AddPlot();
-        plot3.Add.Signal(Generate.AddNoise(Generate.Sin()));
+        formsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 2);
 
-        // use a custom layout
-        formsPlot1.Multiplot.PositionedPlots[0].Position = new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1);
-        formsPlot1.Multiplot.PositionedPlots[1].Position = new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2);
-        formsPlot1.Multiplot.PositionedPlots[2].Position = new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2);
+        // share the X axis for all subplots
+        formsPlot1.Multiplot.ShareX(subplots);
+
+        // share the Y axis for select subplots
+        formsPlot1.Multiplot.ShareY([subplots[0], subplots[1]]);
     }
 }
