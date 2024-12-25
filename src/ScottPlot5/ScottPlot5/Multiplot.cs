@@ -1,40 +1,71 @@
 ﻿namespace ScottPlot;
 
-public class PositionedSubplot(Plot plot, ISubplotPosition position)
-{
-    public Plot Plot { get; set; } = plot;
-    public PixelRect LastRenderRect { get; set; } = PixelRect.NaN;
-    public ISubplotPosition Position { get; set; } = position;
-}
-
 public class Multiplot
 {
-    public int Count => PositionedPlots.Count;
-    public IEnumerable<Plot> Plots => PositionedPlots.Select(x => x.Plot);
-    public List<PositionedSubplot> PositionedPlots { get; } = [];
+    /// <summary>
+    /// Number of subplots in this multiplot
+    /// </summary>
+    public int Count => Subplots.Count;
+
+    /// <summary>
+    /// Copy styling options (e.g., background color) to new plots as they are added
+    /// </summary>
     bool StyleNewPlotsAutomatically { get; set; } = true;
 
     /// <summary>
-    /// This engine is used to resize all plots automatically every time new ones are added
+    /// This list contains plots, logic for positioning them, and records of where they were last rendered
     /// </summary>
-    public IMultiplotLayout? Layout { get; set; } = new ScottPlot.MultiplotLayouts.Rows();
+    private readonly List<PositionedSubplot> Subplots = [];
+    private class PositionedSubplot(Plot plot, ISubplotPosition position)
+    {
+        public Plot Plot { get; set; } = plot;
+        public PixelRect LastRenderRect { get; set; } = PixelRect.NaN;
+        public ISubplotPosition Position { get; set; } = position;
+    }
 
+    private IMultiplotLayout? _Layout = new MultiplotLayouts.Rows();
+
+    /// <summary>
+    /// This logic is used to create the initial layout for subplots in the multiplot
+    /// </summary>
+    public IMultiplotLayout? Layout
+    {
+        get => _Layout;
+        set
+        {
+            _Layout = value;
+            _Layout?.ResetAllPositions(this);
+        }
+    }
+
+    /// <summary>
+    /// Create a multiplot with no initial subplots
+    /// </summary>
     public Multiplot()
     {
 
     }
 
+    /// <summary>
+    /// Create a multiplot with a single subplot
+    /// </summary>
     public Multiplot(Plot plot)
     {
         AddPlot(plot);
     }
 
+    /// <summary>
+    /// Reset this multiplot so it only contains the given plot
+    /// </summary>
     public void Reset(Plot plot)
     {
-        PositionedPlots.Clear();
+        Subplots.Clear();
         AddPlot(plot);
     }
 
+    /// <summary>
+    /// Create a new plot, add it as a subplot, and return it
+    /// </summary>
     public Plot AddPlot()
     {
         Plot plot = new();
@@ -42,28 +73,102 @@ public class Multiplot
         return plot;
     }
 
+    /// <summary>
+    /// Add the given plot as a subplot into this multiplot
+    /// </summary>
     public void AddPlot(Plot plot)
     {
-        if (StyleNewPlotsAutomatically && PositionedPlots.Count > 0)
+        if (StyleNewPlotsAutomatically && Subplots.Count > 0)
         {
-            Plot lastPlot = PositionedPlots.Last().Plot;
+            Plot lastPlot = Subplots.Last().Plot;
             plot.FigureBackground.Color = lastPlot.FigureBackground.Color;
             plot.DataBackground.Color = lastPlot.DataBackground.Color;
         }
 
         PositionedSubplot positionedPlot = new(plot, new SubplotPositions.Full());
-        PositionedPlots.Add(positionedPlot);
+        Subplots.Add(positionedPlot);
         Layout?.ResetAllPositions(this);
     }
 
+    /// <summary>
+    /// Add (or remove) plots until the given number of subplots is achieved
+    /// </summary>
+    public Plot[] AddPlots(int total)
+    {
+        while (Count > total)
+        {
+            Subplots.RemoveAt(Subplots.Count - 1);
+        }
+
+        while (Count < total)
+        {
+            AddPlot();
+        }
+
+        return GetPlots();
+    }
+
+    /// <summary>
+    /// Return all plots in this multiplot
+    /// </summary>
+    public Plot[] GetPlots()
+    {
+        return Subplots.Select(x => x.Plot).ToArray();
+    }
+
+    /// <summary>
+    /// Set the position of the given subplot
+    /// </summary>
+    public void SetPosition(Plot plot, ISubplotPosition position)
+    {
+        for (int i = 0; i < Subplots.Count; i++)
+        {
+            if (Subplots[i].Plot == plot)
+            {
+                Subplots[i].Position = position;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Set the position of the given subplot index
+    /// </summary>
+    public void SetPosition(int plotIndex, ISubplotPosition position)
+    {
+        Subplots[plotIndex].Position = position;
+    }
+
+    /// <summary>
+    /// Get the pixel rectangle where the given subplot was last rendered.
+    /// Returns PixelRect.NaN if a render has not yet occurred.
+    /// </summary>
+    public PixelRect GetLastRenderRectangle(Plot plot)
+    {
+        foreach (var pos in Subplots)
+        {
+            if (pos.Plot == plot)
+            {
+                return pos.LastRenderRect;
+            }
+        }
+
+        throw new KeyNotFoundException();
+    }
+
+    /// <summary>
+    /// Render the multiplot into the clip boundary of the given surface.
+    /// </summary>
     public void Render(SKSurface surface)
     {
         Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
     }
 
+    /// <summary>
+    /// Render the multiplot on a canvas inside the given rectangle.
+    /// </summary>
     public void Render(SKCanvas canvas, PixelRect figureRect)
     {
-        foreach (var positionedPlot in PositionedPlots)
+        foreach (var positionedPlot in Subplots)
         {
             PixelRect subPlotRect = positionedPlot.Position.GetRect(figureRect);
             positionedPlot.LastRenderRect = subPlotRect;
@@ -72,6 +177,9 @@ public class Multiplot
         }
     }
 
+    /// <summary>
+    /// Create a new image, render the multiplot onto it, and return it
+    /// </summary>
     public Image Render(int width, int height)
     {
         SKImageInfo imageInfo = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
@@ -81,14 +189,21 @@ public class Multiplot
         return new(surface);
     }
 
+    /// <summary>
+    /// Save the multiplot as a PNG image file
+    /// </summary>
     public SavedImageInfo SavePng(string filename, int width = 800, int height = 600)
     {
         return Render(width, height).SavePng(filename);
     }
 
+    /// <summary>
+    /// Return the plot beneath the given pixel according to the last render.
+    /// Returns null if no render occurred or the pixel is not over a plot.
+    /// </summary>
     public Plot? GetPlotAtPixel(Pixel pixel)
     {
-        foreach (var positionedPlot in PositionedPlots)
+        foreach (var positionedPlot in Subplots)
         {
             if (positionedPlot.LastRenderRect.Contains(pixel))
                 return positionedPlot.Plot;
