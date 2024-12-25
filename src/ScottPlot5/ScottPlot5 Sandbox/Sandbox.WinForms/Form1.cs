@@ -19,5 +19,11 @@ public partial class Form1 : Form
         }
 
         formsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 2);
+
+        // share the X axis for all subplots
+        formsPlot1.Multiplot.ShareX(subplots);
+
+        // share the Y axis for select subplots
+        formsPlot1.Multiplot.ShareY([subplots[0], subplots[1]]);
     }
 }

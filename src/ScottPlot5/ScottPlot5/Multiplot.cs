@@ -20,6 +20,7 @@ public class Multiplot
     {
         public Plot Plot { get; set; } = plot;
         public PixelRect LastRenderRect { get; set; } = PixelRect.NaN;
+        public AxisLimits LastRenderAxisLimits { get; set; } = AxisLimits.Unset; // TODO: support multi-axis
         public ISubplotPosition Position { get; set; } = position;
     }
 
@@ -109,11 +110,34 @@ public class Multiplot
     }
 
     /// <summary>
+    /// Return the plot at the given index
+    /// </summary>
+    public Plot GetPlot(int index)
+    {
+        return Subplots[index].Plot;
+    }
+
+    /// <summary>
     /// Return all plots in this multiplot
     /// </summary>
     public Plot[] GetPlots()
     {
         return Subplots.Select(x => x.Plot).ToArray();
+    }
+
+    /// <summary>
+    /// Return the positioned subplot associated with the given plot
+    /// </summary>
+    private PositionedSubplot GetPositionedSubplot(Plot plot)
+    {
+        foreach (var subplot in Subplots)
+        {
+            if (subplot.Plot == plot)
+            {
+                return subplot;
+            }
+        }
+        throw new KeyNotFoundException();
     }
 
     /// <summary>
@@ -168,10 +192,13 @@ public class Multiplot
     /// </summary>
     public void Render(SKCanvas canvas, PixelRect figureRect)
     {
+        UpdateSharedPlotAxisLimits();
+
         foreach (var positionedPlot in Subplots)
         {
             PixelRect subPlotRect = positionedPlot.Position.GetRect(figureRect);
             positionedPlot.LastRenderRect = subPlotRect;
+            positionedPlot.LastRenderAxisLimits = positionedPlot.Plot.Axes.GetLimits();
             positionedPlot.Plot.RenderManager.ClearCanvasBeforeEachRender = false;
             positionedPlot.Plot.Render(canvas, subPlotRect);
         }
@@ -210,5 +237,68 @@ public class Multiplot
         }
 
         return null;
+    }
+
+    // TODO: improve support for plots with non-standard axis limits
+    private List<PositionedSubplot> PlotsWithSharedX = [];
+    private List<PositionedSubplot> PlotsWithSharedY = [];
+
+    private void UpdateSharedPlotAxisLimits()
+    {
+        // TODO: this shouldn't be the FIRST with changed limits, 
+        // it should be the one that was last changed manually...
+        Plot? parentPlotX = GetFirstPlotWithChangedLimitsX();
+        if (parentPlotX is not null)
+        {
+            AxisLimits parentLimits = parentPlotX.Axes.GetLimits();
+            PlotsWithSharedX.ForEach(x => x.Plot.Axes.SetLimitsX(parentLimits));
+        }
+
+        Plot? parentPlotY = GetFirstPlotWithChangedLimitsY();
+        if (parentPlotY is not null)
+        {
+            AxisLimits parentLimits = parentPlotY.Axes.GetLimits();
+            PlotsWithSharedY.ForEach(x => x.Plot.Axes.SetLimitsY(parentLimits));
+        }
+    }
+
+    private Plot? GetFirstPlotWithChangedLimitsX()
+    {
+        foreach (var positionedPlot in PlotsWithSharedX)
+        {
+            var oldRange = positionedPlot.Plot.Axes.GetLimits().HorizontalRange;
+            var newRange = positionedPlot.LastRenderAxisLimits.HorizontalRange;
+            if (oldRange != newRange)
+            {
+                return positionedPlot.Plot;
+            }
+        }
+        return null;
+    }
+
+    private Plot? GetFirstPlotWithChangedLimitsY()
+    {
+        foreach (var positionedPlot in PlotsWithSharedY)
+        {
+            var oldRange = positionedPlot.Plot.Axes.GetLimits().VerticalRange;
+            var newRange = positionedPlot.LastRenderAxisLimits.VerticalRange;
+            if (oldRange != newRange)
+            {
+                return positionedPlot.Plot;
+            }
+        }
+        return null;
+    }
+
+    public void ShareX(IEnumerable<Plot> plots)
+    {
+        PlotsWithSharedX.Clear();
+        PlotsWithSharedX.AddRange(plots.Select(GetPositionedSubplot));
+    }
+
+    public void ShareY(IEnumerable<Plot> plots)
+    {
+        PlotsWithSharedY.Clear();
+        PlotsWithSharedY.AddRange(plots.Select(GetPositionedSubplot));
     }
 }
