@@ -297,6 +297,12 @@ public class Multiplot
     {
         PlotsWithSharedX.Clear();
         PlotsWithSharedX.AddRange(plots.Select(GetPositionedSubplot));
+
+        // reset remembered axis limits to force realignment on the next render
+        foreach (Plot plot in plots)
+        {
+            GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
+        }
     }
 
     /// <summary>
@@ -307,6 +313,12 @@ public class Multiplot
     {
         PlotsWithSharedY.Clear();
         PlotsWithSharedY.AddRange(plots.Select(GetPositionedSubplot));
+
+        // reset remembered axis limits to force realignment on the next render
+        foreach (Plot plot in plots)
+        {
+            GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
+        }
     }
 
     /// <summary>
