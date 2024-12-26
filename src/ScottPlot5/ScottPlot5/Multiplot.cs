@@ -297,6 +297,12 @@ public class Multiplot
     {
         PlotsWithSharedX.Clear();
         PlotsWithSharedX.AddRange(plots.Select(GetPositionedSubplot));
+
+        // reset remembered axis limits to force realignment on the next render
+        foreach (Plot plot in plots)
+        {
+            GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
+        }
     }
 
     /// <summary>
@@ -307,17 +313,11 @@ public class Multiplot
     {
         PlotsWithSharedY.Clear();
         PlotsWithSharedY.AddRange(plots.Select(GetPositionedSubplot));
-    }
 
-    /// <summary>
-    /// Apply the same fixed amount of padding to all subplots.
-    /// This ensures data area alignment in multi-plot figures.
-    /// </summary>
-    public void ApplyFixedPadding(PixelPadding padding)
-    {
-        foreach (var plot in GetPlots())
+        // reset remembered axis limits to force realignment on the next render
+        foreach (Plot plot in plots)
         {
-            plot.Layout.Fixed(padding);
+            GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
         }
     }
 }
