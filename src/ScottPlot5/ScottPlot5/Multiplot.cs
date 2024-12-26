@@ -13,6 +13,13 @@ public class Multiplot
     bool StyleNewPlotsAutomatically { get; set; } = true;
 
     /// <summary>
+    /// If enabled, canvases passed into Render() methods will be cleared before plots are drawn on top of them.
+    /// This is helpful for interactive multiplots with layouts containing blank spaces to ensure drawings from previous 
+    /// renders do not persist through multiple renders where figure dimensions change.
+    /// </summary>
+    bool ClearCanvasBeforeRender { get; set; } = true;
+
+    /// <summary>
     /// This list contains plots, logic for positioning them, and records of where they were last rendered
     /// </summary>
     private readonly List<PositionedSubplot> Subplots = [];
@@ -198,6 +205,11 @@ public class Multiplot
     public void Render(SKCanvas canvas, PixelRect figureRect)
     {
         UpdateSharedPlotAxisLimits();
+
+        if (ClearCanvasBeforeRender)
+        {
+            canvas.Clear();
+        }
 
         foreach (var positionedPlot in Subplots)
         {
