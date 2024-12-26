@@ -25,7 +25,7 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
 
         // use a fixed layout to ensure all plots remain aligned
         PixelPadding padding = new(50, 20, 40, 20);
-        foreach(Plot plot in formsPlot1.Multiplot.GetPlots())
+        foreach (Plot plot in formsPlot1.Multiplot.GetPlots())
             plot.Layout.Fixed(padding);
 
         // wire button clicks to layout changes
@@ -77,7 +77,7 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
         public PixelRect GetRect(PixelRect figureRect)
         {
             return new PixelRect(
-                left: figureRect.Left, 
+                left: figureRect.Left,
                 right: figureRect.Right,
                 bottom: figureRect.VerticalCenter - middlePlotHeight / 2,
                 top: figureRect.Top);
@@ -89,9 +89,9 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
         public PixelRect GetRect(PixelRect figureRect)
         {
             return new PixelRect(
-                left: figureRect.Left, 
+                left: figureRect.Left,
                 right: figureRect.Right,
-                bottom: figureRect.VerticalCenter + middlePlotHeight / 2, 
+                bottom: figureRect.VerticalCenter + middlePlotHeight / 2,
                 top: figureRect.VerticalCenter - middlePlotHeight / 2);
         }
     }
@@ -101,9 +101,9 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
         public PixelRect GetRect(PixelRect figureRect)
         {
             return new PixelRect(
-                left: figureRect.Left, 
+                left: figureRect.Left,
                 right: figureRect.Right,
-                bottom: figureRect.Bottom, 
+                bottom: figureRect.Bottom,
                 top: figureRect.VerticalCenter + middlePlotHeight / 2);
         }
     }
