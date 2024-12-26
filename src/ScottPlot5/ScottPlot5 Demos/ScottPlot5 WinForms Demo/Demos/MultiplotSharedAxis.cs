@@ -2,8 +2,12 @@
 
 namespace WinForms_Demo.Demos;
 
-public partial class MultiplotSharedAxis : Form
+public partial class MultiplotSharedAxis : Form, IDemoWindow
 {
+    public string Title => "Multiplot with shared axis limits";
+
+    public string Description => "Updates to axis limits of a subplot may be applied to all other subplots in the multiplot.";
+
     public MultiplotSharedAxis()
     {
         InitializeComponent();

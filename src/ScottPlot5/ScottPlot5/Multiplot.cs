@@ -320,16 +320,4 @@ public class Multiplot
             GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
         }
     }
-
-    /// <summary>
-    /// Apply the same fixed amount of padding to all subplots.
-    /// This ensures data area alignment in multi-plot figures.
-    /// </summary>
-    public void ApplyFixedPadding(PixelPadding padding)
-    {
-        foreach (var plot in GetPlots())
-        {
-            plot.Layout.Fixed(padding);
-        }
-    }
 }

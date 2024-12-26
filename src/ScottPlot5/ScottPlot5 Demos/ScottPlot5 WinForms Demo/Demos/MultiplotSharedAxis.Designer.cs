@@ -39,9 +39,9 @@ partial class MultiplotSharedAxis
         // 
         formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         formsPlot1.DisplayScale = 1F;
-        formsPlot1.Location = new Point(6, 62);
+        formsPlot1.Location = new Point(6, 49);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(794, 546);
+        formsPlot1.Size = new Size(794, 559);
         formsPlot1.TabIndex = 5;
         // 
         // btnShareNone
