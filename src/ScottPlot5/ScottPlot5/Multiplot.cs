@@ -24,6 +24,11 @@ public class Multiplot
         public ISubplotPosition Position { get; set; } = position;
     }
 
+
+    // TODO: improve support for plots with non-standard axis limits
+    private readonly List<PositionedSubplot> PlotsWithSharedX = [];
+    private readonly List<PositionedSubplot> PlotsWithSharedY = [];
+
     private IMultiplotLayout? _Layout = new MultiplotLayouts.Rows();
 
     /// <summary>
@@ -239,14 +244,8 @@ public class Multiplot
         return null;
     }
 
-    // TODO: improve support for plots with non-standard axis limits
-    private List<PositionedSubplot> PlotsWithSharedX = [];
-    private List<PositionedSubplot> PlotsWithSharedY = [];
-
     private void UpdateSharedPlotAxisLimits()
     {
-        // TODO: this shouldn't be the FIRST with changed limits, 
-        // it should be the one that was last changed manually...
         Plot? parentPlotX = GetFirstPlotWithChangedLimitsX();
         if (parentPlotX is not null)
         {
@@ -290,15 +289,35 @@ public class Multiplot
         return null;
     }
 
+    /// <summary>
+    /// Link horizontal axis limits of the given collection of plots
+    /// so when one changes they all change in unison
+    /// </summary>
     public void ShareX(IEnumerable<Plot> plots)
     {
         PlotsWithSharedX.Clear();
         PlotsWithSharedX.AddRange(plots.Select(GetPositionedSubplot));
     }
 
+    /// <summary>
+    /// Link vertical axis limits of the given collection of plots
+    /// so when one changes they all change in unison
+    /// </summary>
     public void ShareY(IEnumerable<Plot> plots)
     {
         PlotsWithSharedY.Clear();
         PlotsWithSharedY.AddRange(plots.Select(GetPositionedSubplot));
+    }
+
+    /// <summary>
+    /// Apply the same fixed amount of padding to all subplots.
+    /// This ensures data area alignment in multi-plot figures.
+    /// </summary>
+    public void ApplyFixedPadding(PixelPadding padding)
+    {
+        foreach (var plot in GetPlots())
+        {
+            plot.Layout.Fixed(padding);
+        }
     }
 }
