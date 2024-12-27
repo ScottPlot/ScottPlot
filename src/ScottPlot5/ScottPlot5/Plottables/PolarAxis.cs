@@ -67,7 +67,11 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         Circles.Clear();
         for (int i = 0; i < positions.Length; i++)
         {
-            PolarAxisCircle circle = new(positions[i]) { LabelText = labels[i] };
+            PolarAxisCircle circle = new(positions[i])
+            {
+                Origin = Coordinates.Origin,
+                LabelText = labels[i]
+            };
             Circles.Add(circle);
         }
     }
@@ -236,13 +240,20 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
 
     private void RenderCircles(RenderPack rp, SKPaint paint)
     {
-        Pixel originPx = Axes.GetPixel(Coordinates.Origin);
         double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
 
         for (int i = 0; i < Circles.Count; i++)
         {
             float radiusPx = (float)(pxPerUnit * Circles[i].Radius);
-            Drawing.DrawCircle(rp.Canvas, originPx, radiusPx, Circles[i].LineStyle, paint);
+            Pixel originPx = Axes.GetPixel(Circles[i].Origin);
+            PixelRect rect = new(
+                originPx.X - radiusPx,
+                originPx.X + radiusPx,
+                originPx.Y + radiusPx,
+                originPx.Y - radiusPx);
+            Drawing.DrawArc(rp.Canvas, paint, Circles[i].LineStyle, rect,
+                (float)Circles[i].StartAngle.Degrees,
+                (float)Circles[i].SweepAngle.Degrees);
         }
     }
 

@@ -352,6 +352,17 @@ public static class Drawing
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
 
+    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+    }
+
     public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
     {
         if (!style.IsVisible)
