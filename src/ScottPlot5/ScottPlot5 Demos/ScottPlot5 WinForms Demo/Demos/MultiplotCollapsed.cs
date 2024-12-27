@@ -4,10 +4,10 @@ namespace WinForms_Demo.Demos;
 
 public partial class MultiplotCollapsed : Form, IDemoWindow
 {
-    public string Title => "Multiplot with Collapsed Subplots";
+    public string Title => "Multiplot with Draggable Subplots";
 
-    public string Description => "Subplots may be placed very close together by setting their padding to zero " +
-        "to enhance the visual effect of multiple subplots sharing a single axis";
+    public string Description => "Subplots may be placed very close together by setting their padding to zero. " +
+        "This example uses an advanced Layout system to enable mouse drag resizing of subplots.";
 
     public MultiplotCollapsed()
     {
@@ -49,32 +49,173 @@ public partial class MultiplotCollapsed : Form, IDemoWindow
         rsiPlot.Layout.Fixed(new PixelPadding(padLeft, padRight, bottom: 0, top: 0));
         volumePlot.Layout.Fixed(new PixelPadding(padLeft, padRight, bottom: 40, top: 0));
 
-        // use custom logic to tell the multiplot how large to make each plot
-        formsPlot1.Multiplot.SetPosition(pricePlot, new ExpandingTopRow(0));
-        formsPlot1.Multiplot.SetPosition(rsiPlot, new ExpandingTopRow(1));
-        formsPlot1.Multiplot.SetPosition(volumePlot, new ExpandingTopRow(2));
+        // disable tick generation for axes that don't need them
+        pricePlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
+        rsiPlot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.EmptyTickGenerator();
+
+        // update grids to use ticks from the bottom plot
+        pricePlot.Grid.XAxis = volumePlot.Axes.Bottom;
+        rsiPlot.Grid.XAxis = volumePlot.Axes.Bottom;
+
+        // update grids to use ticks from the right axis
+        pricePlot.Grid.YAxis = pricePlot.Axes.Right;
+        rsiPlot.Grid.YAxis = rsiPlot.Axes.Right;
+        volumePlot.Grid.YAxis = volumePlot.Axes.Right;
 
         // link horizontal axes across all plots
         formsPlot1.Multiplot.ShareX([pricePlot, rsiPlot, volumePlot]);
+
+        // use custom logic to tell the multiplot how large to make each plot
+        CustomLayout customLayout = new();
+        formsPlot1.Multiplot.Layout = customLayout;
+
+        // wire mouse events to enable dragging dividers that separate plots
+        formsPlot1.MouseDown += (s, e) =>
+        {
+            customLayout.DividerBeingDragged = customLayout.GetDividerUnder(e.Y);
+            if (customLayout.DividerBeingDragged > 0)
+            {
+                customLayout.RememberAxisLimits();
+                formsPlot1.UserInputProcessor.Disable();
+            }
+        };
+
+        formsPlot1.MouseUp += (s, e) =>
+        {
+            customLayout.DividerBeingDragged = 0;
+            formsPlot1.UserInputProcessor.Enable();
+        };
+
+        formsPlot1.MouseMove += (s, e) =>
+        {
+            if (customLayout.DividerBeingDragged > 0)
+            {
+                customLayout.ProcessMouseDrag(e.Y);
+                customLayout.RecallAxisLimits();
+                formsPlot1.Refresh();
+            }
+            else
+            {
+                Cursor = customLayout.IsOverDivider(e.Y) ? Cursors.SizeNS : Cursors.Default;
+            }
+        };
+
+        // force a render in memory so axis changes are registered at startup
+        formsPlot1.Multiplot.Render(formsPlot1.Width, formsPlot1.Height);
     }
 
-    class ExpandingTopRow(int rowIndex) : ISubplotPosition
+    class CustomLayout() : IMultiplotLayout
     {
-        public float MiddlePlotHeight = 100;
-        public float BottomPlotHeight = 100;
+        readonly CustomRowPosition PositionRowA = new(0);
+        readonly CustomRowPosition PositionRowB = new(1);
+        readonly CustomRowPosition PositionRowC = new(2);
+        List<CustomRowPosition> PositionRows => [PositionRowA, PositionRowB, PositionRowC];
+
+        Plot PlotA = null!;
+        Plot PlotB = null!;
+        Plot PlotC = null!;
+
+        MultiAxisLimits MouseDownLimitsA = null!;
+        MultiAxisLimits MouseDownLimitsB = null!;
+        MultiAxisLimits MouseDownLimitsC = null!;
+
+        public int DividerBeingDragged = 0;
+
+        public float SnapDistance { get; set; } = 5;
+
+        public void ResetAllPositions(Multiplot multiplot)
+        {
+            if (multiplot.Count != 3)
+                throw new InvalidOperationException("Expect exactly 3 plots");
+
+            if (PlotA is null)
+            {
+                PlotA = multiplot.GetPlot(0);
+                PlotB = multiplot.GetPlot(1);
+                PlotC = multiplot.GetPlot(2);
+            }
+
+            multiplot.SetPosition(0, PositionRowA);
+            multiplot.SetPosition(1, PositionRowB);
+            multiplot.SetPosition(2, PositionRowC);
+        }
+
+        public bool IsOverDivider(float yPixel) => GetDividerUnder(yPixel) > 0;
+        public bool IsOverDivider1(float yPixel) => Math.Abs(yPixel - PositionRowA.LastRect.Bottom) <= SnapDistance;
+        public bool IsOverDivider2(float yPixel) => Math.Abs(yPixel - PositionRowB.LastRect.Bottom) <= SnapDistance;
+        public int GetDividerUnder(float yPixel)
+        {
+            if (IsOverDivider1(yPixel)) return 1;
+            else if (IsOverDivider2(yPixel)) return 2;
+            else return 0;
+        }
+
+        public void RememberAxisLimits()
+        {
+            MouseDownLimitsA = new(PlotA);
+            MouseDownLimitsB = new(PlotB);
+            MouseDownLimitsC = new(PlotC);
+        }
+
+        public void RecallAxisLimits()
+        {
+            MouseDownLimitsA.Recall();
+            MouseDownLimitsB.Recall();
+            MouseDownLimitsC.Recall();
+        }
+
+        public void ProcessMouseDrag(float yPixel)
+        {
+            float lastFigureHeight = PositionRows.Select(x => x.LastRect.Height).Sum();
+            float minimumHeight = 50;
+
+            if (DividerBeingDragged == 1)
+            {
+                float bottomPlotHeight = PositionRowC.LastRect.Height;
+                float topPlotHeight = Math.Clamp(yPixel, minimumHeight, lastFigureHeight - bottomPlotHeight - minimumHeight);
+                float middlePlotHeight = lastFigureHeight - bottomPlotHeight - topPlotHeight;
+                PositionRows.ForEach(x =>
+                {
+                    x.MiddlePlotHeight = middlePlotHeight;
+                    x.BottomPlotHeight = bottomPlotHeight;
+                });
+            }
+
+            if (DividerBeingDragged == 2)
+            {
+                float topPlotHeight = PositionRowA.LastRect.Height;
+                float bottomPlotHeight = Math.Clamp(lastFigureHeight - yPixel, minimumHeight, lastFigureHeight - topPlotHeight - minimumHeight);
+                float middlePlotHeight = lastFigureHeight - bottomPlotHeight - topPlotHeight;
+                PositionRows.ForEach(x =>
+                {
+                    x.MiddlePlotHeight = middlePlotHeight;
+                    x.BottomPlotHeight = bottomPlotHeight;
+                });
+            }
+        }
+    }
+
+    class CustomRowPosition(int rowIndex) : ISubplotPosition
+    {
+        public float MiddlePlotHeight { get; set; } = 100;
+        public float BottomPlotHeight { get; set; } = 100;
+
+        public PixelRect LastRect { get; private set; }
 
         public PixelRect GetRect(PixelRect figureRect)
         {
             float bottomPlotTop = figureRect.Bottom - BottomPlotHeight;
             float middlePlotTop = bottomPlotTop - MiddlePlotHeight;
 
-            return rowIndex switch
+            LastRect = rowIndex switch
             {
                 0 => new(figureRect.Left, figureRect.Right, bottom: middlePlotTop, top: figureRect.Top),
                 1 => new(figureRect.Left, figureRect.Right, bottom: bottomPlotTop, top: middlePlotTop),
                 2 => new(figureRect.Left, figureRect.Right, bottom: figureRect.Bottom, top: bottomPlotTop),
                 _ => throw new IndexOutOfRangeException(nameof(rowIndex)),
             };
+
+            return LastRect;
         }
     }
 }
