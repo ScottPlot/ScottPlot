@@ -38,4 +38,20 @@ internal class CoordinateRectTests
         CoordinateRect cRect2 = cRect.Expanded(coord);
         cRect2.Contains(coord).Should().BeTrue();
     }
+
+    [TestCase(0, 0, 1, 1, 0.5, 0.5, true, TestName = "Test Contains with no inverted")]
+    [TestCase(0, 0, 1, -1, 0.5, -0.5, true, TestName = "Test Contains with inverted X")]
+    [TestCase(0, 0, -1, 1, -0.5, 0.5, true, TestName = "Test Contains with inverted Y")]
+    [TestCase(0, 0, -1, -1, -0.5, -0.5, true, TestName = "Test Contains with inverted X and Y")]
+    public void Test_CoordinateRect_Contains(double x1,
+        double y1,
+        double x2,
+        double y2,
+        double x,
+        double y,
+        bool expectedContains)
+    {
+        CoordinateRect coordinateRect = new CoordinateRect(x1, x2, y1, y2);
+        Assert.That(coordinateRect.Contains(x, y), Is.True);
+    }
 }
