@@ -1,5 +1,12 @@
 ## ScottPlot 5.0.48
 _Not yet on NuGet..._
+* Multiplot: Extend `Multiplot` to support rending onto an existing surface (#4628, #4600)
+* User Controls: Add `Multiplot` to `IPlotControl` (#4628, #4600)
+* User Controls: Remove deprecated `Interaction` system (#4630, #4600)
+* Plot: Remove the `PlotControl` property to encourage one-way flow of control (#4631, #4600)
+* Controls: Update all `UserInputProcessor` code to support `Multiplot` interactions (#4632, #4600)
+* Multiplot: Add advanced subplot positioning features (#4633, #4600)
+* Multiplot: Add shared axis helper methods to facilitate syncing axis limits across subplots (#4635, #4600)
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_

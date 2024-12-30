@@ -2,9 +2,13 @@
 
 public class SingleClickContextMenu(MouseButton button) : SingleClickResponse(button, LaunchContextMenu)
 {
-    public static void LaunchContextMenu(Plot plot, Pixel pixel)
+    public static void LaunchContextMenu(IPlotControl plotControl, Pixel pixel)
     {
-        plot.PlotControl?.ShowContextMenu(pixel);
+        Plot? plot = plotControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+
+        plot.ParentControlShowContextMenu(pixel);
     }
 }
 
