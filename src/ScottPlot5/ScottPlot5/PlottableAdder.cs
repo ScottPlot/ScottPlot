@@ -2,7 +2,6 @@
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.Statistics;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -1200,6 +1199,36 @@ public class PlottableAdder(Plot plot)
     {
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
         return SignalXY(source, color);
+    }
+
+    public SmithChartAxis SmithChartAxis()
+    {
+        SmithChartAxis smithChartAxis = new();
+
+        double[] realTicks = [30, 5, 2, 1, 0.5, 0.2, 0];
+        foreach (var position in realTicks)
+        {
+            var realPart = smithChartAxis.AddRealTick(position);
+            if (position == 1 || position == 0)
+            {
+                realPart.LineStyle.Color = Colors.Black;
+            }
+        }
+
+        double[] imaginaryTicks = [30, 5, 2, 1, 0.5, 0.2, 0.0, -0.2, -0.5, -1, -2, -5, -30];
+        foreach (var position in imaginaryTicks)
+        {
+            var imaginaryPart = smithChartAxis.AddImaginaryTick(position);
+            if (position == 0)
+            {
+                imaginaryPart.LineStyle.Color = Colors.Black;
+            }
+        }
+
+        Plot.PlottableList.Add(smithChartAxis);
+
+        Plot.HideAxesAndGrid();
+        return smithChartAxis;
     }
 
     /// <summary>

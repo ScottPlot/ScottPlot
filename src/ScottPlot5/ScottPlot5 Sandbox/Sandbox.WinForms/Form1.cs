@@ -28,6 +28,5 @@ public partial class Form1 : Form
 
         // used manual padding to ensure subplot alignment
         PixelPadding padding = new(50, 10, 25, 45);
-        formsPlot1.Multiplot.ApplyFixedPadding(padding);
     }
 }
