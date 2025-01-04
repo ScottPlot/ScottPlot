@@ -12,7 +12,8 @@ _Not yet on NuGet..._
 * Rendering: Improved handling of the `RenderPack` inside the render loop to avoid Skia exceptions (#4592) @vadimart92
 * Axes: Improved support for `CoordinateRect` hit detection on plots with inverted axes (#4596) @SprinterDave
 * Axes: Improved axis rule behavior on plots using inverted axes (#3597, #4609) @CoderPM2011
-* Smith Chart: New plot type for displaying impedance of signals as resistance vs. reactance on a circular axis system (#4634, #4578, #41) @CoderPM2011, @louis1901, @Padanian
+* Smith Chart: New plot type for displaying impedance of signals as resistance vs. reactance on a circular axis system (#4634, #4578, #41) @CoderPM2011 @louis1901 @Padanian
+* Rendering: Improve support for platforms where BGRA is not the default color model (#4648, #4647) @bclehmann @ssharks
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_
