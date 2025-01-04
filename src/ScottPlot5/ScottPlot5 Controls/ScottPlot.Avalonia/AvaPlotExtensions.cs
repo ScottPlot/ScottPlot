@@ -81,36 +81,4 @@ internal static class AvaPlotExtensions
             _ => new Interactivity.Key(avaKey.ToString()),
         };
     }
-
-    internal static Control.Key OldToKey(this KeyEventArgs e)
-    {
-        return e.Key switch
-        {
-            AvaKey.LeftAlt => Control.Key.Alt,
-            AvaKey.RightAlt => Control.Key.Alt,
-            AvaKey.LeftShift => Control.Key.Shift,
-            AvaKey.RightShift => Control.Key.Shift,
-            AvaKey.LeftCtrl => Control.Key.Ctrl,
-            AvaKey.RightCtrl => Control.Key.Ctrl,
-            _ => Control.Key.Unknown,
-        };
-    }
-
-    internal static Control.MouseButton OldToButton(this PointerUpdateKind kind)
-    {
-        return kind switch
-        {
-            PointerUpdateKind.LeftButtonPressed => Control.MouseButton.Left,
-            PointerUpdateKind.LeftButtonReleased => Control.MouseButton.Left,
-
-            PointerUpdateKind.RightButtonPressed => Control.MouseButton.Right,
-            PointerUpdateKind.RightButtonReleased => Control.MouseButton.Right,
-
-            PointerUpdateKind.MiddleButtonPressed => Control.MouseButton.Middle,
-            PointerUpdateKind.MiddleButtonReleased => Control.MouseButton.Middle,
-
-            _ => Control.MouseButton.Unknown,
-        };
-    }
-
 }
