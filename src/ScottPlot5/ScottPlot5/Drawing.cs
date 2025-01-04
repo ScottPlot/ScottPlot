@@ -405,7 +405,9 @@ public static class Drawing
     {
         GCHandle handle = GCHandle.Alloc(argbs, GCHandleType.Pinned);
 
-        var imageInfo = new SKImageInfo(width, height);
+        // We need to specify a colour type for platforms where BGRA is not the default
+        // BGRA is the SKia name for ARGB, the ambiguity in naming comes from endianness
+        var imageInfo = new SKImageInfo(width, height, SKColorType.Bgra8888);
         var bmp = new SKBitmap(imageInfo);
         bmp.InstallPixels(
             info: imageInfo,
