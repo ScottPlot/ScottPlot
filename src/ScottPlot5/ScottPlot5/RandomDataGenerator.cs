@@ -147,7 +147,7 @@ public class RandomDataGenerator
     {
         for (int i = 0; i < values.Length; i++)
         {
-            double noise = (2 * RandomNumber() - .5) * magnitude;
+            double noise = (2 * RandomNumber() - 1) * magnitude;
             values[i] = values[i] + noise;
         }
     }

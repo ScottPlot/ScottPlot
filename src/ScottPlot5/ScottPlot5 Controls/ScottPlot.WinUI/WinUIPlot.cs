@@ -3,19 +3,15 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
-using System;
 
 namespace ScottPlot.WinUI;
-
-#pragma warning disable CS0618 // disable obsolete warnings
 
 public partial class WinUIPlot : UserControl, IPlotControl
 {
     public Plot Plot { get; internal set; }
+    public Multiplot Multiplot { get; internal set; }
     public SkiaSharp.GRContext? GRContext => null;
 
-    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    public IPlotInteraction Interaction { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public Window? AppWindow { get; set; } // https://stackoverflow.com/a/74286947
@@ -26,7 +22,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         Plot = new() { PlotControl = this };
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
+        Multiplot = new(Plot);
         UserInputProcessor = new(this);
         Menu = new WinUIPlotMenu(this);
 
@@ -75,6 +71,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     {
         Plot = plot;
         Plot.PlotControl = this;
+        Multiplot.Reset(plot);
     }
 
     public void Refresh()
@@ -95,48 +92,37 @@ public partial class WinUIPlot : UserControl, IPlotControl
     private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
     {
         Focus(FocusState.Pointer);
-
-        Interaction.MouseDown(e.Pixel(this), e.OldToButton(this));
         UserInputProcessor.ProcessMouseDown(this, e);
-
         (sender as UIElement)?.CapturePointer(e.Pointer);
-
         base.OnPointerPressed(e);
     }
 
     private void OnPointerReleased(object sender, PointerRoutedEventArgs e)
     {
-        Interaction.MouseUp(e.Pixel(this), e.OldToButton(this));
         UserInputProcessor.ProcessMouseUp(this, e);
-
         (sender as UIElement)?.ReleasePointerCapture(e.Pointer);
-
         base.OnPointerReleased(e);
     }
 
     private void OnPointerMoved(object sender, PointerRoutedEventArgs e)
     {
-        Interaction.OnMouseMove(e.Pixel(this));
         UserInputProcessor.ProcessMouseMove(this, e);
         base.OnPointerMoved(e);
     }
 
     private void OnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
     {
-        Interaction.DoubleClick();
         base.OnDoubleTapped(e);
     }
 
     private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
     {
-        Interaction.MouseWheelVertical(e.Pixel(this), e.GetCurrentPoint(this).Properties.MouseWheelDelta);
         UserInputProcessor.ProcessMouseWheel(this, e);
         base.OnPointerWheelChanged(e);
     }
 
     private void OnKeyDown(object sender, KeyRoutedEventArgs e)
     {
-        Interaction.KeyDown(e.OldToKey());
         UserInputProcessor.ProcessKeyDown(this, e);
         base.OnKeyDown(e);
     }
@@ -144,7 +130,6 @@ public partial class WinUIPlot : UserControl, IPlotControl
     private void OnKeyUp(object sender, KeyRoutedEventArgs e)
     {
         System.Diagnostics.Debug.WriteLine($"KEY UP {e.Key}");
-        Interaction.KeyUp(e.OldToKey());
         UserInputProcessor.ProcessKeyUp(this, e);
         base.OnKeyUp(e);
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Controls;
-using ScottPlot.Control;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -80,44 +80,6 @@ internal static class WinUIPlotExtensions
         processor.Process(action);
     }
 
-    internal static Control.MouseButton OldToButton(this PointerRoutedEventArgs e, WinUIPlot plotControl)
-    {
-        switch (e.GetCurrentPoint(plotControl).Properties.PointerUpdateKind)
-        {
-            case PointerUpdateKind.MiddleButtonPressed:
-            case PointerUpdateKind.MiddleButtonReleased:
-                return Control.MouseButton.Middle;
-            case PointerUpdateKind.LeftButtonPressed:
-            case PointerUpdateKind.LeftButtonReleased:
-                return Control.MouseButton.Left;
-            case PointerUpdateKind.RightButtonPressed:
-            case PointerUpdateKind.RightButtonReleased:
-                return Control.MouseButton.Right;
-            default:
-                return Control.MouseButton.Unknown;
-        }
-    }
-
-    internal static Control.Key OldToKey(this KeyRoutedEventArgs e)
-    {
-        return e.Key switch
-        {
-            VirtualKey.Control => Control.Key.Ctrl,
-            VirtualKey.LeftControl => Control.Key.Ctrl,
-            VirtualKey.RightControl => Control.Key.Ctrl,
-
-            VirtualKey.Menu => Control.Key.Alt,
-            VirtualKey.LeftMenu => Control.Key.Alt,
-            VirtualKey.RightMenu => Control.Key.Alt,
-
-            VirtualKey.Shift => Control.Key.Shift,
-            VirtualKey.LeftShift => Control.Key.Shift,
-            VirtualKey.RightShift => Control.Key.Shift,
-
-            _ => Control.Key.Unknown,
-        };
-    }
-
     internal static Interactivity.Key ToKey(this KeyRoutedEventArgs e)
     {
         return e.Key switch

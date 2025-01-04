@@ -11,7 +11,7 @@ static class Program
         Application.EnableVisualStyles();
 
         // CTRL+D opens this window (useful for testing in development)
-        Type testingFormType = typeof(Demos.ReportViewer);
+        Type testingFormType = typeof(Demos.MultiplotCollapsed);
 
         Application.Run(new MainMenuForm(testingFormType));
     }
