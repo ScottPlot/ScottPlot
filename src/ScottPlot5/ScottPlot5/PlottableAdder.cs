@@ -1205,9 +1205,25 @@ public class PlottableAdder(Plot plot)
     {
         SmithChartAxis smithChartAxis = new();
 
-        smithChartAxis.SetConstantRealParts([30, 5, 2, 1, 0.5, 0.2, 0]);
-        smithChartAxis.SetConstantImaginaryParts(
-            [30, 5, 2, 1, 0.5, 0.2, 0.0, -0.2, -0.5, -1, -2, -5, -30]);
+        double[] realTicks = [30, 5, 2, 1, 0.5, 0.2, 0];
+        foreach (var position in realTicks)
+        {
+            var realPart = smithChartAxis.AddRealTick(position);
+            if (position == 1 || position == 0)
+            {
+                realPart.LineStyle.Color = Colors.Black;
+            }
+        }
+
+        double[] imaginaryTicks = [30, 5, 2, 1, 0.5, 0.2, 0.0, -0.2, -0.5, -1, -2, -5, -30];
+        foreach (var position in imaginaryTicks)
+        {
+            var imaginaryPart = smithChartAxis.AddImaginaryTick(position);
+            if (position == 0)
+            {
+                imaginaryPart.LineStyle.Color = Colors.Black;
+            }
+        }
 
         Plot.PlottableList.Add(smithChartAxis);
 

@@ -5,7 +5,7 @@
 /// where points are represented by a radius and angle. 
 /// This class draws a polar axes and has options to customize spokes and circles.
 /// </summary>
-public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
+public class SmithChartAxis : IPlottable, IManagesAxisLimits
 {
     public static Coordinates CalculateGamma(Coordinates normalizedImpedance)
     {
@@ -31,12 +31,12 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
         return new(a, c);
     }
 
-    public sealed class ConstantRealPart :
+    public sealed class RealTick :
         PolarAxisCircle
     {
         public double Re { get; set; }
 
-        public ConstantRealPart(double Re) :
+        public RealTick(double Re) :
             base(Math.Abs(1 / (1 + Re)))
         {
             this.Re = Re;
@@ -52,14 +52,14 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
         }
     }
 
-    public sealed class ConstantImaginaryPart :
+    public sealed class ImaginaryTick :
         PolarAxisCircle
     {
         public double Lm { get; set; }
 
         public IReadOnlyList<Coordinates> Points { get; }
 
-        public ConstantImaginaryPart(
+        public ImaginaryTick(
             double Lm, Coordinates center = default, double radius = 1) :
             base(Math.Abs(1 / Lm))
         {
@@ -130,12 +130,14 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     /// <summary>
+    /// Concentric circular tick lines
     /// </summary>
-    public List<ConstantRealPart> ConstantRealParts { get; } = [];
+    public List<RealTick> RealTicks { get; } = [];
 
     /// <summary>
+    /// Curves extending from the right side of the outer circle to various points around its circumference
     /// </summary>
-    public List<ConstantImaginaryPart> ConstantImaginaryParts { get; } = [];
+    public List<ImaginaryTick> ImaginaryTicks { get; } = [];
 
     /// <summary>
     /// Rotates the axis clockwise from its default position (where 0 points right)
@@ -149,32 +151,31 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
 
-    public LineStyle LineStyle { get; set; } = new()
+    /// <summary>
+    /// Default style of the curved lines extending from the right edge 
+    /// to points around the circumference of the chart outline
+    /// </summary>
+    public LineStyle RealLineStyle { get; set; } = new()
     {
         Width = 1,
-        Color = Colors.Black.WithAlpha(.5),
+        Color = Colors.Black.WithAlpha(.2),
     };
 
-    public float LineWidth
+    /// <summary>
+    /// Default style of the concentric circular axis lines
+    /// </summary>
+    public LineStyle Imaginary { get; set; } = new()
     {
-        get => LineStyle.Width;
-        set => LineStyle.Width = value;
-    }
-
-    public LinePattern LinePattern
-    {
-        get => LineStyle.Pattern;
-        set => LineStyle.Pattern = value;
-    }
-
-    public Color LineColor
-    {
-        get => LineStyle.Color;
-        set => LineStyle.Color = value;
-    }
+        Width = 1,
+        Color = Colors.Black.WithAlpha(.2),
+    };
 
     public LabelStyle LabelStyle { get; } = new();
     public string? LabelText { get; set; } = null;
+
+    /// <summary>
+    /// Distance to offset label text
+    /// </summary>
     public double LabelPaddingFraction { get; set; } = 0.1;
 
     public static IEnumerable<Coordinates> FindIntersectionPoints(
@@ -209,20 +210,24 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
         yield return new(cx - offsetX, cy + offsetY);
     }
 
-    public void SetConstantRealParts(double[] values)
+    public RealTick AddRealTick(double value)
     {
-        ConstantRealParts.Clear();
-        ConstantRealParts.AddRange(values.Select(i => new ConstantRealPart(i)));
+        RealTick part = new(value)
+        {
+            LineStyle = RealLineStyle.Clone(),
+        };
+        RealTicks.Add(part);
+        return part;
     }
 
-    public void SetConstantImaginaryParts(double[] values)
+    public ImaginaryTick AddImaginaryTick(double value)
     {
-        ConstantImaginaryParts.Clear();
-        for (int i = 0; i < values.Length; i++)
+        ImaginaryTick part = new(value)
         {
-            ConstantImaginaryPart part = new(values[i]);
-            ConstantImaginaryParts.Add(part);
-        }
+            LineStyle = RealLineStyle.Clone(),
+        };
+        ImaginaryTicks.Add(part);
+        return part;
     }
 
     /// <summary>
@@ -241,11 +246,20 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
         return point.WithAngle(point.Angle + Rotation).ToCartesian();
     }
 
+    /// <summary>
+    /// Return the X/Y position of the given impedance
+    /// </summary>
+    public Coordinates GetCoordinates(double resistance, double reactance)
+    {
+        Coordinates normalizedImpedance = new(resistance, reactance);
+        return CalculateGamma(normalizedImpedance);
+    }
+
     public AxisLimits GetAxisLimits()
     {
         AxisLimits limits = new(-1, 1, -1, 1);
-        ConstantRealParts.ForEach(i => limits = limits.Expanded(i.GetAxisLimits()));
-        ConstantImaginaryParts.ForEach(i => limits = limits.Expanded(i.GetAxisLimits()));
+        RealTicks.ForEach(i => limits = limits.Expanded(i.GetAxisLimits()));
+        ImaginaryTicks.ForEach(i => limits = limits.Expanded(i.GetAxisLimits()));
         return limits;
     }
 
@@ -264,21 +278,14 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
     public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
-
-        double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
-        float radiusPx = (float)(pxPerUnit * 1);
-        Pixel originPx = Axes.GetPixel(Coordinates.Origin);
-        Drawing.DrawCircle(rp.Canvas, originPx, radiusPx, LineStyle, paint);
-
-        RenderConstantRealPart(rp, paint);
-        RenderConstantImaginaryParts(rp, paint);
-
+        RenderConstantRealCircles(rp, paint);
+        RenderConstantImaginaryCurves(rp, paint);
         RenderCircleLabels(rp, paint);
     }
 
     private void RenderCircleLabels(RenderPack rp, SKPaint paint)
     {
-        foreach (PolarAxisCircle circle in ConstantImaginaryParts)
+        foreach (PolarAxisCircle circle in ImaginaryTicks)
         {
             Coordinates c = GetCoordinates(radius: circle.Radius, angle: circle.LabelAngle);
             Pixel px = Axes.GetPixel(c);
@@ -286,13 +293,13 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
         }
     }
 
-    private void RenderConstantRealPart(RenderPack rp, SKPaint paint)
+    private void RenderConstantRealCircles(RenderPack rp, SKPaint paint)
     {
         double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
         LabelStyle.Rotation = (float)Rotation.Degrees - 90;
         LabelStyle.Alignment = Alignment.LowerLeft;
 
-        foreach (ConstantRealPart part in ConstantRealParts)
+        foreach (RealTick part in RealTicks)
         {
             float radiusPx = (float)(pxPerUnit * part.Radius);
             Pixel originPx = Axes.GetPixel(part.Origin);
@@ -305,27 +312,28 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
                     (part.Radius * (1 + LabelPaddingFraction / 2), Angle.FromDegrees(180))
                     .ToCartesian()
                     .WithDelta(part.Origin.X, part.Origin.Y);
-                LabelStyle.Render(rp.Canvas, Axes.GetPixel(labelPoint), paint);
+                Pixel labelPixel = Axes.GetPixel(labelPoint).WithOffset(0, -3);
+                LabelStyle.Render(rp.Canvas, labelPixel, paint);
             }
         }
     }
 
-    private void RenderConstantImaginaryParts(RenderPack rp, SKPaint paint)
+    private void RenderConstantImaginaryCurves(RenderPack rp, SKPaint paint)
     {
         double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
         LabelStyle.Rotation = (float)Rotation.Degrees;
         LabelStyle.Alignment = Alignment.MiddleCenter;
 
-        for (int i = 0; i < ConstantImaginaryParts.Count; i++)
+        for (int i = 0; i < ImaginaryTicks.Count; i++)
         {
-            float radiusPx = (float)(pxPerUnit * ConstantImaginaryParts[i].Radius);
-            Pixel originPx = Axes.GetPixel(ConstantImaginaryParts[i].Origin);
-            if (ConstantImaginaryParts[i].Lm == 0)
+            float radiusPx = (float)(pxPerUnit * ImaginaryTicks[i].Radius);
+            Pixel originPx = Axes.GetPixel(ImaginaryTicks[i].Origin);
+            if (ImaginaryTicks[i].Lm == 0)
             {
                 Drawing.DrawLine(rp.Canvas, paint,
-                    Axes.GetPixel(ConstantImaginaryPart.GetPointOnCircle(new(), 1, Angle.FromDegrees(180))),
-                    Axes.GetPixel(ConstantImaginaryPart.GetPointOnCircle(new(), 1, Angle.FromDegrees(0))),
-                    ConstantImaginaryParts[i].LineStyle);
+                    Axes.GetPixel(ImaginaryTick.GetPointOnCircle(new(), 1, Angle.FromDegrees(180))),
+                    Axes.GetPixel(ImaginaryTick.GetPointOnCircle(new(), 1, Angle.FromDegrees(0))),
+                    ImaginaryTicks[i].LineStyle);
 
                 PolarCoordinates labelPoint =
                     new(1 * (1 + LabelPaddingFraction), Angle.FromDegrees(0));
@@ -337,9 +345,9 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
                 labelPoint = labelPoint.WithAngleDegrees(180);
                 LabelStyle.Render(rp.Canvas, Axes.GetPixel(labelPoint.ToCartesian()), paint);
             }
-            else if (ConstantImaginaryParts[i].SweepAngle.Degrees == 360)
+            else if (ImaginaryTicks[i].SweepAngle.Degrees == 360)
             {
-                Drawing.DrawCircle(rp.Canvas, originPx, radiusPx, ConstantImaginaryParts[i].LineStyle, paint);
+                Drawing.DrawCircle(rp.Canvas, originPx, radiusPx, ImaginaryTicks[i].LineStyle, paint);
             }
             else
             {
@@ -348,24 +356,25 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits, IHasLine
                     originPx.X + radiusPx,
                     originPx.Y + radiusPx,
                     originPx.Y - radiusPx);
-                Drawing.DrawArc(rp.Canvas, paint, ConstantImaginaryParts[i].LineStyle, rect,
-                    (float)-ConstantImaginaryParts[i].StartAngle.Degrees,
-                    (float)-ConstantImaginaryParts[i].SweepAngle.Degrees);
+                Drawing.DrawArc(rp.Canvas, paint, ImaginaryTicks[i].LineStyle, rect,
+                    (float)-ImaginaryTicks[i].StartAngle.Degrees,
+                    (float)-ImaginaryTicks[i].SweepAngle.Degrees);
 
-                Coordinates point = (ConstantImaginaryParts[i].Lm < 0)
-                    ? ConstantImaginaryParts[i].Points[0]
-                    : ConstantImaginaryParts[i].Points[1];
+                Coordinates point = (ImaginaryTicks[i].Lm < 0)
+                    ? ImaginaryTicks[i].Points[0]
+                    : ImaginaryTicks[i].Points[1];
 
                 StringBuilder sb = new();
-                sb.Append((ConstantImaginaryParts[i].Lm < 0) ? '-' : '+');
+                sb.Append((ImaginaryTicks[i].Lm < 0) ? '-' : '+');
                 sb.Append('j');
-                sb.Append(Math.Abs(ConstantImaginaryParts[i].Lm));
+                sb.Append(Math.Abs(ImaginaryTicks[i].Lm));
                 LabelStyle.Text = sb.ToString();
 
-                Angle angle = ConstantImaginaryPart.GetAngle(point, new(0, 0));
+                Angle angle = ImaginaryTick.GetAngle(point, new(0, 0));
                 PolarCoordinates labelPoint =
                     new(1 * (1 + LabelPaddingFraction), angle);
-                LabelStyle.Render(rp.Canvas, Axes.GetPixel(labelPoint.ToCartesian()), paint);
+                Pixel labelPixel = Axes.GetPixel(labelPoint.ToCartesian());
+                LabelStyle.Render(rp.Canvas, labelPixel, paint);
             }
         }
     }

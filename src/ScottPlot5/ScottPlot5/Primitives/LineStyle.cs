@@ -41,6 +41,19 @@ public class LineStyle
 
     public static LineStyle None => new() { Width = 0 };
 
+    public LineStyle Clone()
+    {
+        return new()
+        {
+            Width = Width,
+            Color = Color,
+            Hairline = Hairline,
+            Pattern = Pattern,
+            AntiAlias = AntiAlias,
+            IsVisible = IsVisible,
+        };
+    }
+
     public LineStyle()
     {
 
