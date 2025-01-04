@@ -15,9 +15,10 @@ public class MockPlotControl : IPlotControl
     public Pixel Center => new(Width / 2, Height / 2);
 
     public Plot Plot { get; private set; }
+
+    public Multiplot Multiplot { get; private set; }
     public GRContext? GRContext => null;
 
-    public IPlotInteraction Interaction { get; set; }
     public UserInputProcessor UserInputProcessor { get; }
 
     public IPlotMenu? Menu // TODO: mock menu
@@ -29,11 +30,7 @@ public class MockPlotControl : IPlotControl
     public MockPlotControl()
     {
         Plot = new() { PlotControl = this };
-
-#pragma warning disable CS0618 
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-#pragma warning restore CS0618
-
+        Multiplot = new(Plot);
         UserInputProcessor = new(this) { IsEnabled = true };
 
         // force a render on startup so we can immediately use pixel drag actions
@@ -47,7 +44,7 @@ public class MockPlotControl : IPlotControl
     public void Refresh()
     {
         RefreshCount += 1;
-        Plot.RenderInMemory(Width, Height);
+        Multiplot.Render(Width, Height);
     }
 
     public void Reset()
@@ -61,6 +58,7 @@ public class MockPlotControl : IPlotControl
         Plot = plot;
         Plot.PlotControl = this;
         oldPlot.Dispose();
+        Multiplot.Reset(plot);
     }
 
     public int ContextMenuLaunchCount { get; private set; } = 0;

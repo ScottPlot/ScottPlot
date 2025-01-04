@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using ScottPlot.Control;
 using System;
 using System.Collections.Generic;
 
