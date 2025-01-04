@@ -86,30 +86,4 @@ internal static class EtoPlotExtensions
         double y = e.Location.Y;
         return new Pixel((float)x, (float)y);
     }
-
-    internal static Control.MouseButton OldToButton(this MouseEventArgs e)
-    {
-        if (e.Buttons == MouseButtons.Middle)
-            return Control.MouseButton.Middle;
-        else if (e.Buttons == MouseButtons.Primary)
-            return Control.MouseButton.Left;
-        else if (e.Buttons == MouseButtons.Alternate)
-            return Control.MouseButton.Right;
-        else
-            return Control.MouseButton.Unknown;
-    }
-
-    internal static Control.Key OldToKey(this KeyEventArgs e)
-    {
-        return e.Key switch
-        {
-            Keys.LeftControl => Control.Key.Ctrl,
-            Keys.RightControl => Control.Key.Ctrl,
-            Keys.LeftAlt => Control.Key.Alt,
-            Keys.RightAlt => Control.Key.Alt,
-            Keys.LeftShift => Control.Key.Shift,
-            Keys.RightShift => Control.Key.Shift,
-            _ => Control.Key.Unknown,
-        };
-    }
 }

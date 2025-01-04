@@ -1,13 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using SkiaSharp;
 
 namespace ScottPlot.WPF;
-
-#pragma warning disable CS0618 
 
 public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotControl
 {
@@ -15,9 +11,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public abstract void Refresh();
 
     public Plot Plot { get; internal set; }
-
-    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    public IPlotInteraction Interaction { get; set; }
+    public Multiplot Multiplot { get; internal set; }
     public float DisplayScale { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -33,8 +27,8 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public WpfPlotBase()
     {
         Plot = new Plot() { PlotControl = this };
+        Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
         Menu = new WpfPlotMenu(this);
         Focusable = true;
@@ -51,6 +45,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
         Plot = newPlot;
         oldPlot?.Dispose();
         Plot.PlotControl = this;
+        Multiplot.Reset(newPlot);
     }
 
     public void ShowContextMenu(Pixel position)
@@ -61,42 +56,33 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     internal void SKElement_MouseDown(object? sender, MouseButtonEventArgs e)
     {
         Keyboard.Focus(this);
-        Interaction.MouseDown(e.ToPixel(PlotFrameworkElement), e.OldToButton());
         UserInputProcessor.ProcessMouseDown(PlotFrameworkElement, e);
         (sender as UIElement)?.CaptureMouse();
-
-        if (e.ClickCount == 2)
-            Interaction.DoubleClick();
     }
 
     internal void SKElement_MouseUp(object? sender, MouseButtonEventArgs e)
     {
-        Interaction.MouseUp(e.ToPixel(PlotFrameworkElement), e.OldToButton());
         UserInputProcessor.ProcessMouseUp(PlotFrameworkElement, e);
         (sender as UIElement)?.ReleaseMouseCapture();
     }
 
     internal void SKElement_MouseMove(object? sender, MouseEventArgs e)
     {
-        Interaction.OnMouseMove(e.ToPixel(PlotFrameworkElement));
         UserInputProcessor.ProcessMouseMove(PlotFrameworkElement, e);
     }
 
     internal void SKElement_MouseWheel(object? sender, MouseWheelEventArgs e)
     {
-        Interaction.MouseWheelVertical(e.ToPixel(PlotFrameworkElement), e.Delta);
         UserInputProcessor.ProcessMouseWheel(PlotFrameworkElement, e);
     }
 
     internal void SKElement_KeyDown(object? sender, KeyEventArgs e)
     {
-        Interaction.KeyDown(e.OldToKey());
         UserInputProcessor.ProcessKeyDown(e);
     }
 
     internal void SKElement_KeyUp(object? sender, KeyEventArgs e)
     {
-        Interaction.KeyUp(e.OldToKey());
         UserInputProcessor.ProcessKeyUp(e);
     }
 
@@ -107,14 +93,12 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        Interaction.KeyDown(e.OldToKey());
         UserInputProcessor.ProcessKeyDown(e);
         base.OnKeyDown(e);
     }
 
     protected override void OnKeyUp(KeyEventArgs e)
     {
-        Interaction.KeyUp(e.OldToKey());
         UserInputProcessor.ProcessKeyUp(e);
         base.OnKeyUp(e);
     }

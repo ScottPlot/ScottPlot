@@ -1,6 +1,5 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
-using ScottPlot.Control;
 using System;
 using System.Collections.Generic;
 using System.IO;
