@@ -2,12 +2,14 @@
 
 public class Rows : IMultiplotLayout
 {
-    public IEnumerable<(FractionRect, Plot)> GetLayout(IReadOnlyList<Plot> plots)
+    public void ResetAllPositions(Multiplot multiplot)
     {
-        for (int i = 0; i < plots.Count; i++)
+        double fractionPerRow = 1.0 / multiplot.Count;
+        for (int i = 0; i < multiplot.Count; i++)
         {
-            FractionRect rect = FractionRect.Row(i, plots.Count);
-            yield return (rect, plots[i]);
+            FractionRect fr = new(0, fractionPerRow * i, 1, fractionPerRow);
+            ISubplotPosition position = new SubplotPositions.Fractional(fr);
+            multiplot.SetPosition(i, position);
         }
     }
 }

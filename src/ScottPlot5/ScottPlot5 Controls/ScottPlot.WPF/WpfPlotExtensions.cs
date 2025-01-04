@@ -81,34 +81,6 @@ internal static class WpfPlotExtensions
         processor.Process(action);
     }
 
-    internal static Control.MouseButton OldToButton(this MouseButtonEventArgs e)
-    {
-        if (e.ChangedButton == MouseButton.Middle)
-            return Control.MouseButton.Middle;
-        else if (e.ChangedButton == MouseButton.Left)
-            return Control.MouseButton.Left;
-        else if (e.ChangedButton == MouseButton.Right)
-            return Control.MouseButton.Right;
-        else
-            return Control.MouseButton.Unknown;
-    }
-
-    internal static Control.Key OldToKey(this KeyEventArgs e)
-    {
-        Key key = e.Key == Key.System ? e.SystemKey : e.Key; // required to capture Alt
-
-        return key switch
-        {
-            Key.LeftCtrl => Control.Key.Ctrl,
-            Key.RightCtrl => Control.Key.Ctrl,
-            Key.LeftAlt => Control.Key.Alt,
-            Key.RightAlt => Control.Key.Alt,
-            Key.LeftShift => Control.Key.Shift,
-            Key.RightShift => Control.Key.Shift,
-            _ => Control.Key.Unknown,
-        };
-    }
-
     internal static Interactivity.Key ToKey(this KeyEventArgs e)
     {
         Key key = e.Key == Key.System ? e.SystemKey : e.Key; // required to capture Alt

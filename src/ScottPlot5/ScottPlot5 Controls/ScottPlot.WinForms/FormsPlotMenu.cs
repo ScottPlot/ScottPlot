@@ -1,5 +1,4 @@
-﻿using ScottPlot.Control;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System;
 using System.Drawing;
 using System.Collections.Generic;

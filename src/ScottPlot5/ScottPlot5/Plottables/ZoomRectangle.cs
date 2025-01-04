@@ -1,10 +1,9 @@
-﻿
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Plottables;
 
 /// <summary>
-/// Logic for drawing the shaded region on the plot when the user middle-click-drags to zoom
+/// The shaded region on the plot when the user middle-click-drags to zoom
 /// </summary>
-public class StandardZoomRectangle(Plot plot) : IZoomRectangle
+public class ZoomRectangle(Plot plot) : IZoomRectangle
 {
     public bool IsVisible { get; set; } = false;
 

@@ -64,7 +64,7 @@ public partial class CustomMouseActions : Form, IDemoWindow
 
             // Q key autoscale too
             var autoscaleKey = new ScottPlot.Interactivity.Key("Q");
-            Action<ScottPlot.Plot, ScottPlot.Pixel> autoscaleAction = (plot, pixel) => plot.Axes.AutoScale();
+            Action<ScottPlot.IPlotControl, ScottPlot.Pixel> autoscaleAction = (plotControl, pixel) => plotControl.Plot.Axes.AutoScale();
             var autoscaleKeyResponse = new ScottPlot.Interactivity.UserActionResponses.KeyPressResponse(autoscaleKey, autoscaleAction);
             formsPlot1.UserInputProcessor.UserActionResponses.Add(autoscaleKeyResponse);
 

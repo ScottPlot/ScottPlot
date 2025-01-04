@@ -6,6 +6,8 @@
 /// </summary>
 public class MultiAxisLimits(Plot plot)
 {
+    public readonly Plot Plot = plot;
+
     private readonly Dictionary<IAxis, CoordinateRange> AxisRanges = plot.Axes.GetAxes()
         .ToDictionary(x => x, x => x.Range.ToCoordinateRange);
 

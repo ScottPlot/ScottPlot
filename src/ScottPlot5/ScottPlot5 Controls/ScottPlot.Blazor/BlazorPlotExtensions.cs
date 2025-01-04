@@ -88,28 +88,6 @@ public static class BlazorPlotExtensions
         processor.Process(action);
     }
 
-    public static Control.MouseButton OldToButton(this MouseEventArgs args)
-    {
-        return args.Button switch
-        {
-            0 => Control.MouseButton.Left,
-            1 => Control.MouseButton.Middle,
-            2 => Control.MouseButton.Right,
-            _ => Control.MouseButton.Unknown,
-        };
-    }
-
-    public static Control.Key OldToKey(this KeyboardEventArgs e)
-    {
-        return e.Key switch
-        {
-            "Control" => Control.Key.Ctrl,
-            "Alt" => Control.Key.Alt,
-            "Shift" => Control.Key.Shift,
-            _ => Control.Key.Unknown,
-        };
-    }
-
     public static Interactivity.Key ToKey(this KeyboardEventArgs e)
     {
         return e.Key switch

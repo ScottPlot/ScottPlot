@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using ScottPlot.Control;
 using System.Windows.Media.Imaging;
 using System.Windows;
 using System;
