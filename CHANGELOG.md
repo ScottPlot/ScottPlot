@@ -9,6 +9,7 @@ _Not yet on NuGet..._
 * Multiplot: Add shared axis helper methods to facilitate syncing axis limits across subplots (#4635, #4600)
 * Generate:  Fixed causing `AddNoiseInPlace()` to offset the mean of the underlying signal (#4564) @nightroman
 * Text: Fixed `DragTo()` to use the correct axis dimension (#4587) @claire0821
+* Rendering: Improved handling of the `RenderPack` inside the render loop to avoid Skia exceptions (#4592) @vadimart92
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_
