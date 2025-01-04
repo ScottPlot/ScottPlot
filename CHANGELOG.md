@@ -10,6 +10,7 @@ _Not yet on NuGet..._
 * Generate:  Fixed causing `AddNoiseInPlace()` to offset the mean of the underlying signal (#4564) @nightroman
 * Text: Fixed `DragTo()` to use the correct axis dimension (#4587) @claire0821
 * Rendering: Improved handling of the `RenderPack` inside the render loop to avoid Skia exceptions (#4592) @vadimart92
+* Axes: Improved support for `CoordinateRect` hit detection on plots with inverted axes (#4596) @SprinterDave
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_
