@@ -8,31 +8,54 @@ public class MaximumBoundary(IXAxis xAxis, IYAxis yAxis, AxisLimits limits) : IA
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        double xSpan = Math.Min(XAxis.Range.Span, Limits.HorizontalSpan);
-        double ySpan = Math.Min(YAxis.Range.Span, Limits.VerticalSpan);
-
-        if (XAxis.Range.Max > Limits.Right)
+        if (XAxis.IsInverted())
         {
-            XAxis.Range.Max = Limits.Right;
-            XAxis.Range.Min = Limits.Right - xSpan;
+            if (XAxis.Range.Min > Limits.XRange.Max)
+            {
+                XAxis.Range.Min = Limits.XRange.Max;
+            }
+
+            if (XAxis.Range.Max < Limits.XRange.Min)
+            {
+                XAxis.Range.Max = Limits.XRange.Min;
+            }
+        }
+        else
+        {
+            if (XAxis.Range.Max > Limits.XRange.Max)
+            {
+                XAxis.Range.Max = Limits.XRange.Max;
+            }
+
+            if (XAxis.Range.Min < Limits.XRange.Min)
+            {
+                XAxis.Range.Min = Limits.XRange.Min;
+            }
         }
 
-        if (XAxis.Range.Min < Limits.Left)
+        if (YAxis.IsInverted())
         {
-            XAxis.Range.Min = Limits.Left;
-            XAxis.Range.Max = Limits.Left + xSpan;
-        }
+            if (YAxis.Range.Min > Limits.YRange.Max)
+            {
+                YAxis.Range.Min = Limits.YRange.Max;
+            }
 
-        if (YAxis.Range.Max > Limits.Top)
-        {
-            YAxis.Range.Max = Limits.Top;
-            YAxis.Range.Min = Limits.Top - ySpan;
+            if (YAxis.Range.Max < Limits.YRange.Min)
+            {
+                YAxis.Range.Max = Limits.YRange.Min;
+            }
         }
-
-        if (YAxis.Range.Min < Limits.Bottom)
+        else
         {
-            YAxis.Range.Min = Limits.Bottom;
-            YAxis.Range.Max = Limits.Bottom + ySpan;
+            if (YAxis.Range.Max > Limits.YRange.Max)
+            {
+                YAxis.Range.Max = Limits.YRange.Max;
+            }
+
+            if (YAxis.Range.Min < Limits.YRange.Min)
+            {
+                YAxis.Range.Min = Limits.YRange.Min;
+            }
         }
     }
 }
