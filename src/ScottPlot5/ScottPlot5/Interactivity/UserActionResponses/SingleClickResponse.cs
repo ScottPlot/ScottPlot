@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Interactivity.UserActionResponses;
 
-public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action) : IUserActionResponse
+public class SingleClickResponse(MouseButton button, Action<IPlotControl, Pixel> action) : IUserActionResponse
 {
     /// <summary>
     /// Which mouse button to watch for single-click events
@@ -10,22 +10,28 @@ public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action)
     /// <summary>
     /// This action is invoked when a single-click occurs.
     /// </summary>
-    public Action<Plot, Pixel> ResponseAction { get; } = action;
+    public Action<IPlotControl, Pixel> ResponseAction { get; } = action;
 
     /// <summary>
     /// Location of the previous mouse down event
     /// </summary>
     private Pixel MouseDownPixel = Pixel.NaN;
 
-    public void ResetState(Plot plot)
+    public void ResetState(IPlotControl plotControl)
     {
         MouseDownPixel = Pixel.NaN;
     }
 
-    public ResponseInfo Execute(Plot plot, IUserAction userAction, KeyboardState keys)
+    public ResponseInfo Execute(IPlotControl plotControl, IUserAction userAction, KeyboardState keys)
     {
         if (userAction is IMouseButtonAction buttonAction && buttonAction.Button == MouseButton)
         {
+            Plot? plot = plotControl.GetPlotAtPixel(buttonAction.Pixel);
+            if (plot is null)
+            {
+                return ResponseInfo.NoActionRequired;
+            }
+
             if (buttonAction.IsPressed)
             {
                 MouseDownPixel = buttonAction.Pixel;
@@ -46,7 +52,7 @@ public class SingleClickResponse(MouseButton button, Action<Plot, Pixel> action)
                     return ResponseInfo.NoActionRequired;
                 }
 
-                ResponseAction.Invoke(plot, buttonAction.Pixel);
+                ResponseAction.Invoke(plotControl, buttonAction.Pixel);
                 MouseDownPixel = Pixel.NaN;
 
                 return new ResponseInfo() { RefreshNeeded = true };

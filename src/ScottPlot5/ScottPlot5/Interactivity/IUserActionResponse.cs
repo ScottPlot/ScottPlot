@@ -8,7 +8,7 @@ public interface IUserActionResponse
     /// <summary>
     /// Perform the given action on the specified plot and return a result indicating what to do next.
     /// </summary>
-    ResponseInfo Execute(Plot plot, IUserAction userActions, KeyboardState keys);
+    ResponseInfo Execute(IPlotControl plotControl, IUserAction userActions, KeyboardState keys);
 
     /// <summary>
     /// Reset state to what it was when the action response was first created.
@@ -16,5 +16,5 @@ public interface IUserActionResponse
     /// control loses and re-gains focus or is disabled and re-enabled) and
     /// is designed to reset responses like mouse-drag events that accumulate state.
     /// </summary>
-    void ResetState(Plot plot);
+    void ResetState(IPlotControl plotControl);
 }

@@ -8,18 +8,13 @@ using Avalonia.Threading;
 using SkiaSharp;
 
 using Controls = Avalonia.Controls;
-using System;
 
 namespace ScottPlot.Avalonia;
-
-#pragma warning disable CS0618 // disable obsolete warnings
 
 public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; internal set; }
-
-    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    public IPlotInteraction Interaction { get; set; }
+    public Multiplot Multiplot { get; internal set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
@@ -30,9 +25,9 @@ public class AvaPlot : Controls.Control, IPlotControl
     public AvaPlot()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
         UserInputProcessor = new(this);
         Menu = new AvaPlotMenu(this);
         Focusable = true; // Required for keyboard events
@@ -87,6 +82,7 @@ public class AvaPlot : Controls.Control, IPlotControl
         Plot oldPlot = Plot;
         Plot = plot;
         oldPlot?.Dispose();
+        Multiplot.Reset(plot);
     }
 
     public void Refresh()
@@ -103,22 +99,14 @@ public class AvaPlot : Controls.Control, IPlotControl
     {
         Pixel pixel = e.ToPixel(this);
         PointerUpdateKind kind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
-        Interaction.MouseDown(pixel, kind.OldToButton());
         UserInputProcessor.ProcessMouseDown(pixel, kind);
-
         e.Pointer.Capture(this);
-
-        if (e.ClickCount == 2)
-        {
-            Interaction.DoubleClick();
-        }
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         Pixel pixel = e.ToPixel(this);
         PointerUpdateKind kind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
-        Interaction.MouseUp(pixel, kind.OldToButton());
         UserInputProcessor.ProcessMouseUp(pixel, kind);
 
         e.Pointer.Capture(null);
@@ -127,7 +115,6 @@ public class AvaPlot : Controls.Control, IPlotControl
     protected override void OnPointerMoved(PointerEventArgs e)
     {
         Pixel pixel = e.ToPixel(this);
-        Interaction.OnMouseMove(pixel);
         UserInputProcessor.ProcessMouseMove(pixel);
     }
 
@@ -138,20 +125,17 @@ public class AvaPlot : Controls.Control, IPlotControl
 
         if (delta != 0)
         {
-            Interaction.MouseWheelVertical(pixel, delta);
             UserInputProcessor.ProcessMouseWheel(pixel, delta);
         }
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        Interaction.KeyDown(e.OldToKey());
         UserInputProcessor.ProcessKeyDown(e);
     }
 
     protected override void OnKeyUp(KeyEventArgs e)
     {
-        Interaction.KeyUp(e.OldToKey());
         UserInputProcessor.ProcessKeyUp(e);
     }
 

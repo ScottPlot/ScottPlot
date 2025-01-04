@@ -44,6 +44,7 @@ public class FormsPlot : FormsPlotBase
         SKControl.DoubleClick += SKElement_DoubleClick;
         SKControl.MouseWheel += SKElement_MouseWheel;
         SKControl.KeyDown += SKElement_KeyDown;
+        SKControl.PreviewKeyDown += SKControl_PreviewKeyDown;
         SKControl.KeyUp += SKElement_KeyUp;
         SKControl.LostFocus += SKElement_LostFocus;
 
@@ -73,7 +74,7 @@ public class FormsPlot : FormsPlotBase
 
     private void SKElement_PaintSurface(object? sender, SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(e.Surface);
+        Multiplot.Render(e.Surface);
     }
 
     public override void Refresh()

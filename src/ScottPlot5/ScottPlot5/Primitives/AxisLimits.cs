@@ -20,6 +20,8 @@ public readonly struct AxisLimits : IEquatable<AxisLimits>
 
     public CoordinateRange XRange => new(Left, Right);
     public CoordinateRange YRange => new(Bottom, Top);
+    public CoordinateRange HorizontalRange => XRange;
+    public CoordinateRange VerticalRange => YRange;
 
     // TODO: make sure callers aren't using this when they dont have to
     public CoordinateRect Rect => new(Left, Right, Bottom, Top);

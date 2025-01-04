@@ -1008,7 +1008,7 @@ public class AxisManager
     /// </summary>
     public void SquareUnits()
     {
-        IAxisRule rule = Plot.PlotControl is null
+        IAxisRule rule = !Plot.HasParentControl
             ? new AxisRules.SquareZoomOut(Bottom, Left) // best for console apps
             : new AxisRules.SquarePreserveX(Bottom, Left); // best for interactive apps
 
@@ -1172,13 +1172,13 @@ public class AxisManager
 
         foreach (Plot plot in plotsNeedingUpdates)
         {
-            if (plot.PlotControl is null)
+            if (!plot.HasParentControl)
             {
                 plot.RenderInMemory();
             }
             else
             {
-                plot.PlotControl.Refresh();
+                plot.ParentControlRefresh();
             }
         }
     }

@@ -3,21 +3,19 @@
 public interface IPlotControl
 {
     /// <summary>
-    /// The <see cref="Plot"/> displayed by this interactive control
+    /// The primary <see cref="Plot"/> displayed by this interactive control
     /// </summary>
     Plot Plot { get; }
+
+    /// <summary>
+    /// The multiplot managed by this interactive control
+    /// </summary>
+    Multiplot Multiplot { get; }
 
     /// <summary>
     /// Render the plot and update the image
     /// </summary>
     void Refresh();
-
-    /// <summary>
-    /// Legacy options for plot manipulation in response to user inputs.
-    /// This functionality has been replaced by <see cref="UserInputProcessor"/>.
-    /// </summary>
-    [Obsolete("Deprecated. Use IPlotControl.UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    IPlotInteraction Interaction { get; set; }
 
     /// <summary>
     /// This object takes in UI events and contains logic for how to respond to them.
@@ -62,4 +60,12 @@ public interface IPlotControl
     /// Loads the given Plot into the control
     /// </summary>
     void Reset(Plot plot);
+}
+
+public static class IPlotControlExtensions
+{
+    public static Plot? GetPlotAtPixel(this IPlotControl plotControl, Pixel pixel)
+    {
+        return plotControl.Multiplot.GetPlotAtPixel(pixel);
+    }
 }
