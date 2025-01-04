@@ -392,26 +392,12 @@ public static class Drawing
 
     public static SKBitmap BitmapFromArgbs(uint[] argbs, int width, int height)
     {
-        var imageInfo = new SKImageInfo(width, height);
+        GCHandle handle = GCHandle.Alloc(argbs, GCHandleType.Pinned);
+
+        // We need to specify a colour type for platforms where BGRA is not the default
+        // BGRA is the SKia name for ARGB, the ambiguity in naming comes from endianness
+        var imageInfo = new SKImageInfo(width, height, SKColorType.Bgra8888);
         var bmp = new SKBitmap(imageInfo);
-
-        uint[] data = argbs;
-
-        if (bmp.Info.ColorType == SKColorType.Rgba8888)
-        {
-            data = new uint[argbs.Length]; // TODO: Maybe mutating in place is fine?
-            for (int i = 0; i < argbs.Length; i++)
-            {
-                uint a = argbs[i] >> 24;
-                uint r = (argbs[i] & 0x00ff0000) >> 16;
-                uint g = (argbs[i] & 0x0000ff00) >> 8;
-                uint b = argbs[i] & 0x000000ff;
-
-                data[i] = (a << 24) | (b << 16) | (g << 8) | r;
-            }
-        }
-
-        GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
         bmp.InstallPixels(
             info: imageInfo,
             pixels: handle.AddrOfPinnedObject(),
