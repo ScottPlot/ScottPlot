@@ -90,7 +90,7 @@ public class LinePlot : ICategory
             line1.MarkerColor = Colors.Red;
             line1.MarkerSize = 20;
             line1.MarkerShape = MarkerShape.FilledCircle;
-            line1.LineOnTop = true;
+            line1.LineOnTop = true; // render order is controlled here
 
             var line2 = myPlot.Add.Line(0, 1, 1, 2);
             line2.LineColor = Colors.Orange;
@@ -98,7 +98,7 @@ public class LinePlot : ICategory
             line2.MarkerColor = Colors.Red;
             line2.MarkerSize = 20;
             line2.MarkerShape = MarkerShape.FilledCircle;
-            line2.MarkersOnTop = true;
+            line2.MarkersOnTop = true; // render order is controlled here
         }
     }
 }
