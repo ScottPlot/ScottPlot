@@ -17,6 +17,7 @@ _Not yet on NuGet..._
 * Legend: Made `GetItems()` virtual to support custom ordering logic and made `Plot.Legend` settable (#4571) @onur-akaydin
 * Controls: Improved middle-click-drag zoom rectangle support for plots using inverted axis limits (#4573) @xichaoqiang
 * Ticks: Improved tick placement consistency for financial plots with DateTime axes (#4591) @VladislavPustovarov
+* Line: Added `LineOnTop` and `MarkersOnTop` flags to control which components appear in front (#4610) @nullsoftware @quantfreedom
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_

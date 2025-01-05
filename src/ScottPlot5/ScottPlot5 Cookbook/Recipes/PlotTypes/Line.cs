@@ -74,5 +74,32 @@ public class LinePlot : ICategory
             myPlot.ShowLegend(Alignment.UpperRight);
         }
     }
+
+    public class LinePlotMarkerOrder : RecipeBase
+    {
+        public override string Name => "Line and Marker Order";
+        public override string Description => "Markers may be displayed at the ends of lines, " +
+            "and a flag controls whether the markers are drawn above or below the line.";
+
+        [Test]
+        public override void Execute()
+        {
+            var line1 = myPlot.Add.Line(0, 0, 1, 1);
+            line1.LineColor = Colors.Orange;
+            line1.LineWidth = 5;
+            line1.MarkerColor = Colors.Red;
+            line1.MarkerSize = 20;
+            line1.MarkerShape = MarkerShape.FilledCircle;
+            line1.LineOnTop = true; // render order is controlled here
+
+            var line2 = myPlot.Add.Line(1, 0, 2, 1);
+            line2.LineColor = Colors.Orange;
+            line2.LineWidth = 5;
+            line2.MarkerColor = Colors.Red;
+            line2.MarkerSize = 20;
+            line2.MarkerShape = MarkerShape.FilledCircle;
+            line2.MarkersOnTop = true; // render order is controlled here
+        }
+    }
 }
 

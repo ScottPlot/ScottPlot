@@ -37,6 +37,9 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
 
+    public bool LineOnTop { get; set; } = true;
+    public bool MarkersOnTop { get => !LineOnTop; set => LineOnTop = !value; }
+
     public Color Color
     {
         get => LineStyle.Color;
@@ -55,12 +58,30 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        CoordinateLine line = new(Start, End);
-        PixelLine pxLine = Axes.GetPixelLine(line);
-
         using SKPaint paint = new();
+
+        if (LineOnTop)
+        {
+            DrawMarkers(rp, paint);
+            DrawLine(rp, paint);
+        }
+        else
+        {
+            DrawLine(rp, paint);
+            DrawMarkers(rp, paint);
+        }
+    }
+
+    private void DrawMarkers(RenderPack rp, SKPaint paint)
+    {
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Start), MarkerStyle);
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(End), MarkerStyle);
+    }
+
+    private void DrawLine(RenderPack rp, SKPaint paint)
+    {
+        CoordinateLine line = new(Start, End);
+        PixelLine pxLine = Axes.GetPixelLine(line);
         Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
     }
 }
