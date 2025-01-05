@@ -62,13 +62,13 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
 
         if (LineOnTop)
         {
-            DrawLine(rp, paint);
             DrawMarkers(rp, paint);
+            DrawLine(rp, paint);
         }
         else
         {
-            DrawMarkers(rp, paint);
             DrawLine(rp, paint);
+            DrawMarkers(rp, paint);
         }
     }
 
