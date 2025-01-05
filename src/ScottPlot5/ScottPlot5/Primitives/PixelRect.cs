@@ -77,6 +77,13 @@ public readonly struct PixelRect : IEquatable<PixelRect>
     /// <summary>
     /// Create a rectangle representing pixels on a screen
     /// </summary>
+    public PixelRect(float width, float height) : this(0, width, height, 0)
+    {
+    }
+
+    /// <summary>
+    /// Create a rectangle representing pixels on a screen
+    /// </summary>
     public PixelRect(PixelSize size, Pixel offset) : this(offset.X, size.Width, size.Height, offset.Y)
     {
     }

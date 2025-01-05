@@ -1,6 +1,7 @@
 ﻿using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using ScottPlot.Statistics;
 
 namespace ScottPlot;
 
@@ -509,6 +510,24 @@ public class PlottableAdder(Plot plot)
             }
         }
         return Heatmap(intensities);
+    }
+
+    public HistogramBars Histogram(Histogram histogram, Color? color = null, bool disableBottomPadding = true)
+    {
+        HistogramBars hb = new(histogram);
+        Plot.PlottableList.Add(hb);
+
+        foreach (var bar in hb.Bars)
+        {
+            bar.LineWidth = 0;
+            bar.FillStyle.AntiAlias = false;
+            bar.FillColor = color ?? Palette.GetColor(0);
+        }
+
+        if (disableBottomPadding)
+            Plot.Axes.Margins(bottom: 0);
+
+        return hb;
     }
 
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = default)
@@ -1180,6 +1199,36 @@ public class PlottableAdder(Plot plot)
     {
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
         return SignalXY(source, color);
+    }
+
+    public SmithChartAxis SmithChartAxis()
+    {
+        SmithChartAxis smithChartAxis = new();
+
+        double[] realTicks = [30, 5, 2, 1, 0.5, 0.2, 0];
+        foreach (var position in realTicks)
+        {
+            var realPart = smithChartAxis.AddRealTick(position);
+            if (position == 1 || position == 0)
+            {
+                realPart.LineStyle.Color = Colors.Black;
+            }
+        }
+
+        double[] imaginaryTicks = [30, 5, 2, 1, 0.5, 0.2, 0.0, -0.2, -0.5, -1, -2, -5, -30];
+        foreach (var position in imaginaryTicks)
+        {
+            var imaginaryPart = smithChartAxis.AddImaginaryTick(position);
+            if (position == 0)
+            {
+                imaginaryPart.LineStyle.Color = Colors.Black;
+            }
+        }
+
+        Plot.PlottableList.Add(smithChartAxis);
+
+        Plot.HideAxesAndGrid();
+        return smithChartAxis;
     }
 
     /// <summary>

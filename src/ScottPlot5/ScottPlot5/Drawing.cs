@@ -352,6 +352,17 @@ public static class Drawing
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
 
+    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+    }
+
     public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
     {
         if (!style.IsVisible)
@@ -394,7 +405,9 @@ public static class Drawing
     {
         GCHandle handle = GCHandle.Alloc(argbs, GCHandleType.Pinned);
 
-        var imageInfo = new SKImageInfo(width, height);
+        // We need to specify a colour type for platforms where BGRA is not the default
+        // BGRA is the SKia name for ARGB, the ambiguity in naming comes from endianness
+        var imageInfo = new SKImageInfo(width, height, SKColorType.Bgra8888);
         var bmp = new SKBitmap(imageInfo);
         bmp.InstallPixels(
             info: imageInfo,

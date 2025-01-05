@@ -1,10 +1,9 @@
-﻿
-namespace ScottPlot.Control;
+﻿namespace ScottPlot.Plottables;
 
 /// <summary>
-/// Logic for drawing the shaded region on the plot when the user middle-click-drags to zoom
+/// The shaded region on the plot when the user middle-click-drags to zoom
 /// </summary>
-public class StandardZoomRectangle(Plot plot) : IZoomRectangle
+public class ZoomRectangle(Plot plot) : IZoomRectangle
 {
     public bool IsVisible { get; set; } = false;
 
@@ -31,7 +30,8 @@ public class StandardZoomRectangle(Plot plot) : IZoomRectangle
         double x2 = xAxis.GetCoordinate(MouseUp.X, dataRect);
         double xMin = Math.Min(x1, x2);
         double xMax = Math.Max(x1, x2);
-        xAxis.Range.Set(xMin, xMax);
+        CoordinateRange xRange = xAxis.IsInverted() ? new(xMax, xMin) : new(xMin, xMax);
+        xAxis.Range.Set(xRange);
     }
 
     public void Apply(IYAxis yAxis)
@@ -42,9 +42,10 @@ public class StandardZoomRectangle(Plot plot) : IZoomRectangle
         PixelRect dataRect = Plot.RenderManager.LastRender.DataRect;
         double y1 = yAxis.GetCoordinate(MouseDown.Y, dataRect);
         double y2 = yAxis.GetCoordinate(MouseUp.Y, dataRect);
-        double xMin = Math.Min(y1, y2);
-        double xMax = Math.Max(y1, y2);
-        yAxis.Range.Set(xMin, xMax);
+        double yMin = Math.Min(y1, y2);
+        double yMax = Math.Max(y1, y2);
+        CoordinateRange yRange = yAxis.IsInverted() ? new(yMax, yMin) : new(yMin, yMax);
+        yAxis.Range.Set(yRange);
     }
 
     public void Render(RenderPack rp)

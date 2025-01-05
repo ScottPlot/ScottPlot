@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using ScottPlot.Control;
 using SkiaSharp;
 
 namespace ScottPlot.Blazor;
@@ -14,9 +13,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public bool EnableRenderLoop { get; set; } = false;
 
     public Plot Plot { get; private set; }
-
-    [Obsolete("Deprecated. Use UserInputProcessor instead. See ScottPlot.NET demo and FAQ for usage details.")]
-    public IPlotInteraction Interaction { get; set; }
+    public Multiplot Multiplot { get; internal set; }
 
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -24,12 +21,8 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public BlazorPlotBase()
     {
         Plot = new() { PlotControl = this };
+        Multiplot = new(Plot);
         DisplayScale = DetectDisplayScale();
-
-#pragma warning disable CS0618 
-        Interaction = new Control.Interaction(this); // TODO: remove in an upcoming release
-#pragma warning restore CS0618
-
         UserInputProcessor = new(this) { IsEnabled = true };
         Menu = new BlazorPlotMenu();
     }
@@ -52,6 +45,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         Plot = plot;
         oldPlot?.Dispose();
         Plot.PlotControl = this;
+        Multiplot.Reset(Plot);
     }
 
     public virtual void Refresh() { }

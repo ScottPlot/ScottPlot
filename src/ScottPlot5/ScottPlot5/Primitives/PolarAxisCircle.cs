@@ -7,6 +7,9 @@
 public class PolarAxisCircle(double radius) : IHasLine
 {
     public double Radius { get; set; } = radius;
+    public Coordinates Origin { get; set; } = new();
+    public Angle StartAngle { get; set; } = Angle.FromDegrees(0);
+    public Angle SweepAngle { get; set; } = Angle.FromDegrees(360);
 
     public LabelStyle LabelStyle { get; set; } = new()
     {
