@@ -18,6 +18,7 @@ _Not yet on NuGet..._
 * Controls: Improved middle-click-drag zoom rectangle support for plots using inverted axis limits (#4573) @xichaoqiang
 * Ticks: Improved tick placement consistency for financial plots with DateTime axes (#4591) @VladislavPustovarov
 * Line: Added `LineOnTop` and `MarkersOnTop` flags to control which components appear in front (#4610) @nullsoftware @quantfreedom
+* Axes: Added a helper method allowing `Plot.Axes.Left.RemoveTickGenerator()` to quickly disable left axis tick generation (#2875, #4613, #4608, #4613)
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_
