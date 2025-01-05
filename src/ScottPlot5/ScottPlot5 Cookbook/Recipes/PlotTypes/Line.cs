@@ -92,7 +92,7 @@ public class LinePlot : ICategory
             line1.MarkerShape = MarkerShape.FilledCircle;
             line1.LineOnTop = true; // render order is controlled here
 
-            var line2 = myPlot.Add.Line(0, 1, 1, 2);
+            var line2 = myPlot.Add.Line(1, 0, 2, 1);
             line2.LineColor = Colors.Orange;
             line2.LineWidth = 5;
             line2.MarkerColor = Colors.Red;
