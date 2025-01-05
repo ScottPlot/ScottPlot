@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Axes: Improved axis rule behavior on plots using inverted axes (#3597, #4609) @CoderPM2011
 * Smith Chart: New plot type for displaying impedance of signals as resistance vs. reactance on a circular axis system (#4634, #4578, #41) @CoderPM2011 @louis1901 @Padanian
 * Rendering: Improve support for platforms where BGRA is not the default color model (#4648, #4647) @bclehmann @ssharks
+* Legend: Made `GetItems()` virtual to support custom ordering logic and made `Plot.Legend` settable (#4571) @onur-akaydin
 
 ## ScottPlot 5.0.47
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2024-11-24_

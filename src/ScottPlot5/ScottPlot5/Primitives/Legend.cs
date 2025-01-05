@@ -128,7 +128,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// </summary>
     public double HiddenItemOpacity { get; set; } = 0.25;
 
-    public LegendItem[] GetItems()
+    public virtual LegendItem[] GetItems()
     {
         List<LegendItem> items = [];
 
