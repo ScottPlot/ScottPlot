@@ -1,5 +1,8 @@
-## ScottPlot 5.0.48
+## ScottPlot 5.0.49
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.48
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-05_
 * Multiplot: Extend `Multiplot` to support rending onto an existing surface (#4628, #4600)
 * User Controls: Add `Multiplot` to `IPlotControl` (#4628, #4600)
 * User Controls: Remove deprecated `Interaction` system (#4630, #4600)
