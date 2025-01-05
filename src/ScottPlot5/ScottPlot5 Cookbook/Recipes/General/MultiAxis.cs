@@ -81,6 +81,9 @@ public class MultiAxis : ICategory
             myPlot.Axes.Right.Label.Text = "Hello, Right Axis";
             myPlot.Axes.Right.Label.FontSize = 18;
 
+            // it is recommended to remove tick generators from unused axes
+            myPlot.Axes.Left.RemoveTickGenerator();
+
             // pass in the custom axis when calling SetLimits()
             myPlot.Axes.SetLimitsY(bottom: -2, top: 2, yAxis: myPlot.Axes.Right);
         }
