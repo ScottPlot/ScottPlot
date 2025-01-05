@@ -434,4 +434,34 @@ public class Heatmap : ICategory
             }
         }
     }
+
+    public class HeatmapDateTime : RecipeBase
+    {
+        public override string Name => "Heatmap with DateTime Axis";
+        public override string Description => "Heatmaps can be displayed on plots which use dates " +
+            "instead of numbers on the horizontal axis.";
+
+        [Test]
+        public override void Execute()
+        {
+            // add a heatmap to the plot
+            double[,] data = SampleData.MonaLisa();
+            var hm = myPlot.Add.Heatmap(data);
+
+            // define its height using numeric units
+            CoordinateRange yRange = new(0, 10);
+
+            // define its width using date units
+            DateTime start = new(2024, 01, 01);
+            DateTime end = new(2025, 01, 01);
+            CoordinateRange xRange = new(start.ToOADate(), end.ToOADate());
+
+            // apply width and height to the heatmap
+            hm.Rectangle = new(xRange, yRange);
+
+            // tell the plot to use date formatting for X axis tick labels
+            myPlot.Axes.DateTimeTicksBottom();
+        }
+    }
+
 }
