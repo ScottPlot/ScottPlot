@@ -33,7 +33,7 @@ public class Plot : IDisposable
     public PlotStyler Style { get; } = new();
 
     public FontStyler Font { get; }
-    public Legend Legend { get; }
+    public Legend Legend { get; set; }
 
     public DefaultGrid Grid => Axes.DefaultGrid;
 
