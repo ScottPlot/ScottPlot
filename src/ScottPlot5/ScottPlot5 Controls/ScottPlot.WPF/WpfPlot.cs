@@ -34,7 +34,7 @@ namespace ScottPlot.WPF
                 float width = (float)e.Surface.Canvas.LocalClipBounds.Width;
                 float height = (float)e.Surface.Canvas.LocalClipBounds.Height;
                 PixelRect rect = new(0, width, height, 0);
-                Plot.Render(e.Surface.Canvas, rect);
+                Multiplot.Render(e.Surface.Canvas, rect);
             };
 
             SKElement.MouseDown += SKElement_MouseDown;
