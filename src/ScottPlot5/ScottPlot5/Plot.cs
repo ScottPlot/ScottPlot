@@ -57,7 +57,7 @@ public class Plot : IDisposable
         }
     }
 
-    private IPlotControl? ParentControl = null;
+    internal IPlotControl? ParentControl { get; private set; } = null;
 
     public bool HasParentControl => ParentControl is not null;
 
