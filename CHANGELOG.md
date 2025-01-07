@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 ## ScottPlot 5.0.50
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-06_
 * WPF: Updated the WPF control to pass render requests though the new Multiplot system (#4666, #4667) @zygfrydw @VladislavPustovarov
+* Palette: Added `GetColors()` extension method for creating an array of colors from an existing palette
 
 ## ScottPlot 5.0.48
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-05_
