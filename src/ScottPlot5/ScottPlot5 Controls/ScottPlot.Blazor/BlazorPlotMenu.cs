@@ -15,7 +15,7 @@ public class BlazorPlotMenu : IPlotMenu
     {
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
     }
 
