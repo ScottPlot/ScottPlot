@@ -36,13 +36,13 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     private class CustomDrawOp : ICustomDrawOperation
     {
-        private readonly Plot _plot;
+        private readonly Multiplot _plot;
 
         public Rect Bounds { get; }
         public bool HitTest(Point p) => true;
         public bool Equals(ICustomDrawOperation? other) => false;
 
-        public CustomDrawOp(Rect bounds, Plot plot)
+        public CustomDrawOp(Rect bounds, Multiplot plot)
         {
             _plot = plot;
             Bounds = bounds;
@@ -67,7 +67,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     public override void Render(DrawingContext context)
     {
         Rect controlBounds = new(Bounds.Size);
-        CustomDrawOp customDrawOp = new(controlBounds, Plot);
+        CustomDrawOp customDrawOp = new(controlBounds, Multiplot);
         context.Custom(customDrawOp);
     }
 
