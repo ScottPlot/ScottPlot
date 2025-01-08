@@ -1,4 +1,4 @@
-﻿using Eto.Forms;
+using Eto.Forms;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
@@ -65,8 +65,8 @@ public class EtoPlot : Drawable, IPlotControl
         using var surface = SKSurface.Create(imageInfo);
         if (surface is null)
             return;
-
-        Plot.Render(surface.Canvas, (int)surface.Canvas.LocalClipBounds.Width, (int)surface.Canvas.LocalClipBounds.Height);
+        PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
+        Multiplot.Render(surface.Canvas, rect);
 
         SKImage img = surface.Snapshot();
         SKPixmap pixels = img.ToRasterImage().PeekPixels();
