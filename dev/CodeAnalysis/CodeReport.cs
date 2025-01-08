@@ -17,7 +17,6 @@ public static class CodeReport
         sb.AppendLine($"<hr style='margin: 50px;' />");
 
         AddLinesOfCodeSection(sb, metrics);
-        AddTodoSection(sb, metrics, "ScottPlot4");
         AddTodoSection(sb, metrics, "ScottPlot5");
 
         sb.AppendLine($"<div align='center' style='margin-top: 100px;'>Generated {DateTime.Now}</div>");
@@ -35,17 +34,6 @@ public static class CodeReport
     private static void AddLinesOfCodeSection(StringBuilder sb, ProjectMetrics metrics)
     {
         sb.AppendLine("<h2 style='margin-bottom: 0px;'>Lines of Code</h2>");
-
-        sb.AppendLine($"<ul style='margin-left: 1em;'>");
-
-        sb.AppendLine($"<li style='margin-top: 1em;'><b>ScottPlot 4: {metrics.GetLines("ScottPlot4")}</b></li>");
-        sb.AppendLine($"<ul>");
-        sb.AppendLine($"<li>Library: {metrics.GetLines("ScottPlot4", "ScottPlot")}</li>");
-        sb.AppendLine($"<li>Tests: {metrics.GetLines("ScottPlot4", "ScottPlot.Tests")}</li>");
-        sb.AppendLine($"<li>Cookbook: {metrics.GetLines("ScottPlot4", "ScottPlot.Cookbook")}</li>");
-        sb.AppendLine($"<li>Demos: {metrics.GetLines("ScottPlot4", "ScottPlot.Demo")}</li>");
-        sb.AppendLine($"</ul>");
-
         sb.AppendLine($"<li style='margin-top: 1em;'><b>ScottPlot 5: {metrics.GetLines("ScottPlot5")}</b></li>");
         sb.AppendLine($"<ul>");
         sb.AppendLine($"<li>Library: {metrics.GetLines("ScottPlot5", "ScottPlot5")}</li>");
