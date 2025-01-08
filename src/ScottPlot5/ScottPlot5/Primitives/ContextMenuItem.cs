@@ -7,5 +7,5 @@ public struct ContextMenuItem
 {
     public bool IsSeparator { get; set; }
     public string Label { get; set; }
-    public Action<IPlotControl> OnInvoke { get; set; }
+    public Action<Plot> OnInvoke { get; set; }
 }

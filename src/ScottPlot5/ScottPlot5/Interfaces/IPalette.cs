@@ -22,3 +22,11 @@ public interface IPalette
     /// </summary>
     public Color GetColor(int index);
 }
+
+public static class IPaletteExtensions
+{
+    public static Color[] GetColors(this IPalette palette, int count)
+    {
+        return Enumerable.Range(0, count).Select(palette.GetColor).ToArray();
+    }
+}

@@ -8,7 +8,7 @@ public class SingleClickContextMenu(MouseButton button) : SingleClickResponse(bu
         if (plot is null)
             return;
 
-        plot.ParentControlShowContextMenu(pixel);
+        plot.PlotControl?.ShowContextMenu(pixel);
     }
 }
 

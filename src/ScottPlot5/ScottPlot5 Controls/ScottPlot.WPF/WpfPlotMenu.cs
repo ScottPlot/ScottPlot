@@ -54,7 +54,7 @@ public class WpfPlotMenu : IPlotMenu
         };
     }
 
-    public ContextMenu GetContextMenu()
+    public ContextMenu GetContextMenu(Plot plot)
     {
         ContextMenu menu = new();
 
@@ -67,7 +67,7 @@ public class WpfPlotMenu : IPlotMenu
             else
             {
                 MenuItem menuItem = new() { Header = curr.Label };
-                menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+                menuItem.Click += (s, e) => curr.OnInvoke(plot);
                 menu.Items.Add(menuItem);
             }
         }
@@ -75,15 +75,18 @@ public class WpfPlotMenu : IPlotMenu
         return menu;
     }
 
-    public void ShowContextMenu(Pixel position)
+    public void ShowContextMenu(Pixel pixel)
     {
-        var menu = GetContextMenu();
+        Plot? plot = ThisControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+        var menu = GetContextMenu(plot);
         menu.PlacementTarget = ThisControl;
         menu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
         menu.IsOpen = true;
     }
 
-    public void OpenSaveImageDialog(IPlotControl plotControl)
+    public void OpenSaveImageDialog(Plot plot)
     {
         SaveFileDialog dialog = new()
         {
@@ -114,8 +117,8 @@ public class WpfPlotMenu : IPlotMenu
             }
             try
             {
-                PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-                plotControl.Plot.Save(dialog.FileName, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
+                PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+                plot.Save(dialog.FileName, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
             }
             catch (Exception)
             {
@@ -125,10 +128,10 @@ public class WpfPlotMenu : IPlotMenu
         }
     }
 
-    public static void CopyImageToClipboard(IPlotControl plotControl)
+    public static void CopyImageToClipboard(Plot plot)
     {
-        PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-        Image bmp = plotControl.Plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
+        PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+        Image bmp = plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
         byte[] bmpBytes = bmp.GetImageBytes();
 
         using MemoryStream ms = new();
@@ -140,16 +143,16 @@ public class WpfPlotMenu : IPlotMenu
         Clipboard.SetImage(bmpImage);
     }
 
-    public void Autoscale(IPlotControl plotControl)
+    public void Autoscale(Plot plot)
     {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
+        plot.Axes.AutoScale();
+        ThisControl.Refresh();
     }
 
-    public void OpenInNewWindow(IPlotControl plotControl)
+    public void OpenInNewWindow(Plot plot)
     {
-        WpfPlotViewer.Launch(plotControl.Plot, "Interactive Plot");
-        plotControl.Refresh();
+        WpfPlotViewer.Launch(plot, "Interactive Plot");
+        ThisControl.Refresh();
     }
 
     public void Reset()
@@ -163,7 +166,7 @@ public class WpfPlotMenu : IPlotMenu
         ContextMenuItems.Clear();
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
     }

@@ -2,12 +2,12 @@
 
 public class MauiPlotMenu : IPlotMenu
 {
-    private readonly MauiPlot MauiPlot;
+    private readonly MauiPlot ThisControl;
     public List<ContextMenuItem> ContextMenuItems { get; set; } = new();
 
     public MauiPlotMenu(MauiPlot plot)
     {
-        MauiPlot = plot;
+        ThisControl = plot;
         Reset();
     }
 
@@ -50,7 +50,7 @@ public class MauiPlotMenu : IPlotMenu
         };
     }
 
-    public async void SaveImageDialog(IPlotControl plotControl)
+    public async void SaveImageDialog(Plot plot)
     {
         Page? page = Application.Current?.MainPage;
         if (page == null) return;
@@ -67,18 +67,16 @@ public class MauiPlotMenu : IPlotMenu
         {
             var format = await page.DisplayActionSheet("Select a format", null, null, formats);
             if (string.IsNullOrEmpty(format)) return;
-            ImageFormat imgformat = ImageFormats.FromFilename(format);
-
+            ImageFormat imageFormat = ImageFormats.FromFilename(format);
 
             string tempFileName = $"Plot_{DateTime.Now:yyyyMMdd_HHmmss}";
             var name = await page.DisplayPromptAsync("File name", "Enter the file name", placeholder: tempFileName);
             if (string.Equals(name, "Cancel")) return;
             if (string.IsNullOrEmpty(name)) name = tempFileName;
 
-
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-            plotControl.Plot.Save(Path.Combine(folder, $"{name}{format}"), (int)lastRenderSize.Width, (int)lastRenderSize.Height, imgformat);
+            PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+            plot.Save(Path.Combine(folder, $"{name}{format}"), (int)lastRenderSize.Width, (int)lastRenderSize.Height, imageFormat);
 
             await page.DisplayAlert("Success", $"Image saved to {folder}", "OK");
         }
@@ -91,27 +89,27 @@ public class MauiPlotMenu : IPlotMenu
 
     }
 
-    public void Autoscale(IPlotControl plotControl)
+    public void Autoscale(Plot plot)
     {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
+        plot.Axes.AutoScale();
+        ThisControl.Refresh();
     }
 
-    public void ZoomIn(IPlotControl plotControl)
+    public void ZoomIn(Plot plot)
     {
-        plotControl.Plot.Axes.Zoom(1.5, 1.5);
-        plotControl.Refresh();
+        plot.Axes.Zoom(1.5, 1.5);
+        ThisControl.Refresh();
     }
 
-    public void ZoomOut(IPlotControl plotControl)
+    public void ZoomOut(Plot plot)
     {
-        plotControl.Plot.Axes.Zoom(0.5, 0.5);
-        plotControl.Refresh();
+        plot.Axes.Zoom(0.5, 0.5);
+        ThisControl.Refresh();
     }
 
-    public MenuFlyout GetContextMenu(IPlotControl plotControl)
+    public MenuFlyout GetContextMenu(Plot plot)
     {
-        MenuFlyout flyout = new();
+        MenuFlyout flyout = [];
 
         foreach (var item in ContextMenuItems)
         {
@@ -122,7 +120,7 @@ public class MauiPlotMenu : IPlotMenu
             else
             {
                 var menuItem = new MenuFlyoutItem { Text = item.Label };
-                menuItem.Clicked += (s, e) => item.OnInvoke(plotControl);
+                menuItem.Clicked += (s, e) => item.OnInvoke(plot);
                 flyout.Add(menuItem);
             }
         }
@@ -132,11 +130,14 @@ public class MauiPlotMenu : IPlotMenu
 
     public void ShowContextMenu(Pixel pixel)
     {
-        MenuFlyout flyout = GetContextMenu(MauiPlot);
-        FlyoutBase.SetContextFlyout(MauiPlot, flyout);
+        Plot? plot = ThisControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+        MenuFlyout flyout = GetContextMenu(plot);
+        FlyoutBase.SetContextFlyout(ThisControl, flyout);
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
     }

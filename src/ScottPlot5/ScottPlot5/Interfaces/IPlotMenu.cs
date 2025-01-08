@@ -6,7 +6,7 @@ public interface IPlotMenu
 
     public void Clear();
 
-    public void Add(string Label, Action<IPlotControl> action);
+    public void Add(string Label, Action<Plot> action);
 
     public void AddSeparator();
 

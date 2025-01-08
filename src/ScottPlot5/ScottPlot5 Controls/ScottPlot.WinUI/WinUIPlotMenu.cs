@@ -47,7 +47,7 @@ public class WinUIPlotMenu : IPlotMenu
         };
     }
 
-    public MenuFlyout GetContextMenu(IPlotControl plotControl)
+    public MenuFlyout GetContextMenu(Plot plot)
     {
         MenuFlyout menu = new();
 
@@ -60,7 +60,7 @@ public class WinUIPlotMenu : IPlotMenu
             else
             {
                 var menuItem = new MenuFlyoutItem { Text = curr.Label };
-                menuItem.Click += (s, e) => curr.OnInvoke(plotControl);
+                menuItem.Click += (s, e) => curr.OnInvoke(plot);
                 menu.Items.Add(menuItem);
             }
         }
@@ -68,7 +68,7 @@ public class WinUIPlotMenu : IPlotMenu
         return menu;
     }
 
-    public async void OpenSaveImageDialog(IPlotControl plotControl)
+    public async void OpenSaveImageDialog(Plot plot)
     {
         FileSavePicker dialog = new()
         {
@@ -91,15 +91,15 @@ public class WinUIPlotMenu : IPlotMenu
         {
             // TODO: launch a pop-up window indicating if extension is invalid or save failed
             ImageFormat format = ImageFormats.FromFilename(file.Name);
-            PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-            plotControl.Plot.Save(file.Path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
+            PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+            plot.Save(file.Path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
         }
     }
 
-    public void CopyImageToClipboard(IPlotControl plotControl)
+    public void CopyImageToClipboard(Plot plot)
     {
-        PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-        byte[] bytes = plotControl.Plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height).GetImageBytes();
+        PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+        byte[] bytes = plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height).GetImageBytes();
 
         var stream = new InMemoryRandomAccessStream();
         stream.AsStreamForWrite().Write(bytes);
@@ -110,15 +110,18 @@ public class WinUIPlotMenu : IPlotMenu
         Clipboard.SetContent(content);
     }
 
-    public void Autoscale(IPlotControl plotControl)
+    public void Autoscale(Plot plot)
     {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
+        plot.Axes.AutoScale();
+        ThisControl.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)
     {
-        MenuFlyout flyout = GetContextMenu(ThisControl);
+        Plot? plot = ThisControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+        MenuFlyout flyout = GetContextMenu(plot);
         Windows.Foundation.Point pt = new(pixel.X, pixel.Y);
         flyout.ShowAt(ThisControl, pt);
     }
@@ -134,7 +137,7 @@ public class WinUIPlotMenu : IPlotMenu
         ContextMenuItems.Clear();
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
     }

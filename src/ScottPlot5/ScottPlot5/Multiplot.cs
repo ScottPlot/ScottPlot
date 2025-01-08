@@ -91,6 +91,11 @@ public class Multiplot
     /// </summary>
     public void AddPlot(Plot plot)
     {
+        if (Subplots.Count > 0)
+        {
+            plot.PlotControl = Subplots.First().Plot.PlotControl;
+        }
+
         if (StyleNewPlotsAutomatically && Subplots.Count > 0)
         {
             Plot lastPlot = Subplots.Last().Plot;

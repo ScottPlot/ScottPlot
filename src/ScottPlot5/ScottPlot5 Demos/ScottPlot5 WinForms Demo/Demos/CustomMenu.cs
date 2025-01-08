@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using ScottPlot;
-using ScottPlot.WinForms;
+﻿using ScottPlot;
 
 namespace WinForms_Demo.Demos;
 
@@ -32,39 +30,39 @@ public partial class CustomMenu : Form, IDemoWindow
         formsPlot1.Menu?.Clear();
 
         // add menu items with custom actions
-        formsPlot1.Menu?.Add("Add Scatter", (formsplot1) =>
+        formsPlot1.Menu?.Add("Add Scatter", (plot) =>
         {
-            formsplot1.Plot.Add.Scatter(Generate.RandomCoordinates(5));
-            formsplot1.Plot.Axes.AutoScale();
-            formsplot1.Refresh();
+            plot.Add.Scatter(Generate.RandomCoordinates(5));
+            plot.Axes.AutoScale();
+            plot.PlotControl?.Refresh();
         });
 
-        formsPlot1.Menu?.Add("Add Line", (formsplot1) =>
+        formsPlot1.Menu?.Add("Add Line", (plot) =>
         {
-            var line = formsplot1.Plot.Add.Line(Generate.RandomLine());
+            var line = plot.Add.Line(Generate.RandomLine());
             line.LineWidth = 2;
             line.MarkerSize = 20;
-            formsplot1.Plot.Axes.AutoScale();
-            formsplot1.Refresh();
+            plot.Axes.AutoScale();
+            plot.PlotControl?.Refresh();
         });
 
-        formsPlot1.Menu?.Add("Add Text", (formsplot1) =>
+        formsPlot1.Menu?.Add("Add Text", (plot) =>
         {
-            var txt = formsplot1.Plot.Add.Text("Test", Generate.RandomLocation());
+            var txt = plot.Add.Text("Test", Generate.RandomLocation());
             txt.LabelFontSize = 10 + Generate.RandomInteger(20);
             txt.LabelFontColor = Generate.RandomColor(128);
             txt.LabelBold = true;
-            formsplot1.Plot.Axes.AutoScale();
-            formsplot1.Refresh();
+            plot.Axes.AutoScale();
+            plot.PlotControl?.Refresh();
         });
 
         formsPlot1.Menu?.AddSeparator();
 
-        formsPlot1.Menu?.Add("Clear", (formsplot1) =>
+        formsPlot1.Menu?.Add("Clear", (plot) =>
         {
-            formsplot1.Plot.Clear();
-            formsplot1.Plot.Axes.AutoScale();
-            formsplot1.Refresh();
+            plot.Clear();
+            plot.Axes.AutoScale();
+            plot.PlotControl?.Refresh();
         });
 
         formsPlot1.Plot.Title("Custom Right-Click Menu");

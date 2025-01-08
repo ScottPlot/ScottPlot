@@ -2,7 +2,6 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace ScottPlot.WinForms;
 
@@ -53,26 +52,26 @@ public class FormsPlotMenu : IPlotMenu
         };
     }
 
-    public void CopyImageToClipboard(IPlotControl plotControl)
+    public void CopyImageToClipboard(Plot plot)
     {
-        PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-        Bitmap bmp = plotControl.Plot.GetBitmap((int)lastRenderSize.Width, (int)lastRenderSize.Height);
+        PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+        Bitmap bmp = plot.GetBitmap((int)lastRenderSize.Width, (int)lastRenderSize.Height);
         Clipboard.SetImage(bmp);
     }
 
-    public void OpenInNewWindow(IPlotControl plotControl)
+    public void OpenInNewWindow(Plot plot)
     {
-        FormsPlotViewer.Launch(plotControl.Plot, "Interactive Plot");
-        plotControl.Refresh();
+        FormsPlotViewer.Launch(plot, "Interactive Plot");
+        ThisControl.Refresh();
     }
 
-    public void Autoscale(IPlotControl plotControl)
+    public void Autoscale(Plot plot)
     {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
+        plot.Axes.AutoScale();
+        ThisControl.Refresh();
     }
 
-    public ContextMenuStrip GetContextMenu()
+    public ContextMenuStrip GetContextMenu(Plot plot)
     {
         ContextMenuStrip menu = new();
 
@@ -85,7 +84,10 @@ public class FormsPlotMenu : IPlotMenu
             else
             {
                 ToolStripMenuItem menuItem = new(item.Label);
-                menuItem.Click += (s, e) => item.OnInvoke(ThisControl);
+                menuItem.Click += (s, e) =>
+                {
+                    item.OnInvoke(plot);
+                };
 
                 menu.Items.Add(menuItem);
             }
@@ -94,7 +96,7 @@ public class FormsPlotMenu : IPlotMenu
         return menu;
     }
 
-    public void OpenSaveImageDialog(IPlotControl plotControl)
+    public void OpenSaveImageDialog(Plot plot)
     {
         SaveFileDialog dialog = new()
         {
@@ -126,8 +128,8 @@ public class FormsPlotMenu : IPlotMenu
 
             try
             {
-                PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-                plotControl.Plot.Save(dialog.FileName, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
+                PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+                plot.Save(dialog.FileName, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
             }
             catch (Exception)
             {
@@ -139,8 +141,10 @@ public class FormsPlotMenu : IPlotMenu
 
     public void ShowContextMenu(Pixel pixel)
     {
-        Debug.WriteLine("Showing Context Menu");
-        ContextMenuStrip menu = GetContextMenu();
+        Plot? plot = ThisControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+        ContextMenuStrip menu = GetContextMenu(plot);
         menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
     }
 
@@ -155,7 +159,7 @@ public class FormsPlotMenu : IPlotMenu
         ContextMenuItems.Clear();
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
     }

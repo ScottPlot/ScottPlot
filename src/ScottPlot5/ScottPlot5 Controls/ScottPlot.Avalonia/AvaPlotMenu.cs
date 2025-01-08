@@ -40,20 +40,20 @@ public class AvaPlotMenu : IPlotMenu
         };
     }
 
-    public ContextMenu GetContextMenu()
+    public ContextMenu GetContextMenu(Plot plot)
     {
         List<MenuItem> items = new();
 
-        foreach (var curr in ContextMenuItems)
+        foreach (var contextMenuItem in ContextMenuItems)
         {
-            if (curr.IsSeparator)
+            if (contextMenuItem.IsSeparator)
             {
                 items.Add(new MenuItem { Header = "-" });
             }
             else
             {
-                var menuItem = new MenuItem { Header = curr.Label };
-                menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+                var menuItem = new MenuItem { Header = contextMenuItem.Label };
+                menuItem.Click += (s, e) => contextMenuItem.OnInvoke(plot);
                 items.Add(menuItem);
             }
         }
@@ -64,7 +64,7 @@ public class AvaPlotMenu : IPlotMenu
         };
     }
 
-    public async void OpenSaveImageDialog(IPlotControl plotControl)
+    public async void OpenSaveImageDialog(Plot plot)
     {
         var topLevel = TopLevel.GetTopLevel(ThisControl) ?? throw new NullReferenceException("Could not find a top level");
         var destinationFile = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
@@ -76,8 +76,8 @@ public class AvaPlotMenu : IPlotMenu
         string? path = destinationFile?.TryGetLocalPath();
         if (path is not null && !string.IsNullOrWhiteSpace(path))
         {
-            PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-            plotControl.Plot.Save(path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, ImageFormats.FromFilename(path));
+            PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+            plot.Save(path, (int)lastRenderSize.Width, (int)lastRenderSize.Height, ImageFormats.FromFilename(path));
         }
     }
 
@@ -91,15 +91,18 @@ public class AvaPlotMenu : IPlotMenu
         new("All Files") { Patterns = new List<string> { "*" } },
     };
 
-    public void Autoscale(IPlotControl plotControl)
+    public void Autoscale(Plot plot)
     {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
+        plot.Axes.AutoScale();
+        ThisControl.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)
     {
-        var manualContextMenu = GetContextMenu();
+        Plot? plot = ThisControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+        var manualContextMenu = GetContextMenu(plot);
 
         // I am fully aware of how janky it is to place the menu in a 1x1 rect,
         // unfortunately the Avalonia docs were down when I wrote this
@@ -119,7 +122,7 @@ public class AvaPlotMenu : IPlotMenu
         ContextMenuItems.Clear();
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
     }

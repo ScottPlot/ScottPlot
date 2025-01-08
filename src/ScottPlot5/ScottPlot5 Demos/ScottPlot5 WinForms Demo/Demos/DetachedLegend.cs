@@ -4,7 +4,7 @@ using SkiaSharp.Views.Desktop;
 
 namespace WinForms_Demo.Demos
 {
-    public partial class DetachedLegend : Form//, IDemoWindow
+    public partial class DetachedLegend : Form, IDemoWindow
     {
         public string Title => "Detachable Legend";
 
@@ -28,15 +28,15 @@ namespace WinForms_Demo.Demos
             formsPlot1.Menu?.Add("Detach Legend", LaunchDetachedLegend);
         }
 
-        private void LaunchDetachedLegend(IPlotControl plotControl)
+        private void LaunchDetachedLegend(Plot plot)
         {
             // hide the legend in the original plot
-            plotControl.Plot.Legend.IsVisible = false;
-            plotControl.Plot.Legend.ShowItemsFromHiddenPlottables = true;
-            plotControl.Plot.Legend.OutlineWidth = 0;
-            plotControl.Plot.Legend.BackgroundColor = ScottPlot.Color.FromSDColor(SystemColors.Control);
-            plotControl.Plot.Legend.ShadowColor = Colors.Transparent;
-            plotControl.Refresh();
+            plot.Legend.IsVisible = false;
+            plot.Legend.ShowItemsFromHiddenPlottables = true;
+            plot.Legend.OutlineWidth = 0;
+            plot.Legend.BackgroundColor = ScottPlot.Color.FromSDColor(SystemColors.Control);
+            plot.Legend.ShadowColor = Colors.Transparent;
+            plot.PlotControl?.Refresh();
 
             // create a form that displays a SkiaSharp canvas the legend can be drawn on
             Form form = new()
@@ -49,12 +49,12 @@ namespace WinForms_Demo.Demos
             form.FormClosed += (s, e) =>
             {
                 // un-hide the legend in the original plot when the legend viewer is closed
-                plotControl.Plot.Legend.IsVisible = true;
-                plotControl.Plot.Legend.ShowItemsFromHiddenPlottables = false;
-                plotControl.Plot.Legend.OutlineWidth = 1;
-                plotControl.Plot.Legend.BackgroundColor = ScottPlot.Colors.White;
-                plotControl.Plot.Legend.ShadowColor = Colors.Black.WithOpacity(.2);
-                plotControl.Refresh();
+                plot.Legend.IsVisible = true;
+                plot.Legend.ShowItemsFromHiddenPlottables = false;
+                plot.Legend.OutlineWidth = 1;
+                plot.Legend.BackgroundColor = ScottPlot.Colors.White;
+                plot.Legend.ShadowColor = Colors.Black.WithOpacity(.2);
+                plot.PlotControl?.Refresh();
             };
 
             SKControl skControl = new()

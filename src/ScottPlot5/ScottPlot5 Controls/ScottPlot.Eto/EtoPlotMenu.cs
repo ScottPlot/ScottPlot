@@ -45,7 +45,7 @@ public class EtoPlotMenu : IPlotMenu
         };
     }
 
-    public ContextMenu GetContextMenu()
+    public ContextMenu GetContextMenu(Plot plot)
     {
         ContextMenu menu = new();
         foreach (var curr in ContextMenuItems)
@@ -57,7 +57,7 @@ public class EtoPlotMenu : IPlotMenu
             else
             {
                 var menuItem = new ButtonMenuItem() { Text = curr.Label };
-                menuItem.Click += (s, e) => curr.OnInvoke(ThisControl);
+                menuItem.Click += (s, e) => curr.OnInvoke(plot);
                 menu.Items.Add(menuItem);
             }
         }
@@ -75,7 +75,7 @@ public class EtoPlotMenu : IPlotMenu
         new() { Name = "All Files", Extensions = new string[] { "*" } },
     };
 
-    public void OpenSaveImageDialog(IPlotControl plotControl)
+    public void OpenSaveImageDialog(Plot plot)
     {
         SaveFileDialog dialog = new()
         {
@@ -100,29 +100,32 @@ public class EtoPlotMenu : IPlotMenu
 
             // TODO: launch a pop-up window indicating if extension is invalid or save failed
             ImageFormat format = ImageFormats.FromFilename(filename);
-            PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-            plotControl.Plot.Save(filename, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
+            PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+            plot.Save(filename, (int)lastRenderSize.Width, (int)lastRenderSize.Height, format);
         }
     }
 
-    public void CopyImageToClipboard(IPlotControl plotControl)
+    public void CopyImageToClipboard(Plot plot)
     {
-        PixelSize lastRenderSize = plotControl.Plot.RenderManager.LastRender.FigureRect.Size;
-        byte[] bytes = plotControl.Plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height).GetImageBytes();
+        PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+        byte[] bytes = plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height).GetImageBytes();
         MemoryStream ms = new(bytes);
         using Bitmap bmp = new(ms);
         Clipboard.Instance.Image = bmp;
     }
 
-    public void Autoscale(IPlotControl plotControl)
+    public void Autoscale(Plot plot)
     {
-        plotControl.Plot.Axes.AutoScale();
-        plotControl.Refresh();
+        plot.Axes.AutoScale();
+        ThisControl.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)
     {
-        var menu = GetContextMenu();
+        Plot? plot = ThisControl.GetPlotAtPixel(pixel);
+        if (plot is null)
+            return;
+        var menu = GetContextMenu(plot);
         menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
     }
 
@@ -137,7 +140,7 @@ public class EtoPlotMenu : IPlotMenu
         ContextMenuItems.Clear();
     }
 
-    public void Add(string Label, Action<IPlotControl> action)
+    public void Add(string Label, Action<Plot> action)
     {
         ContextMenuItems.Add(new ContextMenuItem() { Label = Label, OnInvoke = action });
     }

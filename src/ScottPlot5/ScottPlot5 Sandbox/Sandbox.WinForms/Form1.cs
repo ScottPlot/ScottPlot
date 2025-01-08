@@ -9,12 +9,15 @@ public partial class Form1 : Form
         InitializeComponent();
 
         Plot[] subplots = formsPlot1.Multiplot.AddPlots(4);
+        ScottPlot.Color[] colors = new ScottPlot.Palettes.Category10().GetColors(4);
 
         for (int i = 0; i < subplots.Length; i++)
         {
             double scale = Math.Pow(10, i);
             double[] data = Generate.RandomWalk(100, scale*2);
-            subplots[i].Add.Signal(data);
+            var sig = subplots[i].Add.Signal(data);
+            sig.LineWidth = 2;
+            sig.Color = colors[i];
             subplots[i].Title($"Subplot {i + 1}");
         }
 
