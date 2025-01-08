@@ -24,7 +24,9 @@ public static class FormsPlotViewer
 
     public static void Launch(Plot plot, string title = "", int width = 600, int height = 400, bool blocking = true)
     {
+        IPlotControl? originalControl = plot.PlotControl;
         Form form = CreateForm(plot, title, width, height);
+        form.FormClosed += (s, e) => plot.PlotControl = originalControl;
 
         if (blocking)
             form.ShowDialog();

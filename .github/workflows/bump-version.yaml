@@ -1,0 +1,28 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bump:
+    name: Bump and Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: ✨ Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+          dotnet-quality: "preview"
+      - name: ↗⚙️ Bump Version
+        run:  dotnet run --project "./dev/BumpVersion/"
+      - name: ✅ Commit Changes
+        run: |
+          git config --global user.name 'Scott W Harden (via GitHub Actions)'
+          git config --global user.email 'swharden@gmail.com'
+          git pull
+          git commit -am "ScottPlot: bump csproj file versions"
+          git push
