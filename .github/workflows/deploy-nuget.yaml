@@ -107,51 +107,6 @@ jobs:
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
 
-      - name: Package ScottPlot (version 4)
-        env:
-          PROJECT_FOLDER: "src/ScottPlot4/ScottPlot/"
-        run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
-          dotnet restore "${{ env.PROJECT_FOLDER }}"
-          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
-          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
-
-      - name: Package ScottPlot.WinForms (version 4)
-        env:
-          PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.WinForms"
-        run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
-          dotnet restore "${{ env.PROJECT_FOLDER }}"
-          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
-          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
-
-      - name: Package ScottPlot.WPF (version 4)
-        env:
-          PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.WPF"
-        run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
-          dotnet restore "${{ env.PROJECT_FOLDER }}"
-          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
-          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
-
-      - name: Package ScottPlot.Avalonia (version 4)
-        env:
-          PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.Avalonia"
-        run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
-          dotnet restore "${{ env.PROJECT_FOLDER }}"
-          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
-          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
-
-      - name: Package ScottPlot.Eto (version 4)
-        env:
-          PROJECT_FOLDER: "src/ScottPlot4/ScottPlot.Eto"
-        run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
-          dotnet restore "${{ env.PROJECT_FOLDER }}"
-          dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
-          dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
