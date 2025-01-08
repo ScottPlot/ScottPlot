@@ -93,7 +93,7 @@ public class Multiplot
     {
         if (Subplots.Count > 0)
         {
-            plot.PlotControl = Subplots.First().Plot.ParentControl;
+            plot.PlotControl = Subplots.First().Plot.PlotControl;
         }
 
         if (StyleNewPlotsAutomatically && Subplots.Count > 0)
