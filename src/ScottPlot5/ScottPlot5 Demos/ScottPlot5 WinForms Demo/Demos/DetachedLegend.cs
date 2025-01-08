@@ -4,7 +4,7 @@ using SkiaSharp.Views.Desktop;
 
 namespace WinForms_Demo.Demos
 {
-    public partial class DetachedLegend : Form//, IDemoWindow
+    public partial class DetachedLegend : Form, IDemoWindow
     {
         public string Title => "Detachable Legend";
 
