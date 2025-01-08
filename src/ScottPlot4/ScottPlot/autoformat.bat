@@ -1,2 +1,0 @@
-dotnet format
-pause
