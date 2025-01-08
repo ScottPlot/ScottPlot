@@ -11,7 +11,7 @@
 
         <!-- NuGet info -->
         <PackageId>ScottPlot.OpenGL</PackageId>
-        <Version>5.0.50</Version>
+        <Version>5.0.51</Version>
         <Authors>Scott Harden</Authors>
         <Company>Harden Technologies, LLC</Company>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
