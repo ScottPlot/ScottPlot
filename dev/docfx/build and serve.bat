@@ -1,2 +1,0 @@
-docfx --serve
-pause
