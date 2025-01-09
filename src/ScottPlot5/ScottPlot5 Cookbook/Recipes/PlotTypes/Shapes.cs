@@ -1,6 +1,4 @@
-﻿using ScottPlot.Hatches;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Shapes : ICategory
 {
@@ -72,7 +70,7 @@ public class Shapes : ICategory
         {
             for (int i = 0; i < 10; i++)
             {
-                var el = myPlot.Add.Ellipse(0, 0, 1, 10, rotation: i * 10);
+                var el = myPlot.Add.Ellipse(0, 0, 1, 10, rotation: Angle.FromDegrees(i * -10));
                 double fraction = i / 10.0;
                 el.LineColor = Colors.Blue.WithAlpha(fraction);
             }

@@ -391,7 +391,7 @@ public class PlottableAdder(Plot plot)
         return streamer;
     }
 
-    public Ellipse Ellipse(Coordinates center, double radiusX, double radiusY, float rotation = 0)
+    public Ellipse Ellipse(Coordinates center, double radiusX, double radiusY, Angle? rotation = null)
     {
         Color color = GetNextColor();
 
@@ -400,7 +400,7 @@ public class PlottableAdder(Plot plot)
             Center = center,
             RadiusX = radiusX,
             RadiusY = radiusY,
-            Rotation = rotation,
+            Rotation = rotation ?? Angle.FromDegrees(0),
             LineColor = color,
         };
 
@@ -408,7 +408,7 @@ public class PlottableAdder(Plot plot)
         return ellipse;
     }
 
-    public Ellipse Ellipse(double xCenter, double yCenter, double radiusX, double radiusY, float rotation = 0)
+    public Ellipse Ellipse(double xCenter, double yCenter, double radiusX, double radiusY, Angle? rotation = null)
     {
         return Ellipse(new Coordinates(xCenter, yCenter), radiusX, radiusY, rotation);
     }

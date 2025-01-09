@@ -46,28 +46,18 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
     /// <summary>
     /// Rotation of the ellipse (degrees)
     /// </summary>
-    public double Rotation
-    {
-        get => _rotation;
-        set
-        {
-            if (value < 0) { value += 360; }
-            _rotation = value % 360;
-        }
-    }
-
-    private double _rotation = 0;
+    public Angle Rotation { get; set; } = Angle.FromDegrees(0);
 
     public AxisLimits GetAxisLimits()
     {
-        if (Rotation == 0)
+        if (Rotation.Normalized.Degrees == 0)
         {
             return new(Center.ToRect(RadiusX, RadiusY));
         }
 
         // https://math.stackexchange.com/a/91304
 
-        var rad = (float)(Rotation / 180.0 * Math.PI);
+        var rad = -Rotation.Normalized.Radians;
         var cos2 = Math.Pow(Math.Cos(rad), 2);
         var sin2 = Math.Pow(Math.Sin(rad), 2);
 
@@ -91,7 +81,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         using var paint = new SKPaint();
 
         rp.Canvas.Translate(Axes.GetPixel(Center).ToSKPoint());
-        rp.Canvas.RotateDegrees((float)Rotation);
+        rp.Canvas.RotateDegrees((float)-Rotation.Normalized.Degrees);
 
         float rx = Axes.GetPixelX(RadiusX) - Axes.GetPixelX(0);
         float ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);

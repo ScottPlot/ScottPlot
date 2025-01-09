@@ -39,7 +39,7 @@ public partial class PlottableDrag : Form, IDemoWindow
         formsPlot1.Plot.Remove(scatter);
         formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(scatter));
 
-        var ellipse = formsPlot1.Plot.Add.Ellipse(25, 2, 5, 3, 30);
+        var ellipse = formsPlot1.Plot.Add.Ellipse(25, 2, 5, 3, Angle.FromDegrees(-30));
         formsPlot1.Plot.Remove(ellipse);
         formsPlot1.Plot.Add.Plottable(new DraggablePlottableDecorator(ellipse));
 
