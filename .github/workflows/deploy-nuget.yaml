@@ -123,3 +123,7 @@ jobs:
 
       - name: Deploy Packages
         run: nuget push "${{ env.ARTIFACT_FOLDER }}\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+
+  bump:
+    name: "Bump Version"
+    uses: ./.github/workflows/bump-version.yaml
