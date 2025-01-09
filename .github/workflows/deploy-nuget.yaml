@@ -125,5 +125,8 @@ jobs:
         run: nuget push "${{ env.ARTIFACT_FOLDER }}\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
 
   bump:
-    name: "Bump Version"
+    name: Bump Version
+    needs: [deploy]
     uses: ./.github/workflows/bump-version.yaml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
