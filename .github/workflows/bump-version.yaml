@@ -2,6 +2,10 @@ name: Bump Version
 
 on:
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
 
 jobs:
   bump:
