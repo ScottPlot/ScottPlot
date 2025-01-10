@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.53
 _Not yet on NuGet..._
+* Axis Rules: Improved support for inner and boundaries on plots with inverted axis limits (#4686, #4609) @kebox7
 
 ## ScottPlot 5.0.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-08_
