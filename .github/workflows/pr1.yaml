@@ -22,5 +22,3 @@ jobs:
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj" --configuration Release --verbosity minimal
       - name: ScottPlot5 Cookbook
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj" --configuration Release --verbosity minimal
-      - name: ScottPlot5 Tests
-        run: dotnet test "src/ScottPlot4/ScottPlot/ScottPlot.csproj" --configuration Release --verbosity minimal
