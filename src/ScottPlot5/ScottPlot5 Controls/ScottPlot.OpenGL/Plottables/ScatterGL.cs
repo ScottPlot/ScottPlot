@@ -61,11 +61,11 @@ public class ScatterGL : Scatter, IPlottableGL
     {
         if (GLHasBeenInitialized)
         {
-            // Delete vertex arrays and buffers
             GL.DeleteVertexArray(VertexArrayObject);
             GL.DeleteBuffer(VertexBufferObject);
 
-            // Dispose shader programs
+            LinesProgram?.GLFinish();
+            MarkerProgram?.GLFinish();
             LinesProgram?.Dispose();
             MarkerProgram?.Dispose();
 
