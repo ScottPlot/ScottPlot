@@ -261,7 +261,7 @@ public class Plot : IDisposable
             throw new ArgumentException($"{nameof(height)} must be greater than 0");
 
         SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-        using SKSurface surface = SKSurface.Create(info) 
+        using SKSurface surface = SKSurface.Create(info)
             ?? throw new NullReferenceException($"invalid SKImageInfo");
 
         Render(surface.Canvas, width, height);
