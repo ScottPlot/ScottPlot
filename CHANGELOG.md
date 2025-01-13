@@ -1454,7 +1454,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2021-08-25_
 * Signal Plot: Added `StepDisplay` option to render signal plots as step plots when zoomed in (#1092, #1128) @EFeru
 * Testing: Improved error reporting on failed XML documentation tests (#1127) @StendProg
 * Histogram: Marked `ScottPlot.Statistics.Histogram` obsolete in favor of static methods in `ScottPlot.Statistics.Common` designed to create histograms and probability function curves (#1051, #1166). See cookbook for usage examples. @breakwinz and @bclehmann
-* WpfPlot: Improve memory management for dynamically created and destroyed WpfPlot controls by properly unloading the dispatcher timer (#1115, #1117) @RamsayGit, @bclehmann, @StendProg, and @Orace
+* WpfPlot: Improve memory management for dynamically created and destroyed WpfPlot controls by properly unloading the dispatcher timer (#1115, #1117) @ramsayamarin, @bclehmann, @StendProg, and @Orace
 * Mouse Processing: Improved bug that affected fast drag-dropping of draggable objects (#1076)
 * Rendering: Fixed clipping bug that caused some plot types to be rendered above data area frames (#1084)
 * Plot: Added `Width` and `Height` properties
