@@ -42,6 +42,7 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected virtual void InitializeGL()
     {
+        CleanupGL();
         LinesProgram = new LinesProgram();
         MarkerProgram = new MarkerFillCircleProgram();
 
@@ -54,6 +55,22 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.EnableVertexAttribArray(0);
         Vertices = Array.Empty<double>();
         GLHasBeenInitialized = true;
+    }
+
+    protected virtual void CleanupGL()
+    {
+        if (GLHasBeenInitialized)
+        {
+            GL.DeleteVertexArray(VertexArrayObject);
+            GL.DeleteBuffer(VertexBufferObject);
+
+            LinesProgram?.GLFinish();
+            MarkerProgram?.GLFinish();
+            LinesProgram?.Dispose();
+            MarkerProgram?.Dispose();
+
+            GLHasBeenInitialized = false;
+        }
     }
 
     protected Matrix4d CalcTransform()
