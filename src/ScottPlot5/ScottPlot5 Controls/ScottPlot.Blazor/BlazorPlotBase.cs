@@ -13,7 +13,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public bool EnableRenderLoop { get; set; } = false;
 
     public Plot Plot { get; private set; }
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
 
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -21,7 +21,7 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
     public BlazorPlotBase()
     {
         Plot = new() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         DisplayScale = DetectDisplayScale();
         UserInputProcessor = new(this) { IsEnabled = true };
         Menu = new BlazorPlotMenu();

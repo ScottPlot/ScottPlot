@@ -11,7 +11,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public abstract void Refresh();
 
     public Plot Plot { get; internal set; }
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
     public float DisplayScale { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -27,7 +27,7 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     public WpfPlotBase()
     {
         Plot = new Plot() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         DisplayScale = DetectDisplayScale();
         UserInputProcessor = new(this);
         Menu = new WpfPlotMenu(this);

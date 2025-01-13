@@ -6,7 +6,7 @@ namespace ScottPlot.Maui;
 public class MauiPlot : SKCanvasView, IPlotControl
 {
     public Plot Plot { get; internal set; } = new();
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
     public SkiaSharp.GRContext? GRContext => null;
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
@@ -16,7 +16,7 @@ public class MauiPlot : SKCanvasView, IPlotControl
     public MauiPlot()
     {
         Plot = new Plot() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         DisplayScale = DetectDisplayScale();
         UserInputProcessor = new(this);
         Menu = new MauiPlotMenu(this);

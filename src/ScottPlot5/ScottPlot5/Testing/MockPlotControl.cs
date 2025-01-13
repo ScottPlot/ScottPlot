@@ -16,7 +16,7 @@ public class MockPlotControl : IPlotControl
 
     public Plot Plot { get; private set; }
 
-    public Multiplot Multiplot { get; private set; }
+    public IMultiplot Multiplot { get; set; }
     public GRContext? GRContext => null;
 
     public UserInputProcessor UserInputProcessor { get; }
@@ -30,7 +30,7 @@ public class MockPlotControl : IPlotControl
     public MockPlotControl()
     {
         Plot = new() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         UserInputProcessor = new(this) { IsEnabled = true };
 
         // force a render on startup so we can immediately use pixel drag actions

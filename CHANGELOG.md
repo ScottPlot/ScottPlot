@@ -3,6 +3,7 @@ _Not yet on NuGet..._
 * Axis Rules: Improved support for inner and boundaries on plots with inverted axis limits (#4686, #4609) @kebox7
 * OpenGL: Improved behavior for applications which have multiple OpenGL instances (#4693) @onur-akaydin
 * Multiplot: Improved interactive behavior in .NET Maui, Blazor, and WinUI controls (#4691) @King-Taz
+* IPlotControl: Refactor to support `IMultiplot` allowing users to inject their own multi-plot logic (#4687)
 
 ## ScottPlot 5.0.52
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-08_

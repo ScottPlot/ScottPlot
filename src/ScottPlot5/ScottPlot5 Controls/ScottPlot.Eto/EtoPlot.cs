@@ -1,15 +1,14 @@
-using Eto.Forms;
+﻿using Eto.Forms;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
-using System;
 
 namespace ScottPlot.Eto;
 
 public class EtoPlot : Drawable, IPlotControl
 {
     public Plot Plot { get; internal set; }
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
     public GRContext? GRContext => null;
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
     public IPlotMenu? Menu { get; set; }
@@ -18,7 +17,7 @@ public class EtoPlot : Drawable, IPlotControl
     public EtoPlot()
     {
         Plot = new() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         DisplayScale = DetectDisplayScale();
         UserInputProcessor = new(this);
         Menu = new EtoPlotMenu(this);
