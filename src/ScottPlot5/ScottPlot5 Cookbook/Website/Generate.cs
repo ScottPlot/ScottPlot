@@ -17,9 +17,12 @@ internal class Generate
         GenerateHomePage(cb);
         GenerateCategoryPages(cb);
         GenerateRecipePages(cb);
-        GenerateSearchPage();
-        GeneratePalettesPage();
-        GenerateColormapsPage();
+
+        // generate flat pages
+        SearchPage.Generate(Paths.OutputFolder);
+        PalettesPage.Generate(Paths.OutputFolder);
+        ColormapsPage.Generate(Paths.OutputFolder);
+        ColorsPage.Generate(Paths.OutputFolder);
 
         Console.WriteLine(Paths.OutputFolder);
     }
@@ -46,20 +49,5 @@ internal class Generate
                 new RecipePage(recipe).Generate(Paths.OutputFolder);
             }
         }
-    }
-
-    private static void GenerateSearchPage()
-    {
-        SearchPage.Generate(Paths.OutputFolder);
-    }
-
-    private static void GeneratePalettesPage()
-    {
-        PalettesPage.Generate(Paths.OutputFolder);
-    }
-
-    private static void GenerateColormapsPage()
-    {
-        ColormapsPage.Generate(Paths.OutputFolder);
     }
 }

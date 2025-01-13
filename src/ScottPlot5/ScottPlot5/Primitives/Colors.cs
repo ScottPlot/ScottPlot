@@ -5,6 +5,7 @@
  */
 
 using ScottPlot.Palettes;
+using System.Collections.Generic;
 
 namespace ScottPlot;
 
@@ -217,6 +218,28 @@ public struct Colors
             float luminosity = 0.5f;
             colors[i] = Color.FromHSL(hue, saturation, luminosity);
         }
+
+        return colors;
+    }
+
+    public static List<(string, Color)> GetNamedColors()
+    {
+        List<(string, Color)> colors = [];
+
+        colors.AddRange(typeof(Colors)
+            .GetProperties()
+            .Where(x => x.PropertyType == typeof(Color))
+            .Select(x => ($"Colors.{x.Name}", (Color)x.GetValue(null)!)));
+
+        colors.AddRange(typeof(NamedColors.WindowsStandardColors)
+            .GetProperties()
+            .Where(x => x.PropertyType == typeof(Color))
+            .Select(x => ($"Colors.Windows.{x.Name}", (Color)x.GetValue(null)!)));
+
+        colors.AddRange(typeof(NamedColors.XkcdColors)
+            .GetProperties()
+            .Where(x => x.PropertyType == typeof(Color))
+            .Select(x => ($"Colors.Xkcd.{x.Name}", (Color)x.GetValue(null)!)));
 
         return colors;
     }
