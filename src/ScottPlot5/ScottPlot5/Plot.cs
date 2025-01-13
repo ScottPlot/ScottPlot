@@ -225,7 +225,7 @@ public class Plot : IDisposable
     public void RenderInMemory(int width = 400, int height = 300) => GetImage(width, height);
 
     /// <summary>
-    /// Render onto an existing canvas
+    /// Render onto an existing canvas with the given dimensions
     /// </summary>
     public void Render(SKCanvas canvas, int width, int height)
     {
@@ -261,9 +261,8 @@ public class Plot : IDisposable
             throw new ArgumentException($"{nameof(height)} must be greater than 0");
 
         SKImageInfo info = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-        using SKSurface surface = SKSurface.Create(info);
-        if (surface is null)
-            throw new NullReferenceException($"invalid SKImageInfo");
+        using SKSurface surface = SKSurface.Create(info) 
+            ?? throw new NullReferenceException($"invalid SKImageInfo");
 
         Render(surface.Canvas, width, height);
         return new Image(surface);
