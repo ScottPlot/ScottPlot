@@ -1,5 +1,8 @@
-## ScottPlot 5.0.53
+## ScottPlot 5.0.54
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.53
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_
 * Axis Rules: Improved support for inner and boundaries on plots with inverted axis limits (#4686, #4609) @kebox7
 * OpenGL: Improved behavior for applications which have multiple OpenGL instances (#4693) @onur-akaydin
 * Multiplot: Improved interactive behavior in .NET Maui, Blazor, and WinUI controls (#4691) @King-Taz
