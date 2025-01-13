@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot;
 
-public class Multiplot
+public class Multiplot : IMultiplot
 {
     /// <summary>
     /// Number of subplots in this multiplot

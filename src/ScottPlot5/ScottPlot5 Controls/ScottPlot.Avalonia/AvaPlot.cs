@@ -14,7 +14,7 @@ namespace ScottPlot.Avalonia;
 public class AvaPlot : Controls.Control, IPlotControl
 {
     public Plot Plot { get; internal set; }
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
     public IPlotMenu? Menu { get; set; }
     public Interactivity.UserInputProcessor UserInputProcessor { get; }
 
@@ -25,7 +25,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     public AvaPlot()
     {
         Plot = new() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         ClipToBounds = true;
         DisplayScale = DetectDisplayScale();
         UserInputProcessor = new(this);
@@ -36,15 +36,15 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     private class CustomDrawOp : ICustomDrawOperation
     {
-        private readonly Multiplot _plot;
+        private readonly IMultiplot Multiplot;
 
         public Rect Bounds { get; }
         public bool HitTest(Point p) => true;
         public bool Equals(ICustomDrawOperation? other) => false;
 
-        public CustomDrawOp(Rect bounds, Multiplot plot)
+        public CustomDrawOp(Rect bounds, IMultiplot multiplot)
         {
-            _plot = plot;
+            Multiplot = multiplot;
             Bounds = bounds;
         }
 
@@ -60,7 +60,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
             using var lease = leaseFeature.Lease();
             PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
-            _plot.Render(lease.SkCanvas, rect);
+            Multiplot.Render(lease.SkCanvas, rect);
         }
     }
 

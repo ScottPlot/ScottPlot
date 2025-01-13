@@ -9,7 +9,7 @@ namespace ScottPlot.WinUI;
 public partial class WinUIPlot : UserControl, IPlotControl
 {
     public Plot Plot { get; internal set; }
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
     public SkiaSharp.GRContext? GRContext => null;
 
     public IPlotMenu? Menu { get; set; }
@@ -22,7 +22,7 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public WinUIPlot()
     {
         Plot = new() { PlotControl = this };
-        Multiplot = new(Plot);
+        Multiplot = new Multiplot(Plot);
         UserInputProcessor = new(this);
         Menu = new WinUIPlotMenu(this);
 

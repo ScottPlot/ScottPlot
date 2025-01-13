@@ -10,7 +10,7 @@ public interface IPlotControl
     /// <summary>
     /// The multiplot managed by this interactive control
     /// </summary>
-    Multiplot Multiplot { get; }
+    IMultiplot Multiplot { get; set; }
 
     /// <summary>
     /// Render the plot and update the image

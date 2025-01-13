@@ -20,7 +20,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
-    public Multiplot Multiplot { get; internal set; }
+    public IMultiplot Multiplot { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
@@ -48,7 +48,7 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         try
         {
             Plot = new() { PlotControl = this };
-            Multiplot = new(Plot);
+            Multiplot = new Multiplot(Plot);
             DisplayScale = DetectDisplayScale();
             UserInputProcessor = new(this);
             Menu = new FormsPlotMenu(this);
