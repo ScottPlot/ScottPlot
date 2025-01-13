@@ -92,7 +92,7 @@ public class MauiPlot : SKCanvasView, IPlotControl
         base.OnPaintSurface(e);
 
         e.Surface.Canvas.Clear();
-        Plot.Render(e.Surface.Canvas, e.Info.Width, e.Info.Height);
+        Multiplot.Render(e.Surface);
     }
 
     public float DetectDisplayScale()
