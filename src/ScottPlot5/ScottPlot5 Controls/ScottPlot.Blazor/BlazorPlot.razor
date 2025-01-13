@@ -25,10 +25,7 @@
 
     public void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
-        Plot.Render(
-            canvas: e.Surface.Canvas,
-            width: (int)e.Surface.Canvas.LocalClipBounds.Width,
-            height: (int)e.Surface.Canvas.LocalClipBounds.Height);
+        Multiplot.Render(e.Surface);
     }
 
 
