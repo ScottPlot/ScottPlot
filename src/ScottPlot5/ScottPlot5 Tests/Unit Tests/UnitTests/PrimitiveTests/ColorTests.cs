@@ -276,4 +276,15 @@ internal class ColorTests
         spColor.Green.Should().Be(skColor.Green);
         spColor.Blue.Should().Be(skColor.Blue);
     }
+
+    [Test]
+    public void Test_Colors_GetNamedColors()
+    {
+        var namedColors = Colors.GetNamedColors();
+        namedColors.Should().NotBeEmpty();
+        foreach ((string name, Color color) in namedColors)
+        {
+            Console.WriteLine($"{name} {color}");
+        }
+    }
 }

@@ -34,6 +34,8 @@ internal class FrontPage : PageBase
             }
             if (chapter == "General")
             {
+                SB.AppendLine("<hr>");
+                SB.AppendLine($"<li><a href='colors'>Colors</a> - A list of all the colors included with ScottPlot</li>");
                 SB.AppendLine($"<li><a href='palettes'>Color Palettes</a> - Collections of colors which can be used to represent categorical data</li>");
                 SB.AppendLine($"<li><a href='colormaps'>Colormaps</a> - Color gradients available to represent continuous data</li>");
             }
