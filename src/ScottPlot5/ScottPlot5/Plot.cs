@@ -66,6 +66,15 @@ public class Plot : IDisposable
     {
         DataBackground?.Dispose();
         FigureBackground?.Dispose();
+
+        foreach (var plottable in PlottableList)
+        {
+            if (plottable is IDisposable disposablePlottable)
+            {
+                disposablePlottable.Dispose();
+            }
+        }
+
         PlottableList.Clear();
     }
 
