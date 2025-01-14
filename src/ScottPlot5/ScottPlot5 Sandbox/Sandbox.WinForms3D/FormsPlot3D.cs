@@ -1,4 +1,5 @@
 ﻿using Sandbox.WinForms3D.Primitives3D;
+using ScottPlot.WinForms;
 using SkiaSharp.Views.Desktop;
 using System.Windows.Forms;
 
@@ -6,7 +7,7 @@ namespace Sandbox.WinForms3D;
 
 public class FormsPlot3D : UserControl
 {
-    private SKControl SKControl { get; }
+    private TransparentSKControl SKControl { get; }
     public Plot3D Plot3D = new();
 
     Rotation3D? MouseDownRotation = null;
