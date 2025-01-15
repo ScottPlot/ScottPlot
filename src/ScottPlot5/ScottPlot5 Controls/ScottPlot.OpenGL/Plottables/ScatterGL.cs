@@ -54,7 +54,7 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
         GL.EnableVertexAttribArray(0);
         Vertices = Array.Empty<double>();
         GLHasBeenInitialized = true;
-    }    
+    }
 
     protected Matrix4d CalcTransform()
     {
@@ -201,7 +201,7 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
         if (GLHasBeenInitialized)
         {
             GL.DeleteVertexArray(VertexArrayObject);
-            GL.DeleteBuffer(VertexBufferObject);            
+            GL.DeleteBuffer(VertexBufferObject);
 
             GLHasBeenInitialized = false;
         }

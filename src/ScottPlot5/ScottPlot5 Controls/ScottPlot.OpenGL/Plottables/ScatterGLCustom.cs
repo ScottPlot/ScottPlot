@@ -11,7 +11,7 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGLCustom : ScatterGL
 {
-    private IMarkersDrawProgram? JoinsProgram;
+    protected IMarkersDrawProgram? JoinsProgram;
 
     public ScatterGLCustom(IScatterSource data, IPlotControl control) : base(data, control)
     {
