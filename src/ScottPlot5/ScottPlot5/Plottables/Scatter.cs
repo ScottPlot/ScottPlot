@@ -53,6 +53,14 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public double ScaleY { get; set; } = 1;
 
     /// <summary>
+    /// Creates an empty Scatter plot
+    /// </summary>
+    public Scatter(ScatterSourceDoubleArray scatterSourceDoubleArray = new([], []))
+    {
+
+    }
+
+    /// <summary>
     /// The style of lines to use when connecting points.
     /// </summary>
     public ConnectStyle ConnectStyle = ConnectStyle.Straight;
