@@ -56,7 +56,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     /// <summary>
     /// Creates an empty Scatter plot
     /// </summary>
-    public Scatter(ScatterSourceDoubleArray scatterSourceDoubleArray = new([], []))
+    public Scatter(ScatterSourceDoubleArray scatterSourceDoubleArray)
     {
 
     }
