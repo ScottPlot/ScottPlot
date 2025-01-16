@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Linq;
+using ScottPlot.DataSources;
 
 namespace ScottPlot.Plottables;
 
