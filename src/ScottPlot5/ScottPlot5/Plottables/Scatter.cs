@@ -1,10 +1,6 @@
-﻿using System.Data;
-using System.Linq;
-using ScottPlot.DataSources;
-
 namespace ScottPlot.Plottables;
 
-public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
+public class Scatter() : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -34,7 +30,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
-    public IScatterSource Data { get; } = data;
+    public IScatterSource Data { get; }
 
     public bool FillY { get; set; } = false;
     public bool FillYBelow { get; set; } = true;
@@ -56,9 +52,10 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     /// <summary>
     /// Creates an empty Scatter plot
     /// </summary>
-    public Scatter(IScatterSource data)
+    public Scatter(IScatterSource data) : this()
     {
-
+        Data = data;
+        _dataSource = data as IDataSource;
     }
 
     /// <summary>
@@ -345,7 +342,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     // Data object is assumed to implement IDataSource and will provide best execution
 
-    readonly IDataSource? _dataSource = data as IDataSource;
+    readonly IDataSource? _dataSource;
     bool IDataSource.IsSorted() => _dataSource?.IsSorted() ?? false;
     bool IDataSource.PreferCoordinates => _dataSource?.PreferCoordinates ?? true;
     int IDataSource.Length => _dataSource?.Length ?? Data.GetScatterPoints().Count;
