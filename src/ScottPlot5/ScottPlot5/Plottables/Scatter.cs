@@ -1,6 +1,8 @@
+using ScottPlot.DataSources;
+
 namespace ScottPlot.Plottables;
 
-public class Scatter() : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
+public class Scatter : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -30,7 +32,7 @@ public class Scatter() : IPlottable, IHasLine, IHasMarker, IHasLegendText, IData
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
-    public required IScatterSource Data { get; set; }
+    public IScatterSource Data { get; set; }
 
     public bool FillY { get; set; } = false;
     public bool FillYBelow { get; set; } = true;
@@ -50,13 +52,23 @@ public class Scatter() : IPlottable, IHasLine, IHasMarker, IHasLegendText, IData
     public double ScaleY { get; set; } = 1;
 
     /// <summary>
-    /// Creates an empty Scatter plot
+    /// Creates a Scatter plot with IScatterSource data
     /// </summary>
+     /// <param name="data"></param>
     public Scatter(IScatterSource data) : this()
     {
         Data = data;
         _dataSource = data as IDataSource;
     }
+
+    /// <summary>
+    /// Creates an empty Scatter plot
+    /// </summary>
+    public Scatter()
+    {
+        Data = new ScatterSourceDoubleArray([], []);
+    }
+
 
     /// <summary>
     /// The style of lines to use when connecting points.
