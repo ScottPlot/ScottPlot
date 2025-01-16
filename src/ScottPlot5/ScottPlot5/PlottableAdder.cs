@@ -996,6 +996,7 @@ public class PlottableAdder(Plot plot)
             LineColor = nextColor,
             MarkerFillColor = nextColor,
             MarkerLineColor = nextColor,
+            Data = source
         };
         Plot.PlottableList.Add(scatter);
         return scatter;
@@ -1038,7 +1039,10 @@ public class PlottableAdder(Plot plot)
     {
         Color nextColor = color ?? GetNextColor();
         ScatterSourceGenericArray<T1, T2> source = new(xs, ys);
-        Scatter scatter = new(source);
+        Scatter scatter = new(source)
+        {
+            Data = source 
+        };
         scatter.LineStyle.Color = nextColor;
         scatter.MarkerStyle.FillColor = nextColor;
         Plot.PlottableList.Add(scatter);
@@ -1049,7 +1053,10 @@ public class PlottableAdder(Plot plot)
     {
         Color nextColor = color ?? GetNextColor();
         ScatterSourceGenericList<T1, T2> source = new(xs, ys);
-        Scatter scatter = new(source);
+        Scatter scatter = new(source)
+        {
+            Data = source 
+        };
         scatter.LineStyle.Color = nextColor;
         scatter.MarkerStyle.FillColor = nextColor;
         Plot.PlottableList.Add(scatter);
