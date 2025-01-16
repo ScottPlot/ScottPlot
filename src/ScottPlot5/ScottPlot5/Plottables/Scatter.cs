@@ -30,7 +30,7 @@ public class Scatter() : IPlottable, IHasLine, IHasMarker, IHasLegendText, IData
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
 
-    public IScatterSource? Data { get; }
+    public required IScatterSource Data { get; set; }
 
     public bool FillY { get; set; } = false;
     public bool FillYBelow { get; set; } = true;
