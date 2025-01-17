@@ -170,7 +170,7 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
 
     #region DISPOSAL
 
-    private bool _disposed;
+    private bool _disposed = false;
 
     protected virtual void Dispose(bool disposing)
     {
