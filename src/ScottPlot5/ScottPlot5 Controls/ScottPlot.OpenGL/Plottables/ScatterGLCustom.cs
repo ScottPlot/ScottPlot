@@ -72,4 +72,28 @@ public class ScatterGLCustom : ScatterGL
         }
         RenderMarkers();
     }
+
+    private bool _disposed = false;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                GL.Finish();
+                JoinsProgram?.Dispose();
+                JoinsProgram = null;
+            }
+
+            _disposed = true;
+        }
+
+        base.Dispose(disposing);
+    }
+
+    ~ScatterGLCustom()
+    {
+        Dispose(false);
+    }
 }

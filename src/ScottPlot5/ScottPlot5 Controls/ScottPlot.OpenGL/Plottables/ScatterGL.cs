@@ -185,7 +185,7 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
                 MarkerProgram = null;
             }
 
-            CleanupGL();
+            CleanupGPUMemory();
 
             _disposed = true;
         }
@@ -196,7 +196,7 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
         Dispose(true);
     }
 
-    protected virtual void CleanupGL()
+    protected virtual void CleanupGPUMemory()
     {
         if (GLHasBeenInitialized)
         {
