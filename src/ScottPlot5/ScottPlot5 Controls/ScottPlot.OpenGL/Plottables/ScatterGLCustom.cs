@@ -91,9 +91,4 @@ public class ScatterGLCustom : ScatterGL
 
         base.Dispose(disposing);
     }
-
-    ~ScatterGLCustom()
-    {
-        Dispose(false);
-    }
 }

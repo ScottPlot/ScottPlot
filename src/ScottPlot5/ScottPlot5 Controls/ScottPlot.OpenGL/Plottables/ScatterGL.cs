@@ -206,9 +206,6 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
             GLHasBeenInitialized = false;
         }
     }
-    ~ScatterGL()
-    {
-        Dispose(false);
-    }
+   
     #endregion
 }
