@@ -48,6 +48,22 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
     /// </summary>
     public Angle Rotation { get; set; } = Angle.FromDegrees(0);
 
+    /// <summary>
+    /// if false, it is an elliptical arc
+    /// If true, it is an elliptical sector;
+    /// </summary>
+    public bool IsSector { get; set; } = true;
+
+    /// <summary>
+    /// Start angle of elliptical arc or elliptical sector (degrees)
+    /// </summary>
+    public Angle StartAngle { get; set; } = Angle.FromDegrees(0);
+
+    /// <summary>
+    /// Sweep angle of elliptical arc or elliptical sector (degrees)
+    /// </summary>
+    public Angle SweepAngle { get; set; } = Angle.FromDegrees(360);
+
     public AxisLimits GetAxisLimits()
     {
         if (Rotation.Normalized.Degrees == 0)
@@ -87,7 +103,28 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         float ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);
 
         PixelRect rect = new(-rx, rx, ry, -ry);
-        Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
-        Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
+
+        if (SweepAngle.Normalized.Degrees == 0 ||
+            Math.Abs(SweepAngle.Normalized.Degrees) >= 360)
+        {
+            Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
+            Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
+        }
+        else
+        {
+            double startAngle = StartAngle.Normalized.Degrees;
+            if (IsSector)
+            {
+                Drawing.FillSector(rp.Canvas, paint, FillStyle, rect,
+                    (float)-startAngle, (float)-SweepAngle.Degrees);
+                Drawing.DrawSector(rp.Canvas, paint, LineStyle, rect,
+                    (float)-startAngle, (float)-SweepAngle.Degrees);
+            }
+            else
+            {
+                Drawing.DrawArc(rp.Canvas, paint, LineStyle, rect,
+                    (float)-startAngle, (float)-SweepAngle.Degrees);
+            }
+        }
     }
 }
