@@ -395,6 +395,31 @@ public static class Drawing
         canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, false, paint);
     }
 
+    public static void DrawSector(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        (Angle correctedStart, Angle correctedSweep) =
+            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, true, paint);
+    }
+
+    public static void FillSector(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect, float startAngle, float sweepAngle)
+    {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
+
+        fillStyle.ApplyToPaint(paint, rect);
+
+        (Angle correctedStart, Angle correctedSweep) =
+            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, true, paint);
+    }
+
     public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
     {
         if (!style.IsVisible)
