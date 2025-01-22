@@ -352,6 +352,36 @@ public static class Drawing
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
 
+    private static (Angle startAngle, Angle sweepAngle) CorrectEllipseAngle(Angle startAngle, Angle sweepAngle, PixelRect rect)
+    {
+        Angle Correct(Angle angle)
+        {
+            // Calculate the coordinates on the circle
+            double x = Math.Cos(angle.Radians);
+            double y = Math.Sin(angle.Radians);
+
+            // Map back to the ellipse and use atan2 to calculate the corrected angle
+            var correctAngle =
+                Angle.FromRadians(Math.Atan2(y * rect.Right, x * rect.Bottom));
+
+            // Map back to the original range
+            double scalar = Math.Ceiling(Math.Abs(angle.Degrees) / 360);
+            return angle.Degrees switch
+            {
+                < -180 => correctAngle - scalar * Angle.FromDegrees(360),
+                > 180 => correctAngle + scalar * Angle.FromDegrees(360),
+                _ => correctAngle,
+            };
+        }
+
+        Angle start = startAngle;
+        Angle end = start + sweepAngle;
+        Angle correctedStart = Correct(start);
+        Angle correctedEnd = Correct(end);
+        Angle correctedSweep = correctedEnd - correctedStart;
+        return (correctedStart, correctedSweep);
+    }
+
     public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
@@ -360,7 +390,9 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+        (Angle correctedStart, Angle correctedSweep) =
+            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, false, paint);
     }
 
     public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
