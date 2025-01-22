@@ -52,6 +52,30 @@ public class PlottableAdder(Plot plot)
         return an;
     }
 
+    public Ellipse Arc(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
+    {
+        Color color = GetNextColor();
+
+        Ellipse arc = new()
+        {
+            Center = center,
+            RadiusX = radius,
+            RadiusY = radius,
+            StartAngle = startAngle,
+            SweepAngle = sweepAngle,
+            LineColor = color,
+            IsSector = false,
+        };
+
+        Plot.PlottableList.Add(arc);
+        return arc;
+    }
+
+    public Ellipse Arc(int xCenter, int yCenter, int radius, Angle startAngle, Angle sweepAngle)
+    {
+        return Arc(new(xCenter, yCenter), radius, startAngle, sweepAngle);
+    }
+
     public Arrow Arrow(Coordinates arrowBase, Coordinates arrowTip)
     {
         Color color = GetNextColor();
@@ -283,6 +307,30 @@ public class PlottableAdder(Plot plot)
         return Circle(new(xCenter, yCenter), radius);
     }
 
+    public Ellipse CircleSector(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
+    {
+        Color color = GetNextColor();
+
+        Ellipse arc = new()
+        {
+            Center = center,
+            RadiusX = radius,
+            RadiusY = radius,
+            StartAngle = startAngle,
+            SweepAngle = sweepAngle,
+            LineColor = color,
+            IsSector = true,
+        };
+
+        Plot.PlottableList.Add(arc);
+        return arc;
+    }
+
+    public Ellipse CircleSector(int xCenter, int yCenter, int radius, Angle startAngle, Angle sweepAngle)
+    {
+        return CircleSector(new(xCenter, yCenter), radius, startAngle, sweepAngle);
+    }
+
     public ColorBar ColorBar(IHasColorAxis source, Edge edge = Edge.Right)
     {
         ColorBar colorBar = new(source, edge);
@@ -411,6 +459,56 @@ public class PlottableAdder(Plot plot)
     public Ellipse Ellipse(double xCenter, double yCenter, double radiusX, double radiusY, Angle? rotation = null)
     {
         return Ellipse(new Coordinates(xCenter, yCenter), radiusX, radiusY, rotation);
+    }
+
+    public Ellipse EllipticalArc(Coordinates center, double radiusX, double radiusY, Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        Color color = GetNextColor();
+
+        Ellipse ellipticalSector = new()
+        {
+            Center = center,
+            RadiusX = radiusX,
+            RadiusY = radiusY,
+            StartAngle = startAngle,
+            SweepAngle = sweepAngle,
+            Rotation = rotation ?? Angle.FromDegrees(0),
+            LineColor = color,
+            IsSector = false,
+        };
+
+        Plot.PlottableList.Add(ellipticalSector);
+        return ellipticalSector;
+    }
+
+    public Ellipse EllipticalArc(double xCenter, double yCenter, double radiusX, double radiusY, Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        return EllipticalArc(new Coordinates(xCenter, yCenter), radiusX, radiusY, startAngle, sweepAngle, rotation);
+    }
+
+    public Ellipse EllipticalSector(Coordinates center, double radiusX, double radiusY, Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        Color color = GetNextColor();
+
+        Ellipse ellipticalSector = new()
+        {
+            Center = center,
+            RadiusX = radiusX,
+            RadiusY = radiusY,
+            StartAngle = startAngle,
+            SweepAngle = sweepAngle,
+            Rotation = rotation ?? Angle.FromDegrees(0),
+            LineColor = color,
+            IsSector = true,
+        };
+
+        Plot.PlottableList.Add(ellipticalSector);
+        return ellipticalSector;
+    }
+
+    public Ellipse EllipticalSector(double xCenter, double yCenter, double radiusX, double radiusY, Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        return EllipticalSector(new Coordinates(xCenter, yCenter), radiusX, radiusY, startAngle, sweepAngle, rotation);
     }
 
     public ErrorBar ErrorBar(IReadOnlyList<double> xs, IReadOnlyList<double> ys, IReadOnlyList<double> yErrors)
