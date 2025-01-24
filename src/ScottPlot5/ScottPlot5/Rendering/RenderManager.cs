@@ -48,7 +48,7 @@ public class RenderManager(Plot plot)
 
     /// <summary>
     /// This event is invoked just before each render, 
-    /// after axis limits are determined and axis limits are set
+    /// after axis limits are determined, tick labels are measured, and data area has been decided
     /// </summary>
     public EventHandler<RenderPack> RenderStarting { get; set; } = delegate { };
 
