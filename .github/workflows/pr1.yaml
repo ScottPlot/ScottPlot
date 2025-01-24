@@ -18,9 +18,17 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0"
-      - name: Build
-        run: bash .github/workflows/scripts/check-build.sh
-      - name: ScottPlot5 Unit Tests
+      - name: Build ScottPlot
+        run: dotnet build "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
+      - name: Build Tests
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj"
+      - name: Build Cookbook
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
+      - name: Build WinForms Demo
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
+      - name: Build WPF Demo
+        run: dotnet build "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WPF Demo/WPF Demo.csproj"
+      - name: Run Unit Tests
         run: dotnet test "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj" --configuration Release --verbosity minimal
-      - name: ScottPlot5 Cookbook
+      - name: Run Cookbook Tests
         run: dotnet test "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj" --configuration Release --verbosity minimal
