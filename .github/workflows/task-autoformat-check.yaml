@@ -12,14 +12,11 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - name: 🛒 Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      - name: ✨ Setup .NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
-          dotnet-quality: "preview"
-      - name: ✒️ Code Format
-        run: |
-          bash  .github/workflows/scripts/autoformat.sh
-          echo "::warning::Run 'dotnet format' to fix code format errors"
+          dotnet-version: "9.0"
+      - name: Code Format Check
+        run: dotnet format "src/ScottPlot5/ScottPlot5/ScottPlot.csproj" --verify-no-changes
