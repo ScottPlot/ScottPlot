@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.54
 _Not yet on NuGet..._
+* Multiplot: Improved API for advanced layout customization. See cookbook and demo application for examples. (#4738)
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_
