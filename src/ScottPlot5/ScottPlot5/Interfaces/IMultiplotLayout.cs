@@ -2,5 +2,5 @@
 
 public interface IMultiplotLayout
 {
-    PixelRect[] GetSubplotRectangles(Multiplot multiplot, PixelRect figureRect);
+    PixelRect[] GetSubplotRectangles(SubplotCollection subplots, PixelRect figureRect);
 }

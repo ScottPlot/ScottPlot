@@ -18,7 +18,7 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
         formsPlot1.Multiplot.AddPlots(3);
 
         // add sample data to each subplot
-        for (int i = 0; i < formsPlot1.Multiplot.Count; i++)
+        for (int i = 0; i < formsPlot1.Multiplot.Subplots.Count; i++)
         {
             double[] ys = ScottPlot.Generate.Sin(oscillations: i + 1);
             formsPlot1.Multiplot.GetPlot(i).Add.Signal(ys);
@@ -80,9 +80,9 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
     {
         int MiddlePlotHeight = middlePlotHeight;
 
-        public PixelRect[] GetSubplotRectangles(Multiplot multiplot, PixelRect figureRect)
+        public PixelRect[] GetSubplotRectangles(SubplotCollection subplots, PixelRect figureRect)
         {
-            PixelRect[] rectangles = new PixelRect[multiplot.Count];
+            PixelRect[] rectangles = new PixelRect[subplots.Count];
 
             PixelSize middlePlotSize = new(figureRect.Width, MiddlePlotHeight);
             PixelSize otherPlotSize = new(figureRect.Width, (figureRect.Height - MiddlePlotHeight) / 2);

@@ -3,6 +3,7 @@ _Not yet on NuGet..._
 * Multiplot: Improved API for advanced layout customization. See cookbook and demo application for examples. (#4738)
 * Multiplot: Use new shared axis manager. `Multiplot.ShareY()` is now `Multiplot.SharedAxes.ShareY()` as seen in demo application. (#4738)
 * Multiplot: Moved state management and pixel lookup logic based on previous renders into the `IMultiplot.LastRender` property (#4738)
+* Multiplot: Added `Subplots` property for plot collection management and replaced `IMultiplot.Count` with `Multiplot.Count()` (#4738)
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_

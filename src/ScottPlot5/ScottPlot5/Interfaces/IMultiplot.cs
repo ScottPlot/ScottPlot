@@ -2,36 +2,7 @@
 
 public interface IMultiplot
 {
-    #region subplot collection management
-
-    // TODO: collection manager
-
-    /// <summary>
-    /// Number of subplots in this multiplot
-    /// </summary>
-    public int Count { get; }
-
-    /// <summary>
-    /// Add the given plot to the collection of subplots
-    /// </summary>
-    void AddPlot(Plot plot);
-
-    /// <summary>
-    /// Remove the given plot from the collection of subplots
-    /// </summary>
-    void RemovePlot(Plot plot);
-
-    /// <summary>
-    /// Return the plot at the given index
-    /// </summary>
-    Plot GetPlot(int index);
-
-    /// <summary>
-    /// Return all plots in this multiplot
-    /// </summary>
-    Plot[] GetPlots();
-
-    #endregion
+    SubplotCollection Subplots { get; }
 
     /// <summary>
     /// This logic is used at render time to place subplots 
@@ -117,12 +88,12 @@ public static class IMultiplotExtensions
     /// </summary>
     public static void AddPlots(this IMultiplot multiplot, int total)
     {
-        while (multiplot.Count < total)
+        while (multiplot.Count() < total)
         {
             multiplot.AddPlot();
         }
 
-        while (multiplot.Count > total)
+        while (multiplot.Count() > total)
         {
             multiplot.RemovePlot(multiplot.GetPlots().Last());
         }
@@ -135,5 +106,45 @@ public static class IMultiplotExtensions
     public static Plot? GetPlotAtPixel(this IMultiplot multiplot, Pixel pixel)
     {
         return multiplot.LastRender.GetPlotAtPixel(pixel);
+    }
+
+    /// <summary>
+    /// Number of subplots in this multiplot
+    /// </summary>
+    public static int Count(this IMultiplot multiplot)
+    {
+        return multiplot.Subplots.Count;
+    }
+
+    /// <summary>
+    /// Add the given plot to the collection of subplots
+    /// </summary>
+    public static void AddPlot(this IMultiplot multiplot, Plot plot)
+    {
+        multiplot.Subplots.Add(plot);
+    }
+
+    /// <summary>
+    /// Remove the given plot from the collection of subplots
+    /// </summary>
+    public static void RemovePlot(this IMultiplot multiplot, Plot plot)
+    {
+        multiplot.Subplots.Remove(plot);
+    }
+
+    /// <summary>
+    /// Return the plot at the given index
+    /// </summary>
+    public static Plot GetPlot(this IMultiplot multiplot, int index)
+    {
+        return multiplot.Subplots.GetPlot(index);
+    }
+
+    /// <summary>
+    /// Return all plots in this multiplot
+    /// </summary>
+    public static Plot[] GetPlots(this IMultiplot multiplot)
+    {
+        return multiplot.Subplots.GetPlots();
     }
 }

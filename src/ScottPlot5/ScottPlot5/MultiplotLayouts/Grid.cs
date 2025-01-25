@@ -2,14 +2,14 @@
 
 public class Grid(int rows, int columns) : IMultiplotLayout
 {
-    public PixelRect[] GetSubplotRectangles(Multiplot multiplot, PixelRect figureRect)
+    public PixelRect[] GetSubplotRectangles(SubplotCollection subplots, PixelRect figureRect)
     {
-        PixelRect[] rectangles = new PixelRect[multiplot.Count];
+        PixelRect[] rectangles = new PixelRect[subplots.Count];
 
         double fractionPerRow = 1.0 / rows;
         double fractionPerColumn = 1.0 / columns;
 
-        for (int i = 0; i < multiplot.Count; i++)
+        for (int i = 0; i < subplots.Count; i++)
         {
             int rowIndex = i / columns;
             int columnIndex = i % columns;
