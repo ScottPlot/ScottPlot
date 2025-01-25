@@ -25,10 +25,10 @@ public partial class Form1 : Form
         formsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 2);
 
         // share the X axis for all subplots
-        formsPlot1.Multiplot.ShareX(subplots);
+        formsPlot1.Multiplot.SharedAxes.ShareX(subplots);
 
         // share the Y axis for select subplots
-        formsPlot1.Multiplot.ShareY([subplots[0], subplots[1]]);
+        formsPlot1.Multiplot.SharedAxes.ShareY([subplots[0], subplots[1]]);
 
         // used manual padding to ensure subplot alignment
         PixelPadding padding = new(50, 10, 25, 45);

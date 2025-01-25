@@ -4,6 +4,8 @@ public interface IMultiplot
 {
     #region subplot collection management
 
+    // TODO: collection manager
+
     /// <summary>
     /// Number of subplots in this multiplot
     /// </summary>
@@ -33,6 +35,8 @@ public interface IMultiplot
 
     #region subplot layout management
 
+    // TODO: LastRender state management
+
     /// <summary>
     /// This logic is used at render time to place subplots 
     /// within the rectangle containing the entire multiplot figure.
@@ -47,23 +51,7 @@ public interface IMultiplot
 
     #endregion
 
-
-    #region axis and layout sharing
-    // TODO: create a SubPlotShareManager to handle shared axes and layouts
-
-    /// <summary>
-    /// Link horizontal axis limits of the given collection of plots
-    /// so when one changes they all change in unison
-    /// </summary>
-    void ShareX(IEnumerable<Plot> plots);
-
-    /// <summary>
-    /// Link vertical axis limits of the given collection of plots
-    /// so when one changes they all change in unison
-    /// </summary>
-    void ShareY(IEnumerable<Plot> plots);
-
-    #endregion
+    public MultiplotSharedAxisManager SharedAxes { get; }
 
     /// <summary>
     /// Render this multiplot onto the given canvas using a layout
