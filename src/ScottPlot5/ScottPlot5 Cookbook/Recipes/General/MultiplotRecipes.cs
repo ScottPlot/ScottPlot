@@ -85,10 +85,14 @@ public class MultiplotRecipes : ICategory
                 multiplot.AddPlot(plot);
             }
 
-            // manually set the position for each plot
-            multiplot.SetPosition(0, new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1));
-            multiplot.SetPosition(1, new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2));
-            multiplot.SetPosition(2, new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2));
+            // create a custom grid layout
+            ScottPlot.MultiplotLayouts.CustomGrid gridLayout = new();
+            gridLayout.Set(multiplot.GetPlot(0), new GridCell(0, 0, 2, 1)); // double wide
+            gridLayout.Set(multiplot.GetPlot(1), new GridCell(1, 0, 2, 2)); // bottom left
+            gridLayout.Set(multiplot.GetPlot(2), new GridCell(1, 1, 2, 2)); // bottom right
+
+            // user the custom layout in our multiplot
+            multiplot.Layout = gridLayout;
         }
     }
 }

@@ -8,47 +8,18 @@ public class Multiplot : IMultiplot
     public int Count => Subplots.Count;
 
     /// <summary>
-    /// Copy styling options (e.g., background color) to new plots as they are added
-    /// </summary>
-    bool StyleNewPlotsAutomatically { get; set; } = true;
-
-    /// <summary>
-    /// If enabled, canvases passed into Render() methods will be cleared before plots are drawn on top of them.
-    /// This is helpful for interactive multiplots with layouts containing blank spaces to ensure drawings from previous 
-    /// renders do not persist through multiple renders where figure dimensions change.
-    /// </summary>
-    bool ClearCanvasBeforeRender { get; set; } = true;
-
-    /// <summary>
     /// This list contains plots, logic for positioning them, and records of where they were last rendered
     /// </summary>
-    private readonly List<PositionedSubplot> Subplots = [];
-    private class PositionedSubplot(Plot plot, ISubplotPosition position)
-    {
-        public Plot Plot { get; set; } = plot;
-        public PixelRect LastRenderRect { get; set; } = PixelRect.NaN;
-        public AxisLimits LastRenderAxisLimits { get; set; } = AxisLimits.Unset; // TODO: support multi-axis
-        public ISubplotPosition Position { get; set; } = position;
-    }
+    private readonly List<Plot> Subplots = [];
 
     // TODO: improve support for plots with non-standard axis limits
-    private readonly List<PositionedSubplot> PlotsWithSharedX = [];
-    private readonly List<PositionedSubplot> PlotsWithSharedY = [];
-
-    private IMultiplotLayout? _Layout = new MultiplotLayouts.Rows();
+    private readonly List<Plot> PlotsWithSharedX = [];
+    private readonly List<Plot> PlotsWithSharedY = [];
 
     /// <summary>
     /// This logic is used to create the initial layout for subplots in the multiplot
     /// </summary>
-    public IMultiplotLayout? Layout
-    {
-        get => _Layout;
-        set
-        {
-            _Layout = value;
-            _Layout?.ResetAllPositions(this);
-        }
-    }
+    public IMultiplotLayout Layout { get; set; } = new MultiplotLayouts.Rows();
 
     /// <summary>
     /// Create a multiplot with no initial subplots
@@ -68,12 +39,25 @@ public class Multiplot : IMultiplot
 
     public void RemovePlot(Plot plot)
     {
-        var matchingSubplots = Subplots.Where(x => x.Plot == plot);
-        foreach (var subplot in matchingSubplots)
-        {
-            Subplots.Remove(subplot);
-        }
+        Subplots.Remove(plot);
+        ForgetLastRender(plot);
     }
+
+    #region last render state
+
+    // TODO: wrap this in a class
+    private readonly Dictionary<Plot, PixelRect> LastRenderRect = [];
+    private readonly Dictionary<Plot, AxisLimits> LastRenderAxisLimits = []; // TODO: support multi-axis
+
+    public PixelRect? GetLastRenderRectangle(Plot plot) => LastRenderRect[plot];
+
+    private void ForgetLastRender(Plot plot)
+    {
+        LastRenderRect.Remove(plot);
+        LastRenderAxisLimits.Remove(plot);
+    }
+
+    #endregion
 
     /// <summary>
     /// Reset this multiplot so it only contains the given plot
@@ -101,19 +85,17 @@ public class Multiplot : IMultiplot
     {
         if (Subplots.Count > 0)
         {
-            plot.PlotControl = Subplots.First().Plot.PlotControl;
+            plot.PlotControl = Subplots.First().PlotControl;
         }
 
-        if (StyleNewPlotsAutomatically && Subplots.Count > 0)
+        if (Subplots.Count > 0)
         {
-            Plot lastPlot = Subplots.Last().Plot;
+            Plot lastPlot = Subplots.Last();
             plot.FigureBackground.Color = lastPlot.FigureBackground.Color;
             plot.DataBackground.Color = lastPlot.DataBackground.Color;
         }
 
-        PositionedSubplot positionedPlot = new(plot, new SubplotPositions.Full());
-        Subplots.Add(positionedPlot);
-        Layout?.ResetAllPositions(this);
+        Subplots.Add(plot);
     }
 
     /// <summary>
@@ -139,7 +121,7 @@ public class Multiplot : IMultiplot
     /// </summary>
     public Plot GetPlot(int index)
     {
-        return Subplots[index].Plot;
+        return Subplots[index];
     }
 
     /// <summary>
@@ -147,61 +129,7 @@ public class Multiplot : IMultiplot
     /// </summary>
     public Plot[] GetPlots()
     {
-        return Subplots.Select(x => x.Plot).ToArray();
-    }
-
-    /// <summary>
-    /// Return the positioned subplot associated with the given plot
-    /// </summary>
-    private PositionedSubplot GetPositionedSubplot(Plot plot)
-    {
-        foreach (var subplot in Subplots)
-        {
-            if (subplot.Plot == plot)
-            {
-                return subplot;
-            }
-        }
-        throw new KeyNotFoundException();
-    }
-
-    /// <summary>
-    /// Set the position of the given subplot
-    /// </summary>
-    public void SetPosition(Plot plot, ISubplotPosition position)
-    {
-        for (int i = 0; i < Subplots.Count; i++)
-        {
-            if (Subplots[i].Plot == plot)
-            {
-                Subplots[i].Position = position;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Set the position of the given subplot index
-    /// </summary>
-    public void SetPosition(int plotIndex, ISubplotPosition position)
-    {
-        Subplots[plotIndex].Position = position;
-    }
-
-    /// <summary>
-    /// Get the pixel rectangle where the given subplot was last rendered.
-    /// Returns PixelRect.NaN if a render has not yet occurred.
-    /// </summary>
-    public PixelRect GetLastRenderRectangle(Plot plot)
-    {
-        foreach (var pos in Subplots)
-        {
-            if (pos.Plot == plot)
-            {
-                return pos.LastRenderRect;
-            }
-        }
-
-        throw new KeyNotFoundException();
+        return Subplots.ToArray();
     }
 
     /// <summary>
@@ -219,39 +147,23 @@ public class Multiplot : IMultiplot
     {
         UpdateSharedPlotAxisLimits();
 
-        if (ClearCanvasBeforeRender)
+        canvas.Clear();
+
+        PixelRect[] subplotRectangles = Layout.GetSubplotRectangles(this, figureRect);
+        if (subplotRectangles.Length != Subplots.Count)
         {
-            canvas.Clear();
+            throw new InvalidOperationException($"Layout returned {subplotRectangles.Length} rectangles for {Subplots.Count} subplots");
         }
 
-        foreach (var positionedPlot in Subplots)
+        for (int i = 0; i < Subplots.Count; i++)
         {
-            PixelRect subPlotRect = positionedPlot.Position.GetRect(figureRect);
-            positionedPlot.LastRenderRect = subPlotRect;
-            positionedPlot.LastRenderAxisLimits = positionedPlot.Plot.Axes.GetLimits();
-            positionedPlot.Plot.RenderManager.ClearCanvasBeforeEachRender = false;
-            positionedPlot.Plot.Render(canvas, subPlotRect);
+            Plot plot = Subplots[i];
+            plot.RenderManager.ClearCanvasBeforeEachRender = false;
+            plot.Render(canvas, subplotRectangles[i]);
+
+            LastRenderRect[plot] = subplotRectangles[i];
+            LastRenderAxisLimits[plot] = plot.Axes.GetLimits();
         }
-    }
-
-    /// <summary>
-    /// Create a new image, render the multiplot onto it, and return it
-    /// </summary>
-    public Image Render(int width, int height)
-    {
-        SKImageInfo imageInfo = new(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-        SKSurface surface = SKSurface.Create(imageInfo);
-        PixelRect rect = new(0, width, height, 0);
-        Render(surface.Canvas, rect);
-        return new(surface);
-    }
-
-    /// <summary>
-    /// Save the multiplot as a PNG image file
-    /// </summary>
-    public SavedImageInfo SavePng(string filename, int width = 800, int height = 600)
-    {
-        return Render(width, height).SavePng(filename);
     }
 
     /// <summary>
@@ -260,10 +172,12 @@ public class Multiplot : IMultiplot
     /// </summary>
     public Plot? GetPlotAtPixel(Pixel pixel)
     {
-        foreach (var positionedPlot in Subplots)
+        foreach (var entry in LastRenderRect)
         {
-            if (positionedPlot.LastRenderRect.Contains(pixel))
-                return positionedPlot.Plot;
+            if (entry.Value.Contains(pixel))
+            {
+                return entry.Key;
+            }
         }
 
         return null;
@@ -275,26 +189,26 @@ public class Multiplot : IMultiplot
         if (parentPlotX is not null)
         {
             AxisLimits parentLimits = parentPlotX.Axes.GetLimits();
-            PlotsWithSharedX.ForEach(x => x.Plot.Axes.SetLimitsX(parentLimits));
+            PlotsWithSharedX.ForEach(x => x.Axes.SetLimitsX(parentLimits));
         }
 
         Plot? parentPlotY = GetFirstPlotWithChangedLimitsY();
         if (parentPlotY is not null)
         {
             AxisLimits parentLimits = parentPlotY.Axes.GetLimits();
-            PlotsWithSharedY.ForEach(x => x.Plot.Axes.SetLimitsY(parentLimits));
+            PlotsWithSharedY.ForEach(x => x.Axes.SetLimitsY(parentLimits));
         }
     }
 
     private Plot? GetFirstPlotWithChangedLimitsX()
     {
-        foreach (var positionedPlot in PlotsWithSharedX)
+        foreach (var plot in PlotsWithSharedX)
         {
-            var oldRange = positionedPlot.Plot.Axes.GetLimits().HorizontalRange;
-            var newRange = positionedPlot.LastRenderAxisLimits.HorizontalRange;
+            var oldRange = plot.Axes.GetLimits().HorizontalRange;
+            var newRange = LastRenderAxisLimits[plot].HorizontalRange;
             if (oldRange != newRange)
             {
-                return positionedPlot.Plot;
+                return plot;
             }
         }
         return null;
@@ -302,13 +216,13 @@ public class Multiplot : IMultiplot
 
     private Plot? GetFirstPlotWithChangedLimitsY()
     {
-        foreach (var positionedPlot in PlotsWithSharedY)
+        foreach (var plot in PlotsWithSharedY)
         {
-            var oldRange = positionedPlot.Plot.Axes.GetLimits().VerticalRange;
-            var newRange = positionedPlot.LastRenderAxisLimits.VerticalRange;
+            var oldRange = plot.Axes.GetLimits().VerticalRange;
+            var newRange = LastRenderAxisLimits[plot].VerticalRange;
             if (oldRange != newRange)
             {
-                return positionedPlot.Plot;
+                return plot;
             }
         }
         return null;
@@ -321,12 +235,12 @@ public class Multiplot : IMultiplot
     public void ShareX(IEnumerable<Plot> plots)
     {
         PlotsWithSharedX.Clear();
-        PlotsWithSharedX.AddRange(plots.Select(GetPositionedSubplot));
+        PlotsWithSharedX.AddRange(plots);
 
         // reset remembered axis limits to force realignment on the next render
         foreach (Plot plot in plots)
         {
-            GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
+            LastRenderAxisLimits[plot] = AxisLimits.Unset;
         }
     }
 
@@ -337,12 +251,12 @@ public class Multiplot : IMultiplot
     public void ShareY(IEnumerable<Plot> plots)
     {
         PlotsWithSharedY.Clear();
-        PlotsWithSharedY.AddRange(plots.Select(GetPositionedSubplot));
+        PlotsWithSharedY.AddRange(plots);
 
         // reset remembered axis limits to force realignment on the next render
         foreach (Plot plot in plots)
         {
-            GetPositionedSubplot(plot).LastRenderAxisLimits = AxisLimits.Unset;
+            LastRenderAxisLimits[plot] = AxisLimits.Unset;
         }
     }
 }

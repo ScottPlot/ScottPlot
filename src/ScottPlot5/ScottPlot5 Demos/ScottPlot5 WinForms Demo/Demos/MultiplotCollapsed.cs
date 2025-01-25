@@ -13,6 +13,7 @@ public partial class MultiplotCollapsed : Form, IDemoWindow
     {
         InitializeComponent();
 
+        /*
         // setup a multiplot with 3 subplots
         formsPlot1.Multiplot.AddPlots(3);
 
@@ -102,8 +103,10 @@ public partial class MultiplotCollapsed : Form, IDemoWindow
 
         // force a render in memory so axis changes are registered at startup
         formsPlot1.Multiplot.Render(formsPlot1.Width, formsPlot1.Height);
+        */
     }
 
+    /*
     class CustomLayout() : IMultiplotLayout
     {
         readonly CustomRowPosition PositionRowA = new(0);
@@ -193,6 +196,11 @@ public partial class MultiplotCollapsed : Form, IDemoWindow
                 });
             }
         }
+
+        public PixelRect[] GetSubplotRectangles(Multiplot multiplot, PixelRect figureRect)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class CustomRowPosition(int rowIndex) : ISubplotPosition
@@ -218,4 +226,5 @@ public partial class MultiplotCollapsed : Form, IDemoWindow
             return LastRect;
         }
     }
+    */
 }

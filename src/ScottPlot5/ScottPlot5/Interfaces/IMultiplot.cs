@@ -34,14 +34,10 @@ public interface IMultiplot
     #region subplot layout management
 
     /// <summary>
-    /// This logic is used to create the initial layout for subplots in the multiplot
+    /// This logic is used at render time to place subplots 
+    /// within the rectangle containing the entire multiplot figure.
     /// </summary>
-    IMultiplotLayout? Layout { get; set; }
-
-    /// <summary>
-    /// Set the position of the subplot at the given index
-    /// </summary>
-    void SetPosition(int index, ISubplotPosition position);
+    IMultiplotLayout Layout { get; set; }
 
     /// <summary>
     /// Return the plot beneath the given pixel according to the last render.
@@ -113,6 +109,14 @@ public static class IMultiplotExtensions
     public static void Render(this IMultiplot multiplot, SKSurface surface)
     {
         multiplot.Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
+    }
+
+    /// <summary>
+    /// Save the multiplot as a PNG image file
+    /// </summary>
+    public static SavedImageInfo SavePng(this IMultiplot multiplot, string filename, int width = 800, int height = 600)
+    {
+        return multiplot.Render(width, height).SavePng(filename);
     }
 
     /// <summary>

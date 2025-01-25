@@ -2,8 +2,10 @@
 
 public class Grid(int rows, int columns) : IMultiplotLayout
 {
-    public void ResetAllPositions(Multiplot multiplot)
+    public PixelRect[] GetSubplotRectangles(Multiplot multiplot, PixelRect figureRect)
     {
+        PixelRect[] rectangles = new PixelRect[multiplot.Count];
+
         double fractionPerRow = 1.0 / rows;
         double fractionPerColumn = 1.0 / columns;
 
@@ -12,8 +14,9 @@ public class Grid(int rows, int columns) : IMultiplotLayout
             int rowIndex = i / columns;
             int columnIndex = i % columns;
             FractionRect fr = new(fractionPerColumn * columnIndex, fractionPerRow * rowIndex, fractionPerColumn, fractionPerRow);
-            ISubplotPosition position = new SubplotPositions.Fractional(fr);
-            multiplot.SetPosition(i, position);
+            rectangles[i] = fr.GetPixelRect(figureRect);
         }
+
+        return rectangles;
     }
 }
