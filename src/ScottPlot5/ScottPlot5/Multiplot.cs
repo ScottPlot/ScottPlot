@@ -19,6 +19,8 @@ public class Multiplot : IMultiplot
     /// </summary>
     public IMultiplotLayout Layout { get; set; } = new MultiplotLayouts.Rows();
 
+    public MultiplotLayoutSnapshot LastRender { get; } = new();
+
     /// <summary>
     /// Create a multiplot with no initial subplots
     /// </summary>
@@ -38,24 +40,8 @@ public class Multiplot : IMultiplot
     public void RemovePlot(Plot plot)
     {
         Subplots.Remove(plot);
-        ForgetLastRender(plot);
+        LastRender.Forget(plot);
     }
-
-    #region last render state
-
-    // TODO: wrap this in a class
-    private readonly Dictionary<Plot, PixelRect> LastRenderRect = [];
-    private readonly Dictionary<Plot, AxisLimits> LastRenderAxisLimits = []; // TODO: support multi-axis
-
-    public PixelRect? GetLastRenderRectangle(Plot plot) => LastRenderRect[plot];
-
-    private void ForgetLastRender(Plot plot)
-    {
-        LastRenderRect.Remove(plot);
-        LastRenderAxisLimits.Remove(plot);
-    }
-
-    #endregion
 
     /// <summary>
     /// Reset this multiplot so it only contains the given plot
@@ -131,14 +117,6 @@ public class Multiplot : IMultiplot
     }
 
     /// <summary>
-    /// Render the multiplot into the clip boundary of the given surface.
-    /// </summary>
-    public void Render(SKSurface surface)
-    {
-        Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
-    }
-
-    /// <summary>
     /// Render the multiplot on a canvas inside the given rectangle.
     /// </summary>
     public void Render(SKCanvas canvas, PixelRect figureRect)
@@ -158,26 +136,7 @@ public class Multiplot : IMultiplot
             Plot plot = Subplots[i];
             plot.RenderManager.ClearCanvasBeforeEachRender = false;
             plot.Render(canvas, subplotRectangles[i]);
-
-            LastRenderRect[plot] = subplotRectangles[i];
-            LastRenderAxisLimits[plot] = plot.Axes.GetLimits();
+            LastRender.Remember(plot, subplotRectangles[i]);
         }
-    }
-
-    /// <summary>
-    /// Return the plot beneath the given pixel according to the last render.
-    /// Returns null if no render occurred or the pixel is not over a plot.
-    /// </summary>
-    public Plot? GetPlotAtPixel(Pixel pixel)
-    {
-        foreach (var entry in LastRenderRect)
-        {
-            if (entry.Value.Contains(pixel))
-            {
-                return entry.Key;
-            }
-        }
-
-        return null;
     }
 }

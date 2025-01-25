@@ -33,10 +33,6 @@ public interface IMultiplot
 
     #endregion
 
-    #region subplot layout management
-
-    // TODO: LastRender state management
-
     /// <summary>
     /// This logic is used at render time to place subplots 
     /// within the rectangle containing the entire multiplot figure.
@@ -44,13 +40,14 @@ public interface IMultiplot
     IMultiplotLayout Layout { get; set; }
 
     /// <summary>
-    /// Return the plot beneath the given pixel according to the last render.
-    /// Returns null if no render occurred or the pixel is not over a plot.
+    /// Stores state about previous renders that can be used
+    /// to determine plots at specific pixel positions.
     /// </summary>
-    Plot? GetPlotAtPixel(Pixel pixel);
+    MultiplotLayoutSnapshot LastRender { get; }
 
-    #endregion
-
+    /// <summary>
+    /// Logic for linking subplot axis limits together.
+    /// </summary>
     public MultiplotSharedAxisManager SharedAxes { get; }
 
     /// <summary>
@@ -129,5 +126,14 @@ public static class IMultiplotExtensions
         {
             multiplot.RemovePlot(multiplot.GetPlots().Last());
         }
+    }
+
+    /// <summary>
+    /// Return the plot beneath the given pixel according to the last render.
+    /// Returns null if no render occurred or the pixel is not over a plot.
+    /// </summary>
+    public static Plot? GetPlotAtPixel(this IMultiplot multiplot, Pixel pixel)
+    {
+        return multiplot.LastRender.GetPlotAtPixel(pixel);
     }
 }
