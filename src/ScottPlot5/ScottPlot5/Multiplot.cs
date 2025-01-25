@@ -31,7 +31,6 @@ public class Multiplot : IMultiplot
         public ISubplotPosition Position { get; set; } = position;
     }
 
-
     // TODO: improve support for plots with non-standard axis limits
     private readonly List<PositionedSubplot> PlotsWithSharedX = [];
     private readonly List<PositionedSubplot> PlotsWithSharedY = [];
@@ -65,6 +64,15 @@ public class Multiplot : IMultiplot
     public Multiplot(Plot plot)
     {
         AddPlot(plot);
+    }
+
+    public void RemovePlot(Plot plot)
+    {
+        var matchingSubplots = Subplots.Where(x => x.Plot == plot);
+        foreach (var subplot in matchingSubplots)
+        {
+            Subplots.Remove(subplot);
+        }
     }
 
     /// <summary>

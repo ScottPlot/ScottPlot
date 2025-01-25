@@ -8,7 +8,8 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        Plot[] subplots = formsPlot1.Multiplot.AddPlots(4);
+        formsPlot1.Multiplot.AddPlots(4);
+        Plot[] subplots = formsPlot1.Multiplot.GetPlots();
         ScottPlot.Color[] colors = new ScottPlot.Palettes.Category10().GetColors(4);
 
         for (int i = 0; i < subplots.Length; i++)
