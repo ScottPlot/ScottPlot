@@ -111,7 +111,6 @@ public class RenderManager(Plot plot)
             RenderOnce(canvas, rect);
             if (!AxisLimitsChangedSinceLastRender())
                 return;
-            //Debug.WriteLine($"Re-Render required! #{i}");
         }
     }
 
@@ -184,4 +183,8 @@ public class RenderManager(Plot plot)
         return false;
     }
 
+    public void ForgetLastRender()
+    {
+        LastRender = new();
+    }
 }

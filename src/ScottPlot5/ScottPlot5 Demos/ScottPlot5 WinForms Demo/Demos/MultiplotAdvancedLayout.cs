@@ -1,4 +1,5 @@
 ﻿using ScottPlot;
+using ScottPlot.MultiplotLayouts;
 
 namespace WinForms_Demo.Demos;
 
@@ -17,7 +18,7 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
         formsPlot1.Multiplot.AddPlots(3);
 
         // add sample data to each subplot
-        for (int i = 0; i < formsPlot1.Multiplot.Count; i++)
+        for (int i = 0; i < formsPlot1.Multiplot.Subplots.Count; i++)
         {
             double[] ys = ScottPlot.Generate.Sin(oscillations: i + 1);
             formsPlot1.Multiplot.GetPlot(i).Add.Signal(ys);
@@ -38,73 +39,59 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
 
     void SetupRows()
     {
-        formsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Rows();
+        formsPlot1.Multiplot.Layout = new Rows();
         formsPlot1.Refresh();
     }
 
     void SetupColumns()
     {
-        formsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Columns();
+        formsPlot1.Multiplot.Layout = new Columns();
         formsPlot1.Refresh();
     }
 
     void SetupGrid()
     {
-        formsPlot1.Multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(2, 2);
+        formsPlot1.Multiplot.Layout = new Grid(2, 2);
         formsPlot1.Refresh();
     }
 
     void SetupMultiColumnSpan()
     {
-        formsPlot1.Multiplot.SetPosition(0, new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1));
-        formsPlot1.Multiplot.SetPosition(1, new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2));
-        formsPlot1.Multiplot.SetPosition(2, new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2));
+        CustomGrid customGrid = new();
+        customGrid.Set(formsPlot1.Multiplot.GetPlot(0), new GridCell(0, 0, 2, 1));
+        customGrid.Set(formsPlot1.Multiplot.GetPlot(1), new GridCell(1, 0, 2, 2));
+        customGrid.Set(formsPlot1.Multiplot.GetPlot(2), new GridCell(1, 1, 2, 2));
+
+        formsPlot1.Multiplot.Layout = customGrid;
+
         formsPlot1.Refresh();
     }
 
     void SetupPixelSizing()
     {
-        // Stack 3 plots in rows but force the center row to always be 100px high
-        float middlePlotHeight = 100;
-        formsPlot1.Multiplot.SetPosition(0, new CustomTopRow(middlePlotHeight));
-        formsPlot1.Multiplot.SetPosition(1, new CustomMiddleRow(middlePlotHeight));
-        formsPlot1.Multiplot.SetPosition(2, new CustomBottomRow(middlePlotHeight));
+        formsPlot1.Multiplot.Layout = new FixedTopRowLayout(100);
         formsPlot1.Refresh();
     }
 
-    class CustomTopRow(float middlePlotHeight) : ISubplotPosition
+    /// <summary>
+    /// Stack 3 plots in rows but force the center row to have a fixed pixel height
+    /// </summary>
+    class FixedTopRowLayout(int middlePlotHeight = 100) : IMultiplotLayout
     {
-        public PixelRect GetRect(PixelRect figureRect)
-        {
-            return new PixelRect(
-                left: figureRect.Left,
-                right: figureRect.Right,
-                bottom: figureRect.VerticalCenter - middlePlotHeight / 2,
-                top: figureRect.Top);
-        }
-    }
+        int MiddlePlotHeight = middlePlotHeight;
 
-    class CustomMiddleRow(float middlePlotHeight) : ISubplotPosition
-    {
-        public PixelRect GetRect(PixelRect figureRect)
+        public PixelRect[] GetSubplotRectangles(SubplotCollection subplots, PixelRect figureRect)
         {
-            return new PixelRect(
-                left: figureRect.Left,
-                right: figureRect.Right,
-                bottom: figureRect.VerticalCenter + middlePlotHeight / 2,
-                top: figureRect.VerticalCenter - middlePlotHeight / 2);
-        }
-    }
+            PixelRect[] rectangles = new PixelRect[subplots.Count];
 
-    class CustomBottomRow(float middlePlotHeight) : ISubplotPosition
-    {
-        public PixelRect GetRect(PixelRect figureRect)
-        {
-            return new PixelRect(
-                left: figureRect.Left,
-                right: figureRect.Right,
-                bottom: figureRect.Bottom,
-                top: figureRect.VerticalCenter + middlePlotHeight / 2);
+            PixelSize middlePlotSize = new(figureRect.Width, MiddlePlotHeight);
+            PixelSize otherPlotSize = new(figureRect.Width, (figureRect.Height - MiddlePlotHeight) / 2);
+
+            rectangles[0] = new PixelRect(otherPlotSize).WithDelta(0, 0);
+            rectangles[1] = new PixelRect(middlePlotSize).WithDelta(0, rectangles[0].Bottom);
+            rectangles[2] = new PixelRect(otherPlotSize).WithDelta(0, rectangles[1].Bottom);
+
+            return rectangles;
         }
     }
 }
