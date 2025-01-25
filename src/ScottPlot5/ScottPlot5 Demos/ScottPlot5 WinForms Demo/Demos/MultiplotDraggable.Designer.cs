@@ -1,6 +1,6 @@
 ﻿namespace WinForms_Demo.Demos;
 
-partial class MultiplotCollapsed
+partial class MultiplotDraggable
 {
     /// <summary>
     /// Required designer variable.
@@ -37,16 +37,16 @@ partial class MultiplotCollapsed
         formsPlot1.Dock = DockStyle.Fill;
         formsPlot1.Location = new Point(0, 0);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(800, 450);
+        formsPlot1.Size = new Size(1016, 738);
         formsPlot1.TabIndex = 7;
         // 
-        // MultiplotCollapsed
+        // MultiplotDraggable
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(800, 450);
+        ClientSize = new Size(1016, 738);
         Controls.Add(formsPlot1);
-        Name = "MultiplotCollapsed";
+        Name = "MultiplotDraggable";
         Text = "MultiplotCollapsed";
         ResumeLayout(false);
     }
