@@ -147,4 +147,29 @@ public static class IMultiplotExtensions
     {
         return multiplot.Subplots.GetPlots();
     }
+
+    /// <summary>
+    /// Set bottom and top axis size to zero between each subplot
+    /// so plots can be stacked vertically without any space between them.
+    /// </summary>
+    public static void CollapseVertically(this IMultiplot multiplot)
+    {
+        Plot[] plots = multiplot.Subplots.GetPlots();
+
+        foreach (Plot plot in plots)
+        {
+            bool collapseAbove = plot != plots.First();
+            bool collapseBelow = plot != plots.Last();
+
+            if (collapseAbove)
+            {
+                plot.Axes.GetAxes().Where(x => x.Edge == Edge.Top).ToList().ForEach(x => x.Collapse());
+            }
+
+            if (collapseBelow)
+            {
+                plot.Axes.GetAxes().Where(x => x.Edge == Edge.Bottom).ToList().ForEach(x => x.Collapse());
+            }
+        }
+    }
 }
