@@ -76,11 +76,13 @@ public static class IMultiplotExtensions
     }
 
     /// <summary>
-    /// Add a single plot to the collection of subplots
+    /// Create a new plot, add it to the collection of subplots, and return it
     /// </summary>
-    public static void AddPlot(this IMultiplot multiplot)
+    public static Plot AddPlot(this IMultiplot multiplot)
     {
-        multiplot.AddPlot(new Plot());
+        Plot plot = new();
+        multiplot.AddPlot(plot);
+        return plot;
     }
 
     /// <summary>

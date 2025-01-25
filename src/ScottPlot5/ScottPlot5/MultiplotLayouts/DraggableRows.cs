@@ -36,6 +36,9 @@ public class DraggableRows() : IMultiplotLayout
 
     float[] GetDividerPositions()
     {
+        if (PlotHeights.Count == 1)
+            return [PlotHeights[0]];
+
         float[] positions = new float[PlotHeights.Count - 1];
 
         positions[0] = PlotHeights[0];

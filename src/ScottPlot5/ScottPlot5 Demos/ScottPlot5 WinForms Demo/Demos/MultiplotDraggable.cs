@@ -45,7 +45,10 @@ public partial class MultiplotDraggable : Form, IDemoWindow
 
         // use the same size for all right axes to ensure alignment regardless of tick label length
         foreach (Plot plot in formsPlot1.Multiplot.GetPlots())
+        {
+            plot.Axes.Left.LockSize(10);
             plot.Axes.Right.LockSize(80);
+        }
 
         // update grids to use ticks from the bottom plot
         pricePlot.Grid.XAxis = volumePlot.Axes.Bottom;
@@ -93,6 +96,31 @@ public partial class MultiplotDraggable : Form, IDemoWindow
             }
 
             Cursor = customLayout.GetDivider(e.Y) is not null ? Cursors.SizeNS : Cursors.Default;
+        };
+
+        btnAddRow.Click += (s, e) =>
+        {
+            Plot plot = formsPlot1.Multiplot.AddPlot();
+            plot.Axes.Left.LockSize(10);
+            plot.Axes.Right.LockSize(80);
+            formsPlot1.Multiplot.CollapseVertically();
+            formsPlot1.Refresh();
+        };
+
+        btnDeleteRow.Click += (s, e) =>
+        {
+            if (formsPlot1.Multiplot.Subplots.Count < 2)
+                return;
+
+            Plot plotToRemove = formsPlot1.Multiplot.Subplots.GetPlots().Last();
+            formsPlot1.Multiplot.RemovePlot(plotToRemove);
+
+            // revert the collapse of the lower edge of the new bottom plot and use the original tick generator
+            Plot newBottomPlot = formsPlot1.Multiplot.Subplots.GetPlots().Last();
+            newBottomPlot.Axes.Bottom.ResetSize();
+            newBottomPlot.Axes.Bottom.TickGenerator = plotToRemove.Axes.Bottom.TickGenerator;
+
+            formsPlot1.Refresh();
         };
     }
 }
