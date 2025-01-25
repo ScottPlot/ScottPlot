@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * Multiplot: Added `Subplots` property for plot collection management and replaced `IMultiplot.Count` with `Multiplot.Count()` (#4738)
 * Axes: Added `IAxis.Collapse()` helper method to disable tick generation and set size to zero for a given axis (#4738)
 * Multiplot: Added `CollapseVertically()` to collapse space between vertically stacked plots (#4738)
+* Axes: Added `LockSize()` helper method to quickly set `MinimumSize` and `MaximumSize` to the same value
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_
