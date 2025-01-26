@@ -4,7 +4,7 @@ using ScottPlot.IO;
 namespace ScottPlot;
 
 /// <summary>
-/// Bitmap representation of a <seealso cref="SkiaSharp.SKImage"/>
+/// Bitmap representation of an image with helper methods for manipulating the image and enabling IO with other platforms
 /// </summary>
 public class Image : IDisposable
 {
@@ -14,17 +14,17 @@ public class Image : IDisposable
     public int Height => SKImage.Height;
     public PixelSize Size => new(Width, Height);
 
-    [Obsolete("Use initializer that accepts a SKSurface", true)]
-    public Image(SKImage image)
-    {
-        SKImage = image;
-    }
-
+    /// <summary>
+    /// Create an Image from the snapshot of an existing Surface
+    /// </summary>
     public Image(SKSurface surface)
     {
         SKImage = surface.Snapshot();
     }
 
+    /// <summary>
+    /// Create an Image from a file on disk
+    /// </summary>
     public Image(string filename)
     {
         if (!File.Exists(filename))
@@ -34,26 +34,41 @@ public class Image : IDisposable
         SKImage = SKImage.FromEncodedData(bytes);
     }
 
+    /// <summary>
+    /// Create an Image from a byte array of image data encoded in a common file format
+    /// </summary>
     public Image(byte[] bytes)
     {
         SKImage = SKImage.FromEncodedData(bytes);
     }
 
+    /// <summary>
+    /// Create an Image from an existing bitmap
+    /// </summary>
     public Image(SKBitmap bmp)
     {
         SKImage = SKImage.FromBitmap(bmp);
     }
 
+    /// <summary>
+    /// Create a black Image with the given dimensions
+    /// </summary>
     public Image(int width, int height) : this(width, height, Colors.Black)
     {
 
     }
 
+    /// <summary>
+    /// Create a black Image with the given dimensions
+    /// </summary>
     public Image(PixelSize size) : this((int)size.Width, (int)size.Height, Colors.Black)
     {
 
     }
 
+    /// <summary>
+    /// Create an image filled with the given color
+    /// </summary>
     public Image(int width, int height, Color color)
     {
         SKSurface surface = SKSurface.Create(new SKImageInfo(width, height));
@@ -62,6 +77,10 @@ public class Image : IDisposable
         SKImage = surface.Snapshot();
     }
 
+    /// <summary>
+    /// Create a grayscale Image from a 2D array of bytes. 
+    /// R, G, and B channels will all be set to the given value for each pixel.
+    /// </summary>
     public Image(byte[,] pixelArray)
     {
         int width = pixelArray.GetLength(1);
@@ -97,6 +116,9 @@ public class Image : IDisposable
         SKImage = SKImage.FromBitmap(bmp);
     }
 
+    /// <summary>
+    /// Create an Image from a 3D array of bytes with axes representing Y position, X position, and Color
+    /// </summary>
     public Image(byte[,,] pixelArray)
     {
         int width = pixelArray.GetLength(1);
@@ -133,15 +155,23 @@ public class Image : IDisposable
     }
 
     /// <summary>
+    /// Return the image as a platform-agnostic byte array that can be consumed by any common image library
+    /// </summary>
+    private byte[] GetBitmapBytes()
+    {
+        return GetBitmapBytes(SKImage);
+    }
+
+    /// <summary>
     /// SkiaSharp cannot natively create BMP files. 
     /// This function creates bitmaps in memory manually.
     /// https://github.com/mono/SkiaSharp/issues/320
     /// </summary>
-    private byte[] GetBitmapBytes()
+    private static byte[] GetBitmapBytes(SKImage SKImage)
     {
         using SKBitmap skBitmap = SKBitmap.FromImage(SKImage);
 
-        BitmapHeader header = new(Width, Height);
+        BitmapHeader header = new(SKImage.Width, SKImage.Height);
 
         byte[] bitmapBytes = new byte[skBitmap.Bytes.Length + BitmapHeader.FileHeaderSize];
 
@@ -166,6 +196,9 @@ public class Image : IDisposable
         return bitmapBytes;
     }
 
+    /// <summary>
+    /// Return the image as a platform-agnostic byte array that can be consumed by any common image library
+    /// </summary>
     public byte[] GetImageBytes(ImageFormat format = ImageFormat.Png, int quality = 100)
     {
         SKEncodedImageFormat skFormat = format.ToSKFormat();
@@ -230,6 +263,9 @@ public class Image : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    /// <summary>
+    /// Draw the image onto the given canvas
+    /// </summary>
     public void Render(SKCanvas canvas, PixelRect target, SKPaint paint, bool antiAlias)
     {
         paint.Color = SKColors.White;
@@ -237,6 +273,10 @@ public class Image : IDisposable
         canvas.DrawImage(SKImage, target.ToSKRect(), paint);
     }
 
+    /// <summary>
+    /// Return the image as a 2D byte array grayscale image with axes representing X and Y positions.
+    /// Grayscale values for each pixel are the mean of R, G, and B channels.
+    /// </summary>
     public byte[,] GetArrayGrayscale()
     {
         using SKBitmap bmp = SKBitmap.FromImage(SKImage);
@@ -260,6 +300,9 @@ public class Image : IDisposable
         return GrayscaleBytes;
     }
 
+    /// <summary>
+    /// Return the image as a 3D byte array with axes representing X position, Y position, and Color
+    /// </summary>
     public byte[,,] GetArrayRGB()
     {
         using SKBitmap bmp = SKBitmap.FromImage(SKImage);
@@ -285,6 +328,9 @@ public class Image : IDisposable
         return RgbBytes;
     }
 
+    /// <summary>
+    /// Return a new image with brightness/contrast maximized to fit the range of the data
+    /// </summary>
     public Image GetAutoscaledImage()
     {
         byte[,,] values = GetArrayRGB();
@@ -301,5 +347,43 @@ public class Image : IDisposable
                     values[y, x, c] = (byte)((double)values[y, x, c] / maxValue * 255);
 
         return new Image(values);
+    }
+
+    /// <summary>
+    /// Return a new image with dimensions scaled by the given scale factor.
+    /// A scale factor of 2.0 will double the size of the returned image.
+    /// </summary>
+    public Image Scaled(double scale, bool antiAlias = true)
+    {
+        return Scaled(scale, scale, antiAlias);
+    }
+
+    /// <summary>
+    /// Return a new image with dimensions scaled by the given scale factors.
+    /// A scale factor of 2.0 will double the size of the returned image.
+    /// </summary>
+    public Image Scaled(double scaleX, double scaleY, bool antiAlias = true)
+    {
+        int newWidth = (int)(scaleX * Width);
+        int newHeight = (int)(scaleY * Height);
+        return Resized(newWidth, newHeight, antiAlias);
+    }
+
+    /// <summary>
+    /// Return a new image resized to fit the given dimensions.
+    /// </summary>
+    public Image Resized(int newWidth, int newHeight, bool antiAlias = true)
+    {
+        SKRect newRect = new(0, 0, newWidth, newHeight);
+
+        using SKPaint paint = new() { FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None };
+        using SKBitmap targetBitmap = new(newWidth, newHeight);
+        using SKCanvas targetCanvas = new(targetBitmap);
+        using SKBitmap sourceBitmap = SKBitmap.FromImage(SKImage);
+        targetCanvas.DrawBitmap(sourceBitmap, newRect, paint);
+
+        using SKImage newImage = SKImage.FromBitmap(targetBitmap);
+        byte[] bytes = GetBitmapBytes(newImage);
+        return new Image(bytes);
     }
 }
