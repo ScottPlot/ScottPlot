@@ -1,4 +1,6 @@
-﻿namespace WinForms_Demo.Demos;
+﻿using ScottPlot;
+
+namespace WinForms_Demo.Demos;
 
 public partial class MultiplotGrowingAxis : Form, IDemoWindow
 {

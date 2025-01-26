@@ -14,14 +14,14 @@ public class MultiplotRecipes : ICategory
         [Test]
         public override void Execute()
         {
-            ScottPlot.Plot plot1 = new();
+            // configure the multiplot to use 2 subplots
+            multiplot.AddPlots(2);
+            Plot plot1 = multiplot.Subplots.GetPlot(0);
+            Plot plot2 = multiplot.Subplots.GetPlot(1);
+
+            // add sample data to each subplot
             plot1.Add.Signal(Generate.Sin());
-
-            ScottPlot.Plot plot2 = new();
             plot2.Add.Signal(Generate.Cos());
-
-            multiplot.AddPlot(plot1);
-            multiplot.AddPlot(plot2);
         }
     }
 
@@ -34,14 +34,16 @@ public class MultiplotRecipes : ICategory
         [Test]
         public override void Execute()
         {
-            ScottPlot.Plot plot1 = new();
-            plot1.Add.Signal(Generate.Sin());
+            // configure the multiplot to use 2 subplots
+            multiplot.AddPlots(2);
+            Plot plot1 = multiplot.Subplots.GetPlot(0);
+            Plot plot2 = multiplot.Subplots.GetPlot(1);
 
-            ScottPlot.Plot plot2 = new();
+            // add sample data to each subplot
+            plot1.Add.Signal(Generate.Sin());
             plot2.Add.Signal(Generate.Cos());
 
-            multiplot.AddPlot(plot1);
-            multiplot.AddPlot(plot2);
+            // apply a custom layout
             multiplot.Layout = new ScottPlot.MultiplotLayouts.Columns();
         }
     }
@@ -55,14 +57,18 @@ public class MultiplotRecipes : ICategory
         [Test]
         public override void Execute()
         {
-            for (int i = 0; i < 6; i++)
+            // configure the multiplot to have 6 subplots
+            multiplot.AddPlots(6);
+
+            // add sample data to each subplot
+            for (int i = 0; i < multiplot.Subplots.Count; i++)
             {
-                ScottPlot.Plot plot = new();
+                Plot plot = multiplot.GetPlot(i);
                 double[] ys = Generate.Sin(oscillations: i + 1);
                 plot.Add.Signal(ys);
-                multiplot.AddPlot(plot);
             }
 
+            // configure the multiplot to use a grid layout
             multiplot.Layout = new ScottPlot.MultiplotLayouts.Grid(rows: 2, columns: 3);
         }
     }
@@ -76,19 +82,25 @@ public class MultiplotRecipes : ICategory
         [Test]
         public override void Execute()
         {
-            // create 3 plots
-            for (int i = 0; i < 3; i++)
+            // configure the multiplot to have 3 subplots
+            multiplot.AddPlots(3);
+
+            // add sample data to each subplot
+            for (int i = 0; i < multiplot.Subplots.Count; i++)
             {
-                ScottPlot.Plot plot = new();
+                Plot plot = multiplot.GetPlot(i);
                 double[] ys = Generate.Sin(oscillations: i + 1);
                 plot.Add.Signal(ys);
-                multiplot.AddPlot(plot);
             }
 
-            // manually set the position for each plot
-            multiplot.SetPosition(0, new ScottPlot.SubplotPositions.GridCell(0, 0, 2, 1));
-            multiplot.SetPosition(1, new ScottPlot.SubplotPositions.GridCell(1, 0, 2, 2));
-            multiplot.SetPosition(2, new ScottPlot.SubplotPositions.GridCell(1, 1, 2, 2));
+            // create a custom grid layout and define the position of each subplot
+            ScottPlot.MultiplotLayouts.CustomGrid gridLayout = new();
+            gridLayout.Set(multiplot.GetPlot(0), new GridCell(0, 0, 2, 1)); // double wide
+            gridLayout.Set(multiplot.GetPlot(1), new GridCell(1, 0, 2, 2)); // bottom left
+            gridLayout.Set(multiplot.GetPlot(2), new GridCell(1, 1, 2, 2)); // bottom right
+
+            // user the custom layout in our multiplot
+            multiplot.Layout = gridLayout;
         }
     }
 }
