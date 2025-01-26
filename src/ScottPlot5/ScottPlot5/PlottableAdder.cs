@@ -103,21 +103,7 @@ public class PlottableAdder(Plot plot)
 
     public Ellipse Arc(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
     {
-        Color color = GetNextColor();
-
-        Ellipse arc = new()
-        {
-            Center = center,
-            RadiusX = radius,
-            RadiusY = radius,
-            StartAngle = startAngle,
-            SweepAngle = sweepAngle,
-            LineColor = color,
-            IsSector = false,
-        };
-
-        Plot.PlottableList.Add(arc);
-        return arc;
+        return EllipticalArc(center, radius, radius, startAngle, sweepAngle);
     }
 
     public Ellipse Arc(int xCenter, int yCenter, int radius, Angle startAngle, Angle sweepAngle)
@@ -358,21 +344,7 @@ public class PlottableAdder(Plot plot)
 
     public Ellipse CircleSector(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
     {
-        Color color = GetNextColor();
-
-        Ellipse arc = new()
-        {
-            Center = center,
-            RadiusX = radius,
-            RadiusY = radius,
-            StartAngle = startAngle,
-            SweepAngle = sweepAngle,
-            LineColor = color,
-            IsSector = true,
-        };
-
-        Plot.PlottableList.Add(arc);
-        return arc;
+        return EllipticalSector(center, radius, radius, startAngle, sweepAngle);
     }
 
     public Ellipse CircleSector(int xCenter, int yCenter, int radius, Angle startAngle, Angle sweepAngle)
