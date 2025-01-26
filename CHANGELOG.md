@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * Multiplot: Added `CollapseVertically()` to collapse space between vertically stacked plots (#4738)
 * Multiplot: Created `DraggableRows()` layout to simplify user-resizable multiplots as demonstrated in the demo application (#4738) @VladislavPustovarov @quantfreedom
 * Axes: Added `LockSize()` helper method to quickly set `MinimumSize` and `MaximumSize` to the same value
+* WinForms: improve `ScottPlot.Image.GetBitmap()` memory management and disposal
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_

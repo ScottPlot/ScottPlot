@@ -135,9 +135,10 @@ public static class FormsPlotExtensions
         return bmp;
     }
 
-    public static Bitmap GetBitmap(this Image img)
+    public static System.Drawing.Bitmap GetBitmap(this Image img)
     {
-        using MemoryStream ms = new(img.GetImageBytes(ImageFormat.Bmp));
+        byte[] bytes = img.GetImageBytes(ImageFormat.Bmp);
+        MemoryStream ms = new(bytes);
         return new Bitmap(ms);
     }
 }
