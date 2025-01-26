@@ -44,30 +44,48 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
     private double _radiusY = 10;
 
     /// <summary>
+    /// Horizontal inner annular radius (axis units)
+    /// </summary>
+    public double InnerRadiusX { get; set; } = 0;
+
+    /// <summary>
+    /// Horizontal inner annular radius (axis units)
+    /// </summary>
+    public double InnerRadiusY { get; set; } = 0;
+
+    /// <summary>
     /// Rotation of the ellipse (degrees)
     /// </summary>
-    public double Rotation
-    {
-        get => _rotation;
-        set
-        {
-            if (value < 0) { value += 360; }
-            _rotation = value % 360;
-        }
-    }
+    public Angle Rotation { get; set; } = Angle.FromDegrees(0);
 
-    private double _rotation = 0;
+    public bool IsAnnulus => InnerRadiusX > 0 && InnerRadiusY > 0;
+
+    /// <summary>
+    /// if false, it is an elliptical arc
+    /// If true, it is an elliptical sector;
+    /// </summary>
+    public bool IsSector { get; set; } = true;
+
+    /// <summary>
+    /// Start angle of elliptical arc or elliptical sector (degrees)
+    /// </summary>
+    public Angle StartAngle { get; set; } = Angle.FromDegrees(0);
+
+    /// <summary>
+    /// Sweep angle of elliptical arc or elliptical sector (degrees)
+    /// </summary>
+    public Angle SweepAngle { get; set; } = Angle.FromDegrees(360);
 
     public AxisLimits GetAxisLimits()
     {
-        if (Rotation == 0)
+        if (Rotation.Normalized.Degrees == 0)
         {
             return new(Center.ToRect(RadiusX, RadiusY));
         }
 
         // https://math.stackexchange.com/a/91304
 
-        var rad = (float)(Rotation / 180.0 * Math.PI);
+        var rad = -Rotation.Normalized.Radians;
         var cos2 = Math.Pow(Math.Cos(rad), 2);
         var sin2 = Math.Pow(Math.Sin(rad), 2);
 
@@ -83,6 +101,53 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
     private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
     private bool RadiusIsNotFinite => !IsFinite(RadiusX) || !IsFinite(RadiusY);
 
+    protected virtual void RenderAnnulus(RenderPack rp, SKPaint paint, PixelRect rect)
+    {
+        float innerRx = Axes.GetPixelX(InnerRadiusX) - Axes.GetPixelX(0);
+        float innerRy = Axes.GetPixelY(InnerRadiusY) - Axes.GetPixelY(0);
+        PixelRect innerRect = new(-innerRx, innerRx, innerRy, -innerRy);
+        if (SweepAngle.Normalized.Degrees == 0 ||
+            Math.Abs(SweepAngle.Degrees) >= 360)
+        {
+            Drawing.FillEllipticalAnnulus(rp.Canvas, paint, FillStyle, rect, innerRect);
+            Drawing.DrawEllipticalAnnulus(rp.Canvas, paint, LineStyle, rect, innerRect);
+        }
+        else
+        {
+            double startAngle = StartAngle.Normalized.Degrees;
+            Drawing.FillAnnularSector(rp.Canvas, paint, FillStyle, rect, innerRect,
+                (float)-startAngle, (float)-SweepAngle.Degrees);
+            Drawing.DrawAnnularSector(rp.Canvas, paint, LineStyle, rect, innerRect,
+                (float)-startAngle, (float)-SweepAngle.Degrees);
+        }
+    }
+
+    protected virtual void RenderEllipse(RenderPack rp, SKPaint paint, PixelRect rect)
+    {
+        if (SweepAngle.Normalized.Degrees == 0 ||
+            Math.Abs(SweepAngle.Degrees) >= 360)
+        {
+            Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
+            Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
+        }
+        else
+        {
+            double startAngle = StartAngle.Normalized.Degrees;
+            if (IsSector)
+            {
+                Drawing.FillSector(rp.Canvas, paint, FillStyle, rect,
+                    (float)-startAngle, (float)-SweepAngle.Degrees);
+                Drawing.DrawSector(rp.Canvas, paint, LineStyle, rect,
+                    (float)-startAngle, (float)-SweepAngle.Degrees);
+            }
+            else
+            {
+                Drawing.DrawArc(rp.Canvas, paint, LineStyle, rect,
+                    (float)-startAngle, (float)-SweepAngle.Degrees);
+            }
+        }
+    }
+
     public virtual void Render(RenderPack rp)
     {
         if (!IsVisible || RadiusIsNotFinite)
@@ -91,13 +156,19 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         using var paint = new SKPaint();
 
         rp.Canvas.Translate(Axes.GetPixel(Center).ToSKPoint());
-        rp.Canvas.RotateDegrees((float)Rotation);
+        rp.Canvas.RotateDegrees((float)-Rotation.Normalized.Degrees);
 
         float rx = Axes.GetPixelX(RadiusX) - Axes.GetPixelX(0);
         float ry = Axes.GetPixelY(RadiusY) - Axes.GetPixelY(0);
-
         PixelRect rect = new(-rx, rx, ry, -ry);
-        Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
-        Drawing.DrawOval(rp.Canvas, paint, LineStyle, rect);
+
+        if (IsAnnulus)
+        {
+            RenderAnnulus(rp, paint, rect);
+        }
+        else
+        {
+            RenderEllipse(rp, paint, rect);
+        }
     }
 }

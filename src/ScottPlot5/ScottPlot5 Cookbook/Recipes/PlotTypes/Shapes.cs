@@ -1,6 +1,4 @@
-﻿using ScottPlot.Hatches;
-
-namespace ScottPlotCookbook.Recipes.PlotTypes;
+﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Shapes : ICategory
 {
@@ -72,7 +70,7 @@ public class Shapes : ICategory
         {
             for (int i = 0; i < 10; i++)
             {
-                var el = myPlot.Add.Ellipse(0, 0, 1, 10, rotation: i * 10);
+                var el = myPlot.Add.Ellipse(0, 0, 1, 10, rotation: Angle.FromDegrees(i * -10));
                 double fraction = i / 10.0;
                 el.LineColor = Colors.Blue.WithAlpha(fraction);
             }
@@ -201,6 +199,156 @@ public class Shapes : ICategory
             double[] positions = [0.5, 1.5, 2.5, 3.5];
             string[] labels = { "Alfred", "Ralph", "Don", "James" };
             myPlot.Axes.Bottom.SetTicks(positions, labels);
+        }
+    }
+
+    public class Arc : RecipeBase
+    {
+        public override string Name => "Arc";
+        public override string Description => "An arc is a curve along the partial circumference of a circle. " +
+            "The circle starts at the far right and extends counter-clockwise.";
+
+        [Test]
+        public override void Execute()
+        {
+            Coordinates center = new(0, 0);
+            double radius = 1.0;
+            Angle start = Angle.FromDegrees(45);
+            Angle sweep = Angle.FromDegrees(135);
+
+            var circle = myPlot.Add.Circle(center, radius);
+            circle.FillColor = Colors.Blue.WithAlpha(.2);
+            circle.LineWidth = 0;
+
+            var arc = myPlot.Add.Arc(center, radius, start, sweep);
+            arc.LineWidth = 5;
+            arc.LineColor = Colors.Black;
+
+            myPlot.Axes.SquareUnits(); // use square units so circles are not stretched
+        }
+    }
+
+    public class EllipticalArc : RecipeBase
+    {
+        public override string Name => "Elliptical Arc";
+        public override string Description => "An elliptical arc is a curve along the partial circumference of an ellipse. " +
+            "The ellipse starts at the far right and extends counter-clockwise.";
+
+        [Test]
+        public override void Execute()
+        {
+            Coordinates center = new(0, 0);
+            double radiusX = 2.0;
+            double radiusY = 1.0;
+            Angle start = Angle.FromDegrees(45);
+            Angle sweep = Angle.FromDegrees(135);
+
+            var ellipse = myPlot.Add.Ellipse(center, radiusX, radiusY);
+            ellipse.FillColor = Colors.Blue.WithAlpha(.2);
+            ellipse.LineWidth = 0;
+
+            var arc = myPlot.Add.EllipticalArc(center, radiusX, radiusY, start, sweep);
+            arc.LineWidth = 5;
+            arc.LineColor = Colors.Black;
+
+            myPlot.Axes.SquareUnits(); // use square units so circles are not stretched
+        }
+    }
+
+    public class CircleSector : RecipeBase
+    {
+        public override string Name => "Circle Sector";
+        public override string Description => "A circle sector is the 2D shape formed by the area " +
+            "inside a circle between an arc around its circumference and its center point.";
+
+        [Test]
+        public override void Execute()
+        {
+            Coordinates center = new(0, 0);
+            double radius = 1.0;
+            Angle start = Angle.FromDegrees(45);
+            Angle sweep = Angle.FromDegrees(135);
+
+            var cs = myPlot.Add.CircleSector(center, radius, start, sweep);
+            cs.FillColor = Colors.Blue.WithAlpha(.2);
+            cs.LineColor = Colors.Black;
+            cs.LineWidth = 5;
+
+            myPlot.Axes.SquareUnits(); // use square units so circles are not stretched
+        }
+    }
+
+    public class EllipseSector : RecipeBase
+    {
+        public override string Name => "Ellipse Sector";
+        public override string Description => "An ellipse sector is the 2D shape formed by the area " +
+            "inside an ellipse between an arc around its edge and its center point.";
+
+        [Test]
+        public override void Execute()
+        {
+            Coordinates center = new(0, 0);
+            double radiusX = 2.0;
+            double radiusY = 1.0;
+            Angle start = Angle.FromDegrees(45);
+            Angle sweep = Angle.FromDegrees(135);
+
+            var cs = myPlot.Add.EllipticalSector(center, radiusX, radiusY, start, sweep);
+            cs.FillColor = Colors.Blue.WithAlpha(.2);
+            cs.LineColor = Colors.Black;
+            cs.LineWidth = 5;
+
+            myPlot.Axes.SquareUnits(); // use square units so circles are not stretched
+        }
+    }
+
+    public class AnnularSector : RecipeBase
+    {
+        public override string Name => "Annular Sector";
+        public override string Description => "An annular sector is the 2D shape between two circles (like a donut) " +
+            "and may be sliced to contain only the area between two angles relative to the center point.";
+
+        [Test]
+        public override void Execute()
+        {
+            Coordinates center = new(0, 0);
+            double outerRadius = 2.0;
+            double innerRadius = 1.0;
+            Angle start = Angle.FromDegrees(45);
+            Angle sweep = Angle.FromDegrees(135);
+
+            var cs = myPlot.Add.AnnularSector(center, outerRadius, innerRadius, start, sweep);
+            cs.FillColor = Colors.Blue.WithAlpha(.2);
+            cs.LineColor = Colors.Black;
+            cs.LineWidth = 5;
+
+            myPlot.Axes.SquareUnits(); // use square units so circles are not stretched
+        }
+    }
+
+    public class AnnularEllipticalSector : RecipeBase
+    {
+        public override string Name => "Annular Elliptical Sector";
+        public override string Description => "An annular elliptical sector is the 2D shape between two ellipses " +
+            "and may be sliced to contain only the area between two angles relative to the center point.";
+
+        [Test]
+        public override void Execute()
+        {
+            Coordinates center = new(0, 0);
+            double outerRadiusX = 4.0;
+            double outerRadiusY = 2.0;
+            double innerRadiusX = 2.0;
+            double innerRadiusY = 1.0;
+            Angle start = Angle.FromDegrees(45);
+            Angle sweep = Angle.FromDegrees(135);
+
+            var cs = myPlot.Add.AnnularEllipticalSector(center, outerRadiusX, outerRadiusY, innerRadiusX, innerRadiusY, start, sweep);
+            cs.FillColor = Colors.Blue.WithAlpha(.2);
+            cs.LineColor = Colors.Black;
+            cs.LineWidth = 5;
+
+            myPlot.Axes.SquareUnits(); // use square units so circles are not stretched
         }
     }
 }

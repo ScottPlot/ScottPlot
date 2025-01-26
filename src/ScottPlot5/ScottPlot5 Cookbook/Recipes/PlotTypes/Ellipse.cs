@@ -108,7 +108,7 @@ public class Ellipse : ICategory
                     radiusX: 1,
                     radiusY: 5);
 
-                el.Rotation = i * 180.0 / count;
+                el.Rotation = Angle.FromDegrees(i * 180.0 / count);
             }
 
             // force pixels to have a 1:1 scale ratio
