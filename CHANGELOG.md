@@ -11,6 +11,7 @@ _Not yet on NuGet..._
 * WinForms: improve `ScottPlot.Image.GetBitmap()` memory management and disposal
 * Image: Added `Scaled()` and `Resized()` methods to help resize existing images in memory
 * WinForms: Improve support for transparency for plots placed on Forms with background images (#4698) @luo-ross
+* OpenGL: Improved memory management for applications using scatter plots in OpenGL controls (#4702, #4693) @onur-akaydin @StendProg @allrightsreserved
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_
