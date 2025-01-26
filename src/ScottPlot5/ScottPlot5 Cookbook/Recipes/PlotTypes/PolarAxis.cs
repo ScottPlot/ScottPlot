@@ -231,4 +231,25 @@ public class PolarAxis : ICategory
             poly2.LineColor = Colors.Black;
         }
     }
+
+    public class PolarSpokeLabelPadding : RecipeBase
+    {
+        public override string Name => "Polar Spoke Label Padding";
+        public override string Description => "Modifies the padding of labels on polar spokes.";
+
+        [Test]
+        public override void Execute()
+        {
+            var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.SetSpokes(4, 1);
+
+            for (int i = 0; i < polarAxis.Spokes.Count; i++)
+            {
+                polarAxis.Spokes[i].LineWidth = 4;
+                polarAxis.Spokes[i].LabelStyle.FontSize = 16;
+                polarAxis.Spokes[i].LabelPaddingFraction = 0.2 * i;
+                polarAxis.Spokes[i].LabelText = $"{polarAxis.Spokes[i].LabelLength}";
+            }
+        }
+    }
 }
