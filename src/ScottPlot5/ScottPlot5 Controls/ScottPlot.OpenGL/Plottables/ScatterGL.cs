@@ -13,7 +13,7 @@ namespace ScottPlot.Plottables;
 /// <summary>
 /// This plot type uses an OpenGL shader for rendering.
 /// </summary>
-public class ScatterGL : Scatter, IPlottableGL
+public class ScatterGL : Scatter, IPlottableGL, IDisposable
 {
     public IPlotControl PlotControl { get; }
     protected int VertexBufferObject;
@@ -21,7 +21,7 @@ public class ScatterGL : Scatter, IPlottableGL
     protected ILinesDrawProgram? LinesProgram;
     protected IMarkersDrawProgram? MarkerProgram;
     protected double[] Vertices;
-    protected readonly int VerticesCount;
+    protected int VerticesCount;
 
     protected bool GLHasBeenInitialized = false;
 
@@ -42,7 +42,6 @@ public class ScatterGL : Scatter, IPlottableGL
 
     protected virtual void InitializeGL()
     {
-        CleanupGL();
         LinesProgram = new LinesProgram();
         MarkerProgram = new MarkerFillCircleProgram();
 
@@ -55,22 +54,6 @@ public class ScatterGL : Scatter, IPlottableGL
         GL.EnableVertexAttribArray(0);
         Vertices = Array.Empty<double>();
         GLHasBeenInitialized = true;
-    }
-
-    protected virtual void CleanupGL()
-    {
-        if (GLHasBeenInitialized)
-        {
-            GL.DeleteVertexArray(VertexArrayObject);
-            GL.DeleteBuffer(VertexBufferObject);
-
-            LinesProgram?.GLFinish();
-            MarkerProgram?.GLFinish();
-            LinesProgram?.Dispose();
-            MarkerProgram?.Dispose();
-
-            GLHasBeenInitialized = false;
-        }
     }
 
     protected Matrix4d CalcTransform()
@@ -184,4 +167,45 @@ public class ScatterGL : Scatter, IPlottableGL
             GL.PopAttrib();
         }
     }
+
+    #region DISPOSAL
+
+    private bool _disposed = false;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                GL.Finish();
+                LinesProgram?.Dispose();
+                LinesProgram = null;
+                MarkerProgram?.Dispose();
+                MarkerProgram = null;
+            }
+
+            CleanupGPUMemory();
+
+            _disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+    }
+
+    protected virtual void CleanupGPUMemory()
+    {
+        if (GLHasBeenInitialized)
+        {
+            GL.DeleteVertexArray(VertexArrayObject);
+            GL.DeleteBuffer(VertexBufferObject);
+
+            GLHasBeenInitialized = false;
+        }
+    }
+   
+    #endregion
 }

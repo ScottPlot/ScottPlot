@@ -2,5 +2,5 @@
 
 public interface IMultiplotLayout
 {
-    void ResetAllPositions(Multiplot multiplot);
+    PixelRect[] GetSubplotRectangles(SubplotCollection subplots, PixelRect figureRect);
 }

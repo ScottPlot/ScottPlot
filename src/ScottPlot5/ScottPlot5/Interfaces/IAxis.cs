@@ -76,4 +76,15 @@ public static class IAxisExtensions
     public static CoordinateRange GetRange(this IAxis axis) => new(axis.Min, axis.Max);
     public static bool IsInverted(this IAxis axis) => axis.Min > axis.Max;
     public static void RemoveTickGenerator(this IAxis axis) => axis.TickGenerator = new TickGenerators.EmptyTickGenerator();
+
+    /// <summary>
+    /// Set the axis size to zero and disable tick generation.
+    /// This method allows the data area to rest against the edge of the figure
+    /// (e.g., when collapsing space between stacked plots in a multiplot)
+    /// </summary>
+    public static void Collapse(this IAxis axis)
+    {
+        axis.MaximumSize = 0;
+        axis.RemoveTickGenerator();
+    }
 }

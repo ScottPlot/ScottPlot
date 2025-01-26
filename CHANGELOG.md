@@ -1,5 +1,17 @@
 ## ScottPlot 5.0.54
 _Not yet on NuGet..._
+* Multiplot: Improved API for advanced layout customization. See cookbook and demo application for examples. (#4738)
+* Multiplot: Use new shared axis manager. `Multiplot.ShareY()` is now `Multiplot.SharedAxes.ShareY()` as seen in demo application. (#4738)
+* Multiplot: Moved state management and pixel lookup logic based on previous renders into the `IMultiplot.LastRender` property (#4738)
+* Multiplot: Added `Subplots` property for plot collection management and replaced `IMultiplot.Count` with `Multiplot.Count()` (#4738)
+* Axes: Added `IAxis.Collapse()` helper method to disable tick generation and set size to zero for a given axis (#4738)
+* Multiplot: Added `CollapseVertically()` to collapse space between vertically stacked plots (#4738)
+* Multiplot: Created `DraggableRows()` layout to simplify user-resizable multiplots as demonstrated in the demo application (#4738) @VladislavPustovarov @quantfreedom
+* Axes: Added `LockSize()` helper method to quickly set `MinimumSize` and `MaximumSize` to the same value
+* WinForms: improve `ScottPlot.Image.GetBitmap()` memory management and disposal
+* Image: Added `Scaled()` and `Resized()` methods to help resize existing images in memory
+* WinForms: Improve support for transparency for plots placed on Forms with background images (#4698) @luo-ross
+* OpenGL: Improved memory management for applications using scatter plots in OpenGL controls (#4702, #4693) @onur-akaydin @StendProg @allrightsreserved
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_

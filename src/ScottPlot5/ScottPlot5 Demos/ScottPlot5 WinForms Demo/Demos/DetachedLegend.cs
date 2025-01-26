@@ -1,4 +1,5 @@
 ﻿using ScottPlot;
+using ScottPlot.WinForms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
@@ -57,7 +58,7 @@ namespace WinForms_Demo.Demos
                 plot.PlotControl?.Refresh();
             };
 
-            SKControl skControl = new()
+            TransparentSKControl skControl = new()
             {
                 Dock = DockStyle.Fill
             };
