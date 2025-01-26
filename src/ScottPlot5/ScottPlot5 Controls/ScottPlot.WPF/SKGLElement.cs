@@ -70,11 +70,11 @@ namespace SkiaSharp.Views.WPF
                 if (window != null)
                 {
                     theWindow = new WeakReference<Window>(window);
-                    window.Closing += Window_Closing;
+                    window.Closed += Window_Closed;
                 }
             }
 
-            private void Window_Closing(object sender, CancelEventArgs e)
+            private void Window_Closed(object sender, EventArgs e)
             {
                 SKGLElement target = null;
                 if (toDestroy.TryGetTarget(out target))
@@ -84,7 +84,6 @@ namespace SkiaSharp.Views.WPF
                         target.Dispose();
                     }
                 }
-
             }
 
             private bool disposed = false;
@@ -102,7 +101,7 @@ namespace SkiaSharp.Views.WPF
                 {
                     if (window != null)
                     {
-                        window.Closing -= Window_Closing;
+                        window.Closed -= Window_Closed;
                     }
                 }
                 theWindow = null;

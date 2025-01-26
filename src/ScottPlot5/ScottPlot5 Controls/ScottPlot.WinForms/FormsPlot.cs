@@ -11,7 +11,7 @@ public class FormsPlot : FormsPlotBase
 {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
-    public SKControl? SKControl { get; private set; }
+    public TransparentSKControl? SKControl { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
@@ -35,8 +35,10 @@ public class FormsPlot : FormsPlotBase
     {
         TeardownSKControl();
 
-        SKControl = new() { Dock = DockStyle.Fill };
-
+        SKControl = new()
+        {
+            Dock = DockStyle.Fill,
+        };
         SKControl.PaintSurface += SKElement_PaintSurface;
         SKControl.MouseDown += SKElement_MouseDown;
         SKControl.MouseUp += SKElement_MouseUp;
