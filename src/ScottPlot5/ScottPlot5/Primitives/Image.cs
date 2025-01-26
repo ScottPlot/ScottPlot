@@ -302,4 +302,42 @@ public class Image : IDisposable
 
         return new Image(values);
     }
+
+    /// <summary>
+    /// Return a new image with dimensions scaled by the given scale factor.
+    /// A scale factor of 2.0 will double the size of the returned image.
+    /// </summary>
+    public Image Scaled(double scale, bool antiAlias = true)
+    {
+        return Scaled(scale, scale, antiAlias);
+    }
+
+    /// <summary>
+    /// Return a new image with dimensions scaled by the given scale factors.
+    /// A scale factor of 2.0 will double the size of the returned image.
+    /// </summary>
+    public Image Scaled(double scaleX, double scaleY, bool antiAlias = true)
+    {
+        int newWidth = (int)(scaleX * Width);
+        int newHeight = (int)(scaleY * Height);
+        return Resized(newWidth, newHeight, antiAlias);
+    }
+
+    /// <summary>
+    /// Return a new image resized to fit the given dimensions.
+    /// </summary>
+    public Image Resized(int newWidth, int newHeight, bool antiAlias = true)
+    {
+        SKRect newRect = new(0, 0, newWidth, newHeight);
+
+        using SKPaint paint = new() { FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None };
+        using SKBitmap targetBitmap = new(newWidth, newHeight);
+        using SKCanvas targetCanvas = new(targetBitmap);
+        using SKBitmap sourceBitmap = SKBitmap.FromImage(SKImage);
+        targetCanvas.DrawBitmap(sourceBitmap, newRect, paint);
+
+        using SKImage newImage = SKImage.FromBitmap(targetBitmap);
+        byte[] bytes = GetBitmapBytes(newImage);
+        return new Image(bytes);
+    }
 }
