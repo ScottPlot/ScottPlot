@@ -173,15 +173,12 @@ public class RenderManager(Plot plot)
             if (double.IsNaN(axis.Range.Span))
                 continue;
 
-            //Reverting this change, I'm not sure why this affects the rendering of the legends
-            //CoordinateRange rangeNow = axis.Range.ToCoordinateRange;
-            //CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
-            //bool axisLimitsChanged = rangeNow != rangeBefore;            
+            double newMin = axis.Range.Min;
+            double newMax = axis.Range.Max;
+            double oldMin = LastRender.AxisLimitsByAxis[axis].Min;
+            double oldMax = LastRender.AxisLimitsByAxis[axis].Max;
 
-            CoordinateRangeMutable rangeNow = axis.Range;
-            CoordinateRange rangeBefore = LastRender.AxisLimitsByAxis[axis];
-            bool axisLimitsChanged = rangeNow.Min != rangeBefore.Min || rangeNow.Max != rangeBefore.Max;
-
+            bool axisLimitsChanged = (oldMin != newMin) || (oldMax != newMax);
             if (axisLimitsChanged)
                 return true;
         }
