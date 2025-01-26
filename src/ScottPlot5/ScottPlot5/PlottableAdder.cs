@@ -54,7 +54,7 @@ public class PlottableAdder(Plot plot)
 
     public Ellipse AnnularEllipticalSector(
         Coordinates center,
-        double radiusX1, double radiusY1, double radiusX2, double radiusY2,
+        double outerRadiusX, double outerRadiusY, double innerRadiusX, double innerRadiusY,
         Angle startAngle, Angle sweepAngle, Angle? rotation = null)
     {
         Color color = GetNextColor();
@@ -62,10 +62,10 @@ public class PlottableAdder(Plot plot)
         Ellipse ellipticalSector = new()
         {
             Center = center,
-            RadiusX = radiusX1,
-            RadiusY = radiusY1,
-            InnerRadiusX = radiusX2,
-            InnerRadiusY = radiusY2,
+            RadiusX = outerRadiusX,
+            RadiusY = outerRadiusY,
+            InnerRadiusX = innerRadiusX,
+            InnerRadiusY = innerRadiusY,
             StartAngle = startAngle,
             SweepAngle = sweepAngle,
             Rotation = rotation ?? Angle.FromDegrees(0),
@@ -79,34 +79,34 @@ public class PlottableAdder(Plot plot)
 
     public Ellipse AnnularEllipticalSector(
         int xCenter, int yCenter,
-        double radiusX1, double radiusY1, double radiusX2, double radiusY2,
+        double outerRadiusX, double outerRadiusY, double innerRadiusX, double innerRadiusY,
         Angle startAngle, Angle sweepAngle, Angle? rotation = null)
     {
-        return AnnularEllipticalSector(new(xCenter, yCenter), radiusX1, radiusY1, radiusX2, radiusY2, startAngle, sweepAngle);
+        return AnnularEllipticalSector(new(xCenter, yCenter), outerRadiusX, outerRadiusY, innerRadiusX, innerRadiusY, startAngle, sweepAngle, rotation);
     }
 
     public Ellipse AnnularSector(
         Coordinates center,
-        double radius1, double radius2,
+        double outerRadius, double innerRadius,
         Angle startAngle, Angle sweepAngle, Angle? rotation = null)
     {
-        return AnnularEllipticalSector(center, radius1, radius1, radius2, radius2, startAngle, sweepAngle, rotation);
+        return AnnularEllipticalSector(center, outerRadius, outerRadius, innerRadius, innerRadius, startAngle, sweepAngle, rotation);
     }
 
     public Ellipse AnnularSector(
         int xCenter, int yCenter,
-        double radius1, double radius2,
+        double outerRadius, double innerRadius,
         Angle startAngle, Angle sweepAngle, Angle? rotation = null)
     {
-        return AnnularSector(new(xCenter, yCenter), radius1, radius2, startAngle, sweepAngle);
+        return AnnularSector(new(xCenter, yCenter), outerRadius, innerRadius, startAngle, sweepAngle, rotation);
     }
 
-    public Ellipse Arc(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
+    public Ellipse Arc(Coordinates center, double radius, Angle startAngle, Angle sweepAngle)
     {
         return EllipticalArc(center, radius, radius, startAngle, sweepAngle);
     }
 
-    public Ellipse Arc(int xCenter, int yCenter, int radius, Angle startAngle, Angle sweepAngle)
+    public Ellipse Arc(double xCenter, double yCenter, double radius, Angle startAngle, Angle sweepAngle)
     {
         return Arc(new(xCenter, yCenter), radius, startAngle, sweepAngle);
     }
@@ -342,7 +342,7 @@ public class PlottableAdder(Plot plot)
         return Circle(new(xCenter, yCenter), radius);
     }
 
-    public Ellipse CircleSector(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
+    public Ellipse CircleSector(Coordinates center, double radius, Angle startAngle, Angle sweepAngle)
     {
         return EllipticalSector(center, radius, radius, startAngle, sweepAngle);
     }
