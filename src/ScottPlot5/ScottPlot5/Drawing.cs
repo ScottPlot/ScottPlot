@@ -395,6 +395,91 @@ public static class Drawing
         canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, false, paint);
     }
 
+    private static SKPath GetEllipticalAnnularSector(PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    {
+        (Angle correctedStart, Angle correctedSweep) =
+            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+        float start = (float)correctedStart.Degrees;
+        float sweep = (float)correctedSweep.Degrees;
+
+        static SKPoint GetPointOnEllipse(double centerX, double centerY, double a, double b, Angle theta)
+        {
+            double x = centerX + a * Math.Cos(theta.Radians);
+            double y = centerY + b * Math.Sin(theta.Radians);
+            return new((float)x, (float)y);
+        }
+
+        SKPoint p1 = GetPointOnEllipse(
+                innerRect.Center.X, innerRect.Center.Y,
+                innerRect.Right, innerRect.Bottom,
+                correctedStart + correctedSweep);
+
+        SKPoint p2 = GetPointOnEllipse(
+            rect.Center.X, rect.Center.Y, rect.Right, rect.Bottom, Angle.FromDegrees(0));
+
+        SKPath path = new();
+        path.AddArc(rect.ToSKRect(), start, sweep);
+        path.LineTo(p1);
+        path.AddArc(innerRect.ToSKRect(), start + sweep, -sweep);
+        path.LineTo(p2);
+        path.MoveTo(p2);
+        path.Close();
+        return path;
+    }
+
+    public static void DrawAnnularSector(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        using SKPath path = GetEllipticalAnnularSector(rect, innerRect, startAngle, sweepAngle);
+        canvas.DrawPath(path, paint);
+    }
+
+    public static void FillAnnularSector(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
+
+        fillStyle.ApplyToPaint(paint, rect);
+
+        using SKPath path = GetEllipticalAnnularSector(rect, innerRect, startAngle, sweepAngle);
+        canvas.DrawPath(path, paint);
+    }
+
+    public static void DrawEllipticalAnnulus(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect outerRect, PixelRect innerRect)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        canvas.DrawOval(outerRect.ToSKRect(), paint);
+        canvas.DrawOval(innerRect.ToSKRect(), paint);
+    }
+
+    public static void FillEllipticalAnnulus(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect outerRect, PixelRect innerRect)
+    {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
+
+        CanvasState canvasState = new(canvas);
+        canvasState.Save();
+        fillStyle.ApplyToPaint(paint, outerRect);
+
+        // Clip inner oval
+        using SKPath path = new();
+        path.AddOval(innerRect.ToSKRect());
+        canvas.ClipPath(path, SKClipOperation.Difference, true);
+
+        canvas.DrawOval(outerRect.ToSKRect(), paint);
+        canvasState.Restore();
+    }
+
     public static void DrawSector(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
