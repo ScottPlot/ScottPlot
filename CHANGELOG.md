@@ -13,6 +13,7 @@ _Not yet on NuGet..._
 * WinForms: Improve support for transparency for plots placed on Forms with background images (#4698) @luo-ross
 * OpenGL: Improved memory management for applications using scatter plots in OpenGL controls (#4702, #4693) @onur-akaydin @StendProg @allrightsreserved
 * Rendering: Improved detection of changed axis limits and improved behavior of legend item orientation (#4722, #4629) @aespitia
+* Plottables: Added many new shapes like arcs, circle sectors, annular sectors, and more as seen in the cookbook (#4739) @CoderPM2011 @heartacker
 
 ## ScottPlot 5.0.53
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-12_
