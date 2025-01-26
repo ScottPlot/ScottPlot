@@ -11,7 +11,7 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class ScatterGLCustom : ScatterGL
 {
-    private IMarkersDrawProgram? JoinsProgram;
+    protected IMarkersDrawProgram? JoinsProgram;
 
     public ScatterGLCustom(IScatterSource data, IPlotControl control) : base(data, control)
     {
@@ -71,5 +71,24 @@ public class ScatterGLCustom : ScatterGL
             GL.DrawArrays(PrimitiveType.Points, 0, VerticesCount);
         }
         RenderMarkers();
+    }
+
+    private bool _disposed = false;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                GL.Finish();
+                JoinsProgram?.Dispose();
+                JoinsProgram = null;
+            }
+
+            _disposed = true;
+        }
+
+        base.Dispose(disposing);
     }
 }
