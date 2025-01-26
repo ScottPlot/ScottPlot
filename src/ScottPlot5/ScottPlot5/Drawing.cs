@@ -390,9 +390,7 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        (Angle correctedStart, Angle correctedSweep) =
-            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
-        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, false, paint);
+        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
     }
 
     private static SKPath GetEllipticalAnnularSector(PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
