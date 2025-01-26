@@ -100,15 +100,16 @@ public class Ellipse : ICategory
         [Test]
         public override void Execute()
         {
-            int count = 5;
-            for (int i = 0; i < count; i++)
-            {
-                var el = myPlot.Add.Ellipse(
-                    center: Coordinates.Origin,
-                    radiusX: 1,
-                    radiusY: 5);
+            Coordinates center = new(0, 0);
+            double radiusX = 1;
+            double radiusY = 5;
 
-                el.Rotation = Angle.FromDegrees(i * 180.0 / count);
+            for (int i = 0; i < 5; i++)
+            {
+                Angle angle = Angle.FromDegrees(i * 20);
+                var el = myPlot.Add.Ellipse(center, radiusX, radiusY, angle);
+                el.LineWidth = 3;
+                el.LineColor = Colors.Blue.WithAlpha(0.1 + 0.2 * i);
             }
 
             // force pixels to have a 1:1 scale ratio
