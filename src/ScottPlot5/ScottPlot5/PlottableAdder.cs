@@ -52,6 +52,55 @@ public class PlottableAdder(Plot plot)
         return an;
     }
 
+    public Ellipse AnnularEllipticalSector(
+        Coordinates center,
+        double radiusX1, double radiusY1, double radiusX2, double radiusY2,
+        Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        Color color = GetNextColor();
+
+        Ellipse ellipticalSector = new()
+        {
+            Center = center,
+            RadiusX = radiusX1,
+            RadiusY = radiusY1,
+            InnerRadiusX = radiusX2,
+            InnerRadiusY = radiusY2,
+            StartAngle = startAngle,
+            SweepAngle = sweepAngle,
+            Rotation = rotation ?? Angle.FromDegrees(0),
+            LineColor = color,
+            IsSector = true,
+        };
+
+        Plot.PlottableList.Add(ellipticalSector);
+        return ellipticalSector;
+    }
+
+    public Ellipse AnnularEllipticalSector(
+        int xCenter, int yCenter,
+        double radiusX1, double radiusY1, double radiusX2, double radiusY2,
+        Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        return AnnularEllipticalSector(new(xCenter, yCenter), radiusX1, radiusY1, radiusX2, radiusY2, startAngle, sweepAngle);
+    }
+
+    public Ellipse AnnularSector(
+        Coordinates center,
+        double radius1, double radius2,
+        Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        return AnnularEllipticalSector(center, radius1, radius1, radius2, radius2, startAngle, sweepAngle, rotation);
+    }
+
+    public Ellipse AnnularSector(
+        int xCenter, int yCenter,
+        double radius1, double radius2,
+        Angle startAngle, Angle sweepAngle, Angle? rotation = null)
+    {
+        return AnnularSector(new(xCenter, yCenter), radius1, radius2, startAngle, sweepAngle);
+    }
+
     public Ellipse Arc(Coordinates center, int radius, Angle startAngle, Angle sweepAngle)
     {
         Color color = GetNextColor();
