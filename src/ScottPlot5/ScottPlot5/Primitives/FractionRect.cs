@@ -32,6 +32,13 @@ public readonly struct FractionRect
             throw new ArgumentException($"{nameof(left)} + {nameof(width)} must not exceed 1");
     }
 
+    public PixelRect GetPixelRect(PixelRect fullRect)
+    {
+        Pixel topLeft = new(Left * fullRect.Width, Top * fullRect.Height);
+        PixelSize size = new(Width * fullRect.Width, Height * fullRect.Height);
+        return new PixelRect(topLeft, size);
+    }
+
     public PixelRect GetPixelRect(float width, float height)
     {
         Pixel topLeft = new(Left * width, Top * height);

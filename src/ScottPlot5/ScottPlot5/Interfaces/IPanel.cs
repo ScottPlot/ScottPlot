@@ -63,4 +63,22 @@ public static class IPanelExtensions
     /// Returns true for Y axes (left and right)
     /// </summary>
     public static bool IsVertical(this IPanel panel) => !panel.IsHorizontal();
+
+    /// <summary>
+    /// Set min and max size to the same value to force this size to always be used
+    /// </summary>
+    public static void LockSize(this IPanel panel, float size)
+    {
+        panel.MinimumSize = size;
+        panel.MaximumSize = size;
+    }
+
+    /// <summary>
+    /// Remove all pixel size constraints
+    /// </summary>
+    public static void ResetSize(this IPanel panel)
+    {
+        panel.MinimumSize = 0;
+        panel.MaximumSize = float.MaxValue;
+    }
 }

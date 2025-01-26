@@ -23,29 +23,29 @@ public partial class MultiplotSharedAxis : Form, IDemoWindow
 
         btnShareXY.Click += (s, e) =>
         {
-            formsPlot1.Multiplot.ShareX(formsPlot1.Multiplot.GetPlots());
-            formsPlot1.Multiplot.ShareY(formsPlot1.Multiplot.GetPlots());
+            formsPlot1.Multiplot.SharedAxes.ShareX(formsPlot1.Multiplot.GetPlots());
+            formsPlot1.Multiplot.SharedAxes.ShareY(formsPlot1.Multiplot.GetPlots());
             formsPlot1.Refresh();
         };
 
         btnShareX.Click += (s, e) =>
         {
-            formsPlot1.Multiplot.ShareX(formsPlot1.Multiplot.GetPlots());
-            formsPlot1.Multiplot.ShareY([]);
+            formsPlot1.Multiplot.SharedAxes.ShareX(formsPlot1.Multiplot.GetPlots());
+            formsPlot1.Multiplot.SharedAxes.ShareY([]);
             formsPlot1.Refresh();
         };
 
         btnShareY.Click += (s, e) =>
         {
-            formsPlot1.Multiplot.ShareX([]);
-            formsPlot1.Multiplot.ShareY(formsPlot1.Multiplot.GetPlots());
+            formsPlot1.Multiplot.SharedAxes.ShareX([]);
+            formsPlot1.Multiplot.SharedAxes.ShareY(formsPlot1.Multiplot.GetPlots());
             formsPlot1.Refresh();
         };
 
         btnShareNone.Click += (s, e) =>
         {
-            formsPlot1.Multiplot.ShareX([]);
-            formsPlot1.Multiplot.ShareY([]);
+            formsPlot1.Multiplot.SharedAxes.ShareX([]);
+            formsPlot1.Multiplot.SharedAxes.ShareY([]);
         };
     }
 }
