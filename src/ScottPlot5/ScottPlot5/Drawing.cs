@@ -393,10 +393,10 @@ public static class Drawing
         canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
     }
 
-    private static SKPath GetEllipticalAnnularSector(PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    private static SKPath GetEllipticalAnnularSector(PixelRect outerRect, PixelRect innerRect, float startAngle, float sweepAngle)
     {
         (Angle correctedStart, Angle correctedSweep) =
-            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), outerRect);
         float start = (float)correctedStart.Degrees;
         float sweep = (float)correctedSweep.Degrees;
 
@@ -407,20 +407,22 @@ public static class Drawing
             return new((float)x, (float)y);
         }
 
-        SKPoint p1 = GetPointOnEllipse(
-                innerRect.Center.X, innerRect.Center.Y,
-                innerRect.Right, innerRect.Bottom,
-                correctedStart + correctedSweep);
+        SKPoint innerArcEndPoint = GetPointOnEllipse(
+            innerRect.Center.X, innerRect.Center.Y,
+            innerRect.Right, innerRect.Bottom,
+            correctedStart + correctedSweep);
 
-        SKPoint p2 = GetPointOnEllipse(
-            rect.Center.X, rect.Center.Y, rect.Right, rect.Bottom, Angle.FromDegrees(0));
+        SKPoint outerArcStartPoint = GetPointOnEllipse(
+            outerRect.Center.X, outerRect.Center.Y,
+            outerRect.Right, outerRect.Bottom,
+            correctedStart);
 
         SKPath path = new();
-        path.AddArc(rect.ToSKRect(), start, sweep);
-        path.LineTo(p1);
-        path.AddArc(innerRect.ToSKRect(), start + sweep, -sweep);
-        path.LineTo(p2);
-        path.MoveTo(p2);
+        path.MoveTo(outerArcStartPoint);
+        path.ArcTo(outerRect.ToSKRect(), start, sweep, false);
+        path.LineTo(innerArcEndPoint);
+        path.ArcTo(innerRect.ToSKRect(), start + sweep, -sweep, false);
+        path.LineTo(outerArcStartPoint);
         path.Close();
         return path;
     }
