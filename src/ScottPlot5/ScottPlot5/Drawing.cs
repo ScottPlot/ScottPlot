@@ -365,7 +365,13 @@ public static class Drawing
                 Angle.FromRadians(Math.Atan2(y * rect.Right, x * rect.Bottom));
 
             // Map back to the original range
-            double scalar = Math.Ceiling(Math.Abs(angle.Degrees) / 360);
+            int absAngleDegrees = (int)Math.Abs(angle.Degrees);
+            int scalar = absAngleDegrees switch
+            {
+                < 180 => 0,
+                < 360 => 1,
+                _ => absAngleDegrees / 360,
+            };
             return angle.Degrees switch
             {
                 < -180 => correctAngle - scalar * Angle.FromDegrees(360),
