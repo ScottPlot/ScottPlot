@@ -352,6 +352,17 @@ public static class Drawing
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
 
+    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+    }
+
     private static (Angle startAngle, Angle sweepAngle) CorrectEllipseAngle(Angle startAngle, Angle sweepAngle, PixelRect rect)
     {
         Angle Correct(Angle angle)
@@ -388,15 +399,13 @@ public static class Drawing
         return (correctedStart, correctedSweep);
     }
 
-    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    public static void DrawEllipticalArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
 
-        lineStyle.ApplyToPaint(paint);
-        if (lineStyle.Hairline)
-            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
-
-        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+        (Angle correctedStart, Angle correctedSweep) = CorrectEllipseAngle(
+            Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+        DrawArc(canvas, paint, lineStyle, rect, (float)correctedStart.Degrees, (float)correctedSweep.Degrees);
     }
 
     private static SKPath GetEllipticalAnnularSector(PixelRect outerRect, PixelRect innerRect, float startAngle, float sweepAngle)
