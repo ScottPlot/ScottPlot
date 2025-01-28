@@ -1320,7 +1320,7 @@ public class PlottableAdder(Plot plot)
         return SignalXY(source, color);
     }
     
-    public SignalXY SignalXY<TX, TY>(List<TX> xs, List<TY> ys, Color? color = null)
+    public SignalXY SignalXY<TX, TY>(IReadOnlyList<TX> xs, IReadOnlyList<TY> ys, Color? color = null)
     {
         SignalXYSourceGenericList<TX, TY> source = new(xs, ys);
         return SignalXY(source, color);
