@@ -225,6 +225,18 @@ internal class SignalTests
 
         plt.Should().ThrowOnRender<InvalidDataException>();
     }
+    
+    [Test]
+    public void SignalXY_Throws_IfNotAscending_GenericList()
+    {
+        List<double> xs = Generate.RandomWalk(5_000).ToList();
+        List<double> ys = new double[xs.Count].ToList();
+
+        ScottPlot.Plot plt = new();
+        plt.Add.SignalXY(xs, ys);
+
+        plt.Should().ThrowOnRender<InvalidDataException>();
+    }    
 
     [Test]
     public void SignalXY_DoubleArray_RendersOutsideAxisView()
