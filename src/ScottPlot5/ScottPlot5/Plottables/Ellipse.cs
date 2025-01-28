@@ -142,7 +142,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
             }
             else
             {
-                Drawing.DrawArc(rp.Canvas, paint, LineStyle, rect,
+                Drawing.DrawEllipticalArc(rp.Canvas, paint, LineStyle, rect,
                     (float)-startAngle, (float)-SweepAngle.Degrees);
             }
         }
