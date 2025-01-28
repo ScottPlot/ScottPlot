@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.55
 _Not yet on NuGet..._
+* WPF: Added autoscale option to the default right-click context menu (#4701) @hsfetterman
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
