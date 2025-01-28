@@ -59,7 +59,32 @@ public class SignalXY : ICategory
             myPlot.Add.SignalXY(xs, ys);
         }
     }
+    
+    public class SignalXYGenericList : RecipeBase
+    {
+        public override string Name => "SignalXY Generic List";
+        public override string Description => "SignalXY plots are a high performance plot type " +
+                                              "for X/Y data in List<Tx,Ty> where the X values are always ascending.";
 
+        [Test]
+        public override void Execute()
+        {
+            // generate sample data with gaps
+            List<double> xList = new();
+            List<double> yList = new();
+            xList.AddRange(Generate.Consecutive());
+            yList.AddRange(Generate.Sin(51));
+
+            // add a SignalXY plot
+            var plt = myPlot.Add.SignalXY(xList, yList);
+            
+            // Extend Data and refresh
+            //xList.AddRange(Generate.Consecutive());
+            //yList.AddRange(Generate.RandomWalk(51));
+            //???.Refresh
+        }
+    } 
+    
     public class SignalXYDateTime : RecipeBase
     {
         public override string Name => "SignalXY DateTime Axis";
