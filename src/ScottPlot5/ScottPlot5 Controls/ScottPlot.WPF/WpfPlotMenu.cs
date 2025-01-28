@@ -50,6 +50,7 @@ public class WpfPlotMenu : IPlotMenu
         {
             saveImage,
             copyImage,
+            autoscale,
             newWindow,
         };
     }
