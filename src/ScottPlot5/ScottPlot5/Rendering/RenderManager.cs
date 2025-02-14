@@ -173,13 +173,10 @@ public class RenderManager(Plot plot)
             if (double.IsNaN(axis.Range.Span))
                 continue;
 
-            double newMin = axis.Range.Min;
-            double newMax = axis.Range.Max;
-            double oldMin = LastRender.AxisLimitsByAxis[axis].Min;
-            double oldMax = LastRender.AxisLimitsByAxis[axis].Max;
+            if (LastRender.PreviousAxisLimitsByAxis is null || !LastRender.PreviousAxisLimitsByAxis.TryGetValue(axis, out CoordinateRange lastAxisLimits))
+                return true;
 
-            bool axisLimitsChanged = (oldMin != newMin) || (oldMax != newMax);
-            if (axisLimitsChanged)
+            if (axis.Range.ToCoordinateRange != lastAxisLimits)
                 return true;
         }
 
