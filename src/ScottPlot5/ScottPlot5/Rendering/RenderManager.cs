@@ -109,7 +109,7 @@ public class RenderManager(Plot plot)
         for (int i = 0; i < maxRenderCount; i++)
         {
             RenderOnce(canvas, rect);
-            if (!AxisLimitsChangedSinceLastRender())
+            if (!LastRender.AxisLimitsChanged)
                 return;
         }
     }
@@ -161,26 +161,6 @@ public class RenderManager(Plot plot)
         DisableAxisLimitsChangedEventOnNextRender = false;
 
         // TODO: event for when layout changes
-    }
-
-    private bool AxisLimitsChangedSinceLastRender()
-    {
-        foreach (IAxis axis in LastRender.AxisLimitsByAxis.Keys)
-        {
-            if (axis is null)
-                continue;
-
-            if (double.IsNaN(axis.Range.Span))
-                continue;
-
-            if (LastRender.PreviousAxisLimitsByAxis is null || !LastRender.PreviousAxisLimitsByAxis.TryGetValue(axis, out CoordinateRange lastAxisLimits))
-                return true;
-
-            if (axis.Range.ToCoordinateRange != lastAxisLimits)
-                return true;
-        }
-
-        return false;
     }
 
     public void ForgetLastRender()
