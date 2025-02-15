@@ -35,7 +35,7 @@ jobs:
           distribution: "microsoft"
           java-version: "17"
       - name: Restore Workloads
-        run: dotnet workload restore ${{ env.SOLUTION_FILE }}
+        run: dotnet workload restore ${{ env.SOLUTION_FILE }} --from-previous-sdk
       - name: Restore Solution
         run: dotnet restore ${{ env.SOLUTION_FILE }}
       - name: Build Solution
