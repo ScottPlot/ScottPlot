@@ -9,7 +9,7 @@ namespace ScottPlot.Triangulation
             result = zs.Select(z =>
             {
                 var edgeLines = MarchingSquares(coordinateGrid, z).ToDictionary(e => e.CellID);
-                var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(0));
+                var mergedPaths = MergeContourParts(edgeLines, coordinateGrid.GetLength(1));
                 return mergedPaths.Select(elem => new ContourLine(CoordinatePath.Open(elem.Select(edge => edge.Interpolate(coordinateGrid, z))), z));
             })
             .SelectMany(elem => elem)
@@ -63,7 +63,7 @@ namespace ScottPlot.Triangulation
                     Vertex rb = new(i + 1, j);     // RigthtBottom
                     Vertex rt = new(i + 1, j + 1); // RightTop
 
-                    int cellID = j * CoordinateGrid.GetLength(0) + i;
+                    int cellID = j * CoordinateGrid.GetLength(1) + i;
 
                     int index = 0;
 
