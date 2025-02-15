@@ -1,3 +1,4 @@
+root = true
 indent_style = space
 
 [*.{cs}]
