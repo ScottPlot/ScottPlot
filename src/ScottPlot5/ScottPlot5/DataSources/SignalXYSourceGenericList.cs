@@ -1,5 +1,3 @@
-using System.Data.SqlTypes;
-
 namespace ScottPlot.DataSources;
 
 public class SignalXYSourceGenericList<Tx, Ty> : ISignalXYSource, IDataSource, IGetNearest
