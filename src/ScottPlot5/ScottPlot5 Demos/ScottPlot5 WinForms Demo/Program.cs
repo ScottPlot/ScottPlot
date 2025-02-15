@@ -1,4 +1,4 @@
-﻿
+
 namespace WinForms_Demo;
 
 static class Program

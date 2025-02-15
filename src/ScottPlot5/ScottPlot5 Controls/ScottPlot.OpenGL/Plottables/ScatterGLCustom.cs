@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using ScottPlot.OpenGL.GLPrograms;
 using SkiaSharp;
 using System;

@@ -1,4 +1,4 @@
-﻿/* A 9-color palette by Arthurits created by lightening the colors in the visible spectrum
+/* A 9-color palette by Arthurits created by lightening the colors in the visible spectrum
  */
 
 namespace ScottPlot.Palettes;

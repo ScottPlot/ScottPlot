@@ -1,4 +1,4 @@
-﻿using ScottPlot.Markers;
+using ScottPlot.Markers;
 
 namespace ScottPlot;
 

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 [Obsolete("use CoordinateLine or PixelLine", true)]
 public class Line

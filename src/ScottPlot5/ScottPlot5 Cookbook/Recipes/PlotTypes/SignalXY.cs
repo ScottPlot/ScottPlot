@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class SignalXY : ICategory
 {
@@ -37,8 +37,8 @@ public class SignalXY : ICategory
 
     public class SignalXYGeneric : RecipeBase
     {
-        public override string Name => "SignalXY Generic";
-        public override string Description => "SignalXY plots support generic data types, " +
+        public override string Name => "SignalXY Generic Array";
+        public override string Description => "SignalXY plots support arrays with generic data types, " +
             "although double is typically the most performant.";
 
         [Test]
@@ -52,11 +52,34 @@ public class SignalXY : ICategory
                 xList.AddRange(Generate.Consecutive(1000, first: 2000 * i).Select(x => (int)x));
                 yList.AddRange(Generate.RandomSample(1000).Select(x => (float)x));
             }
+
+            // this example converts
             int[] xs = xList.ToArray();
             float[] ys = yList.ToArray();
 
             // add a SignalXY plot
             myPlot.Add.SignalXY(xs, ys);
+        }
+    }
+
+    public class SignalXYGenericList : RecipeBase
+    {
+        public override string Name => "SignalXY Generic List";
+        public override string Description => "SignalXY plots support generic lists.";
+
+        [Test]
+        public override void Execute()
+        {
+            // create X and Y list with initial data
+            List<double> xs = new(Generate.Consecutive(count: 10, first: 0));
+            List<double> ys = new(Generate.RandomSample(10));
+
+            // create a signal plot from our X and Y lists
+            myPlot.Add.SignalXY(xs, ys);
+
+            // data can be added to lists later
+            xs.AddRange(Generate.Consecutive(count: 10, first: 50));
+            ys.AddRange(Generate.RandomSample(10));
         }
     }
 

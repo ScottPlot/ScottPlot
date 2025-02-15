@@ -1,4 +1,4 @@
-﻿/* The Jet colormap is provided under a MIT license.
+/* The Jet colormap is provided under a MIT license.
  * Do not use this colormap for heatmap data! See references:
  * https://jakevdp.github.io/blog/2014/10/16/how-bad-is-your-colormap/
  * https://bids.github.io/colormap/

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Rendering.RenderActions;
+namespace ScottPlot.Rendering.RenderActions;
 
 public class RenderZoomRectangle : IRenderAction
 {

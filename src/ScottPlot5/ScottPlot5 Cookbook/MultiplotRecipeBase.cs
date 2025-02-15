@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+namespace ScottPlotCookbook;
 
 #pragma warning disable IDE1006 // Ignore lowercase public variable names
 

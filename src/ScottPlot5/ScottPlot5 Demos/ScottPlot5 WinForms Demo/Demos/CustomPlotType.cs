@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using SkiaSharp;
 
 namespace WinForms_Demo.Demos;

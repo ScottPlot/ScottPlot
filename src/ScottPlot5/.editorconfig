@@ -1,9 +1,10 @@
+root = true
 indent_style = space
 
 [*.{cs}]
 indent_size = 4
 insert_final_newline = true
-charset = utf-8-bom
+charset = utf-8
 
 # New line preferences
 csharp_new_line_before_open_brace = all

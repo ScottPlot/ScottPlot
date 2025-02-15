@@ -1,4 +1,4 @@
-﻿using ScottPlot.TickGenerators.TimeUnits;
+using ScottPlot.TickGenerators.TimeUnits;
 
 namespace ScottPlot.TickGenerators
 {

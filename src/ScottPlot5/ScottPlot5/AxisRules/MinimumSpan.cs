@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class MinimumSpan(IXAxis xAxis, IYAxis yAxis, double xSpan, double ySpan) : IAxisRule
 {
@@ -10,18 +10,42 @@ public class MinimumSpan(IXAxis xAxis, IYAxis yAxis, double xSpan, double ySpan)
 
     public void Apply(RenderPack rp, bool beforeLayout)
     {
-        if (XAxis.Range.Span < XSpan)
+        if (XAxis.IsInverted())
         {
-            double xMin = XAxis.Range.Center - XSpan / 2;
-            double xMax = XAxis.Range.Center + XSpan / 2;
-            XAxis.Range.Set(xMin, xMax);
+            if (Math.Abs(XAxis.Range.Span) < XSpan)
+            {
+                double xMin = XAxis.Range.Center - XSpan / 2;
+                double xMax = XAxis.Range.Center + XSpan / 2;
+                XAxis.Range.Set(xMax, xMin);
+            }
+        }
+        else
+        {
+            if (XAxis.Range.Span < XSpan)
+            {
+                double xMin = XAxis.Range.Center - XSpan / 2;
+                double xMax = XAxis.Range.Center + XSpan / 2;
+                XAxis.Range.Set(xMin, xMax);
+            }
         }
 
-        if (YAxis.Range.Span < YSpan)
+        if (YAxis.IsInverted())
         {
-            double yMin = YAxis.Range.Center - YSpan / 2;
-            double yMax = YAxis.Range.Center + YSpan / 2;
-            YAxis.Range.Set(yMin, yMax);
+            if (Math.Abs(YAxis.Range.Span) < YSpan)
+            {
+                double yMin = YAxis.Range.Center - YSpan / 2;
+                double yMax = YAxis.Range.Center + YSpan / 2;
+                YAxis.Range.Set(yMax, yMin);
+            }
+        }
+        else
+        {
+            if (YAxis.Range.Span < YSpan)
+            {
+                double yMin = YAxis.Range.Center - YSpan / 2;
+                double yMax = YAxis.Range.Center + YSpan / 2;
+                YAxis.Range.Set(yMin, yMax);
+            }
         }
     }
 }

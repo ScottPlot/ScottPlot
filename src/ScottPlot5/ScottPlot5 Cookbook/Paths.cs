@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+namespace ScottPlotCookbook;
 
 internal static class Paths
 {

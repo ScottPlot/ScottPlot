@@ -1,4 +1,4 @@
-﻿using GraphicalTestRunner;
+using GraphicalTestRunner;
 using ScottPlot;
 using System.Data;
 using System.Diagnostics;

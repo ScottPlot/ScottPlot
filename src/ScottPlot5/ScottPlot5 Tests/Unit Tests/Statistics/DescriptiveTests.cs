@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.Statistics;
+namespace ScottPlotTests.Statistics;
 
 /* known values obtained from an online calculator:
  * https://www.calculatorsoup.com/calculators/statistics/variance-calculator.php 

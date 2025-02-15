@@ -1,4 +1,4 @@
-﻿using ScottPlot.FontResolvers;
+using ScottPlot.FontResolvers;
 using System.Collections.Concurrent;
 
 namespace ScottPlot;

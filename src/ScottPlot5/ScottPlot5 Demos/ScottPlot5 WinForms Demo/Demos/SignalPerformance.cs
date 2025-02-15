@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 
 namespace WinForms_Demo.Demos;
 

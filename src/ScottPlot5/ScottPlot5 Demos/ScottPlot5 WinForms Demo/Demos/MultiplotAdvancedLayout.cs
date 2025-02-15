@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using ScottPlot.MultiplotLayouts;
 
 namespace WinForms_Demo.Demos;

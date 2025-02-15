@@ -1,4 +1,4 @@
-﻿using ScottPlot.Interactivity;
+using ScottPlot.Interactivity;
 
 namespace ScottPlotTests.InteractivityTests;
 

@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   workflow_call:
 
-env:
-  DOTNET_VERSION: "9.0.x"
-
 jobs:
   sp4-autoformat:
     name: Check
@@ -17,6 +14,6 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0"
+          dotnet-version: "9.0.103" #https://github.com/dotnet/sdk/issues/46780#issuecomment-2654628175
       - name: Code Format Check
         run: dotnet format "src/ScottPlot5/ScottPlot5/ScottPlot.csproj" --verify-no-changes

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.WPF;
+namespace ScottPlot.WPF;
 
 public static class WpfPlotViewer
 {

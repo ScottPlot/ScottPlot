@@ -1,4 +1,4 @@
-﻿namespace WinForms_Demo;
+namespace WinForms_Demo;
 
 public partial class MainMenuForm : Form
 {

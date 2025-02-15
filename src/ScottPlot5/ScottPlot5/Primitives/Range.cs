@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 ///<summary>
 ///Represents a range between any two finite values (inclusive)

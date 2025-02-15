@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisPanels.Experimental;
+namespace ScottPlot.AxisPanels.Experimental;
 
 /// <summary>
 /// A simple custom Y axis which includes a subtitle/sub-label.

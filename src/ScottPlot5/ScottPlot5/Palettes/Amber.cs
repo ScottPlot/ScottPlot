@@ -1,4 +1,4 @@
-﻿/* Sourced from Material Design
+/* Sourced from Material Design
  * https://material.io/design/color/the-color-system.html
  */
 

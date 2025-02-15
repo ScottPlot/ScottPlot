@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// A stateful analog to <see cref="AxisLimits"/> deisgned to expand to include given data

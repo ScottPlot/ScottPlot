@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSources;
+namespace ScottPlot.DataSources;
 
 public class FunctionSource(Func<double, double> func) : IFunctionSource
 {

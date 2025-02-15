@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
+namespace ScottPlotTests.InteractivityTests.UserInputActionTests;
 
 internal class RightClickContextMenuTests
 {

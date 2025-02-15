@@ -1,4 +1,4 @@
-﻿using Sandbox.WinForms3D.Primitives3D;
+using Sandbox.WinForms3D.Primitives3D;
 using ScottPlot;
 
 namespace Sandbox.WinForms3D.Plottables3D;

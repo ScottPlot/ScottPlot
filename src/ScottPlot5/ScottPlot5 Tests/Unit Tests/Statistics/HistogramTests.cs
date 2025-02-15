@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.Statistics;
+namespace ScottPlotTests.Statistics;
 
 internal class HistogramTests
 {

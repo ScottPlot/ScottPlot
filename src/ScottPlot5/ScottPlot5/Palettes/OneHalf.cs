@@ -1,4 +1,4 @@
-﻿/* Sourced from Son A. Pham's Sublime color scheme by the same name
+/* Sourced from Son A. Pham's Sublime color scheme by the same name
  * https://github.com/sonph/onehalf
  */
 

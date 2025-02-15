@@ -1,4 +1,4 @@
-﻿namespace Sandbox.WinForms3D;
+namespace Sandbox.WinForms3D;
 
 static class Program
 {

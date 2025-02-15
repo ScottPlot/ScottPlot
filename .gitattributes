@@ -1,0 +1,28 @@
+# Set default behavior to automatically normalize line endings.
+* text=auto
+
+# Force bash scripts to always use lf line endings so that if a repo is accessed
+# in Unix via a file share from Windows, the scripts will work.
+*.in text eol=lf
+*.sh text eol=lf
+
+# Likewise, force cmd and batch scripts to always use crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# set encoding for source code
+*.cs text diff=csharp eol=crlf
+*.csproj text merge=union eol=crlf
+*.sln text merge=union eol=crlf
+
+# set encoding for other text file types
+*.resx text
+*.py text
+*.html text
+*.css text
+*.js text
+
+# set encoding type for binaries
+*.jpg binary
+*.png binary
+*.gif binary

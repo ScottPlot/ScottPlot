@@ -1,4 +1,4 @@
-﻿// Adapted from https://github.com/nol1fe/delaunator-sharp
+// Adapted from https://github.com/nol1fe/delaunator-sharp
 // See https://github.com/ScottPlot/ScottPlot/pull/4296
 
 /*

@@ -1,4 +1,4 @@
-﻿using Windows.System;
+using Windows.System;
 using Windows.Foundation;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Input;

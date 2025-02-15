@@ -1,4 +1,4 @@
-﻿using Eto.Forms;
+using Eto.Forms;
 
 
 namespace Sandbox.Eto

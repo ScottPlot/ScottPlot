@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests;
+namespace ScottPlotTests;
 
 internal class Sandbox
 {

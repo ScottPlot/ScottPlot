@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// This object holds an X axis and Y axis and performs 2D coordinate/pixel conversions

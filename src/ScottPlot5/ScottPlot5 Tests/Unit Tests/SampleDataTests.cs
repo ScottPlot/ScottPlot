@@ -1,4 +1,4 @@
-﻿namespace SharedTests;
+namespace SharedTests;
 
 internal class SampleData
 {

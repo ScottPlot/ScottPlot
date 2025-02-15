@@ -1,4 +1,4 @@
-﻿// This colormap was created by Scott Harden on 2020-06-16 and is released under a MIT license.
+// This colormap was created by Scott Harden on 2020-06-16 and is released under a MIT license.
 // It was designed to mimic Turbo, but is not a copy of or derived from Turbo source code.
 // https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html
 

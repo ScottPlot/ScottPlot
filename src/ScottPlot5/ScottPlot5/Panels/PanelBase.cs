@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Panels;
+namespace ScottPlot.Panels;
 
 public abstract class PanelBase : IPanel
 {

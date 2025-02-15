@@ -1,4 +1,4 @@
-﻿using AvaKey = Avalonia.Input.Key;
+using AvaKey = Avalonia.Input.Key;
 using Avalonia.Input;
 using Avalonia;
 using ScottPlot.Interactivity;

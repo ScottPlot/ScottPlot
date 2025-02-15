@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisLimitManagers;
+namespace ScottPlot.AxisLimitManagers;
 
 /// <summary>
 /// Show the entire range of data, changing the axis limits only

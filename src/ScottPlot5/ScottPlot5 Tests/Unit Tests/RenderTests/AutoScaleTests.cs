@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.RenderTests;
+namespace ScottPlotTests.RenderTests;
 
 internal class AutoScaleTests
 {

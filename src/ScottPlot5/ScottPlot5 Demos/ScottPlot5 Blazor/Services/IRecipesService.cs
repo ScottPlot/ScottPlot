@@ -1,4 +1,4 @@
-﻿using ScottPlotCookbook;
+using ScottPlotCookbook;
 using System.Collections.ObjectModel;
 
 namespace Sandbox.Blazor.WebAssembly.Services

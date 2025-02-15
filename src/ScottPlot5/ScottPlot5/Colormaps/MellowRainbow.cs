@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Colormaps;
+namespace ScottPlot.Colormaps;
 
 /// <summary>
 /// A rainbow colormap inspired by Jet and Turbo but adapted by Scott Harden to have 

@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Skia;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -60,6 +60,9 @@ public class AvaPlot : Controls.Control, IPlotControl
 
             using var lease = leaseFeature.Lease();
             PixelRect rect = new(0, (float)Bounds.Width, (float)Bounds.Height, 0);
+
+            using SKAutoCanvasRestore _ = new(lease.SkCanvas, false);
+            lease.SkCanvas.SaveLayer();
             Multiplot.Render(lease.SkCanvas, rect);
         }
     }

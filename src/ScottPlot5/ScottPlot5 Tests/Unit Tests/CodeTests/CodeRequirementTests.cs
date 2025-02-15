@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
+using System.Reflection;
 
 namespace ScottPlotTests.CodeTests;
 
@@ -80,6 +79,24 @@ internal class CodeRequirementTests
             if (!classInfo.IsVisible)
             {
                 throw new InvalidOperationException($"{type.Namespace}.{type.Name} should be public");
+            }
+        }
+    }
+
+    [Test]
+    public void Test_UserActionResponses_ArePublic()
+    {
+        string targetNamespace = "ScottPlot.Interactivity.UserActionResponses";
+        var actionTypes = Assembly.GetAssembly(typeof(ScottPlot.Plot))!
+                              .GetTypes()
+                              .Where(t => t.IsClass && t.Namespace == targetNamespace);
+
+        foreach (Type type in actionTypes)
+        {
+            TypeInfo classInfo = type.GetTypeInfo();
+            if (classInfo.IsNotPublic)
+            {
+                throw new InvalidOperationException($"{type.FullName} should be public");
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using ScottPlot.Interactivity.UserActions;
+using ScottPlot.Interactivity.UserActions;
 
 namespace ScottPlot.Interactivity.UserActionResponses;
 

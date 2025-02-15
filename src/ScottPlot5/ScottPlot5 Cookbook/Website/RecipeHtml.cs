@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Website;
+namespace ScottPlotCookbook.Website;
 
 public static class RecipeHtml
 {

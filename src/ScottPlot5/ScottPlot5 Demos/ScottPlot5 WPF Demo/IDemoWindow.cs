@@ -1,4 +1,4 @@
-﻿namespace WPF_Demo;
+namespace WPF_Demo;
 public interface IDemoWindow
 {
     string DemoTitle { get; }

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.PathStrategies;
+namespace ScottPlot.PathStrategies;
 
 /// <summary>
 /// Connect points with curved lines which ease into and out of the midpoint between each pair.

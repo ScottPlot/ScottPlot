@@ -1,4 +1,4 @@
-﻿/* Magma is a colormap by Nathaniel J. Smith and Stefan van der Walt
+/* Magma is a colormap by Nathaniel J. Smith and Stefan van der Walt
  * https://bids.github.io/colormap/
  * https://github.com/BIDS/colormap/blob/master/colormaps.py
  * 

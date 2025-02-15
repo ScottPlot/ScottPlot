@@ -1,4 +1,4 @@
-﻿namespace Sandbox.WinForms3D.Primitives3D;
+namespace Sandbox.WinForms3D.Primitives3D;
 
 public record struct Rotation3D
 {

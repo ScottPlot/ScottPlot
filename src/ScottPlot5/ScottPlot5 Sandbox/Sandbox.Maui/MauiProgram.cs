@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using ScottPlot.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 

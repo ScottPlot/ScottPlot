@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a range of values between a pair of bounding coordinates on a single axis.
@@ -83,13 +83,10 @@ public readonly struct CoordinateRange(double value1, double value2)
     /// </summary>
     public static CoordinateRange Extrema(IEnumerable<double> values)
     {
-        if (!values.Any())
-            return CoordinateRange.NoLimits;
-
-        var nonNanValues = values.Where(i => !double.IsNaN(i));
-        double min = nonNanValues.Min();
-        double max = nonNanValues.Max();
-        return new(min, max);
+        var nonNanValues = values.Where(i => !double.IsNaN(i)).ToList();
+        return nonNanValues.Any()
+            ? new CoordinateRange(nonNanValues.Min(), nonNanValues.Max())
+            : NoLimits;
     }
 
     /// <summary>

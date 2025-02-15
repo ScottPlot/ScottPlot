@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.LayoutEngines;
+namespace ScottPlot.LayoutEngines;
 
 public class LayoutEngineBase
 {

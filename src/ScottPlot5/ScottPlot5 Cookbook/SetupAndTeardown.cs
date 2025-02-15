@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+namespace ScottPlotCookbook;
 
 [SetUpFixture]
 internal class SetupAndTeardown

@@ -1,4 +1,4 @@
-﻿using ScottPlot.AxisPanels;
+using ScottPlot.AxisPanels;
 
 namespace WinForms_Demo.Demos;
 

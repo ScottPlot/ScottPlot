@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Statistics;
+namespace ScottPlot.Statistics;
 
 public readonly struct LinearRegression
 {

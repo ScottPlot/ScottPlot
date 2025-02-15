@@ -1,4 +1,4 @@
-﻿using ScottPlot.Collections;
+using ScottPlot.Collections;
 using System.Runtime.CompilerServices;
 
 namespace ScottPlot;

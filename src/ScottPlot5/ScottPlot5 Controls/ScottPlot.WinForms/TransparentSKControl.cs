@@ -1,4 +1,4 @@
-﻿
+
 using SkiaSharp.Views.Desktop;
 using System.Windows.Forms;
 

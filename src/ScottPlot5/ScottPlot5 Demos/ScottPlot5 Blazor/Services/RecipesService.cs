@@ -1,4 +1,4 @@
-﻿using ScottPlotCookbook;
+using ScottPlotCookbook;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 

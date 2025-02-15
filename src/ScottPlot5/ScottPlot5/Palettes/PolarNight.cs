@@ -1,4 +1,4 @@
-﻿/* Sourced from Nord:
+/* Sourced from Nord:
  * https://github.com/arcticicestudio/nord
  * https://www.nordtheme.com/docs/colors-and-palettes
  */

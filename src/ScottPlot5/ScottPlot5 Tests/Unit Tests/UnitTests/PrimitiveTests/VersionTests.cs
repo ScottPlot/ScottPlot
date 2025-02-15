@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.UnitTests.PrimitiveTests;
+namespace ScottPlotTests.UnitTests.PrimitiveTests;
 
 internal class VersionTests
 {

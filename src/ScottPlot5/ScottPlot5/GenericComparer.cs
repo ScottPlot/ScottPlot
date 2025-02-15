@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Generic helper used to provide <see cref="IComparer{T}"/> on supported types.

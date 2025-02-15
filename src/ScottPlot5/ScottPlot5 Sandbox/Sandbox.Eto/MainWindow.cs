@@ -1,4 +1,4 @@
-﻿using Eto.Forms;
+using Eto.Forms;
 using ScottPlot;
 
 namespace Sandbox.Eto;

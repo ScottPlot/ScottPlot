@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 #if NETCOREAPP || NET
 using OpenTK.Mathematics;

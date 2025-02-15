@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class LockedTop(IYAxis yAxis, double yMax) : IAxisRule
 {

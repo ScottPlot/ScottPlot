@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisLimitManagers;
+namespace ScottPlot.AxisLimitManagers;
 
 /// <summary>
 /// Slide the view to the right to keep the newest data points in view

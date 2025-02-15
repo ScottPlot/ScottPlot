@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.UnitTests.PrimitiveTests;
+namespace ScottPlotTests.UnitTests.PrimitiveTests;
 
 internal class CoordinateRangeTests
 {
@@ -93,6 +93,36 @@ internal class CoordinateRangeTests
         new CoordinateRange(10, 2).Center.Should().Be(6);
         new CoordinateRange(2, -10).Center.Should().Be(-4);
         new CoordinateRange(10, -2).Center.Should().Be(4);
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Extrema_Empty()
+    {
+        CoordinateRange.Extrema(Array.Empty<double>()).Should().Be(CoordinateRange.NoLimits);
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Extrema_Single_Value()
+    {
+        CoordinateRange.Extrema(new[] { 3.14159 }).Should().Be(new CoordinateRange(3.14159, 3.14159));
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Extrema_AllNaN()
+    {
+        CoordinateRange.Extrema(new[] { double.NaN, double.NaN }).Should().Be(CoordinateRange.NoLimits);
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Extrema_SomeNaN()
+    {
+        CoordinateRange.Extrema(new[] { 1.0, double.NaN, 2.0 }).Should().Be(new CoordinateRange(1.0, 2.0));
+    }
+
+    [Test]
+    public void Test_CoordinateRange_Extrema_Normal()
+    {
+        CoordinateRange.Extrema(new[] { -1.0, 0.0, 1.0 }).Should().Be(new CoordinateRange(-1.0, 1.0));
     }
 
     [Test]
