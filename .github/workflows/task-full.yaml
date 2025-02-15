@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   workflow_call:
 
-env:
-  SOLUTION_FILE: "./src/ScottPlot5/ScottPlot5.sln"
-
 jobs:
   full:
     name: Full Build
@@ -35,12 +32,16 @@ jobs:
           distribution: "microsoft"
           java-version: "17"
       - name: Restore Workloads
-        run: dotnet workload restore ${{ env.SOLUTION_FILE }}
+        working-directory: ./src/ScottPlot5/
+        run: dotnet workload restore
       - name: Restore Solution
-        run: dotnet restore ${{ env.SOLUTION_FILE }}
+        working-directory: ./src/ScottPlot5/
+        run: dotnet restore
       - name: Build Solution
-        run: dotnet build  ${{ env.SOLUTION_FILE }} --configuration Release
+        working-directory: ./src/ScottPlot5/
+        run: dotnet build  --configuration Release
       - name: Run Tests
-        run: dotnet test ${{ env.SOLUTION_FILE }} --configuration Release --no-build --verbosity minimal
+        working-directory: ./src/ScottPlot5/
+        run: dotnet test --configuration Release --no-build --verbosity minimal
       - name: Security Scan
         uses: github/codeql-action/analyze@v3
