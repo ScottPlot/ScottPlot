@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TickGenerators;
+namespace ScottPlot.TickGenerators;
 
 public class DateTimeAutomatic : IDateTimeTickGenerator
 {

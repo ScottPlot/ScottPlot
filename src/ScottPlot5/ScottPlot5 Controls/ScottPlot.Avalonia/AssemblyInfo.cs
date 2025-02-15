@@ -1,1 +1,1 @@
-﻿[assembly: System.Runtime.InteropServices.ComVisible(true)]
+[assembly: System.Runtime.InteropServices.ComVisible(true)]

@@ -1,4 +1,4 @@
-﻿// This plot type was inspired by MicroCharts:
+// This plot type was inspired by MicroCharts:
 // https://github.com/dotnet-ad/Microcharts/blob/main/Sources/Microcharts/Charts/RadialGaugeChart.cs
 
 namespace ScottPlot.Plottables;

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserActionResponses;
+namespace ScottPlot.Interactivity.UserActionResponses;
 
 public class SingleClickResponse(MouseButton button, Action<IPlotControl, Pixel> action) : IUserActionResponse
 {

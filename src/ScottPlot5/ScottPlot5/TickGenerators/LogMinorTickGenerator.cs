@@ -1,4 +1,4 @@
-﻿
+
 namespace ScottPlot.TickGenerators;
 
 public class LogMinorTickGenerator : IMinorTickGenerator

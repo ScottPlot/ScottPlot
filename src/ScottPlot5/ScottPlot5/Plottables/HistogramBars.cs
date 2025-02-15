@@ -1,4 +1,4 @@
-﻿
+
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottables;

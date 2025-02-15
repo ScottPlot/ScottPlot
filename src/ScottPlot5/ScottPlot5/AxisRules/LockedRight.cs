@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class LockedRight(IXAxis xAxis, double xMax) : IAxisRule
 {

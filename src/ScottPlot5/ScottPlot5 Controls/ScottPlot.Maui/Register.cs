@@ -1,4 +1,4 @@
-﻿using SkiaSharp.Views.Maui.Controls.Hosting;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;

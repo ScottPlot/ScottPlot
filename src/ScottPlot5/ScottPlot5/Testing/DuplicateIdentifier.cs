@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Testing;
+namespace ScottPlot.Testing;
 
 /// <summary>
 /// Helper class to detect for duplicate items in complex collections

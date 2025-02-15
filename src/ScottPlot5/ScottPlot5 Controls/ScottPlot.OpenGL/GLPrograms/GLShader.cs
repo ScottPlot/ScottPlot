@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using System.Diagnostics;
 
 namespace ScottPlot.OpenGL.GLPrograms;

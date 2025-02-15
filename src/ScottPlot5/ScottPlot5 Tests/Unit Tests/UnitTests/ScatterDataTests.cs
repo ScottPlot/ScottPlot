@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using ScottPlot.DataSources;
 
 namespace ScottPlotTests.UnitTests;

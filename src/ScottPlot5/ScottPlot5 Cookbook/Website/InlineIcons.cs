@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Website;
+namespace ScottPlotCookbook.Website;
 
 internal static class InlineIcons
 {

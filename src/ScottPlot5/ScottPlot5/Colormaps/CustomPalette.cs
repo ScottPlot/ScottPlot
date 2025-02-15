@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Colormaps;
+namespace ScottPlot.Colormaps;
 
 /// <summary>
 /// A palette of colors with "hard edges" (no interpolation between colors)

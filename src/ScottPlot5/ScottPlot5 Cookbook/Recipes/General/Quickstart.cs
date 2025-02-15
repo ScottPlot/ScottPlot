@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Recipes.Quickstart;
+namespace ScottPlotCookbook.Recipes.Quickstart;
 
 public class ScottPlotQuickstart : ICategory
 {

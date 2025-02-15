@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class LockedBottom(IYAxis yAxis, double yMin) : IAxisRule
 {

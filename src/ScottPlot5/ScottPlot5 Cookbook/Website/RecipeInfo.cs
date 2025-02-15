@@ -1,4 +1,4 @@
-﻿using ScottPlotCookbook.Recipes;
+using ScottPlotCookbook.Recipes;
 
 namespace ScottPlotCookbook.Website;
 

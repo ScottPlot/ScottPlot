@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Statistics;
+namespace ScottPlot.Statistics;
 
 /// <summary>
 /// Represents a Gaussian distribution of probabilities

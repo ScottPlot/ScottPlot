@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// <see cref="IComparer{T}"/> for various types provided by ScottPlot

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Grids;
+namespace ScottPlot.Grids;
 
 public class DefaultGrid(IXAxis xAxis, IYAxis yAxis) : IGrid
 {

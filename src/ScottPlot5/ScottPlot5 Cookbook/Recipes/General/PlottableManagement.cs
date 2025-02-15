@@ -1,4 +1,4 @@
-﻿using ScottPlot.Plottables;
+using ScottPlot.Plottables;
 
 namespace ScottPlotCookbook.Recipes.General;
 

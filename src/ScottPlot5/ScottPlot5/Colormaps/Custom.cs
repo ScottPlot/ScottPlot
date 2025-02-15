@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Colormaps;
+namespace ScottPlot.Colormaps;
 
 /// <summary>
 /// A custom colormap created from a collection of colors

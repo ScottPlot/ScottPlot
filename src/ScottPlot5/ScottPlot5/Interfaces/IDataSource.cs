@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 // TODO: Performance of many data sources may be improved and code duplication reduced.
 // Improvements should be made in concert with performance tests.

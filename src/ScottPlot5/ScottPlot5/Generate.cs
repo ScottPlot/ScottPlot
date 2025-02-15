@@ -1,4 +1,4 @@
-﻿using ScottPlot.DataGenerators;
+using ScottPlot.DataGenerators;
 
 namespace ScottPlot;
 

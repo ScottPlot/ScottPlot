@@ -1,4 +1,4 @@
-﻿using ScottPlotCookbook;
+using ScottPlotCookbook;
 using System.Text;
 
 namespace WinForms_Demo.Demos;

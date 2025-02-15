@@ -1,4 +1,4 @@
-﻿using ScottPlot.Statistics;
+using ScottPlot.Statistics;
 
 namespace ScottPlot.Finance;
 

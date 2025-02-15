@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// This plottable renders date tick labels for financial charts where

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.NamedColors;
+namespace ScottPlot.NamedColors;
 
 /// <summary>
 /// Colors defined according to results of the xkcd color name survey

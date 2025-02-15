@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
 {

@@ -1,4 +1,4 @@
-﻿using SkiaSharp.Views.Maui;
+using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 
 namespace ScottPlot.Maui;

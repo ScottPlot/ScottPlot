@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// This plottable contains logic to modify tick labels to display them

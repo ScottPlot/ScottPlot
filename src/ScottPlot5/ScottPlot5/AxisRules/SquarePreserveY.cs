@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class SquarePreserveY(IXAxis xAxis, IYAxis yAxis) : IAxisRule
 {

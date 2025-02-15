@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// Displays 1 or more boxes all styled the same

@@ -1,4 +1,4 @@
-﻿using ScottPlot.AxisPanels;
+using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;

@@ -1,4 +1,4 @@
-﻿using OpenTK;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using ScottPlot.OpenGL;
 using ScottPlot.OpenGL.GLPrograms;
@@ -206,6 +206,6 @@ public class ScatterGL : Scatter, IPlottableGL, IDisposable
             GLHasBeenInitialized = false;
         }
     }
-   
+
     #endregion
 }

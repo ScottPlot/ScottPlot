@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.UnitTests.TickGenerators;
+namespace ScottPlotTests.UnitTests.TickGenerators;
 
 internal class DecimalTickSpacingCalculatorTests
 {

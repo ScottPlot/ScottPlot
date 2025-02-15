@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Testing;
+namespace ScottPlot.Testing;
 
 /// <summary>
 /// Compare two raster images to identify and quantify differences

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserActions;
+namespace ScottPlot.Interactivity.UserActions;
 
 public record struct RightMouseUp(Pixel Pixel) : IMouseButtonAction
 {

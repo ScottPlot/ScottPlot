@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.FontResolvers;
+namespace ScottPlot.FontResolvers;
 
 /// <summary>
 /// Font resolver that creates a typeface from a specified TTF file

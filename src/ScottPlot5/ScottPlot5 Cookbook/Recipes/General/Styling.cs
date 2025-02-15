@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Recipes.Introduction;
+namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Styling : ICategory
 {

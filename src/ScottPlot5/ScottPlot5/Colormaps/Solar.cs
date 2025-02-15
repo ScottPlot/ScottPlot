@@ -1,4 +1,4 @@
-﻿//This is a cmocean colormap
+//This is a cmocean colormap
 //All credit to Kristen Thyng
 //This colormap is under the MIT License
 //All cmocean colormaps are available at https://github.com/matplotlib/cmocean/tree/master/cmocean/rgb

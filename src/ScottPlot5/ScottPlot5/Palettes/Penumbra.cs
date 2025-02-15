@@ -1,4 +1,4 @@
-﻿/* Sourced from Neal McKee's Penumbra color theme:
+/* Sourced from Neal McKee's Penumbra color theme:
  * https://github.com/nealmckee/penumbra/blob/main/penumbra.tsv
  * https://github.com/nealmckee/penumbra#accent-colour-palettes-2
  */

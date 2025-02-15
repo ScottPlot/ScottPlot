@@ -1,4 +1,4 @@
-﻿namespace Sandbox.WinForms;
+namespace Sandbox.WinForms;
 
 static class Program
 {

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.MultiplotLayouts;
+namespace ScottPlot.MultiplotLayouts;
 
 public class Columns : IMultiplotLayout
 {

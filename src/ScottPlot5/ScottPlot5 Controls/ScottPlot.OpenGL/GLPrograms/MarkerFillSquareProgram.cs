@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.OpenGL.GLPrograms;
+namespace ScottPlot.OpenGL.GLPrograms;
 
 public class MarkerFillSquareProgram : MarkersProgram
 {

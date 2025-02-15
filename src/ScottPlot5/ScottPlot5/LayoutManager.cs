@@ -1,4 +1,4 @@
-﻿using ScottPlot.LayoutEngines;
+using ScottPlot.LayoutEngines;
 
 namespace ScottPlot;
 

@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.CodeTests;
+namespace ScottPlotTests.CodeTests;
 
 public class CodeFormatTests
 {

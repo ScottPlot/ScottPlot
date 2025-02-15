@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {

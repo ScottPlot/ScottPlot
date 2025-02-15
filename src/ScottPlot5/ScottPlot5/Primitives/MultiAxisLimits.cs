@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Stores the <see cref="CoordinateRange"/> for all axes on the plot

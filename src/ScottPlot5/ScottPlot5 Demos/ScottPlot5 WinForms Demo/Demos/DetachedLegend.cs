@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using ScottPlot.WinForms;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;

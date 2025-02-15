@@ -1,4 +1,4 @@
-﻿/* A color palette based on Anton Tsitsulin's 6-color palette
+/* A color palette based on Anton Tsitsulin's 6-color palette
  * http://tsitsul.in/blog/coloropt
  * https://github.com/xgfs/coloropt
  */

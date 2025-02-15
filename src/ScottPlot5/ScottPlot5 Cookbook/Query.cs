@@ -1,4 +1,4 @@
-﻿using ScottPlotCookbook.Recipes.Miscellaneous;
+using ScottPlotCookbook.Recipes.Miscellaneous;
 using System.Reflection;
 
 namespace ScottPlotCookbook;

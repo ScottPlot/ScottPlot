@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.LayoutEngines;
+namespace ScottPlot.LayoutEngines;
 
 /// <summary>
 /// Generate a layout using a fixed rectangle for the data area

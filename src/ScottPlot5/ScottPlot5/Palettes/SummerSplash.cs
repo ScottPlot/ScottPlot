@@ -1,4 +1,4 @@
-﻿/* This palette can be found in several places:
+/* This palette can be found in several places:
  * https://www.canva.com/colors/color-palettes/summer-splash/
  * https://color.adobe.com/My-Color-Theme-color-theme-17257636/
  * "The Indian Ocean" on https://evening-ridge-43372.herokuapp.com/

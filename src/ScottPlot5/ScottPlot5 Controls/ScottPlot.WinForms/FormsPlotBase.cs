@@ -1,4 +1,4 @@
-﻿using ScottPlot.Interactivity;
+using ScottPlot.Interactivity;
 using SkiaSharp;
 using System;
 using System.ComponentModel;

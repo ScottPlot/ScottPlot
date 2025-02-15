@@ -1,4 +1,4 @@
-﻿using ScottPlot.DataSources;
+using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.Statistics;

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 // TODO: strangle this class and replace with CoordinateRangeStruct
 

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TickGenerators;
+namespace ScottPlot.TickGenerators;
 
 // TODO: Consider creating a `LabelFormatter` type or `ILabelFormatter` because we use this pattern in a lot of places.
 

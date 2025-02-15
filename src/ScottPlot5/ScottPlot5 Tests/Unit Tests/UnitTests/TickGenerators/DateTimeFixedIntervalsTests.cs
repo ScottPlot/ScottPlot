@@ -1,4 +1,4 @@
-﻿using ScottPlot.TickGenerators;
+using ScottPlot.TickGenerators;
 using ScottPlot.TickGenerators.TimeUnits;
 using SkiaSharp;
 using DateTime = System.DateTime;

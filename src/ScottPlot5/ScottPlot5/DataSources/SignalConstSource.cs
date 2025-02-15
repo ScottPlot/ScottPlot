@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSources;
+namespace ScottPlot.DataSources;
 
 public class SignalConstSource<T> : SignalSourceGenericArray<T>
     where T : struct, IComparable

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.LegendLayouts;
+namespace ScottPlot.LegendLayouts;
 
 public class Wrapping : ILegendLayout
 {

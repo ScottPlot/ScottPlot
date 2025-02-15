@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Statistics;
+namespace ScottPlot.Statistics;
 
 /// <summary>
 /// A histogram that accumulates the number of values observed in a continuous range of user defined bins

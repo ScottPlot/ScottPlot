@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Maui;
+namespace ScottPlot.Maui;
 
 public class MauiPlotMenu : IPlotMenu
 {

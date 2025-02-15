@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataGenerators;
+namespace ScottPlot.DataGenerators;
 
 public class RandomWalker(int? seed = null, double firstValue = 0, double multiplier = 1)
 {

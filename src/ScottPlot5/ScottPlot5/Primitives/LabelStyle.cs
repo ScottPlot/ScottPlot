@@ -1,4 +1,4 @@
-﻿using SkiaSharp.HarfBuzz;
+using SkiaSharp.HarfBuzz;
 
 namespace ScottPlot;
 

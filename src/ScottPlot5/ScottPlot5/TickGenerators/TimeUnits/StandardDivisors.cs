@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TickGenerators.TimeUnits;
+namespace ScottPlot.TickGenerators.TimeUnits;
 
 internal static class StandardDivisors
 {

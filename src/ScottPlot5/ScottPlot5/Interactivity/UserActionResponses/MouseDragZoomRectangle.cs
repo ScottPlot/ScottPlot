@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserActionResponses;
+namespace ScottPlot.Interactivity.UserActionResponses;
 
 /// <summary>
 /// Click-drag draws a rectangle over a plot which becomes the new field of view when released.

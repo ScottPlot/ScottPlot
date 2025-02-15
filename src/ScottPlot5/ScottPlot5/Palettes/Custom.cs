@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Palettes;
+namespace ScottPlot.Palettes;
 
 public class Custom : IPalette
 {

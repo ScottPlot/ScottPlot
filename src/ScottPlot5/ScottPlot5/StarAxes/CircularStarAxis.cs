@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.StarAxes;
+namespace ScottPlot.StarAxes;
 
 public class CircularStarAxis : SpokedStarAxis
 {

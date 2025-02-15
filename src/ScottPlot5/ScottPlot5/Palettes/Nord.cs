@@ -1,4 +1,4 @@
-﻿/* Sourced from NordConEmu:
+/* Sourced from NordConEmu:
  * https://github.com/arcticicestudio/nord-conemu
  * Seems to be an extended version of Aurora
  * suggested background: #2e3440

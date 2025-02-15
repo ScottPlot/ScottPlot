@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 public class LinkedAxisRule(IAxis sourceAxis, IAxis targetAxis, Plot targetPlot)
 {

@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;

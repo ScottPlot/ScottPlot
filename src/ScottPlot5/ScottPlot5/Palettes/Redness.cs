@@ -1,4 +1,4 @@
-﻿/* Sourced from Color Hex:
+/* Sourced from Color Hex:
  * https://www.color-hex.com/
  * https://www.color-hex.com/color-palette/616
  */

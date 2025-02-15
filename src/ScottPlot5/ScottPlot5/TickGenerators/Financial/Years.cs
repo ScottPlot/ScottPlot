@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TickGenerators.Financial;
+namespace ScottPlot.TickGenerators.Financial;
 
 public class Years : IFinancialTickGenerator
 {

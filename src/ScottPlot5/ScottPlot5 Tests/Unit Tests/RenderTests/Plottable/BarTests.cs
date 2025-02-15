@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.RenderTests.Plottable;
+namespace ScottPlotTests.RenderTests.Plottable;
 
 internal class BarTests
 {

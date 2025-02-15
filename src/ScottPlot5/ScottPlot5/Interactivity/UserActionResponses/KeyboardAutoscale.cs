@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity.UserActionResponses;
+namespace ScottPlot.Interactivity.UserActionResponses;
 
 public class KeyboardAutoscale(Key key) : KeyPressResponse(key, AutoScale)
 {

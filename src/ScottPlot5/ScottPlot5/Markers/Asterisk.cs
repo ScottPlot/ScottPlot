@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Markers;
+namespace ScottPlot.Markers;
 
 internal class Asterisk : IMarker
 {

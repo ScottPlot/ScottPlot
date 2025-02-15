@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 using OpenTK.Graphics;
 #if NETCOREAPP || NET
 using OpenTK.Mathematics;

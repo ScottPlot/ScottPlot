@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataGenerators;
+namespace ScottPlot.DataGenerators;
 
 public class FinancialDataGenerator(int? seed = null)
 {

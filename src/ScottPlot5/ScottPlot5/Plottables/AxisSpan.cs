@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
 {

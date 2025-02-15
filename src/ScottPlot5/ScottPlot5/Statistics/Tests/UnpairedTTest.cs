@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Statistics.Tests;
+namespace ScottPlot.Statistics.Tests;
 
 // Useful: https://www.statstutor.ac.uk/resources/uploaded/unpaired-t-test.pdf
 

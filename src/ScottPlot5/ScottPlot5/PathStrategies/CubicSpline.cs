@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.PathStrategies;
+namespace ScottPlot.PathStrategies;
 
 using System.Linq;
 
