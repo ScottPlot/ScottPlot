@@ -1319,6 +1319,12 @@ public class PlottableAdder(Plot plot)
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
         return SignalXY(source, color);
     }
+    
+    public SignalXY SignalXY<TX, TY>(IReadOnlyList<TX> xs, IReadOnlyList<TY> ys, Color? color = null)
+    {
+        SignalXYSourceGenericList<TX, TY> source = new(xs, ys);
+        return SignalXY(source, color);
+    }    
 
     public SmithChartAxis SmithChartAxis()
     {
