@@ -61,7 +61,7 @@ public class SignalXY : ICategory
             myPlot.Add.SignalXY(xs, ys);
         }
     }
-    
+
     public class SignalXYGenericList : RecipeBase
     {
         public override string Name => "SignalXY Generic List";
@@ -81,8 +81,8 @@ public class SignalXY : ICategory
             xs.AddRange(Generate.Consecutive(count: 10, first: 50));
             ys.AddRange(Generate.RandomSample(10));
         }
-    } 
-    
+    }
+
     public class SignalXYDateTime : RecipeBase
     {
         public override string Name => "SignalXY DateTime Axis";

@@ -225,7 +225,7 @@ internal class SignalTests
 
         plt.Should().ThrowOnRender<InvalidDataException>();
     }
-    
+
     [Test]
     public void SignalXY_Throws_IfNotAscending_GenericList()
     {
@@ -236,7 +236,7 @@ internal class SignalTests
         plt.Add.SignalXY(xs, ys);
 
         plt.Should().ThrowOnRender<InvalidDataException>();
-    }    
+    }
 
     [Test]
     public void SignalXY_DoubleArray_RendersOutsideAxisView()
