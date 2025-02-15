@@ -6,6 +6,7 @@ _Not yet on NuGet..._
 * SignalXY: Improve support for generic X and Y collections (#4753, #4746) @JoeStoneAT @bclehmann
 * Axis Rules: Updated minimum and maximum span rules to improve support for inverted axes (#4755, #4735) @manaruto
 * Avalonia: Improved support for transparency at the window level (#4759, #3444, #4732) @bclehmann
+* CoordinateRange: Improve NaN support for `Extrema()` method (#4770, #4665) @bwedding @uperp
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
