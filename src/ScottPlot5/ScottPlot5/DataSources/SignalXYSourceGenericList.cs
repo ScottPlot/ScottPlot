@@ -1,3 +1,5 @@
+using System.Data.SqlTypes;
+
 namespace ScottPlot.DataSources;
 
 public class SignalXYSourceGenericList<Tx, Ty> : ISignalXYSource, IDataSource, IGetNearest
@@ -412,7 +414,7 @@ public class SignalXYSourceGenericList<Tx, Ty> : ISignalXYSource, IDataSource, I
     private (int SearchedPosition, int LimitedIndex) SearchIndex(double x, IndexRange indexRange)
     {
         NumericConversion.DoubleToGeneric((x - XOffset) / XScale, out Tx x2);
-        int index = Array.BinarySearch(Xs.ToArray(), indexRange.Min, indexRange.Length, x2);
+        int index = SignalXYSourceGenericList<Tx, Ty>.BinarySearch(Xs, indexRange.Min, indexRange.Max, x2);
 
         // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
         // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
@@ -481,4 +483,23 @@ public class SignalXYSourceGenericList<Tx, Ty> : ISignalXYSource, IDataSource, I
     }
     bool IDataSource.IsSorted() => true;
 
+    private static int BinarySearch(IReadOnlyList<Tx> list, int lo, int hi, Tx value)
+    {
+        double valueAsDouble = NumericConversion.GenericToDouble(ref value);
+        while (lo <= hi)
+        {
+            int mid = lo + (hi - lo) / 2; // This is just a trick to ensure we don't overflow, it's equivalent to (lo + hi) / 2
+
+            Tx genericX = list[mid];
+            double x = NumericConversion.GenericToDouble(ref genericX);
+            if (x == valueAsDouble)
+                return mid;
+            else if (valueAsDouble > x)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
+        }
+
+        return ~lo; // We mimic the BCL implementation here by returning the ones-complement of the index where it would slot in and maintain sorted order
+    }
 }
