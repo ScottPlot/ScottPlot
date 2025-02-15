@@ -24,13 +24,16 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "9.0"
-      - name: Run Autoformatter
-        run: |
-          dotnet format "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
-          dotnet format "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj"
-          dotnet format "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
-          dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj"
-          dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WPF Demo/WPF Demo.csproj"
+      - name: Autoformat ScottPlot
+        run: dotnet format "src/ScottPlot5/ScottPlot5/ScottPlot.csproj" --verbosity diagnostic
+      - name: Autoformat ScottPlot Tests
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj" --verbosity diagnostic
+      - name: Autoformat ScottPlot Cookbook
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj" --verbosity diagnostic
+      - name: Autoformat ScottPlot WinForms Demo
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WinForms Demo/WinForms Demo.csproj" --verbosity diagnostic
+      - name: Autoformat ScottPlot WPF Demo
+        run: dotnet format "src/ScottPlot5/ScottPlot5 Demos/ScottPlot5 WPF Demo/WPF Demo.csproj" --verbosity diagnostic
       - name: Inspect Code Format Changes
         id: verify_diff
         run: git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
