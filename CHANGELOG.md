@@ -7,7 +7,7 @@ _Not yet on NuGet..._
 * Axis Rules: Updated minimum and maximum span rules to improve support for inverted axes (#4755, #4735) @manaruto
 * Avalonia: Improved support for transparency at the window level (#4759, #3444, #4732) @bclehmann
 * CoordinateRange: Improve NaN support for `Extrema()` method (#4770, #4665) @bwedding @uperp
-* Heatmap: Improve logic used to identify cells from coordinates, fixing issues associated with contour line plots (#4787, #4791) @StendProg @ScottSSapphire
+* Rectangular Grid: Improve logic used to identify cells from coordinates, fixing issues associated with contour line plots (#4787, #4791) @StendProg @ScottSSapphire
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
