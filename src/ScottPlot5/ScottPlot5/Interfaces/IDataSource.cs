@@ -1,5 +1,9 @@
 ﻿namespace ScottPlot;
 
+// TODO: Performance of many data sources may be improved and code duplication reduced.
+// Improvements should be made in concert with performance tests.
+// See https://github.com/ScottPlot/ScottPlot/pull/4753 for comments.
+
 /// <summary>
 /// Internal interface used for Utility Functions within <see cref="DataSourceUtilities"/>
 /// </summary>
