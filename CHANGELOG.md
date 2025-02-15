@@ -4,6 +4,7 @@ _Not yet on NuGet..._
 * Interactivity: Make all user action responses public (#4743) @manaruto @bwedding
 * Shapes: Improved display of newly added Eclipse and Arc shapes (#4744, #4739) @CoderPM2011
 * SignalXY: Improve support for generic X and Y collections (#4753, #4746) @JoeStoneAT @bclehmann
+* Axis Rules: Updated minimum and maximum span rules to improve support for inverted axes (#4755, #4735) @manaruto
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
