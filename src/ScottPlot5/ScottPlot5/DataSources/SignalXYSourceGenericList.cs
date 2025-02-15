@@ -1,11 +1,11 @@
 ﻿namespace ScottPlot.DataSources;
 
-public class SignalXYSourceGenericList<Tx, Ty>: ISignalXYSource, IDataSource, IGetNearest
+public class SignalXYSourceGenericList<Tx, Ty> : ISignalXYSource, IDataSource, IGetNearest
 {
     private readonly IReadOnlyList<Tx> Xs;
     private readonly IReadOnlyList<Ty> Ys;
-    
-    public int Count => Xs.Count;
+
+    public int Count => Math.Min(Xs.Count, Ys.Count);
 
     public bool Rotated { get; set; } = false;
 
@@ -15,7 +15,16 @@ public class SignalXYSourceGenericList<Tx, Ty>: ISignalXYSource, IDataSource, IG
     public double XScale { get; set; } = 1;
 
     public int MinimumIndex { get; set; } = 0;
-    public int MaximumIndex { get; set; }
+
+    private int? _maximumIndex = null;
+    public int MaximumIndex
+    {
+        get => _maximumIndex.GetValueOrDefault(Count - 1);
+        set
+        {
+            _maximumIndex = value;
+        }
+    }
 
     bool IDataSource.PreferCoordinates => false;
     int IDataSource.Length => Xs.Count;
@@ -24,7 +33,7 @@ public class SignalXYSourceGenericList<Tx, Ty>: ISignalXYSource, IDataSource, IG
 
     public bool UsePixelOverlap { get; } = false; // https://github.com/ScottPlot/ScottPlot/issues/3665
 
-    public SignalXYSourceGenericList(IReadOnlyList<Tx> xs,IReadOnlyList<Ty> ys)
+    public SignalXYSourceGenericList(IReadOnlyList<Tx> xs, IReadOnlyList<Ty> ys)
     {
         if (xs.Count != ys.Count)
         {
@@ -33,7 +42,6 @@ public class SignalXYSourceGenericList<Tx, Ty>: ISignalXYSource, IDataSource, IG
 
         Xs = xs;
         Ys = ys;
-        MaximumIndex = xs.Count - 1;
     }
 
     public AxisLimits GetAxisLimits()
