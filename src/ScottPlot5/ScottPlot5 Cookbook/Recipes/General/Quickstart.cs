@@ -26,7 +26,7 @@ public class ScottPlotQuickstart : ICategory
     public class CustomizingPlottables : RecipeBase
     {
         public override string Name => "Customizing Plottables";
-        public override string Description => "Most methods which add items to plots return the item the was added. " +
+        public override string Description => "Most methods which add items to plots return the item that was added. " +
             "Save the object that is returned and set its properties to customize it.";
 
         [Test]
