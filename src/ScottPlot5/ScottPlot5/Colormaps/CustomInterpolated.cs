@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Colormaps;
+namespace ScottPlot.Colormaps;
 
 /// <summary>
 /// A custom palette which smoothly blends across a collection of colors using linear interpolation

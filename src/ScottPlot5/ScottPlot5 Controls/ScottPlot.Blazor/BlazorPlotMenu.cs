@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Blazor;
+namespace ScottPlot.Blazor;
 
 public class BlazorPlotMenu : IPlotMenu
 {

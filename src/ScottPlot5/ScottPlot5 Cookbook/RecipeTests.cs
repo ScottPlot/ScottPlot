@@ -1,4 +1,4 @@
-﻿using NUnit.Framework.Internal;
+using NUnit.Framework.Internal;
 using ScottPlotCookbook.Website;
 using System.Reflection;
 

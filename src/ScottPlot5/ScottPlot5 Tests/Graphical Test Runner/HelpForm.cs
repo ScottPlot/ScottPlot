@@ -1,4 +1,4 @@
-﻿namespace GraphicalTestRunner;
+namespace GraphicalTestRunner;
 
 public partial class HelpForm : Form
 {

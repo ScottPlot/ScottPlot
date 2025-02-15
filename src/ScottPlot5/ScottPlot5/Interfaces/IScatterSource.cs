@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a series of data points with distinct X and Y positions in coordinate space.

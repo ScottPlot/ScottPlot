@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Stylers;
+namespace ScottPlot.Stylers;
 
 [Obsolete("This class is deprecated. See the ScottPlot Cookbook for styling information.", true)]
 public class PlotStyler()

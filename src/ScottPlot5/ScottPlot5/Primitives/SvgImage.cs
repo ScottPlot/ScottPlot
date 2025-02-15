@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 internal class SvgImage : IDisposable
 {

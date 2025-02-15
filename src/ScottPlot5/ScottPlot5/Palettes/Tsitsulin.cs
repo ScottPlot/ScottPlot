@@ -1,4 +1,4 @@
-﻿/* A 25-color palette based on Anton Tsitsulin's 12-color palette
+/* A 25-color palette based on Anton Tsitsulin's 12-color palette
  * Adapted by Arthurits: https://github.com/ScottPlot/ScottPlot/pull/1318
  * http://tsitsul.in/blog/coloropt
  * https://github.com/xgfs/coloropt

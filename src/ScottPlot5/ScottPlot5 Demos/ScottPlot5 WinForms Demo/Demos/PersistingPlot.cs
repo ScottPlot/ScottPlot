@@ -1,4 +1,4 @@
-﻿namespace WinForms_Demo.Demos;
+namespace WinForms_Demo.Demos;
 
 public partial class PersistingPlot : Form, IDemoWindow
 {

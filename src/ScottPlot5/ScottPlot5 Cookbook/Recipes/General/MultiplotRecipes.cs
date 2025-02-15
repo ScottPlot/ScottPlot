@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Recipes.Miscellaneous;
+namespace ScottPlotCookbook.Recipes.Miscellaneous;
 
 public class MultiplotRecipes : ICategory
 {

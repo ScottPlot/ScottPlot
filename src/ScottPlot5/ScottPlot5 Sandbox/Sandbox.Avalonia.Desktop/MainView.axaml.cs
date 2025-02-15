@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ScottPlot.Avalonia;
 using ScottPlot;
 

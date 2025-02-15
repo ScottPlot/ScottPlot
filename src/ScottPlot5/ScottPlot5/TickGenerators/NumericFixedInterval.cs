@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TickGenerators;
+namespace ScottPlot.TickGenerators;
 
 public class NumericFixedInterval(double interval = 1) : ITickGenerator
 {

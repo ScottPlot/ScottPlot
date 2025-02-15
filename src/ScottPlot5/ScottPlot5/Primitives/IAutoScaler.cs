@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Contains logic for determining new axis limits when Autoscale() is called

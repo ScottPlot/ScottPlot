@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a distance in pixel units

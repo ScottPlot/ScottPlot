@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity;
+namespace ScottPlot.Interactivity;
 
 #pragma warning disable CS0618 // disable obsolete Interaction warning
 

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class LockedHorizontal(IXAxis xAxis, double xMin, double xMax) : IAxisRule
 {

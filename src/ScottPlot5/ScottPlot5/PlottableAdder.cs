@@ -1,4 +1,4 @@
-﻿using ScottPlot.DataSources;
+using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using ScottPlot.Statistics;
@@ -1317,6 +1317,12 @@ public class PlottableAdder(Plot plot)
     public SignalXY SignalXY<TX, TY>(TX[] xs, TY[] ys, Color? color = null)
     {
         var source = new SignalXYSourceGenericArray<TX, TY>(xs, ys);
+        return SignalXY(source, color);
+    }
+
+    public SignalXY SignalXY<TX, TY>(IReadOnlyList<TX> xs, IReadOnlyList<TY> ys, Color? color = null)
+    {
+        SignalXYSourceGenericList<TX, TY> source = new(xs, ys);
         return SignalXY(source, color);
     }
 

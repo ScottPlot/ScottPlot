@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a point in coordinate space (X and Y axis units)

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.LayoutEngines;
+namespace ScottPlot.LayoutEngines;
 
 /// <summary>
 /// Generate layouts where the data area has a fixed padding from the edge of the figure

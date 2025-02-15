@@ -1,4 +1,4 @@
-﻿using ScottPlot.Colormaps;
+using ScottPlot.Colormaps;
 
 namespace ScottPlot;
 

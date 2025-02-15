@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.PathStrategies;
+namespace ScottPlot.PathStrategies;
 
 public static class Arrows // TODO: use an interface to let users inject custom logic
 {

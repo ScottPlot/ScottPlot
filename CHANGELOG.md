@@ -1,6 +1,12 @@
 ## ScottPlot 5.0.55
 _Not yet on NuGet..._
 * WPF: Added autoscale option to the default right-click context menu (#4701) @hsfetterman
+* Interactivity: Make all user action responses public (#4743) @manaruto @bwedding
+* Shapes: Improved display of newly added Eclipse and Arc shapes (#4744, #4739) @CoderPM2011
+* SignalXY: Improve support for generic X and Y collections (#4753, #4746) @JoeStoneAT @bclehmann
+* Axis Rules: Updated minimum and maximum span rules to improve support for inverted axes (#4755, #4735) @manaruto
+* Avalonia: Improved support for transparency at the window level (#4759, #3444, #4732) @bclehmann
+* CoordinateRange: Improve NaN support for `Extrema()` method (#4770, #4665) @bwedding @uperp
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_

@@ -1,4 +1,4 @@
-﻿using Eto.Forms;
+using Eto.Forms;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;

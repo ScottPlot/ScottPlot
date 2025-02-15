@@ -1,4 +1,4 @@
-﻿namespace Graphical_Test_Runner;
+namespace Graphical_Test_Runner;
 
 static class Program
 {

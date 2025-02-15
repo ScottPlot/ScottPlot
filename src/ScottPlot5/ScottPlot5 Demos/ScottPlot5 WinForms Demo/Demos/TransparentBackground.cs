@@ -1,4 +1,4 @@
-﻿using ScottPlot.WinForms;
+using ScottPlot.WinForms;
 
 namespace WinForms_Demo.Demos;
 public partial class TransparentBackground : Form, IDemoWindow

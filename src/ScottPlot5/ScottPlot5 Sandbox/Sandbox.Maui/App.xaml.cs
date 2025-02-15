@@ -1,4 +1,4 @@
-﻿namespace Sandbox.Maui;
+namespace Sandbox.Maui;
 
 public partial class App : Application
 {

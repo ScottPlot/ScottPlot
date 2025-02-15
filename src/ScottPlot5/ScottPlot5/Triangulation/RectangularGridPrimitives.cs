@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Triangulation
+namespace ScottPlot.Triangulation
 {
     public record Vertex(int i, int j);
     public class EdgeLine

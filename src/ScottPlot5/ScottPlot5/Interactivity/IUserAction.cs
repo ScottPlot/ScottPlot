@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity;
+namespace ScottPlot.Interactivity;
 
 /// <summary>
 /// Describes something the uer did to interact with the plot

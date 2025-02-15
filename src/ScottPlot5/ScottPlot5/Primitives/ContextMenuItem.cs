@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// Represents a single item in a right-click pop-up menu

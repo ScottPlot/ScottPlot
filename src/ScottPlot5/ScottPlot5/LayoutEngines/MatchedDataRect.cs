@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.LayoutEngines;
+namespace ScottPlot.LayoutEngines;
 
 /// <summary>
 /// Generate layouts that match layouts of another control

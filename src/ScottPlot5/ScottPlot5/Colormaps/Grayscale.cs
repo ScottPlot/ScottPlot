@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Colormaps;
+namespace ScottPlot.Colormaps;
 
 public class Grayscale : IColormap
 {

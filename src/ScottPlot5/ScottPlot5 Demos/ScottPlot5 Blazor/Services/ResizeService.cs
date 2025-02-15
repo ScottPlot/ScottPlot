@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 using System.Drawing;
 
 namespace Sandbox.Blazor.WebAssembly.Services

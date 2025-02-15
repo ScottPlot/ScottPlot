@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Stylers;
+namespace ScottPlot.Stylers;
 
 /// <summary>
 /// Helper methods for setting fonts to all components of a plot

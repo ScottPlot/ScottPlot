@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+namespace ScottPlotCookbook;
 
 /// <summary>
 /// A recipe category object contains many individual recipes

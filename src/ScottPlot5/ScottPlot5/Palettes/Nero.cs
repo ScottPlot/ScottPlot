@@ -1,4 +1,4 @@
-﻿/* no info on where this palette originated */
+/* no info on where this palette originated */
 
 namespace ScottPlot.Palettes;
 

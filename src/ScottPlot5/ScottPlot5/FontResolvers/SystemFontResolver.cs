@@ -1,4 +1,4 @@
-﻿
+
 namespace ScottPlot.FontResolvers;
 
 public class SystemFontResolver : IFontResolver

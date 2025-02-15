@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSources;
+namespace ScottPlot.DataSources;
 
 public abstract class OHLCSourceBase : IOHLCSource
 {

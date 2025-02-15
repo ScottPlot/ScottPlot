@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot;
 
@@ -352,6 +352,17 @@ public static class Drawing
         canvas.DrawOval(rect.ToSKRect(), paint);
     }
 
+    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    {
+        if (!lineStyle.CanBeRendered) return;
+
+        lineStyle.ApplyToPaint(paint);
+        if (lineStyle.Hairline)
+            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
+
+        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+    }
+
     private static (Angle startAngle, Angle sweepAngle) CorrectEllipseAngle(Angle startAngle, Angle sweepAngle, PixelRect rect)
     {
         Angle Correct(Angle angle)
@@ -365,7 +376,13 @@ public static class Drawing
                 Angle.FromRadians(Math.Atan2(y * rect.Right, x * rect.Bottom));
 
             // Map back to the original range
-            double scalar = Math.Ceiling(Math.Abs(angle.Degrees) / 360);
+            int absAngleDegrees = (int)Math.Abs(angle.Degrees);
+            int scalar = absAngleDegrees switch
+            {
+                < 180 => 0,
+                < 360 => 1,
+                _ => absAngleDegrees / 360,
+            };
             return angle.Degrees switch
             {
                 < -180 => correctAngle - scalar * Angle.FromDegrees(360),
@@ -382,21 +399,19 @@ public static class Drawing
         return (correctedStart, correctedSweep);
     }
 
-    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    public static void DrawEllipticalArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
 
-        lineStyle.ApplyToPaint(paint);
-        if (lineStyle.Hairline)
-            paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
-
-        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+        (Angle correctedStart, Angle correctedSweep) = CorrectEllipseAngle(
+            Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+        DrawArc(canvas, paint, lineStyle, rect, (float)correctedStart.Degrees, (float)correctedSweep.Degrees);
     }
 
-    private static SKPath GetEllipticalAnnularSector(PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    private static SKPath GetEllipticalAnnularSector(PixelRect outerRect, PixelRect innerRect, float startAngle, float sweepAngle)
     {
         (Angle correctedStart, Angle correctedSweep) =
-            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
+            CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), outerRect);
         float start = (float)correctedStart.Degrees;
         float sweep = (float)correctedSweep.Degrees;
 
@@ -407,20 +422,22 @@ public static class Drawing
             return new((float)x, (float)y);
         }
 
-        SKPoint p1 = GetPointOnEllipse(
-                innerRect.Center.X, innerRect.Center.Y,
-                innerRect.Right, innerRect.Bottom,
-                correctedStart + correctedSweep);
+        SKPoint innerArcEndPoint = GetPointOnEllipse(
+            innerRect.Center.X, innerRect.Center.Y,
+            innerRect.Right, innerRect.Bottom,
+            correctedStart + correctedSweep);
 
-        SKPoint p2 = GetPointOnEllipse(
-            rect.Center.X, rect.Center.Y, rect.Right, rect.Bottom, Angle.FromDegrees(0));
+        SKPoint outerArcStartPoint = GetPointOnEllipse(
+            outerRect.Center.X, outerRect.Center.Y,
+            outerRect.Right, outerRect.Bottom,
+            correctedStart);
 
         SKPath path = new();
-        path.AddArc(rect.ToSKRect(), start, sweep);
-        path.LineTo(p1);
-        path.AddArc(innerRect.ToSKRect(), start + sweep, -sweep);
-        path.LineTo(p2);
-        path.MoveTo(p2);
+        path.MoveTo(outerArcStartPoint);
+        path.ArcTo(outerRect.ToSKRect(), start, sweep, false);
+        path.LineTo(innerArcEndPoint);
+        path.ArcTo(innerRect.ToSKRect(), start + sweep, -sweep, false);
+        path.LineTo(outerArcStartPoint);
         path.Close();
         return path;
     }

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// A vertical span marks the full horizontal range between two vertical values

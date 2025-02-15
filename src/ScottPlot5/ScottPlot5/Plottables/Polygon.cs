@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 /// <summary>
 /// A polygon is a collection of X/Y points that are all connected to form a closed shape.

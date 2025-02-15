@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.ApiDocs;
+namespace ScottPlotCookbook.ApiDocs;
 
 public class ClassDocs
 {

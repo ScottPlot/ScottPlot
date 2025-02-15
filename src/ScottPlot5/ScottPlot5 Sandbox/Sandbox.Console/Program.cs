@@ -1,4 +1,4 @@
-﻿using ScottPlot;
+using ScottPlot;
 
 Plot myPlot = new();
 myPlot.Add.Signal(Generate.Sin());

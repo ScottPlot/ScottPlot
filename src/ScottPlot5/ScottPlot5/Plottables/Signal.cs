@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Plottables;
+namespace ScottPlot.Plottables;
 
 public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
 {

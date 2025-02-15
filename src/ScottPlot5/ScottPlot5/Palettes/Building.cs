@@ -1,4 +1,4 @@
-﻿/* Sourced from RefactoringUI - Building Your Color Palette:
+/* Sourced from RefactoringUI - Building Your Color Palette:
  * https://www.refactoringui.com/previews/building-your-color-palette
  */
 

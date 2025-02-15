@@ -1,4 +1,4 @@
-﻿/* A 12-color palette based on lighter tints of the classic color wheel 
+/* A 12-color palette based on lighter tints of the classic color wheel 
  */
 
 namespace ScottPlot.Palettes;

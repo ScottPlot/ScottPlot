@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.ArrowShapes;
+namespace ScottPlot.ArrowShapes;
 
 public class DoubleLine : IArrowShape
 {

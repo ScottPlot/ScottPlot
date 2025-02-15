@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.NamedColors;
+namespace ScottPlot.NamedColors;
 
 public class WindowsVistaColors : NamedColorsBase
 {

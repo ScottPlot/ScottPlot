@@ -1,4 +1,4 @@
-﻿/* Additional Resources:
+/* Additional Resources:
  * https://learn.microsoft.com/en-us/windows/win32/wmdm/-bitmapinfoheader
  * https://en.wikipedia.org/wiki/BMP_file_format
  * https://gibberlings3.github.io/iesdp/file_formats/ie_formats/bmp.htm

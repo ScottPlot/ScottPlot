@@ -1,4 +1,4 @@
-﻿using Windows.System;
+using Windows.System;
 using ScottPlot.Interactivity;
 
 namespace ScottPlot.Maui;

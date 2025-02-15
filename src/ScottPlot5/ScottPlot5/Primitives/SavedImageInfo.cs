@@ -1,4 +1,4 @@
-﻿
+
 namespace ScottPlot;
 
 public class SavedImageInfo(string path, int fileSize)

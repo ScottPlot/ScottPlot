@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity;
+namespace ScottPlot.Interactivity;
 
 /// <summary>
 /// Mouse actions that describe a button changing state

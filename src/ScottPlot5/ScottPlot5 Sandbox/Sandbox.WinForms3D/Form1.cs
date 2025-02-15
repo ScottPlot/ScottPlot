@@ -1,4 +1,4 @@
-﻿using Sandbox.WinForms3D.Primitives3D;
+using Sandbox.WinForms3D.Primitives3D;
 
 namespace Sandbox.WinForms3D;
 

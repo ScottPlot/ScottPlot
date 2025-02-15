@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests.RenderTests.Figure;
+namespace ScottPlotTests.RenderTests.Figure;
 
 public class GenerateTests
 {

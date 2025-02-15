@@ -1,4 +1,4 @@
-﻿using ScottPlot.TickGenerators;
+using ScottPlot.TickGenerators;
 
 namespace ScottPlot.AxisPanels;
 

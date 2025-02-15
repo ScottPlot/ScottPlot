@@ -1,4 +1,4 @@
-﻿namespace ScottPlotTests;
+namespace ScottPlotTests;
 
 public static class Paths
 {

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.DataSources
+namespace ScottPlot.DataSources
 {
     /// <summary>
     /// Helper class used when a source (such as <see cref="IScatterSource"/>) does not implement <see cref="IDataSource"/>

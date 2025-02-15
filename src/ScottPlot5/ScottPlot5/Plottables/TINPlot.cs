@@ -1,4 +1,4 @@
-﻿using ScottPlot.Triangulation;
+using ScottPlot.Triangulation;
 
 namespace ScottPlot.Plottables;
 

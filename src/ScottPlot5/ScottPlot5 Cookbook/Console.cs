@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+namespace ScottPlotCookbook;
 
 public static class Console
 {

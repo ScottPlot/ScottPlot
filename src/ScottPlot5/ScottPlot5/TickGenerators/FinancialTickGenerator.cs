@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.TickGenerators;
+namespace ScottPlot.TickGenerators;
 
 /// <summary>
 /// Experimental tick generator designed for displaying financial time series data

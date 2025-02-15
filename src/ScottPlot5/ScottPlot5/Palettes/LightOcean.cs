@@ -1,4 +1,4 @@
-﻿/* A 9-color palette by Arthurits created by a mixture of light greens, blues, and purples
+/* A 9-color palette by Arthurits created by a mixture of light greens, blues, and purples
  */
 
 namespace ScottPlot.Palettes;

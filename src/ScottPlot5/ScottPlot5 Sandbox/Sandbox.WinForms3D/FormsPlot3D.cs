@@ -1,4 +1,4 @@
-﻿using Sandbox.WinForms3D.Primitives3D;
+using Sandbox.WinForms3D.Primitives3D;
 using ScottPlot.WinForms;
 using SkiaSharp.Views.Desktop;
 using System.Windows.Forms;

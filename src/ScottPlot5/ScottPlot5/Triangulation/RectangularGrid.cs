@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 namespace ScottPlot.Triangulation
 {
     public static class RectangularGrid

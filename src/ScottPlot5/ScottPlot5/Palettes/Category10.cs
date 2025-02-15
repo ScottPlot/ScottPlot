@@ -1,4 +1,4 @@
-﻿// These colors were originally developed by Tableau:
+// These colors were originally developed by Tableau:
 //   https://www.tableau.com/about/blog/2016/7/colors-upgrade-tableau-10-56782
 //
 // Vega obtained permission to release this color set under a BSD license:

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity;
+namespace ScottPlot.Interactivity;
 
 /// <summary>
 /// Represents a physical button on a mouse

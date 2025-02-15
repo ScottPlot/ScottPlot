@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook;
+namespace ScottPlotCookbook;
 
 /// <summary>
 /// Recipes are collected in categories, and categories are grouped into chapters.

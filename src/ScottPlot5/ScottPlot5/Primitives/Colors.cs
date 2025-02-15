@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Discussion and links to reference APIs:
  * https://github.com/ScottPlot/ScottPlot/pull/1647#issuecomment-1152963629
  * 

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity;
+namespace ScottPlot.Interactivity;
 
 /// <summary>
 /// User actions that occur at a point in pixel space

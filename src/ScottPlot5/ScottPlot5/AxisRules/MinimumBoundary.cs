@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AxisRules;
+namespace ScottPlot.AxisRules;
 
 public class MinimumBoundary(IXAxis xAxis, IYAxis yAxis, AxisLimits limits) : IAxisRule
 {

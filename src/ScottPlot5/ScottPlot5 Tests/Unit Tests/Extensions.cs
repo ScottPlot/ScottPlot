@@ -1,4 +1,4 @@
-﻿using SkiaSharp;
+using SkiaSharp;
 using System.Diagnostics;
 using System.Reflection;
 

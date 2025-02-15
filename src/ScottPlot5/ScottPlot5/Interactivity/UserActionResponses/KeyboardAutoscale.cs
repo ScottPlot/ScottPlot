@@ -1,6 +1,6 @@
-﻿namespace ScottPlot.Interactivity.UserActionResponses;
+namespace ScottPlot.Interactivity.UserActionResponses;
 
-internal class KeyboardAutoscale(Key key) : KeyPressResponse(key, AutoScale)
+public class KeyboardAutoscale(Key key) : KeyPressResponse(key, AutoScale)
 {
     public static void AutoScale(IPlotControl plotControl, Pixel pixel)
     {

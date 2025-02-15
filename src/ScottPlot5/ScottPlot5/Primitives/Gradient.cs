@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
 {

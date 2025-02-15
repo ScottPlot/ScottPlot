@@ -1,4 +1,4 @@
-﻿namespace ScottPlotCookbook.Recipes.PlotTypes;
+namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Phasor : ICategory
 {

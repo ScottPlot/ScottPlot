@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.PlotStyles;
+namespace ScottPlot.PlotStyles;
 
 public class Light : PlotStyle
 {

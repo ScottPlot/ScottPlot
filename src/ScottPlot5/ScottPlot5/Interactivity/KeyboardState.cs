@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Interactivity;
+namespace ScottPlot.Interactivity;
 
 /// <summary>
 /// Tracks which keyboard keys are currently pressed.

@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.AutoScalers;
+namespace ScottPlot.AutoScalers;
 
 public class FractionalAutoScaler : IAutoScaler
 {

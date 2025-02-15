@@ -1,4 +1,4 @@
-﻿namespace ScottPlot;
+namespace ScottPlot;
 
 /// <summary>
 /// This configuration object (reference type) permanently lives inside objects which require styling.
