@@ -39,12 +39,27 @@ public class TriangularAxis(bool clockwise) : IPlottable
     /// </summary>
     public Coordinates GetCoordinates(double bottomFraction, double leftFraction, double rightFraction)
     {
-        if (leftFraction + rightFraction != 1)
+        if (Math.Abs(bottomFraction + leftFraction + rightFraction - 1) > 1e-6)
         {
-            throw new ArgumentException("sum of left and right fractions must equal 1");
+            throw new ArgumentException("The sum of bottom, left, and right fractions must equal 1.");
         }
 
-        return GetCoordinates(bottomFraction, leftFraction);
+        double x, y;
+        
+        if (!Clockwise)
+        {
+            // Counterclockwise transformation
+            x = 0.5 * (2 * bottomFraction + rightFraction);
+            y = (Math.Sqrt(3) / 2) * rightFraction;
+        }
+        else
+        {
+            // Clockwise transformation
+            x = 0.5 * (2 * rightFraction + leftFraction);
+            y = (Math.Sqrt(3) / 2) * leftFraction;
+        }
+        
+        return new Coordinates(x, y);
     }
 
     public virtual void Render(RenderPack rp)
