@@ -7,29 +7,60 @@ namespace ScottPlot;
 /// </summary>
 public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO: rename to MutableCoordinateRange or something
 {
-    public double Min { get; set; }
-    public double Max { get; set; }
-    public double Center => (Min + Max) / 2;
-    public double Span => Max - Min;
+    public double Value1 { get; set; }
+    public double Value2 { get; set; }
+    public bool IsInverted => Value1 > Value2;
+    public double Min {
+        get => Math.Min(Value1, Value2);
+        set // Unfortunately we need a setter to support code from when Min was allowed to be greater than Max
+        {
+            if (Value1 < Value2)
+            {
+                Value1 = value;
+            } else
+            {
+                Value2 = value;
+            }
+        }
+    }
+    public double Max
+    {
+        get => Math.Max(Value1, Value2);
+        set
+        {
+            if (Value1 >= Value2)
+            {
+                Value1 = value;
+            }
+            else
+            {
+                Value2 = value;
+            }
+        }
+    }
+    public double Center => (Value1 + Value2) / 2;
+    public double Span => Value2 - Value1;
 
     // TODO: obsolete this
     public bool HasBeenSet => NumericConversion.IsReal(Span) && Span != 0;
 
-    public CoordinateRange ToCoordinateRange => new(Min, Max);
+    public CoordinateRange ToCoordinateRange => new(Value1, Value2);
 
-    public CoordinateRange ToRectifiedCoordinateRange => Min < Max ? new(Min, Max) : new(Max, Min);
+    public CoordinateRange ToRectifiedCoordinateRange => new(Min, Max);
 
-    public CoordinateRangeMutable(double min, double max)
+    public CoordinateRangeMutable(double value1, double value2)
     {
-        Min = min;
-        Max = max;
+        Value1 = value1;
+        Value2 = value2;
     }
 
     public static CoordinateRangeMutable Infinity => new(double.NegativeInfinity, double.PositiveInfinity);
 
     public override string ToString()
     {
-        return $"Min={Min}, Max={Max}, Span={Span}";
+        return IsInverted
+            ? $"CoordinateRangeMutable [{Min}, {Max}], Span = {Span} (inverted)"
+            : $"CoordinateRangeMutable [{Min}, {Max}], Span = {Span}";
     }
 
     /// <summary>
@@ -37,7 +68,7 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
     /// </summary>
     public bool Contains(double position)
     {
-        return position >= Min && position <= Max;
+        return position >= Min && position <= Max; // TODO: Confirm if we want to consider the inverted ranges to include anything (e.g. does [1, -1] include 0?)
     }
 
     // TODO: deprecate
@@ -49,11 +80,12 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         if (double.IsNaN(value))
             return;
 
-        if (double.IsNaN(Min) || value < Min)
-            Min = value;
+        // TODO: Confirm that we should allow calling Expand to uninvert a range?
+        if (double.IsNaN(Value1) || value < Value1)
+            Value1 = value;
 
-        if (double.IsNaN(Max) || value > Max)
-            Max = value;
+        if (double.IsNaN(Value2) || value > Value2)
+            Value2 = value;
     }
 
     // TODO: deprecate
@@ -86,48 +118,49 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
     /// </summary>
     public void Reset()
     {
-        Min = double.PositiveInfinity;
-        Max = double.NegativeInfinity;
+        Value1 = double.PositiveInfinity;
+        Value2 = double.NegativeInfinity;
         if (HasBeenSet)
             throw new InvalidOperationException();
     }
 
-    public void Set(double min, double max)
+    public void Set(double value1, double value2)
     {
-        Min = min;
-        Max = max;
+        Value1 = value1;
+        Value2 = value2;
     }
 
     public void Set(CoordinateRange range)
     {
+        // TODO: Confirm that we want to implicitly uninvert ranges like this?
         if (range.IsInverted)
         {
-            Max = range.Min;
-            Min = range.Max;
+            Value2 = range.Min;
+            Value1 = range.Max;
         }
         else
         {
-            Min = range.Min;
-            Max = range.Max;
+            Value1 = range.Min;
+            Value2 = range.Max;
         }
     }
 
     public void Set(CoordinateRangeMutable range)
     {
-        Min = range.Min;
-        Max = range.Max;
+        Value1 = range.Value1;
+        Value2 = range.Value2;
     }
 
     public void Set(IAxis otherAxis)
     {
-        Min = otherAxis.Min;
-        Max = otherAxis.Max;
+        Value1 = otherAxis.Min;
+        Value2 = otherAxis.Max;
     }
 
     public void Pan(double delta)
     {
-        Min += delta;
-        Max += delta;
+        Value1 += delta;
+        Value2 += delta;
     }
 
     public void PanMouse(float mouseDeltaPx, float dataSizePx)
@@ -169,7 +202,7 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         if (other is null)
             return false;
 
-        return Equals(Min, other.Min) && Equals(Min, other.Min);
+        return Equals(Value1, other.Value1) && Equals(Value2, other.Value2);
     }
 
     public override bool Equals(object? obj)
@@ -195,6 +228,6 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
 
     public override int GetHashCode()
     {
-        return Min.GetHashCode() ^ Max.GetHashCode();
+        return Value1.GetHashCode() ^ Value2.GetHashCode();
     }
 }
