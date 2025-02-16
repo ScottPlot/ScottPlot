@@ -31,6 +31,11 @@ public class MultiplotLayoutSnapshot
         Shapshots.Remove(plot);
     }
 
+    public void Reset()
+    {
+        Shapshots.Clear();
+    }
+
     /// <summary>
     /// Return the plot beneath the given pixel according to the last render.
     /// Returns null if no render occurred or the pixel is not over a plot.
