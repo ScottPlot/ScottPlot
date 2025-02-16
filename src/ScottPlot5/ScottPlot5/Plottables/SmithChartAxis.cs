@@ -84,9 +84,9 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits
         /// <param name="center">The coordinates of the center of the circle.</param>
         public static Angle GetAngle(Coordinates point, Coordinates center)
         {
+            // Make sure the angle range is between 0 and 360.
             return Angle
                 .FromRadians(Math.Atan2(point.Y - center.Y, point.X - center.X))
-                // Make sure the angle range is between 0 and 360.
                 .Normalized;
         }
 
