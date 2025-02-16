@@ -14,7 +14,7 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
         get => Math.Min(Value1, Value2);
         set // Unfortunately we need a setter to support code from when Min was allowed to be greater than Max
         {
-            if (Value1 < Value2)
+            if (Value1 <= Value2)
             {
                 Value1 = value;
             } else
