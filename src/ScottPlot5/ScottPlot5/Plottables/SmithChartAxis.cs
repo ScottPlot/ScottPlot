@@ -11,7 +11,7 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits
     {
         // Γ = (z - 1) / (z + 1)
         //   = (R + jX - 1) / (R + jX + 1)
-        //   = a + jc
+        //   = a + jc 
 
         double R = normalizedImpedance.X;
         double X = normalizedImpedance.Y;
