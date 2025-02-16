@@ -13,6 +13,7 @@ _Not yet on NuGet..._
 * SignalXY: Improve performance by reducing allocations and copying inside the render loop (#4794, #4753) @bclehmann
 * CoordinateRangeMutable: Improve comparison logic (#4796) @bclehmann
 * Multiplot: Improve interactivity following `Reset()` and restore cookbook behavior (#4793)
+* Population: Use stable random number generator for horizontal symbol offsets (#4616) @marklam
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
