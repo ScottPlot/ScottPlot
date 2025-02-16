@@ -7,7 +7,11 @@ _Not yet on NuGet..._
 * Axis Rules: Updated minimum and maximum span rules to improve support for inverted axes (#4755, #4735) @manaruto
 * Avalonia: Improved support for transparency at the window level (#4759, #3444, #4732) @bclehmann
 * CoordinateRange: Improve NaN support for `Extrema()` method (#4770, #4665) @bwedding @uperp
+* Rendering: Improved performance by simplifying axis limit change detection to reduce duplicate renders (#4790, #4783) @bclehmann @dtoppani-twist @chen1tian @ssharks
 * Rectangular Grid: Improve logic used to identify cells from coordinates, fixing issues associated with contour line plots (#4787, #4791) @StendProg @ScottSSapphire
+* Axes: Improve coordinate lookup logic for translating between triangular and Cartesian axes (#4797, #4798) @manaruto
+* SignalXY: Improve performance by reducing allocations and copying inside the render loop (#4794, #4753) @bclehmann
+* CoordinateRangeMutable: Improve comparison logic (#4796) @bclehmann
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
