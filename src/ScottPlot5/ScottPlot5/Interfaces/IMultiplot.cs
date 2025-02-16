@@ -35,6 +35,7 @@ public static class IMultiplotExtensions
     /// </summary>
     public static void Reset(this IMultiplot multiplot, Plot plot)
     {
+        multiplot.LastRender.Reset();
         multiplot.AddPlots(0);
         multiplot.AddPlot(plot);
     }
