@@ -1,9 +1,12 @@
 
+using System;
+
 namespace ScottPlot.Plottables;
 
 public class PopulationSymbol(Population population) : IPlottable
 {
     public Population Population { get; } = population;
+    private readonly List<double> RandomXs = [];
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
@@ -95,10 +98,16 @@ public class PopulationSymbol(Population population) : IPlottable
             return;
 
         CoordinateRect rect = GetMarkerRect();
-        double[] xs = Rand.RandomSample(Population.Count, rect.Width, rect.Left);
+
+        if (RandomXs.Count < Population.Count)
+        {
+            int valuesNeeded = Population.Count - RandomXs.Count;
+            RandomXs.AddRange(Rand.RandomSample(valuesNeeded, rect.Width, rect.Left));
+        }
+
         for (int i = 0; i < Population.Count; i++)
         {
-            Coordinates location = new(xs[i], Population.Values[i]);
+            Coordinates location = new(RandomXs[i], Population.Values[i]);
             Pixel px = Axes.GetPixel(location);
             Drawing.DrawMarker(rp.Canvas, paint, px, Marker.MarkerStyle);
         }
