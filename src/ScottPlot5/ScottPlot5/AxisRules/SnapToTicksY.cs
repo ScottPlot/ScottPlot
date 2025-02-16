@@ -89,7 +89,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         }
 
         //This is to handle panning, which can be jumpy if we snap before it has panned more than half the tick interval
-        if (isPanning & Math.Abs(newLimits.Max - oldTop) < tickDelta / 2)
+        if (isPanning && Math.Abs(newTop - oldTop) < tickDelta / 2)
         {
             newTop = oldTop;
             newBottom = oldBottom;

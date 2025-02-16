@@ -10,63 +10,29 @@ public class MinimumBoundary(IXAxis xAxis, IYAxis yAxis, AxisLimits limits) : IA
     {
         double horizontalSpan = Math.Max(Math.Abs(XAxis.Range.Span), Limits.XRange.Span);
         double verticalSpan = Math.Max(Math.Abs(YAxis.Range.Span), Limits.YRange.Span);
-
-        if (XAxis.IsInverted())
+        
+        if (XAxis.Range.Max < Limits.XRange.Max)
         {
-            if (XAxis.Range.Min < Limits.XRange.Max)
-            {
-                XAxis.Range.Min = Limits.XRange.Max;
-                XAxis.Range.Max = Limits.XRange.Max - horizontalSpan;
-            }
-
-            if (XAxis.Range.Max > Limits.XRange.Min)
-            {
-                XAxis.Range.Max = Limits.XRange.Min;
-                XAxis.Range.Min = Limits.XRange.Min + horizontalSpan;
-            }
-        }
-        else
-        {
-            if (XAxis.Range.Max < Limits.XRange.Max)
-            {
-                XAxis.Range.Max = Limits.XRange.Max;
-                XAxis.Range.Min = Limits.XRange.Max - horizontalSpan;
-            }
-
-            if (XAxis.Range.Min > Limits.XRange.Min)
-            {
-                XAxis.Range.Min = Limits.XRange.Min;
-                XAxis.Range.Max = Limits.XRange.Min + horizontalSpan;
-            }
+            XAxis.Range.Max = Limits.XRange.Max;
+            XAxis.Range.Min = Limits.XRange.Max - horizontalSpan;
         }
 
-        if (YAxis.IsInverted())
+        if (XAxis.Range.Min > Limits.XRange.Min)
         {
-            if (YAxis.Range.Min < Limits.YRange.Max)
-            {
-                YAxis.Range.Min = Limits.YRange.Max;
-                YAxis.Range.Max = Limits.YRange.Max - verticalSpan;
-            }
-
-            if (YAxis.Range.Max > Limits.YRange.Min)
-            {
-                YAxis.Range.Max = Limits.YRange.Min;
-                YAxis.Range.Min = Limits.YRange.Min + verticalSpan;
-            }
+            XAxis.Range.Min = Limits.XRange.Min;
+            XAxis.Range.Max = Limits.XRange.Min + horizontalSpan;
         }
-        else
-        {
-            if (YAxis.Range.Max < Limits.YRange.Max)
-            {
-                YAxis.Range.Max = Limits.YRange.Max;
-                YAxis.Range.Min = Limits.YRange.Max - verticalSpan;
-            }
 
-            if (YAxis.Range.Min > Limits.YRange.Min)
-            {
-                YAxis.Range.Min = Limits.YRange.Min;
-                YAxis.Range.Max = Limits.YRange.Min + verticalSpan;
-            }
+        if (YAxis.Range.Max < Limits.YRange.Max)
+        {
+            YAxis.Range.Max = Limits.YRange.Max;
+            YAxis.Range.Min = Limits.YRange.Max - verticalSpan;
+        }
+
+        if (YAxis.Range.Min > Limits.YRange.Min)
+        {
+            YAxis.Range.Min = Limits.YRange.Min;
+            YAxis.Range.Max = Limits.YRange.Min + verticalSpan;
         }
     }
 }
