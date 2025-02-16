@@ -11,6 +11,7 @@ _Not yet on NuGet..._
 * Rectangular Grid: Improve logic used to identify cells from coordinates, fixing issues associated with contour line plots (#4787, #4791) @StendProg @ScottSSapphire
 * Axes: Improve coordinate lookup logic for translating between triangular and Cartesian axes (#4797, #4798) @manaruto
 * SignalXY: Improve performance by reducing allocations and copying inside the render loop (#4794, #4753) @bclehmann
+* CoordinateRangeMutable: Improve comparison logic (#4796) @bclehmann
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
