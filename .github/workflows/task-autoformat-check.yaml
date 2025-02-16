@@ -17,4 +17,4 @@ jobs:
           dotnet-version: "9.0.103" #https://github.com/dotnet/sdk/issues/46780#issuecomment-2654628175
       - name: Code Format Check
         run: dotnet format ScottPlot5 --verify-no-changes --verbosity diagnostic
-        working-directory: .src/ScottPlot5/
+        working-directory: ./src/ScottPlot5/
