@@ -4,7 +4,7 @@ namespace ScottPlot.Plottables;
 /// A polar axes uses spoke lines and circles to describe a polar coordinate system
 /// where points are represented by a radius and angle. 
 /// This class draws a polar axes and has options to customize spokes and circles.
-/// </summary> 
+/// </summary>
 public class SmithChartAxis : IPlottable, IManagesAxisLimits
 {
     public static Coordinates CalculateGamma(Coordinates normalizedImpedance)
