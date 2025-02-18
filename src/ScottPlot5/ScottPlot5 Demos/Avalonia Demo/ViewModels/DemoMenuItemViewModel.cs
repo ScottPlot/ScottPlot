@@ -6,4 +6,14 @@ public partial class DemoMenuItemViewModel : ViewModelBase
 
     public string Title  => Demo?.DemoTitle ?? "Title Goes Here";
     public string Description => Demo?.Description ?? "Description goes here";
+
+    public void OpenDemo()
+    {
+        if (Demo is null)
+        {
+            throw new System.ArgumentNullException("No demo provided");
+        }
+
+        Demo?.GetWindow().Show();
+    }
 }

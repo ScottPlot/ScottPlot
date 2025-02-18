@@ -25,7 +25,7 @@
             Padding="5"
             >
 			<DockPanel>
-				<Button x:Name="LaunchButton" FontSize="14" Padding="5" BorderThickness="1">
+				<Button Command="{Binding OpenDemo}" FontSize="14" Padding="5" BorderThickness="1">
 					<TextBlock Text="Launch" />
 					<Button.Styles>
 						<Style Selector="Button">

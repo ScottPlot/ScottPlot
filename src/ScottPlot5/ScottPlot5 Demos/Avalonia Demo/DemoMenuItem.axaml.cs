@@ -11,13 +11,5 @@ public partial class DemoMenuItem : UserControl
     public DemoMenuItem()
     {
         InitializeComponent();
-
-        LaunchButton.Click += (s, e) => OpenDemo();
-    }
-
-    private void OpenDemo()
-    {
-        var demo = ((DataContext as DemoMenuItemViewModel)?.Demo) ?? throw new System.ArgumentNullException("No demo provided");
-        demo.GetWindow().Show();
     }
 }
