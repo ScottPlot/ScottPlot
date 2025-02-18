@@ -13,5 +13,5 @@ public partial class MultiThreadingViewModel : ViewModelBase
     private bool _buttonsAreEnabled = true;
     
     [ObservableProperty]
-    public string _timerInUse = "";
+    public string? _timerInUse = null;
 }
