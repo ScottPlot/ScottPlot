@@ -38,9 +38,18 @@
 					</Panel>
 				</TreeDataTemplate>
 			</TreeView.ItemTemplate>
+
+			<TreeView.Styles>
+				<Style Selector="TreeViewItem">
+					<Style Selector="^:selected /template/ Border#PART_LayoutRoot">
+						<Setter Property="Background" Value="Transparent" />
+						<Setter Property="BorderBrush" Value="Transparent" />
+					</Style>
+				</Style>
+			</TreeView.Styles>
 		</TreeView>
 		<ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="0" Grid.Column="1" />
-		<local.Controls:RecipeInfoBox 
+		<local.Controls:RecipeInfoBox
 			Grid.Row="1"
 			Grid.Column="1"
 			DataContext="{Binding RecipeViewModel}"
