@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Avalonia_Demo.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Avalonia_Demo.DemoMenuItem"
+			 x:DataType="vm:DemoMenuItemViewModel"
+			 Background="WhiteSmoke"
+             d:DesignHeight="100" d:DesignWidth="400"
+			 >
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:DemoMenuItemViewModel/>
+	</Design.DataContext>
+	<StackPanel>
+		<HeaderedContentControl
+            x:Name="GroupBox1"
+            BorderBrush="Gray"
+            Header="{Binding Title}"
+            FontSize="14"
+            Margin="5"
+            BorderThickness="1"
+            Padding="5"
+            >
+			<DockPanel>
+				<Button x:Name="LaunchButton" FontSize="14" Padding="5" BorderThickness="1">
+					<TextBlock Text="Launch" />
+					<Button.Styles>
+						<Style Selector="Button">
+							<Setter Property="Foreground" Value="Black" />
+							<Setter Property="Background" Value="LightGray" />
+						</Style>
+						<Style Selector="Button:pointerover /template/ ContentPresenter">
+							<Setter Property="Foreground" Value="Black" />
+							<Setter Property="Background" Value="LightGray" />
+							<Setter Property="BorderBrush" Value="Black" />
+						</Style>
+					</Button.Styles>
+				</Button>
+				<TextBlock FontSize="14" Margin="10 0 0 0" Text="{Binding Description}" TextWrapping="Wrap"	/>
+			</DockPanel>
+		</HeaderedContentControl>
+	</StackPanel>
+
+
+</UserControl>

@@ -1,0 +1,60 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Avalonia_Demo.App"
+             xmlns:local="using:Avalonia_Demo"
+             RequestedThemeVariant="Default">
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
+
+	<Application.Styles>
+		<FluentTheme />
+
+		<!-- Avalonia doesn't come with a GroupBox control, so this styles HeaderedContentControl like one, see https://docs.avaloniaui.net/docs/tutorials/groupbox -->
+		<Style Selector="HeaderedContentControl">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<!-- Header -->
+						<Border
+							ZIndex="1"
+							Background="WhiteSmoke"
+							Padding="5,0,5,0"
+							Margin="5,0,0,0">
+							<TextBlock
+								Text="{TemplateBinding Header}"
+								FontWeight="Bold"/>
+						</Border>
+
+						<!-- Content Area -->
+						<Border
+							Grid.RowSpan="2"
+							Padding="0,5,0,0"
+							Grid.ColumnSpan="2"
+							CornerRadius="4"
+							Margin="0,10,0,0"
+							BorderBrush="Gray"
+							BorderThickness="1">
+							<ContentPresenter
+								Name="PART_ContentPresenter"
+								Padding="8"
+								Content="{TemplateBinding Content}"/>
+						</Border>
+					</Grid>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+	</Application.Styles>
+
+</Application>
