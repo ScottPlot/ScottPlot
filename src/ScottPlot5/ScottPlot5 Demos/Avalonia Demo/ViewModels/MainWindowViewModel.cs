@@ -17,7 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase
             .Where(x => !x.IsInterface)
             .Select(x => new DemoMenuItemViewModel() { Demo = Activator.CreateInstance(x) as IDemo })
             .Where(x => x is not null)
-            .OrderBy(d => d.Demo is Demos.QuickstartWindow ? -1 : 0)
+            .OrderBy(d => d.Demo is Avalonia_Demo.Demos.QuickstartDemo ? -1 : 0)
             .ThenBy(d => d.Title)
             .ToList()
     );

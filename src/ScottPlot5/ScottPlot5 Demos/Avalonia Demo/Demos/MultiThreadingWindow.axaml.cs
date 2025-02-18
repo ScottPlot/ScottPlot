@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using Avalonia.Threading;
 using ScottPlot;
+using Avalonia_Demo.ViewModels.Demos;
 
 namespace Avalonia_Demo.Demos;
 
@@ -28,9 +29,12 @@ public partial class MultiThreadingWindow : Window
     private readonly List<double> Xs = [];
     private readonly List<double> Ys = [];
 
+    private MultiThreadingViewModel TypedDataContext => (DataContext as MultiThreadingViewModel) ?? throw new ArgumentException(nameof(DataContext));
+
     public MultiThreadingWindow()
     {
         InitializeComponent();
+        this.DataContext = new MultiThreadingViewModel();
 
         // pre-populate lists with valid data
         ChangeDataLength();
@@ -75,12 +79,14 @@ public partial class MultiThreadingWindow : Window
     private void StartTimer(object sender, RoutedEventArgs e)
     {
         SystemTimer.Start();
-        ButtonStackPanel.IsEnabled = false;
+        TypedDataContext.ButtonsAreEnabled = false;
+        TypedDataContext.TimerInUse = "System Timer";
     }
 
     private void StartDispatchTimer(object sender, RoutedEventArgs e)
     {
         DispatcherTimer.Start();
-        ButtonStackPanel.IsEnabled = false;
+        TypedDataContext.ButtonsAreEnabled = false;
+        TypedDataContext.TimerInUse = "Dispatch Timer";
     }
 }
