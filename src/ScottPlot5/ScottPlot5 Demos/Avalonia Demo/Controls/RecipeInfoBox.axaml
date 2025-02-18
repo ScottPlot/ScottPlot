@@ -17,9 +17,11 @@
 			BorderThickness="1"
 			Padding="5"
             >
-			<TextBlock
-				Text="{Binding RecipeInfo.Source, FallbackValue=Source not found. Run test suites to generate JSON file.}"
+			<ScrollViewer MaxHeight="150">
+				<TextBlock
+					Text="{Binding RecipeInfo.Source, FallbackValue=Source not found. Run test suites to generate JSON file.}"
 			/>
+			</ScrollViewer>
 		</HeaderedContentControl>
 	</StackPanel>
 </UserControl>
