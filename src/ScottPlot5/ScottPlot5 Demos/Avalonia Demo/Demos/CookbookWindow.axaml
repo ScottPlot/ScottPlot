@@ -6,7 +6,7 @@
 		xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
 	    xmlns:local="clr-namespace:Avalonia_Demo"
 	    xmlns:local.Controls="clr-namespace:Avalonia_Demo.Controls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
         x:Class="Avalonia_Demo.Demos.CookbookWindow"
 	    x:DataType="vm:Demos.CookbookViewModel"
         Title="Cookbook"
@@ -21,8 +21,10 @@
 						<Button
 							Command="{Binding Select}"
 							IsVisible="{Binding IsLeafNode}"
+							Padding="0,0,0,0"
+							Margin="-6,0,0,0"
 						>
-							<TextBlock Text="{Binding Name}" />
+							<TextBlock Text="{Binding Name}" FontSize="12"/>
 							<Button.Styles>
 								<Style Selector="Button">
 									<Setter Property="Foreground" Value="Black" />
@@ -47,6 +49,11 @@
 					</Style>
 				</Style>
 			</TreeView.Styles>
+
+
+			<TreeView.Resources>
+				<x:Double x:Key="TreeViewItemMinHeight">12</x:Double>
+			</TreeView.Resources>
 		</TreeView>
 		<ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="0" Grid.Column="1" />
 		<local.Controls:RecipeInfoBox
