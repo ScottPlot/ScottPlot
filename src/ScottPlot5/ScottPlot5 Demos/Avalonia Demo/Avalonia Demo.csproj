@@ -35,6 +35,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Demos\AxisRulesWindow.axaml.cs">
+		  <DependentUpon>AxisRulesWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\MouseTrackerWindow.axaml.cs">
+		  <DependentUpon>MouseTrackerWindow.axaml</DependentUpon>
+		</Compile>
 		<Compile Update="Demos\MultiThreadingWindow.axaml.cs">
 			<DependentUpon>MultiThreadingWindow.axaml</DependentUpon>
 		</Compile>

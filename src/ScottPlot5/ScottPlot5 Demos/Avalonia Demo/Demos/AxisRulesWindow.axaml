@@ -5,7 +5,7 @@
 		xmlns:vm="using:Avalonia_Demo.ViewModels.Demos"
 		xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
-        x:Class="Avalonia_Demo.AxisRules"
+        x:Class="Avalonia_Demo.Demos.AxisRulesWindow"
 	    x:DataType="vm:AxisRulesViewModel"
         Title="Axis Rules"
 		Background="White"

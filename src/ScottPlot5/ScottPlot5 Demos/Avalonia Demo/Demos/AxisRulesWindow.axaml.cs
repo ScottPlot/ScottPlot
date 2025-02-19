@@ -7,7 +7,7 @@ using ScottPlot;
 using System;
 using System.ComponentModel;
 
-namespace Avalonia_Demo;
+namespace Avalonia_Demo.Demos;
 
 public class AxisRulesDemo : IDemo
 {
@@ -17,14 +17,14 @@ public class AxisRulesDemo : IDemo
 
     public Window GetWindow()
     {
-        return new AxisRules();
+        return new AxisRulesWindow();
     }
 }
 
-public partial class AxisRules : Window
+public partial class AxisRulesWindow : Window
 {
     private AxisRulesViewModel TypedDataContext => (DataContext as AxisRulesViewModel) ?? throw new ArgumentException(nameof(DataContext));
-    public AxisRules()
+    public AxisRulesWindow()
     {
         InitializeComponent();
 
