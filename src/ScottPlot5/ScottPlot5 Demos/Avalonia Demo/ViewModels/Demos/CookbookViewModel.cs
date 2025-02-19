@@ -50,18 +50,23 @@ public partial class CookbookViewModel : ViewModelBase
         foreach (Chapter chapter in Query.GetChaptersInOrder())
         {
             IEnumerable<ICategory> categoriesInChapter = RecipesByCategory.Keys.Where(x => x.Chapter == chapter);
- 
+
             foreach (var category in categoriesInChapter)
             {
-                yield return new TreeViewNode(this) {
+                var children = RecipesByCategory[category].Select(r => new TreeViewNode(this)
+                {
+                    Name = r.Name,
+                    Children = []
+                })
+                .ToArray();
+
+                if (children.Length == 0)
+                    continue;
+
+                yield return new TreeViewNode(this)
+                {
                     Name = category.CategoryName,
-                    Children = RecipesByCategory[category]
-                        .Select(r => new TreeViewNode(this)
-                        {
-                            Name = r.Name,
-                            Children = []
-                        })
-                        .ToArray()
+                    Children = children
                 };
             }
         }
@@ -106,7 +111,8 @@ public partial class CookbookViewModel : ViewModelBase
         }
         else
         {
-            RecipeViewModel = new() {
+            RecipeViewModel = new()
+            {
                 Recipe = SelectedRecipeDetails.Value.Recipe,
                 RecipeInfo = SelectedRecipeDetails.Value.RecipeInfo.Value
             };
