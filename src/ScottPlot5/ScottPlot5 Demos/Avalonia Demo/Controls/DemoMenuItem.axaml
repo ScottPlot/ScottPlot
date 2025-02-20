@@ -27,17 +27,6 @@
 			<DockPanel>
 				<Button Command="{Binding OpenDemo}" FontSize="14" Padding="5" BorderThickness="1">
 					<TextBlock Text="Launch" />
-					<Button.Styles>
-						<Style Selector="Button">
-							<Setter Property="Foreground" Value="Black" />
-							<Setter Property="Background" Value="LightGray" />
-						</Style>
-						<Style Selector="Button:pointerover /template/ ContentPresenter">
-							<Setter Property="Foreground" Value="Black" />
-							<Setter Property="Background" Value="LightGray" />
-							<Setter Property="BorderBrush" Value="Black" />
-						</Style>
-					</Button.Styles>
 				</Button>
 				<TextBlock FontSize="14" Margin="10 0 0 0" Text="{Binding Description}" TextWrapping="Wrap"	/>
 			</DockPanel>

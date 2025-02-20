@@ -11,7 +11,7 @@
 
 	<Application.Styles>
 		<FluentTheme />
-
+	
 		<!-- Avalonia doesn't come with a GroupBox control, so this styles HeaderedContentControl like one, see https://docs.avaloniaui.net/docs/tutorials/groupbox -->
 		<Style Selector="HeaderedContentControl">
 			<Setter Property="Template">
@@ -55,6 +55,23 @@
 				</ControlTemplate>
 			</Setter>
 		</Style>
+
+
+		<Style Selector="Button">
+			<Setter Property="Foreground" Value="Black" />
+			<Setter Property="Background" Value="LightGray" />
+		</Style>
+		<Style Selector="Button:pointerover /template/ ContentPresenter">
+			<Setter Property="Foreground" Value="Black" />
+			<Setter Property="Background" Value="LightGray" />
+			<Setter Property="BorderBrush" Value="Black" />
+		</Style>
+		<Style Selector="Button:disabled /template/ ContentPresenter">
+			<Setter Property="Foreground" Value="Black" />
+			<Setter Property="Background" Value="DarkGray" />
+			<Setter Property="BorderBrush" Value="Black" />
+		</Style>
+
 	</Application.Styles>
 
 </Application>

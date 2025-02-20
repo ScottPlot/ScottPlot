@@ -41,24 +41,7 @@
 											IsEnabled="{Binding #Root((vm:AxisRulesViewModel)DataContext).ButtonsAreEnabled}"
 											Margin="0, 0, 4, 0"
 											BorderThickness="1"
-									>
-											<Button.Styles>
-												<Style Selector="Button">
-													<Setter Property="Foreground" Value="Black" />
-													<Setter Property="Background" Value="LightGray" />
-												</Style>
-												<Style Selector="Button:pointerover /template/ ContentPresenter">
-													<Setter Property="Foreground" Value="Black" />
-													<Setter Property="Background" Value="LightGray" />
-													<Setter Property="BorderBrush" Value="Black" />
-												</Style>
-												<Style Selector="Button:disabled /template/ ContentPresenter">
-													<Setter Property="Foreground" Value="Black" />
-													<Setter Property="Background" Value="DarkGray" />
-													<Setter Property="BorderBrush" Value="Black" />
-												</Style>
-											</Button.Styles>
-										</Button>
+										/>
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

@@ -14,7 +14,6 @@ public class QuickstartDemo : IDemo
     {
         return new QuickstartWindow();
     }
-
 }
 
 public partial class QuickstartWindow : SimpleDemoWindow 
