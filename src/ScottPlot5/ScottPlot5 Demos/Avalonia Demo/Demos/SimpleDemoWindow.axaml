@@ -8,7 +8,7 @@
 		x:Class="Avalonia_Demo.Demos.SimpleDemoWindow"
 	    x:DataType="vm:Demos.SimpleDemoViewModel"
 		WindowStartupLocation="CenterScreen"
-		Height="400" Width="600"
+		Height="600" Width="800"
 		Title="{Binding DemoName}"
 >
 	<ScottPlot:AvaPlot Name="AvaPlot" />
