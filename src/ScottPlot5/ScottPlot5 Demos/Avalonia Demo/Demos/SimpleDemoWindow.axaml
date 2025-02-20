@@ -3,11 +3,13 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+		xmlns:vm="using:Avalonia_Demo.ViewModels"
 		mc:Ignorable="d"
-		x:Class="Avalonia_Demo.Demos.QuickstartWindow"
+		x:Class="Avalonia_Demo.Demos.SimpleDemoWindow"
+	    x:DataType="vm:Demos.SimpleDemoViewModel"
 		WindowStartupLocation="CenterScreen"
 		Height="400" Width="600"
-		Title="Quickstart"
+		Title="{Binding DemoName}"
 >
 	<ScottPlot:AvaPlot Name="AvaPlot" />
 </Window>

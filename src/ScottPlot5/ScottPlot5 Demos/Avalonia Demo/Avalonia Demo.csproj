@@ -44,8 +44,8 @@
 		<Compile Update="Demos\MultiThreadingWindow.axaml.cs">
 			<DependentUpon>MultiThreadingWindow.axaml</DependentUpon>
 		</Compile>
-		<Compile Update="Demos\QuickstartWindow.axaml.cs">
-			<DependentUpon>QuickstartWindow.axaml</DependentUpon>
+		<Compile Update="Demos\SimpleDemoWindow.axaml.cs">
+		  <DependentUpon>SimpleDemoWindow.axaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 </Project>
