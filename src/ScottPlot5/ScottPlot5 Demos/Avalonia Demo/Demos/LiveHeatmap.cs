@@ -30,7 +30,7 @@ public class LiveHeatmapWindow : SimpleDemoWindow
     private double[,] HeatmapData;
     private int UpdateCount = 0;
 
-    public LiveHeatmapWindow() : base("Continuously Autoscale")
+    public LiveHeatmapWindow() : base("Live Heatmap")
     {
 
     }
