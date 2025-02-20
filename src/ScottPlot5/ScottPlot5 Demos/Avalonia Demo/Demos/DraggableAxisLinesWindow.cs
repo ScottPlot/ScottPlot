@@ -12,7 +12,7 @@ namespace Avalonia_Demo.Demos;
 
 public class DraggableAxisLinesDemo : IDemo
 {
-    public string DemoTitle => "Draggable Axis Lines";
+    public string Title => "Draggable Axis Lines";
     public string Description => "Demonstrates how to add mouse interactivity to plotted objects";
 
     public Window GetWindow()

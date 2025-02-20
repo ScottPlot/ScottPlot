@@ -7,7 +7,7 @@ namespace Avalonia_Demo.Demos;
 
 public class MouseTrackerDemo : IDemo
 {
-    public string DemoTitle => "Mouse Tracker";
+    public string Title => "Mouse Tracker";
     public string Description => "Demonstrates how to interact with the mouse " +
         "and convert between screen units (pixels) and axis units (coordinates)";
 

@@ -12,7 +12,7 @@ namespace Avalonia_Demo.Demos;
 
 public class DraggablePointsDemo : IDemo
 {
-    public string DemoTitle => "Draggable Data Points";
+    public string Title => "Draggable Data Points";
     public string Description => "GUI events can be used to interact with data " +
         "drawn on the plot. This example shows how to achieve drag-and-drop behavior " +
         "for points of a scatter plot. Extra code may be added to limit how far points may be moved.";

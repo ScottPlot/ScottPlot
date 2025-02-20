@@ -14,7 +14,7 @@ namespace Avalonia_Demo.Demos;
 
 public class CookbookDemo : IDemo
 {
-    public string DemoTitle => $"{ScottPlot.Version.LongString} Cookbook";
+    public string Title => $"{ScottPlot.Version.LongString} Cookbook";
     public string Description => "Common ScottPlot features demonstrated " +
         "as interactive graphs displayed next to the code used to create them";
 

@@ -7,7 +7,7 @@ namespace Avalonia_Demo.Demos;
 
 public class QuickstartDemo : IDemo
 {
-    public string DemoTitle => "Avalonia Quickstart";
+    public string Title => "Avalonia Quickstart";
     public string Description => "Create a simple plot using the Avalonia control.";
 
     public Window GetWindow()

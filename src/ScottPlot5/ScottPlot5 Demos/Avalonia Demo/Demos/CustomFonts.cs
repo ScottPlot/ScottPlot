@@ -12,7 +12,7 @@ namespace Avalonia_Demo.Demos;
 
 public class CustomFontsDemo : IDemo
 {
-    public string DemoTitle => "Custom Fonts";
+    public string Title => "Custom Fonts";
 
     public string Description => "Demonstrates how to create plots that " +
         "render text using fonts defined in an external TTF file.";

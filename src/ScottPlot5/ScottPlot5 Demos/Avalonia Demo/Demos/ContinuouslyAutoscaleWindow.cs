@@ -12,7 +12,7 @@ namespace Avalonia_Demo.Demos;
 
 public class ContionuouslyAutoscaleDemo : IDemo
 {
-    public string DemoTitle => "Continuously Autoscale";
+    public string Title => "Continuously Autoscale";
 
     public string Description => "Custom axis scale logic may be applied at the start of each render";
 

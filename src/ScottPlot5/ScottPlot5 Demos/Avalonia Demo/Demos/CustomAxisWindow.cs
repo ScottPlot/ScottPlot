@@ -13,7 +13,7 @@ namespace Avalonia_Demo.Demos;
 
 public class CustomAxisDemo : IDemo
 {
-    public string DemoTitle => "Custom Axis";
+    public string Title => "Custom Axis";
 
     public string Description => "How to create a custom axis class " +
         "that implements IAxis to create totally customizable axis panels";

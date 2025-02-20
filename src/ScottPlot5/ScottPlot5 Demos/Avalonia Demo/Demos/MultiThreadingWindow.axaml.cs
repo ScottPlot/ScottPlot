@@ -12,7 +12,7 @@ namespace Avalonia_Demo.Demos;
 
 public class MultiThreadingDemo: IDemo
 {
-    public string DemoTitle => "Avalonia Multi-Threading";
+    public string Title => "Avalonia Multi-Threading";
     public string Description => "Demonstrate how to safely change data while rendering asynchronously.";
 
     public Window GetWindow()

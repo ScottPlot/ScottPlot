@@ -11,7 +11,7 @@ namespace Avalonia_Demo.Demos;
 
 public class AxisRulesDemo : IDemo
 {
-    public string DemoTitle => "Axis Rules";
+    public string Title => "Axis Rules";
     public string Description => "Configure rules that limit how far the user " +
         "can zoom in or out or enforce equal axis scaling";
 

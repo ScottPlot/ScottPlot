@@ -11,7 +11,7 @@ namespace Avalonia_Demo.Demos;
 
 public class CustomMarkerDemo : IDemo
 {
-    public string DemoTitle => "Custom Marker Shapes";
+    public string Title => "Custom Marker Shapes";
 
     public string Description => "Demonstrates how to create plots using custom markers";
 
