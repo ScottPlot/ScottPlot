@@ -52,6 +52,9 @@
 		<Compile Update="Demos\AxisRulesWindow.axaml.cs">
 		  <DependentUpon>AxisRulesWindow.axaml</DependentUpon>
 		</Compile>
+		<Compile Update="Demos\CustomMouseActionsWindow.axaml.cs">
+		  <DependentUpon>CustomMouseActionsWindow.axaml</DependentUpon>
+		</Compile>
 		<Compile Update="Demos\MouseTrackerWindow.axaml.cs">
 		  <DependentUpon>MouseTrackerWindow.axaml</DependentUpon>
 		</Compile>

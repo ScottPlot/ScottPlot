@@ -56,7 +56,6 @@
 			</Setter>
 		</Style>
 
-
 		<Style Selector="Button">
 			<Setter Property="Foreground" Value="Black" />
 			<Setter Property="Background" Value="LightGray" />
@@ -72,6 +71,8 @@
 			<Setter Property="BorderBrush" Value="Black" />
 		</Style>
 
+		<Style Selector="TextBlock">
+			<Setter Property="Foreground" Value="Black" />
+		</Style>
 	</Application.Styles>
-
 </Application>
