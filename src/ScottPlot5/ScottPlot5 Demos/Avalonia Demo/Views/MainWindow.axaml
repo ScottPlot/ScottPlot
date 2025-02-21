@@ -70,13 +70,14 @@
             <ItemsControl ItemsSource="{Binding DemoWindows}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel />
+                        <!-- <StackPanel /> -->
+                        <WrapPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:DemoMenuItem Foreground="Black" />
+                        <local:DemoMenuItem Width="450" Foreground="Black" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
