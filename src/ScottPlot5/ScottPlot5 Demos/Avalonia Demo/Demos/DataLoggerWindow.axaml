@@ -5,7 +5,7 @@
 		xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Avalonia_Demo.Demos.DataLoggerWindow"
-        Title="Custom Mouse Actions">
+        Title="Data Logger">
 	<Grid RowDefinitions="auto,*" Background="White">
 		<DockPanel Grid.Row="0" Margin="16,16,16,0">
 			<Button Margin="0,0,4,0" Click="OnFullButtonClicked">
