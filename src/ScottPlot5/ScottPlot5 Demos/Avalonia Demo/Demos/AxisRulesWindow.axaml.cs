@@ -184,7 +184,7 @@ public partial class AxisRulesWindow : Window
         }
         else
         {
-            throw new ArgumentOutOfRangeException(nameof(category));  
+            throw new ArgumentOutOfRangeException(nameof(category));
         }
     }
 

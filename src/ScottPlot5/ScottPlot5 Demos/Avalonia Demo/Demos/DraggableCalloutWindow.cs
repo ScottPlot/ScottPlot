@@ -97,7 +97,7 @@ public class DraggableCalloutWindow : SimpleDemoWindow
 
     private void OnMouseMove(object? sender, PointerEventArgs e)
     {
-            var pos = e.GetPosition(this);
+        var pos = e.GetPosition(this);
         if (CalloutBeingDragged is null)
         {
             Callout? calloutUnderMouse = GetCalloutUnderMouse((float)pos.X, (float)pos.Y);

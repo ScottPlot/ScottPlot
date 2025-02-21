@@ -10,7 +10,7 @@ using Avalonia_Demo.ViewModels.Demos;
 
 namespace Avalonia_Demo.Demos;
 
-public class MultiThreadingDemo: IDemo
+public class MultiThreadingDemo : IDemo
 {
     public string Title => "Avalonia Multi-Threading";
     public string Description => "Demonstrate how to safely change data while rendering asynchronously.";

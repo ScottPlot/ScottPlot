@@ -8,7 +8,7 @@ public partial class RecipeInfoViewModel : ObservableObject
 {
     [ObservableProperty]
     private IRecipe _recipe;
-    
+
     [ObservableProperty]
     private JsonRecipeInfo _recipeInfo;
 }

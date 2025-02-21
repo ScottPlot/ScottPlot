@@ -16,7 +16,7 @@ public class QuickstartDemo : IDemo
     }
 }
 
-public partial class QuickstartWindow : SimpleDemoWindow 
+public partial class QuickstartWindow : SimpleDemoWindow
 {
     public QuickstartWindow() : base("Avalonia Quickstart")
     {
