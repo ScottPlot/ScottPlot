@@ -1,0 +1,80 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Avalonia_Demo.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	    xmlns:local="clr-namespace:Avalonia_Demo"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Avalonia_Demo.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+		Background="#9a4993"
+        WindowStartupLocation="CenterScreen"
+        Title="ScottPlot Avalonia Demo" Height="700" Width="500"
+		>
+
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+
+	<DockPanel>
+		<DockPanel DockPanel.Dock="Top" Background="#67217a">
+			<Image Width="48" Margin="10 0 5 0" Name="LogoImage"
+				   Source="/Assets/logo-128.png"
+			/>
+			<StackPanel Margin="5">
+				<Label
+                    Content="ScottPlot Avalonia Demo"
+                    Foreground="WhiteSmoke"
+                    FontSize="26"
+                    FontWeight="SemiBold"
+                    Padding="0 5 0 0"
+                    Margin="0"/>
+				<Label
+                    Name="Subtitle"
+                    Content="{Binding VersionStringFull}"
+                    Foreground="WhiteSmoke"
+                    FontSize="18"
+                    FontWeight="Light"
+                    Padding="0 0 0 10"
+                    Margin="0"/>
+			</StackPanel>
+		</DockPanel>
+
+		<TextBlock
+            DockPanel.Dock="Top"
+            Foreground="WhiteSmoke"
+            Opacity=".5"
+            FontSize="16"
+            TextWrapping="Wrap"
+            Padding="10 15">
+			This application demonstrates Avalonia-specific concepts that affect how
+			plots are displayed and interactive with in Avalonia.
+			<LineBreak/>
+			<LineBreak/>
+			The main ScottPlot Demo application uses Windows Forms, but the concepts
+			it demonstrates easily translate to other GUI frameworks,
+			so Avalonia developers are encouraged to review both demo applications.
+		</TextBlock>
+
+		<ScrollViewer Background="WhiteSmoke">
+			<!--This binds to the observable collection in the ViewModel-->
+			<ItemsControl ItemsSource="{Binding DemoWindows}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<local:DemoMenuItem Foreground="Black" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</DockPanel>
+
+</Window>
