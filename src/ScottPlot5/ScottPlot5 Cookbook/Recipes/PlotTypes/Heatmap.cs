@@ -45,7 +45,7 @@ public class Heatmap : ICategory
 
     public class HeatmapColormap : RecipeBase
     {
-        public override string Name => "Heatmap with custom Colormap";
+        public override string Name => "Heatmap with Custom Colormap";
         public override string Description => "A heatmap's Colormap is the logic " +
             "used to convert from cell value to cell color and they can set by the user. " +
             "ScottPlot comes with many common colormaps, " +
@@ -59,6 +59,24 @@ public class Heatmap : ICategory
 
             var hm1 = myPlot.Add.Heatmap(data);
             hm1.Colormap = new ScottPlot.Colormaps.Turbo();
+
+            myPlot.Add.ColorBar(hm1);
+        }
+    }
+
+    public class HeatmapColormapTransparent : RecipeBase
+    {
+        public override string Name => "Heatmap with Transparent Colormap";
+        public override string Description => "Custom colormaps may include transparency.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[,] data = SampleData.MonaLisa();
+            var hm1 = myPlot.Add.Heatmap(data);
+
+            Color[] colors = [Colors.Navy, Colors.Transparent, Colors.Orange];
+            hm1.Colormap = new ScottPlot.Colormaps.CustomInterpolated(colors);
 
             myPlot.Add.ColorBar(hm1);
         }
