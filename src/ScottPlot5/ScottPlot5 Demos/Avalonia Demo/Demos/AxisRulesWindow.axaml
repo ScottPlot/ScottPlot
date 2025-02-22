@@ -78,17 +78,4 @@
         </DockPanel>
         <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="1" />
     </Grid>
-
-    <Window.Styles>
-        <Style Selector="CheckBox">
-            <Setter Property="Foreground" Value="Black" />
-        </Style>
-        <Style Selector="CheckBox:pointerover /template/ ContentPresenter">
-            <Setter Property="Foreground" Value="Black" />
-        </Style>
-    </Window.Styles>
-    <Window.Resources>
-        <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeUnchecked">Black</SolidColorBrush>
-        <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeUncheckedPointerOver">Black</SolidColorBrush>
-    </Window.Resources>
 </Window>
