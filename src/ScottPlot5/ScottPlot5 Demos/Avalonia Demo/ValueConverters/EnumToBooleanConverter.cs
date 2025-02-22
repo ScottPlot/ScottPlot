@@ -13,7 +13,7 @@ namespace Avalonia_Demo.ValueConverters;
 // Thanks to https://github.com/AvaloniaUI/Avalonia/issues/3016#issuecomment-706492175
 public class EnumToBooleanConverter : IValueConverter
 {
-    public object? Convert(object value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value?.Equals(parameter);
     }

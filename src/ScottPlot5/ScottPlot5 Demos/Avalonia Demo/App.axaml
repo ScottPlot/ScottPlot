@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:conv="using:Avalonia_Demo.ValueConverters"
     xmlns:local="using:Avalonia_Demo"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     RequestedThemeVariant="Default">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
@@ -104,6 +105,9 @@
 
     <Application.Resources>
         <conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+
+        <sys:Boolean x:Key="True">True</sys:Boolean>
+        <sys:Boolean x:Key="False">False</sys:Boolean>
 
         <SolidColorBrush x:Key="RadioButtonOuterEllipseStroke">Black</SolidColorBrush>
         <SolidColorBrush x:Key="RadioButtonOuterEllipseStrokePointerOver">Black</SolidColorBrush>
