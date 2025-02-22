@@ -5,7 +5,7 @@
     xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="LegendOutsideBitmapWindow"
+    Title="Legend Outside (Bitmap)"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
