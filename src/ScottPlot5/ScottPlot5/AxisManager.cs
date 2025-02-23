@@ -1,7 +1,5 @@
 using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using System;
-using System.Linq;
 
 namespace ScottPlot;
 
@@ -37,7 +35,17 @@ public class AxisManager
     /// <summary>
     /// All axes
     /// </summary>
-    public IEnumerable<IAxis> GetAxes() => XAxes.Cast<IAxis>().Concat(YAxes);
+    public IEnumerable<IAxis> GetAxes() => [.. XAxes, .. YAxes];
+
+    /// <summary>
+    /// All X axes
+    /// </summary>
+    public IEnumerable<IXAxis> GetXAxes() => XAxes;
+
+    /// <summary>
+    /// All Y axes
+    /// </summary>
+    public IEnumerable<IYAxis> GetYAxes() => YAxes;
 
     /// <summary>
     /// All axes with the given edge
@@ -47,8 +55,7 @@ public class AxisManager
     /// <summary>
     /// Returns all axes, panels, and the title
     /// </summary>
-    /// <returns></returns>
-    internal IPanel[] GetPanels() => GetAxes().Concat(Panels).Concat(new[] { Title }).ToArray();
+    public IPanel[] GetPanels() => GetAxes().Concat(Panels).Concat(new[] { Title }).ToArray();
 
     /// <summary>
     /// The primary horizontal axis above the plot
@@ -615,7 +622,7 @@ public class AxisManager
     /// <summary>
     /// Adds the default X and Y axes to all plottables with unset axes
     /// </summary>
-    internal void ReplaceNullAxesWithDefaults()
+    public void ReplaceNullAxesWithDefaults()
     {
         foreach (var plottable in Plot.PlottableList)
         {
@@ -1155,7 +1162,7 @@ public class AxisManager
     /// <summary>
     /// This is called in the render system after AxisLimitsChanged has been invoked
     /// </summary>
-    internal void ApplyLinkedAxisRules()
+    public void ApplyLinkedAxisRules()
     {
         HashSet<Plot> plotsNeedingUpdates = [];
 
