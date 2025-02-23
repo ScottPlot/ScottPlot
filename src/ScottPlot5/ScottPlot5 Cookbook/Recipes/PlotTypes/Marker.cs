@@ -147,4 +147,78 @@ public class Marker : ICategory
         }
     }
 
+    public class MarkerLineOnly : RecipeBase
+    {
+        public override string Name => "Line Only Markers";
+        public override string Description => "Markers composed of lines only do not have fill properties.";
+
+        [Test]
+        public override void Execute()
+        {
+            MarkerShape[] lineOnlyMarkerShapes = [
+                MarkerShape.OpenCircle,
+                MarkerShape.OpenSquare,
+                MarkerShape.OpenTriangleUp,
+                MarkerShape.Eks,
+                MarkerShape.Cross,
+                MarkerShape.Asterisk,
+                MarkerShape.HashTag,
+            ];
+
+            for (int i = 0; i < lineOnlyMarkerShapes.Length; i++)
+            {
+                var marker = myPlot.Add.Marker(i, 0, lineOnlyMarkerShapes[i]);
+
+                // line only markers have line customization options
+                marker.MarkerLineColor = Colors.Blue;
+                marker.LineWidth = 2;
+                marker.MarkerSize = 20;
+
+                // line only markers are unaffected by changes in fill properties
+                marker.MarkerFillColor = Colors.Green;
+            }
+
+            myPlot.Layout.Frameless();
+            myPlot.HideGrid();
+        }
+    }
+
+    public class MarkerWithFill : RecipeBase
+    {
+        public override string Name => "Markers with Fills";
+        public override string Description => "Markers with fills support customization.";
+
+        [Test]
+        public override void Execute()
+        {
+            MarkerShape[] filledMarkerShapes = [
+                MarkerShape.FilledCircle,
+                MarkerShape.FilledSquare,
+                MarkerShape.FilledTriangleUp,
+                MarkerShape.FilledTriangleDown,
+                MarkerShape.FilledDiamond,
+            ];
+
+            for (int i = 0; i < filledMarkerShapes.Length; i++)
+            {
+                var markerFill = myPlot.Add.Marker(i, 1, filledMarkerShapes[i]);
+                markerFill.MarkerSize = 20;
+
+                var markerFillAndOutline = myPlot.Add.Marker(i, -1, filledMarkerShapes[i]);
+                markerFillAndOutline.MarkerSize = 20;
+
+                // filled markers have a customizable fill color
+                markerFill.MarkerFillColor = Colors.Green.WithAlpha(.5);
+                markerFillAndOutline.MarkerFillColor = Colors.Green.WithAlpha(.5);
+
+                // filled markers can be given an outline
+                markerFillAndOutline.MarkerLineColor = Colors.Blue;
+                markerFillAndOutline.LineWidth = 2;
+            }
+
+            myPlot.Layout.Frameless();
+            myPlot.HideGrid();
+            myPlot.Axes.SetLimitsY(-5, 5);
+        }
+    }
 }

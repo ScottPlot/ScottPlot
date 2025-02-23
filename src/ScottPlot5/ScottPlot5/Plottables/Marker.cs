@@ -29,7 +29,15 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }
     public float MarkerSize { get => MarkerStyle.Size; set => MarkerStyle.Size = value; }
     public Color MarkerFillColor { get => MarkerStyle.FillColor; set => MarkerStyle.FillColor = value; }
-    public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
+    public Color MarkerLineColor
+    {
+        get => MarkerStyle.LineColor;
+        set
+        {
+            MarkerStyle.LineColor = value;
+            MarkerStyle.OutlineColor = value;
+        }
+    }
     public Color MarkerColor
     {
         get => MarkerFillColor;
