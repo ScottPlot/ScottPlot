@@ -356,7 +356,7 @@ public class PlottableAdder(Plot plot)
     {
         ColorBar colorBar = new(source, edge);
 
-        Plot.Axes.Panels.Add(colorBar);
+        Plot.Axes.AddPanel(colorBar);
         return colorBar;
     }
 
