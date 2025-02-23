@@ -11,8 +11,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Models\" />
 		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AvaloniaXaml Remove="Models\**" />
+	  <Compile Remove="Models\**" />
+	  <EmbeddedResource Remove="Models\**" />
+	  <None Remove="Models\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -63,6 +69,9 @@
 		</Compile>
 		<Compile Update="Demos\MultiThreadingWindow.axaml.cs">
 			<DependentUpon>MultiThreadingWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\ShowValueUnderMouseWindow.axaml.cs">
+		  <DependentUpon>ShowValueUnderMouseWindow.axaml</DependentUpon>
 		</Compile>
 		<Compile Update="Demos\SimpleDemoWindow.axaml.cs">
 		  <DependentUpon>SimpleDemoWindow.axaml</DependentUpon>
