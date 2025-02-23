@@ -47,8 +47,7 @@ public class AxisManager
     /// <summary>
     /// Returns all axes, panels, and the title
     /// </summary>
-    /// <returns></returns>
-    internal IPanel[] GetPanels() => GetAxes().Concat(Panels).Concat(new[] { Title }).ToArray();
+    public IPanel[] GetPanels() => GetAxes().Concat(Panels).Concat(new[] { Title }).ToArray();
 
     /// <summary>
     /// The primary horizontal axis above the plot
