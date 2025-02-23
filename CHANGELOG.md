@@ -15,6 +15,7 @@ _Not yet on NuGet..._
 * Multiplot: Improve interactivity following `Reset()` and restore cookbook behavior (#4793)
 * Population: Use stable random number generator for horizontal symbol offsets (#4616) @marklam
 * Colorbar: Improve support for transparent colormaps (#4685) @Roman-Rak
+* Marker: Setting `LineColor` now sets both line color and outline color to improve support for filled markers with outlines (#4715)
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
