@@ -20,7 +20,7 @@ public partial class BackgroundImagesViewModel : ViewModelBase
     public ImagePosition[] ImagePositions { get; } = Enum.GetValues<ImagePosition>();
 
     [ObservableProperty]
-    private int _imagePositionIndex = 0;
+    private int _imagePositionIndex;
 
     [ObservableProperty]
     private ImagePosition _selectedImagePosition;

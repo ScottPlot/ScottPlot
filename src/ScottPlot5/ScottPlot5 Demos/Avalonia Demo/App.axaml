@@ -105,6 +105,7 @@
 
     <Application.Resources>
         <conv:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <conv:IntToFormattedStringConverter x:Key="IntToFormattedStringConverter" />
 
         <sys:Boolean x:Key="True">True</sys:Boolean>
         <sys:Boolean x:Key="False">False</sys:Boolean>
