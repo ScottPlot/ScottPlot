@@ -1,0 +1,45 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.ScatterVsSignalPlotWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels.Demos"
+    Name="Window"
+    Title="Scatter Plot, Signal Plot, and SignalConst"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:ScatterVsSignalViewModel"
+    Background="White"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="auto,*">
+        <DockPanel Grid.Row="0" Margin="16,8,0,0">
+            <RadioButton
+                Margin="0,0,8,0"
+                Content="Scatter"
+                GroupName="PlotTypes"
+                IsChecked="{Binding PlotType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static vm:PlotType.Scatter}}" />
+            <RadioButton
+                Margin="0,0,8,0"
+                Content="Signal"
+                GroupName="PlotTypes"
+                IsChecked="{Binding PlotType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static vm:PlotType.Signal}}" />
+            <RadioButton
+                Margin="0,0,8,0"
+                Content="SignalConst"
+                GroupName="PlotTypes"
+                IsChecked="{Binding PlotType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static vm:PlotType.SignalConst}}" />
+
+            <TextBlock Margin="0,0,4,0" VerticalAlignment="Center">Number of Points:</TextBlock>
+            <ComboBox ItemsSource="{Binding NumberOfPointOptions}" SelectedIndex="{Binding NumberOfPointsOptionIndex}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding, Converter={StaticResource IntToFormattedStringConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+        <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="1" />
+    </Grid>
+</Window>

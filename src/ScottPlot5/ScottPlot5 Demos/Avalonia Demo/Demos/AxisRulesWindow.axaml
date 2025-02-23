@@ -1,0 +1,81 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.AxisRulesWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels.Demos"
+    Name="Root"
+    Title="Axis Rules"
+    d:DesignHeight="450"
+    d:DesignWidth="1200"
+    x:DataType="vm:AxisRulesViewModel"
+    Background="White"
+    Foreground="Black"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="auto,*">
+        <DockPanel Grid.Row="0">
+            <ItemsControl ItemsSource="{Binding Categories}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel />
+                    </ItemsPanelTemplate>
+
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <HeaderedContentControl Name="CategoryPanel" Header="{Binding Category}">
+                            <ItemsControl ItemsSource="{Binding Options}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <DockPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0,0,4,0"
+                                            BorderThickness="1"
+                                            Command="{Binding #CategoryPanel((vm:AxisRulesCategoryViewModel)DataContext).Select}"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding}"
+                                            IsEnabled="{Binding #Root((vm:AxisRulesViewModel)DataContext).ButtonsAreEnabled}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </HeaderedContentControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Margin="10,10,0,0" VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding InvertX}">
+                    <Label Foreground="Black">Inverted X</Label>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding InvertY}">
+                    <Label Foreground="Black">Inverted Y</Label>
+                </CheckBox>
+            </StackPanel>
+            <Button
+                Margin="10,10,0,0"
+                VerticalAlignment="Center"
+                Command="{Binding Reset}">
+                Reset
+                <Button.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Foreground" Value="Black" />
+                        <Setter Property="Background" Value="LightGray" />
+                    </Style>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Foreground" Value="Black" />
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="BorderBrush" Value="Black" />
+                    </Style>
+                </Button.Styles>
+            </Button>
+        </DockPanel>
+        <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="1" />
+    </Grid>
+</Window>
