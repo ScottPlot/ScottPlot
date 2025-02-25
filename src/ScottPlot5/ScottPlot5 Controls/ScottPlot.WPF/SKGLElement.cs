@@ -217,8 +217,9 @@ namespace SkiaSharp.Views.WPF
             using (new SKAutoCanvasRestore(canvas, true))
             {
                 // start drawing
+                OnPaintSurface(new SKPaintGLSurfaceEventArgs(surface, renderTarget, surfaceOrigin, colorType));
 #pragma warning disable CS0618 // Type or member is obsolete
-                OnPaintSurface(new SKPaintGLSurfaceEventArgs(surface, renderTarget, surfaceOrigin, colorType, glInfo));
+                //OnPaintSurface(new SKPaintGLSurfaceEventArgs(surface, renderTarget, surfaceOrigin, colorType, glInfo));
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
