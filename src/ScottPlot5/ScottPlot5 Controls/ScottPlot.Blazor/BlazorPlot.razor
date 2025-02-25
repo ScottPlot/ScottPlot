@@ -40,7 +40,7 @@
         "Server" => "bg-warning p-3",
         "Static" => "bg-info p-3",
         _ => "bg-danger p-3"
-    });
+    };
     public string rendererInfoName => RendererInfo.Name;
     public string rendererInteractive => RendererInfo.IsInteractive.ToString();
     private SKCanvasView? SKView { get; set; } = OperatingSystem.IsBrowser() ? new() : null;
