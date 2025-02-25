@@ -6,32 +6,52 @@
      onmousewheel="return false;"
      onmousedown="return false;"
      style=@Style>
-    <SKCanvasView @ref="SKView"
-                  style="width:inherit; height:inherit;"
-                  OnPaintSurface="OnPaintSurface"
-                  IgnorePixelScaling="true"
-                  EnableRenderLoop="EnableRenderLoop"
-                  @onpointerdown="OnPointerPressed"
-                  @onpointermove="OnPointerMoved"
-                  @onpointerup="OnPointerReleased"
-                  @onwheel="OnPointerWheelChanged"
-                  @onkeydown="OnKeyDown"
-                  @onkeyup="OnKeyUp" />
+    @if (OperatingSystem.IsBrowser())
+    {
+        <SKCanvasView @ref="SKView"
+                      style="width:inherit; height:inherit;"
+                      OnPaintSurface="OnPaintSurface"
+                      IgnorePixelScaling="true"
+                      EnableRenderLoop="EnableRenderLoop"
+                      @onpointerdown="OnPointerPressed"
+                      @onpointermove="OnPointerMoved"
+                      @onpointerup="OnPointerReleased"
+                      @onwheel="OnPointerWheelChanged"
+                      @onkeydown="OnKeyDown"
+                      @onkeyup="OnKeyUp" />
+    }
+    else
+    {
+        <div class="@NoPlotCss">
+            Plot component will only show in Blazor client-side
+            Blazor Server and pre-rendering are not supported
+        </div>
+        <div>&nbsp;Current Mode</div>
+        <ul>
+            <li>Name: @rendererInfoName</li>
+            <li>Is Interactive: @rendererInteractive</li>
+        </ul>
+    }
 </div>
 
 @code {
-
-    private SKCanvasView SKView { get; set; } = new();
+    string NoPlotCss => RendererInfo.Name switch
+    {
+        "Server" => "bg-warning p-3",
+        "Static" => "bg-info p-3",
+        _ => "bg-danger p-3"
+    });
+    public string rendererInfoName => RendererInfo.Name;
+    public string rendererInteractive => RendererInfo.IsInteractive.ToString();
+    private SKCanvasView? SKView { get; set; } = OperatingSystem.IsBrowser() ? new() : null;
+    public override void Refresh()
+    {
+        SKView?.Invalidate();
+    }
 
     public void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
         Multiplot.Render(e.Surface);
-    }
-
-
-    public override void Refresh()
-    {
-        SKView.Invalidate();
     }
 
 }
