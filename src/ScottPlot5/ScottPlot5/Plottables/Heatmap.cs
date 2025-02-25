@@ -407,13 +407,34 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         if (Bitmap is null)
             Update(); // automatically generate the bitmap on first render if it was not generated manually
 
+        //SKSamplingOptions samplingOptions = Smooth
+        //    ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.None)
+        //    : new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None);
+        //SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNearest);
+
         using SKPaint paint = new()
         {
-            FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
+            IsAntialias = Smooth,
+            //FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None,
+           // FilterOptions = samplingOptions
         };
 
         SKRect rect = Axes.GetPixelRect(GetAlignedExtent()).ToSKRect();
-
+        
         rp.Canvas.DrawBitmap(Bitmap, rect, paint);
     }
+    //public virtual void Render(RenderPack rp)
+    //{
+    //    if (Bitmap is null)
+    //        Update(); // automatically generate the bitmap on first render if it was not generated manually
+
+    //    using SKPaint paint = new()
+    //    {
+    //        FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
+    //    };
+
+    //    SKRect rect = Axes.GetPixelRect(GetAlignedExtent()).ToSKRect();
+
+    //    rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+    //}
 }
