@@ -69,7 +69,6 @@ public readonly struct Color
         Blue = (byte)(argb >> 0);
     }
 
-    [Obsolete("use ScottPlot.Color.FromSKColor()")]
     public Color(SKColor color)
     {
         Alpha = color.Alpha;
@@ -78,7 +77,6 @@ public readonly struct Color
         Blue = color.Blue;
     }
 
-    [Obsolete("use ScottPlot.Color.FromSDColor()")]
     public Color(System.Drawing.Color color)
     {
         Alpha = color.A;
