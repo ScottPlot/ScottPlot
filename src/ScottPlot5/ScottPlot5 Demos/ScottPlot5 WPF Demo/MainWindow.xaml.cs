@@ -11,7 +11,7 @@ public partial class MainWindow : Window
         string[] args = Environment.GetCommandLineArgs();
         if (args.Length > 1 && args[1].EndsWith(".html"))
         {
-            GenerateHtml(args[1]); 
+            GenerateHtml(args[1]);
             Application.Current.Shutdown();
         }
 
