@@ -7,6 +7,7 @@ SET CookbookDest=%ShortcodeFolder%\content\cookbook\5.0
 
 :: generate the demo app shortcode
 dotnet run --project "..\..\src\ScottPlot5\ScottPlot5 Demos\ScottPlot5 WinForms Demo" "%ShortcodeFolder%\demos-winforms.html"
+dotnet run --project "..\..\src\ScottPlot5\ScottPlot5 Demos\ScottPlot5 WPF Demo" "%ShortcodeFolder%\demos-wpf.html"
 
 :: delete the old cookbook if it exists
 rmdir /q/s "%CookbookSource%"
