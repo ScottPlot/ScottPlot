@@ -59,7 +59,7 @@ public class Text : LabelStyleProperties, IPlottable
 
     #endregion
 
-    public AxisLimits GetAxisLimits()
+    public virtual AxisLimits GetAxisLimits()
     {
         return new AxisLimits(Location);
     }
