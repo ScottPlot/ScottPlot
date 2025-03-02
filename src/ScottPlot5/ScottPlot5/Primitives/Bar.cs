@@ -5,10 +5,32 @@ namespace ScottPlot;
 /// </summary>
 public class Bar : IHasFill, IHasLine
 {
+    /// <summary>
+    /// Position (not the value) of the bar.
+    /// Increment position of successive bars so they do not overlap.
+    /// For simple bar plots, position of successive bars is 1, 2, 3, etc. on the horizontal axis.
+    /// </summary>
     public double Position { get; set; }
+
+    /// <summary>
+    /// The value this bar represents.
+    /// This is the top of the bar for bars representing positive values.
+    /// </summary>
     public double Value { get; set; }
-    public double ValueBase { get; set; }
-    public double Size { get; set; } = 0.8; // coordinate units
+
+    /// <summary>
+    /// The position where the bar begins.
+    /// This is the bottom of the bar for bars representing positive values.
+    /// Typically this is zero, so bars extend from zero toward their value.
+    /// </summary>
+    public double ValueBase { get; set; } = 0;
+
+    /// <summary>
+    /// Thickness of the bar in the same units as <see cref="Position"/>.
+    /// Typically the size of each bar is equal to or less than 
+    /// the difference in <see cref="Position"/> between adjacent bars.
+    /// </summary>
+    public double Size { get; set; } = 0.8;
 
     /// <summary>
     /// Size of the error bar extending from <see cref="Value"/>
@@ -41,9 +63,33 @@ public class Bar : IHasFill, IHasLine
     public bool ErrorPositive { get; set; } = true;
     public bool ErrorNegative { get; set; } = true;
 
+    /// <summary>
+    /// Text to display on, above, or below the bar. 
+    /// Typically this is the string representation of the value of the bar.
+    /// </summary>
     public string Label { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Text to display on, above, or below the bar.
+    /// Typically this is the string representation of the value of the bar.
+    /// </summary>
+    public string ValueLabel { get => Label; set => Label = value; }
+
+    /// <summary>
+    /// Enabling this causes the value label to be rendered in the center of the bar
+    /// </summary>
     public bool CenterLabel { get; set; } = false;
+
+    /// <summary>
+    /// Place the value label this many pixels away from the edge of the bar
+    /// </summary>
     public float LabelOffset { get; set; } = 5;
+
+    /// <summary>
+    /// Labels for bars less than this value will be displayed beneath the bar.
+    /// Set this value to negative infinity to force labels to be always on top of the bar.
+    /// </summary>
+    public double LabelInvertWhenValueBelow = 0;
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
 
@@ -132,12 +178,14 @@ public class Bar : IHasFill, IHasLine
             return;
         }
 
+        bool labelAbove = Value >= LabelInvertWhenValueBelow;
+
         if (Orientation == Orientation.Vertical)
         {
             float xPx = rect.HorizontalCenter;
-            float yPx = rect.Top;
-            labelStyle.Alignment = Alignment.LowerCenter;
-            Pixel labelPixel = new(xPx, yPx - LabelOffset);
+            float yPx = labelAbove ? rect.Top : rect.Bottom;
+            labelStyle.Alignment = labelAbove ? Alignment.LowerCenter : Alignment.UpperCenter;
+            Pixel labelPixel = labelAbove ? new(xPx, yPx - LabelOffset) : new(xPx, yPx + LabelOffset);
             labelStyle.Render(rp.Canvas, labelPixel, paint);
         }
         else
