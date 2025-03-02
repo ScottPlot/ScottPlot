@@ -21,4 +21,35 @@ internal class BarTests
 
         plt.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Bar_TextBelow()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/4760
+
+        List<Bar> bars = [];
+        for (int i = 0; i < 10; i++)
+        {
+            double value = Generate.RandomInteger(-100, 100);
+            bars.Add(new()
+            {
+                Position = i,
+                Value = value,
+                Label = value.ToString(),
+                FillColor = Colors.C0,
+                LineWidth = 0,
+            });
+        }
+
+        Plot plot = new();
+        var barPlot = plot.Add.Bars(bars);
+        barPlot.ValueLabelStyle.FontSize = 18;
+        barPlot.ValueLabelStyle.Bold = true;
+
+        plot.Axes.Margins(0.1, 0.25); // increase vertical margins to make room for labels
+
+        plot.Add.HorizontalLine(0, 1, Colors.Black, LinePattern.DenselyDashed);
+        plot.HideGrid();
+        plot.SaveTestImage();
+    }
 }
