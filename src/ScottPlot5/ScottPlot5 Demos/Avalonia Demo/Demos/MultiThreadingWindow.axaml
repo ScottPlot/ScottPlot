@@ -1,0 +1,45 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.MultiThreadingWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    Title="MultiThreading"
+    Width="600"
+    Height="400"
+    x:DataType="vm:Demos.MultiThreadingViewModel"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="*,auto">
+        <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="0" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label
+                VerticalAlignment="Center"
+                Content="Continuously update using:"
+                FontSize="18" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="18"
+                IsVisible="{Binding !ButtonsAreEnabled}"
+                Text="{Binding TimerInUse}" />
+            <StackPanel IsVisible="{Binding ButtonsAreEnabled}" Orientation="Horizontal">
+                <Button
+                    Margin="5"
+                    Padding="10,5"
+                    VerticalContentAlignment="Center"
+                    Click="StartTimer"
+                    Content="Timer"
+                    FontSize="18" />
+                <Button
+                    Margin="5"
+                    Padding="10,5"
+                    VerticalContentAlignment="Center"
+                    Click="StartDispatchTimer"
+                    Content="DispatchTimer"
+                    FontSize="18" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

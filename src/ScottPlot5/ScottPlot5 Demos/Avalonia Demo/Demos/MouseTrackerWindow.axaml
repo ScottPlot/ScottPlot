@@ -1,0 +1,14 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.MouseTrackerWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Mouse Tracker"
+    Width="800"
+    Height="600"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <ScottPlot:AvaPlot Name="AvaPlot" />
+</Window>

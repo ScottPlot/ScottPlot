@@ -1,0 +1,16 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.SimpleDemoWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    Title="{Binding DemoName}"
+    Width="800"
+    Height="600"
+    x:DataType="vm:Demos.SimpleDemoViewModel"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <ScottPlot:AvaPlot Name="AvaPlot" />
+</Window>

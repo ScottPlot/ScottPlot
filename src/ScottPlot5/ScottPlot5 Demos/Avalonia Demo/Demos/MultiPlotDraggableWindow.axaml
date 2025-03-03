@@ -1,0 +1,30 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.MultiPlotDraggableWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Multiplot with Draggable Subplots"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="White" RowDefinitions="auto,*">
+        <DockPanel Grid.Row="0" Margin="4,4,0,0">
+            <Button Click="OnAddRowClick">Add Row</Button>
+            <Button Click="OnDeleteRowClick">Delete Row</Button>
+
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="Margin" Value="0,0,4,0" />
+                </Style>
+            </DockPanel.Styles>
+        </DockPanel>
+        <ScottPlot:AvaPlot
+            Name="AvaPlot"
+            Grid.Row="1"
+            PointerMoved="OnMouseMove"
+            PointerPressed="OnMouseDown"
+            PointerReleased="OnMouseUp" />
+    </Grid>
+</Window>

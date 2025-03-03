@@ -1,0 +1,80 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.CookbookWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Avalonia_Demo"
+    xmlns:local.Controls="clr-namespace:Avalonia_Demo.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    Title="Cookbook"
+    d:DesignHeight="450"
+    d:DesignWidth="600"
+    x:DataType="vm:Demos.CookbookViewModel"
+    Background="WhiteSmoke"
+    Foreground="Black"
+    mc:Ignorable="d">
+    <Grid ColumnDefinitions="auto,*" RowDefinitions="*,auto">
+        <TreeView
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Padding="0,0,10,0"
+            ItemsSource="{Binding Categories}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate ItemsSource="{Binding Children}">
+                    <Panel>
+                        <Button
+                            Margin="-6,0,0,0"
+                            Padding="0,0,0,0"
+                            Command="{Binding Select}"
+                            IsVisible="{Binding IsLeafNode}">
+                            <TextBlock FontSize="12" Text="{Binding Name}" />
+                            <Button.Styles>
+                                <Style Selector="Button">
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Button.Styles>
+                        </Button>
+                        <TextBlock
+                            Foreground="Black"
+                            IsVisible="{Binding !IsLeafNode}"
+                            Text="{Binding Name}" />
+                    </Panel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+
+            <TreeView.Styles>
+                <Style Selector="TreeViewItem">
+                    <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                    </Style>
+                </Style>
+            </TreeView.Styles>
+
+
+            <TreeView.Resources>
+                <x:Double x:Key="TreeViewItemMinHeight">12</x:Double>
+            </TreeView.Resources>
+        </TreeView>
+        <ScottPlot:AvaPlot
+            Name="AvaPlot"
+            Grid.Row="0"
+            Grid.Column="1" />
+        <local.Controls:RecipeInfoBox
+            Grid.Row="1"
+            Grid.Column="1"
+            DataContext="{Binding RecipeViewModel}" />
+
+        <Grid.Resources>
+            <SolidColorBrush x:Key="TreeViewItemForeground" Color="Black" />
+        </Grid.Resources>
+    </Grid>
+</Window>

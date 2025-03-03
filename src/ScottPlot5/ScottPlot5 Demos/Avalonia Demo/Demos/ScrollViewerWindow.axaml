@@ -1,0 +1,34 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.ScrollViewerWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    Title="Scroll Viewer"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:Demos.ScrollViewerViewModel"
+    mc:Ignorable="d">
+    <Grid Background="White" RowDefinitions="auto,*">
+        <HeaderedContentControl Grid.Row="0" Header="Mouse Wheel Action">
+            <DockPanel Margin="4,4,0,0">
+                <Button Command="{Binding SetZoomAllowed}" CommandParameter="{StaticResource False}">Scroll up/down</Button>
+                <Button Command="{Binding SetZoomAllowed}" CommandParameter="{StaticResource True}">Zoom in/out</Button>
+                <DockPanel.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Margin" Value="0,0,4,0" />
+                    </Style>
+                </DockPanel.Styles>
+            </DockPanel>
+        </HeaderedContentControl>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <ScottPlot:AvaPlot Name="AvaPlot1" Height="300" />
+                <ScottPlot:AvaPlot Name="AvaPlot2" Height="300" />
+                <ScottPlot:AvaPlot Name="AvaPlot3" Height="300" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
