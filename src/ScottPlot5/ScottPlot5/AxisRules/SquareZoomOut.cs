@@ -11,8 +11,8 @@ public class SquareZoomOut(IXAxis xAxis, IYAxis yAxis) : IAxisRule
         if (beforeLayout)
             return;
 
-        double unitsPerPxX = XAxis.Width / rp.DataRect.Width;
-        double unitsPerPxY = YAxis.Height / rp.DataRect.Height;
+        double unitsPerPxX = Math.Abs(XAxis.Width / rp.DataRect.Width);
+        double unitsPerPxY = Math.Abs(YAxis.Height / rp.DataRect.Height);
         double maxUnitsPerPx = Math.Max(unitsPerPxX, unitsPerPxY);
 
         double halfHeight = rp.DataRect.Height / 2 * maxUnitsPerPx;
