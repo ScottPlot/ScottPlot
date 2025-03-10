@@ -329,6 +329,7 @@ public class Plot : IDisposable
 
     public string GetSvgXml(int width, int height)
     {
+        RenderInMemory(width, height);
         using SvgImage svg = new(width, height);
         bool originalClearState = RenderManager.ClearCanvasBeforeEachRender;
         RenderManager.ClearCanvasBeforeEachRender = false;
