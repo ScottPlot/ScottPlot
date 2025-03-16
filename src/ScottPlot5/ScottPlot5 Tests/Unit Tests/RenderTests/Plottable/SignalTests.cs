@@ -217,7 +217,8 @@ internal class SignalTests
     [Test]
     public void SignalXY_Throws_IfNotAscending()
     {
-        double[] xs = Generate.RandomWalk(5_000);
+        ScottPlot.RandomDataGenerator gen = new(0);
+        double[] xs = gen.RandomWalk(5_000);
         double[] ys = new double[xs.Length];
 
         ScottPlot.Plot plt = new();
@@ -229,7 +230,8 @@ internal class SignalTests
     [Test]
     public void SignalXY_Throws_IfNotAscending_GenericList()
     {
-        List<double> xs = Generate.RandomWalk(5_000).ToList();
+        ScottPlot.RandomDataGenerator gen = new(0);
+        List<double> xs = gen.RandomWalk(5_000).ToList();
         List<double> ys = new double[xs.Count].ToList();
 
         ScottPlot.Plot plt = new();

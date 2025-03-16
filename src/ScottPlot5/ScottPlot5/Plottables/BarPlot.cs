@@ -20,6 +20,16 @@ public class BarPlot : IPlottable, IHasLegendText
     };
 
     /// <summary>
+    /// Text displayed above each bar, typically containing string representation of the value.
+    /// This label is displayed below the bar for negative bars.
+    /// </summary>
+    public string ValueLabel
+    {
+        get => ValueLabelStyle.Text;
+        set => ValueLabelStyle.Text = value;
+    }
+
+    /// <summary>
     /// Apply a fill color to all bars
     /// </summary>
     public Color Color
