@@ -1,4 +1,3 @@
-
 namespace ScottPlot.Plottables;
 
 /// <summary>
@@ -8,16 +7,26 @@ namespace ScottPlot.Plottables;
 public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
 {
     /// <summary>
-    /// Location on the chart for the text of the tooltip.
-    /// 
+    /// Location in coordinate space where the text of the tooltip will be displayed
     /// </summary>
     public Coordinates LabelLocation { get; set; }
-    public override LabelStyle LabelStyle { get; set; } = new() { FontSize = 14 };
 
+    /// <summary>
+    /// Location in coordinate space of the tip of the tail
+    /// </summary>
     public Coordinates TipLocation { get; set; }
 
+    /// <summary>
+    /// Fractional size of the tail where it attaches to the tooltip body
+    /// </summary>
     public double TailWidthPercentage { get; set; } = 0.5;
-    public float Radius { get; set; } = 5;
+
+    /// <summary>
+    /// Distance (in pixels) of empty space between all sides of the label and the edge of the tooltip body
+    /// </summary>
+    public float Padding { get; set; } = 5;
+
+    public override LabelStyle LabelStyle { get; set; } = new() { FontSize = 14 };
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
@@ -56,16 +65,16 @@ public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
         MeasuredText measured = LabelStyle.Measure(LabelStyle.Text, paint);
         PixelRect bubbleBodyRect = measured.Rect(LabelAlignment)
             .Expand(new PixelPadding(
-                Radius + LabelPixelPadding.Left,
-                Radius + LabelPixelPadding.Right,
-                Radius + LabelPixelPadding.Bottom,
-                Radius + LabelPixelPadding.Top));
+                Padding + LabelPixelPadding.Left,
+                Padding + LabelPixelPadding.Right,
+                Padding + LabelPixelPadding.Bottom,
+                Padding + LabelPixelPadding.Top));
 
         Pixel px = Axes.GetPixel(LabelLocation);
         bubbleBodyRect = bubbleBodyRect.WithOffset(new(px.X, px.Y));
 
         using SKPath bubbleBodyPath = new();
-        bubbleBodyPath.AddRoundRect(new(bubbleBodyRect.ToSKRect(), Radius));
+        bubbleBodyPath.AddRoundRect(new(bubbleBodyRect.ToSKRect(), Padding));
 
         var tailPoint = Axes.GetPixel(TipLocation).ToSKPoint();
         float tailWidth = Math.Min(bubbleBodyRect.Width, bubbleBodyRect.Height)
