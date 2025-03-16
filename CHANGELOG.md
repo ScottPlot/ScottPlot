@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * CoordinateRangeMutable: Improve comparison logic (#4796) @bclehmann
 * Multiplot: Improve interactivity following `Reset()` and restore cookbook behavior (#4793)
 * Population: Use stable random number generator for horizontal symbol offsets (#4616) @marklam
+* Demo: Created an Avalonia demo application available for download in the GitHub repository (#4801) @bclehmann
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
