@@ -90,4 +90,30 @@ public class Tooltip : ICategory
             myPlot.Axes.SetLimits(-3, 7, -1, 9);
         }
     }
+
+    public class TooltipAngle : RecipeBase
+    {
+        public override string Name => "Tooltip Angle";
+        public override string Description => "The shape of tooltips automatically adjusts " +
+            "according to the position of the tip relative to the label.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 360; i += 30)
+            {
+                Coordinates tip = new(0, 0);
+                PolarCoordinates polar = new(1, Angle.FromDegrees(i));
+                Coordinates label = polar.ToCartesian();
+                var tooltip = myPlot.Add.Tooltip(tip, $"{i}º", label);
+                tooltip.FillColor = Colormap.Default.GetColor(i, 360).Lighten(0.5);
+                tooltip.LineColor = Colormap.Default.GetColor(i, 360);
+                tooltip.LineWidth = 2;
+                tooltip.LabelBold = true;
+                tooltip.LabelFontColor = Colormap.Default.GetColor(i, 360).Darken(0.5);
+            }
+
+            myPlot.Axes.SetLimits(-1.5, 1.5, -1.5, 1.5);
+        }
+    }
 }
