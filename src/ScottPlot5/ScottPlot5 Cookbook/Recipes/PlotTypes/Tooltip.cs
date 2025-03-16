@@ -19,7 +19,7 @@ public class Tooltip : ICategory
             plt.MaximumMarkerSize = 20;
 
             Coordinates tip = new(25, ys[25]);
-            Coordinates label = tip.WithDelta(4, .7);
+            Coordinates label = tip.WithDelta(8, .7);
             myPlot.Add.Tooltip(tip, "Special Point", label);
         }
     }
@@ -37,7 +37,7 @@ public class Tooltip : ICategory
             plt.MaximumMarkerSize = 20;
 
             Coordinates tip = new(25, ys[25]);
-            Coordinates label = tip.WithDelta(4, .7);
+            Coordinates label = tip.WithDelta(8, .7);
             var tooltip = myPlot.Add.Tooltip(tip, "Hello", label);
             tooltip.LabelFontName = "Comic Sans MS";
             tooltip.LabelFontSize = 36;
@@ -58,7 +58,7 @@ public class Tooltip : ICategory
             plt.MaximumMarkerSize = 20;
 
             Coordinates tip = new(25, ys[25]);
-            Coordinates label = tip.WithDelta(4, .7);
+            Coordinates label = tip.WithDelta(8, .7);
             var tooltip = myPlot.Add.Tooltip(tip, "Special Point", label);
             tooltip.FillColor = Colors.Blue;
             tooltip.LineColor = Colors.Navy;
@@ -84,7 +84,6 @@ public class Tooltip : ICategory
                 Coordinates tip = new(0, i * 2);
                 Coordinates label = tip.WithDelta(2, 1);
                 var tooltip = myPlot.Add.Tooltip(tip, $"Width={widthFraction[i]}", label);
-                tooltip.Alignment = Alignment.MiddleCenter;
                 tooltip.TailWidthPercentage = widthFraction[i];
             }
 

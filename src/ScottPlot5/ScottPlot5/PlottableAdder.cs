@@ -1424,6 +1424,7 @@ public class PlottableAdder(Plot plot)
             LabelFontColor = Colors.Black,
             LabelLocation = labelLocation,
             TipLocation = tipLocation,
+            LabelAlignment = Alignment.MiddleCenter,
         };
 
         Plot.PlottableList.Add(tooltip);

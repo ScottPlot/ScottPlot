@@ -7,8 +7,11 @@ namespace ScottPlot.Plottables;
 /// </summary>
 public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
 {
+    /// <summary>
+    /// Location on the chart for the text of the tooltip.
+    /// 
+    /// </summary>
     public Coordinates LabelLocation { get; set; }
-    public Alignment Alignment { get => LabelAlignment; set => LabelAlignment = value; }
     public override LabelStyle LabelStyle { get; set; } = new() { FontSize = 14 };
 
     public Coordinates TipLocation { get; set; }
@@ -51,7 +54,7 @@ public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
         using SKPaint paint = new();
 
         MeasuredText measured = LabelStyle.Measure(LabelStyle.Text, paint);
-        PixelRect bubbleBodyRect = measured.Rect(Alignment)
+        PixelRect bubbleBodyRect = measured.Rect(LabelAlignment)
             .Expand(new PixelPadding(
                 Radius + LabelPixelPadding.Left,
                 Radius + LabelPixelPadding.Right,
