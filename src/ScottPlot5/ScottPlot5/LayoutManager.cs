@@ -48,4 +48,12 @@ public class LayoutManager
     {
         Plot.Axes.Frameless();
     }
+
+    /// <summary>
+    /// Reverts the frameless layout by restoring the visibility of axes.
+    /// </summary>
+    public void RestoreFrameless()
+    {
+        Plot.Axes.RestoreFrameless();
+    }
 }
