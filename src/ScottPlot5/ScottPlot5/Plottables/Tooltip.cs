@@ -1,15 +1,19 @@
+
 namespace ScottPlot.Plottables;
 
 /// <summary>
 /// A tooltip displays a text bubble pointing to a specific location in X/Y space.
 /// The position of the bubble moves according to the axis limits to best display the text in the data area.
 /// </summary>
-public class Tooltip : Text, IPlottable, IHasLine, IHasFill
+public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
 {
-    public Coordinates TailPoint { get; set; }
+    public Coordinates LabelLocation { get; set; }
+    public Alignment Alignment { get => LabelAlignment; set => LabelAlignment = value; }
+    public override LabelStyle LabelStyle { get; set; } = new() { FontSize = 14 };
 
-    private float _TailWidthPercentage = 0.5F;
-    public float TailWidthPercentage { get => _TailWidthPercentage; set => _TailWidthPercentage = value > 1.0F ? 1.0F : value; }
+    public Coordinates TipLocation { get; set; }
+
+    public double TailWidthPercentage { get; set; } = 0.5;
     public float Radius { get; set; } = 5;
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
@@ -21,11 +25,15 @@ public class Tooltip : Text, IPlottable, IHasLine, IHasFill
     public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
     public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
+    public bool IsVisible { get; set; } = true;
+    public IAxes Axes { get; set; } = new Axes();
 
-    public override AxisLimits GetAxisLimits()
+    public IEnumerable<LegendItem> LegendItems => LegendItem.None;
+
+    public AxisLimits GetAxisLimits()
     {
-        return new AxisLimits(Location)
-            .Expanded(TailPoint);
+        return new AxisLimits(LabelLocation)
+            .Expanded(TipLocation);
     }
 
     private static (SKPoint, SKPoint) GetTailBasePoints(SKPoint a, SKPoint b, float length)
@@ -38,7 +46,7 @@ public class Tooltip : Text, IPlottable, IHasLine, IHasFill
                 new(b.X - halfLength * unitX, b.Y - halfLength * unitY));
     }
 
-    protected virtual void RenderTooltipShape(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
 
@@ -50,15 +58,15 @@ public class Tooltip : Text, IPlottable, IHasLine, IHasFill
                 Radius + LabelPixelPadding.Bottom,
                 Radius + LabelPixelPadding.Top));
 
-        Pixel px = Axes.GetPixel(Location);
+        Pixel px = Axes.GetPixel(LabelLocation);
         bubbleBodyRect = bubbleBodyRect.WithOffset(new(px.X, px.Y));
 
         using SKPath bubbleBodyPath = new();
         bubbleBodyPath.AddRoundRect(new(bubbleBodyRect.ToSKRect(), Radius));
 
-        var tailPoint = Axes.GetPixel(TailPoint).ToSKPoint();
+        var tailPoint = Axes.GetPixel(TipLocation).ToSKPoint();
         float tailWidth = Math.Min(bubbleBodyRect.Width, bubbleBodyRect.Height)
-            * TailWidthPercentage;
+            * (float)NumericConversion.Clamp(TailWidthPercentage, 0, 1);
 
         SKPath getTooltipShapePath()
         {
@@ -76,21 +84,9 @@ public class Tooltip : Text, IPlottable, IHasLine, IHasFill
             return bubbleBodyPath.Op(bubbleTailPath, SKPathOp.Union);
         }
 
-        using SKPath tooltipShapePath = getTooltipShapePath();
-
-        // Get a filled shape that does not overlap with the stroke,
-        // avoiding overlapping of non-opaque colors.
-        LineStyle.ApplyToPaint(paint);
-        using SKPath fillPath = tooltipShapePath
-            .Op(paint.GetFillPath(tooltipShapePath), SKPathOp.Difference);
-        Drawing.FillPath(rp.Canvas, paint, fillPath, FillStyle);
-
-        Drawing.DrawPath(rp.Canvas, paint, tooltipShapePath, LineStyle);
-    }
-
-    public override void Render(RenderPack rp)
-    {
-        RenderTooltipShape(rp);
-        base.Render(rp);
+        using SKPath path = getTooltipShapePath();
+        Drawing.FillPath(rp.Canvas, paint, path, FillStyle);
+        Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
+        LabelStyle.Render(rp.Canvas, px, paint, LabelText);
     }
 }
