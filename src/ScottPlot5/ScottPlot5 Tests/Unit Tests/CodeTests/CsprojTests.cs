@@ -18,6 +18,8 @@ internal class CsprojTests
             return true;
         if (folder.StartsWith("/src/ScottPlot5/ScottPlot5 Controls/"))
             return true;
+        if (folder.StartsWith("/src/ScottPlot5/ScottPlot5 Tests/"))
+            return true;
         return false;
     }
 
@@ -132,6 +134,30 @@ internal class CsprojTests
             if (!Contains("<Copyright>Copyright (c) Scott Harden / Harden Technologies, LLC</Copyright>", lines))
             {
                 Assert.Fail($"Copyright must be in all NuGet csproj files.\n{file}");
+            }
+        }
+    }
+
+    [Test]
+    public void Test_FluentAssertions_PinnedVersion()
+    {
+        // https://github.com/ScottPlot/ScottPlot/issues/4705
+
+        string packageName = "FluentAssertions";
+        string packageVersion = "[6.12.0]";
+
+        foreach ((string file, string[] lines) in NugetProjectFileContents)
+        {
+            foreach (string line in lines)
+            {
+                if (line.Contains(packageName))
+                {
+                    Console.WriteLine(line);
+                    if (!line.Contains(packageVersion))
+                    {
+                        Assert.Fail($"Package '{packageName}' version must be {packageVersion} in {file}");
+                    }
+                }
             }
         }
     }

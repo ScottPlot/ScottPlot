@@ -8,10 +8,12 @@
         <IsPackable>false</IsPackable>
         <LangVersion>12</LangVersion>
         <SignAssembly>False</SignAssembly>
+        <Copyright>Copyright (c) Scott Harden / Harden Technologies, LLC</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="FluentAssertions" Version="[6.12.0]" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
         <PackageReference Include="NUnit" Version="4.2.2" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
