@@ -517,6 +517,15 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Restore visibility for axes and grid (revert frameless settings).
+    /// </summary>
+    public void ShowAxesAndGrid(bool showTitle = true)
+    {
+        Axes.RestoreFrameless(showTitle);
+        ShowGrid();
+    }
+
+    /// <summary>
     /// Enable visibility for all grids
     /// </summary>
     public void ShowGrid()
