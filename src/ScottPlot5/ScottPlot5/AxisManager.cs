@@ -1054,6 +1054,16 @@ public class AxisManager
     }
 
     /// <summary>
+    /// Reverts the frameless operation by making all axes visible.
+    /// </summary>
+    public void RestoreFrameless(bool showTitle = true)
+    {
+        XAxes.ForEach(x => x.IsVisible = true);
+        YAxes.ForEach(x => x.IsVisible = true);
+        Title.IsVisible = showTitle;
+    }
+
+    /// <summary>
     /// Set anti-aliasing for axis frames, tick marks, and grid lines
     /// </summary>
     /// <param name="enable"></param>
