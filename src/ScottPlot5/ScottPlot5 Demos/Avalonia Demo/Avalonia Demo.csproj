@@ -1,0 +1,116 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AvaloniaXaml Remove="Models\**" />
+	  <Compile Remove="Models\**" />
+	  <EmbeddedResource Remove="Models\**" />
+	  <None Remove="Models\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AvaloniaResource Remove="Assets\Fonts\AlumniSans\AlumniSans-Bold.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\AlumniSans\AlumniSans-BoldItalic.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\AlumniSans\AlumniSans-Italic.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\AlumniSans\AlumniSans-Regular.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\AlumniSans\OFL.txt" />
+	  <AvaloniaResource Remove="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Bold.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-BoldItalic.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Italic.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Light.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Regular.ttf" />
+	  <AvaloniaResource Remove="Assets\Fonts\NotoSerifDisplay\OFL.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.2.1" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Include="Avalonia.Diagnostics" Version="11.2.1">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
+		<ProjectReference Include="..\..\ScottPlot5 Cookbook\ScottPlot Cookbook.csproj" />
+		<ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Demos\AxisRulesWindow.axaml.cs">
+		  <DependentUpon>AxisRulesWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\CustomMouseActionsWindow.axaml.cs">
+		  <DependentUpon>CustomMouseActionsWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\BackgroundImagesWindow.axaml.cs">
+		  <DependentUpon>BackgroundImagesWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\MouseTrackerWindow.axaml.cs">
+		  <DependentUpon>MouseTrackerWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\MultiThreadingWindow.axaml.cs">
+			<DependentUpon>MultiThreadingWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\ShowValueUnderMouseWindow.axaml.cs">
+		  <DependentUpon>ShowValueUnderMouseWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Demos\SimpleDemoWindow.axaml.cs">
+		  <DependentUpon>SimpleDemoWindow.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Assets\Fonts\AlumniSans\AlumniSans-Bold.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\AlumniSans\AlumniSans-BoldItalic.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\AlumniSans\AlumniSans-Italic.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\AlumniSans\AlumniSans-Regular.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\AlumniSans\OFL.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Bold.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-BoldItalic.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Italic.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Light.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\NotoSerifDisplay\NotoSerifDisplay-Regular.ttf">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Assets\Fonts\NotoSerifDisplay\OFL.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+</Project>
