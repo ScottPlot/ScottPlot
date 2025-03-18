@@ -1,0 +1,44 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.DataStreamerWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels.Demos"
+    Title="Data Streamer"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:DataStreamerViewModel"
+    mc:Ignorable="d">
+    <Grid Background="White" RowDefinitions="auto,*">
+        <DockPanel Grid.Row="0" Margin="16,16,16,0">
+            <Button
+                Margin="0,0,4,0"
+                Command="{Binding SetViewMode}"
+                CommandParameter="{x:Static vm:DataStreamerViewMode.Wipe}">
+                Wipe
+            </Button>
+            <Button
+                Margin="0,0,4,0"
+                Command="{Binding SetViewMode}"
+                CommandParameter="{x:Static vm:DataStreamerViewMode.Scroll}">
+                Scroll
+            </Button>
+            <RadioButton
+                Margin="4,0,8,0"
+                Content="DataStreamer.ManageAxisLimits"
+                GroupName="AxisOptions"
+                IsChecked="{Binding SelectedDataStreamerAxisOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static vm:DataStreamerAxisOptions.ManageAxisLimits}}" />
+            <RadioButton
+                Margin="4,0,8,0"
+                Content="Axis.ContinuouslyAutoscale"
+                GroupName="AxisOptions"
+                IsChecked="{Binding SelectedDataStreamerAxisOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static vm:DataStreamerAxisOptions.ContinuouslyAutoscale}}" />
+            <Button Click="OnMarkButtonClick" IsVisible="{Binding SelectedDataStreamerViewMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static vm:DataStreamerViewMode.Scroll}}">
+                Mark
+            </Button>
+        </DockPanel>
+        <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="1" />
+    </Grid>
+</Window>
