@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="Avalonia_Demo.Controls.RecipeInfoBox"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:RecipeInfoViewModel"
+    mc:Ignorable="d">
+    <StackPanel>
+        <Label Content="{Binding Recipe.Name, FallbackValue=Unknown Recipe}" />
+
+        <HeaderedContentControl
+            Margin="5"
+            Padding="5"
+            BorderBrush="Gray"
+            BorderThickness="1"
+            FontSize="14"
+            Header="Source Code">
+            <ScrollViewer MaxHeight="150">
+                <TextBlock Text="{Binding RecipeInfo.Source, FallbackValue=Source not found. Run test suites to generate JSON file.}" />
+            </ScrollViewer>
+        </HeaderedContentControl>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,26 @@
+﻿<Window
+    x:Class="Avalonia_Demo.Demos.CustomMarkerWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    Title="Custom Marker Window"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:Demos.CustomMarkerViewModel"
+    mc:Ignorable="d">
+    <Grid Background="White" RowDefinitions="auto,*">
+        <DockPanel Grid.Row="0" Margin="16,0,16,0">
+            <Label VerticalAlignment="Center" Foreground="Black">
+                Happiness:
+            </Label>
+            <Slider
+                Maximum="1"
+                Minimum="-1"
+                Value="{Binding Happiness}" />
+        </DockPanel>
+        <ScottPlot:AvaPlot Name="AvaPlot" Grid.Row="1" />
+    </Grid>
+</Window>
