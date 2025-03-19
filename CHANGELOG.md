@@ -22,6 +22,7 @@ _Not yet on NuGet..._
 * Tooltip: New plot type for labeling a point in coordinate space using a bubble (#4829, #4751) @CoderPM2011
 * Axis Rules: Improved `SquareZoomOut` support for inverted axes (#4837, #4836) @StendProg @Corbini
 * Axes: Added `LogMinorTickGenerator` to support decade-spaced minor ticks on logarithmic axes (#4841) @macaba
+* SVG: Pre-render plots in memory to finalize layout before generating XML to reduce file size and improve performance (#4847, #4842) @manaruto
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
