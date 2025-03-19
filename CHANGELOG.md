@@ -21,6 +21,7 @@ _Not yet on NuGet..._
 * Bar Plots: Place value labels below the bars for bars with negative values (#4760) @asmallproblem @jux-stef
 * Tooltip: New plot type for labeling a point in coordinate space using a bubble (#4829, #4751) @CoderPM2011
 * Axis Rules: Improved `SquareZoomOut` support for inverted axes (#4837, #4836) @StendProg @Corbini
+* Axes: Added `LogMinorTickGenerator` to support decade-spaced minor ticks on logarithmic axes (#4841) @macaba
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
