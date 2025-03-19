@@ -1414,6 +1414,30 @@ public class PlottableAdder(Plot plot)
         return txt;
     }
 
+    public Tooltip Tooltip(Coordinates tipLocation, string text, Coordinates labelLocation)
+    {
+        Tooltip tooltip = new()
+        {
+            LabelText = text ?? string.Empty,
+            FillColor = Colors.White,
+            LineColor = Colors.Black,
+            LabelFontColor = Colors.Black,
+            LabelLocation = labelLocation,
+            TipLocation = tipLocation,
+            LabelAlignment = Alignment.MiddleCenter,
+        };
+
+        Plot.PlottableList.Add(tooltip);
+        return tooltip;
+    }
+
+    public Tooltip Tooltip(double tipX, double tipY, string text, double labelX, double labelY)
+    {
+        Coordinates labelLocation = new(labelX, labelY);
+        Coordinates tipLocation = new(tipX, tipY);
+        return Tooltip(tipLocation, text, labelLocation);
+    }
+
     public TriangularAxis TriangularAxis(bool clockwise = true, bool hideAxisAndGrid = true, bool useSquareAxisUnits = true)
     {
         TriangularAxis ta = new(clockwise);
