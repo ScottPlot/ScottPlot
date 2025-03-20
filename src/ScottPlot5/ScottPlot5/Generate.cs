@@ -789,7 +789,7 @@ public static class Generate
 
     public static List<OHLC> RandomOHLCs(int count, System.DateTime startDate)
     {
-        return RandomData.RandomOHLCs(count);
+        return RandomData.RandomOHLCs(count, startDate);
     }
 
     #endregion
