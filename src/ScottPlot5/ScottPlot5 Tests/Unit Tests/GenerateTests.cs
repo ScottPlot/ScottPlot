@@ -1,4 +1,4 @@
-namespace ScottPlotTests.RenderTests.Figure;
+namespace ScottPlotTests.GenerateTests;
 
 public class GenerateTests
 {
@@ -35,5 +35,43 @@ public class GenerateTests
         values[2].Should().Be(.10);
         values[^2].Should().Be(.95);
         values[^1].Should().Be(1);
+    }
+
+    [Test]
+    public void Test_Generate_Consecutive_DateTime()
+    {
+        var values = Generate.Consecutive(10, new DateTime(2020, 1, 1), TimeSpan.FromDays(1));
+        DateTime[] expected = [
+            new(2020, 1, 1),
+            new(2020, 1, 2),
+            new(2020, 1, 3),
+            new(2020, 1, 4),
+            new(2020, 1, 5),
+            new(2020, 1, 6),
+            new(2020, 1, 7),
+            new(2020, 1, 8),
+            new(2020, 1, 9),
+            new(2020, 1, 10),
+        ];
+        values.Should().BeEquivalentTo(expected);
+    }
+
+    [Test]
+    public void Test_Generate_Consecutive_DateTimeOffset()
+    {
+        var values = Generate.Consecutive(10, new DateTimeOffset(new DateTime(2020, 1, 1), TimeSpan.FromHours(-7)), TimeSpan.FromDays(1));
+        DateTimeOffset[] expected = [
+            new(new DateTime(2020, 1, 1), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 2), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 3), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 4), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 5), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 6), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 7), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 8), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 9), TimeSpan.FromHours(-7)),
+            new(new DateTime(2020, 1, 10), TimeSpan.FromHours(-7)),
+        ];
+        values.Should().BeEquivalentTo(expected);
     }
 }
