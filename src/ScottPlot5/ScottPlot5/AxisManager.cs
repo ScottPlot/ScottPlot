@@ -1044,13 +1044,15 @@ public class AxisManager
     }
 
     /// <summary>
-    /// Disable visibility of all axes and titles so the data area fills the entire figure
+    /// Helper method to set visibility of all axes and title panels.
+    /// Hiding all panels allows the data area to the extend to the edge of the figure.
+    /// This method hides the title, but call "Plot.Title()" to re-enable it.
     /// </summary>
-    public void Frameless(bool showTitle = false)
+    public void Frameless(bool hideAllPanels = true)
     {
-        XAxes.ForEach(x => x.IsVisible = false);
-        YAxes.ForEach(x => x.IsVisible = false);
-        Title.IsVisible = showTitle;
+        XAxes.ForEach(x => x.IsVisible = !hideAllPanels);
+        YAxes.ForEach(x => x.IsVisible = !hideAllPanels);
+        Title.IsVisible = !hideAllPanels;
     }
 
     /// <summary>
