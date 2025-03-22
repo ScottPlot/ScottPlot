@@ -706,6 +706,68 @@ public static class Generate
 
     #endregion
 
+    #region DateTimeOffset
+
+    public static System.DateTimeOffset[] Consecutive(int count, System.DateTimeOffset start, TimeSpan timeSpan)
+    {
+        System.DateTimeOffset[] dates = new System.DateTimeOffset[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            dates[i] = start;
+            start += timeSpan;
+        }
+
+        return dates;
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveDateTimes(int count, System.DateTimeOffset start, TimeSpan timeSpan)
+    {
+        return Consecutive(count, start, timeSpan);
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveDays(int count, System.DateTimeOffset start)
+    {
+        return Consecutive(count, start, TimeSpan.FromDays(1));
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveWeekdays(int count, System.DateTimeOffset start)
+    {
+        System.DateTimeOffset[] dates = new System.DateTimeOffset[count];
+        TimeSpan step = TimeSpan.FromDays(1);
+        int i = 0;
+        while (i < count)
+        {
+            while (start.DayOfWeek == DayOfWeek.Saturday || start.DayOfWeek == DayOfWeek.Sunday)
+                start += step;
+            dates[i++] = start;
+            start += step;
+        }
+        return dates;
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveHours(int count, System.DateTimeOffset start)
+    {
+        return Consecutive(count, start, TimeSpan.FromHours(1));
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveQuarterHours(int count, System.DateTimeOffset start)
+    {
+        return Consecutive(count, start, TimeSpan.FromMinutes(15));
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveMinutes(int count, System.DateTimeOffset start)
+    {
+        return Consecutive(count, start, TimeSpan.FromMinutes(1));
+    }
+
+    public static System.DateTimeOffset[] ConsecutiveSeconds(int count, System.DateTimeOffset start)
+    {
+        return Consecutive(count, start, TimeSpan.FromSeconds(1));
+    }
+
+    #endregion
+
     #region Finance
 
     public static OHLC RandomOHLC()
@@ -727,7 +789,7 @@ public static class Generate
 
     public static List<OHLC> RandomOHLCs(int count, System.DateTime startDate)
     {
-        return RandomData.RandomOHLCs(count);
+        return RandomData.RandomOHLCs(count, startDate);
     }
 
     #endregion
