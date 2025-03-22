@@ -9,6 +9,8 @@ using System.Linq;
 using System.Security.AccessControl;
 using static ScottPlotCookbook.JsonCookbookInfo;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor
+
 namespace Avalonia_Demo.ViewModels.Demos;
 
 public class TreeViewNode : ObservableObject

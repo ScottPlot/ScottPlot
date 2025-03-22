@@ -38,6 +38,9 @@ public class DraggablePointsWindow : SimpleDemoWindow
 
     protected override void StartDemo()
     {
+        if (Scatter is null)
+            return;
+
         Scatter = AvaPlot.Plot.Add.Scatter(Xs, Ys);
         Scatter.LineWidth = 2;
         Scatter.MarkerSize = 10;
@@ -50,6 +53,9 @@ public class DraggablePointsWindow : SimpleDemoWindow
 
     private void OnMouseDown(object? sender, PointerEventArgs e)
     {
+        if (Scatter is null)
+            return;
+
         var pos = e.GetPosition(this);
         Pixel mousePixel = new(pos.X, pos.Y);
         Coordinates mouseLocation = AvaPlot.Plot.GetCoordinates(mousePixel);
@@ -69,6 +75,9 @@ public class DraggablePointsWindow : SimpleDemoWindow
 
     private void OnMouseMove(object? sender, PointerEventArgs e)
     {
+        if (Scatter is null)
+            return;
+
         var pos = e.GetPosition(this);
         Pixel mousePixel = new(pos.X, pos.Y);
         Coordinates mouseLocation = AvaPlot.Plot.GetCoordinates(mousePixel);
