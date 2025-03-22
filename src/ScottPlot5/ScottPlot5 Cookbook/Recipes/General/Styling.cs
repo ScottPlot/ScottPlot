@@ -316,6 +316,27 @@ public class Styling : ICategory
         }
     }
 
+    public class TitleHide : RecipeBase
+    {
+        public override string Name => "Hide the Title";
+        public override string Description => "A shortcut method exists to easily disable title visibility. " +
+            "This strategy can be used to un-hide the title later, preserving its original text.";
+
+        [Test]
+        public override void Execute()
+        {
+            // add sample data
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            // display text in the title area
+            myPlot.Title("This is an example title");
+
+            // hide the title
+            myPlot.Title(false);
+        }
+    }
+
     public class TitleAlignment : RecipeBase
     {
         public override string Name => "Title Alignment";
