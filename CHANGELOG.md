@@ -25,6 +25,7 @@ _Not yet on NuGet..._
 * SVG: Pre-render plots in memory to finalize layout before generating XML to reduce file size and improve performance (#4847, #4842) @manaruto
 * WPF: Added `XmlnsDefinition` and `XmlnsPrefix` assembly information to simplify referencing in XAML (#4853) @Muny
 * Plot: Calling `Plot.Title()` will always enable its visibility. Call `Plot.Title(false)` to hide the title. (#4804, #4856)
+* Layout: Calling `Frameless(false)` enables visibility of all panels, undoing the actions of `Frameless()` (#4804, #4856) @manaruto @bouyeijiang
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_

@@ -510,20 +510,20 @@ public class Plot : IDisposable
     }
 
     /// <summary>
+    /// Enable visibility for all axes and grids
+    /// </summary>
+    public void ShowAxesAndGrid()
+    {
+        Axes.Frameless(false);
+        ShowGrid();
+    }
+
+    /// <summary>
     /// Disable visibility for all grids
     /// </summary>
     public void HideGrid()
     {
         Axes.AllGrids.ForEach(x => x.IsVisible = false);
-    }
-
-    /// <summary>
-    /// Restore visibility for axes and grid (revert frameless settings).
-    /// </summary>
-    public void ShowAxesAndGrid()
-    {
-        Axes.RestoreFrameless();
-        ShowGrid();
     }
 
     /// <summary>
