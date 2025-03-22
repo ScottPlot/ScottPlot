@@ -1,5 +1,8 @@
-## ScottPlot 5.0.55
+## ScottPlot 5.0.56
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.55
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
 * WPF: Added autoscale option to the default right-click context menu (#4701) @hsfetterman
 * Interactivity: Make all user action responses public (#4743) @manaruto @bwedding
 * Shapes: Improved display of newly added Eclipse and Arc shapes (#4744, #4739) @CoderPM2011
