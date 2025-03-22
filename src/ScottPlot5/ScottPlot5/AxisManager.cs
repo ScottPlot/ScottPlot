@@ -1046,21 +1046,21 @@ public class AxisManager
     /// <summary>
     /// Disable visibility of all axes and titles so the data area fills the entire figure
     /// </summary>
-    public void Frameless(bool showTitle = false)
+    public void Frameless()
     {
         XAxes.ForEach(x => x.IsVisible = false);
         YAxes.ForEach(x => x.IsVisible = false);
-        Title.IsVisible = showTitle;
+        Title.IsVisible = false;
     }
 
     /// <summary>
     /// Reverts the frameless operation by making all axes visible.
     /// </summary>
-    public void RestoreFrameless(bool showTitle = true)
+    public void RestoreFrameless()
     {
         XAxes.ForEach(x => x.IsVisible = true);
         YAxes.ForEach(x => x.IsVisible = true);
-        Title.IsVisible = showTitle;
+        Title.IsVisible = true;
     }
 
     /// <summary>
