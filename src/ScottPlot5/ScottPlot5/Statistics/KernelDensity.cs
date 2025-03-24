@@ -73,7 +73,7 @@ public static class KernelDensity
 
     // See https://en.wikipedia.org/wiki/Epanechnikov_distribution
     // This is an unusual distribution, but it has optimal mean squared error for KDE
-    public static double EpanechnikovKernel(double x)
+    private static double EpanechnikovKernel(double x)
     {
         return Math.Abs(x) <= 1
             ? 0.75 * (1 - x * x)
@@ -81,13 +81,13 @@ public static class KernelDensity
     }
 
     // I'm sure we have a NormPDF function around here somewhere, and likely one that takes mu and sigma as parameters
-    public static double GaussianKernel(double x)
+    private static double GaussianKernel(double x)
     {
         return Math.Exp(-0.5 * x * x) / Math.Sqrt(2 * Math.PI);
     }
 
     // Note that this is the uniform distribution on [-1, 1], not the standard uniform distribution on [0, 1]
-    public static double UniformKernel(double x)
+    private static double UniformKernel(double x)
     {
         return Math.Abs(x) <= 1
             ? 0.5
@@ -96,7 +96,7 @@ public static class KernelDensity
 
     // On [-1, 1] with mode at 0
     // This is another unusual kernel, but it's common in KDE
-    public static double TriangularKernel(double x)
+    private static double TriangularKernel(double x)
     {
         if (x <= 1 || x >= 1)
         {
