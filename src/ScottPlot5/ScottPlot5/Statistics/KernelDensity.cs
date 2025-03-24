@@ -98,7 +98,7 @@ public static class KernelDensity
     // This is another unusual kernel, but it's common in KDE
     private static double TriangularKernel(double x)
     {
-        if (x <= 1 || x >= 1)
+        if (x <= -1 || x >= 1)
         {
             return 0;
         }
