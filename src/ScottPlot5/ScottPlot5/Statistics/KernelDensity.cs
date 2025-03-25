@@ -23,8 +23,8 @@ public static class KernelDensity
 {
     public static double Estimate(double x, IReadOnlyList<double> values, Func<double, double> kernel, double bandwidth)
     {
-        if (values.Count == 0) return 0; // TODO: How to handle this?
-        if (bandwidth == 0) return 0; // TODO: Is this reasonable?
+        if (values.Count == 0) return 0;
+        if (bandwidth == 0) return 0;
 
         return values.Select(v => kernel((x - v) / bandwidth)).Sum() / (values.Count * bandwidth);
     }
@@ -127,7 +127,7 @@ public static class KernelDensity
     {
         if (values.Count == 0)
         {
-            return 0; // TODO: Check this is reasonable
+            return 0;
         }
         var stdDev = Statistics.Descriptive.StandardDeviation(values);
         var n = values.Count;
