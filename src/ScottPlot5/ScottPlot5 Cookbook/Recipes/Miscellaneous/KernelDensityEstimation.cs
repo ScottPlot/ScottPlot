@@ -37,7 +37,7 @@ public class KernelDensityEstimation : ICategory
         }
     }
 
-    public class KdeQuickstart2 : RecipeBase
+    public class KdeKernelOptions : RecipeBase
     {
         public override string Name => "Density Plot Kernels";
         public override string Description => "Several choices of kernels are available.";
