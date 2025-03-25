@@ -28,7 +28,7 @@ public class KernelDensityEstimation : ICategory
             histPlot.BarWidthFraction = 0.8;
 
             var densityEstimate = hist.Bins.Select((x, i) => KernelDensity.Estimate(x, ys)).ToArray();
-            double scale = ys.Max() / densityEstimate.Sum();
+            double scale = ys.Length;
 
             var rescaledDensityEstimate = densityEstimate.Select(x => x * scale).ToArray();
 
@@ -59,7 +59,7 @@ public class KernelDensityEstimation : ICategory
             foreach(var kernel in Enum.GetValues<KdeKernel>())
             {
                 var densityEstimate = hist.Bins.Select((x, i) => KernelDensity.Estimate(x, ys, kernel)).ToArray();
-                double scale = ys.Max() / densityEstimate.Sum();
+                double scale = ys.Length;
 
                 var rescaledDensityEstimate = densityEstimate.Select(x => x * scale).ToArray();
 
