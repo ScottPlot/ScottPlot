@@ -44,8 +44,8 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
     public List<ColorPosition> ColorPositions { get; set; } = [];
-
     public record struct ColorPosition(Color Color, double Position);
+    public GradientDirection FillGradientDirection { get; set; } = GradientDirection.Horizontal;
 
     public double OffsetX { get; set; } = 0;
     public double OffsetY { get; set; } = 0;
@@ -126,73 +126,55 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, MarkerStyle, LineStyle);
 
-    private Gradient CreateXAxisGradient(RenderPack rp)
+    private Gradient CreateAxisGradient(RenderPack rp)
     {
-        float xMin = (float)Axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect);
-        float xMax = (float)Axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect);
+        AxisLimits dataLimits = Data.GetLimits();
+
+        double min = FillGradientDirection == GradientDirection.Horizontal ? (double)Axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect) : dataLimits.Bottom;
+        double max = FillGradientDirection == GradientDirection.Horizontal ? (double)Axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect) : dataLimits.Top;
+
+        var sortedColorPositions = ColorPositions.OrderBy(cp => cp.Position).ToList();
 
         // TODO: move this logic to a positioned color colormap class
         Color interpolate(double val)
         {
-            if (ColorPositions.Select(x => x.Position).All(i => val < i))
-            {
-                return ColorPositions.First().Color;
-            }
+            if (val <= sortedColorPositions.First().Position)
+                return sortedColorPositions.First().Color;
 
-            if (ColorPositions.Select(x => x.Position).All(i => val > i))
-            {
-                return ColorPositions.Last().Color;
-            }
+            if (val >= sortedColorPositions.Last().Position)
+                return sortedColorPositions.Last().Color;
 
-            int lIdx = -1;
-            int rIdx = -1;
-            for (int i = 0; i < ColorPositions.Count; i++)
-            {
-                if (ColorPositions[i].Position <= val &&
-                    (lIdx < 0 || ColorPositions[i].Position > ColorPositions[lIdx].Position))
-                {
-                    lIdx = i;
-                }
+            int upperIndex = sortedColorPositions.FindIndex(cp => cp.Position >= val);
+            int lowerIndex = upperIndex - 1;
 
-                if (ColorPositions[i].Position >= val &&
-                    (rIdx < 0 || ColorPositions[i].Position < ColorPositions[rIdx].Position))
-                {
-                    rIdx = i;
-                }
-            }
+            var lower = sortedColorPositions[lowerIndex];
+            var upper = sortedColorPositions[upperIndex];
 
-            if (lIdx == rIdx)
-            {
-                return ColorPositions[lIdx].Color;
-            }
+            double fraction = (val - lower.Position) / (upper.Position - lower.Position);
 
-            double factor = (val - ColorPositions[lIdx].Position) / (ColorPositions[rIdx].Position - ColorPositions[lIdx].Position);
-            return ColorPositions[lIdx].Color.InterpolateRgb(ColorPositions[rIdx].Color, factor);
+            return lower.Color.InterpolateRgb(upper.Color, fraction);
         }
 
-        float GetAxisFractionX(double x)
+        var stops = sortedColorPositions
+            .Select(cp => cp.Position)
+            .Where(p => p >= min && p <= max)
+            .Concat(new[] { min, max })
+            .Distinct()
+            .OrderBy(p => p)
+            .ToList();
+
+        float GetFraction(double position) => (float)((position - min) / (max - min));
+
+        var (alignmentStart, alignmentEnd) = FillGradientDirection == GradientDirection.Horizontal
+            ? (Alignment.MiddleLeft, Alignment.MiddleRight)
+            : (Alignment.LowerCenter, Alignment.UpperCenter);
+
+        return new Gradient(GradientType.Linear)
         {
-            double distanceFromLeft = Axes.GetPixelX(x) - Axes.DataRect.Left;
-            double width = Axes.DataRect.Right - Axes.DataRect.Left;
-            return (float)(distanceFromLeft / width);
-        }
-
-        IOrderedEnumerable<double> colorPositions = ColorPositions
-            .Select(x => x.Position)
-            .Concat([xMin, xMax])
-            .Where(i => i >= xMin && i <= xMax)
-            .OrderBy(i => i);
-
-        IEnumerable<Color> colors = colorPositions.Select(interpolate);
-        float[] colorPositionsFrac = colorPositions.Select(GetAxisFractionX).ToArray();
-
-        return new Gradient()
-        {
-            GradientType = GradientType.Linear,
-            AlignmentStart = Alignment.MiddleLeft,
-            AlignmentEnd = Alignment.MiddleRight,
-            ColorPositions = colorPositionsFrac,
-            Colors = colors.ToArray(),
+            AlignmentStart = alignmentStart,
+            AlignmentEnd = alignmentEnd,
+            ColorPositions = stops.Select(GetFraction).ToArray(),
+            Colors = stops.Select(interpolate).ToArray()
         };
     }
 
@@ -232,7 +214,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
             if (ColorPositions.Count > 0)
             {
-                fs.Hatch = CreateXAxisGradient(rp);
+                fs.Hatch = CreateAxisGradient(rp);
             }
 
             PixelRect dataPxRect = new(markerPixels);
