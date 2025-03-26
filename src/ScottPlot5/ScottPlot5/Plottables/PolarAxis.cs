@@ -30,11 +30,6 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
     /// </summary>
     public bool StraightLines { get; set; } = false;
-    
-    /// <summary>
-    /// If enabled, the Polar axis will be drawn above any series.
-    /// </summary>
-    public bool IsAboveSeries { get; set; } = false;
 
     /// <summary>
     /// Enable this to modify the axis limits at render time to achieve "square axes"
