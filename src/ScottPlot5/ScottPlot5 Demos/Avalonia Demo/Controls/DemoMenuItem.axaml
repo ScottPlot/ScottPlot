@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="Avalonia_Demo.DemoMenuItem"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Avalonia_Demo.ViewModels"
+    d:DesignHeight="100"
+    d:DesignWidth="400"
+    x:DataType="vm:DemoMenuItemViewModel"
+    Background="WhiteSmoke"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <vm:DemoMenuItemViewModel />
+    </Design.DataContext>
+    <StackPanel>
+        <HeaderedContentControl
+            x:Name="GroupBox1"
+            Margin="5"
+            Padding="5"
+            BorderBrush="Gray"
+            BorderThickness="1"
+            FontSize="14"
+            Header="{Binding Title}">
+            <DockPanel>
+                <Button
+                    Padding="5"
+                    BorderThickness="1"
+                    Command="{Binding OpenDemo}"
+                    FontSize="14">
+                    <TextBlock Text="Launch" />
+                </Button>
+                <TextBlock
+                    Margin="10,0,0,0"
+                    FontSize="14"
+                    Text="{Binding Description}"
+                    TextWrapping="Wrap" />
+            </DockPanel>
+        </HeaderedContentControl>
+    </StackPanel>
+
+
+</UserControl>

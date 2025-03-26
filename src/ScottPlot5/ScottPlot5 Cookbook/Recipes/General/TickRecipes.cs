@@ -378,8 +378,7 @@ public class CustomizingTicks : ICategory
             double[] logYs = ys.Select(Math.Log10).ToArray();
 
             // add log-scaled data to the plot
-            var sp = myPlot.Add.Scatter(xs, logYs);
-            sp.LineWidth = 0;
+            myPlot.Add.ScatterPoints(xs, logYs);
 
             // create a minor tick generator that places log-distributed minor ticks
             ScottPlot.TickGenerators.LogMinorTickGenerator minorTickGen = new();
@@ -401,6 +400,40 @@ public class CustomizingTicks : ICategory
             myPlot.Axes.Left.TickGenerator = tickGen;
 
             // show grid lines for minor ticks
+            myPlot.Grid.MajorLineColor = Colors.Black.WithOpacity(.15);
+            myPlot.Grid.MinorLineColor = Colors.Black.WithOpacity(.05);
+            myPlot.Grid.MinorLineWidth = 1;
+        }
+    }
+
+    public class LogScaleMinorTicks : RecipeBase
+    {
+        public override string Name => "Log Scale with Custom Tick Marks";
+        public override string Description =>
+            "Placement of minor tick marks in plots with logarithmic axes may my customized " +
+            "using a custom minor tick generator. Some may be bundled with ScottPlot as shown here, " +
+            "but users may create their own and apply them as seen here.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(100);
+            double[] logYs = Generate.NoisyExponential(100).Select(Math.Log10).ToArray();
+            var sp = myPlot.Add.ScatterPoints(xs, logYs);
+
+            // this tick generator places 10 ticks (decimal distribution) between major log ticks
+            IMinorTickGenerator minorTickGen = new ScottPlot.TickGenerators.LogDecadeMinorTickGenerator();
+
+            // create a numeric tick generator that uses our custom minor tick generator
+            ScottPlot.TickGenerators.NumericAutomatic tickGen = new()
+            {
+                MinorTickGenerator = minorTickGen,
+                IntegerTicksOnly = true,
+                LabelFormatter = (double y) => $"{Math.Pow(10, y):N0}",
+            };
+
+            // tell the left axis to use our custom tick generator and configure the grid to show ticks
+            myPlot.Axes.Left.TickGenerator = tickGen;
             myPlot.Grid.MajorLineColor = Colors.Black.WithOpacity(.15);
             myPlot.Grid.MinorLineColor = Colors.Black.WithOpacity(.05);
             myPlot.Grid.MinorLineWidth = 1;
