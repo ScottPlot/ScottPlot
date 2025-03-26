@@ -6,12 +6,23 @@ namespace ScottPlot;
 /// </summary>
 public class FontStyle
 {
-    public SKTypeface Typeface => Fonts.GetTypeface(Name, Bold, Italic);
-
+    public SKTypeface Typeface => Fonts.GetTypeface(Name, Weight, Slant, Width);
     public string Name { get; set; } = Fonts.Default;
-    public bool Bold { get; set; } = false;
-    public bool Italic { get; set; } = false;
+    public SKFontStyleWeight Weight { get; set; } = Fonts.DefaultWeight ?? SKFontStyleWeight.Normal;
+    public SKFontStyleSlant Slant { get; set; } = Fonts.DefaultSlant ?? SKFontStyleSlant.Upright;
+    public SKFontStyleWidth Width { get; set; } = Fonts.DefaultWidth ?? SKFontStyleWidth.Normal;
 
+    public bool Bold
+    {
+        get => Weight == SKFontStyleWeight.Bold;
+        set => Weight = value ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+    }
+    public bool Italic
+    {
+        get => Slant == SKFontStyleSlant.Italic;
+        set => Slant = value ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+    }
+    
     // TODO: consider whether color really belongs here...
     public Color Color { get; set; } = Colors.Black;
     public float Size { get; set; } = 12;
@@ -53,6 +64,9 @@ public class FontStyle
             Color = Color,
             Size = Size,
             AntiAlias = AntiAlias,
+            Weight = Weight,
+            Slant = Slant,
+            Width = Width,
         };
     }
 

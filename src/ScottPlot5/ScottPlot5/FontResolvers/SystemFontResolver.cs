@@ -10,7 +10,7 @@ public class SystemFontResolver : IFontResolver
 
     internal static string InstalledSansFont()
     {
-        // Prefer the the system default because it is probably the best for international users
+        // Prefer the system default because it is probably the best for international users
         // https://github.com/ScottPlot/ScottPlot/issues/2746
         string font = SKTypeface.Default.FamilyName;
 
@@ -69,17 +69,22 @@ public class SystemFontResolver : IFontResolver
             ? throw new InvalidOperationException($"Unable to create typeface using the default system font ({fontName})")
             : typeface;
     }
-
-    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
+    
+    public SKTypeface? CreateTypeface(string fontName, SKFontStyleWeight weight, SKFontStyleSlant slant, SKFontStyleWidth width)
     {
         if (!GetInstalledFonts().Contains(fontName))
             return null;
-
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        
         SKFontStyle style = new(weight, width, slant);
         SKTypeface? typeface = SKTypeface.FromFamilyName(fontName, style);
         return typeface;
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
+    {
+        return CreateTypeface(fontName, 
+            bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
+            italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright, 
+            SKFontStyleWidth.Normal);
     }
 }
