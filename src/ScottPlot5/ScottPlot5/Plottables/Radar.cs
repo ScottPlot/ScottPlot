@@ -48,10 +48,8 @@ public class Radar() : IPlottable, IManagesAxisLimits
 
         using SKPaint paint = new();
 
-        // don’t render yet if axis is supposed to be above the series data.
-        if (!PolarAxis.IsAboveSeries)
-            PolarAxis.Render(rp);
-        
+        PolarAxis.Render(rp);
+
         for (int i = 0; i < Series.Count; i++)
         {
             Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values, clockwise: true);
@@ -59,8 +57,5 @@ public class Radar() : IPlottable, IManagesAxisLimits
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);
         }
-        
-        if (PolarAxis.IsAboveSeries)
-            PolarAxis.Render(rp);
     }
 }
