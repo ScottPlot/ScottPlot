@@ -329,6 +329,7 @@ public class Plot : IDisposable
 
     public string GetSvgXml(int width, int height)
     {
+        RenderInMemory(width, height);
         using SvgImage svg = new(width, height);
         bool originalClearState = RenderManager.ClearCanvasBeforeEachRender;
         RenderManager.ClearCanvasBeforeEachRender = false;
@@ -502,10 +503,19 @@ public class Plot : IDisposable
     /// <summary>
     /// Disable visibility for all axes and grids
     /// </summary>
-    public void HideAxesAndGrid(bool showTitle = true)
+    public void HideAxesAndGrid()
     {
-        Axes.Frameless(showTitle);
+        Axes.Frameless();
         HideGrid();
+    }
+
+    /// <summary>
+    /// Enable visibility for all axes and grids
+    /// </summary>
+    public void ShowAxesAndGrid()
+    {
+        Axes.Frameless(false);
+        ShowGrid();
     }
 
     /// <summary>
@@ -615,15 +625,24 @@ public class Plot : IDisposable
     }
 
     /// <summary>
-    /// Shortcut to set text of the <see cref="TitlePanel"/> Label.
-    /// Assign properties of <see cref="TitlePanel"/> Label to customize size, color, font, etc.
+    /// Shortcut to set text of the Axes.Title Label and enable its visibility.
+    /// Reference properties of Axes.Title to customize size, color, font, etc.
     /// </summary>
-    public void Title(string text, float? size = null)
+    public void Title(string? text = null, float? size = null)
     {
-        Axes.Title.Label.Text = text;
-        Axes.Title.IsVisible = !string.IsNullOrWhiteSpace(text);
+        Axes.Title.Label.Text = text ?? Axes.Title.Label.Text;
+        Axes.Title.IsVisible = true;
         if (size.HasValue)
             Axes.Title.Label.FontSize = size.Value;
+    }
+
+    /// <summary>
+    /// Shortcut to show or hide the title by setting Axes.Title.IsVisible.
+    /// Reference properties of Axes.Title to customize size, color, font, etc.
+    /// </summary>
+    public void Title(bool show)
+    {
+        Axes.Title.IsVisible = show;
     }
 
     /// <summary>

@@ -42,10 +42,12 @@ public class LayoutManager
     }
 
     /// <summary>
-    /// Disable visibility of all axes and titles so the data area fills the entire figure
+    /// Helper method to set visibility of all axes and title panels.
+    /// Hiding all panels allows the data area to the extend to the edge of the figure.
+    /// This method hides the title, but call "Plot.Title()" to re-enable it.
     /// </summary>
-    public void Frameless()
+    public void Frameless(bool hideAllPanels = true)
     {
-        Plot.Axes.Frameless();
+        Plot.Axes.Frameless(hideAllPanels);
     }
 }

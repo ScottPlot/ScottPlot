@@ -114,4 +114,34 @@ internal class LayoutTests
 
         myPlot.SaveTestImage();
     }
+
+    [Test]
+    public void Test_Frameless_Undo()
+    {
+        // https://github.com/ScottPlot/ScottPlot/pull/4856
+        // https://github.com/ScottPlot/ScottPlot/issues/4804
+
+        Plot myPlot = new();
+
+        myPlot.Add.Signal(Generate.Sin());
+        myPlot.Add.Signal(Generate.Cos());
+        myPlot.Title("Hello, World");
+
+        myPlot.SaveTestImage(600, 400, "1");
+        byte[] bytesOriginal = myPlot.GetImageBytes(600, 400);
+
+        myPlot.Layout.Frameless();
+        myPlot.SaveTestImage(600, 400, "2");
+        byte[] bytesFrameless = myPlot.GetImageBytes(600, 400);
+
+        myPlot.Layout.Frameless(false);
+        myPlot.SaveTestImage(600, 400, "3");
+        byte[] bytesRestored = myPlot.GetImageBytes(600, 400);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(bytesFrameless, Is.Not.EqualTo(bytesOriginal));
+            Assert.That(bytesRestored, Is.EqualTo(bytesOriginal));
+        });
+    }
 }

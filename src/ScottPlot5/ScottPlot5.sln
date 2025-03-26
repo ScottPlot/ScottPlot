@@ -67,6 +67,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Blazor", "ScottPlot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Blazor.WebAssembly", "ScottPlot5 Demos\ScottPlot5 Blazor\Sandbox.Blazor.WebAssembly.csproj", "{C162BB66-53C7-468D-A643-FBB7A606D2F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia Demo", "ScottPlot5 Demos\Avalonia Demo\Avalonia Demo.csproj", "{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev", "Dev", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\CHANGELOG.md = ..\..\CHANGELOG.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +169,10 @@ Global
 		{9648FD23-5093-49BF-ACD1-B2173A7DF856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C162BB66-53C7-468D-A643-FBB7A606D2F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C162BB66-53C7-468D-A643-FBB7A606D2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +203,7 @@ Global
 		{2C0B012F-36F4-416C-AC6C-BBF824343F2A} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 		{9648FD23-5093-49BF-ACD1-B2173A7DF856} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 		{C162BB66-53C7-468D-A643-FBB7A606D2F7} = {6500EB02-9E5D-4FDF-AAEC-84B831B4E396}
+		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13} = {6500EB02-9E5D-4FDF-AAEC-84B831B4E396}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}

@@ -1,5 +1,8 @@
-## ScottPlot 5.0.55
+## ScottPlot 5.0.56
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.55
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
 * WPF: Added autoscale option to the default right-click context menu (#4701) @hsfetterman
 * Interactivity: Make all user action responses public (#4743) @manaruto @bwedding
 * Shapes: Improved display of newly added Eclipse and Arc shapes (#4744, #4739) @CoderPM2011
@@ -14,10 +17,19 @@ _Not yet on NuGet..._
 * CoordinateRangeMutable: Improve comparison logic (#4796) @bclehmann
 * Multiplot: Improve interactivity following `Reset()` and restore cookbook behavior (#4793)
 * Population: Use stable random number generator for horizontal symbol offsets (#4616) @marklam
+* Demo: Created an Avalonia demo application available for download in the GitHub repository (#4801) @bclehmann
 * Colorbar: Improve support for transparent colormaps (#4685) @Roman-Rak
 * Marker: Setting `LineColor` now sets both line color and outline color to improve support for filled markers with outlines (#4715)
 * Axes: Exposed `GetPanels()` and added `GetXAxes()` and `GetYAxes()` to facilitate advanced customization (#4717) @hsfetterman
 * Bar Plots: Place value labels below the bars for bars with negative values (#4760) @asmallproblem @jux-stef
+* Tooltip: New plot type for labeling a point in coordinate space using a bubble (#4829, #4751) @CoderPM2011
+* Axis Rules: Improved `SquareZoomOut` support for inverted axes (#4837, #4836) @StendProg @Corbini
+* Axes: Added `LogMinorTickGenerator` to support decade-spaced minor ticks on logarithmic axes (#4841) @macaba
+* SVG: Pre-render plots in memory to finalize layout before generating XML to reduce file size and improve performance (#4847, #4842) @manaruto
+* WPF: Added `XmlnsDefinition` and `XmlnsPrefix` assembly information to simplify referencing in XAML (#4853) @Muny
+* Plot: Calling `Plot.Title()` will always enable its visibility. Call `Plot.Title(false)` to hide the title. (#4804, #4856)
+* Layout: Calling `Frameless(false)` enables visibility of all panels, undoing the actions of `Frameless()` (#4804, #4856) @manaruto @bouyeijiang
+* Generate: Added helper methods for generating collections of `DateTimeOffset` objects (#4863, #4861) @bclehmann @bukowa
 
 ## ScottPlot 5.0.54
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-01-26_
