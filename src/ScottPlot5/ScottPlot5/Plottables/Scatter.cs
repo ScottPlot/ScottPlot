@@ -129,15 +129,16 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     private Gradient CreateAxisGradient(RenderPack rp)
     {
         AxisLimits dataLimits = Data.GetLimits();
-
         double min = FillGradientDirection == GradientDirection.Horizontal ? (double)Axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect) : dataLimits.Bottom;
         double max = FillGradientDirection == GradientDirection.Horizontal ? (double)Axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect) : dataLimits.Top;
 
         var sortedColorPositions = ColorPositions.OrderBy(cp => cp.Position).ToList();
 
-        // TODO: move this logic to a positioned color colormap class
         Color interpolate(double val)
         {
+            if (sortedColorPositions.Count == 0)
+                return Colors.Black;
+
             if (val <= sortedColorPositions.First().Position)
                 return sortedColorPositions.First().Color;
 
@@ -151,23 +152,29 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             var upper = sortedColorPositions[upperIndex];
 
             double fraction = (val - lower.Position) / (upper.Position - lower.Position);
-
             return lower.Color.InterpolateRgb(upper.Color, fraction);
         }
 
         var stops = sortedColorPositions
             .Select(cp => cp.Position)
-            .Where(p => p >= min && p <= max)
+            .Where(p => p.Between(min, max))
             .Concat(new[] { min, max })
             .Distinct()
             .OrderBy(p => p)
             .ToList();
 
-        float GetFraction(double position) => (float)((position - min) / (max - min));
+        float GetFraction(double position)
+        {
+            if (max == min) return 0;
+            return (float)((position - min) / (max - min));
+        }
 
-        var (alignmentStart, alignmentEnd) = FillGradientDirection == GradientDirection.Horizontal
-            ? (Alignment.MiddleLeft, Alignment.MiddleRight)
-            : (Alignment.LowerCenter, Alignment.UpperCenter);
+        var (alignmentStart, alignmentEnd) = FillGradientDirection switch
+        {
+            GradientDirection.Horizontal => (Alignment.MiddleLeft, Alignment.MiddleRight),
+            GradientDirection.Vertical => (Alignment.LowerCenter, Alignment.UpperCenter),
+            _ => throw new NotImplementedException()
+        };
 
         return new Gradient(GradientType.Linear)
         {
@@ -180,7 +187,6 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
     public virtual void Render(RenderPack rp)
     {
-        // TODO: can this be done with an iterator to avoid copying?
         var coordinates = Data.GetScatterPoints();
 
         Pixel[] markerPixels = new Pixel[coordinates.Count];
@@ -207,16 +213,12 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         if (FillY)
         {
-            FillStyle fs = new()
-            {
-                IsVisible = true,
-            };
+            FillStyle fs = new() { IsVisible = true };
 
             if (ColorPositions.Count > 0)
             {
                 fs.Hatch = CreateAxisGradient(rp);
             }
-
             PixelRect dataPxRect = new(markerPixels);
 
             PixelRect rect = new(linePixels);
@@ -226,27 +228,39 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             fillPath.LineTo(rect.Right, yValuePixel);
             fillPath.LineTo(rect.Left, yValuePixel);
 
-            bool midWay = yValuePixel < dataPxRect.Bottom && yValuePixel > dataPxRect.Top;
-            bool belowOnly = yValuePixel <= dataPxRect.Top;
-            bool aboveOnly = yValuePixel >= dataPxRect.Bottom;
-
-            if (midWay || aboveOnly)
+            if (FillGradientDirection == GradientDirection.Horizontal)
             {
-                PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
-                rp.CanvasState.Save();
-                rp.CanvasState.Clip(rectAbove);
-                fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYAboveColor;
-                Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
-                rp.CanvasState.Restore();
+                bool midWay = yValuePixel < dataPxRect.Bottom && yValuePixel > dataPxRect.Top;
+                bool belowOnly = yValuePixel <= dataPxRect.Top;
+                bool aboveOnly = yValuePixel >= dataPxRect.Bottom;
+
+                if (midWay || aboveOnly)
+                {
+                    PixelRect rectAbove = new(rp.DataRect.Left, rp.DataRect.Right, yValuePixel, rect.Top);
+                    rp.CanvasState.Save();
+                    rp.CanvasState.Clip(rectAbove);
+                    fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYAboveColor;
+                    Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
+                    rp.CanvasState.Restore();
+                }
+
+                if (midWay || belowOnly)
+                {
+                    PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
+                    rp.CanvasState.Save();
+                    rp.CanvasState.Clip(rectBelow);
+                    fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYBelowColor;
+                    Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
+                    rp.CanvasState.Restore();
+                }
             }
-
-            if (midWay || belowOnly)
+            else if (FillGradientDirection == GradientDirection.Vertical)
             {
-                PixelRect rectBelow = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, yValuePixel);
+                PixelRect fullRect = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, rect.Top);
                 rp.CanvasState.Save();
-                rp.CanvasState.Clip(rectBelow);
-                fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYBelowColor;
-                Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
+                rp.CanvasState.Clip(fullRect);
+                fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYColor;
+                Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, fullRect);
                 rp.CanvasState.Restore();
             }
         }
