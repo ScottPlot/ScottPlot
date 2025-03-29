@@ -157,7 +157,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
         var stops = sortedColorPositions
             .Select(cp => cp.Position)
-            .Where(p => p.Between(min, max))
+            .Where(p => p >= min && p <= max)
             .Concat(new[] { min, max })
             .Distinct()
             .OrderBy(p => p)
