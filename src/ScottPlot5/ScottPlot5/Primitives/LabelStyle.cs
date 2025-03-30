@@ -414,4 +414,36 @@ public class LabelStyle
 
         return (maxText, maxWidth);
     }
+
+    public LabelStyle Clone()
+    {
+        return new LabelStyle
+        {
+            IsVisible = this.IsVisible,
+            Text = this.Text,
+            Alignment = this.Alignment,
+            Rotation = this.Rotation,
+            ForeColor = this.ForeColor,
+            BackgroundColor = this.BackgroundColor,
+            BorderColor = this.BorderColor,
+            BorderWidth = this.BorderWidth,
+            ShadowColor = this.ShadowColor,
+            ShadowOffset = new PixelOffset(this.ShadowOffset.X, this.ShadowOffset.Y),
+            AntiAliasBackground = this.AntiAliasBackground,
+            AntiAliasText = this.AntiAliasText,
+            SubpixelText = this.SubpixelText,
+            FontName = this.FontName,
+            FontSize = this.FontSize,
+            Bold = this.Bold,
+            LineSpacing = this.LineSpacing,
+            Italic = this.Italic,
+            PixelPadding = new PixelPadding(this.PixelPadding.Left, this.PixelPadding.Top, this.PixelPadding.Right, this.PixelPadding.Bottom),
+            OffsetX = this.OffsetX,
+            OffsetY = this.OffsetY,
+            BorderRadiusX = this.BorderRadiusX,
+            BorderRadiusY = this.BorderRadiusY,
+           
+            Image = this.Image, // we don't need to clone the image, right?
+        };
+    }
 }
