@@ -3,7 +3,7 @@ namespace ScottPlot.Plottables;
 /// <summary>
 /// Holds a collection of individually styled bars
 /// </summary>
-public class BarPlot : IPlottable, IHasLegendText
+public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -104,6 +104,14 @@ public class BarPlot : IPlottable, IHasLegendText
         {
             ValueLabelStyle.Text = bar.Label;
             bar.Render(rp, Axes, paint, ValueLabelStyle);
+        }
+    }
+
+    public virtual void RenderLast(RenderPack rp)
+    {
+        foreach (Bar bar in Bars)
+        {
+            bar.RenderLast(rp);
         }
     }
 }
