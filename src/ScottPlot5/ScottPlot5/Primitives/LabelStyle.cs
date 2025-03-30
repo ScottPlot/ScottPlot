@@ -442,7 +442,7 @@ public class LabelStyle
             OffsetY = this.OffsetY,
             BorderRadiusX = this.BorderRadiusX,
             BorderRadiusY = this.BorderRadiusY,
-           
+
             Image = this.Image, // we don't need to clone the image, right?
         };
     }
