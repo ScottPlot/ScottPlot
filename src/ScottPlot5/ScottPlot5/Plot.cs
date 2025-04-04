@@ -23,6 +23,11 @@ public class Plot : IDisposable
     /// </summary>
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
+    /// <summary>
+    /// Style for the plot border
+    /// </summary>
+    public LineStyle BorderStyle { get; } = new() { };
+
     public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
     internal float ScaleFactorF { get; private set; } = 1.0f;
@@ -244,7 +249,22 @@ public class Plot : IDisposable
     {
         lock (Sync)
         {
-            RenderManager.Render(canvas, rect);
+            float borderWidth = 0;
+            if (BorderStyle.CanBeRendered)
+            {
+                borderWidth = BorderStyle.Hairline ? 1 : BorderStyle.Width;
+            }
+
+            // The rendering of the plot should be completed before
+            // the rendering of the border to avoid affecting the rendering of the border.
+            RenderManager.Render(canvas, rect.Contract(borderWidth));
+
+            if (borderWidth > 0)
+            {
+                float halfWidth = borderWidth / 2;
+                using SKPaint paint = new();
+                Drawing.DrawRectangle(canvas, rect.Contract(halfWidth), paint, BorderStyle);
+            }
         }
     }
 
