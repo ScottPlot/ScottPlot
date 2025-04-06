@@ -26,4 +26,15 @@ public class Multiplot : IMultiplot
             LastRender.Remember(plot, subplotRectangles[i]);
         }
     }
+
+    /// <summary>
+    /// Clears all plottables from each subplot in this multiplot.
+    /// </summary>
+    public void Clear()
+    {
+        foreach (var subplot in Subplots.GetPlots())
+        {
+            subplot.Clear(); 
+        }
+    }
 }
