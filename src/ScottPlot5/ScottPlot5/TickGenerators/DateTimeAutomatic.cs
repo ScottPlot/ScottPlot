@@ -65,8 +65,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
     {
-        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span) || double.IsInfinity(range.Span)
-            || size.Length <=0)
+        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span) || double.IsInfinity(range.Span) || (size.Length <= 0))
         {
             // cases of extreme zoom (10,000 years)
             Ticks = [];
@@ -128,7 +127,6 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
     /// </summary>
     private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaint paint, LabelStyle labelStyle)
     {
-        
         DateTime rangeMin = NumericConversion.ToDateTime(range.Min);
         DateTime rangeMax = NumericConversion.ToDateTime(range.Max);
 
@@ -144,7 +142,6 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         if (increment <= 0 || (unit.Next(start, increment) <= start))
             return (ticks, null);
 
-        
         const int maxTickCount = 1000;
         for (DateTime dt = start; dt <= rangeMax; dt = unit.Next(dt, increment))
         {
