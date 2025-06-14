@@ -1,5 +1,3 @@
-using ScottPlot.Primitives;
-
 namespace ScottPlot;
 
 public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
@@ -90,10 +88,15 @@ public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
         };
     }
 
-    public static Gradient CreateAxisGradient(RenderPack rp, AxisLimits limits, GradientDirection direction, IAxes axes, List<GradientColorPosition> colorPositions)
+    public static Gradient FromAxisLimits(RenderPack rp, AxisLimits limits, AxisGradientDirection direction, IAxes axes, List<AxisGradientColorPosition> colorPositions)
     {
-        double min = direction == GradientDirection.Horizontal ? (double)axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect) : limits.Bottom;
-        double max = direction == GradientDirection.Horizontal ? (double)axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect) : limits.Top;
+        double min = direction == AxisGradientDirection.Horizontal
+            ? (double)axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect)
+            : limits.Bottom;
+
+        double max = direction == AxisGradientDirection.Horizontal
+            ? (double)axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect)
+            : limits.Top;
 
         var sortedColorPositions = colorPositions.OrderBy(cp => cp.Position).ToList();
 
@@ -121,7 +124,7 @@ public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
         var stops = sortedColorPositions
             .Select(cp => cp.Position)
             .Where(p => p >= min && p <= max)
-            .Concat(new[] { min, max })
+            .Concat([min, max])
             .Distinct()
             .OrderBy(p => p)
             .ToList();
@@ -134,8 +137,8 @@ public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
 
         var (alignmentStart, alignmentEnd) = direction switch
         {
-            GradientDirection.Horizontal => (Alignment.MiddleLeft, Alignment.MiddleRight),
-            GradientDirection.Vertical => (Alignment.LowerCenter, Alignment.UpperCenter),
+            AxisGradientDirection.Horizontal => (Alignment.MiddleLeft, Alignment.MiddleRight),
+            AxisGradientDirection.Vertical => (Alignment.LowerCenter, Alignment.UpperCenter),
             _ => throw new NotImplementedException()
         };
 

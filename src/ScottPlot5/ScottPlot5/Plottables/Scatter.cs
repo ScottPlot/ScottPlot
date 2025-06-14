@@ -1,7 +1,3 @@
-using ScottPlot.Primitives;
-using System.Data;
-using System.Linq;
-
 namespace ScottPlot.Plottables;
 
 public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
@@ -44,8 +40,8 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public Color FillYBelowColor { get; set; } = Colors.Blue.WithAlpha(.2);
     public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
-    public List<GradientColorPosition> ColorPositions { get; set; } = [];
-    public GradientDirection FillGradientDirection { get; set; } = GradientDirection.Horizontal;
+    public List<AxisGradientColorPosition> ColorPositions { get; set; } = [];
+    public AxisGradientDirection AxisGradientDirection { get; set; } = AxisGradientDirection.Horizontal;
 
     public double OffsetX { get; set; } = 0;
     public double OffsetY { get; set; } = 0;
@@ -158,7 +154,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
 
             if (ColorPositions.Count > 0)
             {
-                fs.Hatch = Gradient.CreateAxisGradient(rp, Data.GetLimits(), FillGradientDirection, Axes, ColorPositions);
+                fs.Hatch = Gradient.FromAxisLimits(rp, Data.GetLimits(), AxisGradientDirection, Axes, ColorPositions);
             }
 
             PixelRect dataPxRect = new(markerPixels);
@@ -169,7 +165,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             fillPath.LineTo(rect.Right, yValuePixel);
             fillPath.LineTo(rect.Left, yValuePixel);
 
-            if (FillGradientDirection == GradientDirection.Horizontal)
+            if (AxisGradientDirection == AxisGradientDirection.Horizontal)
             {
                 bool midWay = yValuePixel < dataPxRect.Bottom && yValuePixel > dataPxRect.Top;
                 bool belowOnly = yValuePixel <= dataPxRect.Top;
@@ -195,7 +191,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
                     rp.CanvasState.Restore();
                 }
             }
-            else if (FillGradientDirection == GradientDirection.Vertical)
+            else if (AxisGradientDirection == AxisGradientDirection.Vertical)
             {
                 PixelRect fullRect = new(rp.DataRect.Left, rp.DataRect.Right, rect.Bottom, rect.Top);
                 rp.CanvasState.Save();

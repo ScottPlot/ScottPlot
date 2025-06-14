@@ -441,7 +441,7 @@ public class Scatter : ICategory
             poly.FillY = true;
 
             // colors are placed at specific positions on the X axis
-            poly.FillGradientDirection = GradientDirection.Horizontal;
+            poly.AxisGradientDirection = AxisGradientDirection.Horizontal;
             poly.ColorPositions.Add(new(Colors.Red, 0));
             poly.ColorPositions.Add(new(Colors.Orange, 10));
             poly.ColorPositions.Add(new(Colors.Yellow, 20));
@@ -466,7 +466,7 @@ public class Scatter : ICategory
             poly.FillY = true;
 
             // colors are placed at specific positions on the Y axis
-            poly.FillGradientDirection = GradientDirection.Vertical;
+            poly.AxisGradientDirection = AxisGradientDirection.Vertical;
             poly.ColorPositions.Add(new(Colors.Red, -1));
             poly.ColorPositions.Add(new(Colors.Blue, 0));
             poly.ColorPositions.Add(new(Colors.Orange, .5));
