@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.56
 _Not yet on NuGet..._
+* Statistics: Added support for kernel density estimation with Epanechnikov, Gaussian, Uniform, and Triangular strategies. Scott's rule (no relation) was implemented for bandwidth estimation (#4869) @bclehmann
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
