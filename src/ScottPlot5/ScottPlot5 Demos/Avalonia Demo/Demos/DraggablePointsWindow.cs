@@ -38,9 +38,6 @@ public class DraggablePointsWindow : SimpleDemoWindow
 
     protected override void StartDemo()
     {
-        if (Scatter is null)
-            return;
-
         Scatter = AvaPlot.Plot.Add.Scatter(Xs, Ys);
         Scatter.LineWidth = 2;
         Scatter.MarkerSize = 10;
