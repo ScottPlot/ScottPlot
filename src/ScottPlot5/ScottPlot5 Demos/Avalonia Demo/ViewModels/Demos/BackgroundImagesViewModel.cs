@@ -13,7 +13,7 @@ public partial class BackgroundImagesViewModel : ViewModelBase
 {
     [ObservableProperty]
     private bool _showFigureBackground = true;
-    
+
     [ObservableProperty]
     private bool _showDataBackground = true;
 

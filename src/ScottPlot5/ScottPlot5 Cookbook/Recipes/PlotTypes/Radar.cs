@@ -139,4 +139,23 @@ public class Radar : ICategory
             radar.PolarAxis.StraightLines = true;
         }
     }
+
+    public class AxisOnTop : RecipeBase
+    {
+        public override string Name => "Axis on Top of Data";
+        public override string Description => "Radar charts can be customized so the axis is rendered on top of the data";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] values = { 78, 83, 100, 76, 43 };
+            var radar = myPlot.Add.Radar(values);
+
+            // make the shape opaque
+            radar.Series[0].FillColor = Colors.RebeccaPurple;
+
+            // render the axis above the data
+            radar.IsAxisAboveData = true;
+        }
+    }
 }
