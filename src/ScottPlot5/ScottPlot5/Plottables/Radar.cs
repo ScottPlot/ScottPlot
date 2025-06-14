@@ -22,7 +22,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
     public virtual void UpdateAxisLimits(Plot plot) => PolarAxis.UpdateAxisLimits(plot);
 
     public bool IsVisible { get; set; } = true;
-    
+
     /// <summary>
     /// If enabled, the Polar axis will be drawn above any <see cref="Series">.
     /// </summary>
@@ -64,7 +64,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);
         }
-        
+
         if (IsAxisAboveData)
             PolarAxis.Render(rp);
     }
