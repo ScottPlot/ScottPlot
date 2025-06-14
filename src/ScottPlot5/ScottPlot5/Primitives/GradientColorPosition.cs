@@ -1,7 +1,7 @@
 namespace ScottPlot.Primitives;
 
 /// <summary>
-/// Defines position of a color in a gradient as a fractional position in the range 0..1
+/// Defines position of a color in a gradient at a particular position in axis units
 /// </summary>
 public class GradientColorPosition(Color color, double position)
 {
