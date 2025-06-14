@@ -51,12 +51,12 @@ public class KernelDensityEstimation : ICategory
 
             var histPlot = myPlot.Add.Histogram(hist);
             histPlot.BarWidthFraction = 0.8;
-            foreach(var bar in histPlot.Bars)
+            foreach (var bar in histPlot.Bars)
             {
                 bar.FillColor = Colors.LightBlue;
             }
 
-            foreach(var kernel in Enum.GetValues<KdeKernel>())
+            foreach (var kernel in Enum.GetValues<KdeKernel>())
             {
                 var densityEstimate = hist.Bins.Select((x, i) => KernelDensity.Estimate(x, ys, kernel)).ToArray();
                 double scale = ys.Length;
