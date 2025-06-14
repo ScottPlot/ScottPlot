@@ -11,7 +11,7 @@ public partial class SharedAxesViewModel : ViewModelBase
 {
     [ObservableProperty]
     private bool _shareX = true;
-    
+
     [ObservableProperty]
     private bool _shareY = true;
 }
