@@ -1,3 +1,4 @@
+using ScottPlot.Primitives;
 using System.Data;
 using System.Linq;
 
@@ -43,8 +44,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     public Color FillYBelowColor { get; set; } = Colors.Blue.WithAlpha(.2);
     public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
-    public List<ColorPosition> ColorPositions { get; set; } = [];
-    public record struct ColorPosition(Color Color, double Position);
+    public List<GradientColorPosition> ColorPositions { get; set; } = [];
     public GradientDirection FillGradientDirection { get; set; } = GradientDirection.Horizontal;
 
     public double OffsetX { get; set; } = 0;
