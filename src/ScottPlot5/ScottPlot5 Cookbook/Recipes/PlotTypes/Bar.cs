@@ -1,3 +1,7 @@
+using FluentAssertions.Extensions;
+using ScottPlot.Plottables;
+using System.Security.Cryptography;
+
 namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Bar : ICategory
@@ -98,6 +102,51 @@ public class Bar : ICategory
             // add extra margin to account for label
             myPlot.Axes.SetLimitsX(-45, 35);
             myPlot.Add.VerticalLine(0, 1, Colors.Black);
+        }
+    }
+
+    public class BarLabelsLast : RecipeBase
+    {
+        public override string Name => "Labels on Top";
+        public override string Description => "Bars with labels are rendered one at a time by default, " +
+            "but this makes it possible for bar labels to get overlapped by other bars. " +
+            "Bar chars may be configured to render labels last, even above other plottables.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] values = Generate.Consecutive(5, first: 1);
+
+            // create two bar plots
+            var bars1 = myPlot.Add.Bars(values);
+            var bars2 = myPlot.Add.Bars(values);
+
+            // enable the LabelsOnTop feature on one of the bars
+            bars2.LabelsOnTop = true;
+
+            // give each bar a label and style it to demonstrate the effect
+            static void StyleBar(BarPlot barPlot, double xOffset)
+            {
+                barPlot.ValueLabelStyle.FontSize = 32;
+                for (int i = 0; i < barPlot.Bars.Count; i++)
+                {
+                    var bar = barPlot.Bars[i];
+                    bar.Label = i.ToString();
+                    bar.CenterLabel = true;
+                    bar.Position = i * .5 + xOffset;
+                    bar.FillColor = bar.FillColor.WithAlpha(.9);
+                    bar.ValueBase = i * .5;
+                    bar.Size = 1.5;
+                }
+            }
+
+            StyleBar(bars1, 0);
+            StyleBar(bars2, 4);
+
+            myPlot.Add.Text("LabelsOnTop = false", 0, 6); 
+            myPlot.Add.Text("LabelsOnTop = true", 4, 6); 
+
+            myPlot.HideGrid();
         }
     }
 
