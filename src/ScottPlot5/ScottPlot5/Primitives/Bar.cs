@@ -1,11 +1,9 @@
-using System.Security.Cryptography;
-
 namespace ScottPlot;
 
 /// <summary>
 /// Represents a single bar in a bar chart
 /// </summary>
-public class Bar : IHasFill, IHasLine, IRenderLast
+public class Bar : IHasFill, IHasLine
 {
     /// <summary>
     /// Position (not the value) of the bar.
@@ -70,6 +68,11 @@ public class Bar : IHasFill, IHasLine, IRenderLast
     /// Typically this is the string representation of the value of the bar.
     /// </summary>
     public string Label { get; set; } = string.Empty;
+
+    /// <summary>
+    /// If enabled, labels will be rendered last (after all other plottables)
+    /// </summary>
+    public bool LabelOnTop { get; set; } = false;
 
     /// <summary>
     /// Text to display on, above, or below the bar.
@@ -153,19 +156,15 @@ public class Bar : IHasFill, IHasLine, IRenderLast
         }
     }
 
-
-    // Store the text‐rendering info for use in RenderLast(...):
-    private PixelRect? _lastRect = null;
-    private LabelStyle? _storedLabelStyle;
-
     public void Render(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
     {
-        if (!IsVisible)
-            return;
+        RenderBody(rp, axes, paint);
+        RenderText(rp, axes, paint, labelStyle);
+    }
 
+    public void RenderBody(RenderPack rp, IAxes axes, SKPaint paint)
+    {
         PixelRect rect = axes.GetPixelRect(Rect);
-        _lastRect = rect;
-        _storedLabelStyle = labelStyle.Clone(); // safe clone
 
         Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
         Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
@@ -182,18 +181,9 @@ public class Bar : IHasFill, IHasLine, IRenderLast
         }
     }
 
-    public void RenderLast(RenderPack rp)
+    public void RenderText(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
     {
-        if (!IsVisible || _lastRect is null || _storedLabelStyle is null)
-            return;
-
-        using SKPaint paint = new SKPaint();
-
-        PixelRect rect = _lastRect.Value;
-        LabelStyle labelStyle = _storedLabelStyle;
-
-        if (string.IsNullOrWhiteSpace(Label))
-            return; // nothing to render
+        PixelRect rect = axes.GetPixelRect(Rect);
 
         if (CenterLabel)
         {
@@ -202,14 +192,14 @@ public class Bar : IHasFill, IHasLine, IRenderLast
             return;
         }
 
-        bool labelAbove = Value >= LabelInvertWhenValueBelow;
+        bool labelAboveBarTop = Value >= LabelInvertWhenValueBelow;
 
         if (Orientation == Orientation.Vertical)
         {
             float xPx = rect.HorizontalCenter;
-            float yPx = labelAbove ? rect.Top : rect.Bottom;
-            labelStyle.Alignment = labelAbove ? Alignment.LowerCenter : Alignment.UpperCenter;
-            Pixel labelPixel = labelAbove ? new Pixel(xPx, yPx - LabelOffset) : new Pixel(xPx, yPx + LabelOffset);
+            float yPx = labelAboveBarTop ? rect.Top : rect.Bottom;
+            labelStyle.Alignment = labelAboveBarTop ? Alignment.LowerCenter : Alignment.UpperCenter;
+            Pixel labelPixel = labelAboveBarTop ? new(xPx, yPx - LabelOffset) : new(xPx, yPx + LabelOffset);
             labelStyle.Render(rp.Canvas, labelPixel, paint);
         }
         else

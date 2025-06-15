@@ -14,6 +14,8 @@ public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 
     public List<Bar> Bars { get; } // TODO: bar plot data source?
 
+    public bool LabelsOnTop { set => Bars.ForEach(x => x.LabelOnTop = value); }
+
     public LabelStyle ValueLabelStyle { get; set; } = new()
     {
         Alignment = Alignment.LowerCenter,
@@ -102,16 +104,26 @@ public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 
         foreach (Bar bar in Bars)
         {
-            ValueLabelStyle.Text = bar.Label;
-            bar.Render(rp, Axes, paint, ValueLabelStyle);
+            bar.RenderBody(rp, Axes, paint);
+            if (!bar.LabelOnTop)
+            {
+                ValueLabelStyle.Text = bar.Label;
+                bar.RenderText(rp, Axes, paint, ValueLabelStyle);
+            }
         }
     }
 
     public virtual void RenderLast(RenderPack rp)
     {
+        using SKPaint paint = new();
+
         foreach (Bar bar in Bars)
         {
-            bar.RenderLast(rp);
+            if (bar.LabelOnTop)
+            {
+                ValueLabelStyle.Text = bar.Label;
+                bar.RenderText(rp, Axes, paint, ValueLabelStyle);
+            }
         }
     }
 }
