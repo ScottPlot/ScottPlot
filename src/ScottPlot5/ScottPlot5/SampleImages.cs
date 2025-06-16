@@ -114,8 +114,8 @@ public class SampleImages
         Image noiseImage = NoiseGrayscale(width, height);
         noiseImage.Render(canvas, rect, paint, false);
 
-        paint.Color = Colors.LightBlue.WithAlpha(.5).ToSKColor();
-        Drawing.DrawRectangle(canvas, rect, paint);
+        Drawing.DrawRectangle(canvas, rect, paint,
+            new LineStyle(1, Colors.LightBlue.WithAlpha(.5)));
         Drawing.DrawDebugRectangle(canvas, rect);
 
         LabelStyle label = new()
