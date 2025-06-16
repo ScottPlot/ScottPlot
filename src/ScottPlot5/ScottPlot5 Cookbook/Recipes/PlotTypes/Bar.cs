@@ -1,7 +1,3 @@
-using FluentAssertions.Extensions;
-using ScottPlot.Plottables;
-using System.Security.Cryptography;
-
 namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Bar : ICategory
@@ -125,7 +121,7 @@ public class Bar : ICategory
             bars2.LabelsOnTop = true;
 
             // give each bar a label and style it to demonstrate the effect
-            static void StyleBar(BarPlot barPlot, double xOffset)
+            static void StyleBar(ScottPlot.Plottables.BarPlot barPlot, double xOffset)
             {
                 barPlot.ValueLabelStyle.FontSize = 32;
                 for (int i = 0; i < barPlot.Bars.Count; i++)
@@ -135,16 +131,14 @@ public class Bar : ICategory
                     bar.CenterLabel = true;
                     bar.Position = i * .5 + xOffset;
                     bar.FillColor = bar.FillColor.WithAlpha(.9);
-                    bar.ValueBase = i * .5;
-                    bar.Size = 1.5;
                 }
             }
 
             StyleBar(bars1, 0);
             StyleBar(bars2, 4);
 
-            myPlot.Add.Text("LabelsOnTop = false", 0, 6); 
-            myPlot.Add.Text("LabelsOnTop = true", 4, 6); 
+            myPlot.Add.Text("Default", 0, 6);
+            myPlot.Add.Text("LabelsOnTop", 4, 6);
 
             myPlot.HideGrid();
         }
