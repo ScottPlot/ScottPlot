@@ -1,5 +1,6 @@
 ## ScottPlot 5.0.56
 _Not yet on NuGet..._
+* PolarAxis: Add support for custom background color (#4897) @CoderPM2011
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
