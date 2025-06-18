@@ -124,6 +124,19 @@ public class PolarAxis : ICategory
         }
     }
 
+    public class PolarAxisBackground : RecipeBase
+    {
+        public override string Name => "Polar Axis Background";
+        public override string Description => "The background style of polar axes may be customized";
+
+        [Test]
+        public override void Execute()
+        {
+            var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.FillColor = Colors.Blue.WithAlpha(.2);
+        }
+    }
+
     public class PolarSpokeLabels : RecipeBase
     {
         public override string Name => "Polar Axis Spoke Labels";
