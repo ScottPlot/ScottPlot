@@ -137,6 +137,19 @@ public class PolarAxis : ICategory
         }
     }
 
+    public class PolarSpokeLength : RecipeBase
+    {
+        public override string Name => "Polar Axis Spoke Length";
+        public override string Description => "The length of spokes may be customized. " +
+            "Spoke length is expressed as a fraction of the polar axis radius.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.PolarAxis(spokeLength: 1.3);
+        }
+    }
+
     public class PolarSpokeLabels : RecipeBase
     {
         public override string Name => "Polar Axis Spoke Labels";
