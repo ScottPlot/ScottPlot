@@ -27,6 +27,9 @@ public enum MarkerShape
     TriDown,
     Asterisk,
     HashTag,
+    CircledDot,
+    RingedCross,
+    RingedEks,
 }
 
 public static class MarkerShapeExtensions
@@ -56,6 +59,9 @@ public static class MarkerShapeExtensions
             MarkerShape.TriDown => new TriDown(),
             MarkerShape.Asterisk => new Asterisk(),
             MarkerShape.HashTag => new HashTag(),
+            MarkerShape.CircledDot => new CircledDot(),
+            MarkerShape.RingedCross => new RingedCross(),
+            MarkerShape.RingedEks => new RingedEks(),
             MarkerShape.None => new None(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
@@ -69,7 +75,7 @@ public static class MarkerShapeExtensions
             MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or
             MarkerShape.Cross or MarkerShape.VerticalBar or MarkerShape.HorizontalBar or
             MarkerShape.TriUp or MarkerShape.TriDown or MarkerShape.Asterisk or
-            MarkerShape.HashTag) => true,
+            MarkerShape.HashTag or MarkerShape.CircledDot or MarkerShape.RingedCross or MarkerShape.RingedEks) => true,
             _ => false,
         };
     }
