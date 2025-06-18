@@ -5,6 +5,7 @@ _Not yet on NuGet..._
 * Scatter: Add support for vertically oriented gradient fills (#4881) @manaruto
 * Bar Plot: Add `LabelsOnTop` option to allow bar labels to always be displayed and never get overlapped by other bars or plottables (#4886, #4855) @manaruto @bclehmann
 * PolarAxis: Add support for custom background color (#4897) @CoderPM2011
+* PolarAxis: Added support for custom spoke lengths (#4897) @CoderPM2011
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
