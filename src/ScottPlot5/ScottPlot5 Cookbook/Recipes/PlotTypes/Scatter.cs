@@ -438,14 +438,39 @@ public class Scatter : ICategory
             double[] ys = Generate.Sin(51);
 
             var poly = myPlot.Add.ScatterLine(xs, ys);
-
             poly.FillY = true;
+
+            // colors are placed at specific positions on the X axis
+            poly.AxisGradientDirection = AxisGradientDirection.Horizontal;
             poly.ColorPositions.Add(new(Colors.Red, 0));
             poly.ColorPositions.Add(new(Colors.Orange, 10));
             poly.ColorPositions.Add(new(Colors.Yellow, 20));
             poly.ColorPositions.Add(new(Colors.Green, 30));
             poly.ColorPositions.Add(new(Colors.Blue, 40));
             poly.ColorPositions.Add(new(Colors.Violet, 50));
+        }
+    }
+
+    public class ScatterFillGradientVertical : RecipeBase
+    {
+        public override string Name => "Scatter Plot with Vertical Gradient";
+        public override string Description => "Scatter plots may be filled with vertical gradients.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] xs = Generate.Consecutive(51);
+            double[] ys = Generate.Sin(51);
+
+            var poly = myPlot.Add.ScatterLine(xs, ys);
+            poly.FillY = true;
+
+            // colors are placed at specific positions on the Y axis
+            poly.AxisGradientDirection = AxisGradientDirection.Vertical;
+            poly.ColorPositions.Add(new(Colors.Red, -1));
+            poly.ColorPositions.Add(new(Colors.Blue, 0));
+            poly.ColorPositions.Add(new(Colors.Orange, .5));
+            poly.ColorPositions.Add(new(Colors.Magenta, 1));
         }
     }
 
