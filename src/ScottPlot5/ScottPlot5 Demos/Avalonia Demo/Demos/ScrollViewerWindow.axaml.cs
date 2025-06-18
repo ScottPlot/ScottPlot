@@ -32,7 +32,7 @@ public partial class ScrollViewerWindow : Window
     public ScrollViewerWindow()
     {
         InitializeComponent();
-        
+
         DataContext = new ScrollViewerViewModel();
         TypedDataContext.PropertyChanged += HandleDataContextChanged;
 

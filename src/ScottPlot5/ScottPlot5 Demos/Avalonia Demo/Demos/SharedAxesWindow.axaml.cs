@@ -44,7 +44,8 @@ public partial class SharedAxesWindow : Window
 
     private void HandleDataContextChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(TypedDataContext.ShareX) || e.PropertyName == nameof(TypedDataContext.ShareY)) {
+        if (e.PropertyName == nameof(TypedDataContext.ShareX) || e.PropertyName == nameof(TypedDataContext.ShareY))
+        {
             UpdateLinkedPlots();
         }
     }
