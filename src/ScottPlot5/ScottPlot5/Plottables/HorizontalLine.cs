@@ -33,11 +33,15 @@ public class HorizontalLine : AxisLine
 
     public override void Render(RenderPack rp)
     {
-        if (!IsVisible || !Axes.YAxis.Range.Contains(Y))
+        if (!IsVisible || !(Axes.YAxis.Range.Min <= Y && Y <= Axes.YAxis.Range.Max ||
+                           Axes.YAxis.Range.Max <= Y && Y <= Axes.YAxis.Range.Min))
             return;
 
-        Coordinates pt1 = new(Math.Max(Minimum, Axes.XAxis.Min), Y);
-        Coordinates pt2 = new(Math.Min(Maximum, Axes.XAxis.Max), Y);
+        double x1 = Math.Max(Minimum, Math.Min(Axes.XAxis.Min, Axes.XAxis.Max));
+        double x2 = Math.Min(Maximum, Math.Max(Axes.XAxis.Min, Axes.XAxis.Max));
+        Coordinates pt1 = new(x1, Y);
+        Coordinates pt2 = new(x2, Y);
+
         CoordinateLine line = new(pt1, pt2);
         PixelLine pxLine = Axes.GetPixelLine(line);
         LineStyle.Render(rp.Canvas, pxLine, rp.Paint);
