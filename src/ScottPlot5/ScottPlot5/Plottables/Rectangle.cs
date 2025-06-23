@@ -58,8 +58,6 @@ public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
 
         PixelRect rect = Axes.GetPixelRect(CoordinateRect);
         Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
-
-        LineStyle.ApplyToPaint(paint);
-        Drawing.DrawRectangle(rp.Canvas, rect, paint);
+        Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
     }
 }
