@@ -144,12 +144,24 @@ public static class Drawing
         DrawPath(canvas, paint, path.Pixels, lineStyle, text, labelStyle);
     }
 
+    [Obsolete($"use FillPath()", false)]
     public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, FillStyle fillStyle)
     {
-        DrawPath(canvas, paint, path.Pixels, fillStyle);
+        FillPath(canvas, paint, path, fillStyle);
     }
 
+    public static void FillPath(SKCanvas canvas, SKPaint paint, PixelPath path, FillStyle fillStyle)
+    {
+        FillPath(canvas, paint, path.Pixels, fillStyle);
+    }
+
+    [Obsolete($"use FillPath()", false)]
     public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
+    {
+        FillPath(canvas, paint, pixels, fillStyle);
+    }
+
+    public static void FillPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
     {
         if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
             return;
@@ -171,7 +183,7 @@ public static class Drawing
         }
 
         PixelRect rect = new(xMin, xMax, yMax, yMin);
-        DrawPath(canvas, paint, path, fillStyle, rect);
+        FillPath(canvas, paint, path, fillStyle, rect);
     }
 
     public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
@@ -185,7 +197,13 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
+    [Obsolete($"use FillPath()", false)]
     public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
+    {
+        FillPath(canvas, paint, path, fillStyle, rect);
+    }
+
+    public static void FillPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
     {
         if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
             return;

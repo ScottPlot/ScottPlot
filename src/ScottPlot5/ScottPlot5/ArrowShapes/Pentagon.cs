@@ -20,7 +20,7 @@ public class Pentagon : IArrowShape
             new(0, 0),
         ];
 
-        Drawing.DrawPath(rp.Canvas, rp.Paint, pixels, arrowStyle.FillStyle);
+        Drawing.FillPath(rp.Canvas, rp.Paint, pixels, arrowStyle.FillStyle);
         Drawing.DrawPath(rp.Canvas, rp.Paint, pixels, arrowStyle.LineStyle);
 
         rp.CanvasState.Restore();
