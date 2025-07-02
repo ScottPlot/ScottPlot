@@ -240,6 +240,8 @@ public static class Drawing
 
     public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
     {
+        if (!fillStyle.IsVisible) return;
+        if (fillStyle.Color == Colors.Transparent) return;
         fillStyle.ApplyToPaint(paint, rect);
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
@@ -270,13 +272,10 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
+    [Obsolete($"use FillRectangle()", false)]
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
     {
-        if (!fillStyle.IsVisible) return;
-        if (fillStyle.Color == Colors.Transparent) return;
-
-        fillStyle.ApplyToPaint(paint, rect);
-        canvas.DrawRect(rect.ToSKRect(), paint);
+        FillRectangle(canvas, rect, paint, fillStyle);
     }
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
