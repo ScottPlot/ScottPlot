@@ -177,7 +177,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
                     rp.CanvasState.Save();
                     rp.CanvasState.Clip(rectAbove);
                     fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYAboveColor;
-                    Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectAbove);
+                    Drawing.FillPath(rp.Canvas, paint, fillPath, fs, rectAbove);
                     rp.CanvasState.Restore();
                 }
 
@@ -187,7 +187,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
                     rp.CanvasState.Save();
                     rp.CanvasState.Clip(rectBelow);
                     fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYBelowColor;
-                    Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, rectBelow);
+                    Drawing.FillPath(rp.Canvas, paint, fillPath, fs, rectBelow);
                     rp.CanvasState.Restore();
                 }
             }
@@ -197,7 +197,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
                 rp.CanvasState.Save();
                 rp.CanvasState.Clip(fullRect);
                 fs.Color = ColorPositions.Count > 0 ? Colors.Black : FillYColor;
-                Drawing.DrawPath(rp.Canvas, paint, fillPath, fs, fullRect);
+                Drawing.FillPath(rp.Canvas, paint, fillPath, fs, fullRect);
                 rp.CanvasState.Restore();
             }
         }

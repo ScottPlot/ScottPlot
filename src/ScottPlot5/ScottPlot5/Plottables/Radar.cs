@@ -61,7 +61,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
         {
             Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values, clockwise: true);
             Pixel[] pixels = cs1.Select(Axes.GetPixel).ToArray();
-            Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
+            Drawing.FillPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);
         }
 

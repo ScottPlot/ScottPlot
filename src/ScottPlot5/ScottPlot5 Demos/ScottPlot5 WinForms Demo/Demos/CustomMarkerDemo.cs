@@ -46,7 +46,7 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
             float centerY = center.Y;
 
             // face
-            Drawing.DrawCircle(canvas, center, faceRadius, markerStyle.FillStyle, paint);
+            Drawing.FillCircle(canvas, center, faceRadius, markerStyle.FillStyle, paint);
             Drawing.DrawCircle(canvas, center, faceRadius, markerStyle.LineStyle, paint);
 
             // left eye

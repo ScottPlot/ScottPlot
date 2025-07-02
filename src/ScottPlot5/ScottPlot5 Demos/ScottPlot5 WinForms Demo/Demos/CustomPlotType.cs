@@ -46,7 +46,7 @@ class RainbowPlot : IPlottable
             Coordinates centerCoordinates = new(Xs[i], Ys[i]);
             Pixel centerPixel = Axes.GetPixel(centerCoordinates);
             FillStyle.Color = Colormap.GetColor(i / (Xs.Length - 1.0));
-            ScottPlot.Drawing.DrawCircle(rp.Canvas, centerPixel, Radius, FillStyle, paint);
+            ScottPlot.Drawing.FillCircle(rp.Canvas, centerPixel, Radius, FillStyle, paint);
         }
     }
 }

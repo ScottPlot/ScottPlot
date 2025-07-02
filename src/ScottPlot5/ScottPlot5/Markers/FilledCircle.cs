@@ -6,7 +6,7 @@ internal class FilledCircle : IMarker
     {
         float radius = size / 2;
 
-        Drawing.DrawCircle(canvas, center, radius, markerStyle.FillStyle, paint);
+        Drawing.FillCircle(canvas, center, radius, markerStyle.FillStyle, paint);
         Drawing.DrawCircle(canvas, center, radius, markerStyle.OutlineStyle, paint);
     }
 }

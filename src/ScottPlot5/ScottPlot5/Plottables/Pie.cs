@@ -90,7 +90,7 @@ public class Pie : PieBase
             }
 
             PixelRect rect = new(origin, outerRadius);
-            Drawing.DrawPath(rp.Canvas, paint, path, slice.Fill, rect);
+            Drawing.FillPath(rp.Canvas, paint, path, slice.Fill, rect);
 
             Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
 
