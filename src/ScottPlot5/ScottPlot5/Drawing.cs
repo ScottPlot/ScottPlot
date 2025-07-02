@@ -330,7 +330,13 @@ public static class Drawing
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
+    [Obsolete("use FillCircle()", false)]
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
+    {
+        FillCircle(canvas, center, radius, fillStyle, paint);
+    }
+
+    public static void FillCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
