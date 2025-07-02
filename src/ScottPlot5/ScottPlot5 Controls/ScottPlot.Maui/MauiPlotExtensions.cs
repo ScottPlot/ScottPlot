@@ -32,7 +32,7 @@ internal static class MauiPlotExtensions
 
     internal static void ProcessPinchUpdated(this UserInputProcessor processor, MauiPlot plot, PinchGestureUpdatedEventArgs e, float width, float height)
     {
-        if (e.Status == GestureStatus.Running)
+        if (e.Status == GestureStatus.Running && processor.IsEnabled)
         {
             Pixel pixel = e.ScaleOrigin.ToPixelScaled(width, height);
 
