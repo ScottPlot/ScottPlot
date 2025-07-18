@@ -21,6 +21,8 @@ public class Legend : ICategory
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.LegendText = "Cos";
 
+            myPlot.Legend.MarkerShapeDefault = MarkerShape.FilledCircle;
+
             myPlot.ShowLegend();
         }
     }

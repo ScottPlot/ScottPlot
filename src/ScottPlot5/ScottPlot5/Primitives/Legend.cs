@@ -114,6 +114,8 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
+    public MarkerShape MarkerShapeDefault { get; set; } = MarkerShape.None;
+
     public bool DisplayPlottableLegendItems { get; set; } = true;
 
     /// <summary>
@@ -291,6 +293,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillRect = symbolRect.Contract(0, symbolRect.Height * .2f);
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
+            item.MarkerShape =  MarkerShapeDefault != MarkerShape.None ?  MarkerShapeDefault : MarkerShape.None;
 
             item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
@@ -300,9 +303,19 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
             }
 
-            item.LineStyle.Render(canvas, symbolLine, paint);
-            item.FillStyle.Render(canvas, symbolFillRect, paint);
-            item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+            if(MarkerShapeDefault != MarkerShape.None)
+            {
+                item.MarkerStyle.Shape = MarkerShapeDefault;
+                item.MarkerStyle.Size = item.LabelFontSize;
+            }
+            else
+            {
+                item.MarkerStyle.Shape = item.MarkerShape;
+                item.LineStyle.Render(canvas, symbolLine, paint);
+                item.FillStyle.Render(canvas, symbolFillRect, paint);
+                item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+            }
+            
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);
 
