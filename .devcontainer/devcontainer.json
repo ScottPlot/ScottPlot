@@ -1,0 +1,14 @@
+{
+        "name": "ScottPlot",
+        "image": "mcr.microsoft.com/devcontainers/dotnet:9.0",  // Any generic, debian-based image.
+        "features": {},
+        "customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csdevkit",
+                                "ms-dotnettools.dotnet-interactive-vscode",
+                                "ms-toolsai.jupyter"
+			]
+		}
+	}
+}
