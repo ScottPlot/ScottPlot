@@ -49,7 +49,7 @@ public class Legend : ICategory
     public class ManualLegend : RecipeBase
     {
         public override string Name => "Manual Legend Items";
-        public override string Description => "Legends may be constructed manually.";
+        public override string Description => "Legends may be constructed manually and markers customized.";
 
         [Test]
         public override void Execute()
@@ -107,7 +107,7 @@ public class Legend : ICategory
             myPlot.Legend.ShadowColor = Colors.Blue.WithOpacity(.2);
             myPlot.Legend.ShadowOffset = new(10, 10);
 
-            myPlot.Legend.FontSize = 32;
+            myPlot.Legend.FontSize = 22;
             myPlot.Legend.FontName = Fonts.Serif;
         }
     }
@@ -115,7 +115,7 @@ public class Legend : ICategory
     public class LegendOverrideSymbol : RecipeBase
     {
         public override string Name => "Legend Default Marker";
-        public override string Description => @"You can override the default rectangular marker used when rendering the legend";
+        public override string Description => @"You can override the default rectangular marker used when rendering the legend.  It also maintains the desired marker for manually added items.";
 
         [Test]
         public override void Execute()
@@ -131,17 +131,15 @@ public class Legend : ICategory
 
             LegendItem item1 = new()
             {
-                MarkerFillColor = Colors.Green,
+                MarkerColor = Colors.Red,
                 MarkerShape = MarkerShape.Cross,
                 LabelText = "Alpha"
             };
 
             LegendItem item2 = new()
             {
-                LineColor = Colors.Yellow,
-                MarkerFillColor = Colors.Yellow,
-                MarkerLineColor = Colors.Yellow,
-                LineWidth = 4,
+                MarkerColor = Colors.Green,    
+                MarkerShape = MarkerShape.FilledSquare,
                 LabelText = "Beta"
             };          
 
