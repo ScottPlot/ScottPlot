@@ -294,7 +294,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            if(item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape==MarkerShape.None)
+            if (item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape == MarkerShape.None)
             {
                 item.MarkerShape = MarkerShapeDefault != MarkerShape.None ? MarkerShapeDefault : MarkerShape.None;
                 item.MarkerColor = item.MarkerColor == Colors.Transparent ? Colors.Black : item.MarkerColor;
@@ -308,9 +308,9 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
             }
 
-            if(MarkerShapeDefault != MarkerShape.None)
+            if (MarkerShapeDefault != MarkerShape.None)
             {
-                item.MarkerStyle.Shape = item.MarkerShape != MarkerShape.None? item.MarkerShape : MarkerShapeDefault;
+                item.MarkerStyle.Shape = item.MarkerShape != MarkerShape.None ? item.MarkerShape : MarkerShapeDefault;
 
                 //NOTE: tried this but size seems to be defaulting something to something small, so you can barely see the shape, defaulting to font size for now
                 //item.MarkerStyle.Size = item.MarkerStyle.Size != 0 ? item.MarkerStyle.Size : item.LabelFontSize;
@@ -328,13 +328,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
                 if (item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape == MarkerShape.None)
                 {
-                        item.LineStyle.Render(canvas, symbolLine, paint);                    
+                    item.LineStyle.Render(canvas, symbolLine, paint);
                 }
 
                 item.FillStyle.Render(canvas, symbolFillRect, paint);
                 item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
             }
-            
+
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);
 

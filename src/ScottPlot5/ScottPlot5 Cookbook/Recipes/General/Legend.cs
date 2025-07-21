@@ -138,10 +138,10 @@ public class Legend : ICategory
 
             LegendItem item2 = new()
             {
-                MarkerColor = Colors.Green,    
+                MarkerColor = Colors.Green,
                 MarkerShape = MarkerShape.FilledSquare,
                 LabelText = "Beta"
-            };          
+            };
 
             myPlot.Legend.ManualItems.Add(item1);
             myPlot.Legend.ManualItems.Add(item2);
