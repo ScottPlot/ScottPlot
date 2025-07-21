@@ -293,7 +293,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillRect = symbolRect.Contract(0, symbolRect.Height * .2f);
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
-            item.MarkerShape =  MarkerShapeDefault != MarkerShape.None ?  MarkerShapeDefault : MarkerShape.None;
+
+            Debug.WriteLine($"MarkerShape: {item.MarkerShape}, MarkerStyle: {item.MarkerStyle.Shape}, Size: MarkerStyle: {item.MarkerStyle.Size}");
+
+            if(item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape==MarkerShape.None)
+            {
+                item.MarkerShape = MarkerShapeDefault != MarkerShape.None ? MarkerShapeDefault : MarkerShape.None;
+            }
 
             item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
@@ -303,18 +309,23 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
             }
 
-            if(MarkerShapeDefault != MarkerShape.None)
-            {
-                item.MarkerStyle.Shape = MarkerShapeDefault;
-                item.MarkerStyle.Size = item.LabelFontSize;
-            }
-            else
-            {
+            //if(MarkerShapeDefault != MarkerShape.None)
+            //{
+                //item.MarkerStyle.Shape = MarkerShapeDefault;
+                //item.MarkerStyle.Size = item.LabelFontSize;
+            //}
+            //else
+            //{
                 item.MarkerStyle.Shape = item.MarkerShape;
-                item.LineStyle.Render(canvas, symbolLine, paint);
-                item.FillStyle.Render(canvas, symbolFillRect, paint);
-                item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+                item.MarkerStyle.Size = item.LabelFontSize;
+            if (item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape == MarkerShape.None)
+            {
+                    item.LineStyle.Render(canvas, symbolLine, paint);                    
             }
+
+            item.FillStyle.Render(canvas, symbolFillRect, paint);
+            item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+            //}
             
             item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             item.ArrowStyle.Render(canvas, symbolLine, paint);

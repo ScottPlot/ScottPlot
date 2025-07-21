@@ -21,8 +21,6 @@ public class Legend : ICategory
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.LegendText = "Cos";
 
-            myPlot.Legend.MarkerShapeDefault = MarkerShape.FilledCircle;
-
             myPlot.ShowLegend();
         }
     }
@@ -65,6 +63,7 @@ public class Legend : ICategory
                 LineColor = Colors.Magenta,
                 MarkerFillColor = Colors.Magenta,
                 MarkerLineColor = Colors.Magenta,
+                MarkerShape = MarkerShape.Cross,
                 LineWidth = 2,
                 LabelText = "Alpha"
             };
@@ -110,6 +109,46 @@ public class Legend : ICategory
 
             myPlot.Legend.FontSize = 32;
             myPlot.Legend.FontName = Fonts.Serif;
+        }
+    }
+
+    public class LegendOverrideSymbol : RecipeBase
+    {
+        public override string Name => "Legend Default Marker";
+        public override string Description => @"You can override the default rectangular marker used when rendering the legend";
+
+        [Test]
+        public override void Execute()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "Sin";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "Cos";
+
+            myPlot.Legend.MarkerShapeDefault = MarkerShape.FilledCircle;
+
+
+            LegendItem item1 = new()
+            {
+                MarkerFillColor = Colors.Green,
+                MarkerShape = MarkerShape.Cross,
+                LabelText = "Alpha"
+            };
+
+            LegendItem item2 = new()
+            {
+                LineColor = Colors.Yellow,
+                MarkerFillColor = Colors.Yellow,
+                MarkerLineColor = Colors.Yellow,
+                LineWidth = 4,
+                LabelText = "Beta"
+            };          
+
+            myPlot.Legend.ManualItems.Add(item1);
+            myPlot.Legend.ManualItems.Add(item2);
+
+            myPlot.ShowLegend();
         }
     }
 
