@@ -14,6 +14,7 @@
     x:DataType="vm:MainWindowViewModel"
     Background="#9a4993"
     Icon="/Assets/avalonia-logo.ico"
+    SizeChanged="Window_SizeChanged"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
@@ -70,13 +71,14 @@
             <ItemsControl ItemsSource="{Binding DemoWindows}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel />
+                        <!-- <StackPanel /> -->
+                        <WrapPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:DemoMenuItem Foreground="Black" />
+                        <local:DemoMenuItem Width="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).DemoWidth}" Foreground="Black" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
