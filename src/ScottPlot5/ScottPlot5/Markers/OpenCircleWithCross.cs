@@ -1,6 +1,6 @@
 namespace ScottPlot.Markers;
 
-internal class RingedCross : IMarker
+internal class OpenCircleWithCross : IMarker
 {
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {

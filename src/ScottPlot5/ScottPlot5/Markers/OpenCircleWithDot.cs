@@ -1,6 +1,6 @@
 namespace ScottPlot.Markers;
 
-internal class CircledDot : IMarker
+internal class OpenCircleWithDot : IMarker
 {
     public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
