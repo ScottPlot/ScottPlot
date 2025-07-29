@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Avalonia_Demo.Demos;
 
-public class BackgroundImagesDemo: IDemo
+public class BackgroundImagesDemo : IDemo
 {
     public string Title => "Background Images";
     public string Description => "Use a bitmap image for the background of the figure or data area";
@@ -39,7 +39,8 @@ public partial class BackgroundImagesWindow : Window
 
     private void HandleDataContextChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(TypedDataContext.ShowFigureBackground) || e.PropertyName == nameof(TypedDataContext.ShowDataBackground) || e.PropertyName == nameof(TypedDataContext.SelectedImagePosition)) {
+        if (e.PropertyName == nameof(TypedDataContext.ShowFigureBackground) || e.PropertyName == nameof(TypedDataContext.ShowDataBackground) || e.PropertyName == nameof(TypedDataContext.SelectedImagePosition))
+        {
             ResetPlot();
         }
     }
@@ -58,8 +59,8 @@ public partial class BackgroundImagesWindow : Window
         AvaPlot.Plot.Title("Plot with Image Background");
 
         // assign the bitmap image
-        AvaPlot.Plot.FigureBackground.Image =TypedDataContext.ShowFigureBackground ? SampleImages.ScottPlotLogo() : null;
-        AvaPlot.Plot.DataBackground.Image = TypedDataContext.ShowDataBackground? SampleImages.MonaLisa() : null;
+        AvaPlot.Plot.FigureBackground.Image = TypedDataContext.ShowFigureBackground ? SampleImages.ScottPlotLogo() : null;
+        AvaPlot.Plot.DataBackground.Image = TypedDataContext.ShowDataBackground ? SampleImages.MonaLisa() : null;
 
         // set the scaling mode
         AvaPlot.Plot.FigureBackground.ImagePosition = TypedDataContext.SelectedImagePosition;
