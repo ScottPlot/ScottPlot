@@ -17,7 +17,7 @@ _Not yet on NuGet..._
 * Maui: Add explicit `net8.0` target to facilitate platform-agnostic unit testing (#4988) @Adam--
 * Drawing: Add `FillPath()` and `FillCircle()` and deprecate draw overloads that accept a `FillStyle` (#4987) @CoderPM2011
 * GitHub: Create a `devconainer.json` file to facilitate development in GitHub Codespaces (#5002) @oxygen-dioxide
-* Maui: Improve behavior for interactive plots when their user input processor is disabled (#4990) @Adam--
+* Maui: Improve behavior for interactive plots when their user input processor is disabled (#4990, #4989) @Adam--
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
