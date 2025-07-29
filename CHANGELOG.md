@@ -13,6 +13,7 @@ _Not yet on NuGet..._
 * Font: Fixed `Font.Set()` issue associated with premature typeface disposal (#4910, #4958) @sproott @237779932
 * WinUI: Improve support for modifier keys when combining mouse and keyboard inputs (#4967, #4970) @diluculo
 * Markers: Added new `OpenCircleWithDot`, `OpenCircleWithCross`, and `OpenCircleWithEks` markers (#4963, #4972) @CoderPM2011
+* NumericConversion: Added type-specific `Clamp()` overloads prevent boxing and improve performance (#4985) @kevin100702
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
