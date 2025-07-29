@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * PolarAxis: Added support for custom spoke lengths (#4897) @CoderPM2011
 * Axes: Improve automatic DateTime tick generation for inverted axes (#4900, #4851) @manaruto @sunwayking
 * Ticks: Improve behavior of DateTime ticks for plots with zero-sized axes (#4911, #4903) @NeilMacMullen @mccabe93
+* Horizontal and Vertical Line: Improve support for inverted axes (#4920) @manaruto
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
