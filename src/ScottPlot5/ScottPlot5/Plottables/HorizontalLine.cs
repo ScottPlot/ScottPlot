@@ -33,8 +33,10 @@ public class HorizontalLine : AxisLine
 
     public override void Render(RenderPack rp)
     {
-        if (!IsVisible || !(Axes.YAxis.Range.Min <= Y && Y <= Axes.YAxis.Range.Max ||
-                           Axes.YAxis.Range.Max <= Y && Y <= Axes.YAxis.Range.Min))
+        if (!IsVisible)
+            return;
+
+        if (!Axes.YAxis.Range.Contains(Y))
             return;
 
         double x1 = Math.Max(Minimum, Math.Min(Axes.XAxis.Min, Axes.XAxis.Max));

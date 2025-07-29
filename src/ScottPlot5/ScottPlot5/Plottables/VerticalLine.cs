@@ -31,8 +31,10 @@ public class VerticalLine : AxisLine
 
     public override void Render(RenderPack rp)
     {
-        if (!IsVisible || !(Axes.XAxis.Range.Min <= X && X <= Axes.XAxis.Range.Max ||
-                           Axes.XAxis.Range.Max <= X && X <= Axes.XAxis.Range.Min))
+        if (!IsVisible)
+            return;
+
+        if (!Axes.XAxis.Range.Contains(X))
             return;
 
         double y1 = Math.Max(Minimum, Math.Min(Axes.YAxis.Min, Axes.YAxis.Max));
