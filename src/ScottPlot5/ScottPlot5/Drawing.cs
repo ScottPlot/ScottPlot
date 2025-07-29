@@ -278,11 +278,6 @@ public static class Drawing
         FillRectangle(canvas, rect, paint, fillStyle);
     }
 
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint)
-    {
-        canvas.DrawRect(rect.ToSKRect(), paint);
-    }
-
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
     {
         if (color == Colors.Transparent || lineWidth == 0)
@@ -296,7 +291,7 @@ public static class Drawing
             IsAntialias = true,
         };
 
-        DrawRectangle(canvas, rect, paint);
+        canvas.DrawRect(rect.ToSKRect(), paint);
     }
 
     public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)

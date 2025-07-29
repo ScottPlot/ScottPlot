@@ -27,6 +27,9 @@ public enum MarkerShape
     TriDown,
     Asterisk,
     HashTag,
+    OpenCircleWithDot,
+    OpenCircleWithCross,
+    OpenCircleWithEks,
 }
 
 public static class MarkerShapeExtensions
@@ -56,20 +59,40 @@ public static class MarkerShapeExtensions
             MarkerShape.TriDown => new TriDown(),
             MarkerShape.Asterisk => new Asterisk(),
             MarkerShape.HashTag => new HashTag(),
+            MarkerShape.OpenCircleWithDot => new OpenCircleWithDot(),
+            MarkerShape.OpenCircleWithCross => new OpenCircleWithCross(),
+            MarkerShape.OpenCircleWithEks => new OpenCircleWithEks(),
             MarkerShape.None => new None(),
             _ => throw new NotImplementedException(shape.ToString()),
         };
     }
 
-    public static bool IsOutlined(this MarkerShape shape)
+    /// <summary>
+    /// Used to determine whether a color passed into a LineStyle constructor
+    /// will be treated as line color or fill color.
+    /// </summary>
+    public static bool IsLineOnly(this MarkerShape shape)
     {
+        // This could probably be achieved with properties on IMarker
+        // or additional interfaces like IMarkerFill and IMarkerLine
         return shape switch
         {
-            (MarkerShape.OpenCircle or MarkerShape.OpenSquare or MarkerShape.OpenTriangleUp or
-            MarkerShape.OpenTriangleDown or MarkerShape.OpenDiamond or MarkerShape.Eks or
-            MarkerShape.Cross or MarkerShape.VerticalBar or MarkerShape.HorizontalBar or
-            MarkerShape.TriUp or MarkerShape.TriDown or MarkerShape.Asterisk or
-            MarkerShape.HashTag) => true,
+            MarkerShape.OpenCircle or
+            MarkerShape.OpenSquare or
+            MarkerShape.OpenTriangleUp or
+            MarkerShape.OpenTriangleDown or
+            MarkerShape.OpenDiamond or
+            MarkerShape.Eks or
+            MarkerShape.Cross or
+            MarkerShape.VerticalBar or
+            MarkerShape.HorizontalBar or
+            MarkerShape.TriUp or
+            MarkerShape.TriDown or
+            MarkerShape.Asterisk or
+            MarkerShape.HashTag or
+            MarkerShape.OpenCircleWithDot or
+            MarkerShape.OpenCircleWithCross or
+            MarkerShape.OpenCircleWithEks => true,
             _ => false,
         };
     }
