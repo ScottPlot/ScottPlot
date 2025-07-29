@@ -70,6 +70,11 @@ public class Bar : IHasFill, IHasLine
     public string Label { get; set; } = string.Empty;
 
     /// <summary>
+    /// If enabled, labels will be rendered last (after all other plottables)
+    /// </summary>
+    public bool LabelOnTop { get; set; } = false;
+
+    /// <summary>
     /// Text to display on, above, or below the bar.
     /// Typically this is the string representation of the value of the bar.
     /// </summary>
@@ -153,10 +158,14 @@ public class Bar : IHasFill, IHasLine
 
     public void Render(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
     {
-        if (!IsVisible)
-            return;
+        RenderBody(rp, axes, paint);
+        RenderText(rp, axes, paint, labelStyle);
+    }
 
+    public void RenderBody(RenderPack rp, IAxes axes, SKPaint paint)
+    {
         PixelRect rect = axes.GetPixelRect(Rect);
+
         Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
         Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
 
@@ -170,6 +179,11 @@ public class Bar : IHasFill, IHasLine
                 Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
             }
         }
+    }
+
+    public void RenderText(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
+    {
+        PixelRect rect = axes.GetPixelRect(Rect);
 
         if (CenterLabel)
         {
@@ -178,14 +192,14 @@ public class Bar : IHasFill, IHasLine
             return;
         }
 
-        bool labelAbove = Value >= LabelInvertWhenValueBelow;
+        bool labelAboveBarTop = Value >= LabelInvertWhenValueBelow;
 
         if (Orientation == Orientation.Vertical)
         {
             float xPx = rect.HorizontalCenter;
-            float yPx = labelAbove ? rect.Top : rect.Bottom;
-            labelStyle.Alignment = labelAbove ? Alignment.LowerCenter : Alignment.UpperCenter;
-            Pixel labelPixel = labelAbove ? new(xPx, yPx - LabelOffset) : new(xPx, yPx + LabelOffset);
+            float yPx = labelAboveBarTop ? rect.Top : rect.Bottom;
+            labelStyle.Alignment = labelAboveBarTop ? Alignment.LowerCenter : Alignment.UpperCenter;
+            Pixel labelPixel = labelAboveBarTop ? new(xPx, yPx - LabelOffset) : new(xPx, yPx + LabelOffset);
             labelStyle.Render(rp.Canvas, labelPixel, paint);
         }
         else
@@ -207,6 +221,5 @@ public class Bar : IHasFill, IHasLine
                 labelStyle.Render(rp.Canvas, labelPixel, paint);
             }
         }
-
     }
 }

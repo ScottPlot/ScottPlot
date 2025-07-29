@@ -65,21 +65,21 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
     {
-        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span) || double.IsInfinity(range.Span) || (size.Length <= 0))
+        if (range.Length >= TimeSpan.MaxValue.Days || double.IsNaN(range.Length) || double.IsInfinity(range.Length) || (size.Length <= 0))
         {
             // cases of extreme zoom (10,000 years)
             Ticks = [];
             return;
         }
 
-        TimeSpan span = TimeSpan.FromDays(range.Span);
+        TimeSpan span = TimeSpan.FromDays(range.Length);
         ITimeUnit? timeUnit = GetAppropriateTimeUnit(span);
 
         // estimate the size of the largest tick label for this unit this unit
         int maxExpectedTickLabelWidth = (int)Math.Max(16, span.TotalDays / MaxTickCount);
         int tickLabelHeight = 12;
         PixelSize tickLabelBounds = new(maxExpectedTickLabelWidth, tickLabelHeight);
-        double coordinatesPerPixel = range.Span / size.Length;
+        double coordinatesPerPixel = range.Length / size.Length;
 
         while (true)
         {

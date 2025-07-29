@@ -87,4 +87,67 @@ public class Gradient(GradientType gradientType = GradientType.Linear) : IHatch
                 ),
         };
     }
+
+    public static Gradient FromAxisLimits(RenderPack rp, AxisLimits limits, AxisGradientDirection direction, IAxes axes, List<AxisGradientColorPosition> colorPositions)
+    {
+        double min = direction == AxisGradientDirection.Horizontal
+            ? (double)axes.XAxis.GetCoordinate(rp.DataRect.Left, rp.DataRect)
+            : limits.Bottom;
+
+        double max = direction == AxisGradientDirection.Horizontal
+            ? (double)axes.XAxis.GetCoordinate(rp.DataRect.Right, rp.DataRect)
+            : limits.Top;
+
+        var sortedColorPositions = colorPositions.OrderBy(cp => cp.Position).ToList();
+
+        Color interpolate(double val)
+        {
+            if (sortedColorPositions.Count == 0)
+                return ScottPlot.Colors.Black;
+
+            if (val <= sortedColorPositions.First().Position)
+                return sortedColorPositions.First().Color;
+
+            if (val >= sortedColorPositions.Last().Position)
+                return sortedColorPositions.Last().Color;
+
+            int upperIndex = sortedColorPositions.FindIndex(cp => cp.Position >= val);
+            int lowerIndex = upperIndex - 1;
+
+            var lower = sortedColorPositions[lowerIndex];
+            var upper = sortedColorPositions[upperIndex];
+
+            double fraction = (val - lower.Position) / (upper.Position - lower.Position);
+            return lower.Color.InterpolateRgb(upper.Color, fraction);
+        }
+
+        var stops = sortedColorPositions
+            .Select(cp => cp.Position)
+            .Where(p => p >= min && p <= max)
+            .Concat([min, max])
+            .Distinct()
+            .OrderBy(p => p)
+            .ToList();
+
+        float GetFraction(double position)
+        {
+            if (max == min) return 0;
+            return (float)((position - min) / (max - min));
+        }
+
+        var (alignmentStart, alignmentEnd) = direction switch
+        {
+            AxisGradientDirection.Horizontal => (Alignment.MiddleLeft, Alignment.MiddleRight),
+            AxisGradientDirection.Vertical => (Alignment.LowerCenter, Alignment.UpperCenter),
+            _ => throw new NotImplementedException()
+        };
+
+        return new Gradient(GradientType.Linear)
+        {
+            AlignmentStart = alignmentStart,
+            AlignmentEnd = alignmentEnd,
+            ColorPositions = stops.Select(GetFraction).ToArray(),
+            Colors = stops.Select(interpolate).ToArray()
+        };
+    }
 }
