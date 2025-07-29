@@ -10,8 +10,9 @@ _Not yet on NuGet..._
 * Ticks: Improve behavior of DateTime ticks for plots with zero-sized axes (#4911, #4903) @NeilMacMullen @mccabe93
 * Horizontal and Vertical Line: Improve support for inverted axes (#4920) @manaruto
 * Rendering: Improve support for invisible and zero line width rectangles (#4956) @Fruchtzwerg94
-* Font: Fixed Font.Set() issue associated with premature typeface disposal (#4910, #4958) @sproott @237779932
+* Font: Fixed `Font.Set()` issue associated with premature typeface disposal (#4910, #4958) @sproott @237779932
 * WinUI: Improve support for modifier keys when combining mouse and keyboard inputs (#4967, #4970) @diluculo
+* Markers: Added new `OpenCircleWithDot`, `OpenCircleWithCross`, and `OpenCircleWithEks` markers (#4963, #4972) @CoderPM2011
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
