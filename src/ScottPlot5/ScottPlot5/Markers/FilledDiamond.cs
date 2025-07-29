@@ -19,7 +19,7 @@ internal class FilledDiamond : IMarker
         SKPath path = new();
         path.AddPoly(pointsList);
 
-        Drawing.DrawPath(canvas, paint, path, markerStyle.FillStyle, rect);
+        Drawing.FillPath(canvas, paint, path, markerStyle.FillStyle, rect);
         Drawing.DrawPath(canvas, paint, path, markerStyle.OutlineStyle);
     }
 }
