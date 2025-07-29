@@ -177,6 +177,9 @@ public struct Colors
     readonly static public Color[] Category20 = new Category20().Colors;
     readonly static public Color[] ColorblindFriendly = new ColorblindFriendly().Colors;
 
+    public static Color ScottPlotPurple => Color.FromHex("#67217a");
+    public static Color ScottPlotPink => Color.FromHex("#9a4993");
+
     /// <summary>
     /// Default Windows Colors
     /// </summary>
