@@ -1,3 +1,5 @@
+using ScottPlot.TickGenerators;
+
 namespace ScottPlotTests.RenderTests;
 
 internal class AxisTicksTests
@@ -142,5 +144,22 @@ internal class AxisTicksTests
         plt.RenderInMemory();
 
         plt.SaveTestImage();
+    }
+
+    [Test]
+    public void Test_DateTimeAutomatic_Does_Not_Hang()
+    {
+        Plot plt = new();
+        DateTime dt1 = new(2023, 01, 01);
+        DateTime dt2 = new(2024, 01, 01);
+        var barPlot = plt.Add.Bars(new[]
+        {
+            new Bar() { Position = dt1.ToOADate()},
+            new Bar() { Position = dt2.ToOADate()},
+        });
+        barPlot.LegendText = "a very long legend that should cause the plotting area to collapse to 0";
+        plt.Axes.Bottom.TickGenerator = new DateTimeAutomatic();
+        plt.ShowLegend(Edge.Right);
+        plt.SaveTestImage(100,100);
     }
 }
