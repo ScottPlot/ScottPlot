@@ -15,6 +15,8 @@ _Not yet on NuGet..._
 * Markers: Added new `OpenCircleWithDot`, `OpenCircleWithCross`, and `OpenCircleWithEks` markers (#4963, #4972) @CoderPM2011
 * NumericConversion: Added type-specific `Clamp()` overloads prevent boxing and improve performance (#4985) @kevin100702
 * Maui: Add explicit `net8.0` target to facilitate platform-agnostic unit testing (#4988) @Adam--
+* Drawing: Add `FillPath()` and `FillCircle()` and deprecate draw overloads that accept a `FillStyle` (#4987) @CoderPM2011
+* GitHub: Create a `devconainer.json` file to facilitate development in GitHub Codespaces (#5002) @oxygen-dioxide
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
