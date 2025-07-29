@@ -1,5 +1,15 @@
 ## ScottPlot 5.0.56
 _Not yet on NuGet..._
+* Statistics: Added support for kernel density estimation with Epanechnikov, Gaussian, Uniform, and Triangular strategies. Scott's rule (no relation) was implemented for bandwidth estimation (#4869) @bclehmann
+* Radar: Added a `IsAxisAboveData` property to allow the axes to be rendered on top of the data series (#4874) @Christoph-Wagner
+* Scatter: Add support for vertically oriented gradient fills (#4881) @manaruto
+* Bar Plot: Add `LabelsOnTop` option to allow bar labels to always be displayed and never get overlapped by other bars or plottables (#4886, #4855) @manaruto @bclehmann
+* PolarAxis: Add support for custom background color (#4897) @CoderPM2011
+* PolarAxis: Added support for custom spoke lengths (#4897) @CoderPM2011
+* Axes: Improve automatic DateTime tick generation for inverted axes (#4900, #4851) @manaruto @sunwayking
+* Ticks: Improve behavior of DateTime ticks for plots with zero-sized axes (#4911, #4903) @NeilMacMullen @mccabe93
+* Horizontal and Vertical Line: Improve support for inverted axes (#4920) @manaruto
+* Rendering: Improve support for invisible and zero line width rectangles (#4956) @Fruchtzwerg94
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
