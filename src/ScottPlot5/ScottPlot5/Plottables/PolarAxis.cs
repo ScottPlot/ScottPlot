@@ -5,7 +5,7 @@ namespace ScottPlot.Plottables;
 /// where points are represented by a radius and angle. 
 /// This class draws a polar axes and has options to customize spokes and circles.
 /// </summary>
-public class PolarAxis : IPlottable, IManagesAxisLimits
+public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -37,6 +37,11 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     /// circles to always appear as circles instead of ellipses.
     /// </summary>
     public bool ManageAxisLimits { get; set; } = true;
+
+    public FillStyle FillStyle { get; set; } = new();
+    public Color FillColor { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public Color FillHatchColor { get => FillStyle.HatchColor; set => FillStyle.HatchColor = value; }
+    public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
 
     /// <summary>
     /// Create <paramref name="count"/> ticks (circles) evenly spaced between 0 and <paramref name="maximumRadius"/>
@@ -191,6 +196,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
     public virtual void Render(RenderPack rp)
     {
         using SKPaint paint = new();
+        RenderBackgroundColor(rp, paint);
         RenderSpokes(rp, paint);
 
         if (StraightLines)
@@ -203,6 +209,22 @@ public class PolarAxis : IPlottable, IManagesAxisLimits
         }
 
         RenderCircleLabels(rp, paint);
+    }
+
+    protected virtual void RenderBackgroundColor(RenderPack rp, SKPaint paint)
+    {
+        double maxCircleRadius = Circles.Count > 0 ? Circles.Max(x => x.Radius) : 0;
+        double maxSpokeRadius = Spokes.Count > 0 ? Spokes.Max(x => x.Length) : 0;
+        double radius = Math.Max(maxCircleRadius, maxSpokeRadius);
+        double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
+        float radiusPx = (float)(pxPerUnit * radius);
+        Pixel originPx = Axes.GetPixel(Coordinates.Origin);
+        PixelRect rect = new(
+            originPx.X - radiusPx,
+            originPx.X + radiusPx,
+            originPx.Y + radiusPx,
+            originPx.Y - radiusPx);
+        Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
     }
 
     private void RenderSpokes(RenderPack rp, SKPaint paint)

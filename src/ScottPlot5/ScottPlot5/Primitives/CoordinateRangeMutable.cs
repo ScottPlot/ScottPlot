@@ -37,7 +37,10 @@ public class CoordinateRangeMutable : IEquatable<CoordinateRangeMutable> // TODO
     /// </summary>
     public bool Contains(double position)
     {
-        return position >= Min && position <= Max;
+        // sort min/max values here to support inverted axes
+        double lower = Math.Min(Min, Max);
+        double upper = Math.Max(Min, Max);
+        return position >= lower && position <= upper;
     }
 
     // TODO: deprecate
