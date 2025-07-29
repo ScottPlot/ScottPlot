@@ -65,21 +65,21 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
     {
-        if (range.Span >= TimeSpan.MaxValue.Days || double.IsNaN(range.Span) || double.IsInfinity(range.Span))
+        if (range.Length >= TimeSpan.MaxValue.Days || double.IsNaN(range.Length) || double.IsInfinity(range.Length) || (size.Length <= 0))
         {
             // cases of extreme zoom (10,000 years)
             Ticks = [];
             return;
         }
 
-        TimeSpan span = TimeSpan.FromDays(range.Span);
+        TimeSpan span = TimeSpan.FromDays(range.Length);
         ITimeUnit? timeUnit = GetAppropriateTimeUnit(span);
 
         // estimate the size of the largest tick label for this unit this unit
         int maxExpectedTickLabelWidth = (int)Math.Max(16, span.TotalDays / MaxTickCount);
         int tickLabelHeight = 12;
         PixelSize tickLabelBounds = new(maxExpectedTickLabelWidth, tickLabelHeight);
-        double coordinatesPerPixel = range.Span / size.Length;
+        double coordinatesPerPixel = range.Length / size.Length;
 
         while (true)
         {
@@ -137,9 +137,18 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
 
         List<Tick> ticks = [];
 
+        // if the increment is 0 or negative, something has gone wrong further up but bail out now.
+        // Also check that unit.Next is actually going to move us forward... otherwise we could loop forever
+        if (increment <= 0 || (unit.Next(start, increment) <= start))
+            return (ticks, null);
+
         const int maxTickCount = 1000;
         for (DateTime dt = start; dt <= rangeMax; dt = unit.Next(dt, increment))
         {
+            //this test is dangerous because it can cause an infinite loop if dt is not
+            //advancing.  It might be better to initialize dt to Max(start,rangeMin) but I'm guessing the#
+            //intentions of having this here is to allow the "preroll" to advance so that the first
+            //tick is beyond rangeMin ?
             if (dt < rangeMin)
                 continue;
 

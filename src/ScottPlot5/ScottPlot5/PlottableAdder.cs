@@ -915,11 +915,11 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public PolarAxis PolarAxis(double radius = 1.0)
+    public PolarAxis PolarAxis(double radius = 1.0, double spokeLength = 1.1)
     {
         PolarAxis polarAxis = new() { };
         polarAxis.SetCircles(radius, 5);
-        polarAxis.SetSpokes(12, radius * 1.1);
+        polarAxis.SetSpokes(12, radius * spokeLength);
 
         Plot.PlottableList.Add(polarAxis);
         Plot.HideAxesAndGrid();
