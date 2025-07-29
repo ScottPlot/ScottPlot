@@ -160,6 +160,6 @@ internal class AxisTicksTests
         barPlot.LegendText = "a very long legend that should cause the plotting area to collapse to 0";
         plt.Axes.Bottom.TickGenerator = new DateTimeAutomatic();
         plt.ShowLegend(Edge.Right);
-        plt.SaveTestImage(100,100);
+        plt.SaveTestImage(100, 100);
     }
 }
