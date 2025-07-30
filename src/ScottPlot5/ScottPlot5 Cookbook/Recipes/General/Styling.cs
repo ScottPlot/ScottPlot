@@ -1,3 +1,5 @@
+using SkiaSharp;
+
 namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Styling : ICategory
@@ -351,4 +353,23 @@ public class Styling : ICategory
             myPlot.Axes.Title.FullFigureCenter = true;
         }
     }
+
+    public class SetSpecificSystemFont : RecipeBase
+    {
+        public override string Name => "Set Specific System Font";
+        public override string Description => "This allows you to set a specific font, but must be installed on the system. This font resolver lets you control the weight, slant, and width.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Font.SetExact("Arial Narrow", FontWeight.Normal, FontSlant.Upright, FontWidth.Condensed);
+            myPlot.Add.Signal(Generate.Sin(51, mult: 1e9));
+            myPlot.Title("This title is centered in the figure");
+            myPlot.Axes.Title.FullFigureCenter = true;
+        }
+    }
+
+
+    
+    
 }

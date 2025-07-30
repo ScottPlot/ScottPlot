@@ -11,8 +11,8 @@ public class FontStyler(Plot plot)
     /// Apply the given font name to all existing plot objects.
     /// Also sets the default font name so this font will be used for plot objects added in the future.
     /// </summary>
-    public void SetExact(string fontName, SKFontStyleWeight weight = SKFontStyleWeight.Normal,
-        SKFontStyleSlant slant = SKFontStyleSlant.Upright, SKFontStyleWidth width = SKFontStyleWidth.Normal)
+    public void SetExact(string fontName, FontWeight weight = FontWeight.Normal,
+        FontSlant slant = FontSlant.Upright, FontWidth width = FontWidth.Normal)
     {
         // do nothing if the font can't be located
         using SKTypeface? typeFace = Fonts.GetTypeface(fontName, weight, slant, width);
@@ -46,7 +46,7 @@ public class FontStyler(Plot plot)
     public void Set(string fontName)
     {
         // do nothing if the font can't be located
-        using SKTypeface? testTypeface = Fonts.GetTypeface(fontName, weight: SKFontStyleWeight.Normal, slant: SKFontStyleSlant.Upright, width: SKFontStyleWidth.Normal);
+        using SKTypeface? testTypeface = Fonts.GetTypeface(fontName, weight: FontWeight.Normal, slant: FontSlant.Upright, width: FontWidth.Normal);
         if (testTypeface is null)
             return;
 
