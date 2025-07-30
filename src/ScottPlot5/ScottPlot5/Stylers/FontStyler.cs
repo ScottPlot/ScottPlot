@@ -38,7 +38,7 @@ public class FontStyler(Plot plot)
 
         // TODO: also modify plotted text by adding an IHasText interface
     }
-    
+
     /// <summary>
     /// Apply the given font name to all existing plot objects with default styles.
     /// Also sets the default font name so this font will be used for plot objects added in the future.

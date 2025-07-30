@@ -22,7 +22,7 @@ public class FontStyle
         get => Slant == FontSlant.Italic;
         set => Slant = value ? FontSlant.Italic : FontSlant.Upright;
     }
-    
+
     // TODO: consider whether color really belongs here...
     public Color Color { get; set; } = Colors.Black;
     public float Size { get; set; } = 12;

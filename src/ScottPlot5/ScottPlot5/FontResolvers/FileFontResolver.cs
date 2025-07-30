@@ -33,9 +33,9 @@ public class FileFontResolver(string name, string path, FontWeight weight, FontS
 
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
-        return CreateTypeface(fontName, 
+        return CreateTypeface(fontName,
             bold ? FontWeight.Bold : FontWeight.Normal,
-            italic ? FontSlant.Italic : FontSlant.Upright, 
+            italic ? FontSlant.Italic : FontSlant.Upright,
             FontWidth.Normal);
     }
 

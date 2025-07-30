@@ -71,12 +71,12 @@ public class SystemFontResolver : IFontResolver
             ? throw new InvalidOperationException($"Unable to create typeface using the default system font ({fontName})")
             : typeface;
     }
-    
+
     public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontWidth width)
     {
         if (!GetInstalledFonts().Contains(fontName))
             return null;
-        
+
         SKFontStyle style = new(weight.ToSKFontStyleWeight(), width.ToSKFontStyleWidth(), slant.ToSKFontStyleSlant());
         SKTypeface? typeface = SKTypeface.FromFamilyName(fontName, style);
         return typeface;
@@ -84,9 +84,9 @@ public class SystemFontResolver : IFontResolver
 
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
-        return CreateTypeface(fontName, 
+        return CreateTypeface(fontName,
             bold ? FontWeight.Bold : FontWeight.Normal,
-            italic ? FontSlant.Italic : FontSlant.Upright, 
+            italic ? FontSlant.Italic : FontSlant.Upright,
             FontWidth.Normal);
     }
 

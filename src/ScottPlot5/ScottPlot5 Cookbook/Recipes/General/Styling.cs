@@ -370,6 +370,6 @@ public class Styling : ICategory
     }
 
 
-    
-    
+
+
 }
