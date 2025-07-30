@@ -23,6 +23,8 @@ internal static class WinUIPlotExtensions
     internal static void ProcessMouseDown(this Interactivity.UserInputProcessor processor, WinUIPlot plotControl, PointerRoutedEventArgs e)
     {
         Pixel pixel = e.Pixel(plotControl);
+        UpdateKeyStateFromModifiers(processor.KeyState, e.KeyModifiers);
+
         PointerUpdateKind kind = e.GetCurrentPoint(plotControl).Properties.PointerUpdateKind;
         Interactivity.IUserAction action = kind switch
         {
@@ -37,6 +39,8 @@ internal static class WinUIPlotExtensions
     internal static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, WinUIPlot plotControl, PointerRoutedEventArgs e)
     {
         Pixel pixel = e.Pixel(plotControl);
+        UpdateKeyStateFromModifiers(processor.KeyState, e.KeyModifiers);
+
         PointerUpdateKind kind = e.GetCurrentPoint(plotControl).Properties.PointerUpdateKind;
         Interactivity.IUserAction action = kind switch
         {
@@ -51,6 +55,8 @@ internal static class WinUIPlotExtensions
     internal static void ProcessMouseMove(this Interactivity.UserInputProcessor processor, WinUIPlot plotControl, PointerRoutedEventArgs e)
     {
         Pixel pixel = e.Pixel(plotControl);
+        UpdateKeyStateFromModifiers(processor.KeyState, e.KeyModifiers);
+
         Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(pixel);
         processor.Process(action);
     }
@@ -58,6 +64,7 @@ internal static class WinUIPlotExtensions
     internal static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, WinUIPlot plotControl, PointerRoutedEventArgs e)
     {
         Pixel pixel = e.Pixel(plotControl);
+        UpdateKeyStateFromModifiers(processor.KeyState, e.KeyModifiers);
 
         Interactivity.IUserAction action = e.GetCurrentPoint(plotControl).Properties.MouseWheelDelta > 0
             ? new Interactivity.UserActions.MouseWheelUp(pixel)
@@ -97,6 +104,23 @@ internal static class WinUIPlotExtensions
             VirtualKey.RightShift => Interactivity.StandardKeys.Shift,
             _ => new Interactivity.Key(e.Key.ToString()),
         };
+    }
+
+    /// <summary>
+    /// Updates KeyState with modifier keys from VirtualKeyModifiers
+    /// </summary>
+    private static void UpdateKeyStateFromModifiers(Interactivity.KeyboardState keyState, VirtualKeyModifiers keyModifiers)
+    {
+        keyState.Reset();
+
+        if (keyModifiers.HasFlag(VirtualKeyModifiers.Control))
+            keyState.Add(Interactivity.StandardKeys.Control);
+
+        if (keyModifiers.HasFlag(VirtualKeyModifiers.Shift))
+            keyState.Add(Interactivity.StandardKeys.Shift);
+
+        if (keyModifiers.HasFlag(VirtualKeyModifiers.Menu))
+            keyState.Add(Interactivity.StandardKeys.Alt);
     }
 }
 
