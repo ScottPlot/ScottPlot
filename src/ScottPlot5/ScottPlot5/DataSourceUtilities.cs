@@ -410,7 +410,8 @@ public static class DataSourceUtilities
                 searchedLeft = NextPoint;
             else
                 searchedRight = NextPoint;
-        };
+        }
+        ;
 
         if (closestDistanceSquared <= maxDistanceSquared)
         {

@@ -70,7 +70,8 @@ public class TriangulatedIrregularNetwork
                     paths.Add(new(path, z));
                 }
             }
-        };
+        }
+        ;
 
         return [.. paths];
     }

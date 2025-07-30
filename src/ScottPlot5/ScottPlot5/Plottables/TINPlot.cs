@@ -63,7 +63,8 @@ public class TINPlot : IPlottable
         {
             Pixel[] pixels = line.Path.Points.Select(Axes.GetPixel).ToArray();
             Drawing.DrawLines(rp.Canvas, paint, pixels, ContourLineStyle);
-        };
+        }
+        ;
     }
 
     public virtual void Render(RenderPack rp)
