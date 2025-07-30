@@ -12,7 +12,7 @@ public static class Fonts
      * https://github.com/ScottPlot/ScottPlot/issues/2833
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
-    private static readonly ConcurrentDictionary<(string, SKFontStyleWeight, SKFontStyleSlant, SKFontStyleWidth), SKTypeface> TypefaceCache = [];
+    private static readonly ConcurrentDictionary<(string, FontWeight, FontSlant, FontWidth), SKTypeface> TypefaceCache = [];
 
     /// <summary>
     /// Collection of font resolvers that return typefaces from font names and style information
@@ -24,9 +24,9 @@ public static class Fonts
     /// </summary>
     public static void AddFontFile(string name, string path, bool bold = false, bool italic = false)
     {
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        FontWeight weight = bold ? FontWeight.Bold : FontWeight.Normal;
+        FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;
+        FontWidth width = FontWidth.Normal;
         FontResolvers.FileFontResolver resolver = new(name, path, weight, slant, width);
         FontResolvers.Add(resolver);
     }
@@ -35,9 +35,9 @@ public static class Fonts
     /// This font is used for almost all text rendering.
     /// </summary>
     public static string Default { get; set; } = SystemFontResolver.InstalledSansFont();
-    public static SKFontStyleWeight? DefaultWeight { get; set; }
-    public static SKFontStyleSlant? DefaultSlant { get; set; }
-    public static SKFontStyleWidth? DefaultWidth { get; set; }
+    public static FontWeight? DefaultWeight { get; set; }
+    public static FontSlant? DefaultSlant { get; set; }
+    public static FontWidth? DefaultWidth { get; set; }
     public static SKTypeface? DefaultFontStyle { get; set; }
 
     /// <summary>
@@ -77,7 +77,7 @@ public static class Fonts
     /// A cached typeface will be used if it exists, 
     /// otherwise one will be created, cached, and returned.
     /// </summary>
-    public static SKTypeface GetTypeface(string fontName, SKFontStyleWeight weight, SKFontStyleSlant slant, SKFontStyleWidth width)
+    public static SKTypeface GetTypeface(string fontName, FontWeight weight, FontSlant slant, FontWidth width)
     {
         var typefaceCacheKey = (fontName, weight, slant, width);
 
@@ -109,9 +109,16 @@ public static class Fonts
     /// </summary>
     public static SKTypeface GetTypeface(string fontName, bool bold, bool italic) 
     {
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
+        FontWeight weight = bold ? FontWeight.Bold : FontWeight.Normal;
+        FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;
+        FontWidth width = FontWidth.Normal;
+        return GetTypeface(fontName, weight, slant, width);
+    }
+
+    public static SKTypeface GetTypeface(string fontName, bool bold, bool italic, FontWidth width)
+    {
+        FontWeight weight = bold ? FontWeight.Bold : FontWeight.Normal;
+        FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;        
         return GetTypeface(fontName, weight, slant, width);
     }
 

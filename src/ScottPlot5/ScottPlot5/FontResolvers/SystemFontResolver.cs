@@ -1,4 +1,6 @@
 
+using ScottPlot.Primitives;
+
 namespace ScottPlot.FontResolvers;
 
 public class SystemFontResolver : IFontResolver
@@ -70,12 +72,12 @@ public class SystemFontResolver : IFontResolver
             : typeface;
     }
     
-    public SKTypeface? CreateTypeface(string fontName, SKFontStyleWeight weight, SKFontStyleSlant slant, SKFontStyleWidth width)
+    public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontWidth width)
     {
         if (!GetInstalledFonts().Contains(fontName))
             return null;
         
-        SKFontStyle style = new(weight, width, slant);
+        SKFontStyle style = new(weight.ToSKFontStyleWeight(), width.ToSKFontStyleWidth(), slant.ToSKFontStyleSlant());
         SKTypeface? typeface = SKTypeface.FromFamilyName(fontName, style);
         return typeface;
     }
@@ -83,8 +85,16 @@ public class SystemFontResolver : IFontResolver
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
     {
         return CreateTypeface(fontName, 
-            bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal,
-            italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright, 
-            SKFontStyleWidth.Normal);
+            bold ? FontWeight.Bold : FontWeight.Normal,
+            italic ? FontSlant.Italic : FontSlant.Upright, 
+            FontWidth.Normal);
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic, FontWidth width = FontWidth.Normal)
+    {
+        return CreateTypeface(fontName,
+            bold ? FontWeight.Bold : FontWeight.Normal,
+            italic ? FontSlant.Italic : FontSlant.Upright,
+            width);
     }
 }

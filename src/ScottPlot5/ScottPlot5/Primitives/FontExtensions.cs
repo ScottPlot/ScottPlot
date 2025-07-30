@@ -35,5 +35,24 @@ namespace ScottPlot.Primitives
                 _ => throw new ArgumentOutOfRangeException(nameof(slant))
             };
         }
+
+        public static SKFontStyleWeight ToSKFontStyleWeight(this FontWeight weight)
+        {
+            return weight switch
+            {
+                FontWeight.Invisible => SKFontStyleWeight.Invisible,
+                FontWeight.Thin => SKFontStyleWeight.Thin,
+                FontWeight.ExtraLight => SKFontStyleWeight.ExtraLight,
+                FontWeight.Light => SKFontStyleWeight.Light,
+                FontWeight.Normal => SKFontStyleWeight.Normal,
+                FontWeight.Medium => SKFontStyleWeight.Medium,
+                FontWeight.SemiBold => SKFontStyleWeight.SemiBold,
+                FontWeight.Bold => SKFontStyleWeight.Bold,
+                FontWeight.ExtraBold => SKFontStyleWeight.ExtraBold,
+                FontWeight.Black => SKFontStyleWeight.Black,
+                FontWeight.ExtraBlack => SKFontStyleWeight.ExtraBlack,
+                _ => throw new ArgumentOutOfRangeException(nameof(weight))
+            };
+        }
     }
 }

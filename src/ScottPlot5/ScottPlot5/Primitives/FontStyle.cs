@@ -8,19 +8,19 @@ public class FontStyle
 {
     public SKTypeface Typeface => Fonts.GetTypeface(Name, Weight, Slant, Width);
     public string Name { get; set; } = Fonts.Default;
-    public SKFontStyleWeight Weight { get; set; } = Fonts.DefaultWeight ?? SKFontStyleWeight.Normal;
-    public SKFontStyleSlant Slant { get; set; } = Fonts.DefaultSlant ?? SKFontStyleSlant.Upright;
-    public SKFontStyleWidth Width { get; set; } = Fonts.DefaultWidth ?? SKFontStyleWidth.Normal;
+    public FontWeight Weight { get; set; } = Fonts.DefaultWeight ?? FontWeight.Normal;
+    public FontSlant Slant { get; set; } = Fonts.DefaultSlant ?? FontSlant.Upright;
+    public FontWidth Width { get; set; } = Fonts.DefaultWidth ?? FontWidth.Normal;
 
     public bool Bold
     {
-        get => Weight == SKFontStyleWeight.Bold;
-        set => Weight = value ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
+        get => Weight == FontWeight.Bold;
+        set => Weight = value ? FontWeight.Bold : FontWeight.Normal;
     }
     public bool Italic
     {
-        get => Slant == SKFontStyleSlant.Italic;
-        set => Slant = value ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
+        get => Slant == FontSlant.Italic;
+        set => Slant = value ? FontSlant.Italic : FontSlant.Upright;
     }
     
     // TODO: consider whether color really belongs here...
