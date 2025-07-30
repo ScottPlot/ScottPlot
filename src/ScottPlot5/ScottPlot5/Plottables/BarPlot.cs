@@ -3,7 +3,7 @@ namespace ScottPlot.Plottables;
 /// <summary>
 /// Holds a collection of individually styled bars
 /// </summary>
-public class BarPlot : IPlottable, IHasLegendText
+public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 {
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
@@ -13,6 +13,8 @@ public class BarPlot : IPlottable, IHasLegendText
     public IAxes Axes { get; set; } = new Axes();
 
     public List<Bar> Bars { get; } // TODO: bar plot data source?
+
+    public bool LabelsOnTop { set => Bars.ForEach(x => x.LabelOnTop = value); }
 
     public LabelStyle ValueLabelStyle { get; set; } = new()
     {
@@ -102,8 +104,26 @@ public class BarPlot : IPlottable, IHasLegendText
 
         foreach (Bar bar in Bars)
         {
-            ValueLabelStyle.Text = bar.Label;
-            bar.Render(rp, Axes, paint, ValueLabelStyle);
+            bar.RenderBody(rp, Axes, paint);
+            if (!bar.LabelOnTop)
+            {
+                ValueLabelStyle.Text = bar.Label;
+                bar.RenderText(rp, Axes, paint, ValueLabelStyle);
+            }
+        }
+    }
+
+    public virtual void RenderLast(RenderPack rp)
+    {
+        using SKPaint paint = new();
+
+        foreach (Bar bar in Bars)
+        {
+            if (bar.LabelOnTop)
+            {
+                ValueLabelStyle.Text = bar.Label;
+                bar.RenderText(rp, Axes, paint, ValueLabelStyle);
+            }
         }
     }
 }
