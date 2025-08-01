@@ -94,7 +94,7 @@ public class Pie : PieBase
             }
 
             Coordinates textPolar = slicePolar
-                .WithRadius(1.0 * SliceLabelDistance)
+                .WithRadius(Radius * SliceLabelDistance)
                 .ToCartesian();
             textPolar.Y = -textPolar.Y;
             Pixel px = Axes.GetPixel(textPolar) - origin;
