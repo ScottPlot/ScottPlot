@@ -1,5 +1,4 @@
 namespace ScottPlotCookbook.Recipes.PlotTypes;
-
 public class PolarAxis : ICategory
 {
     public Chapter Chapter => Chapter.PlotTypes;
@@ -275,6 +274,42 @@ public class PolarAxis : ICategory
                 polarAxis.Spokes[i].LabelStyle.FontSize = 16;
                 polarAxis.Spokes[i].LabelPaddingFraction = 0.2 * i;
                 polarAxis.Spokes[i].LabelText = $"{polarAxis.Spokes[i].LabelLength}";
+            }
+        }
+    }
+
+    public class PolarWithLines : RecipeBase
+    {
+        public override string Name => "Polar Axis with Lines";
+        public override string Description => "This is an example of a polar axis with lines instead of points";
+
+        [Test]
+        public override void Execute()
+        {
+            // add a polar axis to the plot
+            var polarAxis = myPlot.Add.PolarAxis(radius: 100);
+
+            IColormap colormap = new ScottPlot.Colormaps.Turbo();
+            Coordinates? previousPt = null;
+
+            foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
+            {
+                // use the polar axis to get X/Y coordinates given a position in polar space
+                double radius = 100 * fraction;
+                double degrees = 360 * fraction;
+                Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
+
+                if (previousPt != null)
+                {
+                    ScottPlot.Plottables.LinePlot lp = myPlot.Add.Line(previousPt.Value.X, previousPt.Value.Y, pt.X, pt.Y);
+                    lp.LineWidth = 5;
+                    lp.Color = Colors.Red;
+                    previousPt = pt;
+                }
+                else
+                {
+                    previousPt = pt;
+                }
             }
         }
     }
