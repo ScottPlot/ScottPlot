@@ -512,12 +512,15 @@ public static class Drawing
         canvasState.Save();
         fillStyle.ApplyToPaint(paint, outerRect);
 
-        // Clip inner oval
-        using SKPath path = new();
+        using SKPath path = new()
+        {
+            FillType = SKPathFillType.EvenOdd
+        };
+        path.AddOval(outerRect.ToSKRect());
         path.AddOval(innerRect.ToSKRect());
-        canvas.ClipPath(path, SKClipOperation.Difference, true);
 
-        canvas.DrawOval(outerRect.ToSKRect(), paint);
+        canvas.DrawPath(path, paint);
+
         canvasState.Restore();
     }
 
