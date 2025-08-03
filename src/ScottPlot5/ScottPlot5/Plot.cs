@@ -253,7 +253,7 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKSurface surface)
     {
-        RenderManager.Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
+        Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
     }
 
     public Image GetImage(int width, int height)
