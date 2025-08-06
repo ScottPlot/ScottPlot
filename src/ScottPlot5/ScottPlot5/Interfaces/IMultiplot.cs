@@ -65,7 +65,7 @@ public static class IMultiplotExtensions
     /// </summary>
     public static void Render(this IMultiplot multiplot, SKSurface surface)
     {
-        multiplot.Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
+        multiplot.Render(surface.Canvas, surface.Canvas.DeviceClipBounds.ToPixelRect());
     }
 
     /// <summary>
