@@ -18,6 +18,16 @@ public class Wipe : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
+        using SKPaint paint = new();
+        foreach (Pixel[] seg in GetSegments(rp))
+        {
+            Drawing.DrawLines(rp.Canvas, paint, seg, Streamer.LineStyle);
+            Drawing.DrawMarkers(rp.Canvas, paint, seg, Streamer.MarkerStyle);
+        }
+    }
+
+    public IReadOnlyList<Pixel[]> GetSegments(RenderPack rp)
+    {
         int newestCount = Streamer.Data.NextIndex;
         int oldestCount = Streamer.Data.Data.Length - newestCount;
 
@@ -31,7 +41,7 @@ public class Wipe : IDataStreamerView
             double xPos = i * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
             float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i] + Streamer.Data.OffsetY);
-            newest[i] = new(x, y);
+            newest[i] = new Pixel(x, y);
         }
 
         for (int i = 0; i < oldest.Length; i++)
@@ -39,28 +49,41 @@ public class Wipe : IDataStreamerView
             double xPos = (i + newestCount) * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
             float x = Streamer.Axes.GetPixelX(WipeRight ? xPos : xMax - xPos);
             float y = Streamer.Axes.GetPixelY(Streamer.Data.Data[i + newestCount] + Streamer.Data.OffsetY);
-            oldest[i] = new(x, y);
+            oldest[i] = new Pixel(x, y);
         }
 
         if (BlankFraction > 0)
         {
-            int blankPoints = (int)(BlankFraction * Streamer.Data.Length);
+            int blank = (int)(BlankFraction * Streamer.Data.Length);
 
-            if (blankPoints <= oldest.Length)
-            {
-                oldest = oldest.Skip(blankPoints).ToArray();
-            }
+            if (blank <= oldest.Length)
+                oldest = oldest.Skip(blank).ToArray();
             else
             {
-                oldest = [];
-                newest = newest.Skip(blankPoints - oldest.Length).ToArray();
+                newest = newest.Skip(blank - oldest.Length).ToArray();
+                oldest = Array.Empty<Pixel>();
             }
         }
 
-        using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, oldest, Streamer.LineStyle);
-        Drawing.DrawLines(rp.Canvas, paint, newest, Streamer.LineStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, oldest, Streamer.MarkerStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, newest, Streamer.MarkerStyle);
+        if (!WipeRight)
+        {
+            System.Array.Reverse(newest);
+            System.Array.Reverse(oldest);
+        }
+
+        var list = new List<Pixel[]>();
+
+        if (WipeRight)
+        {
+            if (oldest.Length > 1) list.Add(oldest);
+            if (newest.Length > 1) list.Add(newest);
+        }
+        else
+        {
+            if (newest.Length > 1) list.Add(newest);
+            if (oldest.Length > 1) list.Add(oldest);
+        }
+
+        return list;
     }
 }
