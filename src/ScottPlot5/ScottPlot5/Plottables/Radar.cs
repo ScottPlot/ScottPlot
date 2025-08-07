@@ -23,6 +23,11 @@ public class Radar() : IPlottable, IManagesAxisLimits
 
     public bool IsVisible { get; set; } = true;
 
+    /// <summary>
+    /// If enabled, the Polar axis will be drawn above any <see cref="Series">.
+    /// </summary>
+    public bool IsAxisAboveData { get; set; } = false;
+
     public IAxes Axes
     {
         get => PolarAxis.Axes;
@@ -48,14 +53,19 @@ public class Radar() : IPlottable, IManagesAxisLimits
 
         using SKPaint paint = new();
 
-        PolarAxis.Render(rp);
+        // Don’t render axis yet if it’s supposed to be above the data
+        if (!IsAxisAboveData)
+            PolarAxis.Render(rp);
 
         for (int i = 0; i < Series.Count; i++)
         {
             Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values, clockwise: true);
             Pixel[] pixels = cs1.Select(Axes.GetPixel).ToArray();
-            Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
+            Drawing.FillPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);
         }
+
+        if (IsAxisAboveData)
+            PolarAxis.Render(rp);
     }
 }

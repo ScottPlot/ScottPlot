@@ -44,6 +44,7 @@ public class LabelStyle
     public bool AntiAliasText { get; set; } = true;
     public bool SubpixelText { get; set; } = true;
 
+    public SKTypeface? Font { get; set; } = Fonts.DefaultFontStyle;
     public string FontName { get; set; } = Fonts.Default;
     public float FontSize { get; set; } = 12;
     public bool Bold { get; set; } = false;
@@ -145,7 +146,7 @@ public class LabelStyle
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
-        paint.Typeface = Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.Typeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
