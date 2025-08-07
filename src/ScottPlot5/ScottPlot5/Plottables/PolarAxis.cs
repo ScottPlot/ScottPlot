@@ -232,7 +232,10 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
-        rp.Canvas.RotateDegrees(-(float)Rotation.Degrees);
+
+        // Gets the actual rotation angle in Cartesian coordinates, adjusted for axis inversion.
+        Angle effectiveRotation = Axes.XAxis.IsInverted() ^ Axes.YAxis.IsInverted() ? -Rotation : Rotation;
+        rp.Canvas.RotateDegrees(-(float)effectiveRotation.Degrees);
 
         foreach (var spoke in Spokes)
         {
@@ -241,7 +244,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
-            spoke.LabelStyle.Rotation = (float)Rotation.Degrees;
+            spoke.LabelStyle.Rotation = (float)effectiveRotation.Degrees;
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
