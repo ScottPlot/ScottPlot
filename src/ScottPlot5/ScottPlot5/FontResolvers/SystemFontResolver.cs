@@ -69,7 +69,7 @@ public class SystemFontResolver : IFontResolver
             : typeface;
     }
 
-    public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontWidth width)
+    public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing width)
     {
         if (!GetInstalledFonts().Contains(fontName))
             return null;
@@ -84,10 +84,10 @@ public class SystemFontResolver : IFontResolver
         return CreateTypeface(fontName,
             bold ? FontWeight.Bold : FontWeight.Normal,
             italic ? FontSlant.Italic : FontSlant.Upright,
-            FontWidth.Normal);
+            FontSpacing.Normal);
     }
 
-    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic, FontWidth width = FontWidth.Normal)
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic, FontSpacing width = FontSpacing.Normal)
     {
         return CreateTypeface(fontName,
             bold ? FontWeight.Bold : FontWeight.Normal,

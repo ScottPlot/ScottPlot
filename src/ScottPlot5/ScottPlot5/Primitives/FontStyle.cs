@@ -10,7 +10,7 @@ public class FontStyle
     public string Name { get; set; } = Fonts.Default;
     public FontWeight Weight { get; set; } = Fonts.DefaultWeight ?? FontWeight.Normal;
     public FontSlant Slant { get; set; } = Fonts.DefaultSlant ?? FontSlant.Upright;
-    public FontWidth Width { get; set; } = Fonts.DefaultWidth ?? FontWidth.Normal;
+    public FontSpacing Width { get; set; } = Fonts.DefaultWidth ?? FontSpacing.Normal;
 
     public bool Bold
     {

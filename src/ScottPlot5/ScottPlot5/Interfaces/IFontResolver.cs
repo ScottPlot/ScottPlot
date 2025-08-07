@@ -9,7 +9,7 @@ public interface IFontResolver
     /// <summary>
     /// Returns a new instance to a typeface with exactly specified styles
     /// </summary>
-    SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontWidth width);
+    SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing spacing);
 
     /// <summary>
     /// Returns a new instance to a typeface that most closely matches the requested family name and style

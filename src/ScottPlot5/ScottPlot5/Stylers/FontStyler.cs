@@ -8,16 +8,16 @@ public class FontStyler(Plot plot)
     private readonly Plot Plot = plot;
 
     /// <summary>
-    /// Apply the given font name to all existing plot objects.
+    /// Apply the given font name to common plot components.
     /// Also sets the default font name so this font will be used for plot objects added in the future.
     /// </summary>
-    public void SetExact(string fontName, FontWeight weight = FontWeight.Normal,
-        FontSlant slant = FontSlant.Upright, FontWidth width = FontWidth.Normal)
+    public SKTypeface? Set(string fontName, FontWeight weight = FontWeight.Normal,
+        FontSlant slant = FontSlant.Upright, FontSpacing spacing = FontSpacing.Normal)
     {
         // do nothing if the font can't be located
-        using SKTypeface? typeFace = Fonts.GetTypeface(fontName, weight, slant, width);
+        using SKTypeface? typeFace = Fonts.GetTypeface(fontName, weight, slant, spacing);
         if (typeFace is null)
-            return;
+            return null;
 
         // set default font so future added objects will use it
         Fonts.Default = fontName;
@@ -36,34 +36,10 @@ public class FontStyler(Plot plot)
             axis.TickLabelStyle.Font = typeFace;
         }
 
-        // TODO: also modify plotted text by adding an IHasText interface
-    }
+        // controls newly instantated LabelStyle objects
+        Fonts.DefaultFontStyle = typeFace;
 
-    /// <summary>
-    /// Apply the given font name to all existing plot objects with default styles.
-    /// Also sets the default font name so this font will be used for plot objects added in the future.
-    /// </summary>
-    public void Set(string fontName)
-    {
-        // do nothing if the font can't be located
-        using SKTypeface? testTypeface = Fonts.GetTypeface(fontName, weight: FontWeight.Normal, slant: FontSlant.Upright, width: FontWidth.Normal);
-        if (testTypeface is null)
-            return;
-
-        // set default font so future added objects will use it
-        Fonts.Default = fontName;
-
-        // title
-        Plot.Axes.Title.Label.FontName = fontName;
-
-        // axis labels and ticks
-        foreach (IAxis axis in Plot.Axes.GetAxes())
-        {
-            axis.Label.FontName = fontName;
-            axis.TickLabelStyle.FontName = fontName;
-        }
-
-        // TODO: also modify plotted text by adding an IHasText interface
+        return typeFace;
     }
 
     /// <summary>

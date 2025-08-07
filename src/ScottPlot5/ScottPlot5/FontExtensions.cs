@@ -1,26 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ScottPlot
 {
     public static class FontExtensions
     {
-        public static SKFontStyleWidth ToSKFontStyleWidth(this FontWidth width)
+        public static SKFontStyleWidth ToSKFontStyleWidth(this FontSpacing width)
         {
             return width switch
             {
-                FontWidth.UltraCondensed => SKFontStyleWidth.UltraCondensed,
-                FontWidth.ExtraCondensed => SKFontStyleWidth.ExtraCondensed,
-                FontWidth.Condensed => SKFontStyleWidth.Condensed,
-                FontWidth.SemiCondensed => SKFontStyleWidth.SemiCondensed,
-                FontWidth.Normal => SKFontStyleWidth.Normal,
-                FontWidth.SemiExpanded => SKFontStyleWidth.SemiExpanded,
-                FontWidth.Expanded => SKFontStyleWidth.Expanded,
-                FontWidth.ExtraExpanded => SKFontStyleWidth.ExtraExpanded,
-                FontWidth.UltraExpanded => SKFontStyleWidth.UltraExpanded,
+                FontSpacing.UltraCondensed => SKFontStyleWidth.UltraCondensed,
+                FontSpacing.ExtraCondensed => SKFontStyleWidth.ExtraCondensed,
+                FontSpacing.Condensed => SKFontStyleWidth.Condensed,
+                FontSpacing.SemiCondensed => SKFontStyleWidth.SemiCondensed,
+                FontSpacing.Normal => SKFontStyleWidth.Normal,
+                FontSpacing.SemiExpanded => SKFontStyleWidth.SemiExpanded,
+                FontSpacing.Expanded => SKFontStyleWidth.Expanded,
+                FontSpacing.ExtraExpanded => SKFontStyleWidth.ExtraExpanded,
+                FontSpacing.UltraExpanded => SKFontStyleWidth.UltraExpanded,
                 _ => throw new ArgumentOutOfRangeException(nameof(width))
             };
         }

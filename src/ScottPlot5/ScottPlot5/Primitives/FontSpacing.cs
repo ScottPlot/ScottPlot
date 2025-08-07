@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-public enum FontWidth
+public enum FontSpacing
 {
     UltraCondensed = 1,
     ExtraCondensed = 2,
