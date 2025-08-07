@@ -1,3 +1,5 @@
+using SkiaSharp;
+
 namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Styling : ICategory
@@ -349,6 +351,74 @@ public class Styling : ICategory
             myPlot.Add.Signal(Generate.Sin(51, mult: 1e9));
             myPlot.Title("This title is centered in the figure");
             myPlot.Axes.Title.FullFigureCenter = true;
+        }
+    }
+
+    public class SetFontName : RecipeBase
+    {
+        public override string Name => "Set Font by Name";
+        public override string Description => "Set font by its name to apply it to common plot components.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Font.Set("Comic Sans MS");
+            myPlot.Title("Hello, World");
+            var sig = myPlot.Add.Signal(Generate.Sin(51, mult: 1e6));
+            sig.LegendText = "Hello, Custom Font";
+        }
+    }
+
+    public class SetFontWeight : RecipeBase
+    {
+        public override string Name => "Set Font Weight";
+        public override string Description => "Font weight can be customized.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Font.Set("Calibri"); // apply to many existing plot labels
+            myPlot.Title("Hello, World");
+
+            FontWeight[] weights = [FontWeight.Light, FontWeight.Normal,
+                FontWeight.SemiBold, FontWeight.Bold, FontWeight.ExtraBlack];
+
+            for (int i = 0; i < weights.Length; i++)
+            {
+                FontWeight weight = weights[i];
+                myPlot.Font.Set("Calibri", weight: weight); // apply to new labels
+                var text = myPlot.Add.Text($"FontWeight.{weight}", 0, i);
+                text.LabelFontSize = 24;
+            }
+
+            myPlot.Axes.SetLimits(-1, 5, -2, weights.Length);
+            myPlot.HideGrid();
+        }
+    }
+
+    public class SetFontSlant : RecipeBase
+    {
+        public override string Name => "Set Font Slant";
+        public override string Description => "Font slant can be customized.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Font.Set("Calibri", slant: FontSlant.Italic); // apply to many existing plot labels
+            myPlot.Title("Hello, World");
+
+            FontSlant[] slants = [FontSlant.Upright, FontSlant.Italic, FontSlant.Oblique];
+
+            for (int i = 0; i < slants.Length; i++)
+            {
+                FontSlant slant = slants[i];
+                myPlot.Font.Set("Calibri", slant: slant); // apply to new labels
+                var text = myPlot.Add.Text($"FontSlant.{slant}", 0, i);
+                text.LabelFontSize = 24;
+            }
+
+            myPlot.Axes.SetLimits(-1, 5, -1, slants.Length);
+            myPlot.HideGrid();
         }
     }
 }
