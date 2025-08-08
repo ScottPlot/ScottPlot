@@ -354,6 +354,36 @@ public class Styling : ICategory
         }
     }
 
+    public class PlotBorder : RecipeBase
+    {
+        public override string Name => "Plot Border";
+        public override string Description => "Plots can be assigned borders to draw around the figure or data area.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.Signal(Generate.Sin());
+            myPlot.Add.Signal(Generate.Cos());
+
+            myPlot.FigureBorder = new()
+            {
+                Color = Colors.Magenta,
+                Width = 3,
+                Pattern = LinePattern.Dotted,
+            };
+
+            myPlot.DataBorder = new()
+            {
+                Color = Colors.Green,
+                Width = 3,
+                Pattern = LinePattern.DenselyDashed,
+            };
+
+            // the hide axis frame lines so our custom border is the only one
+            myPlot.Axes.Frame(false);
+        }
+    }
+
     public class SetFontName : RecipeBase
     {
         public override string Name => "Set Font by Name";

@@ -23,6 +23,7 @@ _Not yet on NuGet..._
 * Legend: Added the ability to customize default marker shape for legend items (#5005, #5006) @aespitia
 * Pie: Added a `Radius` property (instead of forcing `1.0`) and improved rendering and SVG export (#5020) @CoderPM2011 @aespitia
 * Data Streamer: Added `FillY` and related properties so streaming plots support filled ares (#4948, #5023) @manaruto @Stephanowicz
+* Plot: Added `FigureBorder` and `DataBorder` for displaying custom borders on plots and subplots (#4854, #5024) @CoderPM2011
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_

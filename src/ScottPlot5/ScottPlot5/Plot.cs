@@ -23,6 +23,9 @@ public class Plot : IDisposable
     /// </summary>
     public BackgroundStyle DataBackground = new() { Color = Colors.Transparent };
 
+    public LineStyle FigureBorder { get; set; } = LineStyle.None;
+    public LineStyle DataBorder { get; set; } = LineStyle.None;
+
     public IZoomRectangle ZoomRectangle { get; set; }
     public double ScaleFactor { get => ScaleFactorF; set => ScaleFactorF = (float)value; }
     internal float ScaleFactorF { get; private set; } = 1.0f;
@@ -253,7 +256,7 @@ public class Plot : IDisposable
     /// </summary>
     public void Render(SKSurface surface)
     {
-        RenderManager.Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
+        Render(surface.Canvas, surface.Canvas.LocalClipBounds.ToPixelRect());
     }
 
     public Image GetImage(int width, int height)

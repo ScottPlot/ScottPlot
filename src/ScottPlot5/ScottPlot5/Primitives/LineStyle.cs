@@ -126,10 +126,13 @@ public class LineStyle
         Drawing.DrawLine(canvas, paint, line, this);
     }
 
-    public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint, bool contract = false)
     {
         if (!IsVisible)
             return;
+
+        if (contract)
+            rect = rect.Contract(Width / 2);
 
         Pixel[] pixels =
         [

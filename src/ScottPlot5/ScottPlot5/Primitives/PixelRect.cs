@@ -422,4 +422,9 @@ public static class PixelRectExtensions
     {
         return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
     }
+
+    public static PixelRect ToPixelRect(this SKRectI rect)
+    {
+        return new PixelRect(rect.Left, rect.Right, rect.Bottom, rect.Top);
+    }
 }

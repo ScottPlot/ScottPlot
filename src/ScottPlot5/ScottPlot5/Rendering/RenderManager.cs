@@ -27,6 +27,7 @@ public class RenderManager(Plot plot)
         new RenderActions.RenderGridsAbovePlottables(),
         new RenderActions.RenderLegends(),
         new RenderActions.RenderPanels(),
+        new RenderActions.RenderBorders(),
         new RenderActions.RenderZoomRectangle(),
         new RenderActions.SyncGLPlottables(),
         new RenderActions.RenderPlottablesLast(),
