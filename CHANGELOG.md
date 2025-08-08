@@ -20,6 +20,7 @@ _Not yet on NuGet..._
 * Maui: Improve behavior for interactive plots when their user input processor is disabled (#4990, #4989) @Adam--
 * Fonts: Added new styling options for weight, slant, density, etc. (#5013, #4873) @aespitia @Christoph-Wagner
 * Labels: Added styling options for underline with customizable thickness and offset (#4893) @manaruto
+* Legend: Added the ability to customize default marker shape for legend items (#5005, #5006) @aespitia
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
