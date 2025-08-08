@@ -12,7 +12,7 @@ public static class Fonts
      * https://github.com/ScottPlot/ScottPlot/issues/2833
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
-    private static readonly ConcurrentDictionary<(string, bool, bool), SKTypeface> TypefaceCache = [];
+    private static readonly ConcurrentDictionary<(string, FontWeight, FontSlant, FontSpacing), SKTypeface> TypefaceCache = [];
 
     /// <summary>
     /// Collection of font resolvers that return typefaces from font names and style information
@@ -24,7 +24,10 @@ public static class Fonts
     /// </summary>
     public static void AddFontFile(string name, string path, bool bold = false, bool italic = false)
     {
-        FontResolvers.FileFontResolver resolver = new(name, path, bold, italic);
+        FontWeight weight = bold ? FontWeight.Bold : FontWeight.Normal;
+        FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;
+        FontSpacing width = FontSpacing.Normal;
+        FontResolvers.FileFontResolver resolver = new(name, path, weight, slant, width);
         FontResolvers.Add(resolver);
     }
 
@@ -32,6 +35,10 @@ public static class Fonts
     /// This font is used for almost all text rendering.
     /// </summary>
     public static string Default { get; set; } = SystemFontResolver.InstalledSansFont();
+    public static FontWeight? DefaultWeight { get; set; }
+    public static FontSlant? DefaultSlant { get; set; }
+    public static FontSpacing? DefaultWidth { get; set; }
+    public static SKTypeface? DefaultFontStyle { get; set; }
 
     /// <summary>
     /// Name of a sans-serif font present on the system
@@ -70,9 +77,9 @@ public static class Fonts
     /// A cached typeface will be used if it exists, 
     /// otherwise one will be created, cached, and returned.
     /// </summary>
-    public static SKTypeface GetTypeface(string fontName, bool bold, bool italic)
+    public static SKTypeface GetTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing spacing)
     {
-        var typefaceCacheKey = (fontName, bold, italic);
+        var typefaceCacheKey = (fontName, weight, slant, spacing);
 
         if (TypefaceCache.TryGetValue(typefaceCacheKey, out SKTypeface? cachedTypeface))
         {
@@ -82,7 +89,7 @@ public static class Fonts
 
         foreach (IFontResolver resolver in FontResolvers)
         {
-            SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, bold, italic);
+            SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, weight, slant, spacing);
             if (resolvedTypeface is not null)
             {
                 TypefaceCache.TryAdd(typefaceCacheKey, resolvedTypeface);
@@ -93,6 +100,26 @@ public static class Fonts
         SKTypeface defaultTypeface = SystemFontResolver.CreateDefaultTypeface();
         TypefaceCache.TryAdd(typefaceCacheKey, defaultTypeface);
         return defaultTypeface;
+    }
+
+    /// <summary>
+    /// Returns a typeface for the requested font name and style.
+    /// A cached typeface will be used if it exists, 
+    /// otherwise one will be created, cached, and returned.
+    /// </summary>
+    public static SKTypeface GetTypeface(string fontName, bool bold, bool italic)
+    {
+        FontWeight weight = bold ? FontWeight.Bold : FontWeight.Normal;
+        FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;
+        FontSpacing width = FontSpacing.Normal;
+        return GetTypeface(fontName, weight, slant, width);
+    }
+
+    public static SKTypeface GetTypeface(string fontName, bool bold, bool italic, FontSpacing width)
+    {
+        FontWeight weight = bold ? FontWeight.Bold : FontWeight.Normal;
+        FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;
+        return GetTypeface(fontName, weight, slant, width);
     }
 
     #region Font Detection
