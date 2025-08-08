@@ -1,4 +1,3 @@
-
 namespace ScottPlot.FontResolvers;
 
 public class SystemFontResolver : IFontResolver
@@ -10,7 +9,7 @@ public class SystemFontResolver : IFontResolver
 
     internal static string InstalledSansFont()
     {
-        // Prefer the the system default because it is probably the best for international users
+        // Prefer the system default because it is probably the best for international users
         // https://github.com/ScottPlot/ScottPlot/issues/2746
         string font = SKTypeface.Default.FamilyName;
 
@@ -70,16 +69,29 @@ public class SystemFontResolver : IFontResolver
             : typeface;
     }
 
-    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
+    public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing width)
     {
         if (!GetInstalledFonts().Contains(fontName))
             return null;
 
-        SKFontStyleWeight weight = bold ? SKFontStyleWeight.Bold : SKFontStyleWeight.Normal;
-        SKFontStyleSlant slant = italic ? SKFontStyleSlant.Italic : SKFontStyleSlant.Upright;
-        SKFontStyleWidth width = SKFontStyleWidth.Normal;
-        SKFontStyle style = new(weight, width, slant);
+        SKFontStyle style = new(weight.ToSKFontStyleWeight(), width.ToSKFontStyleWidth(), slant.ToSKFontStyleSlant());
         SKTypeface? typeface = SKTypeface.FromFamilyName(fontName, style);
         return typeface;
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
+    {
+        return CreateTypeface(fontName,
+            bold ? FontWeight.Bold : FontWeight.Normal,
+            italic ? FontSlant.Italic : FontSlant.Upright,
+            FontSpacing.Normal);
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic, FontSpacing width = FontSpacing.Normal)
+    {
+        return CreateTypeface(fontName,
+            bold ? FontWeight.Bold : FontWeight.Normal,
+            italic ? FontSlant.Italic : FontSlant.Upright,
+            width);
     }
 }

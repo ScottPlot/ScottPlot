@@ -44,9 +44,14 @@ public class LabelStyle
     public bool AntiAliasText { get; set; } = true;
     public bool SubpixelText { get; set; } = true;
 
+    public SKTypeface? Font { get; set; } = Fonts.DefaultFontStyle;
     public string FontName { get; set; } = Fonts.Default;
     public float FontSize { get; set; } = 12;
     public bool Bold { get; set; } = false;
+    public bool Underline { get; set; } = false;
+    private bool RenderUnderline => Underline & UnderlineWidth != 0;
+    public double UnderlineWidth { get; set; } = 1;
+    public double UnderlineOffset { get; set; } = 2;
 
     /// <summary>
     /// Manually defined line height in pixels.
@@ -142,7 +147,7 @@ public class LabelStyle
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
-        paint.Typeface = Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.Typeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
@@ -328,10 +333,45 @@ public class LabelStyle
                 if (LabelStyle.RTLSupport)
                 {
                     using (var shaper = new SKShaper(paint.Typeface))
+                    {
+                        float shapedWidth = shaper.Shape(lines[i], paint).Width;
                         canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint);
+
+                        if (RenderUnderline)
+                        {
+                            float underlineY = yPx + (float)UnderlineOffset;
+
+                            using var underlinePaint = new SKPaint
+                            {
+                                Color = paint.Color,
+                                StrokeWidth = (float)UnderlineWidth,
+                                IsStroke = true,
+                                IsAntialias = paint.IsAntialias
+                            };
+
+                            canvas.DrawLine(xPx, underlineY, xPx + shapedWidth, underlineY, underlinePaint);
+                        }
+                    }
                 }
                 else
+                {
                     canvas.DrawText(lines[i], xPx, yPx, paint);
+
+                    if (RenderUnderline)
+                    {
+                        float underlineY = yPx + (float)UnderlineOffset;
+                        float textWidth = paint.MeasureText(lines[i]);
+
+                        using var underlinePaint = new SKPaint
+                        {
+                            Color = paint.Color,
+                            StrokeWidth = (float)UnderlineWidth,
+                            IsStroke = true,
+                            IsAntialias = paint.IsAntialias
+                        };
+                        canvas.DrawLine(xPx, underlineY, xPx + textWidth, underlineY, underlinePaint);
+                    }
+                }
             }
         }
         else
@@ -341,10 +381,45 @@ public class LabelStyle
             if (LabelStyle.RTLSupport)
             {
                 using (var shaper = new SKShaper(paint.Typeface))
+                {
+                    float shapedWidth = shaper.Shape(Text, paint).Width;
                     canvas.DrawShapedText(shaper, Text, xPx, yPx, paint);
+
+                    if (RenderUnderline)
+                    {
+                        float underlineY = yPx + (float)UnderlineOffset;
+
+                        using var underlinePaint = new SKPaint
+                        {
+                            Color = paint.Color,
+                            StrokeWidth = (float)UnderlineWidth,
+                            IsStroke = true,
+                            IsAntialias = paint.IsAntialias
+                        };
+
+                        canvas.DrawLine(xPx, underlineY, xPx + shapedWidth, underlineY, underlinePaint);
+                    }
+                }
             }
             else
+            {
                 canvas.DrawText(Text, xPx, yPx, paint);
+
+                if (RenderUnderline)
+                {
+                    float underlineY = yPx + (float)UnderlineOffset;
+                    float textWidth = paint.MeasureText(Text);
+
+                    using var underlinePaint = new SKPaint
+                    {
+                        Color = paint.Color,
+                        StrokeWidth = (float)UnderlineWidth,
+                        IsStroke = true,
+                        IsAntialias = paint.IsAntialias
+                    };
+                    canvas.DrawLine(xPx, underlineY, xPx + textWidth, underlineY, underlinePaint);
+                }
+            }
         }
     }
 
