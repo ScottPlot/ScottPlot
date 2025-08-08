@@ -7,6 +7,19 @@ _Not yet on NuGet..._
 * PolarAxis: Add support for custom background color (#4897) @CoderPM2011
 * PolarAxis: Added support for custom spoke lengths (#4897) @CoderPM2011
 * Axes: Improve automatic DateTime tick generation for inverted axes (#4900, #4851) @manaruto @sunwayking
+* Ticks: Improve behavior of DateTime ticks for plots with zero-sized axes (#4911, #4903) @NeilMacMullen @mccabe93
+* Horizontal and Vertical Line: Improve support for inverted axes (#4920) @manaruto
+* Rendering: Improve support for invisible and zero line width rectangles (#4956) @Fruchtzwerg94
+* Font: Fixed `Font.Set()` issue associated with premature typeface disposal (#4910, #4958) @sproott @237779932
+* WinUI: Improve support for modifier keys when combining mouse and keyboard inputs (#4967, #4970) @diluculo
+* Markers: Added new `OpenCircleWithDot`, `OpenCircleWithCross`, and `OpenCircleWithEks` markers (#4963, #4972) @CoderPM2011
+* NumericConversion: Added type-specific `Clamp()` overloads prevent boxing and improve performance (#4985) @kevin100702
+* Maui: Add explicit `net8.0` target to facilitate platform-agnostic unit testing (#4988) @Adam--
+* Drawing: Add `FillPath()` and `FillCircle()` and deprecate draw overloads that accept a `FillStyle` (#4987) @CoderPM2011
+* GitHub: Create a `devconainer.json` file to facilitate development in GitHub Codespaces (#5002) @oxygen-dioxide
+* Maui: Improve behavior for interactive plots when their user input processor is disabled (#4990, #4989) @Adam--
+* Fonts: Added new styling options for weight, slant, density, etc. (#5013, #4873) @aespitia @Christoph-Wagner
+* Labels: Added styling options for underline with customizable thickness and offset (#4893) @manaruto
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_

@@ -8,30 +8,38 @@ public class FontStyler(Plot plot)
     private readonly Plot Plot = plot;
 
     /// <summary>
-    /// Apply the given font name to all existing plot objects.
+    /// Apply the given font name to common plot components.
     /// Also sets the default font name so this font will be used for plot objects added in the future.
     /// </summary>
-    public void Set(string fontName)
+    public SKTypeface? Set(string fontName, FontWeight weight = FontWeight.Normal,
+        FontSlant slant = FontSlant.Upright, FontSpacing spacing = FontSpacing.Normal)
     {
         // do nothing if the font can't be located
-        using SKTypeface? testTypeface = Fonts.GetTypeface(fontName, bold: false, italic: false);
-        if (testTypeface is null)
-            return;
+        using SKTypeface? typeFace = Fonts.GetTypeface(fontName, weight, slant, spacing);
+        if (typeFace is null)
+            return null;
 
         // set default font so future added objects will use it
         Fonts.Default = fontName;
+        Fonts.DefaultFontStyle = typeFace;
 
         // title
         Plot.Axes.Title.Label.FontName = fontName;
+        Plot.Axes.Title.Label.Font = typeFace;
 
         // axis labels and ticks
         foreach (IAxis axis in Plot.Axes.GetAxes())
         {
             axis.Label.FontName = fontName;
+            axis.Label.Font = typeFace;
             axis.TickLabelStyle.FontName = fontName;
+            axis.TickLabelStyle.Font = typeFace;
         }
 
-        // TODO: also modify plotted text by adding an IHasText interface
+        // controls newly instantated LabelStyle objects
+        Fonts.DefaultFontStyle = typeFace;
+
+        return typeFace;
     }
 
     /// <summary>

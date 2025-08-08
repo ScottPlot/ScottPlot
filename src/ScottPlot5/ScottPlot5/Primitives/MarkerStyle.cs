@@ -65,7 +65,7 @@ public class MarkerStyle : IHasLine, IHasFill, IHasOutline
     {
         Shape = shape;
         LineColor = color;
-        if (shape.IsOutlined())
+        if (shape.IsLineOnly())
         {
             FillColor = Colors.Transparent;
             LineWidth = 2;

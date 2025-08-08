@@ -23,7 +23,9 @@ public abstract class LabelStyleProperties : IHasLabel
     public float? LabelLineSpacing { get => LabelStyle.LineSpacing; set => LabelStyle.LineSpacing = value; }
     public bool LabelItalic { get => LabelStyle.Italic; set => LabelStyle.Italic = value; }
     public bool LabelBold { get => LabelStyle.Bold; set => LabelStyle.Bold = value; }
-
+    public bool LabelUnderline { get => LabelStyle.Underline; set => LabelStyle.Underline = value; }
+    public double LabelUnderlineWidth { get => LabelStyle.UnderlineWidth; set => LabelStyle.UnderlineWidth = value; }
+    public double LabelUnderlineOffset { get => LabelStyle.UnderlineOffset; set => LabelStyle.UnderlineOffset = value; }
     public Color LabelFontColor { get => LabelStyle.ForeColor; set => LabelStyle.ForeColor = value; }
     public Color LabelBackgroundColor { get => LabelStyle.BackgroundColor; set => LabelStyle.BackgroundColor = value; }
     public float LabelBorderRadius { get => LabelStyle.BorderRadius; set => LabelStyle.BorderRadius = value; }

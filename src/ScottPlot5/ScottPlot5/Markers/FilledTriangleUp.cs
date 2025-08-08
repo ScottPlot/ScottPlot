@@ -21,7 +21,7 @@ internal class FilledTriangleUp : IMarker
         path.AddPoly(pointsList);
 
         PixelRect rect = new(center, radius);
-        Drawing.DrawPath(canvas, paint, path, markerStyle.FillStyle, rect);
+        Drawing.FillPath(canvas, paint, path, markerStyle.FillStyle, rect);
         Drawing.DrawPath(canvas, paint, path, markerStyle.OutlineStyle);
     }
 }
