@@ -18,6 +18,11 @@ _Not yet on NuGet..._
 * Drawing: Add `FillPath()` and `FillCircle()` and deprecate draw overloads that accept a `FillStyle` (#4987) @CoderPM2011
 * GitHub: Create a `devconainer.json` file to facilitate development in GitHub Codespaces (#5002) @oxygen-dioxide
 * Maui: Improve behavior for interactive plots when their user input processor is disabled (#4990, #4989) @Adam--
+* Fonts: Added new styling options for weight, slant, density, etc. (#5013, #4873) @aespitia @Christoph-Wagner
+* Labels: Added styling options for underline with customizable thickness and offset (#4893) @manaruto
+* Legend: Added the ability to customize default marker shape for legend items (#5005, #5006) @aespitia
+* Pie: Added a `Radius` property (instead of forcing `1.0`) and improved rendering and SVG export (#5020) @CoderPM2011 @aespitia
+* Data Streamer: Added `FillY` and related properties so streaming plots support filled ares (#4948, #5023) @manaruto @Stephanowicz
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_

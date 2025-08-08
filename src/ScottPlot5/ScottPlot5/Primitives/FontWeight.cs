@@ -2,6 +2,7 @@ namespace ScottPlot;
 
 public enum FontWeight
 {
+    Invisible = 0,
     Thin = 100,
     ExtraLight = 200,
     Light = 300,
