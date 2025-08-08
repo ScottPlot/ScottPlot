@@ -109,7 +109,11 @@ public class RenderManager(Plot plot)
         int maxRenderCount = 5;
         for (int i = 0; i < maxRenderCount; i++)
         {
-            canvas.Clear();
+            // Only clear when background is transparent
+            if (Plot.FigureBackground?.Color.A < 255)
+            {
+                canvas.Clear();
+            }
 
             RenderOnce(canvas, rect);
             if (!LastRender.AxisLimitsChanged)
