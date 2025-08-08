@@ -421,4 +421,26 @@ public class Styling : ICategory
             myPlot.HideGrid();
         }
     }
+
+    public class SetFontUnderline : RecipeBase
+    {
+        public override string Name => "Set Label Underline";
+        public override string Description => "Underlines may be added to label styles";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var text = myPlot.Add.Text($"Underline {i}px", 0, i);
+                text.LabelFontSize = 24;
+                text.LabelUnderline = true;
+                text.LabelUnderlineWidth = i;
+                text.LabelUnderlineOffset = 2 + i / 2;
+            }
+
+            myPlot.Axes.SetLimits(-1, 5, -1, 5);
+            myPlot.HideGrid();
+        }
+    }
 }

@@ -49,8 +49,8 @@ public class LabelStyle
     public float FontSize { get; set; } = 12;
     public bool Bold { get; set; } = false;
     public bool Underline { get; set; } = false;
-    public float UnderlineStrokeWidth { get; set; } = 1;
-    public float UnderlineOffset { get; set; } = 2f;
+    public double UnderlineWidth { get; set; } = 1;
+    public double UnderlineOffset { get; set; } = 2;
 
     /// <summary>
     /// Manually defined line height in pixels.
@@ -338,12 +338,12 @@ public class LabelStyle
 
                         if (Underline)
                         {
-                            float underlineY = yPx + UnderlineOffset;
+                            float underlineY = yPx + (float)UnderlineOffset;
 
                             using var underlinePaint = new SKPaint
                             {
                                 Color = paint.Color,
-                                StrokeWidth = UnderlineStrokeWidth,
+                                StrokeWidth = (float)UnderlineWidth,
                                 IsStroke = true,
                                 IsAntialias = paint.IsAntialias
                             };
@@ -358,13 +358,13 @@ public class LabelStyle
 
                     if (Underline)
                     {
-                        float underlineY = yPx + UnderlineOffset;
+                        float underlineY = yPx + (float)UnderlineOffset;
                         float textWidth = paint.MeasureText(lines[i]);
 
                         using var underlinePaint = new SKPaint
                         {
                             Color = paint.Color,
-                            StrokeWidth = UnderlineStrokeWidth,
+                            StrokeWidth = (float)UnderlineWidth,
                             IsStroke = true,
                             IsAntialias = paint.IsAntialias
                         };
@@ -386,12 +386,12 @@ public class LabelStyle
 
                     if (Underline)
                     {
-                        float underlineY = yPx + UnderlineOffset;
+                        float underlineY = yPx + (float)UnderlineOffset;
 
                         using var underlinePaint = new SKPaint
                         {
                             Color = paint.Color,
-                            StrokeWidth = UnderlineStrokeWidth,
+                            StrokeWidth = (float)UnderlineWidth,
                             IsStroke = true,
                             IsAntialias = paint.IsAntialias
                         };
@@ -406,13 +406,13 @@ public class LabelStyle
 
                 if (Underline)
                 {
-                    float underlineY = yPx + UnderlineOffset;
+                    float underlineY = yPx + (float)UnderlineOffset;
                     float textWidth = paint.MeasureText(Text);
 
                     using var underlinePaint = new SKPaint
                     {
                         Color = paint.Color,
-                        StrokeWidth = UnderlineStrokeWidth,
+                        StrokeWidth = (float)UnderlineWidth,
                         IsStroke = true,
                         IsAntialias = paint.IsAntialias
                     };
