@@ -49,6 +49,7 @@ public class LabelStyle
     public float FontSize { get; set; } = 12;
     public bool Bold { get; set; } = false;
     public bool Underline { get; set; } = false;
+    private bool RenderUnderline => Underline & UnderlineWidth != 0;
     public double UnderlineWidth { get; set; } = 1;
     public double UnderlineOffset { get; set; } = 2;
 
@@ -336,7 +337,7 @@ public class LabelStyle
                         float shapedWidth = shaper.Shape(lines[i], paint).Width;
                         canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint);
 
-                        if (Underline)
+                        if (RenderUnderline)
                         {
                             float underlineY = yPx + (float)UnderlineOffset;
 
@@ -356,7 +357,7 @@ public class LabelStyle
                 {
                     canvas.DrawText(lines[i], xPx, yPx, paint);
 
-                    if (Underline)
+                    if (RenderUnderline)
                     {
                         float underlineY = yPx + (float)UnderlineOffset;
                         float textWidth = paint.MeasureText(lines[i]);
@@ -384,7 +385,7 @@ public class LabelStyle
                     float shapedWidth = shaper.Shape(Text, paint).Width;
                     canvas.DrawShapedText(shaper, Text, xPx, yPx, paint);
 
-                    if (Underline)
+                    if (RenderUnderline)
                     {
                         float underlineY = yPx + (float)UnderlineOffset;
 
@@ -404,7 +405,7 @@ public class LabelStyle
             {
                 canvas.DrawText(Text, xPx, yPx, paint);
 
-                if (Underline)
+                if (RenderUnderline)
                 {
                     float underlineY = yPx + (float)UnderlineOffset;
                     float textWidth = paint.MeasureText(Text);
