@@ -2,6 +2,7 @@ namespace ScottPlot.Plottables;
 
 public class Pie : PieBase
 {
+    public double Radius { get; set; } = 1.0;
     public double ExplodeFraction { get; set; } = 0;
     public double DonutFraction { get; set; } = 0;
 
@@ -12,27 +13,61 @@ public class Pie : PieBase
 
     public override AxisLimits GetAxisLimits()
     {
-        double radius = Math.Max(SliceLabelDistance, 1 + ExplodeFraction) + Padding;
+        double radius = Math.Max(SliceLabelDistance, Radius + ExplodeFraction) + Padding;
         return new AxisLimits(-radius, radius, -radius, radius);
+    }
+
+    protected virtual void RenderDonutSlice(
+        RenderPack rp, SKPaint paint, LineStyle lineStyle, FillStyle fillStyle,
+        float radius, float sliceAngle, float startAngle)
+    {
+        PixelRect outerRect = new(-radius, radius, -radius, radius);
+
+        // radius of the inner edge of the pie when donut mode is enabled
+        float innerRadius = radius * (float)DonutFraction;
+        PixelRect innerRect = new(-innerRadius, innerRadius, -innerRadius, innerRadius);
+
+        if (Math.Abs(sliceAngle) < 360)
+        {
+            Drawing.FillAnnularSector(rp.Canvas, paint, fillStyle, outerRect, innerRect, startAngle, sliceAngle);
+            Drawing.DrawAnnularSector(rp.Canvas, paint, lineStyle, outerRect, innerRect, startAngle, sliceAngle);
+        }
+        else
+        {
+            Drawing.FillEllipticalAnnulus(rp.Canvas, paint, fillStyle, outerRect, innerRect);
+            Drawing.DrawEllipticalAnnulus(rp.Canvas, paint, lineStyle, outerRect, innerRect);
+        }
+    }
+
+    protected virtual void RenderSlice(
+        RenderPack rp, SKPaint paint, LineStyle lineStyle, FillStyle fillStyle,
+        float radius, float sliceAngle, float startAngle)
+    {
+        PixelRect outerRect = new(-radius, radius, -radius, radius);
+
+        if (Math.Abs(sliceAngle) < 360)
+        {
+            Drawing.FillSector(rp.Canvas, paint, fillStyle, outerRect, startAngle, sliceAngle);
+            Drawing.DrawSector(rp.Canvas, paint, lineStyle, outerRect, startAngle, sliceAngle);
+        }
+        else
+        {
+            Drawing.FillOval(rp.Canvas, paint, fillStyle, outerRect);
+            Drawing.DrawOval(rp.Canvas, paint, lineStyle, outerRect);
+        }
     }
 
     public override void Render(RenderPack rp)
     {
-        using SKPath path = new();
         using SKPaint paint = new() { IsAntialias = true };
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
-        float minX = Math.Abs(Axes.GetPixelX(1) - origin.X);
-        float minY = Math.Abs(Axes.GetPixelY(1) - origin.Y);
+        float minX = Math.Abs(Axes.GetPixelX(Radius) - origin.X);
+        float minY = Math.Abs(Axes.GetPixelY(Radius) - origin.Y);
 
         // radius of the outer edge of the pie
         float outerRadius = Math.Min(minX, minY);
-        SKRect outerRect = new(-outerRadius, -outerRadius, outerRadius, outerRadius);
-
-        // radius of the inner edge of the pie when donut mode is enabled
-        float innerRadius = outerRadius * (float)DonutFraction;
-        SKRect innerRect = new(-innerRadius, -innerRadius, innerRadius, innerRadius);
 
         double totalValue = Slices.Sum(s => s.Value);
         Angle totalAngle = Rotation;
@@ -40,67 +75,32 @@ public class Pie : PieBase
         {
             using SKAutoCanvasRestore _ = new(rp.Canvas);
 
-            var percentage = slice.Value / totalValue;
-            var sliceAngle = Angle.FromDegrees(percentage * 360);
+            Angle sliceAngle = Angle.FromFraction(slice.Value / totalValue);
             Angle centerAngle = totalAngle + sliceAngle / 2;
 
-            Coordinates explosionOffset = new PolarCoordinates(ExplodeFraction * outerRadius, centerAngle).ToCartesian();
+            PolarCoordinates slicePolar = new(ExplodeFraction * outerRadius, centerAngle);
+            Coordinates explosionOffset = slicePolar.ToCartesian();
             rp.Canvas.Translate(
                 (float)(origin.X + explosionOffset.X),
                 (float)(origin.Y + explosionOffset.Y));
 
-            if (sliceAngle.Degrees == 360)
+            if (DonutFraction > 0)
             {
-                if (DonutFraction > 0)
-                {
-                    // Clip inner oval
-                    // avoid clipping to inner oval line
-                    float innerRadius2 = innerRadius - 1;
-                    path.AddOval(new SKRect(
-                        -innerRadius2, -innerRadius2, innerRadius2, innerRadius2));
-                    rp.Canvas.ClipPath(path, SKClipOperation.Difference);
-                    path.Reset();
-
-                    // Draw inner oval line
-                    path.AddOval(innerRect);
-                    LineStyle.ApplyToPaint(paint);
-                    rp.Canvas.DrawPath(path, paint);
-                }
-
-                path.AddOval(outerRect);
+                RenderDonutSlice(rp, paint, LineStyle, slice.Fill, outerRadius, (float)sliceAngle.Degrees, (float)totalAngle.Degrees);
             }
             else
             {
-                Coordinates ptInnerHome = new PolarCoordinates(innerRadius, totalAngle).ToCartesian();
-                Coordinates ptOuterHome = new PolarCoordinates(outerRadius, totalAngle).ToCartesian();
-                Coordinates ptInnerRotated = new PolarCoordinates(innerRadius, totalAngle + sliceAngle).ToCartesian();
-
-                path.MoveTo(new SKPoint((float)ptInnerHome.X, (float)ptInnerHome.Y));
-                path.LineTo(new SKPoint((float)ptOuterHome.X, (float)ptOuterHome.Y));
-                path.ArcTo(outerRect,
-                    (float)totalAngle.Degrees,
-                    (float)sliceAngle.Degrees,
-                    false);
-                path.LineTo(new SKPoint((float)ptInnerRotated.X, (float)ptInnerRotated.Y));
-                path.ArcTo(innerRect,
-                    (float)(totalAngle + sliceAngle).Degrees,
-                    (float)-sliceAngle.Degrees,
-                    false);
-                path.Close();
+                RenderSlice(rp, paint, LineStyle, slice.Fill, outerRadius, (float)sliceAngle.Degrees, (float)totalAngle.Degrees);
             }
 
-            PixelRect rect = new(origin, outerRadius);
-            Drawing.FillPath(rp.Canvas, paint, path, slice.Fill, rect);
-
-            Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
-
-            Coordinates polar = new PolarCoordinates(1.0 * SliceLabelDistance, centerAngle).ToCartesian();
-            polar.Y = -polar.Y;
-            Pixel px = Axes.GetPixel(polar) - origin;
+            Coordinates textPolar = slicePolar
+                .WithRadius(Radius * SliceLabelDistance)
+                .ToCartesian();
+            textPolar.Y = -textPolar.Y;
+            Pixel px = Axes.GetPixel(textPolar) - origin;
             slice.LabelStyle.Render(rp.Canvas, px, paint);
 
             totalAngle += sliceAngle;
-            path.Reset();
         }
     }
 }
