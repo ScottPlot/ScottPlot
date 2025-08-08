@@ -109,6 +109,8 @@ public class RenderManager(Plot plot)
         int maxRenderCount = 5;
         for (int i = 0; i < maxRenderCount; i++)
         {
+            canvas.Clear();
+
             RenderOnce(canvas, rect);
             if (!LastRender.AxisLimitsChanged)
                 return;
