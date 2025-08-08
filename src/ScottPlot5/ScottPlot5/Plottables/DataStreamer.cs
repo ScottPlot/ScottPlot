@@ -1,5 +1,6 @@
 using ScottPlot.AxisLimitManagers;
 using ScottPlot.DataSources;
+using ScottPlot.DataViews;
 
 namespace ScottPlot.Plottables;
 
@@ -25,6 +26,11 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
     public Color MarkerLineColor { get => MarkerStyle.LineColor; set => MarkerStyle.LineColor = value; }
     public Color MarkerColor { get => MarkerStyle.MarkerColor; set => MarkerStyle.MarkerColor = value; }
     public float MarkerLineWidth { get => MarkerStyle.LineWidth; set => MarkerStyle.LineWidth = value; }
+    public bool FillY { get; set; } = false;
+    public double FillYValue { get; set; } = 0;
+    public Color FillYAboveColor { get; set; } = Colors.Blue.WithAlpha(.2);
+    public Color FillYBelowColor { get; set; } = Colors.Blue.WithAlpha(.2);
+    public Color FillYColor { get => FillYAboveColor; set { FillYAboveColor = value; FillYBelowColor = value; } }
 
     public Color Color
     {
@@ -184,7 +190,59 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
 
     public virtual void Render(RenderPack rp)
     {
+        if (Renderer is not IDataStreamerView viewWithSegs)
+        {
+            Renderer.Render(rp);
+            return;
+        }
+
+        var segs = viewWithSegs.GetSegments(rp);
+        if (segs.Count == 0)
+            return;
+
+        if (FillY)
+        {
+            float yBasePx = Axes.YAxis.GetPixel(FillYValue + Data.OffsetY, rp.DataRect);
+
+            using SKPaint paint = new();
+            foreach (Pixel[] seg in segs)
+            {
+                using SKPath path = new();
+                path.MoveTo(seg[0].X, seg[0].Y);
+                for (int i = 1; i < seg.Length; i++)
+                    path.LineTo(seg[i].X, seg[i].Y);
+
+                PixelRect rect = new(seg);
+                using SKPath fill = new(path);
+                fill.LineTo(rect.Right, yBasePx);
+                fill.LineTo(rect.Left, yBasePx);
+
+                // above
+                if (yBasePx > rect.Top)
+                {
+                    PixelRect clip = new(rp.DataRect.Left, rp.DataRect.Right, rp.DataRect.Top, yBasePx);
+                    FillStyle fs = new() { IsVisible = true, Color = FillYAboveColor };
+                    rp.CanvasState.Save();
+                    rp.CanvasState.Clip(clip);
+                    Drawing.FillPath(rp.Canvas, paint, fill, fs, clip);
+                    rp.CanvasState.Restore();
+                }
+
+                // below
+                if (yBasePx < rect.Bottom)
+                {
+                    PixelRect clip = new(rp.DataRect.Left, rp.DataRect.Right, yBasePx, rp.DataRect.Bottom);
+                    FillStyle fs = new() { IsVisible = true, Color = FillYBelowColor };
+                    rp.CanvasState.Save();
+                    rp.CanvasState.Clip(clip);
+                    Drawing.FillPath(rp.Canvas, paint, fill, fs, clip);
+                    rp.CanvasState.Restore();
+                }
+            }
+        }
+
         Renderer.Render(rp);
+
         Data.CountTotalOnLastRender = Data.CountTotal;
     }
 }

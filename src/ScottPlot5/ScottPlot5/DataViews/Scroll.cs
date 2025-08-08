@@ -16,24 +16,55 @@ public class Scroll : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        int dataLength = Streamer.Data.Length;
-        int dataNextIndex = Streamer.Data.NextIndex;
-        int oldPointCount = dataLength - dataNextIndex;
-
-        Pixel[] points = new Pixel[dataLength];
-
-        for (int i = 0; i < dataLength; i++)
+        using SKPaint paint = new();
+        foreach (Pixel[] seg in GetSegments(rp))
         {
-            bool isNewPoint = i < oldPointCount;
-            int sourceIndex = isNewPoint ? dataNextIndex + i : i - oldPointCount;
-            int targetIndex = NewOnRight ? i : dataLength - 1 - i;
-            points[targetIndex] = new(
-                x: Streamer.Axes.GetPixelX(targetIndex * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX),
-                y: Streamer.Axes.GetPixelY(Streamer.Data.Data[sourceIndex] + Streamer.Data.OffsetY));
+            Drawing.DrawLines(rp.Canvas, paint, seg, Streamer.LineStyle);
+            Drawing.DrawMarkers(rp.Canvas, paint, seg, Streamer.MarkerStyle);
+        }
+    }
+
+    public IReadOnlyList<Pixel[]> GetSegments(RenderPack rp)
+    {
+        int cap = Streamer.Data.Length;
+        int samples = Math.Min(Streamer.Data.CountTotal, cap);
+        if (samples < 2)
+            return Array.Empty<Pixel[]>();
+
+        int nextIdx = Streamer.Data.NextIndex;
+        bool wrapped = samples == cap;
+        int oldCnt = wrapped ? cap - nextIdx : 0;
+
+        Span<double> vals = stackalloc double[samples];
+        int dst = 0;
+
+        if (wrapped && oldCnt > 0)
+        {
+            for (int i = 0; i < oldCnt; i++, dst++)
+                vals[dst] = Streamer.Data.Data[nextIdx + i];
         }
 
-        using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, points, Streamer.LineStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, points, Streamer.MarkerStyle);
+        for (int i = 0; i < nextIdx && dst < samples; i++, dst++)
+            vals[dst] = Streamer.Data.Data[i];
+
+        int xShift = NewOnRight ? cap - samples : 0;
+
+        Pixel[] px = new Pixel[samples];
+        for (int screenX = 0; screenX < samples; screenX++)
+        {
+            int valIdx = NewOnRight
+                ? screenX
+                : samples - 1 - screenX;
+
+            int plotIdx = screenX + xShift;
+            double xVal = plotIdx * Streamer.Data.SamplePeriod + Streamer.Data.OffsetX;
+            double yVal = vals[valIdx] + Streamer.Data.OffsetY;
+
+            px[screenX] = new Pixel(
+                Streamer.Axes.GetPixelX(xVal),
+                Streamer.Axes.GetPixelY(yVal));
+        }
+
+        return new[] { px };
     }
 }

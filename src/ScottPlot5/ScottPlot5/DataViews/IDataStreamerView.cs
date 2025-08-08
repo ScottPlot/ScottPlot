@@ -9,4 +9,5 @@ public interface IDataStreamerView
 {
     DataStreamer Streamer { get; }
     void Render(RenderPack rp);
+    IReadOnlyList<Pixel[]> GetSegments(RenderPack rp);
 }
