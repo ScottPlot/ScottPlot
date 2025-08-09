@@ -44,14 +44,12 @@ public abstract class SignalSourceBase
 
     public CoordinateRange GetLimitsX()
     {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.Left, rect.Left);
+        return GetLimits().Rect.XRange;
     }
 
     public CoordinateRange GetLimitsY()
     {
-        CoordinateRect rect = GetLimits().Rect;
-        return new CoordinateRange(rect.Bottom, rect.Bottom);
+        return GetLimits().Rect.YRange;
     }
 
     public abstract SignalRangeY GetLimitsY(int firstIndex, int lastIndex);
