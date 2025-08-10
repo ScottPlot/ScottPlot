@@ -133,6 +133,15 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     }
 
     /// <summary>
+    /// Renders each cell independently.
+    /// </summary>
+    /// <remarks>
+    /// <para>Set this property to <see langword="true"/> to improve clarity when cells cannot be distinctly rendered in SVG output.</para>
+    /// <para><b>⚠ Warning:</b> Enabling this option may reduce performance and significantly increase file size. Evaluate its impact before use.</para>
+    /// </remarks>
+    public bool IndependentCellRendering { get; set; } = false;
+
+    /// <summary>
     /// Actual extent of the heatmap bitmap after alignment has been applied
     /// </summary>
     private CoordinateRect GetAlignedExtent()
@@ -402,18 +411,49 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         }
     }
 
+    /// <summary>
+    /// Independent rendering of cells
+    /// </summary>
+    protected virtual void RenderCell(RenderPack rp)
+    {
+        uint[] argbs = GetArgbValues();
+        var coordinateRect = GetAlignedExtent();
+        for (int h = 0; h < Height; h++)
+        {
+            var offsetY = (Height - 1 - h) * CellHeight;
+            for (int w = 0; w < Width; w++)
+            {
+                var offsetX = w * CellWidth;
+                Drawing.FillRectangle(
+                    rp.Canvas,
+                    Axes.GetPixelRect(new(
+                        coordinateRect.Left + offsetX,
+                        coordinateRect.Left + offsetX + CellWidth,
+                        coordinateRect.Bottom + offsetY,
+                        coordinateRect.Bottom + offsetY + CellHeight)),
+                    Color.FromARGB(argbs[h * Width + w]));
+            }
+        }
+    }
+
     public virtual void Render(RenderPack rp)
     {
         if (Bitmap is null)
             Update(); // automatically generate the bitmap on first render if it was not generated manually
 
-        using SKPaint paint = new()
+        if (IndependentCellRendering)
         {
-            FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
-        };
+            RenderCell(rp);
+        }
+        else
+        {
+            using SKPaint paint = new()
+            {
+                FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
+            };
 
-        SKRect rect = Axes.GetPixelRect(GetAlignedExtent()).ToSKRect();
-
-        rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+            SKRect rect = Axes.GetPixelRect(GetAlignedExtent()).ToSKRect();
+            rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+        }
     }
 }
