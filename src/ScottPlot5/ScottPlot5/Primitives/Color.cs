@@ -23,6 +23,14 @@ public readonly struct Color
         }
     }
 
+    public double Opacity
+    {
+        get
+        {
+            return (Alpha/255) ;
+        }
+    }
+
     public uint PremultipliedARGB
     {
         get
