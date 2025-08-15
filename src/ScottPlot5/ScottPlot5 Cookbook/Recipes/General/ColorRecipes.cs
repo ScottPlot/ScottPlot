@@ -69,7 +69,7 @@ public class ColorRecipes : ICategory
             circle1.FillColor = new Color(red: 255, green: 0, blue: 0, alpha: 128);
             circle2.FillColor = Colors.Green.WithAlpha(.5);
             circle3.FillColor = Colors.Blue.WithAlpha(.5);
-            circle4.FillColor = Colors.Magenta.WithOpacity(Colors.Magenta.Opacity/2);
+            circle4.FillColor = Colors.Magenta.WithOpacity(Colors.Magenta.Opacity / 2);
 
             // set outline style for all circles on the plot
             foreach (var circle in myPlot.GetPlottables<ScottPlot.Plottables.Ellipse>())
