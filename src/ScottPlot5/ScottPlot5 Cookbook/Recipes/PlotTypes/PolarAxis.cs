@@ -16,19 +16,18 @@ public class PolarAxis : ICategory
         public override void Execute()
         {
             // add a polar axis to the plot
-            var polarAxis = myPlot.Add.PolarAxis(radius: 100);
+            var polarAxis = myPlot.Add.PolarAxis();
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
-            foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
+            foreach (double degrees in ScottPlot.Generate.Range(0, 360, 10))
             {
                 // use the polar axis to get X/Y coordinates given a position in polar space
-                double radius = 100 * fraction;
-                double degrees = 360 * fraction;
+                double radius = degrees / 360.0;
                 Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
 
                 // place markers or other plot types using X/Y coordinates like normal
                 var marker = myPlot.Add.Marker(pt);
-                marker.Color = colormap.GetColor(fraction);
+                marker.Color = colormap.GetColor(radius);
             }
         }
     }
@@ -41,17 +40,17 @@ public class PolarAxis : ICategory
         [Test]
         public override void Execute()
         {
-            var polarAxis = myPlot.Add.PolarAxis(radius: 100);
-            polarAxis.Rotation = Angle.FromDegrees(-90);
+            var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.Rotation = Angle.FromDegrees(90); // default direction is counter-clockwise
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
-            foreach (double fraction in ScottPlot.Generate.Range(0, 1, 0.02))
+            foreach (double degrees in ScottPlot.Generate.Range(0, 360, 10))
             {
-                double radius = 100 * fraction;
-                double degrees = 360 * fraction;
+                double radius = degrees / 360.0;
                 Coordinates pt = polarAxis.GetCoordinates(radius, degrees);
+
                 var marker = myPlot.Add.Marker(pt);
-                marker.Color = colormap.GetColor(fraction);
+                marker.Color = colormap.GetColor(radius);
             }
         }
     }
@@ -66,7 +65,7 @@ public class PolarAxis : ICategory
         {
             var polarAxis = myPlot.Add.PolarAxis();
             polarAxis.Clockwise = true;
-            polarAxis.Rotation = Angle.FromDegrees(-90);
+            polarAxis.Rotation = Angle.FromDegrees(-90); // direction will be counter-clockwise
 
             IColormap colormap = new ScottPlot.Colormaps.Turbo();
             foreach (double degrees in ScottPlot.Generate.Range(0, 360, 10))

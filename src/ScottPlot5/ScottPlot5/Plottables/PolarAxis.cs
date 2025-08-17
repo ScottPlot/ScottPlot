@@ -96,8 +96,6 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
     {
         Angle[] angles = new Angle[count];
         double delta = 360.0 / count;
-        if (Clockwise)
-            delta = -delta;
 
         for (int i = 0; i < count; i++)
         {
@@ -105,7 +103,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         }
 
         string[] labels = degreeLabels
-            ? angles.Select(x => Math.Abs(x.Degrees).ToString()).ToArray()
+            ? angles.Select(x => x.Degrees.ToString()).ToArray()
             : new string[count];
 
         SetSpokes(angles, length, labels);
@@ -142,8 +140,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         double delta = 360.0 / labels.Length;
         for (int i = 0; i < labels.Length; i++)
         {
-            double degrees = Clockwise ? -delta * i : delta * i;
-            angles[i] = Angle.FromDegrees(degrees);
+            angles[i] = Angle.FromDegrees(delta * i);
         }
 
         SetSpokes(angles, length, labels);
@@ -178,17 +175,24 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         return point.WithAngle(angleWithRotation).ToCartesian();
     }
 
+    [Obsolete("Set the Clockwise property then call the GetCoordinates() overload that does not pass it in")]
+    public Coordinates[] GetCoordinates(IReadOnlyList<double> values, bool clockwise = false)
+    {
+        Clockwise = clockwise;
+        return GetCoordinates(values);
+    }
+
     /// <summary>
     /// Return coordinates for the given radius values assuming one value per spoke.
     /// </summary>
-    public Coordinates[] GetCoordinates(IReadOnlyList<double> values, bool clockwise = false)
+    public Coordinates[] GetCoordinates(IReadOnlyList<double> radiusValues)
     {
-        if (values.Count != Spokes.Count)
-            throw new ArgumentException($"{nameof(values)} must have a length equal to the number of spokes");
+        if (radiusValues.Count != Spokes.Count)
+            throw new ArgumentException($"{nameof(radiusValues)} must have a length equal to the number of spokes");
 
-        return clockwise
-            ? Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], Spokes[x].Angle)).ToArray()
-            : Enumerable.Range(0, Spokes.Count).Select(x => GetCoordinates(values[x], -Spokes[x].Angle)).ToArray();
+        return Enumerable
+            .Range(0, Spokes.Count).Select(x => GetCoordinates(radiusValues[x], Spokes[x].Angle))
+            .ToArray();
     }
 
     public AxisLimits GetAxisLimits()
@@ -253,18 +257,18 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
 
-        float canvasRotationDegrees = Clockwise ? (float)Rotation.Degrees : -(float)Rotation.Degrees;
-
-        rp.Canvas.RotateDegrees(canvasRotationDegrees);
-
         foreach (var spoke in Spokes)
         {
-            PolarCoordinates tipPoint = new(spoke.Length, spoke.Angle);
+            Angle angle = spoke.Angle + Rotation;
+            if (Clockwise)
+                angle = angle.Inverted;
+
+            PolarCoordinates tipPoint = new(spoke.Length, angle);
             Pixel tipPixel = Axes.GetPixel(tipPoint.ToCartesian()) - Axes.GetPixel(Coordinates.Origin);
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
-            spoke.LabelStyle.Rotation = -canvasRotationDegrees;
+            //spoke.LabelStyle.Rotation = -canvasRotationDegrees;
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
