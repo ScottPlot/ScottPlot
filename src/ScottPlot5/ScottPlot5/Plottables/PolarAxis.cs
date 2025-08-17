@@ -32,7 +32,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
     /// Determines whether angles ascend clockwise or counter-clockwise relative to the origin.
     /// The origin can be effectively changed by setting <see cref="Rotation"/>.
     /// </summary>
-    public bool Clockwise { get; set; } = true;
+    public bool Clockwise { get; set; } = false;
 
     /// <summary>
     /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
