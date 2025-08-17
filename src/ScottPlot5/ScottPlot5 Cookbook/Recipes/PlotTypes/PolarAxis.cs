@@ -56,6 +56,29 @@ public class PolarAxis : ICategory
         }
     }
 
+    public class PolarClockwise : RecipeBase
+    {
+        public override string Name => "Clockwise Polar Axis";
+        public override string Description => "Clockwise polar plots are common for representing spatial orientation.";
+
+        [Test]
+        public override void Execute()
+        {
+            var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.Clockwise = true;
+            polarAxis.Rotation = Angle.FromDegrees(-90);
+
+            IColormap colormap = new ScottPlot.Colormaps.Turbo();
+            foreach (double degrees in ScottPlot.Generate.Range(0, 360, 10))
+            {
+                double fraction = degrees / 360.0;
+                Coordinates pt = polarAxis.GetCoordinates(fraction, degrees);
+                var marker = myPlot.Add.Marker(pt);
+                marker.Color = colormap.GetColor(fraction);
+            }
+        }
+    }
+
     public class PolarAxisArrow : RecipeBase
     {
         public override string Name => "Polar Axis with Arrows";
@@ -72,7 +95,7 @@ public class PolarAxis : ICategory
                 new(30, Angle.FromDegrees(240)),
             ];
 
-            var polarAxis = myPlot.Add.PolarAxis(30);
+            var polarAxis = myPlot.Add.PolarAxis(radius: 30);
             polarAxis.Circles.ForEach(x => x.LinePattern = LinePattern.Dotted);
             polarAxis.Spokes.ForEach(x => x.LinePattern = LinePattern.Dotted);
 

@@ -22,9 +22,17 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
     public List<PolarAxisCircle> Circles { get; } = [];
 
     /// <summary>
-    /// Rotates the axis clockwise from its default position (where 0 points right)
+    /// This value will be added to all angles, effectively rotating the polar axis.
+    /// The default origin angle (0 degrees) is right in 2D Axis space.
+    /// The direction of rotation is defined by <see cref="Clockwise"/>.
     /// </summary>
     public Angle Rotation { get; set; } = Angle.FromDegrees(0);
+
+    /// <summary>
+    /// Determines whether angles ascend clockwise or counter-clockwise relative to the origin.
+    /// The origin can be effectively changed by setting <see cref="Rotation"/>.
+    /// </summary>
+    public bool Clockwise { get; set; } = true;
 
     /// <summary>
     /// If enabled, radial ticks will be drawn using straight lines connecting intersections circles and spokes
@@ -88,13 +96,16 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
     {
         Angle[] angles = new Angle[count];
         double delta = 360.0 / count;
+        if (Clockwise)
+            delta = -delta;
+
         for (int i = 0; i < count; i++)
         {
             angles[i] = Angle.FromDegrees(delta * i);
         }
 
         string[] labels = degreeLabels
-            ? angles.Select(x => x.Degrees.ToString()).ToArray()
+            ? angles.Select(x => Math.Abs(x.Degrees).ToString()).ToArray()
             : new string[count];
 
         SetSpokes(angles, length, labels);
@@ -116,10 +127,14 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         }
     }
 
+
+    [Obsolete("Set the Clockwise property, then call the other SetSpokes() overload", true)]
+    public void SetSpokes(string[] labels, double length, bool clockwise = true) { }
+
     /// <summary>
     /// Replace existing spokes with new ones that have the given labels evenly spaced around the circle
     /// </summary>
-    public void SetSpokes(string[] labels, double length, bool clockwise = true)
+    public void SetSpokes(string[] labels, double length)
     {
         Spokes.Clear();
 
@@ -127,7 +142,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         double delta = 360.0 / labels.Length;
         for (int i = 0; i < labels.Length; i++)
         {
-            double degrees = clockwise ? -delta * i : delta * i;
+            double degrees = Clockwise ? -delta * i : delta * i;
             angles[i] = Angle.FromDegrees(degrees);
         }
 
@@ -155,7 +170,12 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
     /// </summary>
     public Coordinates GetCoordinates(PolarCoordinates point)
     {
-        return point.WithAngle(point.Angle + Rotation).ToCartesian();
+        Angle angleWithRotation = point.Angle + Rotation;
+
+        if (Clockwise)
+            angleWithRotation = angleWithRotation.Inverted;
+
+        return point.WithAngle(angleWithRotation).ToCartesian();
     }
 
     /// <summary>
@@ -232,7 +252,10 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
         rp.Canvas.Translate(origin.X, origin.Y);
-        rp.Canvas.RotateDegrees(-(float)Rotation.Degrees);
+
+        float canvasRotationDegrees = Clockwise ? (float)Rotation.Degrees : -(float)Rotation.Degrees;
+
+        rp.Canvas.RotateDegrees(canvasRotationDegrees);
 
         foreach (var spoke in Spokes)
         {
@@ -241,7 +264,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
             Drawing.DrawLine(rp.Canvas, paint, new Pixel(0, 0), tipPixel, spoke.LineStyle);
 
             spoke.LabelStyle.Text = spoke.LabelText ?? string.Empty;
-            spoke.LabelStyle.Rotation = (float)Rotation.Degrees;
+            spoke.LabelStyle.Rotation = -canvasRotationDegrees;
             spoke.LabelStyle.Alignment = Alignment.MiddleCenter;
 
             PolarCoordinates labelPoint = new(spoke.LabelLength, tipPoint.Angle);
