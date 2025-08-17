@@ -6,9 +6,11 @@ public struct Angle
 
     public double Radians
     {
-        get => Degrees * Math.PI / 180;
+        readonly get => Degrees * Math.PI / 180;
         set => Degrees = value * 180 / Math.PI;
     }
+
+    public readonly Angle Inverted => FromDegrees(-Degrees);
 
     public readonly Angle Normalized
     {
@@ -87,5 +89,25 @@ public struct Angle
     public static Angle operator %(Angle a, double b)
     {
         return FromDegrees(a.Degrees % b);
+    }
+
+    public static bool operator ==(Angle a, Angle b)
+    {
+        return a.Degrees == b.Degrees;
+    }
+
+    public static bool operator !=(Angle a, Angle b)
+    {
+        return a.Degrees != b.Degrees;
+    }
+
+    public readonly override bool Equals(object? obj)
+    {
+        return obj is Angle other && Degrees == other.Degrees;
+    }
+
+    public readonly override int GetHashCode()
+    {
+        return Degrees.GetHashCode();
     }
 }
