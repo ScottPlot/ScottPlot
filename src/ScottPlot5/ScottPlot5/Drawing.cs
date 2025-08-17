@@ -342,7 +342,7 @@ public static class Drawing
         canvas.DrawCircle(center.ToSKPoint(), radius, paint);
     }
 
-    [Obsolete("use FillCircle()", false)]
+    [Obsolete("use FillCircle() instead of DrawCircle() when passing in a FillStyle", false)]
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
     {
         FillCircle(canvas, center, radius, fillStyle, paint);
