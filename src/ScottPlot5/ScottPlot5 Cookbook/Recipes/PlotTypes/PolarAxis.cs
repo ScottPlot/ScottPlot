@@ -252,6 +252,7 @@ public class PolarAxis : ICategory
         public override void Execute()
         {
             var polarAxis = myPlot.Add.PolarAxis();
+            polarAxis.Clockwise = true;
             polarAxis.Rotation = Angle.FromDegrees(-90);
 
             // add labeled spokes
@@ -263,7 +264,7 @@ public class PolarAxis : ICategory
             polarAxis.SetCircles(ticks);
 
             // convert radar values to coordinates
-            double[] values1 = { 5, 4, 5, 2, 3 };
+            double[] values1 = { 5, 4, 3, 2, 3 };
             double[] values2 = { 2, 3, 2, 4, 2 };
             Coordinates[] cs1 = polarAxis.GetCoordinates(values1);
             Coordinates[] cs2 = polarAxis.GetCoordinates(values2);
