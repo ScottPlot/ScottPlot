@@ -26,6 +26,7 @@ _Not yet on NuGet..._
 * Plot: Added `FigureBorder` and `DataBorder` for displaying custom borders on plots and subplots (#4854, #5024) @CoderPM2011
 * Angle: Added `Inverted` property and support for `Angle` comparison using equality operators
 * Polar Axis: Added a `Clockwise` property to support clockwise and counter-clockwise translation between Polar and Cartesian coordinates (#5028, #4884, #5046) @CoderPM2011, @mattwelch2000
+* WinUI: Improved support for plots with transparent backgrounds (#5026, #5029) @diluculo
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
