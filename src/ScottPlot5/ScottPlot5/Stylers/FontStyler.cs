@@ -14,8 +14,8 @@ public class FontStyler(Plot plot)
     public SKTypeface? Set(string fontName, FontWeight weight = FontWeight.Normal,
         FontSlant slant = FontSlant.Upright, FontSpacing spacing = FontSpacing.Normal)
     {
-        // do nothing if the font can't be located
-        using SKTypeface? typeFace = Fonts.GetTypeface(fontName, weight, slant, spacing);
+        // do nothing if the font can't be located.
+        SKTypeface? typeFace = Fonts.GetTypeface(fontName, weight, slant, spacing);
         if (typeFace is null)
             return null;
 
