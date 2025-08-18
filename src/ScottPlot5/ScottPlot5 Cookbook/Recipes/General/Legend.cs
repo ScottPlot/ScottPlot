@@ -114,20 +114,20 @@ public class Legend : ICategory
 
     public class LegendOverrideSymbol : RecipeBase
     {
-        public override string Name => "Legend Default Marker";
-        public override string Description => @"You can override the default rectangular marker used when rendering the legend.  It also maintains the desired marker for manually added items.";
+        public override string Name => "Legend Marker Shape Override";
+        public override string Description => "Use the legend shape override " +
+            "to force all legend items to display using the given marker shape.";
 
         [Test]
         public override void Execute()
         {
+            myPlot.Legend.MarkerShapeOverride = MarkerShape.FilledCircle;
+
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));
             sig1.LegendText = "Sin";
 
             var sig2 = myPlot.Add.Signal(Generate.Cos(51));
             sig2.LegendText = "Cos";
-
-            myPlot.Legend.MarkerShapeDefault = MarkerShape.FilledCircle;
-
 
             LegendItem item1 = new()
             {
