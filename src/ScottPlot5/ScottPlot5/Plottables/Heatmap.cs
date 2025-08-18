@@ -285,6 +285,12 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// <summary>
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
+    private uint[]? CellColors = null;
+
+    /// <summary>
+    /// Generated and stored when calling <see cref="Render"/>,
+    /// and cleared when calling <see cref="Update"/> due to updates.
+    /// </summary>
     private SKBitmap? Bitmap = null;
 
     ~Heatmap()
@@ -344,9 +350,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     public void Update()
     {
         DataRange = Range.GetRange(Intensities);
-        uint[] argbs = GetArgbValues();
+        CellColors = GetArgbValues();
         Bitmap?.Dispose();
-        Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
+        Bitmap = null;
     }
 
     public AxisLimits GetAxisLimits()
@@ -416,7 +422,6 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     protected virtual void RenderCell(RenderPack rp)
     {
-        uint[] argbs = GetArgbValues();
         CoordinateRect coordinateRect = GetAlignedExtent();
         for (int h = 0; h < Height; h++)
         {
@@ -429,7 +434,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                     coordinateRect.Left + offsetX + CellWidth,
                     coordinateRect.Bottom + offsetY,
                     coordinateRect.Bottom + offsetY + CellHeight));
-                Color cellColor = Color.FromARGB(argbs[h * Width + w]);
+                Color cellColor = Color.FromARGB(CellColors[h * Width + w]);
                 Drawing.FillRectangle(rp.Canvas, cellRect, cellColor);
                 Drawing.DrawRectangle(rp.Canvas, cellRect, cellColor);
             }
@@ -438,7 +443,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public virtual void Render(RenderPack rp)
     {
-        if (Bitmap is null)
+        if (CellColors is null)
             Update(); // automatically generate the bitmap on first render if it was not generated manually
 
         if (IndependentCellRendering)
@@ -447,6 +452,8 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         }
         else
         {
+            Bitmap ??= Drawing.BitmapFromArgbs(CellColors!, Width, Height);
+
             using SKPaint paint = new()
             {
                 FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
