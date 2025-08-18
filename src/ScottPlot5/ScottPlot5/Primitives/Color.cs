@@ -27,7 +27,7 @@ public readonly struct Color
     {
         get
         {
-            return (Alpha / 255);
+            return (Alpha / 255.0);
         }
     }
 
