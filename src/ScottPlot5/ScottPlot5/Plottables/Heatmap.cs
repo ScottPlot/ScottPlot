@@ -417,21 +417,21 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     protected virtual void RenderCell(RenderPack rp)
     {
         uint[] argbs = GetArgbValues();
-        var coordinateRect = GetAlignedExtent();
+        CoordinateRect coordinateRect = GetAlignedExtent();
         for (int h = 0; h < Height; h++)
         {
             var offsetY = (Height - 1 - h) * CellHeight;
             for (int w = 0; w < Width; w++)
             {
-                var offsetX = w * CellWidth;
-                Drawing.FillRectangle(
-                    rp.Canvas,
-                    Axes.GetPixelRect(new(
-                        coordinateRect.Left + offsetX,
-                        coordinateRect.Left + offsetX + CellWidth,
-                        coordinateRect.Bottom + offsetY,
-                        coordinateRect.Bottom + offsetY + CellHeight)),
-                    Color.FromARGB(argbs[h * Width + w]));
+                double offsetX = w * CellWidth;
+                PixelRect cellRect = Axes.GetPixelRect(new(
+                    coordinateRect.Left + offsetX,
+                    coordinateRect.Left + offsetX + CellWidth,
+                    coordinateRect.Bottom + offsetY,
+                    coordinateRect.Bottom + offsetY + CellHeight));
+                Color cellColor = Color.FromARGB(argbs[h * Width + w]);
+                Drawing.FillRectangle(rp.Canvas, cellRect, cellColor);
+                Drawing.DrawRectangle(rp.Canvas, cellRect, cellColor);
             }
         }
     }
