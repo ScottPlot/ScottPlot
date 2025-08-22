@@ -303,9 +303,10 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             // - if user gave one, keep it
             // - else, if a default is configured, use that
             bool noExplicitShape = item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape == MarkerShape.None;
-            if (noExplicitShape && MarkerShapeDefault != MarkerShape.None)
+
+            if (noExplicitShape && MarkerShapeOverride.HasValue)
             {
-                item.MarkerStyle.Shape = MarkerShapeDefault;
+                item.MarkerStyle.Shape = MarkerShapeOverride.Value;
                 if (item.MarkerColor == Colors.Transparent)
                     item.MarkerColor = Colors.Black;
 

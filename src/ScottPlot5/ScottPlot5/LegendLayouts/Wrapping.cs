@@ -45,10 +45,10 @@ public class Wrapping : ILegendLayout
             PixelRect itemRect = new(nextPixel, new PixelSize(itemWidth, maxItemHeight));
             itemRect = itemRect.Intersect(maxRectAfterPadding);
 
-            float thisSymbol = Math.Max(legend.SymbolWidth, items[i].MarkerStyle.Size);
-            symbolRects[i] = new(itemRect.Left, itemRect.Left + thisSymbol, itemRect.Bottom, itemRect.Top);
+            float thisSymbolWidth = Math.Max(legend.SymbolWidth, items[i].MarkerStyle.Size);
+            symbolRects[i] = new(itemRect.Left, itemRect.Left + thisSymbolWidth, itemRect.Bottom, itemRect.Top);
             labelRects[i] = new(
-                left: itemRect.Left + thisSymbol + legend.SymbolPadding,
+                left: itemRect.Left + thisSymbolWidth + legend.SymbolPadding,
                 right: itemRect.Right,
                 bottom: itemRect.Bottom,
                 top: itemRect.Top);
