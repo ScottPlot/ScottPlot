@@ -50,7 +50,6 @@ public abstract class RecipeBase : IRecipe
         string saveAs = Path.Combine(Paths.OutputImageFolder, imageFilename);
         Directory.CreateDirectory(Paths.OutputImageFolder);
         myPlot.SavePng(saveAs, ImageWidth, ImageHeight);
-        string localImageUrl = new Uri(saveAs).AbsoluteUri;
-        Console.WriteLine($"Local Image URL: {localImageUrl}");
+        Console.WriteLine(new Uri(saveAs).AbsoluteUri);
     }
 }
