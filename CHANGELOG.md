@@ -30,6 +30,7 @@ _Not yet on NuGet..._
 * Font: Added `Fonts.Reset()` to restore default styling options (#5013) @aespitia
 * Legend: Respect marker size when a default marker shape is used (#5006, #5031) @manaruto @aespitia 
 * Legend: Improve appearance of large markers in legends (#4999, #5031) @manaruto @winsrp
+* Cookbook: Improve developer experience when generating images using the Visual Studio Test Runner (#4882, #5032) @CoderPM2011
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
