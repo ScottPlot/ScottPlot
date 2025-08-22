@@ -5,7 +5,11 @@ public class Radar() : IPlottable, IManagesAxisLimits
     /// <summary>
     /// The polar axis drawn beneath each radar series polygon
     /// </summary>
-    public PolarAxis PolarAxis { get; set; } = new() { Rotation = Angle.FromDegrees(90) };
+    public PolarAxis PolarAxis { get; set; } = new()
+    {
+        Rotation = Angle.FromDegrees(-90),
+        Clockwise = true,
+    };
 
     /// <summary>
     /// A collection of RadarSeries, each of which hold a set of values and the styling information that controls how the shape is rendered
@@ -59,7 +63,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
 
         for (int i = 0; i < Series.Count; i++)
         {
-            Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values, clockwise: true);
+            Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values);
             Pixel[] pixels = cs1.Select(Axes.GetPixel).ToArray();
             Drawing.FillPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
             Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);

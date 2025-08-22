@@ -40,6 +40,7 @@ public abstract class RecipeBase : IRecipe
     public void ResetRandomNumberGenerator()
     {
         Generate.RandomData.Seed(0);
+        Fonts.Reset();
     }
 
     [TearDown]

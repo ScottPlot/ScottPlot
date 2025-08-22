@@ -122,7 +122,13 @@ public class RenderManager(Plot plot)
 
         IsRendering = true;
 
-        // TODO: make this an object
+        // If the figure background is semi-transparent, clear early in the render pipeline
+        // to compensate for WinUI issues. https://github.com/ScottPlot/ScottPlot/issues/5026
+        if (ClearCanvasBeforeEachRender && Plot.FigureBackground.Color.A < 255)
+        {
+            canvas.Clear();
+        }
+
         List<(string, TimeSpan)> actionTimes = [];
 
         using RenderPack rp = new(Plot, rect, canvas);
