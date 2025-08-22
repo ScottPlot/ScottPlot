@@ -24,6 +24,7 @@ internal static class Extensions
         Console.WriteLine(filePath);
 
         img.SavePng(filePath);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 
     internal static void SaveTestImage(this SKSurface surface)
@@ -44,6 +45,7 @@ internal static class Extensions
         Console.WriteLine(filePath);
 
         img.SavePng(filePath);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 
     internal static void SaveTestImage(this Plot plt, int width = 600, int height = 400, string subName = "")
@@ -65,6 +67,7 @@ internal static class Extensions
         Console.WriteLine(filePath);
 
         plt.SavePng(filePath, width, height);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 
     internal static void SaveTestSvg(this Plot plt, int width = 600, int height = 400, string subName = "")
@@ -86,6 +89,7 @@ internal static class Extensions
         Console.WriteLine(filePath);
 
         plt.SaveSvg(filePath, width, height);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 
     internal static void SaveTestImage(this SKBitmap bmp, string subName = "")
@@ -110,6 +114,7 @@ internal static class Extensions
         // actually save the thing
         using SKFileWStream fs = new(filePath);
         bmp.Encode(fs, SKEncodedImageFormat.Png, quality: 100);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 
     internal static void SaveTestString(this string s, string extension = ".html")
@@ -130,6 +135,7 @@ internal static class Extensions
 
         // actually save the thing
         File.WriteAllText(filePath, s);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 
     internal static PlotAssertions Should(this Plot plot)
@@ -156,5 +162,6 @@ internal static class Extensions
         Console.WriteLine(filePath);
 
         multiplot.SavePng(filePath, width, height);
+        Console.WriteLine(new Uri(filePath).AbsoluteUri);
     }
 }
