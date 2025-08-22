@@ -114,7 +114,10 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 
-    public MarkerShape MarkerShapeDefault { get; set; } = MarkerShape.None;
+    /// <summary>
+    /// If supplied, always use this marker shape
+    /// </summary>
+    public MarkerShape? MarkerShapeOverride { get; set; } = null;
 
     public bool DisplayPlottableLegendItems { get; set; } = true;
 
@@ -305,6 +308,10 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 item.MarkerStyle.Shape = MarkerShapeDefault;
                 if (item.MarkerColor == Colors.Transparent)
                     item.MarkerColor = Colors.Black;
+
+                // NOTE: Some plottables like signal plots have dynamically sized markers that can get very small
+                if (item.MarkerSize < 5)
+                    item.MarkerSize = item.LabelFontSize;
             }
             else
             {

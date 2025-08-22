@@ -99,6 +99,8 @@ public class Radar : ICategory
             };
 
             var radar = myPlot.Add.Radar(values);
+            radar.Series[0].LegendText = "A";
+            radar.Series[1].LegendText = "B";
 
             string[] spokeLabels = { "Wins", "Poles", "Podiums", "Points", "DNFs" };
             radar.PolarAxis.SetSpokes(spokeLabels, length: 110);
