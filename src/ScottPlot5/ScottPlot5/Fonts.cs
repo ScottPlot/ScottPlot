@@ -31,14 +31,15 @@ public static class Fonts
         FontResolvers.Add(resolver);
     }
 
-    /// <summary>
-    /// This font is used for almost all text rendering.
-    /// </summary>
-    public static string Default { get; set; } = SystemFontResolver.InstalledSansFont();
     public static FontWeight? DefaultWeight { get; set; }
     public static FontSlant? DefaultSlant { get; set; }
     public static FontSpacing? DefaultWidth { get; set; }
     public static SKTypeface? DefaultFontStyle { get; set; }
+
+    /// <summary>
+    /// This font is used for almost all text rendering.
+    /// </summary>
+    public static string Default { get; set; } = SystemFontResolver.InstalledSansFont();
 
     /// <summary>
     /// Name of a sans-serif font present on the system
@@ -289,4 +290,17 @@ public static class Fonts
     }
 
     #endregion
+
+    public static void Reset()
+    {
+        DefaultWeight = null;
+        DefaultSlant = null;
+        DefaultWidth = null;
+        DefaultFontStyle = null;
+
+        Default = SystemFontResolver.InstalledSansFont();
+        Sans = SystemFontResolver.InstalledSansFont();
+        Serif = SystemFontResolver.InstalledSerifFont();
+        Monospace = SystemFontResolver.InstalledMonospaceFont();
+    }
 }
