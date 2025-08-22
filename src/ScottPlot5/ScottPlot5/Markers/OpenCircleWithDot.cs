@@ -10,6 +10,7 @@ internal class OpenCircleWithDot : IMarker
         float dotRadius = markerStyle.LineStyle.Width > 0
             ? markerStyle.LineStyle.Width
             : 1;
-        Drawing.DrawCircle(canvas, center, dotRadius, markerStyle.FillStyle, paint);
+
+        Drawing.FillCircle(canvas, center, dotRadius, markerStyle.FillStyle, paint);
     }
 }
