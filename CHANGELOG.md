@@ -28,6 +28,8 @@ _Not yet on NuGet..._
 * Polar Axis: Added a `Clockwise` property to support clockwise and counter-clockwise translation between Polar and Cartesian coordinates (#5028, #4884, #5046) @CoderPM2011, @mattwelch2000
 * WinUI: Improved support for plots with transparent backgrounds (#5026, #5029) @diluculo
 * Font: Added `Fonts.Reset()` to restore default styling options (#5013) @aespitia
+* Legend: Respect marker size when a default marker shape is used (#5006, #5031) @manaruto @aespitia 
+* Legend: Improve appearance of large markers in legends (#4999, #5031) @manaruto @winsrp
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
