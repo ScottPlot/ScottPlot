@@ -121,6 +121,7 @@ public class Legend : ICategory
         [Test]
         public override void Execute()
         {
+            // this shape will be used for legend items without defined markers
             myPlot.Legend.MarkerShapeOverride = MarkerShape.FilledCircle;
 
             var sig1 = myPlot.Add.Signal(Generate.Sin(51));

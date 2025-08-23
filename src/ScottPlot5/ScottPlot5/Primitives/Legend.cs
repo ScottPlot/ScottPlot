@@ -290,10 +290,6 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         PixelRect clipRect = layout.LegendRect.Contract(Padding).Expand(1f);
         canvasState.Clip(clipRect);
 
-        // local fallback helper, only use font size if no size was set
-        static float EffectiveMarkerSize(LegendItem it)
-            => (it.MarkerStyle.Size > 0) ? it.MarkerStyle.Size : it.LabelFontSize;
-
         // render items inside the legend
         for (int i = 0; i < layout.LegendItems.Length; i++)
         {
@@ -304,29 +300,19 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            // choose a marker shape:
-            // - if user gave one, keep it
-            // - else, if a default is configured, use that
-            bool noExplicitShape = item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape == MarkerShape.None;
-
-            if (noExplicitShape && MarkerShapeOverride.HasValue)
+            if (MarkerShapeOverride.HasValue)
             {
-                item.MarkerStyle.Shape = MarkerShapeOverride.Value;
+                item.MarkerShape = MarkerShapeOverride.Value;
+
                 if (item.MarkerColor == Colors.Transparent)
                     item.MarkerColor = Colors.Black;
 
                 // NOTE: Some plottables like signal plots have dynamically sized markers that can get very small
-                if (item.MarkerSize < 5)
-                    item.MarkerSize = item.LabelFontSize;
+                item.MarkerSize = Math.Max(item.LabelFontSize, item.MarkerSize);
+                item.LineStyle.IsVisible = false;
+                item.FillStyle.IsVisible = false;
+                item.ArrowStyle.IsVisible = false;
             }
-            else
-            {
-                if (item.MarkerShape != MarkerShape.None)
-                    item.MarkerStyle.Shape = item.MarkerShape;
-            }
-
-            // respect user size, only fallback if not set
-            item.MarkerStyle.Size = EffectiveMarkerSize(item);
 
             item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
