@@ -35,6 +35,7 @@ _Not yet on NuGet..._
 * Heatmap: Added a `RenderStrategy` property so users can use custom rendering logic (#5035) @bclehmann
 * Heatmap: Added `Heatmap.RenderStrategies.Rectangles` to improve SVG support by drawing each cell of a heatmap as a distinct rectangle (#4950, #5020, #5035) @CoderPM2011 @bclehmann @MRC-Karel
 * Color: Added an `Opacity` property to compliment `WithOpacity()` which represents opacity as a fractional value (#5041, #5024) @aespitia, @bclehmann
+* Axis Line: Improve alignment of horizontal line labels on the right side of multi-axis plots (#5052) @afunc233
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
