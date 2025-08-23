@@ -1,7 +1,7 @@
 name: Bump Version
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # careful! you may skip a version by accident.
   workflow_call:
     secrets:
       GH_TOKEN:
@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
+          ref: main
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -30,6 +31,7 @@ jobs:
         run: dotnet run --project "./dev/BumpVersion/"
       - name: Commit changes
         run: |
-          git commit -am "ScottPlot: bump csproj file versions"
+          git add --all
+          git commit -m "ScottPlot: bump version"
       - name: Push changes
-        run: git push
+        run: git push origin HEAD:main
