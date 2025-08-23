@@ -33,7 +33,7 @@ _Not yet on NuGet..._
 * Cookbook: Improve developer experience when generating images using the Visual Studio Test Runner (#4882, #5032) @CoderPM2011
 * Signal: Improve horizontal range accuracy reported by signal plot data sources (#4868, #5033) @CoderPM2011, @dirk-de-bugger, @StendProg
 * Heatmap: Added a `RenderStrategy` property so users can use custom rendering logic (#5035) @bclehmann
-* Heatmap: Added `Heatmap.RenderStrategies.Rectangles` to improve SVG support by drawing each cell of a heatmap as a distinct rectangle (#4950, #5020, #5035) @CoderPM2011 @bclehmann
+* Heatmap: Added `Heatmap.RenderStrategies.Rectangles` to improve SVG support by drawing each cell of a heatmap as a distinct rectangle (#4950, #5020, #5035) @CoderPM2011 @bclehmann @MRC-Karel
 
 ## ScottPlot 5.0.55
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-03-22_
