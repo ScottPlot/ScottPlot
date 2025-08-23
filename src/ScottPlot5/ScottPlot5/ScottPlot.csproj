@@ -48,15 +48,15 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="SkiaSharp" Version="2.88.9" />
-        <PackageReference Include="SkiaSharp.HarfBuzz" Version="2.88.9" />
-        <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="7.3.0.3" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.9" />
+        <PackageReference Include="SkiaSharp" Version="3.119.0" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="8.3.1.1" />
     </ItemGroup>
 
     <!-- Packages allowing modern C# language features to be used in .NET Framework project -->
     <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Include="System.ValueTuple" Version="4.6.1" />
     </ItemGroup>
 
 </Project>
