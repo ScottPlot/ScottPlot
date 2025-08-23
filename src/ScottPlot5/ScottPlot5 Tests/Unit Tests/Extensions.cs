@@ -21,7 +21,6 @@ internal static class Extensions
 
         string fileName = callingMethod + ".png";
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         img.SavePng(filePath);
         Console.WriteLine(new Uri(filePath).AbsoluteUri);
@@ -42,7 +41,6 @@ internal static class Extensions
 
         string fileName = callingMethod + ".png";
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         img.SavePng(filePath);
         Console.WriteLine(new Uri(filePath).AbsoluteUri);
@@ -64,7 +62,6 @@ internal static class Extensions
 
         string fileName = callingMethod + subName + ".png";
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         plt.SavePng(filePath, width, height);
         Console.WriteLine(new Uri(filePath).AbsoluteUri);
@@ -86,7 +83,6 @@ internal static class Extensions
 
         string fileName = callingMethod + subName + ".svg";
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         plt.SaveSvg(filePath, width, height);
         Console.WriteLine(new Uri(filePath).AbsoluteUri);
@@ -109,7 +105,6 @@ internal static class Extensions
 
         string fileName = callingMethod + subName + ".png";
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         // actually save the thing
         using SKFileWStream fs = new(filePath);
@@ -131,7 +126,6 @@ internal static class Extensions
 
         string fileName = callingMethod + extension;
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         // actually save the thing
         File.WriteAllText(filePath, s);
@@ -159,7 +153,6 @@ internal static class Extensions
 
         string fileName = callingMethod + subName + ".png";
         string filePath = Path.Combine(saveFolder, fileName);
-        Console.WriteLine(filePath);
 
         multiplot.SavePng(filePath, width, height);
         Console.WriteLine(new Uri(filePath).AbsoluteUri);
