@@ -272,9 +272,8 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     {
         LastRenderSize = layout.LegendRect.Size;
 
-        using SKPaint paint = new();
-
         // render the legend panel
+        using SKPaint paint = new();
         PixelRect shadowRect = layout.LegendRect.WithOffset(ShadowOffset);
         Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFillStyle);
         Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFillStyle);
@@ -283,9 +282,12 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         CanvasState canvasState = new(canvas);
         canvasState.Save();
 
-        PixelRect clipRect = layout.LegendRect.Contract(Padding).Expand(1.0f);
-
+        PixelRect clipRect = layout.LegendRect.Contract(Padding).Expand(1f);
         canvasState.Clip(clipRect);
+
+        // local fallback helper, only use font size if no size was set
+        static float EffectiveMarkerSize(LegendItem it)
+            => (it.MarkerStyle.Size > 0) ? it.MarkerStyle.Size : it.LabelFontSize;
 
         // render items inside the legend
         for (int i = 0; i < layout.LegendItems.Length; i++)
@@ -297,10 +299,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
-            if (MarkerShapeOverride.HasValue)
-            {
-                item.MarkerShape = MarkerShapeOverride.Value;
+            // choose a marker shape:
+            // - if user gave one, keep it
+            // - else, if a default is configured, use that
+            bool noExplicitShape = item.MarkerShape == MarkerShape.None && item.MarkerStyle.Shape == MarkerShape.None;
 
+            if (noExplicitShape && MarkerShapeOverride.HasValue)
+            {
+                item.MarkerStyle.Shape = MarkerShapeOverride.Value;
                 if (item.MarkerColor == Colors.Transparent)
                     item.MarkerColor = Colors.Black;
 
@@ -308,6 +314,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 if (item.MarkerSize < 5)
                     item.MarkerSize = item.LabelFontSize;
             }
+            else
+            {
+                if (item.MarkerShape != MarkerShape.None)
+                    item.MarkerStyle.Shape = item.MarkerShape;
+            }
+
+            // respect user size, only fallback if not set
+            item.MarkerStyle.Size = EffectiveMarkerSize(item);
 
             item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
 
@@ -317,6 +331,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
             }
 
+            // draw symbol components
             item.LineStyle.Render(canvas, symbolLine, paint);
             item.FillStyle.Render(canvas, symbolFillRect, paint);
             item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
