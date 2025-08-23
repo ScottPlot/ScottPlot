@@ -40,7 +40,6 @@ public abstract class RecipeBase : IRecipe
     public void ResetRandomNumberGenerator()
     {
         Generate.RandomData.Seed(0);
-        Fonts.Reset();
     }
 
     [TearDown]
@@ -52,5 +51,6 @@ public abstract class RecipeBase : IRecipe
         Directory.CreateDirectory(Paths.OutputImageFolder);
         myPlot.SavePng(saveAs, ImageWidth, ImageHeight);
         Console.WriteLine(new Uri(saveAs).AbsoluteUri);
+        Fonts.Reset();
     }
 }
