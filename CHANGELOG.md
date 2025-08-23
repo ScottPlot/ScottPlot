@@ -1,5 +1,8 @@
-## ScottPlot 5.0.56
+## ScottPlot 5.0.57
 _Not yet on NuGet..._
+
+## ScottPlot 5.0.56
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_
 * Statistics: Added support for kernel density estimation with Epanechnikov, Gaussian, Uniform, and Triangular strategies. Scott's rule (no relation) was implemented for bandwidth estimation (#4869) @bclehmann
 * Radar: Added a `IsAxisAboveData` property to allow the axes to be rendered on top of the data series (#4874) @Christoph-Wagner
 * Scatter: Add support for vertically oriented gradient fills (#4881) @manaruto
