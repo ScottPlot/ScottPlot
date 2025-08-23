@@ -218,7 +218,9 @@ namespace SkiaSharp.Views.WPF
             {
                 // start drawing
 #pragma warning disable CS0618 // Type or member is obsolete
+#if false
                 OnPaintSurface(new SKPaintGLSurfaceEventArgs(surface, renderTarget, surfaceOrigin, colorType, glInfo));
+#endif
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
