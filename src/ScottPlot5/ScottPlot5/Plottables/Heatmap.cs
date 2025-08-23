@@ -133,18 +133,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     }
 
     /// <summary>
-    /// Renders each cell independently.
-    /// </summary>
-    /// <remarks>
-    /// <para>Set this property to <see langword="true"/> to improve clarity when cells cannot be distinctly rendered in SVG output.</para>
-    /// <para><b>⚠ Warning:</b> Enabling this option may reduce performance and significantly increase file size. Evaluate its impact before use.</para>
-    /// </remarks>
-    public bool IndependentCellRendering { get; set; } = false;
-
-    /// <summary>
     /// Actual extent of the heatmap bitmap after alignment has been applied
     /// </summary>
-    private CoordinateRect GetAlignedExtent()
+    public CoordinateRect GetAlignedExtent()
     {
         double xOffset = Math.Abs(CellWidth) * CellAlignment.HorizontalFraction();
         double yOffset = Math.Abs(CellHeight) * CellAlignment.VerticalFraction();
@@ -285,13 +276,18 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// <summary>
     /// Generated and stored when <see cref="Update"/> is called
     /// </summary>
-    private uint[]? CellColors = null;
+    private uint[] CellColors = null!;
 
     /// <summary>
     /// Generated and stored when calling <see cref="Render"/>,
     /// and cleared when calling <see cref="Update"/> due to updates.
     /// </summary>
     private SKBitmap? Bitmap = null;
+
+    /// <summary>
+    /// Change this to customize how heatmap values are rendered
+    /// </summary>
+    public IRenderStrategy RenderStrategy { get; set; } = new RenderStrategies.Bitmap();
 
     ~Heatmap()
     {
@@ -402,8 +398,6 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     public Range DataRange { get; private set; }
 
 
-    private Range? _ManualRange;
-
     /// <summary>
     /// If supplied, the colormap will span this range of values
     /// </summary>
@@ -416,51 +410,76 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             Update();
         }
     }
-
-    /// <summary>
-    /// Independent rendering of cells
-    /// </summary>
-    protected virtual void RenderCell(RenderPack rp)
-    {
-        CoordinateRect coordinateRect = GetAlignedExtent();
-        for (int h = 0; h < Height; h++)
-        {
-            var offsetY = (Height - 1 - h) * CellHeight;
-            for (int w = 0; w < Width; w++)
-            {
-                double offsetX = w * CellWidth;
-                PixelRect cellRect = Axes.GetPixelRect(new(
-                    coordinateRect.Left + offsetX,
-                    coordinateRect.Left + offsetX + CellWidth,
-                    coordinateRect.Bottom + offsetY,
-                    coordinateRect.Bottom + offsetY + CellHeight));
-                Color cellColor = Color.FromARGB(CellColors[h * Width + w]);
-                Drawing.FillRectangle(rp.Canvas, cellRect, cellColor);
-                Drawing.DrawRectangle(rp.Canvas, cellRect, cellColor);
-            }
-        }
-    }
+    private Range? _ManualRange = null;
 
     public virtual void Render(RenderPack rp)
     {
         if (CellColors is null)
-            Update(); // automatically generate the bitmap on first render if it was not generated manually
-
-        if (IndependentCellRendering)
         {
-            RenderCell(rp);
+            // Updating is required before rendering to update colors, generate bitmap, etc.
+            // If not called manually before the first render it gets called automatically.
+            Update();
         }
-        else
+
+        RenderStrategy.Render(rp, this);
+    }
+
+    public interface IRenderStrategy
+    {
+        void Render(RenderPack rp, Heatmap hm);
+    }
+
+    public static class RenderStrategies
+    {
+        /// <summary>
+        /// Create a bitmap in memory sized the same as the heatmap data, 
+        /// fill its pixels with colors according to the data and colormap,
+        /// then render the heatmap as an image. This enables features like
+        /// smoothing on most (but not all) platforms.
+        /// </summary>
+        public class Bitmap() : IRenderStrategy
         {
-            Bitmap ??= Drawing.BitmapFromArgbs(CellColors!, Width, Height);
-
-            using SKPaint paint = new()
+            public void Render(RenderPack rp, Heatmap hm)
             {
-                FilterQuality = Smooth ? SKFilterQuality.High : SKFilterQuality.None
-            };
+                hm.Bitmap ??= Drawing.BitmapFromArgbs(hm.CellColors, hm.Width, hm.Height);
 
-            SKRect rect = Axes.GetPixelRect(GetAlignedExtent()).ToSKRect();
-            rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+                using SKPaint paint = new()
+                {
+                    FilterQuality = hm.Smooth ? SKFilterQuality.High : SKFilterQuality.None
+                };
+
+                SKRect rect = hm.Axes.GetPixelRect(hm.GetAlignedExtent()).ToSKRect();
+                rp.Canvas.DrawBitmap(hm.Bitmap, rect, paint);
+            }
+        }
+
+        /// <summary>
+        /// Render cells as a distinct rectangles instead of pixels on a single bitmap.
+        /// This is very inefficient, but may be required for some platforms (like SVG)
+        /// where low-pixel bitmaps are rendered with smoothing by default.
+        /// </summary>
+        public class Rectangles : IRenderStrategy
+        {
+            public void Render(RenderPack rp, Heatmap hm)
+            {
+                CoordinateRect rect = hm.GetAlignedExtent();
+                for (int h = 0; h < hm.Height; h++)
+                {
+                    var offsetY = (hm.Height - 1 - h) * hm.Height;
+                    for (int w = 0; w < hm.Width; w++)
+                    {
+                        double offsetX = w * hm.Width;
+                        PixelRect cellRect = hm.Axes.GetPixelRect(new(
+                            rect.Left + offsetX,
+                            rect.Left + offsetX + hm.Width,
+                            rect.Bottom + offsetY,
+                            rect.Bottom + offsetY + hm.Height));
+                        Color cellColor = Color.FromARGB(hm.CellColors[h * hm.Width + w]);
+                        Drawing.FillRectangle(rp.Canvas, cellRect, cellColor);
+                        Drawing.DrawRectangle(rp.Canvas, cellRect, cellColor);
+                    }
+                }
+            }
         }
     }
 }
