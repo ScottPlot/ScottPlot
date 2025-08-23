@@ -8,6 +8,7 @@ using Avalonia.Threading;
 using SkiaSharp;
 
 using Controls = Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace ScottPlot.Avalonia;
 
@@ -140,6 +141,11 @@ public class AvaPlot : Controls.Control, IPlotControl
     protected override void OnKeyUp(KeyEventArgs e)
     {
         UserInputProcessor.ProcessKeyUp(e);
+    }
+
+    protected override void OnLostFocus(RoutedEventArgs e)
+    {
+        UserInputProcessor.ProcessLostFocus();
     }
 
     public float DetectDisplayScale()
