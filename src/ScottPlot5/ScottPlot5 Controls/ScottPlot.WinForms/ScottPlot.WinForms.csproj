@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- targets must be in this order for the control to appear in the toolbox -->
-        <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
+        <TargetFrameworks>net8.0-windows;net462</TargetFrameworks>
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>disable</ImplicitUsings>
@@ -37,7 +37,7 @@
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 
         <NoWarn>NU1701, CS1591, CS1587, CS1573, CS1572, CS1570, CS1574, CS1584</NoWarn>
-        
+
     </PropertyGroup>
 
     <!-- Include additional files for the NuGet package -->

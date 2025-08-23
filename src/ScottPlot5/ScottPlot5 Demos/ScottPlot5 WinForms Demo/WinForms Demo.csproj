@@ -23,9 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.OpenGL\ScottPlot.OpenGL.csproj">
-            <SetTargetFramework>TargetFramework=net462</SetTargetFramework>
-        </ProjectReference>
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.OpenGL\ScottPlot.OpenGL.csproj"/>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WinForms\ScottPlot.WinForms.csproj" />
         <ProjectReference Include="..\..\ScottPlot5 Cookbook\ScottPlot Cookbook.csproj" />
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
@@ -54,6 +52,7 @@
     <ItemGroup>
         <PackageReference Include="eto.platform.wpf" Version="2.8.2" />
         <PackageReference Include="NAudio" Version="2.2.1" />
+        <PackageReference Include="OpenTK" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>

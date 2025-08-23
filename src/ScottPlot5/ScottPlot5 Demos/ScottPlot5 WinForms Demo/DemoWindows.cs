@@ -34,7 +34,7 @@ public static class DemoWindows
         MoveToTop(typeof(Demos.MouseTracker));
         MoveToTop(typeof(Demos.CookbookViewer));
 
-        MoveToBottom(typeof(Demos.OpenGL));
+        //MoveToBottom(typeof(Demos.OpenGL));
 
         return windows;
     }

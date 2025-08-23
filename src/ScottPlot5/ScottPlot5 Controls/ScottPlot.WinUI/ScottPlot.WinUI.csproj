@@ -71,7 +71,7 @@
 
     <ItemGroup Condition="!$(TargetFramework.Contains('windows'))">
         <PackageReference Include="Uno.WinUI" Version="4.10.39" />
-        <PackageReference Include="SkiaSharp.Views.Uno.WinUI" Version="3.119.0" />
+        <PackageReference Include="SkiaSharp.Views.Uno.WinUI" Version="2.88.9" />
     </ItemGroup>
 
 </Project>
