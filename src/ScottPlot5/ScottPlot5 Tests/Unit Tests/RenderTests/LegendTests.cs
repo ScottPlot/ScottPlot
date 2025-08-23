@@ -436,4 +436,26 @@ internal class LegendTests
 
         plot.SaveTestImage();
     }
+
+    [Test]
+    public void Test_LargeMarkers_ExpandLegendToFit()
+    {
+        Plot plot = new();
+
+        var xs = Generate.Consecutive(51);
+        var ys1 = Generate.Sin(51);
+        var ys2 = Generate.Cos(51);
+
+        var sp1 = plot.Add.Markers(xs, ys1);
+        sp1.LegendText = "Sine";
+        sp1.MarkerSize = 15;
+
+        var sp2 = plot.Add.Markers(xs, ys2);
+        sp2.LegendText = "Cosine";
+        sp2.MarkerSize = 45;
+        sp2.MarkerShape = MarkerShape.OpenSquare;
+
+        plot.ShowLegend(Alignment.LowerRight, Orientation.Horizontal);
+        plot.SaveTestImage();
+    }
 }

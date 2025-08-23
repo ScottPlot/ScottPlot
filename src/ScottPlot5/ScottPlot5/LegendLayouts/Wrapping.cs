@@ -10,10 +10,11 @@ public class Wrapping : ILegendLayout
         PixelSize[] labelSizes = items.Select(x => x.LabelStyle.Measure(x.LabelText, paint).Size).ToArray();
         float maxLabelWidth = labelSizes.Select(x => x.Width).Max();
         float maxLabelHeight = labelSizes.Select(x => x.Height).Max();
-        float maxMarker = items.Select(x => x.MarkerStyle.Size).DefaultIfEmpty(0).Max();
-        float symbolSquare = Math.Max(legend.SymbolWidth, maxMarker);
-        float maxItemWidth = symbolSquare + legend.SymbolPadding + maxLabelWidth;
-        float maxItemHeight = Math.Max(maxLabelHeight, symbolSquare);
+        float maxMarkerSize = items.Select(x => x.MarkerStyle.Size).DefaultIfEmpty(0).Max();
+        float maxItemSymbolWidth = Math.Max(legend.SymbolWidth, maxMarkerSize);
+        float maxItemSymbolHeight = Math.Max(legend.SymbolHeight, maxMarkerSize);
+        float maxItemWidth = maxItemSymbolWidth + legend.SymbolPadding + maxLabelWidth;
+        float maxItemHeight = Math.Max(maxLabelHeight, maxItemSymbolHeight);
 
         PixelRect[] labelRects = new PixelRect[items.Length];
         PixelRect[] symbolRects = new PixelRect[items.Length];
