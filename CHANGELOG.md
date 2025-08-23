@@ -29,7 +29,7 @@ _Not yet on NuGet..._
 * WinUI: Improved support for plots with transparent backgrounds (#5026, #5029) @diluculo
 * Font: Added `Fonts.Reset()` to restore default styling options (#5013) @aespitia
 * Legend: Respect marker size when a default marker shape is used (#5006, #5031) @manaruto @aespitia 
-* Legend: Improve appearance of large markers in legends (#4999, #5031) @manaruto @winsrp
+* Legend: Improve appearance of large markers in legends (#4999, #5031, #5056) @manaruto @winsrp
 * Cookbook: Improve developer experience when generating images using the Visual Studio Test Runner (#4882, #5032) @CoderPM2011
 * Signal: Improve horizontal range accuracy reported by signal plot data sources (#4868, #5033) @CoderPM2011, @dirk-de-bugger, @StendProg
 * Heatmap: Added a `RenderStrategy` property so users can use custom rendering logic (#5035) @bclehmann

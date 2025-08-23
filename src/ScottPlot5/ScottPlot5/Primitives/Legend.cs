@@ -38,6 +38,11 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public float SymbolWidth { get; set; } = 20;
 
     /// <summary>
+    /// Height of the symbol in a legend item
+    /// </summary>
+    public float SymbolHeight { get; set; } = 10;
+
+    /// <summary>
     /// Padding between a symbol and label within a legend item
     /// </summary>
     public float SymbolPadding { get; set; } = 5;
