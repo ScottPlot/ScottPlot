@@ -1,9 +1,5 @@
 namespace ScottPlot;
 
-// TODO: carefully control how this is new'd
-
-// TODO: cut references to SKPaint wherever possible
-
 // NOTE: Code here aims to facilitate the transition between
 // SkiaSharp 2 (where paints have font styles) and SkiaSharp 3 (where they are separate)
 
@@ -43,6 +39,8 @@ public class Paint : IDisposable
     // The exception is all the stuff that happens in the Drawing class.
     public SKPaint SKPaint { get; set; } = new();
     public SKFont SKFont { get; set; } = new();
+
+    [Obsolete("use Color instead of SKColor", true)]
     public SKColor SKColor { get => SKPaint.Color; set => SKPaint.Color = value; }
     public SKTextAlign SKTextAlign { get; set; }
     public SKTypeface SKTypeface { get => SKFont.Typeface; set => SKFont.Typeface = value; }
@@ -52,6 +50,19 @@ public class Paint : IDisposable
     public SKStrokeJoin SKStrokeJoin { get => SKPaint.StrokeJoin; set => SKPaint.StrokeJoin = value; }
     public SKSamplingOptions SKSamplingOptions { get; set; }
     public SKPaintStyle SKPaintStyle { get => SKPaint.Style; set => SKPaint.Style = value; }
+
+    // disable newing this directly so we can more carefully track where this is used
+    private Paint()
+    {
+        this.SKFont.Hinting = SKFontHinting.Slight;
+    }
+
+    public static Paint NewDisposablePaint() => new();
+
+    public void Reset()
+    {
+        //TODO: return everything to default settings
+    }
 
     public void Dispose()
     {

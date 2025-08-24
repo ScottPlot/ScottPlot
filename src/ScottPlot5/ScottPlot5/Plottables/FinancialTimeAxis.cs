@@ -38,22 +38,21 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
         if (maxIndexInView <= minIndexInView) return;
         TimeSpan timeSpanInView = DateTimes[maxIndexInView] - DateTimes[minIndexInView];
         widthOfCandleInPixels = rp.DataRect.Width / Axes.XAxis.Range.Span;
-        IFinancialTickGenerator tickGenerator = GetBestTickGenerator(timeSpanInView, rp.DataRect.Width);
+        IFinancialTickGenerator tickGenerator = GetBestTickGenerator(timeSpanInView, rp.DataRect.Width, rp.Paint);
         List<(int, string)> ticks = tickGenerator.GetTicks(DateTimes, minIndexInView, maxIndexInView);
         startIndex = ticks.First().Item1;
 
         // render each tick label
-        using Paint paint = new();
         foreach ((int x, string label) in ticks)
         {
             Pixel px = new(Axes.XAxis.GetPixel(x, rp.DataRect), rp.DataRect.Bottom);
-            LabelStyle.Render(rp.Canvas, px, paint, label);
+            LabelStyle.Render(rp.Canvas, px, rp.Paint, label);
         }
     }
 
-    private IFinancialTickGenerator GetBestTickGenerator(TimeSpan timeSpan, float widthInPixels)
+    private IFinancialTickGenerator GetBestTickGenerator(TimeSpan timeSpan, float widthInPixels, Paint paint)
     {
-        var maxWidth = LabelStyle.Measure(labelFormat).Size.Width;
+        var maxWidth = LabelStyle.Measure(labelFormat, paint).Size.Width;
         var newCandlesToSkip = (int)Math.Ceiling(maxWidth / widthOfCandleInPixels);
         if (candlesToSkip != newCandlesToSkip)
         {

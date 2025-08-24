@@ -60,13 +60,12 @@ internal class RainbowPlot : IPlottable
     public void Render(RenderPack rp)
     {
         FillStyle FillStyle = new();
-        using Paint paint = new();
         for (int i = 0; i < Xs.Length; i++)
         {
             Coordinates centerCoordinates = new(Xs[i], Ys[i]);
             Pixel centerPixel = Axes.GetPixel(centerCoordinates);
             FillStyle.Color = Colormap.GetColor(i / (Xs.Length - 1.0));
-            ScottPlot.Drawing.FillCircle(rp.Canvas, centerPixel, Radius, FillStyle, paint);
+            Drawing.FillCircle(rp.Canvas, centerPixel, Radius, FillStyle, rp.Paint);
         }
     }
 }

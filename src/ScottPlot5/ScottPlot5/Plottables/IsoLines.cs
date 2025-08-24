@@ -35,17 +35,16 @@ public class IsoLines : IPlottable, IHasLine
             ? GetLinesManual(rp)
             : GetLinesAutomatic(rp);
 
-        using Paint paint = new();
-        RenderLines(rp, paint, lines);
+        RenderLines(rp, rp.Paint, lines);
 
         rp.CanvasState.DisableClipping();
         if (RotateLabels)
         {
-            RenderLabelsRotated(rp, paint, lines);
+            RenderLabelsRotated(rp, rp.Paint, lines);
         }
         else
         {
-            RenderLabelsFixed(rp, paint, lines);
+            RenderLabelsFixed(rp, rp.Paint, lines);
         }
     }
 

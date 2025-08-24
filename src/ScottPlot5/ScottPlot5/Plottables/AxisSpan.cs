@@ -39,8 +39,7 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
 
     protected void Render(RenderPack rp, PixelRect rect)
     {
-        using Paint paint = new();
-        Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
-        Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
+        Drawing.FillRectangle(rp.Canvas, rect, rp.Paint, FillStyle);
+        Drawing.DrawRectangle(rp.Canvas, rect, rp.Paint, LineStyle);
     }
 }

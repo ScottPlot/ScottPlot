@@ -76,9 +76,8 @@ public class FontStyle
         paint.IsStroke = false;
         paint.SKTypeface = Typeface;
         paint.TextSize = Size;
-        paint.SKColor = Color.ToSKColor();
+        paint.Color = Color;
         paint.IsAntialias = AntiAlias;
         paint.Bold = Bold;
     }
-
 }

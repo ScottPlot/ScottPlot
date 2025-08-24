@@ -48,15 +48,15 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
-    public float Measure()
+    public float Measure(Paint paint)
     {
         if (!IsVisible)
             return 0;
 
         // use an example DataRect to estimate the size required by the ticks
         PixelRect guessedDataArea = new(0, 600, 400, 0);
-        GenerateTicks(guessedDataArea);
-        float guessedAxisSize = Axis.Measure();
+        GenerateTicks(guessedDataArea, paint);
+        float guessedAxisSize = Axis.Measure(paint);
 
         return Width + guessedAxisSize;
     }
@@ -65,11 +65,11 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
     /// Return a rectangle encapsulating the colormap
     /// bitmap plus the axis and ticks.
     /// </summary>
-    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset, Paint paint)
     {
         PixelRect bmpRect = GetColormapBitmapRect(dataRect, size, offset);
-        GenerateTicks(dataRect);
-        float axisSize = Axis.Measure();
+        GenerateTicks(dataRect, paint);
+        float axisSize = Axis.Measure(paint);
 
         return Edge switch
         {
@@ -137,7 +137,7 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
 
     private void RenderColorbarAxis(RenderPack rp, PixelRect colormapRect, float size, float offset)
     {
-        GenerateTicks(rp.DataRect);
+        GenerateTicks(rp.DataRect, rp.Paint);
 
         float size2 = Edge switch
         {
@@ -160,7 +160,7 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
         Axis.Render(rp, size2, offset2);
     }
 
-    private void GenerateTicks(PixelRect dataRect)
+    private void GenerateTicks(PixelRect dataRect, Paint paint)
     {
         Range range = Source.GetRange();
         Axis.Min = range.Min;
@@ -170,6 +170,6 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
             ? dataRect.Height
             : dataRect.Width;
 
-        Axis.RegenerateTicks(edgeLength);
+        Axis.RegenerateTicks(edgeLength, paint);
     }
 }

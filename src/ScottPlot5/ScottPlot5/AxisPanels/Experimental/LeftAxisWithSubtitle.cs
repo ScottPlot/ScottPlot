@@ -20,7 +20,7 @@ public class LeftAxisWithSubtitle : YAxisBase
     }
 
     // Override measure to tell the layout engine how much space the axis needs to render properly.
-    public override float Measure()
+    public override float Measure(Paint paint)
     {
         if (!IsVisible)
             return 0;
@@ -28,7 +28,6 @@ public class LeftAxisWithSubtitle : YAxisBase
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
-        using Paint paint = new();
         float maxTickLabelWidth = TickGenerator.Ticks.Length > 0
             ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max()
             : 0;
@@ -52,20 +51,18 @@ public class LeftAxisWithSubtitle : YAxisBase
         // You can put whatever you want here! Check out the implementation of the base axis classes for ideas
         // and how to draw shapes, text, etc. 
 
-        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset, rp.Paint);
         float x = panelRect.Left + PaddingOutsideAxisLabels.Horizontal;
         Pixel labelPoint = new(x, rp.DataRect.VerticalCenter);
 
-        using Paint paint = new();
         LabelAlignment = Alignment.UpperCenter;
-        LabelStyle.Render(rp.Canvas, labelPoint, paint);
+        LabelStyle.Render(rp.Canvas, labelPoint, rp.Paint);
 
-        float labelHeight = LabelStyle.Measure().LineHeight;
+        float labelHeight = LabelStyle.Measure(rp.Paint).LineHeight;
         Pixel subLabelPoint = new(x + labelHeight, rp.DataRect.VerticalCenter);
 
-        using Paint paint2 = new();
         SubLabelStyle.Alignment = Alignment.UpperCenter;
-        SubLabelStyle.Render(rp.Canvas, subLabelPoint, paint2);
+        SubLabelStyle.Render(rp.Canvas, subLabelPoint, rp.Paint);
 
         DrawTicks(rp, TickLabelStyle, panelRect, TickGenerator.Ticks, this, MajorTickStyle, MinorTickStyle);
         DrawFrame(rp, panelRect, Edge, FrameLineStyle);

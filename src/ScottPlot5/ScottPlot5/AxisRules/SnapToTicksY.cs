@@ -63,7 +63,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         bool isPanning = (zoomedInBottom ^ zoomedInTop) & (newTop != oldTop) & (newBottom != oldBottom);
 
 
-        YAxis.RegenerateTicks(new PixelLength(rp.DataRect.Height));
+        YAxis.RegenerateTicks(new PixelLength(rp.DataRect.Height), rp.Paint);
         var ticks = YAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).Select(x => x.Position);
         if (ticks.Count() < 2) return; //if there is only 1 tick we can't establish the tick interval so can't snap to a tick. 
         double tickDelta = ticks.Skip(1).First() - ticks.First();
@@ -110,7 +110,7 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
         if (newTop != newBottom) YAxis.Range.Set(newBottom, newTop);
 
         //But, the new limits might cause a change in the tick interval! So here we will test that and update the snap if necessary
-        YAxis.RegenerateTicks(new PixelLength(rp.DataRect.Height));
+        YAxis.RegenerateTicks(new PixelLength(rp.DataRect.Height), rp.Paint);
         ticks = YAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).Select(x => x.Position);
         var newTickDelta = ticks.Skip(1).First() - ticks.First();
 

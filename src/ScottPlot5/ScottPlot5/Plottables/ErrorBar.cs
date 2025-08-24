@@ -64,13 +64,12 @@ namespace ScottPlot.Plottables
 
         public virtual void Render(RenderPack rp)
         {
-            RenderErrorBars(rp.Canvas, Xs, Ys, YErrorPositive, YErrorNegative);
-            RenderErrorBars(rp.Canvas, Ys, Xs, XErrorPositive, XErrorNegative, true);
+            RenderErrorBars(rp.Canvas, rp.Paint, Xs, Ys, YErrorPositive, YErrorNegative);
+            RenderErrorBars(rp.Canvas, rp.Paint, Ys, Xs, XErrorPositive, XErrorNegative, true);
         }
 
-        private void RenderErrorBars(SKCanvas canvas, IReadOnlyList<double> positions, IReadOnlyList<double> vals, IReadOnlyList<double>? errorPositive, IReadOnlyList<double>? errorNegative, bool horizontal = false)
+        private void RenderErrorBars(SKCanvas canvas, Paint paint, IReadOnlyList<double> positions, IReadOnlyList<double> vals, IReadOnlyList<double>? errorPositive, IReadOnlyList<double>? errorNegative, bool horizontal = false)
         {
-            using Paint paint = new();
             using SKPath path = new();
 
             LineStyle.ApplyToPaint(paint);
@@ -108,7 +107,7 @@ namespace ScottPlot.Plottables
 
             }
 
-            Drawing.DrawPath(canvas, paint, path);
+            Drawing.DrawPath(canvas, paint, path, LineStyle);
         }
     }
 }

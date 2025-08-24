@@ -219,20 +219,19 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-        RenderBackgroundColor(rp, paint);
-        RenderSpokes(rp, paint);
+        RenderBackgroundColor(rp, rp.Paint);
+        RenderSpokes(rp, rp.Paint);
 
         if (StraightLines)
         {
-            RenderStraightLines(rp, paint);
+            RenderStraightLines(rp, rp.Paint);
         }
         else
         {
-            RenderCircles(rp, paint);
+            RenderCircles(rp, rp.Paint);
         }
 
-        RenderCircleLabels(rp, paint);
+        RenderCircleLabels(rp, rp.Paint);
     }
 
     protected virtual void RenderBackgroundColor(RenderPack rp, Paint paint)

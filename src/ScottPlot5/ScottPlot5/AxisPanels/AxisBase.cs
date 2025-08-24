@@ -115,8 +115,7 @@ public abstract class AxisBase : LabelStyleProperties
             pxLine = pxLine.WithDelta(0, .1f);
         }
 
-        using Paint paint = new();
-        Drawing.DrawLine(rp.Canvas, paint, pxLine, lineStyle);
+        Drawing.DrawLine(rp.Canvas, rp.Paint, pxLine, lineStyle);
     }
 
     private static void DrawTicksHorizontalAxis(RenderPack rp, LabelStyle label, PixelRect panelRect, IEnumerable<Tick> ticks, IAxis axis, TickMarkStyle majorStyle, TickMarkStyle minorStyle)
@@ -126,12 +125,12 @@ public abstract class AxisBase : LabelStyleProperties
             throw new InvalidOperationException();
         }
 
-        using Paint paint = new();
+        Paint paint = rp.Paint;
 
         foreach (Tick tick in ticks)
         {
             // draw tick
-            paint.SKColor = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
+            paint.Color = tick.IsMajor ? majorStyle.Color : minorStyle.Color;
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             paint.IsAntialias = tick.IsMajor ? majorStyle.AntiAlias : minorStyle.AntiAlias;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
@@ -163,12 +162,12 @@ public abstract class AxisBase : LabelStyleProperties
             throw new InvalidOperationException();
         }
 
-        using Paint paint = new();
+        Paint paint = rp.Paint;
 
         foreach (Tick tick in ticks)
         {
             // draw tick
-            paint.SKColor = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
+            paint.Color = tick.IsMajor ? majorStyle.Color : minorStyle.Color;
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             paint.IsAntialias = tick.IsMajor ? majorStyle.AntiAlias : minorStyle.AntiAlias;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;

@@ -54,10 +54,8 @@ public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-
         PixelRect rect = Axes.GetPixelRect(CoordinateRect);
-        Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
-        Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
+        Drawing.FillRectangle(rp.Canvas, rect, rp.Paint, FillStyle);
+        Drawing.DrawRectangle(rp.Canvas, rect, rp.Paint, LineStyle);
     }
 }

@@ -10,6 +10,7 @@ public class RenderPlottables : IRenderAction
         {
             plottable.Axes.DataRect = rp.DataRect;
 
+            rp.Paint.Reset();
             rp.CanvasState.Save();
 
             if (plottable is IPlottableGL plottableGL)

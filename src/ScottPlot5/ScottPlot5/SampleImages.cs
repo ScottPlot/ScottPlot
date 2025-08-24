@@ -31,7 +31,7 @@ public class SampleImages
     {
         using SKSurface surface = Drawing.CreateSurface(width, height);
         using SKCanvas canvas = surface.Canvas;
-        using Paint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
         PixelRect canvasRect = new(0, width, height, 0);
 
         FillStyle fillStyle = new();
@@ -108,14 +108,14 @@ public class SampleImages
         PixelRect rect = new(0, width, height, 0);
         using SKSurface surface = Drawing.CreateSurface((int)rect.Width, (int)rect.Height);
         using SKCanvas canvas = surface.Canvas;
-        using Paint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         Image noiseImage = NoiseGrayscale(width, height);
         noiseImage.Render(canvas, rect, paint, false);
 
-        Drawing.DrawRectangle(canvas, rect, paint,
-            new LineStyle(1, Colors.LightBlue.WithAlpha(.5)));
-        Drawing.DrawDebugRectangle(canvas, rect);
+        LineStyle ls = new(1, Colors.LightBlue.WithAlpha(.5));
+        Drawing.DrawRectangle(canvas, rect, paint, ls);
+        Drawing.DrawDebugRectangle(canvas, paint, rect);
 
         LabelStyle label = new()
         {

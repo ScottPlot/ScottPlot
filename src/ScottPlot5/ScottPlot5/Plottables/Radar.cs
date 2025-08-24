@@ -55,8 +55,6 @@ public class Radar() : IPlottable, IManagesAxisLimits
         if (Series.Count == 0)
             return;
 
-        using Paint paint = new();
-
         // Don’t render axis yet if it’s supposed to be above the data
         if (!IsAxisAboveData)
             PolarAxis.Render(rp);
@@ -65,8 +63,8 @@ public class Radar() : IPlottable, IManagesAxisLimits
         {
             Coordinates[] cs1 = PolarAxis.GetCoordinates(Series[i].Values);
             Pixel[] pixels = cs1.Select(Axes.GetPixel).ToArray();
-            Drawing.FillPath(rp.Canvas, paint, pixels, Series[i].FillStyle);
-            Drawing.DrawPath(rp.Canvas, paint, pixels, Series[i].LineStyle, close: true);
+            Drawing.FillPath(rp.Canvas, rp.Paint, pixels, Series[i].FillStyle);
+            Drawing.DrawPath(rp.Canvas, rp.Paint, pixels, Series[i].LineStyle, close: true);
         }
 
         if (IsAxisAboveData)

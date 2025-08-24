@@ -9,7 +9,7 @@ public class RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas) : IDis
 {
     public SKCanvas Canvas { get; } = canvas;
     public CanvasState CanvasState { get; } = new(canvas);
-    public Paint Paint { get; } = new();
+    public Paint Paint { get; } = Paint.NewDisposablePaint();
     public PixelRect FigureRect { get; } = figureRect;
     public PixelRect ScaledFigureRect { get; private set; }
     public PixelRect DataRect { get; private set; }
@@ -33,12 +33,13 @@ public class RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas) : IDis
             bottom: FigureRect.Bottom / Plot.ScaleFactorF,
             top: FigureRect.Top / Plot.ScaleFactorF);
 
-        Layout = Plot.Layout.LayoutEngine.GetLayout(ScaledFigureRect, Plot);
+        Layout = Plot.Layout.LayoutEngine.GetLayout(ScaledFigureRect, Plot, Paint);
         DataRect = Layout.DataRect;
     }
 
     public void Dispose()
     {
         Paint.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

@@ -75,9 +75,8 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
         double maxPixelMag = Math.Sqrt(vectors.Select(x => x.MagnitudeSquared).Max());
         Range pixelMagRange = new(minPixelMag, maxPixelMag);
 
-        using Paint paint = new();
-        ArrowStyle.LineStyle.ApplyToPaint(paint);
-        paint.SKPaintStyle = SKPaintStyle.StrokeAndFill;
+        ArrowStyle.LineStyle.ApplyToPaint(rp.Paint);
+        rp.Paint.SKPaintStyle = SKPaintStyle.StrokeAndFill;
 
         if (Colormap is not null)
         {
@@ -85,19 +84,19 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
 
             foreach (var group in coloredVectors)
             {
-                paint.SKColor = group.Key.ToSKColor();
-                RenderVectors(paint, rp.Canvas, group, ArrowStyle);
+                rp.Paint.Color = group.Key;
+                RenderVectors(rp.Paint, rp.Canvas, group, ArrowStyle);
             }
         }
         else
         {
-            RenderVectors(paint, rp.Canvas, vectors, ArrowStyle);
+            RenderVectors(rp.Paint, rp.Canvas, vectors, ArrowStyle);
         }
     }
 
     private static void RenderVectors(Paint paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
     {
         using SKPath path = PathStrategies.Arrows.GetPath(vectors, arrowStyle);
-        Drawing.DrawPath(canvas, paint, path);
+        Drawing.DrawPath(canvas, paint, path, arrowStyle);
     }
 }

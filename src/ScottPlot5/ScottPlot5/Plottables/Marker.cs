@@ -76,7 +76,6 @@ public class Marker : IPlottable, IHasMarker, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-        Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Location), MarkerStyle);
+        Drawing.DrawMarker(rp.Canvas, rp.Paint, Axes.GetPixel(Location), MarkerStyle);
     }
 }

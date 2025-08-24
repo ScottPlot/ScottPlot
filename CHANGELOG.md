@@ -3,6 +3,7 @@ _Not yet on NuGet..._
 * The transition from ScottPlot `5.0` to `5.1` has breaking changes which are likely to affect advanced users who maintain custom plot types. Upgrading our SkiaSharp from `2.88` to `3.119` brought many improvements, but significantly changed the functionality of `SkiaSharp.SKPaint` which many of our drawing operations relied on. To minimize the impact of this change, references to `SkiaSharp.SKPaint` have been replaced with `ScottPlot.Paint` which closely resembles the original API, minimizing amount of code changes required to upgrade. This version aims at making this upgrade possible, and future versions will refine these objects to improve performance and minimize allocations.
 * Public methods that accepted `SkiaSharp.SKPaint` now accept `ScottPlot.Paint`
 * `Paint.MeasureText()` now returns a single `PixelRect` instead of using `out` variables
+* Rendering: Significantly reduced the number of allocations by passing `Paint` throughout the render flow
 
 ## ScottPlot 5.0.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_

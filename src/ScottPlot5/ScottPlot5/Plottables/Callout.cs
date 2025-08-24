@@ -83,9 +83,8 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     /// </summary>
     /// <remarks>
     /// <returns>The coordinates of the attachment point on the label.</returns>
-    public Coordinates CalculateClosestAttachPoint()
+    public Coordinates CalculateClosestAttachPoint(Paint paint)
     {
-        using Paint paint = new();
         PixelSize labelSize = LabelStyle.Measure(LabelStyle.Text, paint).Size;
 
         Pixel[] attachPoints = [
@@ -127,7 +126,7 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
         LabelPlottable.Render(rp);
 
         ArrowPlottable.Axes = Axes;
-        ArrowPlottable.Base = CalculateClosestAttachPoint();
+        ArrowPlottable.Base = CalculateClosestAttachPoint(rp.Paint);
         ArrowPlottable.Tip = TipCoordinates;
         ArrowPlottable.Render(rp);
     }

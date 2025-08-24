@@ -55,7 +55,7 @@ public interface IAxis : IPanel
     /// <summary>
     /// Use the <see cref="TickLabelStyle"/> to generate ticks with ideal spacing.
     /// </summary>
-    public void RegenerateTicks(PixelLength size);
+    public void RegenerateTicks(PixelLength size, Paint paint);
 
     /// <summary>
     /// The label is the text displayed distal to the ticks

@@ -2,7 +2,7 @@ namespace ScottPlot.LayoutEngines;
 
 public class LayoutEngineBase
 {
-    internal static Dictionary<IPanel, float> MeasurePanels(IEnumerable<IPanel> panels)
+    internal static Dictionary<IPanel, float> MeasurePanels(IEnumerable<IPanel> panels, Paint paint)
     {
         Dictionary<IPanel, float> measuredPanels = new();
 
@@ -10,7 +10,7 @@ public class LayoutEngineBase
         {
             measuredPanels[panel] = panel.MinimumSize == panel.MaximumSize
                 ? panel.MinimumSize
-                : NumericConversion.Clamp(panel.Measure(), panel.MinimumSize, panel.MaximumSize);
+                : NumericConversion.Clamp(panel.Measure(paint), panel.MinimumSize, panel.MaximumSize);
         }
 
         return measuredPanels;

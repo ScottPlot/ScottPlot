@@ -43,15 +43,13 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
 
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
-        using Paint paint = new();
-
         if (Colormap is not null)
         {
-            Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle, Colormap);
+            Drawing.DrawMarkers(rp.Canvas, rp.Paint, markerPixels, MarkerStyle, Colormap);
         }
         else
         {
-            Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
+            Drawing.DrawMarkers(rp.Canvas, rp.Paint, markerPixels, MarkerStyle);
         }
     }
 }

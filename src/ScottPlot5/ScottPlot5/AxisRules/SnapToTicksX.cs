@@ -64,8 +64,8 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         bool zoomedInLeft = Math.Abs(newLeft - oldRight) < Math.Abs(oldLeft - oldRight);
         bool isPanning = (zoomedInLeft ^ zoomedInRight) & (newLeft != oldLeft) & (newRight != oldRight);
 
-        // Find the ticks for the curtrent axis so we can snap to these
-        XAxis.RegenerateTicks(new PixelLength(rp.DataRect.Width));
+        // Find the ticks for the current axis so we can snap to these
+        XAxis.RegenerateTicks(new PixelLength(rp.DataRect.Width), rp.Paint);
         var ticks = XAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).Select(x => x.Position);
         if (ticks.Count() < 2) return; //if there is only 1 tick we can't establish the tick interval so can't snap to a tick. 
         var tickDelta = ticks.Skip(1).First() - ticks.First();
@@ -112,7 +112,7 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
         if (newLeft != newRight) XAxis.Range.Set(newLeft, newRight);
 
         //But, the new limits might cause a change in the tick interval! So here we will test that and update the snap if necessary
-        XAxis.RegenerateTicks(new PixelLength(rp.DataRect.Width));
+        XAxis.RegenerateTicks(new PixelLength(rp.DataRect.Width), rp.Paint);
         ticks = XAxis.TickGenerator.Ticks.Where(tick => tick.IsMajor).Select(x => x.Position);
         var newTickDelta = ticks.Skip(1).First() - ticks.First();
 
