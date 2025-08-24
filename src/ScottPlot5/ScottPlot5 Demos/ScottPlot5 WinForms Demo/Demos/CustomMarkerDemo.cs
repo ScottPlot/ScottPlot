@@ -38,7 +38,7 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
     {
         public double Happiness = 1.0;
 
-        public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+        public void Render(SKCanvas canvas, SKPaintAndFont paint, Pixel center, float size, MarkerStyle markerStyle)
         {
             float faceRadius = size / 2;
             float eyeRadius = faceRadius * 0.1f;
@@ -69,12 +69,12 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
             if (Happiness > 0)
             {
                 SKRect oval = new(leftEyeX, smileTop - smileHeight / 2, rightEyeX, smileBottom - smileHeight / 2);
-                canvas.DrawArc(oval, 180, -180, false, paint);
+                canvas.DrawArc(oval, 180, -180, false, paint.Paint);
             }
             else if (Happiness < 0)
             {
                 SKRect oval = new(leftEyeX, smileTop - smileHeight, rightEyeX, smileBottom - smileHeight);
-                canvas.DrawArc(oval, -180, 180, false, paint);
+                canvas.DrawArc(oval, -180, 180, false, paint.Paint);
             }
         }
     }
