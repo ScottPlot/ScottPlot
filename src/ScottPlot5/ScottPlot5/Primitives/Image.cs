@@ -269,7 +269,7 @@ public class Image : IDisposable
     public void Render(SKCanvas canvas, PixelRect target, SKPaintAndFont paint, bool antiAlias)
     {
         paint.Color = SKColors.White;
-        paint.FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None;
+        paint.FilterQuality = antiAlias ? FilterQuality.High : FilterQuality.None;
         canvas.DrawImage(SKImage, target.ToSKRect(), paint.Paint);
     }
 
@@ -376,7 +376,7 @@ public class Image : IDisposable
     {
         SKRect newRect = new(0, 0, newWidth, newHeight);
 
-        using SKPaintAndFont paint = new() { FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None };
+        using SKPaintAndFont paint = new() { FilterQuality = antiAlias ? FilterQuality.High : FilterQuality.None };
         using SKBitmap targetBitmap = new(newWidth, newHeight);
         using SKCanvas targetCanvas = new(targetBitmap);
         using SKBitmap sourceBitmap = SKBitmap.FromImage(SKImage);

@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace WinForms_Demo;
 
@@ -20,13 +19,6 @@ public static class DemoWindows
             IDemoWindow targetWindow = windows.Where(x => x.GetType() == targetType).Single();
             windows.Remove(targetWindow);
             windows.Insert(0, targetWindow);
-        }
-
-        void MoveToBottom(Type targetType)
-        {
-            IDemoWindow targetWindow = windows.Where(x => x.GetType() == targetType).Single();
-            windows.Remove(targetWindow);
-            windows.Add(targetWindow);
         }
 
         MoveToTop(typeof(Demos.DraggablePoints));

@@ -194,7 +194,7 @@ public class LabelStyle
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
         (float lineHeight, SKFontMetrics metrics) = paint.GetFontMetrics();
-        float[] lineWidths = lines.Select(paint.MeasureText).ToArray();
+        float[] lineWidths = lines.Select(paint.MeasureTextWidth).ToArray();
         float maxWidth = lineWidths.Length == 0 ? 0 : lineWidths.Max();
         PixelSize size = new(maxWidth, lineHeight * lines.Length);
 
@@ -360,7 +360,7 @@ public class LabelStyle
                     if (RenderUnderline)
                     {
                         float underlineY = yPx + (float)UnderlineOffset;
-                        float textWidth = paint.MeasureText(lines[i]);
+                        float textWidth = paint.MeasureText(lines[i]).Width;
 
                         using var underlinePaint = new SKPaint
                         {
@@ -408,7 +408,7 @@ public class LabelStyle
                 if (RenderUnderline)
                 {
                     float underlineY = yPx + (float)UnderlineOffset;
-                    float textWidth = paint.MeasureText(Text);
+                    float textWidth = paint.MeasureText(Text).Width;
 
                     using var underlinePaint = new SKPaint
                     {

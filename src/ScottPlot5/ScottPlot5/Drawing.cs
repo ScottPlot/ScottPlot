@@ -123,7 +123,7 @@ public static class Drawing
 
         labelStyle.ApplyToPaint(paint);
 
-        var measuredText = paint.MeasureText(label);
+        var measuredText = paint.MeasureText(label).Width;
         using SKPathMeasure pathMeasure = new(path, false, 1);
         DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
     }

@@ -445,7 +445,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
                 using SKPaintAndFont paint = new()
                 {
-                    FilterQuality = hm.Smooth ? SKFilterQuality.High : SKFilterQuality.None
+                    FilterQuality = hm.Smooth ? FilterQuality.High : FilterQuality.None
                 };
 
                 SKRect rect = hm.Axes.GetPixelRect(hm.GetAlignedExtent()).ToSKRect();
