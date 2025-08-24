@@ -71,7 +71,7 @@ public class DataStreamerXY(int capacity) : IPlottable, IManagesAxisLimits, IHas
         // TODO: move this logic inside the buffer and make it more effecient
         var pixels = Buffer._buffer.Select(Axes.GetPixel).OrderBy(pt => pt.X);
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
         Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
     }

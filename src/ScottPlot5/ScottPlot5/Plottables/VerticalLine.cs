@@ -72,7 +72,7 @@ public class VerticalLine : AxisLine
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         LabelStyle.Render(rp.Canvas, new Pixel(x, y), paint);
     }
 }

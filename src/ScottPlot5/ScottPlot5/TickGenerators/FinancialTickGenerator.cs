@@ -19,7 +19,7 @@ public class FinancialTickGenerator(DateTime[] dates) : ITickGenerator
 
     public int MaxTickCount { get; set; } = 1000;
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaintAndFont paint, LabelStyle labelStyle)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, Paint paint, LabelStyle labelStyle)
     {
         if (Dates.Length == 0)
         {

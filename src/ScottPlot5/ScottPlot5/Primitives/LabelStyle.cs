@@ -109,7 +109,7 @@ public class LabelStyle
         FontName = Fonts.Detect(Text);
     }
 
-    private void ApplyPointPaint(SKPaintAndFont paint)
+    private void ApplyPointPaint(Paint paint)
     {
         paint.IsStroke = !PointFilled;
         paint.StrokeWidth = 1;
@@ -118,7 +118,7 @@ public class LabelStyle
         paint.Shader = null;
     }
 
-    private void ApplyBorderPaint(SKPaintAndFont paint)
+    private void ApplyBorderPaint(Paint paint)
     {
         paint.IsStroke = true;
         paint.StrokeWidth = BorderWidth;
@@ -127,7 +127,7 @@ public class LabelStyle
         paint.Shader = null;
     }
 
-    private void ApplyShadowPaint(SKPaintAndFont paint)
+    private void ApplyShadowPaint(Paint paint)
     {
         paint.IsStroke = false;
         paint.Color = ShadowColor.ToSKColor();
@@ -135,7 +135,7 @@ public class LabelStyle
         paint.Shader = null;
     }
 
-    private void ApplyBackgroundPaint(SKPaintAndFont paint)
+    private void ApplyBackgroundPaint(Paint paint)
     {
         paint.IsStroke = false;
         paint.Color = BackgroundColor.ToSKColor();
@@ -143,7 +143,7 @@ public class LabelStyle
         paint.Shader = null;
     }
 
-    private void ApplyTextPaint(SKPaintAndFont paint)
+    private void ApplyTextPaint(Paint paint)
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
@@ -155,7 +155,7 @@ public class LabelStyle
         paint.Shader = null;
     }
 
-    public void ApplyToPaint(SKPaintAndFont paint)
+    public void ApplyToPaint(Paint paint)
     {
         ApplyTextPaint(paint);
     }
@@ -173,11 +173,11 @@ public class LabelStyle
     /// </summary>
     public MeasuredText Measure(string text) // NOTE: This should never be called internally
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         return Measure(text, paint);
     }
 
-    public MeasuredText Measure(string text, SKPaintAndFont paint)
+    public MeasuredText Measure(string text, Paint paint)
     {
         if (Image is not null)
         {
@@ -215,7 +215,7 @@ public class LabelStyle
     /// Use the Label's size and <see cref="Alignment"/> to determine where it should be drawn
     /// relative to the given rectangle (aligned to the rectangle according to <paramref name="rectAlignment"/>).
     /// </summary>
-    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY, SKPaintAndFont paint)
+    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY, Paint paint)
     {
         PixelSize textSize = Measure(Text, paint).Size;
         float textWidth = textSize.Width;
@@ -255,14 +255,14 @@ public class LabelStyle
         return new Pixel(x, y);
     }
 
-    public void Render(SKCanvas canvas, Pixel px, SKPaintAndFont paint, string text, bool bottom = true)
+    public void Render(SKCanvas canvas, Pixel px, Paint paint, string text, bool bottom = true)
     {
         Text = text;
         Render(canvas, px, paint, bottom);
     }
 
     // TODO: deprecate this and require a string to be passed in
-    public void Render(SKCanvas canvas, Pixel px, SKPaintAndFont paint, bool bottom = true)
+    public void Render(SKCanvas canvas, Pixel px, Paint paint, bool bottom = true)
     {
         if (!IsVisible)
             return;
@@ -295,17 +295,17 @@ public class LabelStyle
         canvasState.Restore();
     }
 
-    private void DrawBorder(SKCanvas canvas, Pixel px, SKPaintAndFont paint, PixelRect textRect)
+    private void DrawBorder(SKCanvas canvas, Pixel px, Paint paint, PixelRect textRect)
     {
         if (BorderWidth == 0)
             return;
 
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         ApplyBorderPaint(paint);
-        canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint.Paint);
+        canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint.SKPaint);
     }
 
-    private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaintAndFont paint, PixelRect textRect, bool bottom)
+    private void DrawText(SKCanvas canvas, MeasuredText measured, Paint paint, PixelRect textRect, bool bottom)
     {
         if (Text is null)
             return;
@@ -334,8 +334,8 @@ public class LabelStyle
                 {
                     using (var shaper = new SKShaper(paint.Typeface))
                     {
-                        float shapedWidth = shaper.Shape(lines[i], paint.Font).Width;
-                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint.TextAlign, paint.Font, paint.Paint);
+                        float shapedWidth = shaper.Shape(lines[i], paint.SKFont).Width;
+                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
 
                         if (RenderUnderline)
                         {
@@ -355,7 +355,7 @@ public class LabelStyle
                 }
                 else
                 {
-                    canvas.DrawText(lines[i], xPx, yPx, paint.TextAlign, paint.Font, paint.Paint);
+                    canvas.DrawText(lines[i], xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
 
                     if (RenderUnderline)
                     {
@@ -382,8 +382,8 @@ public class LabelStyle
             {
                 using (var shaper = new SKShaper(paint.Typeface))
                 {
-                    float shapedWidth = shaper.Shape(Text, paint.Font).Width;
-                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint.TextAlign, paint.Font, paint.Paint);
+                    float shapedWidth = shaper.Shape(Text, paint.SKFont).Width;
+                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
 
                     if (RenderUnderline)
                     {
@@ -403,7 +403,7 @@ public class LabelStyle
             }
             else
             {
-                canvas.DrawText(Text, xPx, yPx, paint.TextAlign, paint.Font, paint.Paint);
+                canvas.DrawText(Text, xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
 
                 if (RenderUnderline)
                 {
@@ -423,7 +423,7 @@ public class LabelStyle
         }
     }
 
-    private void DrawBackground(SKCanvas canvas, Pixel px, SKPaintAndFont paint, PixelRect textRect)
+    private void DrawBackground(SKCanvas canvas, Pixel px, Paint paint, PixelRect textRect)
     {
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
@@ -431,13 +431,13 @@ public class LabelStyle
         if (ShadowColor != Colors.Transparent)
         {
             ApplyShadowPaint(paint);
-            canvas.DrawRoundRect(shadowRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint.Paint);
+            canvas.DrawRoundRect(shadowRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint.SKPaint);
         }
 
         if (BackgroundColor != Colors.Transparent)
         {
             ApplyBackgroundPaint(paint);
-            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint.Paint);
+            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint.SKPaint);
         }
 
         // TODO: support rotation
@@ -445,16 +445,16 @@ public class LabelStyle
         LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(px.X + OffsetX, px.Y + OffsetY);
     }
 
-    private void DrawPoint(SKCanvas canvas, Pixel px, SKPaintAndFont paint)
+    private void DrawPoint(SKCanvas canvas, Pixel px, Paint paint)
     {
         if (PointSize > 0)
         {
             ApplyPointPaint(paint);
-            canvas.DrawCircle(px.X, px.Y, PointSize, paint.Paint);
+            canvas.DrawCircle(px.X, px.Y, PointSize, paint.SKPaint);
         }
     }
 
-    public (string text, float height) MeasureHighestString(string[] strings, SKPaintAndFont paint)
+    public (string text, float height) MeasureHighestString(string[] strings, Paint paint)
     {
         float maxHeight = 0;
         string maxText = string.Empty;
@@ -472,7 +472,7 @@ public class LabelStyle
         return (maxText, maxHeight);
     }
 
-    public (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaintAndFont paint)
+    public (string text, PixelLength width) MeasureWidestString(string[] strings, Paint paint)
     {
         float maxWidth = 0;
         string maxText = string.Empty;

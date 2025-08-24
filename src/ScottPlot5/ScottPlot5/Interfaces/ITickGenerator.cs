@@ -17,5 +17,5 @@ public interface ITickGenerator
     /// <summary>
     /// Generate ticks based on the current settings and store the result in <see cref="Ticks"/>
     /// </summary>
-    void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaintAndFont paint, LabelStyle labelStyle);
+    void Regenerate(CoordinateRange range, Edge edge, PixelLength size, Paint paint, LabelStyle labelStyle);
 }

@@ -277,13 +277,13 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         RenderConstantRealCircles(rp, paint);
         RenderConstantImaginaryCurves(rp, paint);
         RenderCircleLabels(rp, paint);
     }
 
-    private void RenderCircleLabels(RenderPack rp, SKPaintAndFont paint)
+    private void RenderCircleLabels(RenderPack rp, Paint paint)
     {
         foreach (PolarAxisCircle circle in ImaginaryTicks)
         {
@@ -293,7 +293,7 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits
         }
     }
 
-    private void RenderConstantRealCircles(RenderPack rp, SKPaintAndFont paint)
+    private void RenderConstantRealCircles(RenderPack rp, Paint paint)
     {
         double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
         LabelStyle.Rotation = (float)Rotation.Degrees - 90;
@@ -318,7 +318,7 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits
         }
     }
 
-    private void RenderConstantImaginaryCurves(RenderPack rp, SKPaintAndFont paint)
+    private void RenderConstantImaginaryCurves(RenderPack rp, Paint paint)
     {
         double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
         LabelStyle.Rotation = (float)Rotation.Degrees;

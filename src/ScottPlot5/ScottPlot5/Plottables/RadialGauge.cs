@@ -165,7 +165,7 @@ internal class RadialGauge
         if (!ShowLabels || Label == string.Empty)
             return;
 
-        using SKPaintAndFont paint = new()
+        using Paint paint = new()
         {
             TextSize = (float)Width * (float)FontSizeFraction,
             IsAntialias = true,
@@ -205,7 +205,7 @@ internal class RadialGauge
             X = (float)(LabelPositionFraction / 2) * (skMeasure.Length - textBounds.Width) + additionalSpace  // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
         };
 
-        rp.Canvas.DrawTextOnPath(Label, skPath, skPoint, paint.TextAlign, paint.Font, paint.Paint);
+        rp.Canvas.DrawTextOnPath(Label, skPath, skPoint, paint.TextAlign, paint.SKFont, paint.SKPaint);
 
         // Invert parameters so that the path is reversed
         void ReversePath()

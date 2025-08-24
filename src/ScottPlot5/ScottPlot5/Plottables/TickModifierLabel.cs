@@ -76,7 +76,7 @@ public class TickModifierLabel : IPlottable
         string label = LabelFormatter.Invoke(Exponent);
 
         rp.CanvasState.DisableClipping();
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         LabelStyle.Render(rp.Canvas, px, paint, label);
     }
 }

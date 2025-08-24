@@ -47,7 +47,7 @@ public class ScaleBar : IPlottable, IHasLine
         PixelSize yLabelSize = YLabelStyle.Measure(YLabel).Size;
         corner = corner.WithOffset(-yLabelSize.Width, -xLabelSize.Height);
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         SKPath path = new();
         path.MoveTo(corner.ToSKPoint());
 

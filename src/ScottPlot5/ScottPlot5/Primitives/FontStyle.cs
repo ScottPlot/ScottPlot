@@ -70,7 +70,7 @@ public class FontStyle
         };
     }
 
-    public void ApplyToPaint(SKPaintAndFont paint)
+    public void ApplyToPaint(Paint paint)
     {
         paint.Shader = null;
         paint.IsStroke = false;

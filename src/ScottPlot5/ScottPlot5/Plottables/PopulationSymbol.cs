@@ -86,13 +86,13 @@ public class PopulationSymbol(Population population) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         RenderBar(rp, paint);
         RenderBox(rp, paint);
         RenderMarkers(rp, paint);
     }
 
-    private void RenderMarkers(RenderPack rp, SKPaintAndFont paint)
+    private void RenderMarkers(RenderPack rp, Paint paint)
     {
         if (!Marker.IsVisible)
             return;
@@ -113,7 +113,7 @@ public class PopulationSymbol(Population population) : IPlottable
         }
     }
 
-    private void RenderBar(RenderPack rp, SKPaintAndFont paint)
+    private void RenderBar(RenderPack rp, Paint paint)
     {
         if (!Bar.IsVisible)
             return;
@@ -128,7 +128,7 @@ public class PopulationSymbol(Population population) : IPlottable
         Bar.Render(rp, Axes, paint, _EmptyLabel);
     }
 
-    private void RenderBox(RenderPack rp, SKPaintAndFont paint)
+    private void RenderBox(RenderPack rp, Paint paint)
     {
         if (!Box.IsVisible)
             return;

@@ -54,7 +54,7 @@ public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         PixelRect rect = Axes.GetPixelRect(CoordinateRect);
         Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);

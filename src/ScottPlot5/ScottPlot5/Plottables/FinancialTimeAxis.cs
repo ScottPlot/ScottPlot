@@ -43,7 +43,7 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
         startIndex = ticks.First().Item1;
 
         // render each tick label
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         foreach ((int x, string label) in ticks)
         {
             Pixel px = new(Axes.XAxis.GetPixel(x, rp.DataRect), rp.DataRect.Bottom);

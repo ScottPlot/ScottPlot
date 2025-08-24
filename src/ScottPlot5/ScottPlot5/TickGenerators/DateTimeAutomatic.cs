@@ -63,7 +63,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
         return null;
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaintAndFont paint, LabelStyle labelStyle)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, Paint paint, LabelStyle labelStyle)
     {
         if (range.Length >= TimeSpan.MaxValue.Days || double.IsNaN(range.Length) || double.IsInfinity(range.Length) || (size.Length <= 0))
         {
@@ -125,7 +125,7 @@ public class DateTimeAutomatic : IDateTimeTickGenerator
     /// If all labels fit within the bounds, the list of ticks is returned.
     /// If a label doesn't fit in the bounds, the list is null and the size of the large tick label is returned.
     /// </summary>
-    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, SKPaintAndFont paint, LabelStyle labelStyle)
+    private (List<Tick>? Positions, PixelSize? PixelSize) GenerateTicks(CoordinateRange range, ITimeUnit unit, int increment, PixelSize tickLabelBounds, Paint paint, LabelStyle labelStyle)
     {
         DateTime rangeMin = NumericConversion.ToDateTime(range.Min);
         DateTime rangeMax = NumericConversion.ToDateTime(range.Max);

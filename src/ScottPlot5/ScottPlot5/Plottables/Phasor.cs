@@ -72,7 +72,7 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
             return;
         }
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         Pixel pxBase = Axes.GetPixel(Coordinates.Origin);
 

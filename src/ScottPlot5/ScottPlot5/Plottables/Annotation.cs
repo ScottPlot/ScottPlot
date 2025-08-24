@@ -42,7 +42,7 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
         if (!IsVisible)
             return;
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         PixelRect rect = rp.DataRect.Fraction(FractionRect);
         Pixel px = LabelStyle.GetRenderLocation(rect, Alignment, OffsetX, OffsetY, paint);

@@ -150,7 +150,7 @@ public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IMa
             _ => throw new NotSupportedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
         };
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
 

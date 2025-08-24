@@ -49,7 +49,7 @@ public class HistogramBars : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         for (int i = 0; i < Histogram.Bins.Length; i++)
         {

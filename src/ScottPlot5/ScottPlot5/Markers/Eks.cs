@@ -2,7 +2,7 @@ namespace ScottPlot.Markers;
 
 internal class Eks : IMarker
 {
-    public void Render(SKCanvas canvas, SKPaintAndFont paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, Paint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float radius = size / 2;
 

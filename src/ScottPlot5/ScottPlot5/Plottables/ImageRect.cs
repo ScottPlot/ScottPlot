@@ -17,7 +17,7 @@ public class ImageRect() : IPlottable
 
         PixelRect pxRect = Axes.GetPixelRect(Rect);
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         Image.Render(rp.Canvas, pxRect, paint, AntiAlias);
     }
 }

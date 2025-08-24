@@ -88,7 +88,7 @@ public class ContourLines : IPlottable, IHasLine
         if (IsVisible == false || Lines is null || Lines.Count == 0)
             return;
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         for (int i = 0; i < Lines.Count; i++)
         {

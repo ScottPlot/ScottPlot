@@ -278,7 +278,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         LastRenderSize = layout.LegendRect.Size;
 
         // render the legend panel
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         PixelRect shadowRect = layout.LegendRect.WithOffset(ShadowOffset);
         Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFillStyle);
         Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFillStyle);

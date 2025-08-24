@@ -28,7 +28,7 @@ public class LeftAxisWithSubtitle : YAxisBase
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         float maxTickLabelWidth = TickGenerator.Ticks.Length > 0
             ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max()
             : 0;
@@ -56,14 +56,14 @@ public class LeftAxisWithSubtitle : YAxisBase
         float x = panelRect.Left + PaddingOutsideAxisLabels.Horizontal;
         Pixel labelPoint = new(x, rp.DataRect.VerticalCenter);
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         LabelAlignment = Alignment.UpperCenter;
         LabelStyle.Render(rp.Canvas, labelPoint, paint);
 
         float labelHeight = LabelStyle.Measure().LineHeight;
         Pixel subLabelPoint = new(x + labelHeight, rp.DataRect.VerticalCenter);
 
-        using SKPaintAndFont paint2 = new();
+        using Paint paint2 = new();
         SubLabelStyle.Alignment = Alignment.UpperCenter;
         SubLabelStyle.Render(rp.Canvas, subLabelPoint, paint2);
 

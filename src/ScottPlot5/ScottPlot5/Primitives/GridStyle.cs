@@ -122,7 +122,7 @@ public class GridStyle
                 : new Pixel(rp.DataRect.Right, px);
         }
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         lineStyle.Render(rp.Canvas, starts, ends, paint);
     }
 }

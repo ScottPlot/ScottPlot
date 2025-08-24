@@ -10,7 +10,7 @@ public class PolygonalStarAxis : SpokedStarAxis
     public override void Render(RenderPack rp, IAxes axes, double maxSpokeLength, int numSpokes, float rotationDegrees)
     {
 
-        var paint = new SKPaintAndFont();
+        var paint = new Paint();
         AxisStyle.ApplyToPaint(paint);
 
         var ticks = new float[] { 0.25f, 0.5f, 1 };
@@ -44,7 +44,7 @@ public class PolygonalStarAxis : SpokedStarAxis
                 cumRotation += sweepAngle;
             }
             path.Close();
-            rp.Canvas.DrawPath(path, paint.Paint);
+            rp.Canvas.DrawPath(path, paint.SKPaint);
         }
 
     }

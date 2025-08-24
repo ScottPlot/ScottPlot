@@ -58,7 +58,7 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         if (LineOnTop)
         {
@@ -72,13 +72,13 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
         }
     }
 
-    private void DrawMarkers(RenderPack rp, SKPaintAndFont paint)
+    private void DrawMarkers(RenderPack rp, Paint paint)
     {
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(Start), MarkerStyle);
         Drawing.DrawMarker(rp.Canvas, paint, Axes.GetPixel(End), MarkerStyle);
     }
 
-    private void DrawLine(RenderPack rp, SKPaintAndFont paint)
+    private void DrawLine(RenderPack rp, Paint paint)
     {
         CoordinateLine line = new(Start, End);
         PixelLine pxLine = Axes.GetPixelLine(line);

@@ -51,7 +51,7 @@ public partial class LabelDemo : Form, IDemoWindow
             Color = Colors.Magenta,
         };
 
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         Drawing.DrawCircle(canvas, rect.Center, 5, ls, paint);
         label.Render(canvas, rect.Center, paint);
 

@@ -37,8 +37,8 @@ public class BackgroundStyle : IDisposable
 
     public void Render(SKCanvas canvas, PixelRect target)
     {
-        using SKPaintAndFont paint = new() { Color = Color.ToSKColor() };
-        canvas.DrawRect(target.ToSKRect(), paint.Paint);
+        using Paint paint = new() { Color = Color.ToSKColor() };
+        canvas.DrawRect(target.ToSKRect(), paint.SKPaint);
 
         if (Image is not null)
         {

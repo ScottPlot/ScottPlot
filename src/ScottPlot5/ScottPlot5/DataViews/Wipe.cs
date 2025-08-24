@@ -18,7 +18,7 @@ public class Wipe : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         foreach (Pixel[] seg in GetSegments(rp))
         {
             Drawing.DrawLines(rp.Canvas, paint, seg, Streamer.LineStyle);

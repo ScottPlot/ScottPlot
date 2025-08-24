@@ -105,7 +105,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
 
         var ohlcs = Data.GetOHLCs();
         for (int i = 0; i < ohlcs.Count; i++)

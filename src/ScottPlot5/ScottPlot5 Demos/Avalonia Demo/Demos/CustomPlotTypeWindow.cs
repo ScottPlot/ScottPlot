@@ -60,7 +60,7 @@ internal class RainbowPlot : IPlottable
     public void Render(RenderPack rp)
     {
         FillStyle FillStyle = new();
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         for (int i = 0; i < Xs.Length; i++)
         {
             Coordinates centerCoordinates = new(Xs[i], Ys[i]);

@@ -57,7 +57,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaintAndFont paint = new();
+        using Paint paint = new();
         using SKPath risingPath = new();
         using SKPath fallingPath = new();
 
@@ -109,9 +109,9 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
         }
 
         RisingStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawPath(risingPath, paint.Paint);
+        rp.Canvas.DrawPath(risingPath, paint.SKPaint);
 
         FallingStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawPath(fallingPath, paint.Paint);
+        rp.Canvas.DrawPath(fallingPath, paint.SKPaint);
     }
 }
