@@ -120,7 +120,7 @@ public static class IColormapExtensions
 
         for (int y = 0; y < height; y++)
         {
-            double frac = (double)y / (width - 1);
+            double frac = 1.0 - (double)y / (height - 1);
             Color color = colormap.GetColor(frac);
             paint.Color = color.ToSKColor();
             PixelLine line = new(0, y, width, y);
