@@ -1,5 +1,9 @@
 namespace ScottPlot;
 
+// TODO: carefully control how this is new'd
+
+// TODO: cut references to SKPaint wherever possible
+
 // NOTE: Code here aims to facilitate the transition between
 // SkiaSharp 2 (where paints have font styles) and SkiaSharp 3 (where they are separate)
 
@@ -33,6 +37,7 @@ public class Paint : IDisposable
             };
         }
     }
+
 
     // NOTE: Callers really shouldn't interact with SkiaSharp primitives.
     // The exception is all the stuff that happens in the Drawing class.

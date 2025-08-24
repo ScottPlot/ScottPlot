@@ -68,13 +68,13 @@ public partial class CustomMarkerDemo : Form, IDemoWindow
 
             if (Happiness > 0)
             {
-                SKRect oval = new(leftEyeX, smileTop - smileHeight / 2, rightEyeX, smileBottom - smileHeight / 2);
-                canvas.DrawArc(oval, 180, -180, false, paint.SKPaint);
+                PixelRect oval = new(leftEyeX, rightEyeX, smileTop - smileHeight / 2, smileBottom - smileHeight / 2);
+                Drawing.DrawArc(canvas, paint, markerStyle.LineStyle, oval, 180, -180);
             }
             else if (Happiness < 0)
             {
-                SKRect oval = new(leftEyeX, smileTop - smileHeight, rightEyeX, smileBottom - smileHeight);
-                canvas.DrawArc(oval, -180, 180, false, paint.SKPaint);
+                PixelRect oval = new(leftEyeX, rightEyeX, smileTop - smileHeight, smileBottom - smileHeight);
+                Drawing.DrawArc(canvas, paint, markerStyle.LineStyle, oval, -180, 180);
             }
         }
     }
