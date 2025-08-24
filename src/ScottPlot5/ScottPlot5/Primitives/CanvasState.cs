@@ -70,9 +70,14 @@ public class CanvasState(SKCanvas canvas)
         Canvas.ClipRect(rect.ToSKRect());
     }
 
-    public void Translate(Pixel px)
+    public void Translate(float dX, float dY)
     {
-        Canvas.Translate(px.X, px.Y);
+        Canvas.Translate(dX, dY);
+    }
+
+    public void Translate(Pixel delta)
+    {
+        Canvas.Translate(delta.X, delta.Y);
     }
 
     public void RotateDegrees(double degrees)

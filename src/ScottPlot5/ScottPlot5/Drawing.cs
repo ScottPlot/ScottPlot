@@ -59,6 +59,12 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint.SKPaint);
     }
 
+    public static void DrawPath(SKCanvas canvas, Paint paint, SKPath path, SKShader? shader = null)
+    {
+        paint.SKShader = shader;
+        canvas.DrawPath(path, paint.SKPaint);
+    }
+
     public static void DrawPath(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
