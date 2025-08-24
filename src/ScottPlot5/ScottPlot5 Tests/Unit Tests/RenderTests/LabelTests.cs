@@ -154,7 +154,7 @@ internal class LabelTests
     [Test]
     public void Test_String_Measurement()
     {
-        SKBitmap bmp = new(500, 500);
+        SKBitmap bmp = new(500, 600);
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.Navy);
 

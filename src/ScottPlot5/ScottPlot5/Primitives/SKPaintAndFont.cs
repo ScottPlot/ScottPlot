@@ -51,12 +51,8 @@ public class SKPaintAndFont : IDisposable
 
     public PixelRect MeasureText(string str)
     {
-        // NOTE: SkiaSharp 3 measures 1 too small!
-        // replace it with a 0 to be nearly pixel perfect with previous versions
-        str = str.Replace("1", "0");
-
-        Font.MeasureText(str, out SKRect textBounds);
-        return textBounds.ToPixelRect();
+        float width = Font.MeasureText(str, out SKRect textBounds);
+        return new PixelRect(width, textBounds.Height);
     }
 
     public (float lineHeight, SKFontMetrics metrics) GetFontMetrics()
