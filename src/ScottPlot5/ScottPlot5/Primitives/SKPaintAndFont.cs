@@ -31,13 +31,19 @@ public class SKPaintAndFont : IDisposable
     public float StrokeMiter { get => Paint.StrokeMiter; set => Paint.StrokeMiter = value; }
     public bool FakeBoldText { get => Font.Embolden; set => Font.Embolden = value; }
 
-    // TODO: This is used inside DrawImage() calls
     public SKSamplingOptions SamplingOptions { get; set; }
-    public FilterQuality FilterQuality
+
+    public ResizeFilter ResizeFilter
     {
         set
         {
-            SamplingOptions = value.GetSamplingOptions();
+            SamplingOptions = value switch
+            {
+                ResizeFilter.NearestNeighbor => new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None),
+                ResizeFilter.Bilinear => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear),
+                ResizeFilter.Bicubic => new SKSamplingOptions(SKCubicResampler.Mitchell),
+                _ => throw new ArgumentOutOfRangeException(nameof(value), $"Unknown filter quality: '{value}'"),
+            };
         }
     }
 
@@ -62,28 +68,5 @@ public class SKPaintAndFont : IDisposable
         Paint.Dispose();
         Font.Dispose();
         GC.SuppressFinalize(this);
-    }
-}
-
-public enum FilterQuality
-{
-    None = 0,
-    Low = 1,
-    Medium = 2,
-    High = 3,
-}
-
-public static class FilterQualityExtensions
-{
-    public static SKSamplingOptions GetSamplingOptions(this FilterQuality value)
-    {
-        return value switch
-        {
-            FilterQuality.None => new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None),
-            FilterQuality.Low => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.None),
-            FilterQuality.Medium => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear),
-            FilterQuality.High => new SKSamplingOptions(SKCubicResampler.Mitchell),
-            _ => throw new ArgumentOutOfRangeException(nameof(value), $"Unknown filter quality: '{value}'"),
-        };
     }
 }

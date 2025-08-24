@@ -443,13 +443,9 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             {
                 hm.Bitmap ??= Drawing.BitmapFromArgbs(hm.CellColors, hm.Width, hm.Height);
 
-                using SKPaintAndFont paint = new()
-                {
-                    FilterQuality = hm.Smooth ? FilterQuality.High : FilterQuality.None
-                };
-
-                SKRect rect = hm.Axes.GetPixelRect(hm.GetAlignedExtent()).ToSKRect();
-                rp.Canvas.DrawBitmap(hm.Bitmap, rect, paint.Paint);
+                PixelRect rect = hm.Axes.GetPixelRect(hm.GetAlignedExtent());
+                Image img = new(hm.Bitmap);
+                Drawing.DrawImage(rp.Canvas, img, rect, rp.Paint, hm.Smooth);
             }
         }
 
