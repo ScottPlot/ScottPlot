@@ -53,7 +53,7 @@ public class Box : IHasFill, IHasLine
     {
         if (!IsVisible)
             return;
-        
+
         Paint paint = rp.Paint;
 
         // TODO: support horizontal boxes
