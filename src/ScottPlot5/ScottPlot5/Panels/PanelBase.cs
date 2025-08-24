@@ -8,10 +8,10 @@ public abstract class PanelBase : IPanel
     public float MinimumSize { get; set; } = 0;
     public float MaximumSize { get; set; } = float.MaxValue;
 
-    public abstract float Measure();
+    public abstract float Measure(Paint paint);
     public abstract void Render(RenderPack rp, float size, float offset);
 
-    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset, Paint paint)
     {
         return Edge switch
         {

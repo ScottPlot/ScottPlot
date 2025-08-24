@@ -45,11 +45,9 @@ public class BoxPlot : IPlottable, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-
         foreach (Box box in Boxes)
         {
-            box.Render(rp, paint, Axes);
+            box.Render(rp, Axes);
         }
     }
 }

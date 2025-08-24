@@ -204,7 +204,6 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
         {
             float yBasePx = Axes.YAxis.GetPixel(FillYValue + Data.OffsetY, rp.DataRect);
 
-            using Paint paint = new();
             foreach (Pixel[] seg in segs)
             {
                 using SKPath path = new();
@@ -224,7 +223,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
                     FillStyle fs = new() { IsVisible = true, Color = FillYAboveColor };
                     rp.CanvasState.Save();
                     rp.CanvasState.Clip(clip);
-                    Drawing.FillPath(rp.Canvas, paint, fill, fs, clip);
+                    Drawing.FillPath(rp.Canvas, rp.Paint, fill, fs, clip);
                     rp.CanvasState.Restore();
                 }
 
@@ -235,7 +234,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
                     FillStyle fs = new() { IsVisible = true, Color = FillYBelowColor };
                     rp.CanvasState.Save();
                     rp.CanvasState.Clip(clip);
-                    Drawing.FillPath(rp.Canvas, paint, fill, fs, clip);
+                    Drawing.FillPath(rp.Canvas, rp.Paint, fill, fs, clip);
                     rp.CanvasState.Restore();
                 }
             }

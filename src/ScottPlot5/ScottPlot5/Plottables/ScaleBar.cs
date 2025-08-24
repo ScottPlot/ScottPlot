@@ -43,11 +43,10 @@ public class ScaleBar : IPlottable, IHasLine
         corner = corner.WithOffset(-EdgePadding.Left, -EdgePadding.Bottom);
 
         // offset for labels
-        PixelSize xLabelSize = XLabelStyle.Measure(XLabel).Size;
-        PixelSize yLabelSize = YLabelStyle.Measure(YLabel).Size;
+        PixelSize xLabelSize = XLabelStyle.Measure(XLabel, rp.Paint).Size;
+        PixelSize yLabelSize = YLabelStyle.Measure(YLabel, rp.Paint).Size;
         corner = corner.WithOffset(-yLabelSize.Width, -xLabelSize.Height);
 
-        using Paint paint = new();
         SKPath path = new();
         path.MoveTo(corner.ToSKPoint());
 
@@ -60,7 +59,7 @@ public class ScaleBar : IPlottable, IHasLine
             path.RLineTo(new SKPoint((float)+pxWidth, 0));
 
             Pixel xCenter = new(corner.X - pxWidth / 2, corner.Y + LabelPadding.Top);
-            XLabelStyle.Render(rp.Canvas, xCenter, paint, XLabel);
+            XLabelStyle.Render(rp.Canvas, xCenter, rp.Paint, XLabel);
         }
 
         if (Height > 0)
@@ -72,9 +71,9 @@ public class ScaleBar : IPlottable, IHasLine
             path.RLineTo(new SKPoint(0, (float)+pxHeight));
 
             Pixel yCenter = new(corner.X + LabelPadding.Right, corner.Y - pxHeight / 2);
-            YLabelStyle.Render(rp.Canvas, yCenter, paint, YLabel);
+            YLabelStyle.Render(rp.Canvas, yCenter, rp.Paint, YLabel);
         }
 
-        Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
     }
 }

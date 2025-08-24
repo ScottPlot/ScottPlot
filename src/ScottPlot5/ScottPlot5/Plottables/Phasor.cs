@@ -72,8 +72,6 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
             return;
         }
 
-        using Paint paint = new();
-
         Pixel pxBase = Axes.GetPixel(Coordinates.Origin);
 
         for (int i = 0; i < Points.Count; i++)
@@ -99,10 +97,10 @@ public class Phasor : IPlottable, IHasArrow, IHasLegendText
                 double padding = Math.Min(Axes.XAxis.Range.Span, Axes.YAxis.Range.Span) * PaddingFraction;
                 PolarCoordinates labelPoint = new(point.Radius + padding, angle);
                 Pixel labelPixel = Axes.GetPixel(labelPoint.ToCartesian());
-                PixelRect labelRect = LabelStyle.Measure().Rect(Alignment.MiddleCenter);
+                PixelRect labelRect = LabelStyle.Measure(rp.Paint).Rect(Alignment.MiddleCenter);
                 Pixel labelOffset = labelRect.Center - labelRect.TopLeft;
                 labelPixel -= labelOffset;
-                LabelStyle.Render(rp.Canvas, labelPixel, paint);
+                LabelStyle.Render(rp.Canvas, labelPixel, rp.Paint);
             }
         }
     }

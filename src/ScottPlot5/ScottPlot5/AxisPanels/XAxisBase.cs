@@ -9,15 +9,13 @@ public abstract class XAxisBase : AxisBase, IXAxis
         LabelRotation = 0;
     }
 
-    public virtual float Measure()
+    public virtual float Measure(Paint paint)
     {
         if (!IsVisible)
             return 0;
 
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
-
-        using Paint paint = new();
 
         float tickHeight = MajorTickStyle.Length;
 
@@ -68,7 +66,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
             top: dataRect.Top - offset - size);
     }
 
-    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset, Paint paint)
     {
         return Edge == Edge.Bottom
             ? GetPanelRectangleBottom(dataRect, size, offset)
@@ -80,9 +78,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (!IsVisible)
             return;
 
-        using Paint paint = new();
-
-        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset, rp.Paint);
 
         float y = Edge == Edge.Bottom
             ? panelRect.Bottom - PaddingOutsideAxisLabels.Vertical
@@ -92,7 +88,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, rp.Paint, panelRect, labelPoint, LabelFontColor);
         }
 
         LabelAlignment = Alignment.LowerCenter;
@@ -102,7 +98,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (ClipLabel)
             rp.CanvasState.Clip(panelRect);
 
-        LabelStyle.Render(rp.Canvas, labelPoint, paint);
+        LabelStyle.Render(rp.Canvas, labelPoint, rp.Paint);
 
         rp.CanvasState.Restore();
 
@@ -120,9 +116,8 @@ public abstract class XAxisBase : AxisBase, IXAxis
         return distance / (dataArea.Width / Width);
     }
 
-    public void RegenerateTicks(PixelLength size)
+    public void RegenerateTicks(PixelLength size, Paint paint)
     {
-        using Paint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
         TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
     }

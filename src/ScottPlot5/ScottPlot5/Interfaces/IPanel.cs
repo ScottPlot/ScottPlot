@@ -25,7 +25,7 @@ public interface IPanel
     /// Return the size (in pixels) of the panel in the dimension perpendicular to the edge it lays on
     /// </summary>
     /// <returns></returns>
-    float Measure();
+    float Measure(Paint paint);
 
     /// <summary>
     /// Indicates which edge of the data rectangle this panel lays on
@@ -49,7 +49,7 @@ public interface IPanel
     /// <summary>
     /// Return the rectangle for this panel
     /// </summary>
-    PixelRect GetPanelRect(PixelRect dataRect, float size, float offset);
+    PixelRect GetPanelRect(PixelRect dataRect, float size, float offset, Paint paint);
 }
 
 public static class IPanelExtensions

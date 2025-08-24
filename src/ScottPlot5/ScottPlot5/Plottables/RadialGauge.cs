@@ -168,7 +168,7 @@ internal class RadialGauge
         rp.Paint.TextSize = (float)Width * (float)FontSizeFraction;
         rp.Paint.IsAntialias = true;
         rp.Paint.SubpixelText = true;
-        rp.Paint.SKColor = new(Font.Color.ARGB);
+        rp.Paint.Color = Font.Color;
         rp.Paint.SKTypeface = Font.Typeface;
 
         // Text is measured (in linear form) and converted to angular dimensions

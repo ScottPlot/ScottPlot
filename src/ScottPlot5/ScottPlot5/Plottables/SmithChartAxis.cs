@@ -277,10 +277,9 @@ public class SmithChartAxis : IPlottable, IManagesAxisLimits
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-        RenderConstantRealCircles(rp, paint);
-        RenderConstantImaginaryCurves(rp, paint);
-        RenderCircleLabels(rp, paint);
+        RenderConstantRealCircles(rp, rp.Paint);
+        RenderConstantImaginaryCurves(rp, rp.Paint);
+        RenderCircleLabels(rp, rp.Paint);
     }
 
     private void RenderCircleLabels(RenderPack rp, Paint paint)

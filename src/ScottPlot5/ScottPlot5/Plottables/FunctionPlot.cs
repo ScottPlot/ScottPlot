@@ -98,10 +98,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
             }
         }
 
-        using Paint paint = new();
-        LineStyle.ApplyToPaint(paint);
-
-        Drawing.DrawPath(rp.Canvas, paint, path);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
 
         bool somethingWasRendered = min <= max;
         if (somethingWasRendered)

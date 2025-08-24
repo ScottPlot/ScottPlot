@@ -49,10 +49,12 @@ public class Box : IHasFill, IHasLine
         return new AxisLimits(xMin, xMax, yMin, yMax);
     }
 
-    public void Render(RenderPack rp, Paint paint, IAxes axes)
+    public void Render(RenderPack rp, IAxes axes)
     {
         if (!IsVisible)
             return;
+        
+        Paint paint = rp.Paint;
 
         // TODO: support horizontal boxes
         if (Orientation != Orientation.Vertical)

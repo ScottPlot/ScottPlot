@@ -76,13 +76,8 @@ public class ZoomRectangle(Plot plot) : IZoomRectangle
             rect.Top = dataRect.Top;
         }
 
-        using Paint paint = new()
-        {
-            IsAntialias = true
-        };
-
-        Drawing.FillRectangle(canvas, rect.ToPixelRect(), paint, FillStyle);
-        Drawing.DrawRectangle(canvas, rect.ToPixelRect(), paint, LineStyle);
+        Drawing.FillRectangle(canvas, rect.ToPixelRect(), rp.Paint, FillStyle);
+        Drawing.DrawRectangle(canvas, rect.ToPixelRect(), rp.Paint, LineStyle);
 
         rp.CanvasState.Restore();
     }

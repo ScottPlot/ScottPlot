@@ -69,10 +69,9 @@ public class TINPlot : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-        DrawNetworkLines(rp, paint);
-        DrawMarkers(rp, paint);
-        DrawVoronoi(rp, paint);
-        DrawContours(rp, paint);
+        DrawNetworkLines(rp, rp.Paint);
+        DrawMarkers(rp, rp.Paint);
+        DrawVoronoi(rp, rp.Paint);
+        DrawContours(rp, rp.Paint);
     }
 }

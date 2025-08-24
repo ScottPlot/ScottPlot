@@ -30,7 +30,8 @@ public class Plot3D
     {
         RenderPack3D rp = new(this, surface);
 
-        Drawing.FillRectangle(rp.Canvas, rp.ImageRect, Colors.White);
+        FillStyle fs = new() { Color = Colors.White };
+        Drawing.FillRectangle(rp.Canvas, rp.ImageRect, rp.Paint, fs);
 
         Axis3D.Render(rp);
 

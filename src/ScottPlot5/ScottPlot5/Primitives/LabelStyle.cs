@@ -113,7 +113,7 @@ public class LabelStyle
     {
         paint.IsStroke = true;
         paint.StrokeWidth = BorderWidth;
-        paint.SKColor = BorderColor.ToSKColor();
+        paint.Color = BorderColor;
         paint.IsAntialias = AntiAliasBackground;
         paint.SKShader = null;
     }
@@ -121,7 +121,7 @@ public class LabelStyle
     private void ApplyShadowPaint(Paint paint)
     {
         paint.IsStroke = false;
-        paint.SKColor = ShadowColor.ToSKColor();
+        paint.Color = ShadowColor;
         paint.IsAntialias = AntiAliasBackground;
         paint.SKShader = null;
     }
@@ -129,10 +129,12 @@ public class LabelStyle
     private void ApplyBackgroundPaint(Paint paint)
     {
         paint.IsStroke = false;
-        paint.SKColor = BackgroundColor.ToSKColor();
+        paint.Color = BackgroundColor;
         paint.IsAntialias = AntiAliasBackground;
         paint.SKShader = null;
     }
+
+    private readonly SKPathEffect SolidPathEffect = LinePattern.Solid.GetPathEffect();
 
     private void ApplyTextPaint(Paint paint)
     {
@@ -140,10 +142,11 @@ public class LabelStyle
         paint.IsStroke = false;
         paint.SKTypeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
-        paint.SKColor = ForeColor.ToSKColor();
+        paint.Color = ForeColor;
         paint.IsAntialias = AntiAliasText;
         paint.SubpixelText = SubpixelText;
         paint.SKShader = null;
+        paint.SKPathEffect = SolidPathEffect;
     }
 
     public void ApplyToPaint(Paint paint)
@@ -154,18 +157,9 @@ public class LabelStyle
     /// <summary>
     /// Return size information for the contents of the <see cref="Text"/> property
     /// </summary>
-    public MeasuredText Measure() // NOTE: This should never be called internally
+    public MeasuredText Measure(Paint paint) // NOTE: This should never be called internally
     {
-        return Measure(Text);
-    }
-
-    /// <summary>
-    /// Return size information for the given text
-    /// </summary>
-    public MeasuredText Measure(string text) // NOTE: This should never be called internally
-    {
-        using Paint paint = new();
-        return Measure(text, paint);
+        return Measure(Text, paint);
     }
 
     public MeasuredText Measure(string text, Paint paint)
@@ -332,15 +326,13 @@ public class LabelStyle
                     {
                         float underlineY = yPx + (float)UnderlineOffset;
 
-                        using var underlinePaint = new SKPaint
-                        {
-                            Color = paint.SKColor,
-                            StrokeWidth = (float)UnderlineWidth,
-                            IsStroke = true,
-                            IsAntialias = paint.IsAntialias
-                        };
+                        paint.Color = paint.Color;
+                        paint.StrokeWidth = (float)UnderlineWidth;
+                        paint.IsStroke = true;
+                        paint.IsAntialias = paint.IsAntialias;
 
-                        canvas.DrawLine(xPx, underlineY, xPx + shapedWidth, underlineY, underlinePaint);
+                        PixelLine line = new(xPx, underlineY, xPx + shapedWidth, underlineY);
+                        Drawing.DrawLine(canvas, paint, line);
                     }
                 }
                 else
@@ -352,15 +344,13 @@ public class LabelStyle
                         float underlineY = yPx + (float)UnderlineOffset;
                         float textWidth = paint.MeasureText(lines[i]).Width;
 
-                        using var underlinePaint = new SKPaint
-                        {
-                            Color = paint.SKColor,
-                            StrokeWidth = (float)UnderlineWidth,
-                            IsStroke = true,
-                            IsAntialias = paint.IsAntialias
-                        };
+                        paint.Color = paint.Color;
+                        paint.StrokeWidth = (float)UnderlineWidth;
+                        paint.IsStroke = true;
+                        paint.IsAntialias = paint.IsAntialias;
 
-                        canvas.DrawLine(xPx, underlineY, xPx + textWidth, underlineY, underlinePaint);
+                        PixelLine line = new(xPx, underlineY, xPx + textWidth, underlineY);
+                        Drawing.DrawLine(canvas, paint, line);
                     }
                 }
             }
@@ -380,15 +370,13 @@ public class LabelStyle
                 {
                     float underlineY = yPx + (float)UnderlineOffset;
 
-                    using var underlinePaint = new SKPaint
-                    {
-                        Color = paint.SKColor,
-                        StrokeWidth = (float)UnderlineWidth,
-                        IsStroke = true,
-                        IsAntialias = paint.IsAntialias
-                    };
+                    paint.Color = paint.Color;
+                    paint.StrokeWidth = (float)UnderlineWidth;
+                    paint.IsStroke = true;
+                    paint.IsAntialias = paint.IsAntialias;
 
-                    canvas.DrawLine(xPx, underlineY, xPx + shapedWidth, underlineY, underlinePaint);
+                    PixelLine line = new(xPx, underlineY, xPx + shapedWidth, underlineY);
+                    Drawing.DrawLine(canvas, paint, line);
                 }
             }
             else
@@ -400,14 +388,13 @@ public class LabelStyle
                     float underlineY = yPx + (float)UnderlineOffset;
                     float textWidth = paint.MeasureText(Text).Width;
 
-                    using var underlinePaint = new SKPaint
-                    {
-                        Color = paint.SKColor,
-                        StrokeWidth = (float)UnderlineWidth,
-                        IsStroke = true,
-                        IsAntialias = paint.IsAntialias
-                    };
-                    canvas.DrawLine(xPx, underlineY, xPx + textWidth, underlineY, underlinePaint);
+                    paint.Color = paint.Color;
+                    paint.StrokeWidth = (float)UnderlineWidth;
+                    paint.IsStroke = true;
+                    paint.IsAntialias = paint.IsAntialias;
+
+                    PixelLine line = new(xPx, underlineY, xPx + textWidth, underlineY);
+                    Drawing.DrawLine(canvas, paint, line);
                 }
             }
         }

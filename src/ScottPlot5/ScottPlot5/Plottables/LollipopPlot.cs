@@ -55,7 +55,6 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
         foreach (Coordinates c in Coordinates)
         {
             Coordinates lineBase = (Orientation == Orientation.Vertical) ? new(c.X, 0) : new(0, c.Y);
@@ -64,8 +63,8 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
             PixelLine pxLine = Axes.GetPixelLine(line);
             Pixel px = Axes.GetPixel(lineTip);
 
-            Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
-            Drawing.DrawMarker(rp.Canvas, paint, px, MarkerStyle);
+            Drawing.DrawLine(rp.Canvas, rp.Paint, pxLine, LineStyle);
+            Drawing.DrawMarker(rp.Canvas, rp.Paint, px, MarkerStyle);
         }
     }
 }

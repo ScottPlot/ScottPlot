@@ -26,15 +26,13 @@ public static class Colormap
         using SKBitmap bmp = new(width, height);
         using SKCanvas canvas = new(bmp);
 
-        using Paint paint = new()
-        {
-            IsAntialias = false,
-            IsStroke = true,
-        };
+        using Paint paint = Paint.NewDisposablePaint();
+        paint.IsAntialias = false;
+        paint.IsStroke = true;
 
         for (int i = 0; i < width; i++)
         {
-            paint.SKColor = colormap.GetColor(i / (width - 1.0)).ToSKColor();
+            paint.Color = colormap.GetColor(i / (width - 1.0));
             PixelLine line = new(i, 0, i, height);
             Drawing.DrawLine(canvas, paint, line);
         }

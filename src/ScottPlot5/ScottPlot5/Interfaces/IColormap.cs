@@ -98,13 +98,15 @@ public static class IColormapExtensions
     {
         using SKBitmap bmp = new(width, height);
         using SKCanvas canvas = new(bmp);
-        using Paint paint = new() { IsStroke = true, IsAntialias = false, StrokeWidth = 1 };
+        using Paint paint = Paint.NewDisposablePaint();
+        paint.IsStroke = true;
+        paint.IsAntialias = false;
+        paint.StrokeWidth = 1;
 
         for (int x = 0; x < width; x++)
         {
             double frac = (double)x / (width - 1);
-            Color color = colormap.GetColor(frac);
-            paint.SKColor = color.ToSKColor();
+            paint.Color = colormap.GetColor(frac);
             PixelLine line = new(x, 0, x, height);
             Drawing.DrawLine(canvas, paint, line);
         }
@@ -116,13 +118,15 @@ public static class IColormapExtensions
     {
         using SKBitmap bmp = new(width, height);
         using SKCanvas canvas = new(bmp);
-        using Paint paint = new() { IsStroke = true, IsAntialias = false, StrokeWidth = 1 };
+        using Paint paint = Paint.NewDisposablePaint();
+        paint.IsStroke = true;
+        paint.IsAntialias = false;
+        paint.StrokeWidth = 1;
 
         for (int y = 0; y < height; y++)
         {
             double frac = 1.0 - (double)y / (height - 1);
-            Color color = colormap.GetColor(frac);
-            paint.SKColor = color.ToSKColor();
+            paint.Color = colormap.GetColor(frac);
             PixelLine line = new(0, y, width, y);
             Drawing.DrawLine(canvas, paint, line);
         }

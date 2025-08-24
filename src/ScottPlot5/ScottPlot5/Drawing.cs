@@ -51,7 +51,7 @@ public static class Drawing
         if (width == 0)
             return;
 
-        paint.SKColor = color.ToSKColor();
+        paint.Color = color;
         paint.IsStroke = true;
         paint.IsAntialias = antiAlias;
         paint.StrokeWidth = width;
@@ -60,7 +60,13 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint.SKPaint);
     }
 
-    public static void DrawPath(SKCanvas canvas, Paint paint, SKPath path, SKShader? shader = null)
+    public static void DrawArrow(SKCanvas canvas, Paint paint, SKPath path, ArrowStyle arrowStyle)
+    {
+        arrowStyle.ApplyToPaint(paint);
+        canvas.DrawPath(path, paint.SKPaint);
+    }
+
+    public static void DrawPath(SKCanvas canvas, Paint paint, SKPath path, SKShader? shader)
     {
         paint.SKShader = shader;
         canvas.DrawPath(path, paint.SKPaint);
@@ -257,21 +263,6 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
     }
 
-    public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
-    {
-        if (color == Colors.Transparent)
-            return;
-
-        using Paint paint = new()
-        {
-            SKColor = color.ToSKColor(),
-            IsStroke = false,
-            IsAntialias = true,
-        };
-
-        canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
-    }
-
     public static void DrawRoundRectangle(SKCanvas canvas, PixelRect rect, Paint paint, float radiusX, float radiusY)
     {
         canvas.DrawRoundRect(rect.ToSKRect(), radiusX, radiusY, paint.SKPaint);
@@ -288,40 +279,15 @@ public static class Drawing
         canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
     }
 
-    [Obsolete($"use FillRectangle()", false)]
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Paint paint, FillStyle fillStyle)
-    {
-        FillRectangle(canvas, rect, paint, fillStyle);
-    }
-
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
-    {
-        if (color == Colors.Transparent || lineWidth == 0)
-            return;
-
-        using Paint paint = new()
-        {
-            SKColor = color.ToSKColor(),
-            IsStroke = true,
-            StrokeWidth = lineWidth,
-            IsAntialias = true,
-        };
-
-        canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
-    }
-
-    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)
+    public static void DrawDebugRectangle(SKCanvas canvas, Paint paint, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)
     {
         point ??= Pixel.NaN;
         color ??= Colors.Magenta;
 
-        using Paint paint = new()
-        {
-            SKColor = color.Value.ToSKColor(),
-            IsStroke = true,
-            StrokeWidth = lineWidth,
-            IsAntialias = true,
-        };
+        paint.Color = color.Value;
+        paint.IsStroke = true;
+        paint.StrokeWidth = lineWidth;
+        paint.IsAntialias = true;
 
         canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
         canvas.DrawLine(rect.BottomLeft.ToSKPoint(), rect.TopRight.ToSKPoint(), paint.SKPaint);
@@ -330,21 +296,8 @@ public static class Drawing
         canvas.DrawCircle(point.Value.ToSKPoint(), 5, paint.SKPaint);
 
         paint.IsStroke = false;
-        paint.SKColor = paint.SKColor.WithAlpha(20);
+        paint.Color = paint.Color.WithAlpha(20);
         canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
-    }
-
-    public static void DrawDebugPoint(SKCanvas canvas, Pixel point, Color? color = null, float size = 3)
-    {
-        color ??= Colors.Magenta;
-
-        using Paint paint = new()
-        {
-            SKColor = color.Value.ToSKColor(),
-            IsAntialias = true,
-        };
-
-        canvas.DrawCircle(point.ToSKPoint(), size, paint.SKPaint);
     }
 
     public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, Paint paint)
@@ -666,19 +619,20 @@ public static class Drawing
 
     public static void DrawImage(SKCanvas canvas, SKBitmap image, PixelRect target, Paint paint)
     {
+        paint.Color = Colors.Black; // must be solid or image is semitransparent
         Image img = new(image);
         DrawImage(canvas, img, target, paint);
     }
 
     public static void DrawImage(SKCanvas canvas, SKImage image, PixelRect target, Paint paint)
     {
-        paint.SKColor = SKColors.Black;
+        paint.Color = Colors.Black; // must be solid or image is semitransparent
         canvas.DrawImage(image, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
     }
 
     public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, Paint paint)
     {
-        paint.SKColor = SKColors.Black;
+        paint.Color = Colors.Black; // must be solid or image is semitransparent
         canvas.DrawImage(image.SKImage, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
     }
 

@@ -34,7 +34,7 @@ public class TitlePanel : IPanel
     /// </summary>
     public float VerticalPadding = 10;
 
-    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset, Paint paint)
     {
         return new PixelRect(
             left: dataRect.Left,
@@ -43,15 +43,13 @@ public class TitlePanel : IPanel
             top: dataRect.Top - offset - size);
     }
 
-    public float Measure()
+    public float Measure(Paint paint)
     {
         if (!IsVisible)
             return 0;
 
         if (string.IsNullOrWhiteSpace(Label.Text))
             return 0;
-
-        using Paint paint = new();
 
         return Label.Measure(Label.Text, paint).Height + VerticalPadding;
     }
@@ -61,9 +59,7 @@ public class TitlePanel : IPanel
         if (!IsVisible)
             return;
 
-        using Paint paint = new();
-
-        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset, rp.Paint);
 
         if (FullFigureCenter)
         {
@@ -74,9 +70,9 @@ public class TitlePanel : IPanel
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, Label.ForeColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, rp.Paint, panelRect, labelPoint, Label.ForeColor);
         }
 
-        Label.Render(rp.Canvas, labelPoint, paint);
+        Label.Render(rp.Canvas, labelPoint, rp.Paint);
     }
 }

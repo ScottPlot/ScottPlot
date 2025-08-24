@@ -268,7 +268,7 @@ public class Image : IDisposable
     /// </summary>
     public void Render(SKCanvas canvas, PixelRect target, Paint paint, bool antiAlias)
     {
-        paint.SKColor = SKColors.White;
+        paint.Color = Colors.White;
         paint.ResizeFilter = antiAlias ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor;
         paint.IsAntialias = antiAlias;
         Drawing.DrawImage(canvas, SKImage, target, paint);
@@ -377,7 +377,8 @@ public class Image : IDisposable
     {
         PixelRect newRect = new(0, newWidth, 0, newHeight);
 
-        using Paint paint = new() { ResizeFilter = antiAlias ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor };
+        using Paint paint = Paint.NewDisposablePaint();
+        paint.ResizeFilter = antiAlias ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor;
         using SKBitmap targetBitmap = new(newWidth, newHeight);
         using SKCanvas targetCanvas = new(targetBitmap);
         using SKBitmap sourceBitmap = SKBitmap.FromImage(SKImage);

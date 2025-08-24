@@ -62,7 +62,7 @@ public class TriangularAxis(bool clockwise) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
+        Paint paint = rp.Paint;
 
         RenderBackground(rp, paint);
 

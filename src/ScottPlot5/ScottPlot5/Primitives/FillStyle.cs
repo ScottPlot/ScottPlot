@@ -33,7 +33,7 @@ public class FillStyle
 
     public void ApplyToPaint(Paint paint, PixelRect rect)
     {
-        paint.SKColor = Color.ToSKColor();
+        paint.Color = Color;
         paint.IsStroke = false;
         paint.IsAntialias = AntiAlias;
 

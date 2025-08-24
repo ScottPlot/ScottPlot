@@ -86,13 +86,12 @@ public class PopulationSymbol(Population population) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-        RenderBar(rp, paint);
-        RenderBox(rp, paint);
-        RenderMarkers(rp, paint);
+        RenderBar(rp);
+        RenderBox(rp);
+        RenderMarkers(rp);
     }
 
-    private void RenderMarkers(RenderPack rp, Paint paint)
+    private void RenderMarkers(RenderPack rp)
     {
         if (!Marker.IsVisible)
             return;
@@ -109,11 +108,11 @@ public class PopulationSymbol(Population population) : IPlottable
         {
             Coordinates location = new(RandomXs[i], Population.Values[i]);
             Pixel px = Axes.GetPixel(location);
-            Drawing.DrawMarker(rp.Canvas, paint, px, Marker.MarkerStyle);
+            Drawing.DrawMarker(rp.Canvas, rp.Paint, px, Marker.MarkerStyle);
         }
     }
 
-    private void RenderBar(RenderPack rp, Paint paint)
+    private void RenderBar(RenderPack rp)
     {
         if (!Bar.IsVisible)
             return;
@@ -125,10 +124,10 @@ public class PopulationSymbol(Population population) : IPlottable
         Bar.Value = Population.Mean;
         Bar.Error = Population.StandardError;
 
-        Bar.Render(rp, Axes, paint, _EmptyLabel);
+        Bar.Render(rp, Axes, _EmptyLabel);
     }
 
-    private void RenderBox(RenderPack rp, Paint paint)
+    private void RenderBox(RenderPack rp)
     {
         if (!Box.IsVisible)
             return;
@@ -138,7 +137,7 @@ public class PopulationSymbol(Population population) : IPlottable
         Box.Width = rect.Width;
 
         BoxValueConfig.Invoke(Box, Population);
-        Box.Render(rp, paint, Axes);
+        Box.Render(rp, Axes);
     }
 
     public static Population BoxValueConfigurator_MeanStdErrStDev(Box box, Population pop)

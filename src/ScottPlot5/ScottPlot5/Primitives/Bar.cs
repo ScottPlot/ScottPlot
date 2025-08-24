@@ -156,18 +156,18 @@ public class Bar : IHasFill, IHasLine
         }
     }
 
-    public void Render(RenderPack rp, IAxes axes, Paint paint, LabelStyle labelStyle)
+    public void Render(RenderPack rp, IAxes axes, LabelStyle labelStyle)
     {
-        RenderBody(rp, axes, paint);
-        RenderText(rp, axes, paint, labelStyle);
+        RenderBody(rp, axes);
+        RenderText(rp, axes, labelStyle);
     }
 
-    public void RenderBody(RenderPack rp, IAxes axes, Paint paint)
+    public void RenderBody(RenderPack rp, IAxes axes)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
 
-        Drawing.FillRectangle(rp.Canvas, rect, paint, FillStyle);
-        Drawing.DrawRectangle(rp.Canvas, rect, paint, LineStyle);
+        Drawing.FillRectangle(rp.Canvas, rect, rp.Paint, FillStyle);
+        Drawing.DrawRectangle(rp.Canvas, rect, rp.Paint, LineStyle);
 
         if (Error != 0)
         {
@@ -176,14 +176,15 @@ public class Bar : IHasFill, IHasLine
                 Pixel pt1 = axes.GetPixel(line.Start);
                 Pixel pt2 = axes.GetPixel(line.End);
                 PixelLine pxLine = new(pt1, pt2);
-                Drawing.DrawLine(rp.Canvas, paint, pxLine, LineStyle);
+                Drawing.DrawLine(rp.Canvas, rp.Paint, pxLine, LineStyle);
             }
         }
     }
 
-    public void RenderText(RenderPack rp, IAxes axes, Paint paint, LabelStyle labelStyle)
+    public void RenderText(RenderPack rp, IAxes axes, LabelStyle labelStyle)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
+        Paint paint = rp.Paint;
 
         if (CenterLabel)
         {

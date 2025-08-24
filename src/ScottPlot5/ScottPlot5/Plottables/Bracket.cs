@@ -80,10 +80,9 @@ public class Bracket : IPlottable
         PixelLine edgeLine1 = new(pxEnd1.X, pxEnd1.Y, pxEnd2.X, pxEnd2.Y);
         PixelLine edgeLine2 = new(pxStart2.X, pxStart2.Y, pxEnd2.X, pxEnd2.Y);
 
-        using Paint paint = new();
-        Drawing.DrawLine(rp.Canvas, paint, mainLine, LineStyle);
-        Drawing.DrawLine(rp.Canvas, paint, edgeLine1, LineStyle);
-        Drawing.DrawLine(rp.Canvas, paint, edgeLine2, LineStyle);
+        Drawing.DrawLine(rp.Canvas, rp.Paint, mainLine, LineStyle);
+        Drawing.DrawLine(rp.Canvas, rp.Paint, edgeLine1, LineStyle);
+        Drawing.DrawLine(rp.Canvas, rp.Paint, edgeLine2, LineStyle);
 
         if (string.IsNullOrWhiteSpace(Text))
             return;
@@ -94,7 +93,7 @@ public class Bracket : IPlottable
         Pixel stubPixel2 = stubPixel1.WithOffset(bracketHeadTranslation.X, bracketHeadTranslation.Y);
         PixelLine stubLine = new(stubPixel1, stubPixel2);
 
-        Drawing.DrawLine(rp.Canvas, paint, stubLine, LineStyle);
+        Drawing.DrawLine(rp.Canvas, rp.Paint, stubLine, LineStyle);
 
         // draw label text aligned with the end of the stub
         rp.CanvasState.Translate(stubPixel2);
@@ -113,10 +112,10 @@ public class Bracket : IPlottable
 
         // translate as needed to adjust for flipped text
         bool IsInverted = edgeVector == antiNormal;
-        var labelHeight = LabelStyle.Measure(Text).Height;
+        var labelHeight = LabelStyle.Measure(Text, rp.Paint).Height;
         var translateY = labelHeight * ((IsInverted && !flippedText || !IsInverted && flippedText) ? 0 : 1);
         rp.CanvasState.Translate(new(0, translateY));
 
-        LabelStyle.Render(rp.Canvas, Pixel.Zero, paint, Text);
+        LabelStyle.Render(rp.Canvas, Pixel.Zero, rp.Paint, Text);
     }
 }

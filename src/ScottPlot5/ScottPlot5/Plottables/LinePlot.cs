@@ -58,17 +58,15 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using Paint paint = new();
-
         if (LineOnTop)
         {
-            DrawMarkers(rp, paint);
-            DrawLine(rp, paint);
+            DrawMarkers(rp, rp.Paint);
+            DrawLine(rp, rp.Paint);
         }
         else
         {
-            DrawLine(rp, paint);
-            DrawMarkers(rp, paint);
+            DrawLine(rp, rp.Paint);
+            DrawMarkers(rp, rp.Paint);
         }
     }
 

@@ -153,8 +153,6 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         if (!IsVisible || RadiusIsNotFinite)
             return;
 
-        using var paint = new Paint();
-
         rp.Canvas.Translate(Axes.GetPixel(Center).ToSKPoint());
         rp.Canvas.RotateDegrees((float)-Rotation.Normalized.Degrees);
 
@@ -164,11 +162,11 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
 
         if (IsAnnulus)
         {
-            RenderAnnulus(rp, paint, rect);
+            RenderAnnulus(rp, rp.Paint, rect);
         }
         else
         {
-            RenderEllipse(rp, paint, rect);
+            RenderEllipse(rp, rp.Paint, rect);
         }
     }
 }

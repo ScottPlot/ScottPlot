@@ -17,7 +17,6 @@ public class ImageRect() : IPlottable
 
         PixelRect pxRect = Axes.GetPixelRect(Rect);
 
-        using Paint paint = new();
-        Image.Render(rp.Canvas, pxRect, paint, AntiAlias);
+        Image.Render(rp.Canvas, pxRect, rp.Paint, AntiAlias);
     }
 }
