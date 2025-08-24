@@ -167,7 +167,7 @@ public class LineStyle
     {
         paint.SKShader = null;
         paint.IsStroke = true;
-        paint.Color = Color.ToSKColor();
+        paint.SKColor = Color.ToSKColor();
         paint.StrokeWidth = Hairline ? 1 : Width;
         paint.SKPathEffect = Pattern.GetPathEffect();
         paint.IsAntialias = AntiAlias;

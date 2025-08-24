@@ -21,7 +21,7 @@ public class TickMarkStyle
     {
         paint.IsAntialias = AntiAlias;
         paint.IsStroke = true;
-        paint.Color = Color.ToSKColor();
+        paint.SKColor = Color.ToSKColor();
         paint.StrokeWidth = Hairline ? 1 : Width;
     }
 }

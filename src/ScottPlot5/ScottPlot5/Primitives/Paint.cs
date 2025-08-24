@@ -10,7 +10,7 @@ namespace ScottPlot;
 public class Paint : IDisposable
 {
     // options for customizing paint
-    public SKColor Color { get => SKPaint.Color; set => SKPaint.Color = value; }
+    public Color Color { get => Color.FromSKColor(SKPaint.Color); set => SKPaint.Color = value.ToSKColor(); }
     public bool IsStroke { get => SKPaint.IsStroke; set => SKPaint.IsStroke = value; }
     public float StrokeWidth { get => SKPaint.StrokeWidth; set => SKPaint.StrokeWidth = value; }
     public bool IsAntialias { get => SKPaint.IsAntialias; set => SKPaint.IsAntialias = value; }
@@ -43,6 +43,7 @@ public class Paint : IDisposable
     // The exception is all the stuff that happens in the Drawing class.
     public SKPaint SKPaint { get; set; } = new();
     public SKFont SKFont { get; set; } = new();
+    public SKColor SKColor { get => SKPaint.Color; set => SKPaint.Color = value; }
     public SKTextAlign SKTextAlign { get; set; }
     public SKTypeface SKTypeface { get => SKFont.Typeface; set => SKFont.Typeface = value; }
     public SKShader? SKShader { get => SKPaint.Shader; set => SKPaint.Shader = value; }

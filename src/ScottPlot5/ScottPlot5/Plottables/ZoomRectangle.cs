@@ -7,11 +7,17 @@ public class ZoomRectangle(Plot plot) : IZoomRectangle
 {
     public bool IsVisible { get; set; } = false;
 
-    public Color FillColor = new Color(255, 0, 0).WithAlpha(100);
+    FillStyle FillStyle { get; set; } = new()
+    {
+        Color = new Color(255, 0, 0).WithAlpha(100),
+        AntiAlias = false,
+    };
 
     public LineStyle LineStyle { get; set; } = new()
     {
-        Color = new Color(255, 0, 0).WithAlpha(200)
+        Color = new Color(255, 0, 0).WithAlpha(200),
+        Width = 1,
+        AntiAlias = false,
     };
 
     public Pixel MouseDown { get; set; }
@@ -75,14 +81,8 @@ public class ZoomRectangle(Plot plot) : IZoomRectangle
             IsAntialias = true
         };
 
-        paint.Color = FillColor.ToSKColor();
-        paint.IsStroke = false;
-        canvas.DrawRect(rect, paint.SKPaint);
-
-        paint.Color = LineStyle.Color.ToSKColor();
-        paint.StrokeWidth = LineStyle.Width;
-        paint.IsStroke = true;
-        canvas.DrawRect(rect, paint.SKPaint);
+        Drawing.FillRectangle(canvas, rect.ToPixelRect(), paint, FillStyle);
+        Drawing.DrawRectangle(canvas, rect.ToPixelRect(), paint, LineStyle);
 
         rp.CanvasState.Restore();
     }

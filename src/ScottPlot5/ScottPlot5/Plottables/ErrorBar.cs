@@ -108,7 +108,7 @@ namespace ScottPlot.Plottables
 
             }
 
-            canvas.DrawPath(path, paint.SKPaint);
+            Drawing.DrawPath(canvas, paint, path);
         }
     }
 }

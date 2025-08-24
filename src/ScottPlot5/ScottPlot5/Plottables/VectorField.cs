@@ -85,7 +85,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
 
             foreach (var group in coloredVectors)
             {
-                paint.Color = group.Key.ToSKColor();
+                paint.SKColor = group.Key.ToSKColor();
                 RenderVectors(paint, rp.Canvas, group, ArrowStyle);
             }
         }
@@ -98,6 +98,6 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
     private static void RenderVectors(Paint paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
     {
         using SKPath path = PathStrategies.Arrows.GetPath(vectors, arrowStyle);
-        canvas.DrawPath(path, paint.SKPaint);
+        Drawing.DrawPath(canvas, paint, path);
     }
 }

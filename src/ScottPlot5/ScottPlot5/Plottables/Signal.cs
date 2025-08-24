@@ -122,7 +122,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         using Paint paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        rp.Canvas.DrawPath(path, paint.SKPaint);
+        Drawing.DrawPath(rp.Canvas, paint, path);
 
         double pointsPerPx = PointsPerPixel();
 
@@ -162,7 +162,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
             path.MoveTo(col.X, col.Exit);
         }
 
-        rp.Canvas.DrawPath(path, paint.SKPaint);
+        Drawing.DrawPath(rp.Canvas, paint, path);
     }
 
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)

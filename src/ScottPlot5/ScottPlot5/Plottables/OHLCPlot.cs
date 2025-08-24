@@ -108,10 +108,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
             path.LineTo(right, close);
         }
 
-        RisingStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawPath(risingPath, paint.SKPaint);
-
-        FallingStyle.ApplyToPaint(paint);
-        rp.Canvas.DrawPath(fallingPath, paint.SKPaint);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, risingPath, RisingStyle);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, fallingPath, FallingStyle);
     }
 }

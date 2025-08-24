@@ -1,3 +1,4 @@
+using SkiaSharp.HarfBuzz;
 using System.Runtime.InteropServices;
 
 namespace ScottPlot;
@@ -50,7 +51,7 @@ public static class Drawing
         if (width == 0)
             return;
 
-        paint.Color = color.ToSKColor();
+        paint.SKColor = color.ToSKColor();
         paint.IsStroke = true;
         paint.IsAntialias = antiAlias;
         paint.StrokeWidth = width;
@@ -131,14 +132,17 @@ public static class Drawing
 
         var measuredText = paint.MeasureText(label).Width;
         using SKPathMeasure pathMeasure = new(path, false, 1);
-        DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
+        float hOffset = pathMeasure.Length / 4 - measuredText / 4;
+        float yOffset = 0;
+        DrawTextOnPath(canvas, paint, path, label, hOffset, yOffset);
     }
 
-    public static void DrawTextOnPath(SKCanvas canvas, Paint paint, SKPath path, string text, float hOffset = 0, float vOffset = 0)
+    public static void DrawTextOnPath(SKCanvas canvas, Paint paint, SKPath path, string text, float xOffset, float yOffset)
     {
         if (string.IsNullOrEmpty(text))
             return;
-        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
+
+        canvas.DrawTextOnPath(text, path, xOffset, yOffset, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
     }
 
     public static void DrawPath(SKCanvas canvas, Paint paint, PixelPath path, LineStyle lineStyle)
@@ -260,12 +264,17 @@ public static class Drawing
 
         using Paint paint = new()
         {
-            Color = color.ToSKColor(),
+            SKColor = color.ToSKColor(),
             IsStroke = false,
             IsAntialias = true,
         };
 
         canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
+    }
+
+    public static void DrawRoundRectangle(SKCanvas canvas, PixelRect rect, Paint paint, float radiusX, float radiusY)
+    {
+        canvas.DrawRoundRect(rect.ToSKRect(), radiusX, radiusY, paint.SKPaint);
     }
 
     public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Paint paint, LineStyle lineStyle)
@@ -292,7 +301,7 @@ public static class Drawing
 
         using Paint paint = new()
         {
-            Color = color.ToSKColor(),
+            SKColor = color.ToSKColor(),
             IsStroke = true,
             StrokeWidth = lineWidth,
             IsAntialias = true,
@@ -308,7 +317,7 @@ public static class Drawing
 
         using Paint paint = new()
         {
-            Color = color.Value.ToSKColor(),
+            SKColor = color.Value.ToSKColor(),
             IsStroke = true,
             StrokeWidth = lineWidth,
             IsAntialias = true,
@@ -321,7 +330,7 @@ public static class Drawing
         canvas.DrawCircle(point.Value.ToSKPoint(), 5, paint.SKPaint);
 
         paint.IsStroke = false;
-        paint.Color = paint.Color.WithAlpha(20);
+        paint.SKColor = paint.SKColor.WithAlpha(20);
         canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
     }
 
@@ -331,7 +340,7 @@ public static class Drawing
 
         using Paint paint = new()
         {
-            Color = color.Value.ToSKColor(),
+            SKColor = color.Value.ToSKColor(),
             IsAntialias = true,
         };
 
@@ -655,8 +664,31 @@ public static class Drawing
         new Image(surface).SavePng(filename);
     }
 
-    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, Paint paint, bool antiAlias = true)
+    public static void DrawImage(SKCanvas canvas, SKBitmap image, PixelRect target, Paint paint)
     {
-        image.Render(canvas, target, paint, antiAlias);
+        Image img = new(image);
+        DrawImage(canvas, img, target, paint);
+    }
+
+    public static void DrawImage(SKCanvas canvas, SKImage image, PixelRect target, Paint paint)
+    {
+        paint.SKColor = SKColors.Black;
+        canvas.DrawImage(image, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
+    }
+
+    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, Paint paint)
+    {
+        paint.SKColor = SKColors.Black;
+        canvas.DrawImage(image.SKImage, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
+    }
+
+    public static void DrawText(SKCanvas canvas, string text, Pixel px, Paint paint)
+    {
+        canvas.DrawText(text, px.X, px.Y, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
+    }
+
+    public static void DrawShapedText(SKCanvas canvas, SKShaper shaper, string text, Pixel px, Paint paint)
+    {
+        canvas.DrawShapedText(shaper, text, px.X, px.Y, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
     }
 }

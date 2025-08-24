@@ -84,8 +84,7 @@ public class SampleImages
         }
         path.Close();
 
-        fillStyle.ApplyToPaint(paint, canvasRect);
-        canvas.DrawPath(path, paint.SKPaint);
+        Drawing.FillPath(canvas, paint, path, fillStyle, canvasRect);
     }
 
     public static Image NoiseGrayscale(int width, int height, int seed = 0)

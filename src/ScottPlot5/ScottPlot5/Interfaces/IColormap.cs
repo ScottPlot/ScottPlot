@@ -104,7 +104,7 @@ public static class IColormapExtensions
         {
             double frac = (double)x / (width - 1);
             Color color = colormap.GetColor(frac);
-            paint.Color = color.ToSKColor();
+            paint.SKColor = color.ToSKColor();
             PixelLine line = new(x, 0, x, height);
             Drawing.DrawLine(canvas, paint, line);
         }
@@ -122,7 +122,7 @@ public static class IColormapExtensions
         {
             double frac = 1.0 - (double)y / (height - 1);
             Color color = colormap.GetColor(frac);
-            paint.Color = color.ToSKColor();
+            paint.SKColor = color.ToSKColor();
             PixelLine line = new(0, y, width, y);
             Drawing.DrawLine(canvas, paint, line);
         }

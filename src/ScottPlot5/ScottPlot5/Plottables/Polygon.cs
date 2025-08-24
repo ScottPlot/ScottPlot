@@ -133,9 +133,8 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
         using var paint = new Paint();
         if (FillStyle.HasValue)
         {
-            FillStyle.ApplyToPaint(paint, new PixelRect(xMin, xMax, yMin, yMax));
-            paint.SKPaintStyle = SKPaintStyle.Fill;
-            rp.Canvas.DrawPath(path, paint.SKPaint);
+            PixelRect rect = new(xMin, xMax, yMin, yMax);
+            Drawing.FillPath(rp.Canvas, paint, path, FillStyle, rect);
         }
 
         if (LineStyle is { IsVisible: true, Width: > 0 })

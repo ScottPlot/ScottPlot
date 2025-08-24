@@ -34,8 +34,9 @@ public static class Colormap
 
         for (int i = 0; i < width; i++)
         {
-            paint.Color = colormap.GetColor(i / (width - 1.0)).ToSKColor();
-            canvas.DrawLine(i, 0, i, height, paint.SKPaint);
+            paint.SKColor = colormap.GetColor(i / (width - 1.0)).ToSKColor();
+            PixelLine line = new(i, 0, i, height);
+            Drawing.DrawLine(canvas, paint, line);
         }
 
         using MemoryStream ms = new();

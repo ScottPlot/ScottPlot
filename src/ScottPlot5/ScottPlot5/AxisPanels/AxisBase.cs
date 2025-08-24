@@ -131,7 +131,7 @@ public abstract class AxisBase : LabelStyleProperties
         foreach (Tick tick in ticks)
         {
             // draw tick
-            paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
+            paint.SKColor = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             paint.IsAntialias = tick.IsMajor ? majorStyle.AntiAlias : minorStyle.AntiAlias;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
@@ -168,7 +168,7 @@ public abstract class AxisBase : LabelStyleProperties
         foreach (Tick tick in ticks)
         {
             // draw tick
-            paint.Color = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
+            paint.SKColor = tick.IsMajor ? majorStyle.Color.ToSKColor() : minorStyle.Color.ToSKColor();
             paint.StrokeWidth = tick.IsMajor ? majorStyle.Width : minorStyle.Width;
             paint.IsAntialias = tick.IsMajor ? majorStyle.AntiAlias : minorStyle.AntiAlias;
             float tickLength = tick.IsMajor ? majorStyle.Length : minorStyle.Length;
