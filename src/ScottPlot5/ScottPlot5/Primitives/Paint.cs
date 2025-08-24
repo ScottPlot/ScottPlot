@@ -59,11 +59,6 @@ public class Paint : IDisposable
 
     public static Paint NewDisposablePaint() => new();
 
-    public void Reset()
-    {
-        //TODO: return everything to default settings
-    }
-
     public void Dispose()
     {
         SKPaint.Dispose();

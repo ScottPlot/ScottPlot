@@ -99,6 +99,6 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
     private static void RenderVectors(Paint paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
     {
         using SKPath path = PathStrategies.Arrows.GetPath(vectors, arrowStyle);
-        Drawing.DrawPath(canvas, paint, path, arrowStyle.LineStyle);
+        Drawing.DrawArrow(canvas, paint, path, arrowStyle);
     }
 }
