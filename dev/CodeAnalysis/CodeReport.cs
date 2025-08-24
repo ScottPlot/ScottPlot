@@ -1,6 +1,6 @@
-﻿using CodeAnalysis.HtmlReports;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
+
+using CodeAnalysis.HtmlReports;
 
 namespace CodeAnalysis;
 
@@ -78,26 +78,4 @@ public static class CodeReport
         }
         sb.AppendLine($"</ul>");
     }
-
-    private static int Total(IEnumerable<KeyValuePair<string, int>> linesByFile, string? midFolderName = null)
-    {
-        if (string.IsNullOrEmpty(midFolderName))
-            return linesByFile.Select(x => x.Value).Sum();
-
-        return linesByFile
-            .Where(x => x.Key.Contains(Path.DirectorySeparatorChar + midFolderName + Path.DirectorySeparatorChar))
-            .Select(x => x.Value)
-            .Sum();
-    }
-
-    static int GetLinesOfCOde(string s) => RemoveEmptyLines(StripComments(s)).Split("\n").Length;
-
-    static string StripComments(string s) =>
-        System.Text.RegularExpressions.Regex.Replace(
-            input: s,
-            pattern: @"(@(?:""[^""]*"")+|""(?:[^""\n\\]+|\\.)*""|'(?:[^'\n\\]+|\\.)*')|//.*|/\*(?s:.*?)\*/",
-            replacement: "$1");
-
-    static string RemoveEmptyLines(string s) =>
-        string.Join("\n", s.Split("\n").Where(x => x.Trim().Length > 0));
 }
