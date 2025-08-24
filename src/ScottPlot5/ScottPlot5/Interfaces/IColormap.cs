@@ -21,23 +21,6 @@ public interface IColormap
 public static class IColormapExtensions
 {
     /// <summary>
-    /// Create a 1 by 256 bitmap displaying all values of a heatmap
-    /// </summary>
-    public static SKBitmap GetSKBitmap(this IColormap colormap, bool vertical)
-    {
-        uint[] argbs = Enumerable.Range(0, 256)
-           .Select(i => colormap.GetColor((vertical ? 255 - i : i) / 255f).ARGB)
-           .ToArray();
-
-        int bmpWidth = vertical ? 1 : 256;
-        int bmpHeight = !vertical ? 1 : 256;
-
-        SKBitmap bmp = Drawing.BitmapFromArgbs(argbs, bmpWidth, bmpHeight);
-
-        return bmp;
-    }
-
-    /// <summary>
     /// Returns an array of colors evenly spaced along the colormap
     /// </summary>
     /// <param name="count">The number of colors to get from the colormap.</param>
@@ -111,7 +94,7 @@ public static class IColormapExtensions
         return new Reversed(cmap);
     }
 
-    public static ScottPlot.Image GetImage(this IColormap colormap, int height = 1, int width = 256)
+    public static Image GetImageHorizontal(this IColormap colormap, int height = 1, int width = 256)
     {
         using SKBitmap bmp = new(width, height);
         using SKCanvas canvas = new(bmp);
@@ -120,11 +103,30 @@ public static class IColormapExtensions
         for (int x = 0; x < width; x++)
         {
             double frac = (double)x / (width - 1);
-            ScottPlot.Color color = colormap.GetColor(frac);
+            Color color = colormap.GetColor(frac);
             paint.Color = color.ToSKColor();
-            canvas.DrawLine(x, 0, x, height, paint.SKPaint);
+            PixelLine line = new(x, 0, x, height);
+            Drawing.DrawLine(canvas, paint, line);
         }
 
-        return new ScottPlot.Image(bmp);
+        return new Image(bmp);
+    }
+
+    public static Image GetImageVertical(this IColormap colormap, int height = 256, int width = 1)
+    {
+        using SKBitmap bmp = new(width, height);
+        using SKCanvas canvas = new(bmp);
+        using Paint paint = new() { IsStroke = true, IsAntialias = false, StrokeWidth = 1 };
+
+        for (int y = 0; y < height; y++)
+        {
+            double frac = (double)y / (width - 1);
+            Color color = colormap.GetColor(frac);
+            paint.Color = color.ToSKColor();
+            PixelLine line = new(0, y, width, y);
+            Drawing.DrawLine(canvas, paint, line);
+        }
+
+        return new Image(bmp);
     }
 }

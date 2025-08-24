@@ -126,13 +126,13 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
 
     private void RenderColorbarBitmap(RenderPack rp, PixelRect colormapRect)
     {
-        using SKBitmap bmp = Source.Colormap.GetSKBitmap(Edge.IsVertical());
+        using Image bmp = Edge.IsVertical() ? Source.Colormap.GetImageVertical() : Source.Colormap.GetImageHorizontal();
 
         // NOTE: high quality filter paint is required to support transparency
         // https://github.com/ScottPlot/ScottPlot/issues/4685
-        using Paint paint = new() { ResizeFilter = ResizeFilter.Bicubic };
+        rp.Paint.ResizeFilter = ResizeFilter.Bicubic;
 
-        rp.Canvas.DrawBitmap(bmp, colormapRect.ToSKRect(), paint.SKPaint);
+        Drawing.DrawImage(rp.Canvas, bmp, colormapRect, rp.Paint);
     }
 
     private void RenderColorbarAxis(RenderPack rp, PixelRect colormapRect, float size, float offset)
