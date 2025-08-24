@@ -17,7 +17,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         float tickHeight = MajorTickStyle.Length;
 
@@ -80,7 +80,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
         if (!IsVisible)
             return;
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 
@@ -122,7 +122,7 @@ public abstract class XAxisBase : AxisBase, IXAxis
 
     public void RegenerateTicks(PixelLength size)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         TickLabelStyle.ApplyToPaint(paint);
         TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
     }

@@ -28,7 +28,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         float maxTickLabelWidth = TickGenerator.Ticks.Length > 0
             ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max()
             : 0;
@@ -83,7 +83,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
             Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
         }
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         LabelAlignment = Alignment.UpperCenter;
 
         rp.CanvasState.Save();
@@ -111,7 +111,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
     public void RegenerateTicks(PixelLength size)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         TickLabelStyle.ApplyToPaint(paint);
         TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
     }

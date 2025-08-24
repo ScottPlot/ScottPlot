@@ -59,7 +59,7 @@ public static class Drawing
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
+    public static void DrawPath(SKCanvas canvas, SKPaintAndFont paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -75,10 +75,10 @@ public static class Drawing
             path.LineTo(pixels.First().ToSKPoint());
         }
 
-        DrawPath(canvas, paint, path, lineStyle);
+        DrawPath(canvas, paint.Paint, path, lineStyle);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle, PixelRect rect)
+    public static void FillPath(SKCanvas canvas, SKPaintAndFont paint, IEnumerable<Pixel> pixels, FillStyle fillStyle, PixelRect rect)
     {
         if (!fillStyle.CanBeRendered) return;
 
@@ -93,15 +93,15 @@ public static class Drawing
         canvas.DrawPath(path, paint);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle)
+    public static void FillPath(SKCanvas canvas, SKPaintAndFont paint, SKPath path, FillStyle fillStyle)
     {
         if (!fillStyle.CanBeRendered) return;
 
         fillStyle.ApplyToPaint(paint, path.GetRect().ToPixelRect());
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.Paint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
+    public static void DrawPath(SKCanvas canvas, SKPaintAndFont paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -116,7 +116,7 @@ public static class Drawing
         {
             path.LineTo(pixels.First().ToSKPoint());
         }
-        DrawPath(canvas, paint, path, lineStyle);
+        DrawPath(canvas, paint.Paint, path, lineStyle);
 
         if (labelStyle.IsVisible == false)
             return;
@@ -124,22 +124,23 @@ public static class Drawing
         labelStyle.ApplyToPaint(paint);
 
         var measuredText = paint.MeasureText(label);
-        using (SKPathMeasure pathMeasure = new SKPathMeasure(path, false, 1))
-            DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
+        using SKPathMeasure pathMeasure = new SKPathMeasure(path, false, 1);
+        DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
     }
 
-    public static void DrawTextOnPath(SKCanvas canvas, SKPaint paint, SKPath path, string text, float hOffset = 0, float vOffset = 0)
+    public static void DrawTextOnPath(SKCanvas canvas, SKPaintAndFont paint, SKPath path, string text, float hOffset = 0, float vOffset = 0)
     {
         if (string.IsNullOrEmpty(text))
             return;
-        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint);
+        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint.TextAlign, paint.Font, paint.Paint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle)
+    public static void DrawPath(SKCanvas canvas, SKPaintAndFont paint, PixelPath path, LineStyle lineStyle)
     {
         DrawPath(canvas, paint, path.Pixels, lineStyle);
     }
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle, string text, LabelStyle labelStyle)
+
+    public static void DrawPath(SKCanvas canvas, SKPaintAndFont paint, PixelPath path, LineStyle lineStyle, string text, LabelStyle labelStyle)
     {
         DrawPath(canvas, paint, path.Pixels, lineStyle, text, labelStyle);
     }
@@ -186,7 +187,7 @@ public static class Drawing
         FillPath(canvas, paint, path, fillStyle, rect);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    public static void DrawPath(SKCanvas canvas, SKPaintAndFont paint, SKPath path, LineStyle lineStyle)
     {
         if (!lineStyle.CanBeRendered) return;
 

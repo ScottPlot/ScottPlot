@@ -28,7 +28,7 @@ public class DateTimeManual : ITickGenerator
         }
     }
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaintAndFont paint, LabelStyle labelStyle)
     {
         Ticks = TickList.Where(x => range.Contains(x.Position)).ToArray();
     }

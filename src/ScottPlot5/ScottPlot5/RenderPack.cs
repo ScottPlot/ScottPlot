@@ -9,7 +9,7 @@ public class RenderPack(Plot plot, PixelRect figureRect, SKCanvas canvas) : IDis
 {
     public SKCanvas Canvas { get; } = canvas;
     public CanvasState CanvasState { get; } = new(canvas);
-    public SKPaint Paint { get; } = new();
+    public SKPaintAndFont Paint { get; } = new();
     public PixelRect FigureRect { get; } = figureRect;
     public PixelRect ScaledFigureRect { get; private set; }
     public PixelRect DataRect { get; private set; }

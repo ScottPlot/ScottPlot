@@ -31,7 +31,7 @@ public class FillStyle
         Drawing.FillRectangle(canvas, rect, paint, this);
     }
 
-    public void ApplyToPaint(SKPaint paint, PixelRect rect)
+    public void ApplyToPaint(SKPaintAndFont paint, PixelRect rect)
     {
         paint.Color = Color.ToSKColor();
         paint.IsStroke = false;

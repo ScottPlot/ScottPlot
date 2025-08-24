@@ -38,7 +38,7 @@ public class Coxcomb : PieBase
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
         using SKPath path = new();
-        using SKPaint paint = new() { IsAntialias = true };
+        using SKPaintAndFont paint = new() { IsAntialias = true };
 
         var rotationPerSlice = 360f / Slices.Count;
 
@@ -76,6 +76,7 @@ public class Coxcomb : PieBase
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
             paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
             rp.Canvas.DrawPath(path, paint);
+            Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
 
             LineStyle.ApplyToPaint(paint);
             rp.Canvas.DrawPath(path, paint);

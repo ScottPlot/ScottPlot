@@ -21,14 +21,14 @@ public class NumericAutomatic : ITickGenerator
     public double TickDensity { get; set; } = 1.0; // TODO: consider adding logic to make this a fraction of the width in pixels
     public int? TargetTickCount = null;
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaintAndFont paint, LabelStyle labelStyle)
     {
         Ticks = GenerateTicks(range, edge, size, new PixelLength(12), paint, labelStyle)
             .Where(x => range.Contains(x.Position))
             .ToArray();
     }
 
-    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaint paint, LabelStyle labelStyle, int depth = 0)
+    private Tick[] GenerateTicks(CoordinateRange range, Edge edge, PixelLength axisLength, PixelLength maxLabelLength, SKPaintAndFont paint, LabelStyle labelStyle, int depth = 0)
     {
         if (depth > 3)
             Debug.WriteLine($"Warning: Tick recursion depth = {depth}");

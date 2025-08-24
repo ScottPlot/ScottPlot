@@ -163,7 +163,7 @@ public class LineStyle
         Drawing.DrawLine(canvas, paint, line, this);
     }
 
-    public void ApplyToPaint(SKPaint paint)
+    public void ApplyToPaint(SKPaintAndFont paint)
     {
         paint.Shader = null;
         paint.IsStroke = true;
