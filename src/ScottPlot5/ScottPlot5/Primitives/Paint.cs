@@ -2,40 +2,29 @@ namespace ScottPlot;
 
 // NOTE: Code here aims to facilitate the transition between
 // SkiaSharp 2 (where paints have font styles) and SkiaSharp 3 (where they are separate)
-// After the project builds again, carefully review for methods which don't need both,
-// and consider separate Pant and Font classes.
 
 public class Paint : IDisposable
 {
-    // TODO: make this private and disallow instantiating this throughout the code base
-    public SKPaint SKPaint { get; set; } = new();
-
-    // TODO: make this private and disallow instantiating this throughout the code base
-    public SKFont SKFont { get; set; } = new();
-
-    public float FontSpacing { get => SKFont.Spacing; }
-    public SKTextAlign TextAlign { get; set; } = SKTextAlign.Left;
-    public bool IsStroke { get => SKPaint.IsStroke; set => SKPaint.IsStroke = value; }
-    public SKTypeface Typeface { get => SKFont.Typeface; set => SKFont.Typeface = value; }
-    public float TextSize { get => SKFont.Size; set => SKFont.Size = value; }
+    // options for customizing paint
     public SKColor Color { get => SKPaint.Color; set => SKPaint.Color = value; }
-    public bool IsAntialias { get => SKPaint.IsAntialias; set => SKPaint.IsAntialias = value; }
-    public bool SubpixelText { get => SKFont.Subpixel; set => SKFont.Subpixel = value; }
-    public SKShader? Shader { get => SKPaint.Shader; set => SKPaint.Shader = value; }
+    public bool IsStroke { get => SKPaint.IsStroke; set => SKPaint.IsStroke = value; }
     public float StrokeWidth { get => SKPaint.StrokeWidth; set => SKPaint.StrokeWidth = value; }
-    public SKPathEffect PathEffect { get => SKPaint.PathEffect; set => SKPaint.PathEffect = value; }
-    public SKStrokeCap StrokeCap { get => SKPaint.StrokeCap; set => SKPaint.StrokeCap = value; }
-    public SKStrokeJoin StrokeJoin { get => SKPaint.StrokeJoin; set => SKPaint.StrokeJoin = value; }
+    public bool IsAntialias { get => SKPaint.IsAntialias; set => SKPaint.IsAntialias = value; }
     public float StrokeMiter { get => SKPaint.StrokeMiter; set => SKPaint.StrokeMiter = value; }
-    public bool FakeBoldText { get => SKFont.Embolden; set => SKFont.Embolden = value; }
 
-    public SKSamplingOptions SamplingOptions { get; set; }
+    // options for customizing font
+    public float TextSize { get => SKFont.Size; set => SKFont.Size = value; }
+    public float FontSpacing { get => SKFont.Spacing; }
+    public HorizontalAlignment TextAlign { set { SKTextAlign = value.ToSKTextAlign(); } }
+    public bool SubpixelText { get => SKFont.Subpixel; set => SKFont.Subpixel = value; }
+    public bool Bold { get => SKFont.Embolden; set => SKFont.Embolden = value; }
 
+    // options for images
     public ResizeFilter ResizeFilter
     {
         set
         {
-            SamplingOptions = value switch
+            SKSamplingOptions = value switch
             {
                 ResizeFilter.NearestNeighbor => new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None),
                 ResizeFilter.Bilinear => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear),
@@ -45,7 +34,25 @@ public class Paint : IDisposable
         }
     }
 
-    public SKPaintStyle Style { get => SKPaint.Style; set => SKPaint.Style = value; }
+    // NOTE: Callers really shouldn't interact with SkiaSharp primitives.
+    // The exception is all the stuff that happens in the Drawing class.
+    public SKPaint SKPaint { get; set; } = new();
+    public SKFont SKFont { get; set; } = new();
+    public SKTextAlign SKTextAlign { get; set; }
+    public SKTypeface SKTypeface { get => SKFont.Typeface; set => SKFont.Typeface = value; }
+    public SKShader? SKShader { get => SKPaint.Shader; set => SKPaint.Shader = value; }
+    public SKPathEffect SKPathEffect { get => SKPaint.PathEffect; set => SKPaint.PathEffect = value; }
+    public SKStrokeCap SKStrokeCap { get => SKPaint.StrokeCap; set => SKPaint.StrokeCap = value; }
+    public SKStrokeJoin SKStrokeJoin { get => SKPaint.StrokeJoin; set => SKPaint.StrokeJoin = value; }
+    public SKSamplingOptions SKSamplingOptions { get; set; }
+    public SKPaintStyle SKPaintStyle { get => SKPaint.Style; set => SKPaint.Style = value; }
+
+    public void Dispose()
+    {
+        SKPaint.Dispose();
+        SKFont.Dispose();
+        GC.SuppressFinalize(this);
+    }
 
     public PixelRect MeasureText(string str)
     {
@@ -57,12 +64,5 @@ public class Paint : IDisposable
     {
         float lineHeight = SKFont.GetFontMetrics(out SKFontMetrics metrics);
         return (lineHeight, metrics);
-    }
-
-    public void Dispose()
-    {
-        SKPaint.Dispose();
-        SKFont.Dispose();
-        GC.SuppressFinalize(this);
     }
 }

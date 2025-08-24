@@ -72,13 +72,13 @@ public class FontStyle
 
     public void ApplyToPaint(Paint paint)
     {
-        paint.Shader = null;
+        paint.SKShader = null;
         paint.IsStroke = false;
-        paint.Typeface = Typeface;
+        paint.SKTypeface = Typeface;
         paint.TextSize = Size;
         paint.Color = Color.ToSKColor();
         paint.IsAntialias = AntiAlias;
-        paint.FakeBoldText = Bold;
+        paint.Bold = Bold;
     }
 
 }

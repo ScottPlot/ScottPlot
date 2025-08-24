@@ -165,14 +165,14 @@ public class LineStyle
 
     public void ApplyToPaint(Paint paint)
     {
-        paint.Shader = null;
+        paint.SKShader = null;
         paint.IsStroke = true;
         paint.Color = Color.ToSKColor();
         paint.StrokeWidth = Hairline ? 1 : Width;
-        paint.PathEffect = Pattern.GetPathEffect();
+        paint.SKPathEffect = Pattern.GetPathEffect();
         paint.IsAntialias = AntiAlias;
-        paint.StrokeCap = StrokeCap;
-        paint.StrokeJoin = StrokeJoin;
+        paint.SKStrokeCap = StrokeCap;
+        paint.SKStrokeJoin = StrokeJoin;
         paint.StrokeMiter = StrokeMiter;
 
         if (HandDrawn)
@@ -181,13 +181,13 @@ public class LineStyle
             //     Creates a "jitter" path effect by chopping a path into discrete segments, and
             //     randomly displacing them.
             SKPathEffect handDrawnEffect = SKPathEffect.CreateDiscrete((float)HandDrawnSegmentLength, (float)HandDrawnJitter);
-            if (paint.PathEffect is null)
+            if (paint.SKPathEffect is null)
             {
-                paint.PathEffect = handDrawnEffect;
+                paint.SKPathEffect = handDrawnEffect;
             }
             else
             {
-                paint.PathEffect = SKPathEffect.CreateCompose(paint.PathEffect, handDrawnEffect);
+                paint.SKPathEffect = SKPathEffect.CreateCompose(paint.SKPathEffect, handDrawnEffect);
             }
         }
     }

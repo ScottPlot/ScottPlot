@@ -270,7 +270,7 @@ public class Image : IDisposable
     {
         paint.Color = SKColors.White;
         paint.ResizeFilter = antiAlias ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor;
-        canvas.DrawImage(SKImage, target.ToSKRect(), paint.SamplingOptions, paint.SKPaint);
+        canvas.DrawImage(SKImage, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
     }
 
     /// <summary>

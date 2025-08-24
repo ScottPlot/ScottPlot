@@ -54,7 +54,7 @@ public static class Drawing
         paint.IsStroke = true;
         paint.IsAntialias = antiAlias;
         paint.StrokeWidth = width;
-        paint.PathEffect = pattern.GetPathEffect();
+        paint.SKPathEffect = pattern.GetPathEffect();
 
         canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint.SKPaint);
     }
@@ -132,7 +132,7 @@ public static class Drawing
     {
         if (string.IsNullOrEmpty(text))
             return;
-        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint.TextAlign, paint.SKFont, paint.SKPaint);
+        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
     }
 
     public static void DrawPath(SKCanvas canvas, Paint paint, PixelPath path, LineStyle lineStyle)

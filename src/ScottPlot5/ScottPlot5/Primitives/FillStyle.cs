@@ -39,11 +39,11 @@ public class FillStyle
 
         if (Hatch is not null)
         {
-            paint.Shader = Hatch.GetShader(Color, HatchColor, rect);
+            paint.SKShader = Hatch.GetShader(Color, HatchColor, rect);
         }
         else
         {
-            paint.Shader = null;
+            paint.SKShader = null;
         }
     }
 }

@@ -77,7 +77,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
 
         using Paint paint = new();
         ArrowStyle.LineStyle.ApplyToPaint(paint);
-        paint.Style = SKPaintStyle.StrokeAndFill;
+        paint.SKPaintStyle = SKPaintStyle.StrokeAndFill;
 
         if (Colormap is not null)
         {

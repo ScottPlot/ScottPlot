@@ -115,7 +115,7 @@ public class LabelStyle
         paint.StrokeWidth = 1;
         paint.Color = PointColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
     private void ApplyBorderPaint(Paint paint)
@@ -124,7 +124,7 @@ public class LabelStyle
         paint.StrokeWidth = BorderWidth;
         paint.Color = BorderColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
     private void ApplyShadowPaint(Paint paint)
@@ -132,7 +132,7 @@ public class LabelStyle
         paint.IsStroke = false;
         paint.Color = ShadowColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
     private void ApplyBackgroundPaint(Paint paint)
@@ -140,19 +140,19 @@ public class LabelStyle
         paint.IsStroke = false;
         paint.Color = BackgroundColor.ToSKColor();
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
     private void ApplyTextPaint(Paint paint)
     {
-        paint.TextAlign = SKTextAlign.Left;
+        paint.TextAlign = HorizontalAlignment.Left;
         paint.IsStroke = false;
-        paint.Typeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.SKTypeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
         paint.SubpixelText = SubpixelText;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
     public void ApplyToPaint(Paint paint)
@@ -325,17 +325,17 @@ public class LabelStyle
                     0 => 0,
                     0.5f => textRect.Width / 2 - measured.LineWidths[i] / 2,
                     1 => textRect.Width - measured.LineWidths[i],
-                    _ => throw new NotImplementedException(paint.TextAlign.ToString()),
+                    _ => throw new NotImplementedException(),
                 };
 
                 float xPx = textRect.Left + dX;
                 float yPx = textRect.Top + (1 + i) * lineHeight + dY;
                 if (LabelStyle.RTLSupport)
                 {
-                    using (var shaper = new SKShaper(paint.Typeface))
+                    using (var shaper = new SKShaper(paint.SKTypeface))
                     {
                         float shapedWidth = shaper.Shape(lines[i], paint.SKFont).Width;
-                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
+                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
 
                         if (RenderUnderline)
                         {
@@ -355,7 +355,7 @@ public class LabelStyle
                 }
                 else
                 {
-                    canvas.DrawText(lines[i], xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
+                    canvas.DrawText(lines[i], xPx, yPx, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
 
                     if (RenderUnderline)
                     {
@@ -380,10 +380,10 @@ public class LabelStyle
             float yPx = textRect.Bottom + dY;
             if (LabelStyle.RTLSupport)
             {
-                using (var shaper = new SKShaper(paint.Typeface))
+                using (var shaper = new SKShaper(paint.SKTypeface))
                 {
                     float shapedWidth = shaper.Shape(Text, paint.SKFont).Width;
-                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
+                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
 
                     if (RenderUnderline)
                     {
@@ -403,7 +403,7 @@ public class LabelStyle
             }
             else
             {
-                canvas.DrawText(Text, xPx, yPx, paint.TextAlign, paint.SKFont, paint.SKPaint);
+                canvas.DrawText(Text, xPx, yPx, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
 
                 if (RenderUnderline)
                 {
