@@ -176,7 +176,7 @@ internal class RadialGauge
 
         // Text is measured (in linear form) and converted to angular dimensions
         PixelRect textBounds = paint.MeasureText($"{Label}");
-        
+
         double textAngle = DEG_PER_RAD * textBounds.Width / radius;
 
         // We compute the angular location where the label has to be drawn.
@@ -201,7 +201,7 @@ internal class RadialGauge
         using SKPathMeasure skMeasure = new(skPath);
         SKPoint skPoint = new()
         {
-            Y = -(float)textBounds.VerticalCenter,    // Displacement along the y axis (radial-wise), so we can center the text on the gauge path
+            Y = (float)textBounds.VerticalCenter,    // Displacement along the y axis (radial-wise), so we can center the text on the gauge path
             X = (float)(LabelPositionFraction / 2) * (skMeasure.Length - textBounds.Width) + additionalSpace  // Displacement along the x axis (the length of the path), so that we can set the text at any position along the path
         };
 
