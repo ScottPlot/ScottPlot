@@ -266,11 +266,11 @@ public class Image : IDisposable
     /// <summary>
     /// Draw the image onto the given canvas
     /// </summary>
-    public void Render(SKCanvas canvas, PixelRect target, SKPaint paint, bool antiAlias)
+    public void Render(SKCanvas canvas, PixelRect target, SKPaintAndFont paint, bool antiAlias)
     {
         paint.Color = SKColors.White;
         paint.FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None;
-        canvas.DrawImage(SKImage, target.ToSKRect(), paint);
+        canvas.DrawImage(SKImage, target.ToSKRect(), paint.Paint);
     }
 
     /// <summary>
@@ -376,11 +376,11 @@ public class Image : IDisposable
     {
         SKRect newRect = new(0, 0, newWidth, newHeight);
 
-        using SKPaint paint = new() { FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None };
+        using SKPaintAndFont paint = new() { FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None };
         using SKBitmap targetBitmap = new(newWidth, newHeight);
         using SKCanvas targetCanvas = new(targetBitmap);
         using SKBitmap sourceBitmap = SKBitmap.FromImage(SKImage);
-        targetCanvas.DrawBitmap(sourceBitmap, newRect, paint);
+        targetCanvas.DrawBitmap(sourceBitmap, newRect, paint.Paint);
 
         using SKImage newImage = SKImage.FromBitmap(targetBitmap);
         byte[] bytes = GetBitmapBytes(newImage);

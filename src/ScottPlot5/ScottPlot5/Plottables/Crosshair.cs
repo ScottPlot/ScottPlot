@@ -64,7 +64,7 @@ public class Crosshair : IPlottable, IRenderLast, IHasMarker
         VerticalLine.Axes = Axes;
         VerticalLine.RenderLast(rp);
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         Pixel px = Axes.GetPixel(new Coordinates(X, Y));
         MarkerStyle.Render(rp.Canvas, px, paint);
     }

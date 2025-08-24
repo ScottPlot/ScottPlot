@@ -60,7 +60,7 @@ public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         MeasuredText measured = LabelStyle.Measure(LabelStyle.Text, paint);
         PixelRect bubbleBodyRect = measured.Rect(LabelAlignment)

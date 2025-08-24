@@ -98,10 +98,10 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
             }
         }
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        rp.Canvas.DrawPath(path, paint);
+        rp.Canvas.DrawPath(path, paint.Paint);
 
         bool somethingWasRendered = min <= max;
         if (somethingWasRendered)

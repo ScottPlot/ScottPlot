@@ -43,7 +43,7 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
 
         Pixel[] markerPixels = Data.GetScatterPoints().Select(Axes.GetPixel).ToArray();
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         if (Colormap is not null)
         {

@@ -156,13 +156,13 @@ public class Bar : IHasFill, IHasLine
         }
     }
 
-    public void Render(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
+    public void Render(RenderPack rp, IAxes axes, SKPaintAndFont paint, LabelStyle labelStyle)
     {
         RenderBody(rp, axes, paint);
         RenderText(rp, axes, paint, labelStyle);
     }
 
-    public void RenderBody(RenderPack rp, IAxes axes, SKPaint paint)
+    public void RenderBody(RenderPack rp, IAxes axes, SKPaintAndFont paint)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
 
@@ -181,7 +181,7 @@ public class Bar : IHasFill, IHasLine
         }
     }
 
-    public void RenderText(RenderPack rp, IAxes axes, SKPaint paint, LabelStyle labelStyle)
+    public void RenderText(RenderPack rp, IAxes axes, SKPaintAndFont paint, LabelStyle labelStyle)
     {
         PixelRect rect = axes.GetPixelRect(Rect);
 

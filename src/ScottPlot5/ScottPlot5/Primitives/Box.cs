@@ -49,7 +49,7 @@ public class Box : IHasFill, IHasLine
         return new AxisLimits(xMin, xMax, yMin, yMax);
     }
 
-    public void Render(RenderPack rp, SKPaint paint, IAxes axes)
+    public void Render(RenderPack rp, SKPaintAndFont paint, IAxes axes)
     {
         if (!IsVisible)
             return;

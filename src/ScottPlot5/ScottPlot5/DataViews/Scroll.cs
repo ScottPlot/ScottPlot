@@ -16,7 +16,7 @@ public class Scroll : IDataStreamerView
 
     public void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         foreach (Pixel[] seg in GetSegments(rp))
         {
             Drawing.DrawLines(rp.Canvas, paint, seg, Streamer.LineStyle);

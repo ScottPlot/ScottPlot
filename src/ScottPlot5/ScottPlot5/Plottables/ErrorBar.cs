@@ -70,7 +70,7 @@ namespace ScottPlot.Plottables
 
         private void RenderErrorBars(SKCanvas canvas, IReadOnlyList<double> positions, IReadOnlyList<double> vals, IReadOnlyList<double>? errorPositive, IReadOnlyList<double>? errorNegative, bool horizontal = false)
         {
-            using SKPaint paint = new();
+            using SKPaintAndFont paint = new();
             using SKPath path = new();
 
             LineStyle.ApplyToPaint(paint);
@@ -108,7 +108,7 @@ namespace ScottPlot.Plottables
 
             }
 
-            canvas.DrawPath(path, paint);
+            canvas.DrawPath(path, paint.Paint);
         }
     }
 }

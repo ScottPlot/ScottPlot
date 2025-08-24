@@ -100,7 +100,7 @@ public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         foreach (Bar bar in Bars)
         {
@@ -115,7 +115,7 @@ public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 
     public virtual void RenderLast(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         foreach (Bar bar in Bars)
         {

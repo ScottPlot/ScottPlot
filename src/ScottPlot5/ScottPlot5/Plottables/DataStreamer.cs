@@ -204,7 +204,7 @@ public class DataStreamer : IPlottable, IManagesAxisLimits, IHasLine, IHasLegend
         {
             float yBasePx = Axes.YAxis.GetPixel(FillYValue + Data.OffsetY, rp.DataRect);
 
-            using SKPaint paint = new();
+            using SKPaintAndFont paint = new();
             foreach (Pixel[] seg in segs)
             {
                 using SKPath path = new();

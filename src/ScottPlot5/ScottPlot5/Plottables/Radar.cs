@@ -55,7 +55,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
         if (Series.Count == 0)
             return;
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         // Don’t render axis yet if it’s supposed to be above the data
         if (!IsAxisAboveData)

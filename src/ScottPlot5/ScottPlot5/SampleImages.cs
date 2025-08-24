@@ -31,7 +31,7 @@ public class SampleImages
     {
         using SKSurface surface = Drawing.CreateSurface(width, height);
         using SKCanvas canvas = surface.Canvas;
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         PixelRect canvasRect = new(0, width, height, 0);
 
         FillStyle fillStyle = new();
@@ -74,7 +74,7 @@ public class SampleImages
         return new Image(surface);
     }
 
-    private static void FillPolygon(SKCanvas canvas, PixelRect canvasRect, SKPaint paint, FillStyle fillStyle, Pixel[] pixels)
+    private static void FillPolygon(SKCanvas canvas, PixelRect canvasRect, SKPaintAndFont paint, FillStyle fillStyle, Pixel[] pixels)
     {
         using SKPath path = new();
         path.MoveTo(pixels.First().ToSKPoint());
@@ -85,7 +85,7 @@ public class SampleImages
         path.Close();
 
         fillStyle.ApplyToPaint(paint, canvasRect);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.Paint);
     }
 
     public static Image NoiseGrayscale(int width, int height, int seed = 0)
@@ -109,7 +109,7 @@ public class SampleImages
         PixelRect rect = new(0, width, height, 0);
         using SKSurface surface = Drawing.CreateSurface((int)rect.Width, (int)rect.Height);
         using SKCanvas canvas = surface.Canvas;
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         Image noiseImage = NoiseGrayscale(width, height);
         noiseImage.Render(canvas, rect, paint, false);

@@ -75,7 +75,7 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
         double maxPixelMag = Math.Sqrt(vectors.Select(x => x.MagnitudeSquared).Max());
         Range pixelMagRange = new(minPixelMag, maxPixelMag);
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         ArrowStyle.LineStyle.ApplyToPaint(paint);
         paint.Style = SKPaintStyle.StrokeAndFill;
 
@@ -95,9 +95,9 @@ public class VectorField(IVectorFieldSource source) : IPlottable, IHasArrow, IHa
         }
     }
 
-    private static void RenderVectors(SKPaint paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
+    private static void RenderVectors(SKPaintAndFont paint, SKCanvas canvas, IEnumerable<RootedPixelVector> vectors, ArrowStyle arrowStyle)
     {
         using SKPath path = PathStrategies.Arrows.GetPath(vectors, arrowStyle);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.Paint);
     }
 }

@@ -10,7 +10,7 @@ public class CircularStarAxis : SpokedStarAxis
     public override void Render(RenderPack rp, IAxes axes, double maxSpokeLength, int numSpokes, float rotationDegrees)
     {
 
-        var paint = new SKPaint();
+        var paint = new SKPaintAndFont();
         AxisStyle.ApplyToPaint(paint);
 
         var ticks = new float[] { 0.25f, 0.5f, 1 };
@@ -29,7 +29,7 @@ public class CircularStarAxis : SpokedStarAxis
 
         foreach (var tick in ticks)
         {
-            rp.Canvas.DrawCircle(0, 0, (float)(tick * maxRadius), paint);
+            rp.Canvas.DrawCircle(0, 0, (float)(tick * maxRadius), paint.Paint);
         }
     }
 }

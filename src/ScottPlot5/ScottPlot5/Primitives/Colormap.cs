@@ -26,7 +26,7 @@ public static class Colormap
         using SKBitmap bmp = new(width, height);
         using SKCanvas canvas = new(bmp);
 
-        using SKPaint paint = new()
+        using SKPaintAndFont paint = new()
         {
             IsAntialias = false,
             IsStroke = true,
@@ -35,7 +35,7 @@ public static class Colormap
         for (int i = 0; i < width; i++)
         {
             paint.Color = colormap.GetColor(i / (width - 1.0)).ToSKColor();
-            canvas.DrawLine(i, 0, i, height, paint);
+            canvas.DrawLine(i, 0, i, height, paint.Paint);
         }
 
         using MemoryStream ms = new();

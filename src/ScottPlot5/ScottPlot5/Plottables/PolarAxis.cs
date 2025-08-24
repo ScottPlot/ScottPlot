@@ -219,7 +219,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         RenderBackgroundColor(rp, paint);
         RenderSpokes(rp, paint);
 
@@ -235,7 +235,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         RenderCircleLabels(rp, paint);
     }
 
-    protected virtual void RenderBackgroundColor(RenderPack rp, SKPaint paint)
+    protected virtual void RenderBackgroundColor(RenderPack rp, SKPaintAndFont paint)
     {
         double maxCircleRadius = Circles.Count > 0 ? Circles.Max(x => x.Radius) : 0;
         double maxSpokeRadius = Spokes.Count > 0 ? Spokes.Max(x => x.Length) : 0;
@@ -251,7 +251,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         Drawing.FillOval(rp.Canvas, paint, FillStyle, rect);
     }
 
-    private void RenderSpokes(RenderPack rp, SKPaint paint)
+    private void RenderSpokes(RenderPack rp, SKPaintAndFont paint)
     {
         using SKAutoCanvasRestore _ = new(rp.Canvas);
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
@@ -277,7 +277,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         }
     }
 
-    private void RenderCircleLabels(RenderPack rp, SKPaint paint)
+    private void RenderCircleLabels(RenderPack rp, SKPaintAndFont paint)
     {
         foreach (var circle in Circles)
         {
@@ -287,7 +287,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         }
     }
 
-    private void RenderCircles(RenderPack rp, SKPaint paint)
+    private void RenderCircles(RenderPack rp, SKPaintAndFont paint)
     {
         double pxPerUnit = rp.DataRect.Width / Axes.XAxis.Width;
 
@@ -306,7 +306,7 @@ public class PolarAxis : IPlottable, IManagesAxisLimits, IHasFill
         }
     }
 
-    private void RenderStraightLines(RenderPack rp, SKPaint paint)
+    private void RenderStraightLines(RenderPack rp, SKPaintAndFont paint)
     {
         for (int i = 0; i < Circles.Count; i++)
         {

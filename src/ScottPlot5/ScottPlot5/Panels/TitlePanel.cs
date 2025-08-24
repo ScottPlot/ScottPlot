@@ -51,7 +51,7 @@ public class TitlePanel : IPanel
         if (string.IsNullOrWhiteSpace(Label.Text))
             return 0;
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         return Label.Measure(Label.Text, paint).Height + VerticalPadding;
     }
@@ -61,7 +61,7 @@ public class TitlePanel : IPanel
         if (!IsVisible)
             return;
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
 

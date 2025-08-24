@@ -29,7 +29,7 @@ public class Benchmark : LabelStyleProperties, IPlottable
             $"{rp.Elapsed.TotalMilliseconds:0.000} ms " +
             $"({1e3 / rp.Elapsed.TotalMilliseconds:N0} FPS)";
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         LabelStyle.Render(rp.Canvas, rp.DataRect.BottomLeft.WithOffset(10, -13), paint);
     }
 }

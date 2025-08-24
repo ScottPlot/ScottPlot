@@ -557,7 +557,7 @@ public static class Drawing
 
         IMarker marker = style.CustomRenderer ?? style.Shape.GetMarker();
 
-        marker.Render(canvas, paint.Paint, pixel, style.Size, style);
+        marker.Render(canvas, paint, pixel, style.Size, style);
     }
 
     public static void DrawMarkers(SKCanvas canvas, SKPaintAndFont paint, IEnumerable<Pixel> pixels, MarkerStyle style)
@@ -569,7 +569,7 @@ public static class Drawing
 
         foreach (Pixel pixel in pixels)
         {
-            marker.Render(canvas, paint.Paint, pixel, style.Size, style);
+            marker.Render(canvas, paint, pixel, style.Size, style);
         }
     }
 
@@ -584,7 +584,7 @@ public static class Drawing
         {
             Pixel pixel = pixels[i];
             style.MarkerColor = colormap.GetColor(i, pixels.Count);
-            marker.Render(canvas, paint.Paint, pixel, style.Size, style);
+            marker.Render(canvas, paint, pixel, style.Size, style);
         }
     }
 
@@ -651,6 +651,6 @@ public static class Drawing
 
     public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, SKPaintAndFont paint, bool antiAlias = true)
     {
-        image.Render(canvas, target, paint.Paint, antiAlias);
+        image.Render(canvas, target, paint, antiAlias);
     }
 }

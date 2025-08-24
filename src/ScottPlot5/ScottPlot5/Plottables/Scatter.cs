@@ -145,7 +145,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
             _ => throw new NotImplementedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
         };
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         using SKPath path = PathStrategy.GetPath(linePixels);
 
         if (FillY)

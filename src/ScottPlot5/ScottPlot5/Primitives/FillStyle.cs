@@ -23,7 +23,7 @@ public class FillStyle
         }
     }
 
-    public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    public void Render(SKCanvas canvas, PixelRect rect, SKPaintAndFont paint)
     {
         if (!IsVisible)
             return;

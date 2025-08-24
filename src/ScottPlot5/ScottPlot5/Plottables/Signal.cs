@@ -119,10 +119,10 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         foreach (Pixel point in points)
             path.LineTo(point.ToSKPoint());
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         LineStyle.ApplyToPaint(paint);
 
-        rp.Canvas.DrawPath(path, paint);
+        rp.Canvas.DrawPath(path, paint.Paint);
 
         double pointsPerPx = PointsPerPixel();
 
@@ -141,7 +141,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     /// </summary>
     private void RenderHighDensity(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         LineStyle.ApplyToPaint(paint);
 
         IEnumerable<PixelColumn> cols = Enumerable.Range(0, (int)Axes.DataRect.Width)
@@ -162,7 +162,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
             path.MoveTo(col.X, col.Exit);
         }
 
-        rp.Canvas.DrawPath(path, paint);
+        rp.Canvas.DrawPath(path, paint.Paint);
     }
 
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)

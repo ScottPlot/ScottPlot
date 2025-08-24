@@ -70,19 +70,19 @@ public class ZoomRectangle(Plot plot) : IZoomRectangle
             rect.Top = dataRect.Top;
         }
 
-        using SKPaint paint = new()
+        using SKPaintAndFont paint = new()
         {
             IsAntialias = true
         };
 
         paint.Color = FillColor.ToSKColor();
         paint.IsStroke = false;
-        canvas.DrawRect(rect, paint);
+        canvas.DrawRect(rect, paint.Paint);
 
         paint.Color = LineStyle.Color.ToSKColor();
         paint.StrokeWidth = LineStyle.Width;
         paint.IsStroke = true;
-        canvas.DrawRect(rect, paint);
+        canvas.DrawRect(rect, paint.Paint);
 
         rp.CanvasState.Restore();
     }

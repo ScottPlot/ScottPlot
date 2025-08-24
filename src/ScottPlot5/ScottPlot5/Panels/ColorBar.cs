@@ -130,9 +130,9 @@ public class ColorBar(IHasColorAxis source, Edge edge = Edge.Right) : IPanel
 
         // NOTE: high quality filter paint is required to support transparency
         // https://github.com/ScottPlot/ScottPlot/issues/4685
-        using SKPaint paint = new() { FilterQuality = SKFilterQuality.High };
+        using SKPaintAndFont paint = new() { FilterQuality = SKFilterQuality.High };
 
-        rp.Canvas.DrawBitmap(bmp, colormapRect.ToSKRect(), paint);
+        rp.Canvas.DrawBitmap(bmp, colormapRect.ToSKRect(), paint.Paint);
     }
 
     private void RenderColorbarAxis(RenderPack rp, PixelRect colormapRect, float size, float offset)

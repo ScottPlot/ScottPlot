@@ -55,7 +55,7 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         foreach (Coordinates c in Coordinates)
         {
             Coordinates lineBase = (Orientation == Orientation.Vertical) ? new(c.X, 0) : new(0, c.Y);

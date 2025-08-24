@@ -18,7 +18,7 @@ public class Pie : PieBase
     }
 
     protected virtual void RenderDonutSlice(
-        RenderPack rp, SKPaint paint, LineStyle lineStyle, FillStyle fillStyle,
+        RenderPack rp, SKPaintAndFont paint, LineStyle lineStyle, FillStyle fillStyle,
         float radius, float sliceAngle, float startAngle)
     {
         PixelRect outerRect = new(-radius, radius, -radius, radius);
@@ -40,7 +40,7 @@ public class Pie : PieBase
     }
 
     protected virtual void RenderSlice(
-        RenderPack rp, SKPaint paint, LineStyle lineStyle, FillStyle fillStyle,
+        RenderPack rp, SKPaintAndFont paint, LineStyle lineStyle, FillStyle fillStyle,
         float radius, float sliceAngle, float startAngle)
     {
         PixelRect outerRect = new(-radius, radius, -radius, radius);
@@ -59,7 +59,7 @@ public class Pie : PieBase
 
     public override void Render(RenderPack rp)
     {
-        using SKPaint paint = new() { IsAntialias = true };
+        using SKPaintAndFont paint = new() { IsAntialias = true };
 
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 

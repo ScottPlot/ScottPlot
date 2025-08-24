@@ -80,7 +80,7 @@ public class Bracket : IPlottable
         PixelLine edgeLine1 = new(pxEnd1.X, pxEnd1.Y, pxEnd2.X, pxEnd2.Y);
         PixelLine edgeLine2 = new(pxStart2.X, pxStart2.Y, pxEnd2.X, pxEnd2.Y);
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         Drawing.DrawLine(rp.Canvas, paint, mainLine, LineStyle);
         Drawing.DrawLine(rp.Canvas, paint, edgeLine1, LineStyle);
         Drawing.DrawLine(rp.Canvas, paint, edgeLine2, LineStyle);

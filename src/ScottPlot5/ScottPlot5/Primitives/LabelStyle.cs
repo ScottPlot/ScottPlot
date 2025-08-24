@@ -289,7 +289,7 @@ public class LabelStyle
         }
         else
         {
-            Image.Render(canvas, textRect, paint.Paint, false);
+            Image.Render(canvas, textRect, paint, false);
         }
 
         canvasState.Restore();

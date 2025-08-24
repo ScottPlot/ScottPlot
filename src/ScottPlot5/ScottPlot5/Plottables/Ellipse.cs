@@ -101,7 +101,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
     private static bool IsFinite(double x) => !(double.IsInfinity(x) || double.IsNaN(x));
     private bool RadiusIsNotFinite => !IsFinite(RadiusX) || !IsFinite(RadiusY);
 
-    protected virtual void RenderAnnulus(RenderPack rp, SKPaint paint, PixelRect rect)
+    protected virtual void RenderAnnulus(RenderPack rp, SKPaintAndFont paint, PixelRect rect)
     {
         float innerRx = Axes.GetPixelX(InnerRadiusX) - Axes.GetPixelX(0);
         float innerRy = Axes.GetPixelY(InnerRadiusY) - Axes.GetPixelY(0);
@@ -122,7 +122,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         }
     }
 
-    protected virtual void RenderEllipse(RenderPack rp, SKPaint paint, PixelRect rect)
+    protected virtual void RenderEllipse(RenderPack rp, SKPaintAndFont paint, PixelRect rect)
     {
         if (SweepAngle.Normalized.Degrees == 0 ||
             Math.Abs(SweepAngle.Degrees) >= 360)
@@ -153,7 +153,7 @@ public class Ellipse : IPlottable, IHasLine, IHasFill, IHasLegendText
         if (!IsVisible || RadiusIsNotFinite)
             return;
 
-        using var paint = new SKPaint();
+        using var paint = new SKPaintAndFont();
 
         rp.Canvas.Translate(Axes.GetPixel(Center).ToSKPoint());
         rp.Canvas.RotateDegrees((float)-Rotation.Normalized.Degrees);

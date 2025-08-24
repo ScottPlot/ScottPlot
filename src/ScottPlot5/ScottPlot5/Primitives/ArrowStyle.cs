@@ -38,7 +38,7 @@ public class ArrowStyle : IHasLine, IHasFill
     /// </summary>
     public float Offset { get; set; } = 0;
 
-    public void Render(SKCanvas canvas, PixelLine line, SKPaint paint)
+    public void Render(SKCanvas canvas, PixelLine line, SKPaintAndFont paint)
     {
         if (!IsVisible)
             return;

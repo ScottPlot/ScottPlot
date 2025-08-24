@@ -2,7 +2,7 @@ namespace ScottPlot.Markers;
 
 internal class Asterisk : IMarker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, SKPaintAndFont paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float crossOffset = size / 2;
         float eksOffset = (float)(size / 2.828);

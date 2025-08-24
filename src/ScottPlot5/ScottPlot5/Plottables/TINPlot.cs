@@ -31,7 +31,7 @@ public class TINPlot : IPlottable
     public LineStyle VoronoiLineStyle { get; set; } = new(1, Colors.Blue);
     public LineStyle ContourLineStyle { get; set; } = new(1, Colors.Gray, LinePattern.DenselyDashed);
 
-    private void DrawNetworkLines(RenderPack rp, SKPaint paint)
+    private void DrawNetworkLines(RenderPack rp, SKPaintAndFont paint)
     {
         foreach (CoordinateLine line in TIN.GetLines())
         {
@@ -40,7 +40,7 @@ public class TINPlot : IPlottable
         }
     }
 
-    private void DrawVoronoi(RenderPack rp, SKPaint paint)
+    private void DrawVoronoi(RenderPack rp, SKPaintAndFont paint)
     {
         foreach (CoordinatePath cell in TIN.GetCells())
         {
@@ -50,13 +50,13 @@ public class TINPlot : IPlottable
         }
     }
 
-    private void DrawMarkers(RenderPack rp, SKPaint paint)
+    private void DrawMarkers(RenderPack rp, SKPaintAndFont paint)
     {
         IEnumerable<Pixel> markerPixels = TIN.Points3D.Select(x => Axes.GetPixel(x.Coordinates2d()));
         Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
     }
 
-    private void DrawContours(RenderPack rp, SKPaint paint)
+    private void DrawContours(RenderPack rp, SKPaintAndFont paint)
     {
         double[] zs = TIN.GetZsByInterval(ContourLineInterval);
         foreach (ContourLine line in TIN.GetContourLines(zs))
@@ -69,7 +69,7 @@ public class TINPlot : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         DrawNetworkLines(rp, paint);
         DrawMarkers(rp, paint);
         DrawVoronoi(rp, paint);

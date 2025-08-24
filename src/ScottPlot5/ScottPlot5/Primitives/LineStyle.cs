@@ -89,7 +89,7 @@ public class LineStyle
         }
     }
 
-    public void Render(SKCanvas canvas, Pixel[] starts, Pixel[] ends, SKPaint paint)
+    public void Render(SKCanvas canvas, Pixel[] starts, Pixel[] ends, SKPaintAndFont paint)
     {
         if (starts.Length != ends.Length)
             throw new ArgumentException($"{nameof(starts)} and {nameof(ends)} must have equal length");
@@ -105,7 +105,7 @@ public class LineStyle
         Drawing.DrawPath(canvas, paint, path, this);
     }
 
-    public void Render(SKCanvas canvas, PixelLine[] lines, SKPaint paint)
+    public void Render(SKCanvas canvas, PixelLine[] lines, SKPaintAndFont paint)
     {
         using SKPath path = new();
 
@@ -118,7 +118,7 @@ public class LineStyle
         Drawing.DrawPath(canvas, paint, path, this);
     }
 
-    public void Render(SKCanvas canvas, PixelLine line, SKPaint paint)
+    public void Render(SKCanvas canvas, PixelLine line, SKPaintAndFont paint)
     {
         if (!IsVisible)
             return;
@@ -126,7 +126,7 @@ public class LineStyle
         Drawing.DrawLine(canvas, paint, line, this);
     }
 
-    public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint, bool contract = false)
+    public void Render(SKCanvas canvas, PixelRect rect, SKPaintAndFont paint, bool contract = false)
     {
         if (!IsVisible)
             return;
@@ -146,7 +146,7 @@ public class LineStyle
         Drawing.DrawLines(canvas, paint, pixels, this);
     }
 
-    public void Render(SKCanvas canvas, SKPath path, SKPaint paint)
+    public void Render(SKCanvas canvas, SKPath path, SKPaintAndFont paint)
     {
         if (!IsVisible)
             return;
@@ -155,7 +155,7 @@ public class LineStyle
     }
 
     [Obsolete("use the overload where the paint is passed last")]
-    public void Render(SKCanvas canvas, SKPaint paint, PixelLine line)
+    public void Render(SKCanvas canvas, SKPaintAndFont paint, PixelLine line)
     {
         if (!IsVisible)
             return;

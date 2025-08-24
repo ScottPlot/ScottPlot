@@ -85,7 +85,7 @@ public class Callout : LabelStyleProperties, IPlottable, IHasArrow, IHasLabel
     /// <returns>The coordinates of the attachment point on the label.</returns>
     public Coordinates CalculateClosestAttachPoint()
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         PixelSize labelSize = LabelStyle.Measure(LabelStyle.Text, paint).Size;
 
         Pixel[] attachPoints = [

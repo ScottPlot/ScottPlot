@@ -75,11 +75,11 @@ public class Coxcomb : PieBase
 
             Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
             paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
-            rp.Canvas.DrawPath(path, paint);
+            rp.Canvas.DrawPath(path, paint.Paint);
             Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
 
             LineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
+            rp.Canvas.DrawPath(path, paint.Paint);
 
             path.Reset();
 

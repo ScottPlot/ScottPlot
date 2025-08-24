@@ -45,7 +45,7 @@ public class BoxPlot : IPlottable, IHasLegendText
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         foreach (Box box in Boxes)
         {

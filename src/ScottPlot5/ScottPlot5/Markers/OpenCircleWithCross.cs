@@ -2,7 +2,7 @@ namespace ScottPlot.Markers;
 
 internal class OpenCircleWithCross : IMarker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, SKPaintAndFont paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         float offset = size / 2;
 

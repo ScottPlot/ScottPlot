@@ -115,7 +115,7 @@ public abstract class AxisBase : LabelStyleProperties
             pxLine = pxLine.WithDelta(0, .1f);
         }
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
         Drawing.DrawLine(rp.Canvas, paint, pxLine, lineStyle);
     }
 
@@ -126,7 +126,7 @@ public abstract class AxisBase : LabelStyleProperties
             throw new InvalidOperationException();
         }
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         foreach (Tick tick in ticks)
         {
@@ -163,7 +163,7 @@ public abstract class AxisBase : LabelStyleProperties
             throw new InvalidOperationException();
         }
 
-        using SKPaint paint = new();
+        using SKPaintAndFont paint = new();
 
         foreach (Tick tick in ticks)
         {

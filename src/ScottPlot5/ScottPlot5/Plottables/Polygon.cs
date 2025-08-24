@@ -130,12 +130,12 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
             path.LineTo(p);
         }
 
-        using var paint = new SKPaint();
+        using var paint = new SKPaintAndFont();
         if (FillStyle.HasValue)
         {
             FillStyle.ApplyToPaint(paint, new PixelRect(xMin, xMax, yMin, yMax));
             paint.Style = SKPaintStyle.Fill;
-            rp.Canvas.DrawPath(path, paint);
+            rp.Canvas.DrawPath(path, paint.Paint);
         }
 
         if (LineStyle is { IsVisible: true, Width: > 0 })

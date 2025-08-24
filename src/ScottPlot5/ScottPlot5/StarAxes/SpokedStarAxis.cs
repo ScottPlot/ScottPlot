@@ -7,7 +7,7 @@ public abstract class SpokedStarAxis : IStarAxis
 
     public virtual void RenderSpokes(RenderPack rp, IAxes axes, double spokeLength, int numSpokes, float rotationDegrees = 0)
     {
-        var paint = new SKPaint();
+        var paint = new SKPaintAndFont();
         AxisStyle.ApplyToPaint(paint);
 
         var sweepAngle = 2 * Math.PI / numSpokes;
@@ -22,7 +22,7 @@ public abstract class SpokedStarAxis : IStarAxis
             var theta = i * sweepAngle + sweepAngle / 2;
             var x = (float)(spokeLength * Math.Cos(theta));
             var y = (float)(spokeLength * Math.Sin(theta));
-            rp.Canvas.DrawLine(0, 0, x, y, paint);
+            rp.Canvas.DrawLine(0, 0, x, y, paint.Paint);
         }
     }
 }

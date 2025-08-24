@@ -7,8 +7,12 @@ namespace ScottPlot;
 
 public class SKPaintAndFont : IDisposable
 {
+    // TODO: make this private and disallow instantiating this throughout the code base
     public SKPaint Paint { get; set; } = new();
+
+    // TODO: make this private and disallow instantiating this throughout the code base
     public SKFont Font { get; set; } = new();
+
     public float FontSpacing { get => Font.Spacing; }
     public SKTextAlign TextAlign { get; set; } = SKTextAlign.Left;
     public bool IsStroke { get => Paint.IsStroke; set => Paint.IsStroke = value; }
@@ -23,6 +27,10 @@ public class SKPaintAndFont : IDisposable
     public SKStrokeCap StrokeCap { get => Paint.StrokeCap; set => Paint.StrokeCap = value; }
     public SKStrokeJoin StrokeJoin { get => Paint.StrokeJoin; set => Paint.StrokeJoin = value; }
     public float StrokeMiter { get => Paint.StrokeMiter; set => Paint.StrokeMiter = value; }
+    public bool FakeBoldText { get => Font.Embolden; set => Font.Embolden = value; }
+
+    public SKFilterQuality FilterQuality { get => Paint.FilterQuality; set => Paint.FilterQuality = value; }
+    public SKPaintStyle Style { get => Paint.Style; set => Paint.Style = value; }
 
     public float MeasureText(string s) => Font.MeasureText(s);
 
