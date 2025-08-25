@@ -62,7 +62,7 @@ public class TriangularAxis(bool clockwise) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
+        Paint paint = rp.Paint;
 
         RenderBackground(rp, paint);
 
@@ -75,14 +75,14 @@ public class TriangularAxis(bool clockwise) : IPlottable
         RenderGridLines(rp, paint, Left, Right);
     }
 
-    private void RenderBackground(RenderPack rp, SKPaint paint)
+    private void RenderBackground(RenderPack rp, Paint paint)
     {
         Coordinates[] corners = [Left.Start, Right.Start, Bottom.Start];
         var cornerPixels = corners.Select(Axes.GetPixel);
         Drawing.FillPath(rp.Canvas, paint, cornerPixels, FillStyle, rp.DataRect);
     }
 
-    private void RenderEdge(RenderPack rp, SKPaint paint, TriangularAxisEdge edge)
+    private void RenderEdge(RenderPack rp, Paint paint, TriangularAxisEdge edge)
     {
         // edge line
         Drawing.DrawLine(rp.Canvas, paint, Axes.GetPixelLine(edge.Line), edge.EdgeLineStyle);
@@ -101,7 +101,7 @@ public class TriangularAxis(bool clockwise) : IPlottable
         edge.LabelStyle.Render(rp.Canvas, Axes.GetPixel(edge.Line.Center), paint, edge.LabelText);
     }
 
-    private void RenderGridLines(RenderPack rp, SKPaint paint, TriangularAxisEdge edge1, TriangularAxisEdge edge2, bool reverse = true)
+    private void RenderGridLines(RenderPack rp, Paint paint, TriangularAxisEdge edge1, TriangularAxisEdge edge2, bool reverse = true)
     {
         for (int i = 0; i < edge1.Ticks.Count; i++)
         {

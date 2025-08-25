@@ -7,17 +7,17 @@ public class FixedPadding(PixelPadding padding) : LayoutEngineBase, ILayoutEngin
 {
     private PixelPadding Padding { get; } = padding;
 
-    public Layout GetLayout(PixelRect figureRect, Plot plot)
+    public Layout GetLayout(PixelRect figureRect, Plot plot, Paint paint)
     {
         IEnumerable<IPanel> panels = plot.Axes.GetPanels();
 
         // must recalculate ticks before measuring panels
 
         // NOTE: the actual ticks will be regenerated later, after the layout is determined
-        panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width));
-        panels.OfType<IYAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Height));
+        panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width, paint));
+        panels.OfType<IYAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Height, paint));
 
-        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
+        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels, paint);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
         PixelRect dataRect = new(

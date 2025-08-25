@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0-windows;net462</TargetFrameworks>
+        <TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <LangVersion>11</LangVersion>
@@ -52,11 +52,11 @@
         <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
     </ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-		<PackageReference Include="OpenTK" Version="3.3.1" NoWarn="NU1701" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' != 'net462'">
-		<PackageReference Include="OpenTK" Version="4.3.0" NoWarn="NU1701" />
-	</ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+        <PackageReference Include="OpenTK" Version="3.3.1" NoWarn="NU1701" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+        <PackageReference Include="OpenTK" Version="4.3.0" NoWarn="NU1701" />
+    </ItemGroup>
 
 </Project>

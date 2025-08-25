@@ -1,3 +1,4 @@
+using SkiaSharp.HarfBuzz;
 using System.Runtime.InteropServices;
 
 namespace ScottPlot;
@@ -11,22 +12,22 @@ namespace ScottPlot;
 /// </summary>
 public static class Drawing
 {
-    public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pixelLine)
+    public static void DrawLine(SKCanvas canvas, Paint paint, PixelLine pixelLine)
     {
         DrawLine(canvas, paint, pixelLine.Pixel1, pixelLine.Pixel2);
     }
 
-    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2)
+    public static void DrawLine(SKCanvas canvas, Paint paint, Pixel pt1, Pixel pt2)
     {
-        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
+        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint.SKPaint);
     }
 
-    public static void DrawLine(SKCanvas canvas, SKPaint paint, PixelLine pxLine, LineStyle lineStyle)
+    public static void DrawLine(SKCanvas canvas, Paint paint, PixelLine pxLine, LineStyle lineStyle)
     {
         DrawLine(canvas, paint, pxLine.Pixel1, pxLine.Pixel2, lineStyle);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<PixelLine> pxLines, LineStyle lineStyle)
+    public static void DrawLines(SKCanvas canvas, Paint paint, IEnumerable<PixelLine> pxLines, LineStyle lineStyle)
     {
         foreach (PixelLine line in pxLines)
         {
@@ -34,7 +35,7 @@ public static class Drawing
         }
     }
 
-    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
+    public static void DrawLine(SKCanvas canvas, Paint paint, Pixel pt1, Pixel pt2, LineStyle lineStyle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -42,24 +43,36 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
+        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint.SKPaint);
     }
 
-    public static void DrawLine(SKCanvas canvas, SKPaint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = default)
+    public static void DrawLine(SKCanvas canvas, Paint paint, Pixel pt1, Pixel pt2, Color color, float width = 1, bool antiAlias = true, LinePattern pattern = default)
     {
         if (width == 0)
             return;
 
-        paint.Color = color.ToSKColor();
+        paint.Color = color;
         paint.IsStroke = true;
         paint.IsAntialias = antiAlias;
         paint.StrokeWidth = width;
-        paint.PathEffect = pattern.GetPathEffect();
+        paint.SKPathEffect = pattern.GetPathEffect();
 
-        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint);
+        canvas.DrawLine(pt1.ToSKPoint(), pt2.ToSKPoint(), paint.SKPaint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
+    public static void DrawArrow(SKCanvas canvas, Paint paint, SKPath path, ArrowStyle arrowStyle)
+    {
+        arrowStyle.ApplyToPaint(paint);
+        canvas.DrawPath(path, paint.SKPaint);
+    }
+
+    public static void DrawPath(SKCanvas canvas, Paint paint, SKPath path, SKShader? shader)
+    {
+        paint.SKShader = shader;
+        canvas.DrawPath(path, paint.SKPaint);
+    }
+
+    public static void DrawPath(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -78,7 +91,7 @@ public static class Drawing
         DrawPath(canvas, paint, path, lineStyle);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle, PixelRect rect)
+    public static void FillPath(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle, PixelRect rect)
     {
         if (!fillStyle.CanBeRendered) return;
 
@@ -90,18 +103,18 @@ public static class Drawing
         }
 
         fillStyle.ApplyToPaint(paint, rect);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle)
+    public static void FillPath(SKCanvas canvas, Paint paint, SKPath path, FillStyle fillStyle)
     {
         if (!fillStyle.CanBeRendered) return;
 
         fillStyle.ApplyToPaint(paint, path.GetRect().ToPixelRect());
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
+    public static void DrawPath(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle, string label, LabelStyle labelStyle, bool close = false)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -123,45 +136,49 @@ public static class Drawing
 
         labelStyle.ApplyToPaint(paint);
 
-        var measuredText = paint.MeasureText(label);
-        using (SKPathMeasure pathMeasure = new SKPathMeasure(path, false, 1))
-            DrawTextOnPath(canvas, paint, path, label, pathMeasure.Length / 4 - measuredText / 4, 0);
+        var measuredText = paint.MeasureText(label).Width;
+        using SKPathMeasure pathMeasure = new(path, false, 1);
+        float hOffset = pathMeasure.Length / 4 - measuredText / 4;
+        float yOffset = 0;
+        DrawTextOnPath(canvas, paint, path, label, hOffset, yOffset);
     }
 
-    public static void DrawTextOnPath(SKCanvas canvas, SKPaint paint, SKPath path, string text, float hOffset = 0, float vOffset = 0)
+    public static void DrawTextOnPath(SKCanvas canvas, Paint paint, SKPath path, string text, float xOffset, float yOffset)
     {
         if (string.IsNullOrEmpty(text))
             return;
-        canvas.DrawTextOnPath(text, path, hOffset, vOffset, paint);
+
+        canvas.DrawTextOnPath(text, path, xOffset, yOffset, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle)
+    public static void DrawPath(SKCanvas canvas, Paint paint, PixelPath path, LineStyle lineStyle)
     {
         DrawPath(canvas, paint, path.Pixels, lineStyle);
     }
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, LineStyle lineStyle, string text, LabelStyle labelStyle)
+
+    public static void DrawPath(SKCanvas canvas, Paint paint, PixelPath path, LineStyle lineStyle, string text, LabelStyle labelStyle)
     {
         DrawPath(canvas, paint, path.Pixels, lineStyle, text, labelStyle);
     }
 
     [Obsolete($"use FillPath()", false)]
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, PixelPath path, FillStyle fillStyle)
+    public static void DrawPath(SKCanvas canvas, Paint paint, PixelPath path, FillStyle fillStyle)
     {
         FillPath(canvas, paint, path, fillStyle);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, PixelPath path, FillStyle fillStyle)
+    public static void FillPath(SKCanvas canvas, Paint paint, PixelPath path, FillStyle fillStyle)
     {
         FillPath(canvas, paint, path.Pixels, fillStyle);
     }
 
     [Obsolete($"use FillPath()", false)]
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
+    public static void DrawPath(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
     {
         FillPath(canvas, paint, pixels, fillStyle);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
+    public static void FillPath(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, FillStyle fillStyle)
     {
         if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
             return;
@@ -186,7 +203,7 @@ public static class Drawing
         FillPath(canvas, paint, path, fillStyle, rect);
     }
 
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    public static void DrawPath(SKCanvas canvas, Paint paint, SKPath path, LineStyle lineStyle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -194,27 +211,27 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
     [Obsolete($"use FillPath()", false)]
-    public static void DrawPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
+    public static void DrawPath(SKCanvas canvas, Paint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
     {
         FillPath(canvas, paint, path, fillStyle, rect);
     }
 
-    public static void FillPath(SKCanvas canvas, SKPaint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
+    public static void FillPath(SKCanvas canvas, Paint paint, SKPath path, FillStyle fillStyle, PixelRect rect)
     {
         if (fillStyle.IsVisible == false || fillStyle.Color == Colors.Transparent)
             return;
 
         fillStyle.ApplyToPaint(paint, rect);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
     private static readonly IPathStrategy StraightLineStrategy = new PathStrategies.Straight();
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
+    public static void DrawLines(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, LineStyle lineStyle)
     {
         if (!lineStyle.CanBeRendered) return;
         if (pixels.Take(2).Count() < 2) return;
@@ -224,10 +241,10 @@ public static class Drawing
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
         using SKPath path = StraightLineStrategy.GetPath(pixels);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
-    public static void DrawLines(SKCanvas canvas, SKPaint paint, SKPath path, LineStyle lineStyle)
+    public static void DrawLines(SKCanvas canvas, Paint paint, SKPath path, LineStyle lineStyle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -235,33 +252,23 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
-    public static void FillRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
+    public static void FillRectangle(SKCanvas canvas, PixelRect rect, Paint paint, FillStyle fillStyle)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
         fillStyle.ApplyToPaint(paint, rect);
-        canvas.DrawRect(rect.ToSKRect(), paint);
+        canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
     }
 
-    public static void FillRectangle(SKCanvas canvas, PixelRect rect, Color color)
+    public static void DrawRoundRectangle(SKCanvas canvas, PixelRect rect, Paint paint, float radiusX, float radiusY)
     {
-        if (color == Colors.Transparent)
-            return;
-
-        using SKPaint paint = new()
-        {
-            Color = color.ToSKColor(),
-            IsStroke = false,
-            IsAntialias = true,
-        };
-
-        canvas.DrawRect(rect.ToSKRect(), paint);
+        canvas.DrawRoundRect(rect.ToSKRect(), radiusX, radiusY, paint.SKPaint);
     }
 
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, LineStyle lineStyle)
+    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Paint paint, LineStyle lineStyle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -269,69 +276,31 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawRect(rect.ToSKRect(), paint);
+        canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
     }
 
-    [Obsolete($"use FillRectangle()", false)]
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, SKPaint paint, FillStyle fillStyle)
-    {
-        FillRectangle(canvas, rect, paint, fillStyle);
-    }
-
-    public static void DrawRectangle(SKCanvas canvas, PixelRect rect, Color color, float lineWidth = 1)
-    {
-        if (color == Colors.Transparent || lineWidth == 0)
-            return;
-
-        using SKPaint paint = new()
-        {
-            Color = color.ToSKColor(),
-            IsStroke = true,
-            StrokeWidth = lineWidth,
-            IsAntialias = true,
-        };
-
-        canvas.DrawRect(rect.ToSKRect(), paint);
-    }
-
-    public static void DrawDebugRectangle(SKCanvas canvas, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)
+    public static void DrawDebugRectangle(SKCanvas canvas, Paint paint, PixelRect rect, Pixel? point = null, Color? color = null, float lineWidth = 3)
     {
         point ??= Pixel.NaN;
         color ??= Colors.Magenta;
 
-        using SKPaint paint = new()
-        {
-            Color = color.Value.ToSKColor(),
-            IsStroke = true,
-            StrokeWidth = lineWidth,
-            IsAntialias = true,
-        };
+        paint.Color = color.Value;
+        paint.IsStroke = true;
+        paint.StrokeWidth = lineWidth;
+        paint.IsAntialias = true;
 
-        canvas.DrawRect(rect.ToSKRect(), paint);
-        canvas.DrawLine(rect.BottomLeft.ToSKPoint(), rect.TopRight.ToSKPoint(), paint);
-        canvas.DrawLine(rect.TopLeft.ToSKPoint(), rect.BottomRight.ToSKPoint(), paint);
+        canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
+        canvas.DrawLine(rect.BottomLeft.ToSKPoint(), rect.TopRight.ToSKPoint(), paint.SKPaint);
+        canvas.DrawLine(rect.TopLeft.ToSKPoint(), rect.BottomRight.ToSKPoint(), paint.SKPaint);
 
-        canvas.DrawCircle(point.Value.ToSKPoint(), 5, paint);
+        canvas.DrawCircle(point.Value.ToSKPoint(), 5, paint.SKPaint);
 
         paint.IsStroke = false;
         paint.Color = paint.Color.WithAlpha(20);
-        canvas.DrawRect(rect.ToSKRect(), paint);
+        canvas.DrawRect(rect.ToSKRect(), paint.SKPaint);
     }
 
-    public static void DrawDebugPoint(SKCanvas canvas, Pixel point, Color? color = null, float size = 3)
-    {
-        color ??= Colors.Magenta;
-
-        using SKPaint paint = new()
-        {
-            Color = color.Value.ToSKColor(),
-            IsAntialias = true,
-        };
-
-        canvas.DrawCircle(point.ToSKPoint(), size, paint);
-    }
-
-    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, SKPaint paint)
+    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, LineStyle lineStyle, Paint paint)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -339,26 +308,26 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint.SKPaint);
     }
 
     [Obsolete("use FillCircle() instead of DrawCircle() when passing in a FillStyle", false)]
-    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
+    public static void DrawCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, Paint paint)
     {
         FillCircle(canvas, center, radius, fillStyle, paint);
     }
 
-    public static void FillCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, SKPaint paint)
+    public static void FillCircle(SKCanvas canvas, Pixel center, float radius, FillStyle fillStyle, Paint paint)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
 
         PixelRect rect = new(center, radius);
         fillStyle.ApplyToPaint(paint, rect);
-        canvas.DrawCircle(center.ToSKPoint(), radius, paint);
+        canvas.DrawCircle(center.ToSKPoint(), radius, paint.SKPaint);
     }
 
-    public static void DrawOval(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect)
+    public static void DrawOval(SKCanvas canvas, Paint paint, LineStyle lineStyle, PixelRect rect)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -366,19 +335,19 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawOval(rect.ToSKRect(), paint);
+        canvas.DrawOval(rect.ToSKRect(), paint.SKPaint);
     }
 
-    public static void FillOval(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect)
+    public static void FillOval(SKCanvas canvas, Paint paint, FillStyle fillStyle, PixelRect rect)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
 
         fillStyle.ApplyToPaint(paint, rect);
-        canvas.DrawOval(rect.ToSKRect(), paint);
+        canvas.DrawOval(rect.ToSKRect(), paint.SKPaint);
     }
 
-    public static void DrawArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    public static void DrawArc(SKCanvas canvas, Paint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -386,7 +355,7 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint);
+        canvas.DrawArc(rect.ToSKRect(), startAngle, sweepAngle, false, paint.SKPaint);
     }
 
     private static (Angle startAngle, Angle sweepAngle) CorrectEllipseAngle(Angle startAngle, Angle sweepAngle, PixelRect rect)
@@ -425,7 +394,7 @@ public static class Drawing
         return (correctedStart, correctedSweep);
     }
 
-    public static void DrawEllipticalArc(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    public static void DrawEllipticalArc(SKCanvas canvas, Paint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -468,7 +437,7 @@ public static class Drawing
         return path;
     }
 
-    public static void DrawAnnularSector(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    public static void DrawAnnularSector(SKCanvas canvas, Paint paint, LineStyle lineStyle, PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -477,10 +446,10 @@ public static class Drawing
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
         using SKPath path = GetEllipticalAnnularSector(rect, innerRect, startAngle, sweepAngle);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
-    public static void FillAnnularSector(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
+    public static void FillAnnularSector(SKCanvas canvas, Paint paint, FillStyle fillStyle, PixelRect rect, PixelRect innerRect, float startAngle, float sweepAngle)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
@@ -488,10 +457,10 @@ public static class Drawing
         fillStyle.ApplyToPaint(paint, rect);
 
         using SKPath path = GetEllipticalAnnularSector(rect, innerRect, startAngle, sweepAngle);
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
     }
 
-    public static void DrawEllipticalAnnulus(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect outerRect, PixelRect innerRect)
+    public static void DrawEllipticalAnnulus(SKCanvas canvas, Paint paint, LineStyle lineStyle, PixelRect outerRect, PixelRect innerRect)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -499,11 +468,11 @@ public static class Drawing
         if (lineStyle.Hairline)
             paint.StrokeWidth = 1f / canvas.TotalMatrix.ScaleX;
 
-        canvas.DrawOval(outerRect.ToSKRect(), paint);
-        canvas.DrawOval(innerRect.ToSKRect(), paint);
+        canvas.DrawOval(outerRect.ToSKRect(), paint.SKPaint);
+        canvas.DrawOval(innerRect.ToSKRect(), paint.SKPaint);
     }
 
-    public static void FillEllipticalAnnulus(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect outerRect, PixelRect innerRect)
+    public static void FillEllipticalAnnulus(SKCanvas canvas, Paint paint, FillStyle fillStyle, PixelRect outerRect, PixelRect innerRect)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
@@ -519,12 +488,12 @@ public static class Drawing
         path.AddOval(outerRect.ToSKRect());
         path.AddOval(innerRect.ToSKRect());
 
-        canvas.DrawPath(path, paint);
+        canvas.DrawPath(path, paint.SKPaint);
 
         canvasState.Restore();
     }
 
-    public static void DrawSector(SKCanvas canvas, SKPaint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
+    public static void DrawSector(SKCanvas canvas, Paint paint, LineStyle lineStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!lineStyle.CanBeRendered) return;
 
@@ -534,10 +503,10 @@ public static class Drawing
 
         (Angle correctedStart, Angle correctedSweep) =
             CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
-        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, true, paint);
+        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, true, paint.SKPaint);
     }
 
-    public static void FillSector(SKCanvas canvas, SKPaint paint, FillStyle fillStyle, PixelRect rect, float startAngle, float sweepAngle)
+    public static void FillSector(SKCanvas canvas, Paint paint, FillStyle fillStyle, PixelRect rect, float startAngle, float sweepAngle)
     {
         if (!fillStyle.IsVisible) return;
         if (fillStyle.Color == Colors.Transparent) return;
@@ -546,10 +515,10 @@ public static class Drawing
 
         (Angle correctedStart, Angle correctedSweep) =
             CorrectEllipseAngle(Angle.FromDegrees(startAngle), Angle.FromDegrees(sweepAngle), rect);
-        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, true, paint);
+        canvas.DrawArc(rect.ToSKRect(), (float)correctedStart.Degrees, (float)correctedSweep.Degrees, true, paint.SKPaint);
     }
 
-    public static void DrawMarker(SKCanvas canvas, SKPaint paint, Pixel pixel, MarkerStyle style)
+    public static void DrawMarker(SKCanvas canvas, Paint paint, Pixel pixel, MarkerStyle style)
     {
         if (!style.IsVisible)
             return;
@@ -559,7 +528,7 @@ public static class Drawing
         marker.Render(canvas, paint, pixel, style.Size, style);
     }
 
-    public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
+    public static void DrawMarkers(SKCanvas canvas, Paint paint, IEnumerable<Pixel> pixels, MarkerStyle style)
     {
         if (!style.IsVisible)
             return;
@@ -572,7 +541,7 @@ public static class Drawing
         }
     }
 
-    public static void DrawMarkers(SKCanvas canvas, SKPaint paint, IReadOnlyList<Pixel> pixels, MarkerStyle style, IColormap colormap)
+    public static void DrawMarkers(SKCanvas canvas, Paint paint, IReadOnlyList<Pixel> pixels, MarkerStyle style, IColormap colormap)
     {
         if (!style.IsVisible)
             return;
@@ -648,8 +617,32 @@ public static class Drawing
         new Image(surface).SavePng(filename);
     }
 
-    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, SKPaint paint, bool antiAlias = true)
+    public static void DrawImage(SKCanvas canvas, SKBitmap image, PixelRect target, Paint paint)
     {
-        image.Render(canvas, target, paint, antiAlias);
+        paint.Color = Colors.Black; // must be solid or image is semitransparent
+        Image img = new(image);
+        DrawImage(canvas, img, target, paint);
+    }
+
+    public static void DrawImage(SKCanvas canvas, SKImage image, PixelRect target, Paint paint)
+    {
+        paint.Color = Colors.Black; // must be solid or image is semitransparent
+        canvas.DrawImage(image, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
+    }
+
+    public static void DrawImage(SKCanvas canvas, Image image, PixelRect target, Paint paint)
+    {
+        paint.Color = Colors.Black; // must be solid or image is semitransparent
+        canvas.DrawImage(image.SKImage, target.ToSKRect(), paint.SKSamplingOptions, paint.SKPaint);
+    }
+
+    public static void DrawText(SKCanvas canvas, string text, Pixel px, Paint paint)
+    {
+        canvas.DrawText(text, px.X, px.Y, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
+    }
+
+    public static void DrawShapedText(SKCanvas canvas, SKShaper shaper, string text, Pixel px, Paint paint)
+    {
+        canvas.DrawShapedText(shaper, text, px.X, px.Y, paint.SKTextAlign, paint.SKFont, paint.SKPaint);
     }
 }

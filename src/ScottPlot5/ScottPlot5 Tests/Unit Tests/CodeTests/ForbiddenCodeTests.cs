@@ -76,6 +76,9 @@ internal class ForbiddenCodeTests
             if (Path.GetFileName(filePath) == "MeasuredText.cs")
                 continue;
 
+            if (Path.GetFileName(filePath) == "Drawing.cs")
+                continue;
+
             string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; i++)
             {

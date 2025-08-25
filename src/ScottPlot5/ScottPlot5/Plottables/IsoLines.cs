@@ -35,27 +35,26 @@ public class IsoLines : IPlottable, IHasLine
             ? GetLinesManual(rp)
             : GetLinesAutomatic(rp);
 
-        using SKPaint paint = new();
-        RenderLines(rp, paint, lines);
+        RenderLines(rp, rp.Paint, lines);
 
         rp.CanvasState.DisableClipping();
         if (RotateLabels)
         {
-            RenderLabelsRotated(rp, paint, lines);
+            RenderLabelsRotated(rp, rp.Paint, lines);
         }
         else
         {
-            RenderLabelsFixed(rp, paint, lines);
+            RenderLabelsFixed(rp, rp.Paint, lines);
         }
     }
 
-    private void RenderLines(RenderPack rp, SKPaint paint, List<PixelLine> lines)
+    private void RenderLines(RenderPack rp, Paint paint, List<PixelLine> lines)
     {
         LineStyle.ApplyToPaint(paint);
         lines.ForEach(line => LineStyle.Render(rp.Canvas, line, paint));
     }
 
-    private void RenderLabelsFixed(RenderPack rp, SKPaint paint, List<PixelLine> lines)
+    private void RenderLabelsFixed(RenderPack rp, Paint paint, List<PixelLine> lines)
     {
         float padding = 5;
 
@@ -99,7 +98,7 @@ public class IsoLines : IPlottable, IHasLine
         }
     }
 
-    private void RenderLabelsRotated(RenderPack rp, SKPaint paint, List<PixelLine> lines)
+    private void RenderLabelsRotated(RenderPack rp, Paint paint, List<PixelLine> lines)
     {
         for (int i = 0; i < lines.Count; i++)
         {

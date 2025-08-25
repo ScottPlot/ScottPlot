@@ -96,8 +96,9 @@ public class GridStyle
         for (int i = 1; i < starts.Count(); i++)
         {
             Color fillColor = (i + oddTick) % 2 == 0 ? FillColor1 : FillColor2;
+            FillStyle fs = new() { Color = fillColor };
             PixelRect rect = new(starts.ElementAt(i - 1), ends.ElementAt(i));
-            Drawing.FillRectangle(rp.Canvas, rect, fillColor);
+            Drawing.FillRectangle(rp.Canvas, rect, rp.Paint, fs);
         }
     }
 
@@ -122,7 +123,6 @@ public class GridStyle
                 : new Pixel(rp.DataRect.Right, px);
         }
 
-        using SKPaint paint = new();
-        lineStyle.Render(rp.Canvas, starts, ends, paint);
+        lineStyle.Render(rp.Canvas, starts, ends, rp.Paint);
     }
 }

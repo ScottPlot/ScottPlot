@@ -18,7 +18,7 @@ public class Pie : PieBase
     }
 
     protected virtual void RenderDonutSlice(
-        RenderPack rp, SKPaint paint, LineStyle lineStyle, FillStyle fillStyle,
+        RenderPack rp, Paint paint, LineStyle lineStyle, FillStyle fillStyle,
         float radius, float sliceAngle, float startAngle)
     {
         PixelRect outerRect = new(-radius, radius, -radius, radius);
@@ -29,38 +29,36 @@ public class Pie : PieBase
 
         if (Math.Abs(sliceAngle) < 360)
         {
-            Drawing.FillAnnularSector(rp.Canvas, paint, fillStyle, outerRect, innerRect, startAngle, sliceAngle);
-            Drawing.DrawAnnularSector(rp.Canvas, paint, lineStyle, outerRect, innerRect, startAngle, sliceAngle);
+            Drawing.FillAnnularSector(rp.Canvas, rp.Paint, fillStyle, outerRect, innerRect, startAngle, sliceAngle);
+            Drawing.DrawAnnularSector(rp.Canvas, rp.Paint, lineStyle, outerRect, innerRect, startAngle, sliceAngle);
         }
         else
         {
-            Drawing.FillEllipticalAnnulus(rp.Canvas, paint, fillStyle, outerRect, innerRect);
-            Drawing.DrawEllipticalAnnulus(rp.Canvas, paint, lineStyle, outerRect, innerRect);
+            Drawing.FillEllipticalAnnulus(rp.Canvas, rp.Paint, fillStyle, outerRect, innerRect);
+            Drawing.DrawEllipticalAnnulus(rp.Canvas, rp.Paint, lineStyle, outerRect, innerRect);
         }
     }
 
     protected virtual void RenderSlice(
-        RenderPack rp, SKPaint paint, LineStyle lineStyle, FillStyle fillStyle,
+        RenderPack rp, Paint paint, LineStyle lineStyle, FillStyle fillStyle,
         float radius, float sliceAngle, float startAngle)
     {
         PixelRect outerRect = new(-radius, radius, -radius, radius);
 
         if (Math.Abs(sliceAngle) < 360)
         {
-            Drawing.FillSector(rp.Canvas, paint, fillStyle, outerRect, startAngle, sliceAngle);
-            Drawing.DrawSector(rp.Canvas, paint, lineStyle, outerRect, startAngle, sliceAngle);
+            Drawing.FillSector(rp.Canvas, rp.Paint, fillStyle, outerRect, startAngle, sliceAngle);
+            Drawing.DrawSector(rp.Canvas, rp.Paint, lineStyle, outerRect, startAngle, sliceAngle);
         }
         else
         {
-            Drawing.FillOval(rp.Canvas, paint, fillStyle, outerRect);
-            Drawing.DrawOval(rp.Canvas, paint, lineStyle, outerRect);
+            Drawing.FillOval(rp.Canvas, rp.Paint, fillStyle, outerRect);
+            Drawing.DrawOval(rp.Canvas, rp.Paint, lineStyle, outerRect);
         }
     }
 
     public override void Render(RenderPack rp)
     {
-        using SKPaint paint = new() { IsAntialias = true };
-
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
         float minX = Math.Abs(Axes.GetPixelX(Radius) - origin.X);
@@ -86,11 +84,11 @@ public class Pie : PieBase
 
             if (DonutFraction > 0)
             {
-                RenderDonutSlice(rp, paint, LineStyle, slice.Fill, outerRadius, (float)sliceAngle.Degrees, (float)totalAngle.Degrees);
+                RenderDonutSlice(rp, rp.Paint, LineStyle, slice.Fill, outerRadius, (float)sliceAngle.Degrees, (float)totalAngle.Degrees);
             }
             else
             {
-                RenderSlice(rp, paint, LineStyle, slice.Fill, outerRadius, (float)sliceAngle.Degrees, (float)totalAngle.Degrees);
+                RenderSlice(rp, rp.Paint, LineStyle, slice.Fill, outerRadius, (float)sliceAngle.Degrees, (float)totalAngle.Degrees);
             }
 
             Coordinates textPolar = slicePolar
@@ -98,7 +96,7 @@ public class Pie : PieBase
                 .ToCartesian();
             textPolar.Y = -textPolar.Y;
             Pixel px = Axes.GetPixel(textPolar) - origin;
-            slice.LabelStyle.Render(rp.Canvas, px, paint);
+            slice.LabelStyle.Render(rp.Canvas, px, rp.Paint);
 
             totalAngle += sliceAngle;
         }

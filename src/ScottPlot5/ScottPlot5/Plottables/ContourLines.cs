@@ -88,8 +88,6 @@ public class ContourLines : IPlottable, IHasLine
         if (IsVisible == false || Lines is null || Lines.Count == 0)
             return;
 
-        using SKPaint paint = new();
-
         for (int i = 0; i < Lines.Count; i++)
         {
             PixelPath path = Axes.GetPixelPath(Lines[i].Path);
@@ -101,9 +99,9 @@ public class ContourLines : IPlottable, IHasLine
             }
 
             if (rectangularGrid)
-                Drawing.DrawPath(rp.Canvas, paint, path, LineStyle, Lines[i].Z.ToString("0.###"), LabelStyle);
+                Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle, Lines[i].Z.ToString("0.###"), LabelStyle);
             else
-                Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
+                Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
         }
     }
 }

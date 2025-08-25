@@ -105,8 +105,6 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
-
         var ohlcs = Data.GetOHLCs();
         for (int i = 0; i < ohlcs.Count; i++)
         {
@@ -143,7 +141,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
 
             // low/high line
             PixelLine verticalLine = new(center, top, center, bottom);
-            Drawing.DrawLine(rp.Canvas, paint, verticalLine, lineStyle);
+            Drawing.DrawLine(rp.Canvas, rp.Paint, verticalLine, lineStyle);
 
             // open/close body
             bool barIsAtLeastOnePixelWide = xPxRight - xPxLeft > 1;
@@ -154,11 +152,11 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
                 PixelRect rect = new(xPxRange, yPxRange);
                 if (yPxOpen != yPxClose)
                 {
-                    fillStyle.Render(rp.Canvas, rect, paint);
+                    fillStyle.Render(rp.Canvas, rect, rp.Paint);
                 }
                 else
                 {
-                    lineStyle.Render(rp.Canvas, rect.BottomLine, paint);
+                    lineStyle.Render(rp.Canvas, rect.BottomLine, rp.Paint);
                 }
             }
         }

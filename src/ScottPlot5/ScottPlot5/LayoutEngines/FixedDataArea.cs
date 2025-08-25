@@ -7,10 +7,10 @@ public class FixedDataArea(PixelRect dataRect) : LayoutEngineBase, ILayoutEngine
 {
     private PixelRect DataRect { get; } = dataRect;
 
-    public Layout GetLayout(PixelRect figureRect, Plot plot)
+    public Layout GetLayout(PixelRect figureRect, Plot plot, Paint paint)
     {
         IEnumerable<IPanel> panels = plot.Axes.GetPanels();
-        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
+        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels, paint);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
         return new Layout(figureRect, DataRect, panelSizes, panelOffsets);
     }

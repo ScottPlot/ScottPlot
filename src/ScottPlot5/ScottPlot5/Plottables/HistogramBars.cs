@@ -49,14 +49,10 @@ public class HistogramBars : IPlottable
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
-
         for (int i = 0; i < Histogram.Bins.Length; i++)
         {
-            double binLeftEdge = Histogram.Edges[i];
-            double binRightEdge = Histogram.Edges[i + 1];
             Bars[i].Value = Histogram.Counts[i];
-            Bars[i].Render(rp, Axes, paint, LabelStyle);
+            Bars[i].Render(rp, Axes, LabelStyle);
         }
     }
 }

@@ -23,7 +23,6 @@ public class ImageMarker : IPlottable
         float pxTop = centerPixel.Y - Image.Height / 2.0f * Scale;
         PixelRect rect = new(pxLeft, pxRight, pxBottom, pxTop);
 
-        using SKPaint paint = new();
-        Image.Render(rp.Canvas, rect, paint, AntiAlias);
+        Image.Render(rp.Canvas, rect, rp.Paint, AntiAlias);
     }
 }

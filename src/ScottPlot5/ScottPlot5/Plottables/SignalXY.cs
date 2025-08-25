@@ -80,8 +80,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
             _ => throw new NotImplementedException($"unsupported {nameof(ConnectStyle)}: {ConnectStyle}"),
         };
 
-        using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, linePixels, LineStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, markerPixels, MarkerStyle);
+        Drawing.DrawLines(rp.Canvas, rp.Paint, linePixels, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, rp.Paint, markerPixels, MarkerStyle);
     }
 }

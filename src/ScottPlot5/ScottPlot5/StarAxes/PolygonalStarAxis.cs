@@ -2,17 +2,13 @@ namespace ScottPlot.StarAxes;
 
 public class PolygonalStarAxis : SpokedStarAxis
 {
-    public override LineStyle AxisStyle { get; set; } = new LineStyle()
+    public override LineStyle LineStyle { get; set; } = new LineStyle()
     {
         Color = Colors.DarkGray
     };
 
     public override void Render(RenderPack rp, IAxes axes, double maxSpokeLength, int numSpokes, float rotationDegrees)
     {
-
-        var paint = new SKPaint();
-        AxisStyle.ApplyToPaint(paint);
-
         var ticks = new float[] { 0.25f, 0.5f, 1 };
         Pixel origin = axes.GetPixel(Coordinates.Origin);
 
@@ -44,7 +40,8 @@ public class PolygonalStarAxis : SpokedStarAxis
                 cumRotation += sweepAngle;
             }
             path.Close();
-            rp.Canvas.DrawPath(path, paint);
+
+            Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
         }
 
     }

@@ -109,53 +109,47 @@ public class LabelStyle
         FontName = Fonts.Detect(Text);
     }
 
-    private void ApplyPointPaint(SKPaint paint)
-    {
-        paint.IsStroke = !PointFilled;
-        paint.StrokeWidth = 1;
-        paint.Color = PointColor.ToSKColor();
-        paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
-    }
-
-    private void ApplyBorderPaint(SKPaint paint)
+    private void ApplyBorderPaint(Paint paint)
     {
         paint.IsStroke = true;
         paint.StrokeWidth = BorderWidth;
-        paint.Color = BorderColor.ToSKColor();
+        paint.Color = BorderColor;
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
-    private void ApplyShadowPaint(SKPaint paint)
+    private void ApplyShadowPaint(Paint paint)
     {
         paint.IsStroke = false;
-        paint.Color = ShadowColor.ToSKColor();
+        paint.Color = ShadowColor;
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
-    private void ApplyBackgroundPaint(SKPaint paint)
+    private void ApplyBackgroundPaint(Paint paint)
     {
         paint.IsStroke = false;
-        paint.Color = BackgroundColor.ToSKColor();
+        paint.Color = BackgroundColor;
         paint.IsAntialias = AntiAliasBackground;
-        paint.Shader = null;
+        paint.SKShader = null;
     }
 
-    private void ApplyTextPaint(SKPaint paint)
+    private readonly SKPathEffect SolidPathEffect = LinePattern.Solid.GetPathEffect();
+
+    private void ApplyTextPaint(Paint paint)
     {
-        paint.TextAlign = SKTextAlign.Left;
+        paint.TextAlign = HorizontalAlignment.Left;
         paint.IsStroke = false;
-        paint.Typeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.SKTypeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
         paint.TextSize = FontSize;
-        paint.Color = ForeColor.ToSKColor();
+        paint.Color = ForeColor;
         paint.IsAntialias = AntiAliasText;
         paint.SubpixelText = SubpixelText;
-        paint.Shader = null;
+        paint.SKShader = null;
+        paint.SKPathEffect = SolidPathEffect;
     }
 
-    public void ApplyToPaint(SKPaint paint)
+    public void ApplyToPaint(Paint paint)
     {
         ApplyTextPaint(paint);
     }
@@ -163,21 +157,12 @@ public class LabelStyle
     /// <summary>
     /// Return size information for the contents of the <see cref="Text"/> property
     /// </summary>
-    public MeasuredText Measure() // NOTE: This should never be called internally
+    public MeasuredText Measure(Paint paint) // NOTE: This should never be called internally
     {
-        return Measure(Text);
+        return Measure(Text, paint);
     }
 
-    /// <summary>
-    /// Return size information for the given text
-    /// </summary>
-    public MeasuredText Measure(string text) // NOTE: This should never be called internally
-    {
-        using SKPaint paint = new();
-        return Measure(text, paint);
-    }
-
-    public MeasuredText Measure(string text, SKPaint paint)
+    public MeasuredText Measure(string text, Paint paint)
     {
         if (Image is not null)
         {
@@ -193,8 +178,8 @@ public class LabelStyle
 
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
         ApplyToPaint(paint);
-        float lineHeight = paint.GetFontMetrics(out SKFontMetrics metrics);
-        float[] lineWidths = lines.Select(paint.MeasureText).ToArray();
+        (float lineHeight, SKFontMetrics metrics) = paint.GetFontMetrics();
+        float[] lineWidths = lines.Select(x => paint.MeasureText(x).Width).ToArray();
         float maxWidth = lineWidths.Length == 0 ? 0 : lineWidths.Max();
         PixelSize size = new(maxWidth, lineHeight * lines.Length);
 
@@ -215,7 +200,7 @@ public class LabelStyle
     /// Use the Label's size and <see cref="Alignment"/> to determine where it should be drawn
     /// relative to the given rectangle (aligned to the rectangle according to <paramref name="rectAlignment"/>).
     /// </summary>
-    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY, SKPaint paint)
+    public Pixel GetRenderLocation(PixelRect rect, Alignment rectAlignment, float offsetX, float offsetY, Paint paint)
     {
         PixelSize textSize = Measure(Text, paint).Size;
         float textWidth = textSize.Width;
@@ -255,14 +240,14 @@ public class LabelStyle
         return new Pixel(x, y);
     }
 
-    public void Render(SKCanvas canvas, Pixel px, SKPaint paint, string text, bool bottom = true)
+    public void Render(SKCanvas canvas, Pixel px, Paint paint, string text, bool bottom = true)
     {
         Text = text;
         Render(canvas, px, paint, bottom);
     }
 
     // TODO: deprecate this and require a string to be passed in
-    public void Render(SKCanvas canvas, Pixel px, SKPaint paint, bool bottom = true)
+    public void Render(SKCanvas canvas, Pixel px, Paint paint, bool bottom = true)
     {
         if (!IsVisible)
             return;
@@ -295,17 +280,17 @@ public class LabelStyle
         canvasState.Restore();
     }
 
-    private void DrawBorder(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    private void DrawBorder(SKCanvas canvas, Pixel px, Paint paint, PixelRect textRect)
     {
         if (BorderWidth == 0)
             return;
 
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         ApplyBorderPaint(paint);
-        canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
+        Drawing.DrawRoundRectangle(canvas, backgroundRect, paint, BorderRadiusX, BorderRadiusY);
     }
 
-    private void DrawText(SKCanvas canvas, MeasuredText measured, SKPaint paint, PixelRect textRect, bool bottom)
+    private void DrawText(SKCanvas canvas, MeasuredText measured, Paint paint, PixelRect textRect, bool bottom)
     {
         if (Text is null)
             return;
@@ -325,51 +310,47 @@ public class LabelStyle
                     0 => 0,
                     0.5f => textRect.Width / 2 - measured.LineWidths[i] / 2,
                     1 => textRect.Width - measured.LineWidths[i],
-                    _ => throw new NotImplementedException(paint.TextAlign.ToString()),
+                    _ => throw new NotImplementedException(),
                 };
 
                 float xPx = textRect.Left + dX;
                 float yPx = textRect.Top + (1 + i) * lineHeight + dY;
+                Pixel px = new(xPx, yPx);
                 if (LabelStyle.RTLSupport)
                 {
-                    using (var shaper = new SKShaper(paint.Typeface))
-                    {
-                        float shapedWidth = shaper.Shape(lines[i], paint).Width;
-                        canvas.DrawShapedText(shaper, lines[i], xPx, yPx, paint);
-
-                        if (RenderUnderline)
-                        {
-                            float underlineY = yPx + (float)UnderlineOffset;
-
-                            using var underlinePaint = new SKPaint
-                            {
-                                Color = paint.Color,
-                                StrokeWidth = (float)UnderlineWidth,
-                                IsStroke = true,
-                                IsAntialias = paint.IsAntialias
-                            };
-
-                            canvas.DrawLine(xPx, underlineY, xPx + shapedWidth, underlineY, underlinePaint);
-                        }
-                    }
-                }
-                else
-                {
-                    canvas.DrawText(lines[i], xPx, yPx, paint);
+                    using var shaper = new SKShaper(paint.SKTypeface);
+                    float shapedWidth = shaper.Shape(lines[i], paint.SKFont).Width;
+                    Drawing.DrawShapedText(canvas, shaper, lines[i], px, paint);
 
                     if (RenderUnderline)
                     {
                         float underlineY = yPx + (float)UnderlineOffset;
-                        float textWidth = paint.MeasureText(lines[i]);
 
-                        using var underlinePaint = new SKPaint
-                        {
-                            Color = paint.Color,
-                            StrokeWidth = (float)UnderlineWidth,
-                            IsStroke = true,
-                            IsAntialias = paint.IsAntialias
-                        };
-                        canvas.DrawLine(xPx, underlineY, xPx + textWidth, underlineY, underlinePaint);
+                        paint.Color = paint.Color;
+                        paint.StrokeWidth = (float)UnderlineWidth;
+                        paint.IsStroke = true;
+                        paint.IsAntialias = paint.IsAntialias;
+
+                        PixelLine line = new(xPx, underlineY, xPx + shapedWidth, underlineY);
+                        Drawing.DrawLine(canvas, paint, line);
+                    }
+                }
+                else
+                {
+                    Drawing.DrawText(canvas, lines[i], px, paint);
+
+                    if (RenderUnderline)
+                    {
+                        float underlineY = yPx + (float)UnderlineOffset;
+                        float textWidth = paint.MeasureText(lines[i]).Width;
+
+                        paint.Color = paint.Color;
+                        paint.StrokeWidth = (float)UnderlineWidth;
+                        paint.IsStroke = true;
+                        paint.IsAntialias = paint.IsAntialias;
+
+                        PixelLine line = new(xPx, underlineY, xPx + textWidth, underlineY);
+                        Drawing.DrawLine(canvas, paint, line);
                     }
                 }
             }
@@ -378,52 +359,48 @@ public class LabelStyle
         {
             float xPx = textRect.Left;
             float yPx = textRect.Bottom + dY;
+            Pixel px = new(xPx, yPx);
             if (LabelStyle.RTLSupport)
             {
-                using (var shaper = new SKShaper(paint.Typeface))
-                {
-                    float shapedWidth = shaper.Shape(Text, paint).Width;
-                    canvas.DrawShapedText(shaper, Text, xPx, yPx, paint);
-
-                    if (RenderUnderline)
-                    {
-                        float underlineY = yPx + (float)UnderlineOffset;
-
-                        using var underlinePaint = new SKPaint
-                        {
-                            Color = paint.Color,
-                            StrokeWidth = (float)UnderlineWidth,
-                            IsStroke = true,
-                            IsAntialias = paint.IsAntialias
-                        };
-
-                        canvas.DrawLine(xPx, underlineY, xPx + shapedWidth, underlineY, underlinePaint);
-                    }
-                }
-            }
-            else
-            {
-                canvas.DrawText(Text, xPx, yPx, paint);
+                using var shaper = new SKShaper(paint.SKTypeface);
+                float shapedWidth = shaper.Shape(Text, paint.SKFont).Width;
+                Drawing.DrawShapedText(canvas, shaper, Text, px, paint);
 
                 if (RenderUnderline)
                 {
                     float underlineY = yPx + (float)UnderlineOffset;
-                    float textWidth = paint.MeasureText(Text);
 
-                    using var underlinePaint = new SKPaint
-                    {
-                        Color = paint.Color,
-                        StrokeWidth = (float)UnderlineWidth,
-                        IsStroke = true,
-                        IsAntialias = paint.IsAntialias
-                    };
-                    canvas.DrawLine(xPx, underlineY, xPx + textWidth, underlineY, underlinePaint);
+                    paint.Color = paint.Color;
+                    paint.StrokeWidth = (float)UnderlineWidth;
+                    paint.IsStroke = true;
+                    paint.IsAntialias = paint.IsAntialias;
+
+                    PixelLine line = new(xPx, underlineY, xPx + shapedWidth, underlineY);
+                    Drawing.DrawLine(canvas, paint, line);
+                }
+            }
+            else
+            {
+                Drawing.DrawText(canvas, Text, px, paint);
+
+                if (RenderUnderline)
+                {
+                    float underlineY = yPx + (float)UnderlineOffset;
+                    float textWidth = paint.MeasureText(Text).Width;
+
+                    paint.Color = paint.Color;
+                    paint.StrokeWidth = (float)UnderlineWidth;
+                    paint.IsStroke = true;
+                    paint.IsAntialias = paint.IsAntialias;
+
+                    PixelLine line = new(xPx, underlineY, xPx + textWidth, underlineY);
+                    Drawing.DrawLine(canvas, paint, line);
                 }
             }
         }
     }
 
-    private void DrawBackground(SKCanvas canvas, Pixel px, SKPaint paint, PixelRect textRect)
+    private void DrawBackground(SKCanvas canvas, Pixel px, Paint paint, PixelRect textRect)
     {
         PixelRect backgroundRect = textRect.Expand(PixelPadding);
         PixelRect shadowRect = backgroundRect.WithOffset(ShadowOffset);
@@ -431,13 +408,13 @@ public class LabelStyle
         if (ShadowColor != Colors.Transparent)
         {
             ApplyShadowPaint(paint);
-            canvas.DrawRoundRect(shadowRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
+            Drawing.DrawRoundRectangle(canvas, shadowRect, paint, BorderRadiusX, BorderRadiusY);
         }
 
         if (BackgroundColor != Colors.Transparent)
         {
             ApplyBackgroundPaint(paint);
-            canvas.DrawRoundRect(backgroundRect.ToSKRect(), BorderRadiusX, BorderRadiusY, paint);
+            Drawing.DrawRoundRectangle(canvas, backgroundRect, paint, BorderRadiusX, BorderRadiusY);
         }
 
         // TODO: support rotation
@@ -445,16 +422,34 @@ public class LabelStyle
         LastRenderPixelRect = backgroundRect.Expand(shadowRect).WithDelta(px.X + OffsetX, px.Y + OffsetY);
     }
 
-    private void DrawPoint(SKCanvas canvas, Pixel px, SKPaint paint)
+    private void DrawPoint(SKCanvas canvas, Pixel px, Paint paint)
     {
         if (PointSize > 0)
         {
-            ApplyPointPaint(paint);
-            canvas.DrawCircle(0, 0, PointSize, paint);
+            if (PointFilled)
+            {
+                FillStyle ls = new()
+                {
+                    Color = PointColor,
+                    AntiAlias = AntiAliasBackground,
+                };
+
+                Drawing.FillCircle(canvas, px, PointSize, ls, paint);
+            }
+            else
+            {
+                LineStyle ls = new()
+                {
+                    Color = PointColor,
+                    AntiAlias = AntiAliasBackground,
+                };
+
+                Drawing.DrawCircle(canvas, px, PointSize, ls, paint);
+            }
         }
     }
 
-    public (string text, float height) MeasureHighestString(string[] strings, SKPaint paint)
+    public (string text, float height) MeasureHighestString(string[] strings, Paint paint)
     {
         float maxHeight = 0;
         string maxText = string.Empty;
@@ -472,7 +467,7 @@ public class LabelStyle
         return (maxText, maxHeight);
     }
 
-    public (string text, PixelLength width) MeasureWidestString(string[] strings, SKPaint paint)
+    public (string text, PixelLength width) MeasureWidestString(string[] strings, Paint paint)
     {
         float maxWidth = 0;
         string maxText = string.Empty;

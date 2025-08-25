@@ -2,7 +2,7 @@ namespace ScottPlot.Markers;
 
 internal class OpenTriangleDown : IMarker
 {
-    public void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle)
+    public void Render(SKCanvas canvas, Paint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
         // Length of each side of triangle = size
         float radius = (float)(size / 1.732); // size / sqrt(3)

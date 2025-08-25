@@ -20,7 +20,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         return Min - unitsFromMinValue;
     }
 
-    public virtual float Measure()
+    public virtual float Measure(Paint paint)
     {
         if (!IsVisible)
             return 0;
@@ -28,7 +28,6 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (!Range.HasBeenSet)
             return SizeWhenNoData;
 
-        using SKPaint paint = new();
         float maxTickLabelWidth = TickGenerator.Ticks.Length > 0
             ? TickGenerator.Ticks.Select(x => TickLabelStyle.Measure(x.Label, paint).Width).Max()
             : 0;
@@ -60,7 +59,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
             top: dataRect.Top);
     }
 
-    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset)
+    public PixelRect GetPanelRect(PixelRect dataRect, float size, float offset, Paint paint)
     {
         return Edge == Edge.Left
             ? GetPanelRectangleLeft(dataRect, size, offset)
@@ -72,7 +71,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (!IsVisible)
             return;
 
-        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset);
+        PixelRect panelRect = GetPanelRect(rp.DataRect, size, offset, rp.Paint);
         float x = Edge == Edge.Left
             ? panelRect.Left + PaddingOutsideAxisLabels.Horizontal
             : panelRect.Right - PaddingOutsideAxisLabels.Horizontal;
@@ -80,10 +79,9 @@ public abstract class YAxisBase : AxisBase, IYAxis
 
         if (ShowDebugInformation)
         {
-            Drawing.DrawDebugRectangle(rp.Canvas, panelRect, labelPoint, LabelFontColor);
+            Drawing.DrawDebugRectangle(rp.Canvas, rp.Paint, panelRect, labelPoint, LabelFontColor);
         }
 
-        using SKPaint paint = new();
         LabelAlignment = Alignment.UpperCenter;
 
         rp.CanvasState.Save();
@@ -91,7 +89,7 @@ public abstract class YAxisBase : AxisBase, IYAxis
         if (ClipLabel)
             rp.CanvasState.Clip(panelRect);
 
-        LabelStyle.Render(rp.Canvas, labelPoint, paint);
+        LabelStyle.Render(rp.Canvas, labelPoint, rp.Paint);
 
         rp.CanvasState.Restore();
 
@@ -109,9 +107,8 @@ public abstract class YAxisBase : AxisBase, IYAxis
         return distance / (dataArea.Height / Height);
     }
 
-    public void RegenerateTicks(PixelLength size)
+    public void RegenerateTicks(PixelLength size, Paint paint)
     {
-        using SKPaint paint = new();
         TickLabelStyle.ApplyToPaint(paint);
         TickGenerator.Regenerate(Range.ToCoordinateRange, Edge, size, paint, TickLabelStyle);
     }

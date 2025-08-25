@@ -60,9 +60,7 @@ public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
-
-        MeasuredText measured = LabelStyle.Measure(LabelStyle.Text, paint);
+        MeasuredText measured = LabelStyle.Measure(LabelStyle.Text, rp.Paint);
         PixelRect bubbleBodyRect = measured.Rect(LabelAlignment)
             .Expand(new PixelPadding(
                 Padding + LabelPixelPadding.Left,
@@ -97,8 +95,8 @@ public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
         }
 
         using SKPath path = getTooltipShapePath();
-        Drawing.FillPath(rp.Canvas, paint, path, FillStyle);
-        Drawing.DrawPath(rp.Canvas, paint, path, LineStyle);
-        LabelStyle.Render(rp.Canvas, px, paint, LabelText);
+        Drawing.FillPath(rp.Canvas, rp.Paint, path, FillStyle);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
+        LabelStyle.Render(rp.Canvas, px, rp.Paint, LabelText);
     }
 }

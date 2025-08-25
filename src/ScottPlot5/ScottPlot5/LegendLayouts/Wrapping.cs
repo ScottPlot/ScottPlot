@@ -2,9 +2,8 @@ namespace ScottPlot.LegendLayouts;
 
 public class Wrapping : ILegendLayout
 {
-    public LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize)
+    public LegendLayout GetLayout(Legend legend, LegendItem[] items, PixelSize maxSize, Paint paint)
     {
-        using SKPaint paint = new();
         PixelSize maxSizeAfterPadding = maxSize.Contracted(legend.Padding);
         PixelRect maxRectAfterPadding = new(0, maxSizeAfterPadding.Width, maxSizeAfterPadding.Height, 0);
         PixelSize[] labelSizes = items.Select(x => x.LabelStyle.Measure(x.LabelText, paint).Size).ToArray();

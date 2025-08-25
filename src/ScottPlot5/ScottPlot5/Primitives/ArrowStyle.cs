@@ -38,10 +38,18 @@ public class ArrowStyle : IHasLine, IHasFill
     /// </summary>
     public float Offset { get; set; } = 0;
 
-    public void Render(SKCanvas canvas, PixelLine line, SKPaint paint)
+    public void ApplyToPaint(Paint paint)
+    {
+        LineStyle.ApplyToPaint(paint);
+        paint.SKPaintStyle = SKPaintStyle.StrokeAndFill;
+    }
+
+    public void Render(SKCanvas canvas, PixelLine line, Paint paint)
     {
         if (!IsVisible)
             return;
+
+        ApplyToPaint(paint);
 
         using SKPath path = new();
         path.MoveTo(line.Pixel1.ToSKPoint());
@@ -52,6 +60,7 @@ public class ArrowStyle : IHasLine, IHasFill
         path.LineTo(line.Pixel2.ToSKPoint());
         path.LineTo(line.Pixel2.WithOffset(ArrowheadLength, -ArrowheadWidth).ToSKPoint());
 
+        ApplyToPaint(paint);
         LineStyle.Render(canvas, path, paint);
     }
 }

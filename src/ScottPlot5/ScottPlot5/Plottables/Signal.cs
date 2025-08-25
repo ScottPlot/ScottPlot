@@ -119,19 +119,16 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
         foreach (Pixel point in points)
             path.LineTo(point.ToSKPoint());
 
-        using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
-
-        rp.Canvas.DrawPath(path, paint);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
 
         double pointsPerPx = PointsPerPixel();
 
         if (pointsPerPx < 1)
         {
-            paint.IsStroke = false;
+            rp.Paint.IsStroke = false;
             float radius = (float)Math.Min(Math.Sqrt(.2 / pointsPerPx), MaximumMarkerSize);
             MarkerSize = radius * MaximumMarkerSize * .2f;
-            Drawing.DrawMarkers(rp.Canvas, paint, points, MarkerStyle);
+            Drawing.DrawMarkers(rp.Canvas, rp.Paint, points, MarkerStyle);
         }
     }
 
@@ -141,9 +138,6 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
     /// </summary>
     private void RenderHighDensity(RenderPack rp)
     {
-        using SKPaint paint = new();
-        LineStyle.ApplyToPaint(paint);
-
         IEnumerable<PixelColumn> cols = Enumerable.Range(0, (int)Axes.DataRect.Width)
             .Select(x => Data.GetPixelColumn(Axes, x))
             .Where(x => x.HasData);
@@ -162,7 +156,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
             path.MoveTo(col.X, col.Exit);
         }
 
-        rp.Canvas.DrawPath(path, paint);
+        Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
     }
 
     public DataPoint GetNearest(Coordinates location, RenderDetails renderInfo, float maxDistance = 15)

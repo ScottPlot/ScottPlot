@@ -7,5 +7,5 @@ namespace ScottPlot;
 /// </summary>
 public interface ILayoutEngine
 {
-    public Layout GetLayout(PixelRect figureRect, Plot plot);
+    public Layout GetLayout(PixelRect figureRect, Plot plot, Paint paint);
 }

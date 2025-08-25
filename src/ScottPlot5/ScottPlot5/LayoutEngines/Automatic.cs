@@ -10,7 +10,7 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
 {
     public float SizeForAxisPanelsWithoutData = 10;
 
-    public Layout GetLayout(PixelRect figureRect, Plot plot)
+    public Layout GetLayout(PixelRect figureRect, Plot plot, Paint paint)
     {
         /* PROBLEM: There is a chicken-or-egg situation
          * where the ideal layout depends on the ticks,
@@ -26,10 +26,10 @@ public class Automatic : LayoutEngineBase, ILayoutEngine
         IEnumerable<IPanel> panels = plot.Axes.GetPanels();
 
         // NOTE: the actual ticks will be regenerated later, after the layout is determined
-        panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width));
-        panels.OfType<IYAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Height));
+        panels.OfType<IXAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Width, paint));
+        panels.OfType<IYAxis>().ToList().ForEach(x => x.RegenerateTicks(figureRect.Height, paint));
 
-        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
+        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels, paint);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
         PixelPadding paddingNeededForPanels = new(

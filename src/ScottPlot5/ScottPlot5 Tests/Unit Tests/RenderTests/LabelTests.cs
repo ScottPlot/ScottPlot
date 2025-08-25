@@ -12,7 +12,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         int y = 20;
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
@@ -46,7 +46,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         for (int i = 0; i < 360; i += 45)
         {
@@ -81,7 +81,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         int y = 20;
         foreach (Alignment alignment in Enum.GetValues(typeof(Alignment)))
@@ -116,7 +116,7 @@ internal class LabelTests
         canvas.Clear(SKColors.Navy);
 
         PixelSize size = new(40, 20);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         Alignment[,] alignmentMatrix = AlignmentExtensions.AlignmentMatrix;
 
@@ -154,11 +154,11 @@ internal class LabelTests
     [Test]
     public void Test_String_Measurement()
     {
-        SKBitmap bmp = new(500, 500);
+        SKBitmap bmp = new(500, 600);
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.Navy);
 
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
         string[] fonts = ["Times New Roman", "Consolas", "Impact", "Arial Narrow", "MiSsInG fOnT"];
 
         float yOffset = 20;
@@ -190,7 +190,7 @@ internal class LabelTests
         SKSurface surface = Drawing.CreateSurface(400, 300);
         SKCanvas canvas = surface.Canvas;
         canvas.Clear(SKColors.Navy);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         LabelStyle lbl = new()
         {
@@ -218,7 +218,7 @@ internal class LabelTests
         SKBitmap bmp = new(200, 150);
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.Navy);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         LabelStyle lbl = new()
         {
@@ -243,7 +243,7 @@ internal class LabelTests
         SKBitmap bmp = new(200, 200);
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.White);
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         LabelStyle lbl1 = new()
         {
@@ -309,7 +309,7 @@ internal class LabelTests
         using SKCanvas canvas = new(bmp);
         canvas.Clear(SKColors.Navy);
 
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         Pixel center = new(bmp.Width / 2, bmp.Height / 2);
         float offset = 150f;

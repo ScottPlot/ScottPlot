@@ -42,11 +42,8 @@ public class Annotation : LabelStyleProperties, IPlottable, IHasLabel
         if (!IsVisible)
             return;
 
-        using SKPaint paint = new();
-
         PixelRect rect = rp.DataRect.Fraction(FractionRect);
-        Pixel px = LabelStyle.GetRenderLocation(rect, Alignment, OffsetX, OffsetY, paint);
-
-        LabelStyle.Render(rp.Canvas, px, paint);
+        Pixel px = LabelStyle.GetRenderLocation(rect, Alignment, OffsetX, OffsetY, rp.Paint);
+        LabelStyle.Render(rp.Canvas, px, rp.Paint);
     }
 }

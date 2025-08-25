@@ -68,11 +68,10 @@ public class DataStreamerXY(int capacity) : IPlottable, IManagesAxisLimits, IHas
 
     public virtual void Render(RenderPack rp)
     {
-        // TODO: move this logic inside the buffer and make it more effecient
+        // TODO: move this logic inside the buffer and make it more efficient
         var pixels = Buffer._buffer.Select(Axes.GetPixel).OrderBy(pt => pt.X);
 
-        using SKPaint paint = new();
-        Drawing.DrawLines(rp.Canvas, paint, pixels, LineStyle);
-        Drawing.DrawMarkers(rp.Canvas, paint, pixels, MarkerStyle);
+        Drawing.DrawLines(rp.Canvas, rp.Paint, pixels, LineStyle);
+        Drawing.DrawMarkers(rp.Canvas, rp.Paint, pixels, MarkerStyle);
     }
 }

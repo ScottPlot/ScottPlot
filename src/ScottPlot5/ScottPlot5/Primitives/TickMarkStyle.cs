@@ -8,7 +8,7 @@ public class TickMarkStyle
     public Color Color;
     public bool AntiAlias;
 
-    public void Render(SKCanvas canvas, SKPaint paint, PixelLine pxLine)
+    public void Render(SKCanvas canvas, Paint paint, PixelLine pxLine)
     {
         ApplyToPaint(paint);
         if (Hairline)
@@ -17,11 +17,11 @@ public class TickMarkStyle
         Drawing.DrawLine(canvas, paint, pxLine);
     }
 
-    public void ApplyToPaint(SKPaint paint)
+    public void ApplyToPaint(Paint paint)
     {
         paint.IsAntialias = AntiAlias;
         paint.IsStroke = true;
-        paint.Color = Color.ToSKColor();
+        paint.Color = Color;
         paint.StrokeWidth = Hairline ? 1 : Width;
     }
 }

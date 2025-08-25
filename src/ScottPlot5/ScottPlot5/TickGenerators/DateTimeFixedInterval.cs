@@ -79,7 +79,7 @@ namespace ScottPlot.TickGenerators
             return dates.Select(NumericConversion.ToNumber);
         }
 
-        public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
+        public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, Paint paint, LabelStyle labelStyle)
         {
             List<Tick> ticks = new();
             HashSet<DateTime> timesWithTicks = new(); // Avoid having minor and major ticks at same time

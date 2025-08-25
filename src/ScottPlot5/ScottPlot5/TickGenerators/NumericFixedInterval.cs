@@ -10,7 +10,7 @@ public class NumericFixedInterval(double interval = 1) : ITickGenerator
 
     public int MaxTickCount { get; set; } = 10_000;
 
-    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, SKPaint paint, LabelStyle labelStyle)
+    public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, Paint paint, LabelStyle labelStyle)
     {
         List<Tick> ticks = [];
 

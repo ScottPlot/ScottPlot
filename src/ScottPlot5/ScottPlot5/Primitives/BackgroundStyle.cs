@@ -2,7 +2,12 @@ namespace ScottPlot;
 
 public class BackgroundStyle : IDisposable
 {
-    public Color Color { get; set; } = Colors.White;
+    public Color Color { get => FillStyle.Color; set => FillStyle.Color = value; }
+    public FillStyle FillStyle { get; set; } = new FillStyle()
+    {
+        IsVisible = true,
+        Color = Colors.White,
+    };
 
     private SKBitmap? SKBitmap { get; set; } = null;
     public ImagePosition ImagePosition { get; set; } = ImagePosition.Stretch;
@@ -35,15 +40,14 @@ public class BackgroundStyle : IDisposable
             : ImagePosition.GetRect(Image.Size, targetRect);
     }
 
-    public void Render(SKCanvas canvas, PixelRect target)
+    public void Render(RenderPack rp, PixelRect target)
     {
-        using SKPaint paint = new() { Color = Color.ToSKColor() };
-        canvas.DrawRect(target.ToSKRect(), paint);
+        Drawing.FillRectangle(rp.Canvas, target, rp.Paint, FillStyle);
 
         if (Image is not null)
         {
             PixelRect imgRect = ImagePosition.GetRect(Image.Size, target);
-            Image.Render(canvas, imgRect, paint, AntiAlias);
+            Image.Render(rp.Canvas, imgRect, rp.Paint, AntiAlias);
         }
     }
 }

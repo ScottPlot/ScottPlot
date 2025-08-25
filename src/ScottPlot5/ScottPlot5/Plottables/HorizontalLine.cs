@@ -74,7 +74,6 @@ public class HorizontalLine : AxisLine
         // draw label outside the data area
         rp.CanvasState.DisableClipping();
 
-        using SKPaint paint = new();
-        LabelStyle.Render(rp.Canvas, new Pixel(x, y), paint);
+        LabelStyle.Render(rp.Canvas, new Pixel(x, y), rp.Paint);
     }
 }

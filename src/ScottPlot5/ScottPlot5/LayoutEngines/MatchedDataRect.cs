@@ -7,10 +7,10 @@ public class MatchedDataRect(Plot referencePlot) : LayoutEngineBase, ILayoutEngi
 {
     private Plot ReferencePlot { get; } = referencePlot;
 
-    public Layout GetLayout(PixelRect figureRect, Plot plot)
+    public Layout GetLayout(PixelRect figureRect, Plot plot, Paint paint)
     {
         IEnumerable<IPanel> panels = plot.Axes.GetPanels();
-        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels);
+        Dictionary<IPanel, float> panelSizes = LayoutEngineBase.MeasurePanels(panels, paint);
         Dictionary<IPanel, float> panelOffsets = GetPanelOffsets(panels, panelSizes);
 
         PixelRect dataRect = ReferencePlot.RenderManager.LastRender.DataRect;

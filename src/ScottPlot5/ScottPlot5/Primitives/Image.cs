@@ -9,7 +9,7 @@ namespace ScottPlot;
 public class Image : IDisposable
 {
     private bool IsDisposed = false;
-    protected SKImage SKImage { get; }
+    internal SKImage SKImage { get; }
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
     public PixelSize Size => new(Width, Height);
@@ -266,11 +266,12 @@ public class Image : IDisposable
     /// <summary>
     /// Draw the image onto the given canvas
     /// </summary>
-    public void Render(SKCanvas canvas, PixelRect target, SKPaint paint, bool antiAlias)
+    public void Render(SKCanvas canvas, PixelRect target, Paint paint, bool antiAlias)
     {
-        paint.Color = SKColors.White;
-        paint.FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None;
-        canvas.DrawImage(SKImage, target.ToSKRect(), paint);
+        paint.Color = Colors.White;
+        paint.ResizeFilter = antiAlias ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor;
+        paint.IsAntialias = antiAlias;
+        Drawing.DrawImage(canvas, SKImage, target, paint);
     }
 
     /// <summary>
@@ -374,13 +375,14 @@ public class Image : IDisposable
     /// </summary>
     public Image Resized(int newWidth, int newHeight, bool antiAlias = true)
     {
-        SKRect newRect = new(0, 0, newWidth, newHeight);
+        PixelRect newRect = new(0, newWidth, 0, newHeight);
 
-        using SKPaint paint = new() { FilterQuality = antiAlias ? SKFilterQuality.High : SKFilterQuality.None };
+        using Paint paint = Paint.NewDisposablePaint();
+        paint.ResizeFilter = antiAlias ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor;
         using SKBitmap targetBitmap = new(newWidth, newHeight);
         using SKCanvas targetCanvas = new(targetBitmap);
         using SKBitmap sourceBitmap = SKBitmap.FromImage(SKImage);
-        targetCanvas.DrawBitmap(sourceBitmap, newRect, paint);
+        Drawing.DrawImage(targetCanvas, sourceBitmap, newRect, paint);
 
         using SKImage newImage = SKImage.FromBitmap(targetBitmap);
         byte[] bytes = GetBitmapBytes(newImage);

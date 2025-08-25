@@ -70,7 +70,6 @@ public class Text : LabelStyleProperties, IPlottable
         pixelLocation.X += OffsetX;
         pixelLocation.Y += OffsetY;
 
-        using SKPaint paint = new();
-        LabelStyle.Render(rp.Canvas, pixelLocation, paint);
+        LabelStyle.Render(rp.Canvas, pixelLocation, rp.Paint);
     }
 }

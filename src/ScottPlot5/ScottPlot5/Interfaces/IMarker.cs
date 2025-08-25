@@ -5,5 +5,5 @@ namespace ScottPlot;
 /// </summary>
 public interface IMarker
 {
-    void Render(SKCanvas canvas, SKPaint paint, Pixel center, float size, MarkerStyle markerStyle);
+    void Render(SKCanvas canvas, Paint paint, Pixel center, float size, MarkerStyle markerStyle);
 }

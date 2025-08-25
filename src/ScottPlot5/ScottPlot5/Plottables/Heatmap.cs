@@ -443,13 +443,14 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
             {
                 hm.Bitmap ??= Drawing.BitmapFromArgbs(hm.CellColors, hm.Width, hm.Height);
 
-                using SKPaint paint = new()
-                {
-                    FilterQuality = hm.Smooth ? SKFilterQuality.High : SKFilterQuality.None
-                };
+                // disable anti-aliasing for crisp edges
+                rp.Paint.IsAntialias = hm.Smooth;
 
-                SKRect rect = hm.Axes.GetPixelRect(hm.GetAlignedExtent()).ToSKRect();
-                rp.Canvas.DrawBitmap(hm.Bitmap, rect, paint);
+                // filter controls resize anti-aliasing
+                rp.Paint.ResizeFilter = hm.Smooth ? ResizeFilter.Bicubic : ResizeFilter.NearestNeighbor;
+
+                PixelRect rect = hm.Axes.GetPixelRect(hm.GetAlignedExtent());
+                Drawing.DrawImage(rp.Canvas, hm.Bitmap, rect, rp.Paint);
             }
         }
 
@@ -460,6 +461,8 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
         /// </summary>
         public class Rectangles : IRenderStrategy
         {
+            readonly FillStyle FillStyle = new() { AntiAlias = false };
+
             public void Render(RenderPack rp, Heatmap hm)
             {
                 CoordinateRect rect = hm.GetAlignedExtent();
@@ -474,9 +477,8 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                             rect.Left + offsetX + hm.Width,
                             rect.Bottom + offsetY,
                             rect.Bottom + offsetY + hm.Height));
-                        Color cellColor = Color.FromARGB(hm.CellColors[h * hm.Width + w]);
-                        Drawing.FillRectangle(rp.Canvas, cellRect, cellColor);
-                        Drawing.DrawRectangle(rp.Canvas, cellRect, cellColor);
+                        FillStyle.Color = Color.FromARGB(hm.CellColors[h * hm.Width + w]);
+                        Drawing.FillRectangle(rp.Canvas, cellRect, rp.Paint, FillStyle);
                     }
                 }
             }

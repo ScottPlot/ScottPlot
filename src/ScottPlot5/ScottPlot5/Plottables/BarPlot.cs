@@ -100,29 +100,25 @@ public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 
     public virtual void Render(RenderPack rp)
     {
-        using SKPaint paint = new();
-
         foreach (Bar bar in Bars)
         {
-            bar.RenderBody(rp, Axes, paint);
+            bar.RenderBody(rp, Axes);
             if (!bar.LabelOnTop)
             {
                 ValueLabelStyle.Text = bar.Label;
-                bar.RenderText(rp, Axes, paint, ValueLabelStyle);
+                bar.RenderText(rp, Axes, ValueLabelStyle);
             }
         }
     }
 
     public virtual void RenderLast(RenderPack rp)
     {
-        using SKPaint paint = new();
-
         foreach (Bar bar in Bars)
         {
             if (bar.LabelOnTop)
             {
                 ValueLabelStyle.Text = bar.Label;
-                bar.RenderText(rp, Axes, paint, ValueLabelStyle);
+                bar.RenderText(rp, Axes, ValueLabelStyle);
             }
         }
     }

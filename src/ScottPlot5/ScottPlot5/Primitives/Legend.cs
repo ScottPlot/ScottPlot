@@ -177,9 +177,9 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         return items.ToArray();
     }
 
-    public LegendLayout GetLayout(PixelSize size)
+    public LegendLayout GetLayout(PixelSize size, Paint paint)
     {
-        return Layout.GetLayout(this, GetItems(), size);
+        return Layout.GetLayout(this, GetItems(), size, paint);
     }
 
     /// <summary>
@@ -187,10 +187,11 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// </summary>
     public Image GetImage()
     {
+        using Paint paint = Paint.NewDisposablePaint();
         LegendItem[] items = GetItems();
 
         LegendLayout lp = items.Length > 0
-            ? Layout.GetLayout(this, items, PixelSize.Infinity)
+            ? Layout.GetLayout(this, items, PixelSize.Infinity, paint)
             : LegendLayout.NoLegend;
 
         SKImageInfo info = new(
@@ -202,7 +203,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         using SKSurface surface = SKSurface.Create(info)
             ?? throw new NullReferenceException($"invalid SKImageInfo");
 
-        RenderLayout(surface.Canvas, lp);
+        RenderLayout(surface.Canvas, paint, lp);
 
         return new Image(surface);
     }
@@ -215,14 +216,15 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     {
         LegendItem[] items = GetItems();
 
+        using Paint paint = Paint.NewDisposablePaint();
         LegendLayout lp = items.Length > 0
-            ? Layout.GetLayout(this, items, PixelSize.Infinity)
+            ? Layout.GetLayout(this, items, PixelSize.Infinity, paint)
             : LegendLayout.NoLegend;
 
         int width = (int)Math.Ceiling(lp.LegendRect.Width);
         int height = (int)Math.Ceiling(lp.LegendRect.Height);
         using SvgImage svg = new(width, height);
-        RenderLayout(svg.Canvas, lp);
+        RenderLayout(svg.Canvas, paint, lp);
         return svg.GetXml();
     }
 
@@ -239,7 +241,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             return;
 
         PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
-        LegendLayout tightLayout = Layout.GetLayout(this, items, dataRectAfterMargin.Size);
+        LegendLayout tightLayout = Layout.GetLayout(this, items, dataRectAfterMargin.Size, rp.Paint);
         PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, Alignment);
         PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
         LegendLayout layout = new()
@@ -250,16 +252,16 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
         };
 
-        RenderLayout(rp.Canvas, layout);
+        RenderLayout(rp.Canvas, rp.Paint, layout);
     }
 
-    public void Render(SKCanvas canvs, PixelRect rect, Alignment alignment)
+    public void Render(SKCanvas canvas, Paint paint, PixelRect rect, Alignment alignment)
     {
         LegendItem[] items = GetItems();
         if (items.Length == 0)
             return;
 
-        LegendLayout tightLayout = Layout.GetLayout(this, items, rect.Size);
+        LegendLayout tightLayout = Layout.GetLayout(this, items, rect.Size, paint);
         PixelRect standaloneLegendRect = tightLayout.LegendRect.AlignedInside(rect, alignment);
         PixelOffset legendOffset = new(standaloneLegendRect.Left, standaloneLegendRect.Top);
         LegendLayout layout = new()
@@ -270,15 +272,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
         };
 
-        RenderLayout(canvs, layout);
+        RenderLayout(canvas, paint, layout);
     }
 
-    private void RenderLayout(SKCanvas canvas, LegendLayout layout)
+    private void RenderLayout(SKCanvas canvas, Paint paint, LegendLayout layout)
     {
         LastRenderSize = layout.LegendRect.Size;
 
         // render the legend panel
-        using SKPaint paint = new();
         PixelRect shadowRect = layout.LegendRect.WithOffset(ShadowOffset);
         Drawing.FillRectangle(canvas, shadowRect, paint, ShadowFillStyle);
         Drawing.FillRectangle(canvas, layout.LegendRect, paint, BackgroundFillStyle);
@@ -300,6 +301,14 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             PixelRect symbolFillOutlineRect = symbolFillRect.Expand(1 - item.OutlineWidth);
             PixelLine symbolLine = new(symbolRect.RightCenter, symbolRect.LeftCenter);
 
+            if (ShowItemRectangles_DEBUG)
+            {
+                LineStyle ls = new() { Color = Colors.Magenta.WithAlpha(.2) };
+                Drawing.DrawRectangle(canvas, symbolRect, paint, ls);
+                Drawing.DrawRectangle(canvas, labelRect, paint, ls);
+            }
+
+            // draw symbol components
             if (MarkerShapeOverride.HasValue)
             {
                 item.MarkerShape = MarkerShapeOverride.Value;
@@ -309,31 +318,27 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
 
                 // NOTE: Some plottables like signal plots have dynamically sized markers that can get very small
                 item.MarkerSize = Math.Max(item.LabelFontSize, item.MarkerSize);
-                item.LineStyle.IsVisible = false;
-                item.FillStyle.IsVisible = false;
-                item.ArrowStyle.IsVisible = false;
+
+                // when custom marker shape is in use, only render that and the label
+                item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
+                item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
             }
-
-            item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
-
-            if (ShowItemRectangles_DEBUG)
+            else
             {
-                Drawing.DrawRectangle(canvas, symbolRect, Colors.Magenta.WithAlpha(.2));
-                Drawing.DrawRectangle(canvas, labelRect, Colors.Magenta.WithAlpha(.2));
+                item.LabelStyle.Render(canvas, labelRect.LeftCenter, paint, true);
+                item.LineStyle.Render(canvas, symbolLine, paint);
+                item.FillStyle.Render(canvas, symbolFillRect, paint);
+                item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
+                item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
+                item.ArrowStyle.Render(canvas, symbolLine, paint);
             }
-
-            // draw symbol components
-            item.LineStyle.Render(canvas, symbolLine, paint);
-            item.FillStyle.Render(canvas, symbolFillRect, paint);
-            item.OutlineStyle.Render(canvas, symbolFillOutlineRect, paint);
-            item.MarkerStyle.Render(canvas, symbolRect.Center, paint);
-            item.ArrowStyle.Render(canvas, symbolLine, paint);
 
             // Partially hide legend item to reflect that plottable is invisible
             if (item.Plottable is not null && !item.Plottable.IsVisible)
             {
                 PixelRect itemRect = new(symbolRect.TopLeft, labelRect.BottomRight);
-                Drawing.FillRectangle(canvas, itemRect, BackgroundColor.WithAlpha(1.0 - HiddenItemOpacity));
+                FillStyle fs = new() { Color = BackgroundColor.WithAlpha(1.0 - HiddenItemOpacity) };
+                Drawing.FillRectangle(canvas, itemRect, paint, fs);
             }
         }
 

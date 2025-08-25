@@ -77,7 +77,8 @@ namespace WinForms_Demo.Demos
             PixelSize size = new(skControl.Width, skControl.Height);
             PixelRect rect = new(Pixel.Zero, size);
             SKCanvas canvas = e.Surface.Canvas;
-            formsPlot1.Plot.Legend.Render(canvas, rect, Alignment.UpperLeft);
+            using Paint paint = ScottPlot.Paint.NewDisposablePaint();
+            formsPlot1.Plot.Legend.Render(canvas, paint, rect, Alignment.UpperLeft);
         }
 
         private void LegendControl_MouseClick(SKControl sender, EventArgs ee)
@@ -110,13 +111,14 @@ namespace WinForms_Demo.Demos
         {
             PixelSize size = new(sender.Width, sender.Height);
             LegendItem[] items = formsPlot1.Plot.Legend.GetItems();
-            LegendLayout layout = formsPlot1.Plot.Legend.GetLayout(size);
-            if (items.Count() == 0)
+            using Paint paint = ScottPlot.Paint.NewDisposablePaint();
+            LegendLayout layout = formsPlot1.Plot.Legend.GetLayout(size, paint);
+            if (items.Length == 0)
                 return null;
 
             // mouse hit logic must go here because Legend doesn't know about image stretching or display scaling
-            var itemslayout = Enumerable.Zip(items, layout.LabelRects, layout.SymbolRects);
-            foreach (var il in itemslayout)
+            var itemsLayout = Enumerable.Zip(items, layout.LabelRects, layout.SymbolRects);
+            foreach (var il in itemsLayout)
             {
                 var item = il.First;
                 var lrect = il.Second;

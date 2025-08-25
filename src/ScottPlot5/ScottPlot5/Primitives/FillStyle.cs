@@ -23,7 +23,7 @@ public class FillStyle
         }
     }
 
-    public void Render(SKCanvas canvas, PixelRect rect, SKPaint paint)
+    public void Render(SKCanvas canvas, PixelRect rect, Paint paint)
     {
         if (!IsVisible)
             return;
@@ -31,19 +31,19 @@ public class FillStyle
         Drawing.FillRectangle(canvas, rect, paint, this);
     }
 
-    public void ApplyToPaint(SKPaint paint, PixelRect rect)
+    public void ApplyToPaint(Paint paint, PixelRect rect)
     {
-        paint.Color = Color.ToSKColor();
+        paint.Color = Color;
         paint.IsStroke = false;
         paint.IsAntialias = AntiAlias;
 
         if (Hatch is not null)
         {
-            paint.Shader = Hatch.GetShader(Color, HatchColor, rect);
+            paint.SKShader = Hatch.GetShader(Color, HatchColor, rect);
         }
         else
         {
-            paint.Shader = null;
+            paint.SKShader = null;
         }
     }
 }

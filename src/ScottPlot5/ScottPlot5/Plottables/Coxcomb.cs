@@ -29,6 +29,8 @@ public class Coxcomb : PieBase
 
     public override void Render(RenderPack rp)
     {
+        rp.Paint.IsAntialias = true;
+
         float startAngle = (float)Rotation.Degrees;
 
         var sliceSizes = NormalizedSlices;
@@ -38,7 +40,6 @@ public class Coxcomb : PieBase
         Pixel origin = Axes.GetPixel(Coordinates.Origin);
 
         using SKPath path = new();
-        using SKPaint paint = new() { IsAntialias = true };
 
         var rotationPerSlice = 360f / Slices.Count;
 
@@ -53,7 +54,7 @@ public class Coxcomb : PieBase
 
             float degrees1 = 0f;
 
-            SKPoint ptInner = GetRotatedPoint(sliceSizes[i], degrees1); // Unlike piecharts this is unique (there's no donut coxcomb charts)
+            SKPoint ptInner = GetRotatedPoint(sliceSizes[i], degrees1); // Unlike pie charts this is unique (there's no donut coxcomb charts)
             SKPoint ptOuterHome = GetRotatedPoint(sliceSizes[i], degrees1);
 
             float minX = Math.Abs(Axes.GetPixelX(sliceSizes[i]) - origin.X);
@@ -73,12 +74,10 @@ public class Coxcomb : PieBase
                 path.AddOval(rect);
             }
 
-            Slices[i].Fill.ApplyToPaint(paint, new PixelRect(origin, radius));
-            paint.Shader = paint.Shader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
-            rp.Canvas.DrawPath(path, paint);
-
-            LineStyle.ApplyToPaint(paint);
-            rp.Canvas.DrawPath(path, paint);
+            Slices[i].Fill.ApplyToPaint(rp.Paint, new PixelRect(origin, radius));
+            SKShader? shader = rp.Paint.SKShader?.WithLocalMatrix(SKMatrix.CreateRotationDegrees(-rotationPerSlice * i - startAngle));
+            Drawing.DrawPath(rp.Canvas, rp.Paint, path, shader);
+            Drawing.DrawPath(rp.Canvas, rp.Paint, path, LineStyle);
 
             path.Reset();
 
@@ -88,10 +87,10 @@ public class Coxcomb : PieBase
             Pixel px = Axes.GetPixel(new Coordinates(x, y));
 
             using var textTransform = new SKAutoCanvasRestore(rp.Canvas);
-            rp.Canvas.RotateDegrees((float)-cumulativeRotation - startAngle);
-            rp.Canvas.Translate(-origin.X, -origin.Y);
+            rp.CanvasState.RotateDegrees((float)-cumulativeRotation - startAngle);
+            rp.CanvasState.Translate(-origin.X, -origin.Y);
 
-            Slices[i].LabelStyle.Render(rp.Canvas, px, paint);
+            Slices[i].LabelStyle.Render(rp.Canvas, px, rp.Paint);
         }
     }
 }

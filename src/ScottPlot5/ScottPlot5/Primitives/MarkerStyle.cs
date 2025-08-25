@@ -82,7 +82,7 @@ public class MarkerStyle : IHasLine, IHasFill, IHasOutline
 
     public static MarkerStyle None => new(MarkerShape.None, 0);
 
-    public void Render(SKCanvas canvas, Pixel px, SKPaint paint)
+    public void Render(SKCanvas canvas, Pixel px, Paint paint)
     {
         if (!IsVisible)
             return;

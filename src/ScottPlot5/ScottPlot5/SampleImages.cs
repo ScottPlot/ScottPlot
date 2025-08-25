@@ -31,7 +31,7 @@ public class SampleImages
     {
         using SKSurface surface = Drawing.CreateSurface(width, height);
         using SKCanvas canvas = surface.Canvas;
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
         PixelRect canvasRect = new(0, width, height, 0);
 
         FillStyle fillStyle = new();
@@ -74,7 +74,7 @@ public class SampleImages
         return new Image(surface);
     }
 
-    private static void FillPolygon(SKCanvas canvas, PixelRect canvasRect, SKPaint paint, FillStyle fillStyle, Pixel[] pixels)
+    private static void FillPolygon(SKCanvas canvas, PixelRect canvasRect, Paint paint, FillStyle fillStyle, Pixel[] pixels)
     {
         using SKPath path = new();
         path.MoveTo(pixels.First().ToSKPoint());
@@ -84,8 +84,7 @@ public class SampleImages
         }
         path.Close();
 
-        fillStyle.ApplyToPaint(paint, canvasRect);
-        canvas.DrawPath(path, paint);
+        Drawing.FillPath(canvas, paint, path, fillStyle, canvasRect);
     }
 
     public static Image NoiseGrayscale(int width, int height, int seed = 0)
@@ -109,14 +108,14 @@ public class SampleImages
         PixelRect rect = new(0, width, height, 0);
         using SKSurface surface = Drawing.CreateSurface((int)rect.Width, (int)rect.Height);
         using SKCanvas canvas = surface.Canvas;
-        using SKPaint paint = new();
+        using Paint paint = Paint.NewDisposablePaint();
 
         Image noiseImage = NoiseGrayscale(width, height);
         noiseImage.Render(canvas, rect, paint, false);
 
-        Drawing.DrawRectangle(canvas, rect, paint,
-            new LineStyle(1, Colors.LightBlue.WithAlpha(.5)));
-        Drawing.DrawDebugRectangle(canvas, rect);
+        LineStyle ls = new(1, Colors.LightBlue.WithAlpha(.5));
+        Drawing.DrawRectangle(canvas, rect, paint, ls);
+        Drawing.DrawDebugRectangle(canvas, paint, rect);
 
         LabelStyle label = new()
         {

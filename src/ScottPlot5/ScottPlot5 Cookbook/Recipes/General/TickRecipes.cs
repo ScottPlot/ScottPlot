@@ -232,7 +232,7 @@ public class CustomizingTicks : ICategory
 
             // determine the width of the largest tick label
             float largestLabelWidth = 0;
-            using SKPaint paint = new();
+            using Paint paint = Paint.NewDisposablePaint();
             foreach (Tick tick in ticks)
             {
                 PixelSize size = myPlot.Axes.Bottom.TickLabelStyle.Measure(tick.Label, paint).Size;

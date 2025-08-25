@@ -1,5 +1,3 @@
-using System;
-
 namespace ScottPlotCookbook.Recipes.PlotTypes;
 
 public class Heatmap : ICategory

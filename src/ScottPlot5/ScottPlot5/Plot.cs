@@ -197,6 +197,7 @@ public class Plot : IDisposable
     public IPanel? GetPanel(Pixel pixel, bool axesOnly)
     {
         PixelRect dataRect = RenderManager.LastRender.Layout.DataRect;
+        using Paint paint = Paint.NewDisposablePaint();
 
         // Reverse here so the "highest" axis is returned in the case some overlap.
         var panels = axesOnly
@@ -207,7 +208,7 @@ public class Plot : IDisposable
         {
             float axisPanelSize = RenderManager.LastRender.Layout.PanelSizes[panel];
             float axisPanelOffset = RenderManager.LastRender.Layout.PanelOffsets[panel];
-            PixelRect axisRect = panel.GetPanelRect(dataRect, axisPanelSize, axisPanelOffset);
+            PixelRect axisRect = panel.GetPanelRect(dataRect, axisPanelSize, axisPanelOffset, paint);
             if (axisRect.Contains(pixel))
             {
                 return panel;
