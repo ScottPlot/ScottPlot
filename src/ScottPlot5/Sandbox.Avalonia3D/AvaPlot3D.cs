@@ -1,9 +1,13 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Skia;
+using ScottPlot;
+using ScottPlot.Interactivity;
 using ScottPlot.ScottPlot3D;
 using ScottPlot.ScottPlot3D.Primitives3D;
 using SkiaSharp;
@@ -58,51 +62,66 @@ public class AvaPlot3D : UserControl
         context.Custom(customDrawOp);
     }
 
-    public AvaPlot3D()
+    private Pixel ToPixel(PointerEventArgs e)
     {
-        /*
-        SKControl.MouseDown += (s, e) =>
-        {
-            MouseDownRotation = Plot3D.Rotation;
-            MouseDownPoint = e.Location;
-            MouseDownZoom = Plot3D.ZoomFactor;
-            MouseDownCameraCenter = Plot3D.CameraCenter;
-        };
+        float x = (float)e.GetPosition(this).X;
+        float y = (float)e.GetPosition(this).Y;
+        return new Pixel(x, y);
+    }
+    
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        MouseDownRotation = Plot3D.Rotation;
+        MouseDownPoint = e.GetPosition(this);
+        MouseDownZoom = Plot3D.ZoomFactor;
+        MouseDownCameraCenter = Plot3D.CameraCenter;
 
-        SKControl.MouseUp += (s, e) =>
+        e.Pointer.Capture(this);
+    }
+    
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        PointerUpdateKind kind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+
+        if (kind == PointerUpdateKind.LeftButtonReleased)
         {
             MouseDownRotation = null;
-        };
+        }
 
-        SKControl.MouseMove += (s, e) =>
+        e.Pointer.Capture(null);
+    }
+
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {  
+        if (MouseDownRotation is null)
+            return;
+
+        Point currentPoint = e.GetPosition(this);
+        PointerPointProperties properties = e.GetCurrentPoint(this).Properties;
+        double dX = currentPoint.X - MouseDownPoint.X;
+        double dY = currentPoint.Y - MouseDownPoint.Y;
+
+        Plot3D.Rotation = MouseDownRotation.Value;
+        if (properties.IsLeftButtonPressed)
         {
-            if (MouseDownRotation is null)
-                return;
+            float rotateSensitivity = 0.2f;
+            Plot3D.Rotation.DegreesY += -dX * rotateSensitivity;
+            Plot3D.Rotation.DegreesX += dY * rotateSensitivity;
+        }
+        
+        if (properties.IsMiddleButtonPressed)
+        {
+            float panSensitivity = 0.005f;
+            Plot3D.CameraCenter.X = MouseDownCameraCenter.X - dX * panSensitivity;
+            Plot3D.CameraCenter.Y = MouseDownCameraCenter.Y + dY * panSensitivity;
+        }
+        
+        if (properties.IsRightButtonPressed)
+        {
+            float dMax = (float)Math.Max(dX, -dY);
+            Plot3D.ZoomFactor = MouseDownZoom + dMax;
+        }
 
-            int dX = e.X - MouseDownPoint.X;
-            int dY = e.Y - MouseDownPoint.Y;
-
-            Plot3D.Rotation = MouseDownRotation.Value;
-            if (e.Button == MouseButtons.Left)
-            {
-                float rotateSensitivity = 0.2f;
-                Plot3D.Rotation.DegreesY += -dX * rotateSensitivity;
-                Plot3D.Rotation.DegreesX += dY * rotateSensitivity;
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                float panSensitivity = 0.005f;
-                Plot3D.CameraCenter.X = MouseDownCameraCenter.X - dX * panSensitivity;
-                Plot3D.CameraCenter.Y = MouseDownCameraCenter.Y + dY * panSensitivity;
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                float dMax = Math.Max(dX, -dY);
-                Plot3D.ZoomFactor = MouseDownZoom + dMax;
-            }
-
-            Refresh();
-        };
-        */
+        InvalidateVisual();
     }
 }
