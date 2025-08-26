@@ -21,7 +21,7 @@ public record struct Camera
         }
     }
 
-    public Rotation3D Rotation
+    public Rotation3D Rotation // Note that this is *scene* rotation, not camera rotation
     {
         get => _rotation;
         set
