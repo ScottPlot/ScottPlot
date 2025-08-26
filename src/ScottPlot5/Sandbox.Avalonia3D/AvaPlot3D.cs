@@ -101,31 +101,7 @@ public class AvaPlot3D : UserControl
     {
         switch (e.Key)
         {
-            case Key.Q:
-                Plot3D.Camera.Rotation = new Rotation3D()
-                {
-                    DegreesX = Plot3D.Camera.Rotation.DegreesX - 5,
-                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
-                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
-                };
-                break;
-            case Key.E:
-                Plot3D.Camera.Rotation = new Rotation3D()
-                {
-                    DegreesX = Plot3D.Camera.Rotation.DegreesX + 5,
-                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
-                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
-                };
-                break;
-            case Key.A:
-                Plot3D.Camera.Rotation = new Rotation3D()
-                {
-                    DegreesX = Plot3D.Camera.Rotation.DegreesX,
-                    DegreesY = Plot3D.Camera.Rotation.DegreesY - 5,
-                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
-                };
-                break;
-            case Key.D:
+            case Key.W:
                 Plot3D.Camera.Rotation = new Rotation3D()
                 {
                     DegreesX = Plot3D.Camera.Rotation.DegreesX,
@@ -133,7 +109,31 @@ public class AvaPlot3D : UserControl
                     DegreesZ = Plot3D.Camera.Rotation.DegreesZ
                 };
                 break;
-            case Key.Z:
+            case Key.S:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY - 5,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.A:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX + 5,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.D:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX - 5,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.Q:
                 Plot3D.Camera.Rotation = new Rotation3D()
                 {
                     DegreesX = Plot3D.Camera.Rotation.DegreesX,
@@ -141,7 +141,7 @@ public class AvaPlot3D : UserControl
                     DegreesZ = Plot3D.Camera.Rotation.DegreesZ - 5,
                 };
                 break;
-            case Key.C:
+            case Key.E:
                 Plot3D.Camera.Rotation = new Rotation3D()
                 {
                     DegreesX = Plot3D.Camera.Rotation.DegreesX,
