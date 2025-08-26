@@ -170,8 +170,8 @@ public class AvaPlot3D : UserControl
             float rotateSensitivity = 0.2f;
             Plot3D.Camera.Rotation = new Rotation3D()
             {
-                DegreesX = -dX * rotateSensitivity,
-                DegreesY = dY * rotateSensitivity,
+                DegreesX = Plot3D.Camera.Rotation.DegreesX - dX * rotateSensitivity,
+                DegreesY = Plot3D.Camera.Rotation.DegreesY + dY * rotateSensitivity,
                 DegreesZ = Plot3D.Camera.Rotation.DegreesZ
             };
         }
