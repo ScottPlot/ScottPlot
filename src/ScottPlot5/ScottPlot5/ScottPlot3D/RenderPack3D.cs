@@ -1,9 +1,6 @@
-using System;
-using Sandbox.Avalonia3D.Primitives3D;
-using ScottPlot;
-using SkiaSharp;
+using ScottPlot.ScottPlot3D.Primitives3D;
 
-namespace Sandbox.Avalonia3D;
+namespace ScottPlot.ScottPlot3D;
 
 public class RenderPack3D(Plot3D plot3d, SKSurface surface) : IDisposable
 {

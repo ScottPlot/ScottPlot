@@ -1,4 +1,4 @@
-namespace Sandbox.Avalonia3D;
+namespace ScottPlot.ScottPlot3D;
 
 public interface IPlottable3D
 {

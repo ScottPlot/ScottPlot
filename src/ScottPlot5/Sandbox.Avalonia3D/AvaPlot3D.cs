@@ -1,11 +1,11 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Skia;
-using Sandbox.Avalonia3D.Primitives3D;
+using ScottPlot.ScottPlot3D;
+using ScottPlot.ScottPlot3D.Primitives3D;
 using SkiaSharp;
 
 namespace Sandbox.Avalonia3D;

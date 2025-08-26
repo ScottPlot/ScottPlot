@@ -1,4 +1,4 @@
-namespace Sandbox.Avalonia3D.Primitives3D;
+namespace ScottPlot.ScottPlot3D.Primitives3D;
 
 public record struct Rotation3D
 {

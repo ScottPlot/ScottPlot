@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using Sandbox.Avalonia3D.Plottables3D;
-using Sandbox.Avalonia3D.Primitives3D;
-using ScottPlot;
-using SkiaSharp;
+using ScottPlot.ScottPlot3D.Plottables3D;
+using ScottPlot.ScottPlot3D.Primitives3D;
 
-namespace Sandbox.Avalonia3D;
+namespace ScottPlot.ScottPlot3D;
 
 public class Plot3D
 {

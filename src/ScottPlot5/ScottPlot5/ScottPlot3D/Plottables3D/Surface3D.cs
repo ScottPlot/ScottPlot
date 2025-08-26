@@ -1,8 +1,6 @@
-using System.Linq;
-using Sandbox.Avalonia3D.Primitives3D;
-using ScottPlot;
+using ScottPlot.ScottPlot3D.Primitives3D;
 
-namespace Sandbox.Avalonia3D.Plottables3D;
+namespace ScottPlot.ScottPlot3D.Plottables3D;
 
 public class Surface3D(Point3D[] vertices) : IPlottable3D
 {

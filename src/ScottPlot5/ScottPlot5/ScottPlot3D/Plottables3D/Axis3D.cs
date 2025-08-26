@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using Sandbox.Avalonia3D.Primitives3D;
-using ScottPlot;
+using ScottPlot.ScottPlot3D.Primitives3D;
 
-namespace Sandbox.Avalonia3D.Plottables3D;
+namespace ScottPlot.ScottPlot3D.Plottables3D;
 
 public class Axis3D : IPlottable3D
 {

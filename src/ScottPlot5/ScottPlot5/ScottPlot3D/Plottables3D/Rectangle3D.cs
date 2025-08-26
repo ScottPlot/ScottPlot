@@ -1,8 +1,8 @@
-using Sandbox.Avalonia3D.Plottables3D;
+using ScottPlot.ScottPlot3D.Primitives3D;
 
-namespace Sandbox.Avalonia3D.Primitives3D;
+namespace ScottPlot.ScottPlot3D.Plottables3D;
 
-internal class Rectangle3D : IPlottable3D
+public class Rectangle3D : IPlottable3D
 {
     Surface3D[] Surfaces { get; }
     public Point3D Location { get; }
