@@ -1,27 +1,88 @@
+using System.Drawing;
+using System.Numerics;
 using ScottPlot.ScottPlot3D.Plottables3D;
 using ScottPlot.ScottPlot3D.Primitives3D;
 
 namespace ScottPlot.ScottPlot3D;
 
+public record struct Camera
+{
+    private Point3D _position = new();
+    private Rotation3D _rotation = new() { DegreesX = 110, DegreesY = 18, DegreesZ = 5 };
+    private double _zoom = 200;
+
+    public Point3D Position
+    {
+        get => _position;
+        set
+        {
+            _position = value;
+            UpdateTransformationMatrix();
+        }
+    }
+
+    public Rotation3D Rotation
+    {
+        get => _rotation;
+        set
+        {
+            _rotation = value;
+            UpdateTransformationMatrix();
+        }
+    }
+
+    public double Zoom
+    {
+        get => _zoom;
+        set
+        {
+            _zoom = value;
+            UpdateTransformationMatrix();
+        }
+    }
+    
+    private Matrix4x4 transformationMatrix;
+
+    private static Matrix4x4 OrthographicMatrix => new Matrix4x4(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 1
+    );
+
+    private void UpdateTransformationMatrix()
+    {
+        transformationMatrix = Matrix4x4.Identity;
+        transformationMatrix = OrthographicMatrix * transformationMatrix;
+        transformationMatrix = Matrix4x4.CreateScale((float)Zoom, (float)Zoom, (float)Zoom) * transformationMatrix;
+        transformationMatrix = Matrix4x4.CreateTranslation((float)-Position.X, (float)Position.Y, (float)-Position.Z) * transformationMatrix;
+        transformationMatrix = Matrix4x4.CreateRotationX((float)Rotation.RadiansX) * transformationMatrix;
+        transformationMatrix = Matrix4x4.CreateRotationY((float)Rotation.RadiansY) * transformationMatrix;
+        transformationMatrix = Matrix4x4.CreateRotationZ((float)Rotation.RadiansZ) * transformationMatrix;
+    }
+    
+    public Camera()
+    {
+        UpdateTransformationMatrix();
+    }
+
+    public Pixel GetPoint2D(Point3D point)
+    {
+        Vector4 point4 = new((float)point.X, (float)point.Y, (float)point.Z, 1);
+        Vector4 transformedPoint = Vector4.Transform(point4, transformationMatrix);
+        return new Pixel(transformedPoint.X, transformedPoint.Y);
+    }
+}
+
 public class Plot3D
 {
-    public double ZoomFactor = 200;
-    public Rotation3D Rotation = new() { DegreesX = 110, DegreesY = 18, DegreesZ = 5 };
-    public Point3D CameraCenter = new();
+    public Camera Camera = new();
     public readonly Axis3D Axis3D = new();
     public readonly List<IPlottable3D> Plottables = [];
-
+    
     public Pixel GetPoint2D(Point3D point, Pixel imageCenter)
     {
-        point = point.WithZoom(ZoomFactor);
-        point = point.Translated(Rotation.CenterPoint, Point3D.Origin);
-        point = point.RotatedX(Rotation.DegreesX);
-        point = point.RotatedY(Rotation.DegreesY);
-        point = point.RotatedZ(Rotation.DegreesZ);
-        point = point.Translated(Point3D.Origin, Rotation.CenterPoint);
-        float x = (float)(point.X - CameraCenter.X * ZoomFactor) + imageCenter.X;
-        float y = (float)(CameraCenter.Y * ZoomFactor - point.Y) + imageCenter.Y;
-        return new Pixel(x, y);
+        return Camera.GetPoint2D(point);
     }
 
     public void Render(SKSurface surface)
