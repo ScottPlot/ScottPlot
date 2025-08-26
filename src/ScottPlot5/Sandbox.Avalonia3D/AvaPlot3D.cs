@@ -11,6 +11,7 @@ using ScottPlot.Interactivity;
 using ScottPlot.ScottPlot3D;
 using ScottPlot.ScottPlot3D.Primitives3D;
 using SkiaSharp;
+using Key = Avalonia.Input.Key;
 
 namespace Sandbox.Avalonia3D;
 
@@ -22,6 +23,11 @@ public class AvaPlot3D : UserControl
     double MouseDownZoom;
     Point MouseDownPoint;
     Point3D MouseDownCameraCenter;
+
+    public AvaPlot3D()
+    {
+        Focusable = true; // Required for keyboard events
+    }
 
     private class CustomDrawOp : ICustomDrawOperation
     {
@@ -71,10 +77,10 @@ public class AvaPlot3D : UserControl
     
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
-        MouseDownRotation = Plot3D.Rotation;
+        MouseDownRotation = Plot3D.Camera.Rotation;
         MouseDownPoint = e.GetPosition(this);
-        MouseDownZoom = Plot3D.ZoomFactor;
-        MouseDownCameraCenter = Plot3D.CameraCenter;
+        MouseDownZoom = Plot3D.Camera.Zoom;
+        MouseDownCameraCenter = Plot3D.Camera.Position;
 
         e.Pointer.Capture(this);
     }
@@ -91,6 +97,63 @@ public class AvaPlot3D : UserControl
         e.Pointer.Capture(null);
     }
 
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Q:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX - 5,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.E:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX + 5,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.A:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY - 5,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.D:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY + 5,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+                };
+                break;
+            case Key.Z:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ - 5,
+                };
+                break;
+            case Key.C:
+                Plot3D.Camera.Rotation = new Rotation3D()
+                {
+                    DegreesX = Plot3D.Camera.Rotation.DegreesX,
+                    DegreesY = Plot3D.Camera.Rotation.DegreesY,
+                    DegreesZ = Plot3D.Camera.Rotation.DegreesZ + 5,
+                };
+                break;
+        }
+        
+        InvalidateVisual();
+    }
+
     protected override void OnPointerMoved(PointerEventArgs e)
     {  
         if (MouseDownRotation is null)
@@ -101,25 +164,34 @@ public class AvaPlot3D : UserControl
         double dX = currentPoint.X - MouseDownPoint.X;
         double dY = currentPoint.Y - MouseDownPoint.Y;
 
-        Plot3D.Rotation = MouseDownRotation.Value;
+        Plot3D.Camera.Rotation = MouseDownRotation.Value;
         if (properties.IsLeftButtonPressed)
         {
             float rotateSensitivity = 0.2f;
-            Plot3D.Rotation.DegreesY += -dX * rotateSensitivity;
-            Plot3D.Rotation.DegreesX += dY * rotateSensitivity;
+            Plot3D.Camera.Rotation = new Rotation3D()
+            {
+                DegreesX = -dX * rotateSensitivity,
+                DegreesY = dY * rotateSensitivity,
+                DegreesZ = Plot3D.Camera.Rotation.DegreesZ
+            };
         }
         
         if (properties.IsMiddleButtonPressed)
         {
             float panSensitivity = 0.005f;
-            Plot3D.CameraCenter.X = MouseDownCameraCenter.X - dX * panSensitivity;
-            Plot3D.CameraCenter.Y = MouseDownCameraCenter.Y + dY * panSensitivity;
+
+            Plot3D.Camera.Position = new Point3D()
+            {
+                X = MouseDownCameraCenter.X - dX * panSensitivity,
+                Y = MouseDownCameraCenter.Y + dY * panSensitivity,
+                Z = MouseDownCameraCenter.Z
+            };
         }
         
         if (properties.IsRightButtonPressed)
         {
             float dMax = (float)Math.Max(dX, -dY);
-            Plot3D.ZoomFactor = MouseDownZoom + dMax;
+            Plot3D.Camera.Zoom = MouseDownZoom + dMax;
         }
 
         InvalidateVisual();
