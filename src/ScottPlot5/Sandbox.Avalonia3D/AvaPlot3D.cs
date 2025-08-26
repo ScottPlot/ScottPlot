@@ -154,6 +154,16 @@ public class AvaPlot3D : UserControl
         InvalidateVisual();
     }
 
+    protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+    {
+        if (e.Delta.Y > 0)
+            Plot3D.Camera.Zoom += 5;
+        else if (e.Delta.Y < 0)
+            Plot3D.Camera.Zoom -= 5;
+        
+        InvalidateVisual();
+    }
+
     protected override void OnPointerMoved(PointerEventArgs e)
     {  
         if (MouseDownRotation is null)

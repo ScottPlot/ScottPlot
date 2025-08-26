@@ -17,5 +17,7 @@ public partial class MainWindow : Window
         Size3D size = new(.2, .2, .2);
         Rectangle3D rect = new(location, size);
         AvaPlot.Plot3D.Plottables.Add(rect);
+
+        AvaPlot.Plot3D.Camera.Position = new(-1, 1, -1);
     }
 }
