@@ -14,10 +14,17 @@ internal class ThirdPartyLicenseTests
         // ensure no old licenses stick around
         if (Directory.Exists(NoticeFolder))
         {
-            Directory.Delete(NoticeFolder);
+            Directory.Delete(NoticeFolder, true);
         }
 
         Directory.CreateDirectory(NoticeFolder);
+
+        string readmePath = Path.Combine(NoticeFolder, "readme.md");
+        File.WriteAllText(readmePath, """
+            Notices here are copyright and license details extracted from
+            source code comments in files named according to the file they
+            were sourced from. Licenses in this collection are not duplicated.
+            """);
 
         foreach (var sourceFile in SourceCodeParsing.GetSourceFilePaths())
         {
