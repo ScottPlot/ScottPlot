@@ -18,6 +18,6 @@ public partial class MainWindow : Window
         Rectangle3D rect = new(location, size);
         AvaPlot.Plot3D.Plottables.Add(rect);
 
-        AvaPlot.Plot3D.Camera.Position = new(-1, 1, -1);
+        AvaPlot.Plot3D.Scene.Position = new(-1, 1, -1);
     }
 }

@@ -5,7 +5,7 @@ using ScottPlot.ScottPlot3D.Primitives3D;
 
 namespace ScottPlot.ScottPlot3D;
 
-public record struct Camera
+public record struct Scene
 {
     private Point3D _position = new();
     private Rotation3D _rotation = new() { DegreesX = 110, DegreesY = 18, DegreesZ = 5 };
@@ -21,7 +21,7 @@ public record struct Camera
         }
     }
 
-    public Rotation3D Rotation // Note that this is *scene* rotation, not camera rotation
+    public Rotation3D Rotation
     {
         get => _rotation;
         set
@@ -61,7 +61,7 @@ public record struct Camera
         transformationMatrix = Matrix4x4.CreateRotationZ((float)Rotation.RadiansZ) * transformationMatrix;
     }
     
-    public Camera()
+    public Scene()
     {
         UpdateTransformationMatrix();
     }
@@ -76,13 +76,13 @@ public record struct Camera
 
 public class Plot3D
 {
-    public Camera Camera = new();
+    public Scene Scene = new();
     public readonly Axis3D Axis3D = new();
     public readonly List<IPlottable3D> Plottables = [];
     
     public Pixel GetPoint2D(Point3D point, Pixel imageCenter)
     {
-        return Camera.GetPoint2D(point);
+        return Scene.GetPoint2D(point);
     }
 
     public void Render(SKSurface surface)
