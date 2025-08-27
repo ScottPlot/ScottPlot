@@ -1,0 +1,3 @@
+Open Data Commons Open Database License (ODbL) v1.0
+Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
+here under the Open Database License (https://opendatacommons.org/licenses/odbl/1-0/).

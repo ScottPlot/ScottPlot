@@ -157,13 +157,17 @@ public static class SampleData
         return Generate.RandomNormal(count, mean: 164.7, stdDev: 7.1);
     }
 
-
-    // Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
-    // here under the Open Database License (https://opendatacommons.org/licenses/odbl/1-0/).
-    //
-    // The typical Faithful dataset is (as far as I can tell) under GPL
-    // This was taken from the gap between the first 500 erurptions of 2024, filtered to those where the gap was less than 3 hours
-    public static readonly double[] Faithful = [
+    /*
+    --- NOTICE BEGIN ---
+    Open Data Commons Open Database License (ODbL) v1.0
+    Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
+    here under the Open Database License (https://opendatacommons.org/licenses/odbl/1-0/).
+    --- NOTICE END ---
+    Other sources of the Faithful dataset are under GPL, and we do not want that.
+    This was taken from the gap between the first 500 eruptions of 2024,
+    filtered to those where the gap was less than 3 hours.
+    */
+    public static double[] Faithful { get; set; } = [
         64,116,63,105,66,95,95,103,110,98,105,104,79,93,108,76,100,90,98,96,99,101,67,105,83,109,106,101,104,101,77,102,86,98,64,104,99,70,103,98,
         91,101,65,108,98,101,96,97,92,63,111,90,103,89,113,104,99,103,107,75,97,100,72,114,101,62,102,106,93,102,66,101,70,109,78,102,98,106,102,103,
         71,99,77,103,102,104,108,69,177,69,96,102,102,105,105,99,114,71,108,104,88,83,105,98,99,99,110,104,74,101,108,104,70,96,107,97,101,102,103,97,
