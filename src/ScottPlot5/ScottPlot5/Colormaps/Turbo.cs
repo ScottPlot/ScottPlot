@@ -252,7 +252,7 @@ public class Turbo : IColormap
             4289271297, 4289139713, 4288942849, 4288745985, 4288548865, 4288352001, 4288155137, 4287958273,
             4287761153, 4287498753, 4287301890, 4287105026, 4286908162, 4286645762, 4286448898, 4286186499,
         };
-        
+
         Color[] colors = argbs.Select(Color.FromARGB).ToArray();
 
         Colormap = new CustomPalette(colors);
