@@ -63,7 +63,8 @@ internal class ThirdPartyLicenseTests
             if (savedNotices.Contains(notice))
                 continue;
 
-            string noticeFilename = "ScottPlot" + relPath.Replace("/", ".").Replace(".cs", ".txt");
+            // The same license may be in different files, so name it according to the license content itself.
+            string noticeFilename = ScottPlot.Testing.MD5Hasher.GetHash(notice)[..7] + ".txt";
             string noticeFile = Path.Combine(NoticeFolder, noticeFilename);
             File.WriteAllText(noticeFile, notice);
             Console.WriteLine(new Uri(noticeFile).AbsoluteUri);
