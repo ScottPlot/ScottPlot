@@ -40,7 +40,7 @@
     <ItemGroup>
         <None Include="../../../dev/icon/v5/scottplot-icon-rounded-border-128.png" Pack="true" PackagePath="icon.png" />
         <None Include="nuget-readme.md" Pack="true" PackagePath="readme.md" />
-        <None Include="notices/*.*" Pack="true" PackagePath="notices/" />
+        <None Include="Notices/*.*" Pack="true" PackagePath="Notices/" />
     </ItemGroup>
 
     <!-- NuGet package dependencies -->

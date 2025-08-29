@@ -9,7 +9,7 @@ internal class ThirdPartyLicenseTests
     [Test]
     public void Test_Identify_SourceFilesWithLicenses()
     {
-        HashSet<string> savedNotices = [];
+        Dictionary<string, List<string>> licenseToFiles = [];
 
         // ensure no old licenses stick around
         if (Directory.Exists(NoticeFolder))
@@ -22,7 +22,7 @@ internal class ThirdPartyLicenseTests
         string readmePath = Path.Combine(NoticeFolder, "readme.md");
         File.WriteAllText(readmePath, """
             Notices here are copyright and license details extracted from
-            source code comments in files named according to the file they
+            source code comments with prologue according to the file they
             were sourced from. Licenses in this collection are not duplicated.
             """);
 
@@ -45,7 +45,8 @@ internal class ThirdPartyLicenseTests
                 //continue;
             }
 
-            string relPath = sourceFile.Replace(SourceCodeParsing.SourceFolder, "").Replace("\\", "/");
+            string relPath = sourceFile.Replace(SourceCodeParsing.SourceFolder, "").Replace("\\", "/")
+                                      .TrimStart('/');
 
             // These markers denote the top and bottom of what to include in the notice file
             string errorMessage = $"""
@@ -60,15 +61,35 @@ internal class ThirdPartyLicenseTests
             Assert.That(text, Contains.Substring("--- NOTICE END ---"), errorMessage);
             string notice = ExtractNotice(text, relPath);
 
-            if (savedNotices.Contains(notice))
-                continue;
-
-            string noticeFilename = "ScottPlot" + relPath.Replace("/", ".").Replace(".cs", ".txt");
-            string noticeFile = Path.Combine(NoticeFolder, noticeFilename);
-            File.WriteAllText(noticeFile, notice);
-            Console.WriteLine(new Uri(noticeFile).AbsoluteUri);
-            savedNotices.Add(notice);
+            if (!licenseToFiles.ContainsKey(notice))
+                licenseToFiles[notice] = [];
+            
+            licenseToFiles[notice].Add(relPath);
         }
+        
+        var orderedNotices = licenseToFiles.Select(item => (item.Key, item.Value.Order().ToArray()))
+                                          .OrderBy(item => item.Item2[0])
+                                          .ToArray();
+        StringBuilder output = new();
+        output.AppendLine("ScottPlot includes third-party content from the projects listed below, alongside their licenses.");
+        output.AppendLine("");
+        
+        foreach (var (license, files) in orderedNotices)
+        {
+            var divider = new string('#', 80);
+            var header = $"# Used in: {String.Join(", ", files.Order())}";
+
+            output.AppendLine(divider);
+            output.AppendLine(header);
+            output.AppendLine(divider);
+            output.AppendLine(license);
+            output.AppendLine(divider);
+            output.AppendLine("");
+        }
+        
+        var noticesPath = Path.Combine(NoticeFolder, "THIRD-PARTY-NOTICES.txt");
+        File.WriteAllText(noticesPath, output.ToString());
+        Console.WriteLine(new Uri(noticesPath).AbsoluteUri);
     }
 
     public string ExtractNotice(string text, string relPath)
