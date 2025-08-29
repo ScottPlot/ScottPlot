@@ -1,7 +1,7 @@
 ScottPlot includes third-party content from the projects listed below, alongside their licenses.
 
 ################################################################################
-# Used in: /Collections/CircularBuffer.cs, /CompilerServices/Index.cs, /Primitives/Color.cs
+# Used in: Collections/CircularBuffer.cs, CompilerServices/Index.cs, Primitives/Color.cs
 ################################################################################
 The MIT License (MIT)
 
@@ -29,7 +29,7 @@ SOFTWARE.
 ################################################################################
 
 ################################################################################
-# Used in: /Colormaps/Algae.cs, /Colormaps/Amp.cs, /Colormaps/Balance.cs, /Colormaps/Curl.cs, /Colormaps/Deep.cs, /Colormaps/Delta.cs, /Colormaps/Dense.cs, /Colormaps/Diff.cs, /Colormaps/Haline.cs, /Colormaps/Ice.cs, /Colormaps/Matter.cs, /Colormaps/Oxy.cs, /Colormaps/Phase.cs, /Colormaps/Rain.cs, /Colormaps/Solar.cs, /Colormaps/Speed.cs, /Colormaps/Tarn.cs, /Colormaps/Tempo.cs, /Colormaps/Thermal.cs, /Colormaps/Topo.cs, /Colormaps/Turbid.cs
+# Used in: Colormaps/Algae.cs, Colormaps/Amp.cs, Colormaps/Balance.cs, Colormaps/Curl.cs, Colormaps/Deep.cs, Colormaps/Delta.cs, Colormaps/Dense.cs, Colormaps/Diff.cs, Colormaps/Haline.cs, Colormaps/Ice.cs, Colormaps/Matter.cs, Colormaps/Oxy.cs, Colormaps/Phase.cs, Colormaps/Rain.cs, Colormaps/Solar.cs, Colormaps/Speed.cs, Colormaps/Tarn.cs, Colormaps/Tempo.cs, Colormaps/Thermal.cs, Colormaps/Topo.cs, Colormaps/Turbid.cs
 ################################################################################
 The MIT License (MIT)
 
@@ -55,7 +55,7 @@ SOFTWARE.
 ################################################################################
 
 ################################################################################
-# Used in: /Colormaps/Jet.cs
+# Used in: Colormaps/Jet.cs
 ################################################################################
 The MIT License (MIT)
 
@@ -81,7 +81,7 @@ SOFTWARE.
 ################################################################################
 
 ################################################################################
-# Used in: /Colormaps/Turbo.cs
+# Used in: Colormaps/Turbo.cs
 ################################################################################
 Apache License
 Version 2.0, January 2004
@@ -287,7 +287,7 @@ limitations under the License.
 ################################################################################
 
 ################################################################################
-# Used in: /Palettes/Category10.cs, /Palettes/Category20.cs
+# Used in: Palettes/Category10.cs, Palettes/Category20.cs
 ################################################################################
 Copyright (c) 2015-2018, University of Washington Interactive Data Lab
 All rights reserved.
@@ -319,7 +319,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ################################################################################
 
 ################################################################################
-# Used in: /Palettes/Microcharts.cs
+# Used in: Palettes/Microcharts.cs
 ################################################################################
 MIT License
 
@@ -345,7 +345,7 @@ SOFTWARE.
 ################################################################################
 
 ################################################################################
-# Used in: /SampleData.cs
+# Used in: SampleData.cs
 ################################################################################
 Open Data Commons Open Database License (ODbL) v1.0
 Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
@@ -353,7 +353,7 @@ here under the Open Database License (https://opendatacommons.org/licenses/odbl/
 ################################################################################
 
 ################################################################################
-# Used in: /Triangulation/Delaunator.cs
+# Used in: Triangulation/Delaunator.cs
 ################################################################################
 MIT License
 

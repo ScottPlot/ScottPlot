@@ -45,7 +45,8 @@ internal class ThirdPartyLicenseTests
                 //continue;
             }
 
-            string relPath = sourceFile.Replace(SourceCodeParsing.SourceFolder, "").Replace("\\", "/");
+            string relPath = sourceFile.Replace(SourceCodeParsing.SourceFolder, "").Replace("\\", "/")
+                                      .TrimStart('/');
 
             // These markers denote the top and bottom of what to include in the notice file
             string errorMessage = $"""
