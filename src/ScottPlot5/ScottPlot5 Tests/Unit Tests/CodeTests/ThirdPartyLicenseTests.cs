@@ -22,7 +22,7 @@ internal class ThirdPartyLicenseTests
         string readmePath = Path.Combine(NoticeFolder, "readme.md");
         File.WriteAllText(readmePath, """
             Notices here are copyright and license details extracted from
-            source code comments in files named according to the file they
+            source code comments with prologue according to the file they
             were sourced from. Licenses in this collection are not duplicated.
             """);
 
