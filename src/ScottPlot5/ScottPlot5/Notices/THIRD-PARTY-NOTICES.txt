@@ -3,7 +3,6 @@ ScottPlot includes third-party content from the projects listed below, alongside
 ################################################################################
 # Used in: /Collections/CircularBuffer.cs, /CompilerServices/Index.cs, /Primitives/Color.cs
 ################################################################################
-
 The MIT License (MIT)
 
 Copyright (c) .NET Foundation and Contributors
@@ -32,7 +31,6 @@ SOFTWARE.
 ################################################################################
 # Used in: /Colormaps/Algae.cs, /Colormaps/Amp.cs, /Colormaps/Balance.cs, /Colormaps/Curl.cs, /Colormaps/Deep.cs, /Colormaps/Delta.cs, /Colormaps/Dense.cs, /Colormaps/Diff.cs, /Colormaps/Haline.cs, /Colormaps/Ice.cs, /Colormaps/Matter.cs, /Colormaps/Oxy.cs, /Colormaps/Phase.cs, /Colormaps/Rain.cs, /Colormaps/Solar.cs, /Colormaps/Speed.cs, /Colormaps/Tarn.cs, /Colormaps/Tempo.cs, /Colormaps/Thermal.cs, /Colormaps/Topo.cs, /Colormaps/Turbid.cs
 ################################################################################
-
 The MIT License (MIT)
 
 Copyright (c) 2015 Kristen M. Thyng
@@ -59,7 +57,6 @@ SOFTWARE.
 ################################################################################
 # Used in: /Colormaps/Jet.cs
 ################################################################################
-
 The MIT License (MIT)
 
 Copyright (c) <2012> ICRL
@@ -86,7 +83,6 @@ SOFTWARE.
 ################################################################################
 # Used in: /Colormaps/Turbo.cs
 ################################################################################
-
 Apache License
 Version 2.0, January 2004
 http://www.apache.org/licenses/
@@ -293,7 +289,6 @@ limitations under the License.
 ################################################################################
 # Used in: /Palettes/Category10.cs, /Palettes/Category20.cs
 ################################################################################
-
 Copyright (c) 2015-2018, University of Washington Interactive Data Lab
 All rights reserved.
 
@@ -326,7 +321,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ################################################################################
 # Used in: /Palettes/Microcharts.cs
 ################################################################################
-
 MIT License
 
 Copyright (c) 2017 Aloïs Deniel
@@ -353,7 +347,6 @@ SOFTWARE.
 ################################################################################
 # Used in: /SampleData.cs
 ################################################################################
-
 Open Data Commons Open Database License (ODbL) v1.0
 Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
 here under the Open Database License (https://opendatacommons.org/licenses/odbl/1-0/).
@@ -362,7 +355,6 @@ here under the Open Database License (https://opendatacommons.org/licenses/odbl/
 ################################################################################
 # Used in: /Triangulation/Delaunator.cs
 ################################################################################
-
 MIT License
 
 Copyright (c) 2019 Patryk Grech

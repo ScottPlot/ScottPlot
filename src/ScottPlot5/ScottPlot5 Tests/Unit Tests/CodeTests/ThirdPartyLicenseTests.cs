@@ -81,7 +81,6 @@ internal class ThirdPartyLicenseTests
             output.AppendLine(divider);
             output.AppendLine(header);
             output.AppendLine(divider);
-            output.AppendLine("");
             output.AppendLine(license);
             output.AppendLine(divider);
             output.AppendLine("");
