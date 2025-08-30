@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-public interface ISignalXYSource
+public interface ISignalXYSourceGeneric
 {
     /// <summary>
     /// Number of values in the data source
@@ -51,7 +51,7 @@ public interface ISignalXYSource
     /// Return pixels to render to display this signal.
     /// May return one extra point on each side of the plot outside the data area.
     /// </summary>
-    Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
+    IList<Pixel> GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
 
     /// <summary>
     /// Return the point nearest a specific location given the X/Y pixel scaling information from a previous render.
@@ -64,4 +64,14 @@ public interface ISignalXYSource
     /// Will return <see cref="DataPoint.None"/> if the nearest point is greater than <paramref name="maxDistance"/> pixels away.
     /// </summary>
     DataPoint GetNearestX(Coordinates location, RenderDetails renderInfo, float maxDistance = 15);
+}
+
+public interface ISignalXYSource : ISignalXYSourceGeneric
+{
+    IList<Pixel> ISignalXYSourceGeneric.GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    {
+        return GetPixelsToDraw(rp, axes, connectStyle);
+    }
+    
+    Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
 }
