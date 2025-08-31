@@ -51,7 +51,7 @@ public interface ISignalXYSourceGeneric
     /// Return pixels to render to display this signal.
     /// May return one extra point on each side of the plot outside the data area.
     /// </summary>
-    IList<Pixel> GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
+    IReadOnlyList<Pixel> GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
 
     /// <summary>
     /// Return the point nearest a specific location given the X/Y pixel scaling information from a previous render.
@@ -68,7 +68,7 @@ public interface ISignalXYSourceGeneric
 
 public interface ISignalXYSource : ISignalXYSourceGeneric
 {
-    IList<Pixel> ISignalXYSourceGeneric.GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    IReadOnlyList<Pixel> ISignalXYSourceGeneric.GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         return GetPixelsToDraw(rp, axes, connectStyle);
     }

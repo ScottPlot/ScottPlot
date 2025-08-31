@@ -211,7 +211,7 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     /// </summary>
     /// <param name="points">Array of corner positions</param>
     /// <param name="right">Indicates that a line will extend to the right before rising or falling.</param>
-    public static Pixel[] GetStepDisplayPixels(IList<Pixel> pixels, bool right)
+    public static Pixel[] GetStepDisplayPixels(IReadOnlyList<Pixel> pixels, bool right)
     {
         Pixel[] pixelsStep = new Pixel[pixels.Count() * 2 - 1];
 
