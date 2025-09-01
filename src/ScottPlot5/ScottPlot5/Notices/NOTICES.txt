@@ -1,7 +1,20 @@
-ScottPlot includes third-party content from the projects listed below, alongside their licenses.
+ScottPlot is provided under the MIT License. 
+https://scottplot.net
+https://github.com/scottplot/scottplot
+Some third-party components it includes require attribution text 
+to accompany the binary builds included in this package. Although 
+this information is present in the source code of the relevant files,
+it is also reproduced here so it can be distributed as plain text.
+
+
+
+
 
 ################################################################################
-# Used in: Collections/CircularBuffer.cs, CompilerServices/Index.cs, Primitives/Color.cs
+# The following notice is included in:
+#   Collections/CircularBuffer.cs
+#   CompilerServices/Index.cs
+#   Primitives/Color.cs
 ################################################################################
 The MIT License (MIT)
 
@@ -26,10 +39,37 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-################################################################################
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: Colormaps/Algae.cs, Colormaps/Amp.cs, Colormaps/Balance.cs, Colormaps/Curl.cs, Colormaps/Deep.cs, Colormaps/Delta.cs, Colormaps/Dense.cs, Colormaps/Diff.cs, Colormaps/Haline.cs, Colormaps/Ice.cs, Colormaps/Matter.cs, Colormaps/Oxy.cs, Colormaps/Phase.cs, Colormaps/Rain.cs, Colormaps/Solar.cs, Colormaps/Speed.cs, Colormaps/Tarn.cs, Colormaps/Tempo.cs, Colormaps/Thermal.cs, Colormaps/Topo.cs, Colormaps/Turbid.cs
+# The following notice is included in:
+#   Colormaps/Algae.cs
+#   Colormaps/Amp.cs
+#   Colormaps/Balance.cs
+#   Colormaps/Curl.cs
+#   Colormaps/Deep.cs
+#   Colormaps/Delta.cs
+#   Colormaps/Dense.cs
+#   Colormaps/Diff.cs
+#   Colormaps/Haline.cs
+#   Colormaps/Ice.cs
+#   Colormaps/Matter.cs
+#   Colormaps/Oxy.cs
+#   Colormaps/Phase.cs
+#   Colormaps/Rain.cs
+#   Colormaps/Solar.cs
+#   Colormaps/Speed.cs
+#   Colormaps/Tarn.cs
+#   Colormaps/Tempo.cs
+#   Colormaps/Thermal.cs
+#   Colormaps/Topo.cs
+#   Colormaps/Turbid.cs
 ################################################################################
 The MIT License (MIT)
 
@@ -52,10 +92,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-################################################################################
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: Colormaps/Jet.cs
+# The following notice is included in:
+#   Colormaps/Jet.cs
 ################################################################################
 The MIT License (MIT)
 
@@ -78,10 +125,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-################################################################################
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: Colormaps/Turbo.cs
+# The following notice is included in:
+#   Colormaps/Turbo.cs
 ################################################################################
 Copyright 2019 Google LLC
 
@@ -298,10 +352,18 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-################################################################################
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: Palettes/Category10.cs, Palettes/Category20.cs
+# The following notice is included in:
+#   Palettes/Category10.cs
+#   Palettes/Category20.cs
 ################################################################################
 Copyright (c) 2015-2018, University of Washington Interactive Data Lab
 All rights reserved.
@@ -330,10 +392,17 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-################################################################################
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: Palettes/Microcharts.cs
+# The following notice is included in:
+#   Palettes/Microcharts.cs
 ################################################################################
 MIT License
 
@@ -356,18 +425,33 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-################################################################################
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: SampleData.cs
+# The following notice is included in:
+#   SampleData.cs
 ################################################################################
 Open Data Commons Open Database License (ODbL) v1.0
-Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
-here under the Open Database License (https://opendatacommons.org/licenses/odbl/1-0/).
-################################################################################
+Contains information from GeyserTimes.org (https://geysertimes.org/index.php),
+which is made available here under the Open Database License
+(https://opendatacommons.org/licenses/odbl/1-0/).
+
+
+
+
+
+
+
 
 ################################################################################
-# Used in: Triangulation/Delaunator.cs
+# The following notice is included in:
+#   Triangulation/Delaunator.cs
 ################################################################################
 MIT License
 
@@ -390,5 +474,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-################################################################################
+
+
+
 
