@@ -4,7 +4,7 @@ _Not yet on NuGet..._
 * Public methods that accepted `SkiaSharp.SKPaint` now accept `ScottPlot.Paint`
 * `Paint.MeasureText()` now returns a single `PixelRect` instead of using `out` variables
 * Rendering: Significantly reduced the number of allocations by passing `Paint` throughout the render flow
-* NuGet: Include license and copyright notices as distinct files in the NuGet package (#5068) @jelhan
+* NuGet: Bundle all third party license and copyright notices into a single file included in the NuGet package (#5068, #5075) @jelhan, @bclehmann
 * Colormaps: Updated the Turbo colormap to use the identical color table published by the original author (#5075) @bclehmann
 
 ## ScottPlot 5.0.56
