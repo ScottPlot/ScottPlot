@@ -9,23 +9,29 @@ internal class ThirdPartyLicenseTests
     [Test]
     public void Test_Identify_SourceFilesWithLicenses()
     {
-        HashSet<string> savedNotices = [];
+        // ensure the notices folder exists
+        if (!Directory.Exists(NoticeFolder))
+            Directory.CreateDirectory(NoticeFolder);
+        Console.WriteLine($"Putting notices into: {NoticeFolder}");
 
-        // ensure no old licenses stick around
-        if (Directory.Exists(NoticeFolder))
+        string noticesDestPath = Path.Combine(NoticeFolder, "NOTICES.txt");
+        string ourLicenseSourcePath = Path.Combine(SourceCodeParsing.RepoFolder, "LICENSE");
+        string ourLicenseDestPath = Path.Combine(NoticeFolder, "LICENSE.txt");
+
+        // clear all other files from the notices folder
+        foreach (string path in Directory.GetFiles(NoticeFolder))
         {
-            Directory.Delete(NoticeFolder, true);
+            if (path == ourLicenseDestPath || path == noticesDestPath)
+                continue;
+            Console.WriteLine($"Deleting notice file: {path}");
+            File.Delete(path);
         }
 
-        Directory.CreateDirectory(NoticeFolder);
+        // copy our license into the notices folder
+        File.Copy(ourLicenseSourcePath, ourLicenseDestPath, overwrite: true);
 
-        string readmePath = Path.Combine(NoticeFolder, "readme.md");
-        File.WriteAllText(readmePath, """
-            Notices here are copyright and license details extracted from
-            source code comments in files named according to the file they
-            were sourced from. Licenses in this collection are not duplicated.
-            """);
-
+        // scan source code files for third party licenses to include in the notice folder
+        Dictionary<string, List<string>> licenseToFiles = [];
         foreach (var sourceFile in SourceCodeParsing.GetSourceFilePaths())
         {
             if (sourceFile.Contains(nameof(ThirdPartyLicenseTests)))
@@ -45,7 +51,8 @@ internal class ThirdPartyLicenseTests
                 //continue;
             }
 
-            string relPath = sourceFile.Replace(SourceCodeParsing.SourceFolder, "").Replace("\\", "/");
+            string relPath = sourceFile.Replace(SourceCodeParsing.SourceFolder, "").Replace("\\", "/")
+                                      .TrimStart('/');
 
             // These markers denote the top and bottom of what to include in the notice file
             string errorMessage = $"""
@@ -60,15 +67,48 @@ internal class ThirdPartyLicenseTests
             Assert.That(text, Contains.Substring("--- NOTICE END ---"), errorMessage);
             string notice = ExtractNotice(text, relPath);
 
-            if (savedNotices.Contains(notice))
-                continue;
+            if (!licenseToFiles.ContainsKey(notice))
+                licenseToFiles[notice] = [];
 
-            string noticeFilename = "ScottPlot" + relPath.Replace("/", ".").Replace(".cs", ".txt");
-            string noticeFile = Path.Combine(NoticeFolder, noticeFilename);
-            File.WriteAllText(noticeFile, notice);
-            Console.WriteLine(new Uri(noticeFile).AbsoluteUri);
-            savedNotices.Add(notice);
+            licenseToFiles[notice].Add(relPath);
         }
+
+        var orderedNotices = licenseToFiles.Select(item => (item.Key, item.Value.Order().ToArray()))
+                                          .OrderBy(item => item.Item2[0])
+                                          .ToArray();
+        StringBuilder output = new();
+        output.AppendLine("""
+            ScottPlot is provided under the MIT License. 
+            https://scottplot.net
+            https://github.com/scottplot/scottplot
+            Some third-party components it includes require attribution text 
+            to accompany the binary builds included in this package. Although 
+            this information is present in the source code of the relevant files,
+            it is also reproduced here so it can be distributed as plain text.
+            """);
+
+        output.AppendLine("");
+
+        string separator = new('\n', 4); // above and below sections
+        string divider = new('#', 80); // decorative horizontal line
+
+        foreach (var (license, files) in orderedNotices)
+        {
+            output.Append(separator);
+            output.AppendLine(divider);
+
+            output.AppendLine("# The following notice is included in:");
+            foreach (string file in files.Order())
+            {
+                output.AppendLine($"#   {file}");
+            }
+            output.AppendLine(divider);
+            output.AppendLine(license);
+            output.Append(separator);
+        }
+
+        File.WriteAllText(noticesDestPath, output.ToString());
+        Console.WriteLine(new Uri(noticesDestPath).AbsoluteUri);
     }
 
     public string ExtractNotice(string text, string relPath)
