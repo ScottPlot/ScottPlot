@@ -8,9 +8,10 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        //formsPlot1.Plot.InteractionStarted += (s, e) => Text = $"{e} pressed";
-        //formsPlot1.Plot.InteractionMoved += (s, e) => Text = $"{e} moved";
-        //formsPlot1.Plot.InteractionEnded += (s, e) => Text = $"{e} dropped";
+        formsPlot1.Plot.NodePressed += (s, e) => Text = $"{e} pressed";
+        formsPlot1.Plot.NodeMoved += (s, e) => Text = $"{e} moved";
+        formsPlot1.Plot.NodeReleased += (s, e) => Text = $"{e} dropped";
+        formsPlot1.Plot.NodeHoverChanged += (s, e) => Cursor = e is null ? Cursors.Default : Cursors.Hand;
 
         for (int i = 0; i < 5; i++)
         {

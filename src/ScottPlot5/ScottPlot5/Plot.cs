@@ -235,6 +235,11 @@ public class Plot : IDisposable
         return null;
     }
 
+    public EventHandler<InteractiveNode?>? NodeHoverChanged { get; set; }
+    public EventHandler<InteractiveNode>? NodePressed { get; set; }
+    public EventHandler<InteractiveNode>? NodeMoved { get; set; }
+    public EventHandler<InteractiveNode>? NodeReleased { get; set; }
+
     #endregion
 
     #region Rendering and Image Creation

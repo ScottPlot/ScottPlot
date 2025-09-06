@@ -14,6 +14,7 @@ internal class MouseInteractWithPlottables(MouseButton button) : IUserActionResp
         InteractingPlot = null;
     }
 
+    InteractiveNode? HoveredNode;
     InteractiveNode? InteractingNode;
     Plot? InteractingPlot;
 
@@ -27,6 +28,7 @@ internal class MouseInteractWithPlottables(MouseButton button) : IUserActionResp
                 && buttonReleaseAction.IsPressed == false)
             {
                 InteractingNode.Parent.MouseUp(InteractingNode);
+                InteractingPlot.NodeReleased?.Invoke(this, InteractingNode);
                 InteractingNode = null;
                 InteractingPlot = null;
                 return new ResponseInfo()
@@ -44,6 +46,7 @@ internal class MouseInteractWithPlottables(MouseButton button) : IUserActionResp
             {
                 Coordinates cs = InteractingPlot.GetCoordinates(mouseMoveAction.Pixel);
                 InteractingNode.Parent.MouseMove(InteractingNode, cs);
+                InteractingPlot.NodeMoved?.Invoke(this, InteractingNode);
                 return ResponseInfo.Refresh;
             }
         }
@@ -60,6 +63,7 @@ internal class MouseInteractWithPlottables(MouseButton button) : IUserActionResp
                 if (pressedNode is not null)
                 {
                     pressedNode.Parent.MouseDown(pressedNode);
+                    plot.NodePressed?.Invoke(this, pressedNode);
                     InteractingNode = pressedNode;
                     InteractingPlot = plot;
                     return new ResponseInfo()
@@ -67,6 +71,22 @@ internal class MouseInteractWithPlottables(MouseButton button) : IUserActionResp
                         RefreshNeeded = true, // force a render
                         IsPrimary = true, // take exclusive control of the interaction system to prevent click-drag-pan
                     };
+                }
+            }
+        }
+
+        // invoke an event if the mouse hovered over an interactive node
+        if (userInput is IMouseAction mouseMoveAction2)
+        {
+            Plot? plot = plotControl.GetPlotAtPixel(mouseMoveAction2.Pixel);
+            if (plot is not null)
+            {
+                InteractiveNode? hoveredNode = plot.GetInteractiveNode(mouseMoveAction2.Pixel.X, mouseMoveAction2.Pixel.Y);
+                if (hoveredNode != HoveredNode)
+                {
+                    plot.NodeHoverChanged?.Invoke(this, hoveredNode);
+                    HoveredNode = hoveredNode;
+                    return ResponseInfo.NoActionRequired;
                 }
             }
         }
