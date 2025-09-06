@@ -500,4 +500,9 @@ public class SignalXYSourceGenericList<Tx, Ty> : ISignalXYSource, IDataSource, I
 
         return ~lo; // We mimic the BCL implementation here by returning the ones-complement of the index where it would slot in and maintain sorted order
     }
+
+    public virtual IReadOnlyList<Pixel> GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    {
+        return GetPixelsToDraw(rp, axes, connectStyle);
+    }
 }

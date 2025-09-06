@@ -472,4 +472,8 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
     }
     bool IDataSource.IsSorted() => true;
 
+    public virtual IReadOnlyList<Pixel> GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    {
+        return GetPixelsToDraw(rp, axes, connectStyle);
+    }
 }

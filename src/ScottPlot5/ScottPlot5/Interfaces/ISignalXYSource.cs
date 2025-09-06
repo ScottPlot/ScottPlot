@@ -68,10 +68,5 @@ public interface ISignalXYSourceGeneric
 
 public interface ISignalXYSource : ISignalXYSourceGeneric
 {
-    IReadOnlyList<Pixel> ISignalXYSourceGeneric.GetPixelsToDrawGeneric(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
-    {
-        return GetPixelsToDraw(rp, axes, connectStyle);
-    }
-    
     Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle);
 }
