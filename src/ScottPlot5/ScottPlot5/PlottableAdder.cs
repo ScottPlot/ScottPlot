@@ -1296,7 +1296,7 @@ public class PlottableAdder(Plot plot)
         return Signal(source, color);
     }
 
-    public SignalXY SignalXY(ISignalXYSource source, Color? color = null)
+    public SignalXY SignalXY(ISignalXYSourceGeneric source, Color? color = null)
     {
         SignalXY sig = new(source)
         {

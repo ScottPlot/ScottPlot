@@ -1,8 +1,8 @@
 namespace ScottPlot.Plottables;
 
-public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
+public class SignalXY(ISignalXYSourceGeneric dataSource) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IGetNearest
 {
-    public ISignalXYSource Data { get; set; } = dataSource;
+    public ISignalXYSourceGeneric Data { get; set; } = dataSource;
 
     public bool IsVisible { get; set; } = true;
     public int XAxisIndex { get; set; } = 0;
@@ -70,9 +70,9 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
         if (!IsVisible || Data.Count == 0)
             return;
 
-        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes, ConnectStyle);
+        var markerPixels = Data.GetPixelsToDrawGeneric(rp, Axes, ConnectStyle);
 
-        Pixel[] linePixels = ConnectStyle switch
+        var linePixels = ConnectStyle switch
         {
             ConnectStyle.Straight => markerPixels,
             ConnectStyle.StepHorizontal => Scatter.GetStepDisplayPixels(markerPixels, true),
