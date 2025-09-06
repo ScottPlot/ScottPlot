@@ -160,8 +160,9 @@ public static class SampleData
     /*
     --- NOTICE BEGIN ---
     Open Data Commons Open Database License (ODbL) v1.0
-    Contains information from GeyserTimes.org (https://geysertimes.org/index.php), which is made available
-    here under the Open Database License (https://opendatacommons.org/licenses/odbl/1-0/).
+    Contains information from GeyserTimes.org (https://geysertimes.org/index.php), 
+    which is made available here under the Open Database License 
+    (https://opendatacommons.org/licenses/odbl/1-0/).
     --- NOTICE END ---
     Other sources of the Faithful dataset are under GPL, and we do not want that.
     This was taken from the gap between the first 500 eruptions of 2024,
