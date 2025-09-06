@@ -1,5 +1,6 @@
 using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
+using ScottPlot.Interfaces;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
 
@@ -215,6 +216,22 @@ public class Plot : IDisposable
             }
         }
 
+        return null;
+    }
+
+    #endregion
+
+    #region Interactivity
+
+    public InteractiveNode? GetInteractiveNode(float xPixel, float yPixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        CoordinateRect rect = GetCoordinateRect(xPixel, yPixel, radius, xAxis, yAxis);
+        foreach (var p in PlottableList.OfType<IInteractivePlottable>().Reverse())
+        {
+            InteractiveNode? node = p.GetNode(rect);
+            if (node is not null)
+                return node;
+        }
         return null;
     }
 

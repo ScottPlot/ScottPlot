@@ -1,6 +1,7 @@
 using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using ScottPlot.Plottables.Interactive;
 using ScottPlot.Statistics;
 
 namespace ScottPlot;
@@ -699,6 +700,17 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(marker);
 
         return marker;
+    }
+
+    public InteractiveLineSegment InteractiveLine(CoordinateLine line)
+    {
+        InteractiveLineSegment plottable = new()
+        {
+            Line = line,
+            Color = GetNextColor(),
+        };
+        Plot.PlottableList.Add(plottable);
+        return plottable;
     }
 
     public Legend Legend()

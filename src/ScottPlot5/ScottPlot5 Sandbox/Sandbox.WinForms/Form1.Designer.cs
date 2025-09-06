@@ -1,4 +1,4 @@
-﻿namespace Sandbox.WinForms;
+namespace Sandbox.WinForms;
 
 partial class Form1
 {
@@ -29,32 +29,22 @@ partial class Form1
     private void InitializeComponent()
     {
         formsPlot1 = new ScottPlot.WinForms.FormsPlot();
-        button1 = new Button();
         SuspendLayout();
         // 
         // formsPlot1
         // 
         formsPlot1.DisplayScale = 1F;
-        formsPlot1.Location = new Point(61, 84);
+        formsPlot1.Dock = DockStyle.Fill;
+        formsPlot1.Location = new Point(0, 0);
         formsPlot1.Name = "formsPlot1";
-        formsPlot1.Size = new Size(544, 330);
+        formsPlot1.Size = new Size(669, 415);
         formsPlot1.TabIndex = 0;
-        // 
-        // button1
-        // 
-        button1.Location = new Point(23, 27);
-        button1.Name = "button1";
-        button1.Size = new Size(75, 23);
-        button1.TabIndex = 1;
-        button1.Text = "button1";
-        button1.UseVisualStyleBackColor = true;
         // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(669, 415);
-        Controls.Add(button1);
         Controls.Add(formsPlot1);
         Margin = new Padding(4, 3, 4, 3);
         Name = "Form1";
@@ -66,5 +56,4 @@ partial class Form1
     #endregion
 
     private ScottPlot.WinForms.FormsPlot formsPlot1;
-    private Button button1;
 }

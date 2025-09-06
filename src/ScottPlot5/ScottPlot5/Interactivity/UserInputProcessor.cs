@@ -84,6 +84,7 @@ public class UserInputProcessor
     public static List<IUserActionResponse> DefaultUserResponses() =>
     [
         // drag events
+        new UserActionResponses.MouseInteractWithPlottables(StandardMouseButtons.Left),
         new UserActionResponses.MouseDragZoomRectangle(StandardMouseButtons.Middle),
         new UserActionResponses.MouseDragPan(StandardMouseButtons.Left),
         new UserActionResponses.MouseDragZoom(StandardMouseButtons.Right),

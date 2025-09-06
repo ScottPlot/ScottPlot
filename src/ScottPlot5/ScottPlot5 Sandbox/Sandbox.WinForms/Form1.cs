@@ -8,13 +8,14 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        //formsPlot1.Plot.InteractionStarted += (s, e) => Text = $"{e} pressed";
+        //formsPlot1.Plot.InteractionMoved += (s, e) => Text = $"{e} moved";
+        //formsPlot1.Plot.InteractionEnded += (s, e) => Text = $"{e} dropped";
 
-        button1.Click += (s, e) =>
+        for (int i = 0; i < 5; i++)
         {
-            formsPlot1.Reset();
-            formsPlot1.Plot.Add.Signal(Generate.RandomSample(100));
-            formsPlot1.Refresh();
-        };
+            CoordinateLine line = Generate.RandomCoordinateLine();
+            formsPlot1.Plot.Add.InteractiveLine(line);
+        }
     }
 }
