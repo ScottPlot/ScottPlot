@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml.Input;
 using System;
 using Windows.Foundation;
 using Windows.System;
-using static Uno.UI.FeatureConfiguration;
 
 namespace ScottPlot.WinUI;
 
