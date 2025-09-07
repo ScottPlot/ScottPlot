@@ -46,7 +46,7 @@ public static class Query
             .Where(type => typeof(ICategory).IsAssignableFrom(type))
             .Select(Activator.CreateInstance)
             .Cast<ICategory>()
-            .OrderBy(x=>x.ToString())
+            .OrderBy(x => x.ToString())
             .ToList();
 
         foreach (Chapter chapter in GetChaptersInOrder().Reverse())
