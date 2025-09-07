@@ -3,11 +3,6 @@ namespace ScottPlot;
 public interface IHasInteractiveHandles
 {
     /// <summary>
-    /// Cursor displayed when the cursor hovers over a handle
-    /// </summary>
-    public Cursor Cursor { get; set; }
-
-    /// <summary>
     /// Return the interactive handle inside the rectangle
     /// </summary>
     public InteractiveHandle? GetHandle(CoordinateRect rect);

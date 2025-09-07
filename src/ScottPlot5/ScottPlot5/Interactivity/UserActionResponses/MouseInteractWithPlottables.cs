@@ -88,7 +88,7 @@ public class MouseInteractWithPlottables(MouseButton button) : IUserActionRespon
 
                     if (hoveredHandle is not null)
                     {
-                        plot.PlotControl?.SetCursor(hoveredHandle.Parent.Cursor);
+                        plot.PlotControl?.SetCursor(hoveredHandle.Cursor);
                     }
                     else
                     {

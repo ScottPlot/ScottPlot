@@ -56,4 +56,19 @@ public class InteractivePlottables : ICategory
             }
         }
     }
+
+    public class InteractiveSpans : RecipeBase
+    {
+        public override string Name => "Interactive Spans";
+        public override string Description => "Interactive vertical and horizontal spans let the user " +
+            "select ranges along the vertical and horizontal axes, respectively.";
+
+        [Test]
+        public override void Execute()
+        {
+            myPlot.Add.InteractiveVerticalSpan(3, 5);
+            myPlot.Add.InteractiveHorizontalSpan(3, 5);
+            myPlot.Axes.SetLimits(0, 10, 0, 10);
+        }
+    }
 }

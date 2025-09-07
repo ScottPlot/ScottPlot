@@ -710,6 +710,15 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractiveHorizontalSpan InteractiveHorizontalSpan(double x1, double x2)
+    {
+        InteractiveHorizontalSpan plottable = new() { X1 = x1, X2 = x2 };
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillStyle.Color = plottable.LineStyle.Color.WithOpacity(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveLineSegment InteractiveLineSegment(CoordinateLine line)
     {
         InteractiveLineSegment plottable = new()
@@ -725,6 +734,15 @@ public class PlottableAdder(Plot plot)
     {
         InteractiveVerticalLine plottable = new() { X = x };
         plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveVerticalSpan InteractiveVerticalSpan(double y1, double y2)
+    {
+        InteractiveVerticalSpan plottable = new() { Y1 = y1, Y2 = y2 };
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillStyle.Color = plottable.LineStyle.Color.WithOpacity(.2);
         Plot.PlottableList.Add(plottable);
         return plottable;
     }
