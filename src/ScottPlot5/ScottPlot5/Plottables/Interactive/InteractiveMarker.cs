@@ -15,7 +15,7 @@ public class InteractiveMarker : IPlottable, IHasInteractiveHandles
     public AxisLimits GetAxisLimits() => new(Point);
 
     public InteractiveHandle? GetHandle(CoordinateRect rect) =>
-        rect.Contains(Point) ? new InteractiveHandle(this, 0, Cursor) : null;
+        rect.Contains(Point) ? new InteractiveHandle(this, Cursor) : null;
 
     public virtual void MoveHandle(InteractiveHandle handle, Coordinates point) => Point = point;
     public virtual void PressHandle(InteractiveHandle handle) { }

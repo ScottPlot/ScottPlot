@@ -24,17 +24,17 @@ public class InteractiveHorizontalSpan : IPlottable, IHasInteractiveHandles
     {
         if (rect.ContainsX(X1))
         {
-            return new InteractiveHandle(this, (int)Handles.Edge1, EdgeCursor);
+            return new InteractiveHandle(this, EdgeCursor, (int)Handles.Edge1);
         }
 
         if (rect.ContainsX(X2))
         {
-            return new InteractiveHandle(this, (int)Handles.Edge2, EdgeCursor);
+            return new InteractiveHandle(this, EdgeCursor, (int)Handles.Edge2);
         }
 
         if (rect.Center.X >= XMin && rect.Center.X <= XMax)
         {
-            return new InteractiveHandle(this, (int)Handles.Body, BodyCursor);
+            return new InteractiveHandle(this, BodyCursor, (int)Handles.Body);
         }
 
         return null;

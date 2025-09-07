@@ -12,7 +12,7 @@ public class InteractiveHorizontalLine : IPlottable, IHasInteractiveHandles
     public AxisLimits GetAxisLimits() => AxisLimits.VerticalOnly(Y, Y);
 
     public InteractiveHandle? GetHandle(CoordinateRect rect) =>
-        rect.ContainsY(Y) ? new InteractiveHandle(this, 0, Cursor) : null;
+        rect.ContainsY(Y) ? new InteractiveHandle(this, Cursor) : null;
     public virtual void MoveHandle(InteractiveHandle handle, Coordinates point) => Y = point.Y;
     public virtual void PressHandle(InteractiveHandle handle) { }
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
