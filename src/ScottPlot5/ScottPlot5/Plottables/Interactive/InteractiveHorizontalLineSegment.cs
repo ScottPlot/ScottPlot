@@ -5,7 +5,6 @@ public class InteractiveHorizontalLineSegment : IPlottable, IHasInteractiveHandl
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
-    public Cursor Cursor { get; set; } = Cursor.SizeNorthSouth;
     public LineStyle LineStyle { get; } = new(2, Colors.Black);
     public float HandleLength { get; set; } = 10;
 
@@ -15,7 +14,7 @@ public class InteractiveHorizontalLineSegment : IPlottable, IHasInteractiveHandl
     public double XMin => Math.Min(X1, X2);
     public double XMax => Math.Max(X1, X2);
 
-    public AxisLimits GetAxisLimits() => new(XMin, Y, XMax, Y);
+    public AxisLimits GetAxisLimits() => new(XMin, XMax, Y, Y);
 
     enum Handle { Edge1, Body, Edge2 };
 

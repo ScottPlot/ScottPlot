@@ -759,6 +759,19 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractiveVerticalLineSegment InteractiveVerticalLineSegment(double x, double y1, double y2)
+    {
+        InteractiveVerticalLineSegment plottable = new()
+        {
+            X = x,
+            Y1 = y1,
+            Y2 = y2,
+        };
+        plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveVerticalSpan InteractiveVerticalSpan(double y1, double y2)
     {
         InteractiveVerticalSpan plottable = new() { Y1 = y1, Y2 = y2 };
