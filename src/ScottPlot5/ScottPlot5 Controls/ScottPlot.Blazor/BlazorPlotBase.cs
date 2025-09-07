@@ -94,4 +94,9 @@ public abstract class BlazorPlotBase : ComponentBase, IPlotControl
         UserInputProcessor.ProcessKeyUp(e);
         KeyReleased?.Invoke(this, e.ToKey());
     }
+
+    public void SetCursor(Cursor cursor)
+    {
+        // TODO: implement this in JavaScript?
+    }
 }

@@ -17,7 +17,8 @@ public class MarkerStyle : IHasLine, IHasFill, IHasOutline
 
     public Color MarkerColor
     {
-        get => LineColor; set
+        get => LineColor;
+        set
         {
             FillColor = value;
             LineColor = value;
@@ -81,6 +82,11 @@ public class MarkerStyle : IHasLine, IHasFill, IHasOutline
     public static MarkerStyle Default => new(MarkerShape.FilledCircle, 5);
 
     public static MarkerStyle None => new(MarkerShape.None, 0);
+
+    public void Render(RenderPack rp, Pixel px)
+    {
+        Render(rp.Canvas, px, rp.Paint);
+    }
 
     public void Render(SKCanvas canvas, Pixel px, Paint paint)
     {

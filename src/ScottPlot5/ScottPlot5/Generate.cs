@@ -519,6 +519,13 @@ public static class Generate
 
     #region Axes
 
+    public static CoordinateLine RandomCoordinateLine(double xMult = 1, double yMult = 1, double xOffset = 0, double yOffset = 0)
+    {
+        Coordinates pt1 = RandomCoordinates(xMult, yMult, xOffset, yOffset);
+        Coordinates pt2 = RandomCoordinates(xMult, yMult, xOffset, yOffset);
+        return new CoordinateLine(pt1, pt2);
+    }
+
     public static Coordinates RandomCoordinates(double xMult = 1, double yMult = 1, double xOffset = 0, double yOffset = 0)
     {
         double x = RandomData.RandomNumber() * xMult + xOffset;
@@ -857,6 +864,18 @@ public static class Generate
         MarkerShape[] markerShapes = Enum
             .GetValues(typeof(MarkerShape))
             .Cast<MarkerShape>()
+            .ToArray();
+
+        int i = RandomInteger(markerShapes.Length);
+        return markerShapes[i];
+    }
+
+    public static MarkerShape RandomFilledMarkerShape()
+    {
+        MarkerShape[] markerShapes = Enum
+            .GetValues(typeof(MarkerShape))
+            .Cast<MarkerShape>()
+            .Where(x => x.IsLineOnly() == false)
             .ToArray();
 
         int i = RandomInteger(markerShapes.Length);

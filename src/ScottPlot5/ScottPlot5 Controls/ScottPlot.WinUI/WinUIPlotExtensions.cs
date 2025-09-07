@@ -1,7 +1,9 @@
-using Windows.System;
-using Windows.Foundation;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Input;
+using System;
+using Windows.Foundation;
+using Windows.System;
+using static Uno.UI.FeatureConfiguration;
 
 namespace ScottPlot.WinUI;
 
@@ -121,6 +123,22 @@ internal static class WinUIPlotExtensions
 
         if (keyModifiers.HasFlag(VirtualKeyModifiers.Menu))
             keyState.Add(Interactivity.StandardKeys.Alt);
+    }
+
+    public static InputSystemCursorShape GetCursor(this Cursor cursor)
+    {
+        return cursor switch
+        {
+            Cursor.Arrow => InputSystemCursorShape.Arrow,
+            Cursor.No => InputSystemCursorShape.UniversalNo,
+            Cursor.Wait => InputSystemCursorShape.Wait,
+            Cursor.Hand => InputSystemCursorShape.Hand,
+            Cursor.Cross => InputSystemCursorShape.Cross,
+            Cursor.SizeAll => InputSystemCursorShape.SizeAll,
+            Cursor.SizeNorthSouth => InputSystemCursorShape.SizeNorthSouth,
+            Cursor.SizeWestEast => InputSystemCursorShape.SizeWestEast,
+            _ => throw new NotImplementedException(cursor.ToString()),
+        };
     }
 }
 

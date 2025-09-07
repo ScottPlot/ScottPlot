@@ -220,6 +220,27 @@ public class Plot : IDisposable
 
     #endregion
 
+    #region Interactivity
+
+    public InteractiveHandle? GetInteractiveHandle(float xPixel, float yPixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    {
+        CoordinateRect rect = GetCoordinateRect(xPixel, yPixel, radius, xAxis, yAxis);
+        foreach (var p in PlottableList.OfType<IHasInteractiveHandles>().Reverse())
+        {
+            InteractiveHandle? handle = p.GetHandle(rect);
+            if (handle is not null)
+                return handle;
+        }
+        return null;
+    }
+
+    public EventHandler<InteractiveHandle?>? HandleHoverChanged { get; set; }
+    public EventHandler<InteractiveHandle>? HandlePressed { get; set; }
+    public EventHandler<InteractiveHandle>? HandleMoved { get; set; }
+    public EventHandler<InteractiveHandle>? HandleReleased { get; set; }
+
+    #endregion
+
     #region Rendering and Image Creation
 
     [Obsolete("Call GetImage() to create a new image, " +

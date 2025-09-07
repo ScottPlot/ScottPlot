@@ -154,4 +154,9 @@ public class AvaPlot : Controls.Control, IPlotControl
         // https://github.com/ScottPlot/ScottPlot/issues/2760
         return 1.0f;
     }
+
+    public void SetCursor(Cursor cursor)
+    {
+        Cursor = cursor.GetCursor();
+    }
 }

@@ -1,6 +1,7 @@
 using ScottPlot.DataSources;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using ScottPlot.Plottables.Interactive;
 using ScottPlot.Statistics;
 
 namespace ScottPlot;
@@ -699,6 +700,59 @@ public class PlottableAdder(Plot plot)
         Plot.PlottableList.Add(marker);
 
         return marker;
+    }
+
+    public InteractiveHorizontalLine InteractiveHorizontalLine(double y)
+    {
+        InteractiveHorizontalLine plottable = new() { Y = y };
+        plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveHorizontalSpan InteractiveHorizontalSpan(double x1, double x2)
+    {
+        InteractiveHorizontalSpan plottable = new() { X1 = x1, X2 = x2 };
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillStyle.Color = plottable.LineStyle.Color.WithOpacity(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveLineSegment InteractiveLineSegment(CoordinateLine line)
+    {
+        InteractiveLineSegment plottable = new()
+        {
+            Line = line,
+            Color = GetNextColor(),
+        };
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveMarker InteractiveMarker(Coordinates point)
+    {
+        InteractiveMarker plottable = new() { Point = point };
+        plottable.MarkerStyle.MarkerColor = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveVerticalLine InteractiveVerticalLine(double x)
+    {
+        InteractiveVerticalLine plottable = new() { X = x };
+        plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveVerticalSpan InteractiveVerticalSpan(double y1, double y2)
+    {
+        InteractiveVerticalSpan plottable = new() { Y1 = y1, Y2 = y2 };
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillStyle.Color = plottable.LineStyle.Color.WithOpacity(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
     }
 
     public Legend Legend()

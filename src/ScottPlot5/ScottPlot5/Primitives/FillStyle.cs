@@ -23,6 +23,21 @@ public class FillStyle
         }
     }
 
+    public FillStyle()
+    {
+
+    }
+
+    public FillStyle(Color color)
+    {
+        Color = color;
+    }
+
+    public void Render(RenderPack rp, PixelRect rect)
+    {
+        Render(rp.Canvas, rect, rp.Paint);
+    }
+
     public void Render(SKCanvas canvas, PixelRect rect, Paint paint)
     {
         if (!IsVisible)

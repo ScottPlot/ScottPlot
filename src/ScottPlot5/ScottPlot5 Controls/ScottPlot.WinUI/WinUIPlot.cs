@@ -1,6 +1,7 @@
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
 
@@ -143,5 +144,11 @@ public partial class WinUIPlot : UserControl, IPlotControl
         }
 
         return DisplayScale;
+    }
+
+    public void SetCursor(Cursor cursor)
+    {
+        // TODO: How do we set the cursor in WinUI?
+        //InputSystemCursor.Create(cursor.GetCursor());
     }
 }

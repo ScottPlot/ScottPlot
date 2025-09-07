@@ -118,6 +118,11 @@ public class LineStyle
         Drawing.DrawPath(canvas, paint, path, this);
     }
 
+    public void Render(RenderPack rp, PixelLine line)
+    {
+        Render(rp.Canvas, line, rp.Paint);
+    }
+
     public void Render(SKCanvas canvas, PixelLine line, Paint paint)
     {
         if (!IsVisible)

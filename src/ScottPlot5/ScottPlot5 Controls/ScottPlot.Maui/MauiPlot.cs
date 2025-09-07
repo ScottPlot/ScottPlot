@@ -105,4 +105,12 @@ public class MauiPlot : SKCanvasView, IPlotControl
 
         return DisplayScale;
     }
+
+    public void SetCursor(Cursor cursor)
+    {
+        // NOTE: I can't find a simple cross-platform way to set
+        // cursor shape that works for all .NET versions
+
+        //InputSystemCursor.Set(InputSystemCursorShape.Hand);
+    }
 }

@@ -1,7 +1,9 @@
-using AvaKey = Avalonia.Input.Key;
-using Avalonia.Input;
 using Avalonia;
+using Avalonia.Input;
 using ScottPlot.Interactivity;
+using System;
+using AvaKey = Avalonia.Input.Key;
+using AvaCursor = Avalonia.Input.Cursor;
 
 namespace ScottPlot.Avalonia;
 
@@ -79,6 +81,22 @@ internal static class AvaPlotExtensions
             AvaKey.LeftCtrl => StandardKeys.Control,
             AvaKey.RightCtrl => StandardKeys.Control,
             _ => new Interactivity.Key(avaKey.ToString()),
+        };
+    }
+
+    public static AvaCursor GetCursor(this Cursor cursor)
+    {
+        return cursor switch
+        {
+            Cursor.Arrow => new(StandardCursorType.Arrow),
+            Cursor.No => new(StandardCursorType.No),
+            Cursor.Wait => new(StandardCursorType.Wait),
+            Cursor.Hand => new(StandardCursorType.Hand),
+            Cursor.Cross => new(StandardCursorType.Cross),
+            Cursor.SizeAll => new(StandardCursorType.SizeAll),
+            Cursor.SizeNorthSouth => new(StandardCursorType.SizeNorthSouth),
+            Cursor.SizeWestEast => new(StandardCursorType.SizeWestEast),
+            _ => throw new NotImplementedException(cursor.ToString()),
         };
     }
 }

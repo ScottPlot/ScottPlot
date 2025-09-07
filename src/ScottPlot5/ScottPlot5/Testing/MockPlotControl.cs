@@ -185,4 +185,9 @@ public class MockPlotControl : IPlotControl
         MoveMouse(px2);
         MiddleMouseUp(px2);
     }
+
+    public void SetCursor(Cursor cursor)
+    {
+        throw new NotImplementedException();
+    }
 }
