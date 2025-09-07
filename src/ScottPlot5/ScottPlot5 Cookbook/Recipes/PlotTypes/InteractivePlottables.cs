@@ -71,4 +71,21 @@ public class InteractivePlottables : ICategory
             myPlot.Axes.SetLimits(0, 10, 0, 10);
         }
     }
+
+    public class InteractiveMarker : RecipeBase
+    {
+        public override string Name => "Interactive Marker";
+        public override string Description => "Interactive markers respond to hover events and can be dragged.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Coordinates point = Generate.RandomCoordinates();
+                var marker = myPlot.Add.InteractiveMarker(point);
+                marker.MarkerStyle.Shape = Generate.RandomMarkerShape();
+            }
+        }
+    }
 }

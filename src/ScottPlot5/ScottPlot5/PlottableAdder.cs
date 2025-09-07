@@ -730,6 +730,14 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractiveMarker InteractiveMarker(Coordinates point)
+    {
+        InteractiveMarker plottable = new() { Point = point };
+        plottable.MarkerStyle.MarkerColor = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveVerticalLine InteractiveVerticalLine(double x)
     {
         InteractiveVerticalLine plottable = new() { X = x };

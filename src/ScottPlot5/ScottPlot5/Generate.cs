@@ -870,6 +870,18 @@ public static class Generate
         return markerShapes[i];
     }
 
+    public static MarkerShape RandomFilledMarkerShape()
+    {
+        MarkerShape[] markerShapes = Enum
+            .GetValues(typeof(MarkerShape))
+            .Cast<MarkerShape>()
+            .Where(x => x.IsLineOnly() == false)
+            .ToArray();
+
+        int i = RandomInteger(markerShapes.Length);
+        return markerShapes[i];
+    }
+
     public static CoordinateLine RandomLine()
     {
         return new CoordinateLine(RandomLocation(), RandomLocation());

@@ -59,7 +59,6 @@ public class InteractiveHorizontalSpan : IPlottable, IHasInteractiveHandles
     }
 
     public virtual void PressHandle(InteractiveHandle handle) { }
-
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
 
     public virtual void Render(RenderPack rp)
