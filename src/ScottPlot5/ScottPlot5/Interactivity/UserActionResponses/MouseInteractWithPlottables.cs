@@ -85,6 +85,16 @@ public class MouseInteractWithPlottables(MouseButton button) : IUserActionRespon
                 if (hoveredHandle != HoveredHandle)
                 {
                     plot.HandleHoverChanged?.Invoke(this, hoveredHandle);
+
+                    if (hoveredHandle is not null)
+                    {
+                        plot.PlotControl?.SetCursor(hoveredHandle.Parent.HoverCursor);
+                    }
+                    else
+                    {
+                        plot.PlotControl?.SetCursor(Cursor.Arrow);
+                    }
+
                     HoveredHandle = hoveredHandle;
                     return ResponseInfo.NoActionRequired;
                 }

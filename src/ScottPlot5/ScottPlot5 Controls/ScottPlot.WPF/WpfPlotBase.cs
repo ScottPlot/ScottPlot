@@ -126,4 +126,9 @@ public abstract class WpfPlotBase : System.Windows.Controls.Control, IPlotContro
     {
         return PlotFrameworkElement.ToPixel(Mouse.GetPosition(PlotFrameworkElement));
     }
+
+    public void SetCursor(Cursor cursor)
+    {
+        this.Cursor = cursor.GetCursor();
+    }
 }

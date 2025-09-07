@@ -1,4 +1,5 @@
 using Eto.Forms;
+using EtoMouse = Eto.Forms.Mouse;
 using SkiaSharp;
 using Eto.Drawing;
 using System.Runtime.InteropServices;
@@ -117,5 +118,10 @@ public class EtoPlot : Drawable, IPlotControl
         // TODO: improve support for DPI scale detection
         // https://github.com/ScottPlot/ScottPlot/issues/2760
         return 1.0f;
+    }
+
+    public void SetCursor(Cursor cursor)
+    {
+        EtoMouse.SetCursor(null);
     }
 }

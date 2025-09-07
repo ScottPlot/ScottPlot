@@ -186,7 +186,7 @@ namespace WinForms_Demo.Demos
                 customMenu.Items.Add(MarkerMenu);
             }
 
-            customMenu.Show(Cursor.Position);
+            customMenu.Show(System.Windows.Forms.Cursor.Position);
         }
 
         private void DeletePlottable(IPlottable ClickedPlottable, SKControl skControl)

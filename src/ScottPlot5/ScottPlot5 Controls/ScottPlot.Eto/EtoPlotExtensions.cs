@@ -1,4 +1,7 @@
 using Eto.Forms;
+using EtoMouse = Eto.Forms.Mouse;
+using EtoCursor = Eto.Forms.Cursor;
+using EtoCursors = Eto.Forms.Cursors;
 
 namespace ScottPlot.Eto;
 
@@ -85,5 +88,24 @@ internal static class EtoPlotExtensions
         double x = e.Location.X;
         double y = e.Location.Y;
         return new Pixel((float)x, (float)y);
+    }
+
+    public static EtoCursor GetCursor(this Cursor cursor)
+    {
+        // NOTE: not all cursors are available on Eto
+        // https://pages.picoe.ca/docs/api/html/Properties_T_Eto_Forms_Cursors.htm
+
+        return cursor switch
+        {
+            Cursor.Arrow => EtoCursors.Arrow,
+            Cursor.No => EtoCursors.Arrow,
+            Cursor.Wait => EtoCursors.Arrow,
+            Cursor.Hand => EtoCursors.Pointer,
+            Cursor.Cross => EtoCursors.Crosshair,
+            Cursor.SizeAll => EtoCursors.Move,
+            Cursor.SizeNorthSouth => EtoCursors.Move,
+            Cursor.SizeWestEast => EtoCursors.Move,
+            _ => throw new System.NotImplementedException(cursor.ToString()),
+        };
     }
 }

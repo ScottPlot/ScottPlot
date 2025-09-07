@@ -176,4 +176,9 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
         float ratio = gfx.DpiX / DEFAULT_DPI;
         return ratio;
     }
+
+    public void SetCursor(Cursor cursor)
+    {
+        Cursor = cursor.GetCursor();
+    }
 }

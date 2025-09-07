@@ -141,4 +141,20 @@ public static class FormsPlotExtensions
         MemoryStream ms = new(bytes);
         return new Bitmap(ms);
     }
+
+    public static System.Windows.Forms.Cursor GetCursor(this Cursor cursor)
+    {
+        return cursor switch
+        {
+            Cursor.Arrow => Cursors.Arrow,
+            Cursor.No => Cursors.No,
+            Cursor.Wait => Cursors.WaitCursor,
+            Cursor.Hand => Cursors.Hand,
+            Cursor.Cross => Cursors.Cross,
+            Cursor.SizeAll => Cursors.SizeAll,
+            Cursor.SizeNorthSouth => Cursors.SizeNS,
+            Cursor.SizeWestEast => Cursors.SizeWE,
+            _ => throw new NotImplementedException(cursor.ToString()),
+        };
+    }
 }

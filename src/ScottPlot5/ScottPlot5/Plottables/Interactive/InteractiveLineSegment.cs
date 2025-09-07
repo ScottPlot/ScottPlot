@@ -8,6 +8,8 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
+    public Cursor HoverCursor { get; set; } = Cursor.Hand;
+
     private MutableCoordinateLine MutableLine { get; } = new();
     public CoordinateLine Line
     {

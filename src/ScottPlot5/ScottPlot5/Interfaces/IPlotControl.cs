@@ -60,6 +60,11 @@ public interface IPlotControl
     /// Loads the given Plot into the control
     /// </summary>
     void Reset(Plot plot);
+
+    /// <summary>
+    /// Apply the platform-specific equivalent cursor
+    /// </summary>
+    public void SetCursor(Cursor cursor);
 }
 
 public static class IPlotControlExtensions

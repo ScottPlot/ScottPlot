@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -109,6 +110,22 @@ internal static class WpfPlotExtensions
         bmp.Freeze();
 
         return bmp;
+    }
+
+    public static System.Windows.Input.Cursor GetCursor(this Cursor cursor)
+    {
+        return cursor switch
+        {
+            Cursor.Arrow => Cursors.Arrow,
+            Cursor.No => Cursors.No,
+            Cursor.Wait => Cursors.Wait,
+            Cursor.Hand => Cursors.Hand,
+            Cursor.Cross => Cursors.Cross,
+            Cursor.SizeAll => Cursors.SizeAll,
+            Cursor.SizeNorthSouth => Cursors.SizeNS,
+            Cursor.SizeWestEast => Cursors.SizeWE,
+            _ => throw new NotImplementedException(cursor.ToString()),
+        };
     }
 }
 

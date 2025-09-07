@@ -11,7 +11,7 @@ public partial class Form1 : Form
         formsPlot1.Plot.HandlePressed += (s, e) => Text = $"{e} pressed";
         formsPlot1.Plot.HandleMoved += (s, e) => Text = $"{e} moved";
         formsPlot1.Plot.HandleReleased += (s, e) => Text = $"{e} dropped";
-        formsPlot1.Plot.HandleHoverChanged += (s, e) => Cursor = e is null ? Cursors.Default : Cursors.Hand;
+        formsPlot1.Plot.HandleHoverChanged += (s, e) => Text = e is null ? "" : $"{e} hovered";
 
         for (int i = 0; i < 5; i++)
         {
