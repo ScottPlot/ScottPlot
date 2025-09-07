@@ -8,7 +8,7 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
 
-    public Cursor HoverCursor { get; set; } = Cursor.Hand;
+    public Cursor Cursor { get; set; } = Cursor.Hand;
 
     private MutableCoordinateLine MutableLine { get; } = new();
     public CoordinateLine Line
@@ -48,6 +48,17 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
         }
     }
 
+    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void ReleaseHandle(InteractiveHandle handle) { }
+    public virtual void MoveHandle(InteractiveHandle handle, Coordinates point)
+    {
+        if (handle.Index == (int)Node.Point1)
+            MutableLine.Point1 = point;
+
+        if (handle.Index == (int)Node.Point2)
+            MutableLine.Point2 = point;
+    }
+
     public virtual void Render(RenderPack rp)
     {
         if (IsVisible == false)
@@ -57,24 +68,5 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
         LineStyle.Render(rp.Canvas, pxLine, rp.Paint);
         StartMarkerStyle.Render(rp.Canvas, pxLine.Pixel1, rp.Paint);
         EndMarkerStyle.Render(rp.Canvas, pxLine.Pixel2, rp.Paint);
-    }
-
-    public void PressHandle(InteractiveHandle handle)
-    {
-        LineStyle.Pattern = LinePattern.DenselyDashed;
-    }
-
-    public void ReleaseHandle(InteractiveHandle handle)
-    {
-        LineStyle.Pattern = LinePattern.Solid;
-    }
-
-    public void MoveHandle(InteractiveHandle handle, Coordinates point)
-    {
-        if (handle.Index == (int)Node.Point1)
-            MutableLine.Point1 = point;
-
-        if (handle.Index == (int)Node.Point2)
-            MutableLine.Point2 = point;
     }
 }

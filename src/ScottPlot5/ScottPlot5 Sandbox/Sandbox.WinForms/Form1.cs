@@ -15,8 +15,7 @@ public partial class Form1 : Form
 
         for (int i = 0; i < 5; i++)
         {
-            CoordinateLine line = Generate.RandomCoordinateLine();
-            formsPlot1.Plot.Add.InteractiveLineSegment(line);
+            formsPlot1.Plot.Add.InteractiveVerticalLine(Random.Shared.NextDouble());
         }
     }
 }

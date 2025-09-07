@@ -15,8 +15,45 @@ public class InteractivePlottables : ICategory
         [Test]
         public override void Execute()
         {
-            CoordinateLine line = Generate.RandomLine();
-            myPlot.Add.InteractiveLineSegment(line); ;
+            for (int i = 0; i < 5; i++)
+            {
+                CoordinateLine line = Generate.RandomLine();
+                myPlot.Add.InteractiveLineSegment(line);
+            }
+        }
+    }
+
+    public class InteractiveVerticalLine : RecipeBase
+    {
+        public override string Name => "Interactive Vertical Line";
+        public override string Description => "An interactive vertical line has an X position " +
+            "and extends to infinity along the Y axis.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                double x = Generate.RandomNumber();
+                myPlot.Add.InteractiveVerticalLine(x);
+            }
+        }
+    }
+
+    public class InteractiveHorizontalLine : RecipeBase
+    {
+        public override string Name => "Interactive Horizontal Line";
+        public override string Description => "An interactive horizontal line has a Y position " +
+            "and extends to infinity along the X axis.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                double x = Generate.RandomNumber();
+                myPlot.Add.InteractiveHorizontalLine(x);
+            }
         }
     }
 }

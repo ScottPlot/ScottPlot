@@ -702,6 +702,14 @@ public class PlottableAdder(Plot plot)
         return marker;
     }
 
+    public InteractiveHorizontalLine InteractiveHorizontalLine(double y)
+    {
+        InteractiveHorizontalLine plottable = new() { Y = y };
+        plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveLineSegment InteractiveLineSegment(CoordinateLine line)
     {
         InteractiveLineSegment plottable = new()
@@ -709,6 +717,14 @@ public class PlottableAdder(Plot plot)
             Line = line,
             Color = GetNextColor(),
         };
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveVerticalLine InteractiveVerticalLine(double x)
+    {
+        InteractiveVerticalLine plottable = new() { X = x };
+        plottable.LineStyle.Color = GetNextColor();
         Plot.PlottableList.Add(plottable);
         return plottable;
     }
