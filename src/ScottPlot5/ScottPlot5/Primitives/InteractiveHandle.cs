@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-public class InteractiveHandle(IHasInteractiveHandles parent, int index, Cursor cursor)
+public class InteractiveHandle(IHasInteractiveHandles parent, Cursor cursor, int index = 0)
 {
     /// <summary>
     /// The plottable this handle belongs to.
@@ -9,7 +9,8 @@ public class InteractiveHandle(IHasInteractiveHandles parent, int index, Cursor 
     public IHasInteractiveHandles Parent { get; } = parent;
 
     /// <summary>
-    /// The index of this handle (useful for plots with multiple handles)
+    /// The index that uniquely identifies this handle.
+    /// This value is only useful for interactive objects with multiple handles.
     /// </summary>
     public int Index { get; } = index;
 

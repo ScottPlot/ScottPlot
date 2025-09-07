@@ -23,6 +23,44 @@ public class InteractivePlottables : ICategory
         }
     }
 
+    public class InteractiveHorizontalLineSegment : RecipeBase
+    {
+        public override string Name => "Interactive Horizontal Line Segment";
+        public override string Description => "Horizontal line segments can be expanded horizontally " +
+            "by dragging the left and right edges, or slid vertically by dragging the center line.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                double y = i;
+                double x1 = i;
+                double x2 = i * 2;
+                myPlot.Add.InteractiveHorizontalLineSegment(x1, x2, y);
+            }
+        }
+    }
+
+    public class InteractiveVerticalLineSegment : RecipeBase
+    {
+        public override string Name => "Interactive Vertical Line Segment";
+        public override string Description => "Vertical line segments can be expanded vertically " +
+            "by dragging the top and bottom edges, or slid horizontally by dragging the center line.";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                double x = i;
+                double y1 = i;
+                double y2 = i * 2;
+                myPlot.Add.InteractiveVerticalLineSegment(x, y1, y2);
+            }
+        }
+    }
+
     public class InteractiveVerticalLine : RecipeBase
     {
         public override string Name => "Interactive Vertical Line";

@@ -710,6 +710,19 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractiveHorizontalLineSegment InteractiveHorizontalLineSegment(double x1, double x2, double y)
+    {
+        InteractiveHorizontalLineSegment plottable = new()
+        {
+            X1 = x1,
+            X2 = x2,
+            Y = y,
+        };
+        plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveHorizontalSpan InteractiveHorizontalSpan(double x1, double x2)
     {
         InteractiveHorizontalSpan plottable = new() { X1 = x1, X2 = x2 };
@@ -741,6 +754,19 @@ public class PlottableAdder(Plot plot)
     public InteractiveVerticalLine InteractiveVerticalLine(double x)
     {
         InteractiveVerticalLine plottable = new() { X = x };
+        plottable.LineStyle.Color = GetNextColor();
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveVerticalLineSegment InteractiveVerticalLineSegment(double x, double y1, double y2)
+    {
+        InteractiveVerticalLineSegment plottable = new()
+        {
+            X = x,
+            Y1 = y1,
+            Y2 = y2,
+        };
         plottable.LineStyle.Color = GetNextColor();
         Plot.PlottableList.Add(plottable);
         return plottable;

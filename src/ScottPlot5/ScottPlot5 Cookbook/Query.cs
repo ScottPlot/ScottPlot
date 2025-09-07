@@ -44,8 +44,9 @@ public static class Query
             .SelectMany(x => x.GetTypes())
             .Where(type => type.IsClass && !type.IsAbstract)
             .Where(type => typeof(ICategory).IsAssignableFrom(type))
-            .Select(type => Activator.CreateInstance(type))
+            .Select(Activator.CreateInstance)
             .Cast<ICategory>()
+            .OrderBy(x=>x.ToString())
             .ToList();
 
         foreach (Chapter chapter in GetChaptersInOrder().Reverse())

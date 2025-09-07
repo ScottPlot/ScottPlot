@@ -24,17 +24,17 @@ public class InteractiveVerticalSpan : IPlottable, IHasInteractiveHandles
     {
         if (rect.ContainsY(Y1))
         {
-            return new InteractiveHandle(this, (int)Handles.Edge1, EdgeCursor);
+            return new InteractiveHandle(this, EdgeCursor, (int)Handles.Edge1);
         }
 
         if (rect.ContainsY(Y2))
         {
-            return new InteractiveHandle(this, (int)Handles.Edge2, EdgeCursor);
+            return new InteractiveHandle(this, EdgeCursor, (int)Handles.Edge2);
         }
 
         if (rect.Center.Y >= YMin && rect.Center.Y <= YMax)
         {
-            return new InteractiveHandle(this, (int)Handles.Body, BodyCursor);
+            return new InteractiveHandle(this, BodyCursor, (int)Handles.Body);
         }
 
         return null;
