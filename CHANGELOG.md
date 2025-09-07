@@ -6,6 +6,8 @@ _Not yet on NuGet..._
 * Rendering: Significantly reduced the number of allocations by passing `Paint` throughout the render flow
 * NuGet: Bundle all third party license and copyright notices into a single file included in the NuGet package (#5068, #5075) @jelhan, @bclehmann
 * Colormaps: Updated the Turbo colormap to use the identical color table published by the original author (#5075) @bclehmann
+* Interactive Plottables: Created a new collection of interactive plottables which do not require manually wiring mouse events to support hover and click-drag manipulation
+* Controls: Added `SetCursor()` functionality to `IPlotControl` to improve cross-platform support for mouse interactions
 
 ## ScottPlot 5.0.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_
