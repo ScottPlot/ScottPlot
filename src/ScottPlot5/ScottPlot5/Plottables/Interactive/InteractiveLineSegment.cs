@@ -1,12 +1,9 @@
-using ScottPlot.Interfaces;
-using System.Drawing;
-
 namespace ScottPlot.Plottables.Interactive;
 
 /// <summary>
 /// A straight line between two points
 /// </summary>
-public class InteractiveLineSegment : IPlottable, IInteractivePlottable
+public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -28,13 +25,13 @@ public class InteractiveLineSegment : IPlottable, IInteractivePlottable
 
     enum Node { Point1, Point2 };
 
-    public InteractiveNode? GetNode(CoordinateRect rect)
+    public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
         if (rect.Contains(MutableLine.Point1))
-            return new InteractiveNode(this, (int)Node.Point1);
+            return new InteractiveHandle(this, (int)Node.Point1);
 
         if (rect.Contains(MutableLine.Point2))
-            return new InteractiveNode(this, (int)Node.Point2);
+            return new InteractiveHandle(this, (int)Node.Point2);
 
         return null;
     }
@@ -49,7 +46,7 @@ public class InteractiveLineSegment : IPlottable, IInteractivePlottable
         }
     }
 
-    public void Render(RenderPack rp)
+    public virtual void Render(RenderPack rp)
     {
         if (IsVisible == false)
             return;
@@ -60,22 +57,22 @@ public class InteractiveLineSegment : IPlottable, IInteractivePlottable
         EndMarkerStyle.Render(rp.Canvas, pxLine.Pixel2, rp.Paint);
     }
 
-    public void MouseDown(InteractiveNode node)
+    public void PressHandle(InteractiveHandle handle)
     {
         LineStyle.Pattern = LinePattern.DenselyDashed;
     }
 
-    public void MouseUp(InteractiveNode node)
+    public void ReleaseHandle(InteractiveHandle handle)
     {
         LineStyle.Pattern = LinePattern.Solid;
     }
 
-    public void MouseMove(InteractiveNode node, Coordinates point)
+    public void MoveHandle(InteractiveHandle handle, Coordinates point)
     {
-        if (node.NodeIndex == (int)Node.Point1)
+        if (handle.Index == (int)Node.Point1)
             MutableLine.Point1 = point;
 
-        if (node.NodeIndex == (int)Node.Point2)
+        if (handle.Index == (int)Node.Point2)
             MutableLine.Point2 = point;
     }
 }

@@ -1,6 +1,5 @@
 using ScottPlot.AxisPanels;
 using ScottPlot.Grids;
-using ScottPlot.Interfaces;
 using ScottPlot.Rendering;
 using ScottPlot.Stylers;
 
@@ -223,22 +222,22 @@ public class Plot : IDisposable
 
     #region Interactivity
 
-    public InteractiveNode? GetInteractiveNode(float xPixel, float yPixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
+    public InteractiveHandle? GetInteractiveHandle(float xPixel, float yPixel, float radius = 10, IXAxis? xAxis = null, IYAxis? yAxis = null)
     {
         CoordinateRect rect = GetCoordinateRect(xPixel, yPixel, radius, xAxis, yAxis);
-        foreach (var p in PlottableList.OfType<IInteractivePlottable>().Reverse())
+        foreach (var p in PlottableList.OfType<IHasInteractiveHandles>().Reverse())
         {
-            InteractiveNode? node = p.GetNode(rect);
-            if (node is not null)
-                return node;
+            InteractiveHandle? handle = p.GetHandle(rect);
+            if (handle is not null)
+                return handle;
         }
         return null;
     }
 
-    public EventHandler<InteractiveNode?>? NodeHoverChanged { get; set; }
-    public EventHandler<InteractiveNode>? NodePressed { get; set; }
-    public EventHandler<InteractiveNode>? NodeMoved { get; set; }
-    public EventHandler<InteractiveNode>? NodeReleased { get; set; }
+    public EventHandler<InteractiveHandle?>? HandleHoverChanged { get; set; }
+    public EventHandler<InteractiveHandle>? HandlePressed { get; set; }
+    public EventHandler<InteractiveHandle>? HandleMoved { get; set; }
+    public EventHandler<InteractiveHandle>? HandleReleased { get; set; }
 
     #endregion
 
