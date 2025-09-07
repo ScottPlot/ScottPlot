@@ -702,7 +702,7 @@ public class PlottableAdder(Plot plot)
         return marker;
     }
 
-    public InteractiveLineSegment InteractiveLine(CoordinateLine line)
+    public InteractiveLineSegment InteractiveLineSegment(CoordinateLine line)
     {
         InteractiveLineSegment plottable = new()
         {
