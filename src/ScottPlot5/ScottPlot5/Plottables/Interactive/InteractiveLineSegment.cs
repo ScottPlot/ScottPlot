@@ -30,10 +30,10 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
         if (rect.Contains(MutableLine.Point1))
-            return new InteractiveHandle(this, (int)Node.Point1, Cursor);
+            return new InteractiveHandle(this, Cursor, (int)Node.Point1);
 
         if (rect.Contains(MutableLine.Point2))
-            return new InteractiveHandle(this, (int)Node.Point2, Cursor);
+            return new InteractiveHandle(this, Cursor, (int)Node.Point2);
 
         return null;
     }
