@@ -519,6 +519,18 @@ public static class Generate
 
     #region Axes
 
+    public static CoordinateRect RandomCoordinateRect(double xMult = 1, double yMult = 1, double width = .1, double height = .1)
+    {
+        Coordinates center = RandomCoordinates(xMult, yMult);
+        width *= RandomNumber(1, 5);
+        height *= RandomNumber(1, 5);
+        double x1 = center.X - width / 2 * xMult;
+        double x2 = center.X + width / 2 * xMult;
+        double y1 = center.Y - height / 2 * xMult;
+        double y2 = center.Y + height / 2 * xMult;
+        return new CoordinateRect(x1, x2, y1, y2);
+    }
+
     public static CoordinateLine RandomCoordinateLine(double xMult = 1, double yMult = 1, double xOffset = 0, double yOffset = 0)
     {
         Coordinates pt1 = RandomCoordinates(xMult, yMult, xOffset, yOffset);

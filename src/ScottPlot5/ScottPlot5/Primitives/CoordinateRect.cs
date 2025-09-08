@@ -22,6 +22,8 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
     public CoordinateRange XRange => new(Left, Right);
     public CoordinateRange YRange => new(Bottom, Top);
 
+    public CoordinateSize Size => new(Width, Height);
+
     public double Width => Right - Left;
     public double Height => Top - Bottom;
     public double Area => Width * Height;

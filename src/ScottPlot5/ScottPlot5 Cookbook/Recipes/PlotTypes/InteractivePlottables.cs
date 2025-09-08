@@ -126,4 +126,21 @@ public class InteractivePlottables : ICategory
             }
         }
     }
+
+    public class InteractiveRectangle : RecipeBase
+    {
+        public override string Name => "Interactive Rectangles";
+        public override string Description => "Interactive rectangles can be resized by dragging their edges " +
+            "or repositioned by dragging their bodies";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                CoordinateRect rect = Generate.RandomCoordinateRect();
+                myPlot.Add.InteractiveRectangle(rect);
+            }
+        }
+    }
 }

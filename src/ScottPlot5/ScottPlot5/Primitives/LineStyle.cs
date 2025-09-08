@@ -131,6 +131,11 @@ public class LineStyle
         Drawing.DrawLine(canvas, paint, line, this);
     }
 
+    public void Render(RenderPack rp, PixelRect rect)
+    {
+        Render(rp.Canvas, rect, rp.Paint);
+    }
+
     public void Render(SKCanvas canvas, PixelRect rect, Paint paint, bool contract = false)
     {
         if (!IsVisible)
