@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace ScottPlot;
 
 /// <summary>
@@ -11,6 +9,10 @@ public readonly struct CoordinateLine
     public readonly double X2;
     public readonly double Y1;
     public readonly double Y2;
+    public readonly double XMin => Math.Min(X1, X2);
+    public readonly double XMax => Math.Max(X1, X2);
+    public readonly double YMin => Math.Min(Y1, Y2);
+    public readonly double YMax => Math.Max(Y1, Y2);
     public double XSpan => X2 - X1;
     public double YSpan => Y2 - Y1;
     public double Slope => (X1 == X2) ? double.NaN : YSpan / XSpan;
@@ -104,5 +106,10 @@ public readonly struct CoordinateLine
     public CoordinateLine Reversed()
     {
         return new CoordinateLine(X2, Y2, X1, Y1);
+    }
+
+    public CoordinateRect BoundingBox()
+    {
+        return new CoordinateRect(XMin, XMax, YMin, YMax);
     }
 }

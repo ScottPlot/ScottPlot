@@ -751,6 +751,15 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractiveRectangle InteractiveRectangle(CoordinateRect rect)
+    {
+        InteractiveRectangle plottable = new() { Rect = rect };
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillStyle.Color = plottable.LineStyle.Color.WithAlpha(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveVerticalLine InteractiveVerticalLine(double x)
     {
         InteractiveVerticalLine plottable = new() { X = x };
