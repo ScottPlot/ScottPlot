@@ -70,9 +70,9 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
         if (!IsVisible || Data.Count == 0)
             return;
 
-        Pixel[] markerPixels = Data.GetPixelsToDraw(rp, Axes, ConnectStyle);
+        IReadOnlyList<Pixel> markerPixels = Data.GetPixelsToDraw(rp, Axes, ConnectStyle);
 
-        Pixel[] linePixels = ConnectStyle switch
+        IReadOnlyList<Pixel> linePixels = ConnectStyle switch
         {
             ConnectStyle.Straight => markerPixels,
             ConnectStyle.StepHorizontal => Scatter.GetStepDisplayPixels(markerPixels, true),

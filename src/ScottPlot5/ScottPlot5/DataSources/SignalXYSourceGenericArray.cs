@@ -49,7 +49,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
             : new AxisLimits(xRange, yRange);
     }
 
-    public Pixel[] GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
+    public IReadOnlyList<Pixel> GetPixelsToDraw(RenderPack rp, IAxes axes, ConnectStyle connectStyle)
     {
         return Rotated
             ? GetPixelsToDrawVertically(rp, axes, connectStyle)
