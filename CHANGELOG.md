@@ -8,6 +8,7 @@ _Not yet on NuGet..._
 * Colormaps: Updated the Turbo colormap to use the identical color table published by the original author (#5075) @bclehmann
 * Interactive Plottables: Created a new collection of interactive plottables which do not require manually wiring mouse events to support hover and click-drag manipulation
 * Controls: Added `SetCursor()` functionality to `IPlotControl` to improve cross-platform support for mouse interactions
+* SignalXY: Reduced heap allocations by modifying `ISignalXYSource` to use `IReadOnlyList<Pixel>` instead of `Pixel[]` (#5091, #5078) @bclehmann
 
 ## ScottPlot 5.0.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_
