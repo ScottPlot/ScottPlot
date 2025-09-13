@@ -29,4 +29,19 @@ public static class IPaletteExtensions
     {
         return Enumerable.Range(0, count).Select(palette.GetColor).ToArray();
     }
+
+    public static IPalette Inverted(this IPalette palette)
+    {
+        return new Palettes.Custom(palette.Colors.Select(x => x.Inverted()), $"{palette.Name} (inverted)");
+    }
+
+    public static IPalette InvertedHue(this IPalette palette)
+    {
+        return new Palettes.Custom(palette.Colors.Select(x => x.InvertedHue()), $"{palette.Name} (inverted hue)");
+    }
+
+    public static int Count(this IPalette palette)
+    {
+        return palette.Colors.Length;
+    }
 }
