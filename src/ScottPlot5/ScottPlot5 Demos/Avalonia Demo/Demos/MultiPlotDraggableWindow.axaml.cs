@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ScottPlot;
+using ScottPlot.Plottables.Interactive;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,6 +85,13 @@ public partial class MultiPlotDraggableWindow : Window
 
         // set the initial heights for each plot
         CustomLayout.SetHeights([600, 100, 100]);
+        //add shared vertical cursor
+        var p1 = pricePlot.Add.InteractiveVerticalLine(4);
+        var p2 = volumePlot.Add.InteractiveVerticalLine(4);
+        var p3 = rsiPlot.Add.InteractiveVerticalLine(4);
+        AvaPlot.Multiplot.Add(new SharedVerticalLineManager(p1, p2, p3));
+        AvaPlot.Multiplot.SharedAxes.UpdateSharedPlotAxisLimits();
+
     }
 
     private void OnAddRowClick(object? sender, RoutedEventArgs e)

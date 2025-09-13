@@ -21,6 +21,20 @@ public interface IMultiplot
     /// </summary>
     public MultiplotSharedAxisManager SharedAxes { get; }
 
+
+    /// <summary>
+    /// Get the collection of managers that coordinate shared state between subplots.
+    /// </summary>
+    public IEnumerable<IShareableManager> ShareableManagers { get;}
+    /// <summary>
+    /// Add a shareable manager to this multiplot.
+    /// </summary>
+    public void Add(IShareableManager manager);
+
+    /// <summary>
+    /// Remove a shareable manager from this multiplot.
+    /// </summary>
+    public bool Remove(IShareableManager manager);
     /// <summary>
     /// Render this multiplot onto the given canvas using a layout
     /// created to fit inside the given rectangle.
