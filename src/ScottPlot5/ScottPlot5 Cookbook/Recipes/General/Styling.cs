@@ -112,15 +112,62 @@ public class Styling : ICategory
                 CoordinateRect rect1 = CoordinateRect.UnitSquare.WithTranslation(x, 4);
                 CoordinateRect rect2 = CoordinateRect.UnitSquare.WithTranslation(x, 2);
                 CoordinateRect rect3 = CoordinateRect.UnitSquare.WithTranslation(x, 0);
-                var circle1 = myPlot.Add.Rectangle(rect1);
-                var circle2 = myPlot.Add.Rectangle(rect2);
-                var circle3 = myPlot.Add.Rectangle(rect3);
-                circle1.FillColor = palette1.Colors[x];
-                circle2.FillColor = palette2.Colors[x];
-                circle3.FillColor = palette3.Colors[x];
-                circle1.LineColor = Colors.Black;
-                circle2.LineColor = Colors.Black;
-                circle3.LineColor = Colors.Black;
+                var shape1 = myPlot.Add.Rectangle(rect1);
+                var shape2 = myPlot.Add.Rectangle(rect2);
+                var shape3 = myPlot.Add.Rectangle(rect3);
+
+                // set color using the palette
+                shape1.FillColor = palette1.Colors[x];
+                shape2.FillColor = palette2.Colors[x];
+                shape3.FillColor = palette3.Colors[x];
+
+                shape1.LineColor = shape1.FillColor;
+                shape2.LineColor = shape2.FillColor;
+                shape3.LineColor = shape3.FillColor;
+
+            }
+
+            myPlot.Add.Text("Standard", 0, 5.5);
+            myPlot.Add.Text("Inverted", 0, 3.5);
+            myPlot.Add.Text("Inverted Hue", 0, 1.5);
+            myPlot.HideGrid();
+        }
+    }
+
+    public class Colormaps : RecipeBase
+    {
+        public override string Name => "Colormaps";
+        public override string Description => "A colormap is a continuous gradient of multiple colors. " +
+            "It can be used to color continuous data like heatmaps and images, but colormaps may also " +
+            "be sampled directly to create collections of colors. " +
+            "https://scottplot.net/cookbook/5.0/colormaps/ displays all colormaps included with ScottPlot.";
+
+        [Test]
+        public override void Execute()
+        {
+            var colormap1 = new ScottPlot.Colormaps.Viridis();
+            var colormap2 = colormap1.Invert();
+            var colormap3 = colormap1.InvertHue();
+
+            int steps = 20;
+            for (int x = 0; x < steps; x++)
+            {
+                CoordinateRect rect1 = CoordinateRect.UnitSquare.WithTranslation(x, 4);
+                CoordinateRect rect2 = CoordinateRect.UnitSquare.WithTranslation(x, 2);
+                CoordinateRect rect3 = CoordinateRect.UnitSquare.WithTranslation(x, 0);
+                var shape1 = myPlot.Add.Rectangle(rect1);
+                var shape2 = myPlot.Add.Rectangle(rect2);
+                var shape3 = myPlot.Add.Rectangle(rect3);
+
+                // set color using the colormap
+                double fraction = (double)x / (steps - 1);
+                shape1.FillColor = colormap1.GetColor(fraction);
+                shape2.FillColor = colormap2.GetColor(fraction);
+                shape3.FillColor = colormap3.GetColor(fraction);
+
+                shape1.LineColor = shape1.FillColor;
+                shape2.LineColor = shape2.FillColor;
+                shape3.LineColor = shape3.FillColor;
             }
 
             myPlot.Add.Text("Standard", 0, 5.5);

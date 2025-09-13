@@ -133,4 +133,14 @@ public static class IColormapExtensions
 
         return new Image(bmp);
     }
+
+    public static IColormap Invert(this IColormap original)
+    {
+        return new Inverted(original);
+    }
+
+    public static IColormap InvertHue(this IColormap original)
+    {
+        return new InvertedHue(original);
+    }
 }
