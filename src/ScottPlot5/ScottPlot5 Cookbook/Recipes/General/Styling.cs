@@ -1,5 +1,3 @@
-using SkiaSharp;
-
 namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Styling : ICategory
@@ -77,8 +75,8 @@ public class Styling : ICategory
     {
         public override string Name => "Palettes";
         public override string Description => "A palette is a set of colors, and the Plot's palette " +
-            "defines the default colors to use when adding new plottables. ScottPlot comes with many " +
-            "standard palettes, but users may also create their own.";
+            "defines the default colors to use when adding new plottables. " +
+            "https://scottplot.net/cookbook/5.0/palettes/ displays all palettes included with ScottPlot.";
 
         [Test]
         public override void Execute()
@@ -92,6 +90,43 @@ public class Styling : ICategory
                 var sig = myPlot.Add.Signal(data);
                 sig.LineWidth = 3;
             }
+        }
+    }
+
+    public class PaletteInvert : RecipeBase
+    {
+        public override string Name => "Inverted Palettes";
+        public override string Description => "Palettes can be inverted. " +
+            "Palettes that work well on light backgrounds typically work well " +
+            "on dark backgrounds if they are inverted.";
+
+        [Test]
+        public override void Execute()
+        {
+            var palette1 = new ScottPlot.Palettes.ColorblindFriendly();
+            var palette2 = palette1.Inverted();
+            var palette3 = palette1.InvertedHue();
+
+            for (int x = 0; x < palette1.Count(); x++)
+            {
+                CoordinateRect rect1 = CoordinateRect.UnitSquare.WithTranslation(x, 4);
+                CoordinateRect rect2 = CoordinateRect.UnitSquare.WithTranslation(x, 2);
+                CoordinateRect rect3 = CoordinateRect.UnitSquare.WithTranslation(x, 0);
+                var circle1 = myPlot.Add.Rectangle(rect1);
+                var circle2 = myPlot.Add.Rectangle(rect2);
+                var circle3 = myPlot.Add.Rectangle(rect3);
+                circle1.FillColor = palette1.Colors[x];
+                circle2.FillColor = palette2.Colors[x];
+                circle3.FillColor = palette3.Colors[x];
+                circle1.LineColor = Colors.Black;
+                circle2.LineColor = Colors.Black;
+                circle3.LineColor = Colors.Black;
+            }
+
+            myPlot.Add.Text("Standard", 0, 5.5);
+            myPlot.Add.Text("Inverted", 0, 3.5);
+            myPlot.Add.Text("Inverted Hue", 0, 1.5);
+            myPlot.HideGrid();
         }
     }
 
