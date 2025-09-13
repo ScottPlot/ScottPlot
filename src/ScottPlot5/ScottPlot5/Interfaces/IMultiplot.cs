@@ -25,7 +25,7 @@ public interface IMultiplot
     /// <summary>
     /// Get the collection of managers that coordinate shared state between subplots.
     /// </summary>
-    public IEnumerable<IShareableManager> ShareableManagers { get;}
+    public IEnumerable<IShareableManager> ShareableManagers { get; }
     /// <summary>
     /// Add a shareable manager to this multiplot.
     /// </summary>

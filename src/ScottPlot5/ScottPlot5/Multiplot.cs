@@ -6,7 +6,7 @@ public class Multiplot : IMultiplot
     public SubplotCollection Subplots { get; } = new();
     public MultiplotLayoutSnapshot LastRender { get; } = new();
     private readonly List<IShareableManager> _shareableManagers = new();
-    public IEnumerable<IShareableManager> ShareableManagers => _shareableManagers ;
+    public IEnumerable<IShareableManager> ShareableManagers => _shareableManagers;
     public IMultiplotLayout Layout { get; set; } = new MultiplotLayouts.Rows();
 
     public Multiplot() : this(new Plot()) { }
@@ -24,9 +24,11 @@ public class Multiplot : IMultiplot
     public void Render(SKCanvas canvas, PixelRect figureRect)
     {
         SharedAxes.UpdateSharedPlotAxisLimits();
-	   
-	    foreach (IShareableManager mgr in ShareableManagers)
-            mgr.Update();        
+
+        foreach (IShareableManager mgr in ShareableManagers)
+        {
+            mgr.Update();
+        }
 
         canvas.Clear();
 

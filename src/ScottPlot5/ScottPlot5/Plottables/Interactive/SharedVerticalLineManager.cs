@@ -6,7 +6,7 @@ namespace ScottPlot.Plottables.Interactive;
 public class SharedVerticalLineManager : IShareableManager
 {
     private readonly List<InteractiveVerticalLine> _lines;
-    private double[] _positions=[];
+    private double[] _positions = [];
     private void UpdateCurrentPositions()
     => _positions = _lines.Select(l => l.X).ToArray();
 
