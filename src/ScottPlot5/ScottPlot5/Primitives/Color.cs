@@ -434,6 +434,19 @@ public readonly struct Color
         return new Color(r, g, b, Alpha);
     }
 
+    public Color Inverted()
+    {
+        return new Color(
+            (byte)(255 - R),
+            (byte)(255 - G),
+            (byte)(255 - B));
+    }
+
+    public Color InvertedHue()
+    {
+        return Color.FromHSL(Hue + .5f, Saturation, Luminance);
+    }
+
     /// <summary>
     /// Return this color mixed with another color.
     /// </summary>
