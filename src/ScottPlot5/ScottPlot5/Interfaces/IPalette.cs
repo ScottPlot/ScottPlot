@@ -32,12 +32,12 @@ public static class IPaletteExtensions
 
     public static IPalette Inverted(this IPalette palette)
     {
-        return new Palettes.Custom(palette.Colors.Select(x => x.Inverted()), $"{palette.Name} (inverted)");
+        return new Palettes.Custom(palette.Colors.Select(x => x.Inverted()), $"{palette.Name} (inverted)", palette.Description);
     }
 
     public static IPalette InvertedHue(this IPalette palette)
     {
-        return new Palettes.Custom(palette.Colors.Select(x => x.InvertedHue()), $"{palette.Name} (inverted hue)");
+        return new Palettes.Custom(palette.Colors.Select(x => x.InvertedHue()), $"{palette.Name} (inverted hue)", palette.Description);
     }
 
     public static int Count(this IPalette palette)
