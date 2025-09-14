@@ -76,6 +76,8 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
         Top = Math.Max(point.Y, pt2.Y);
     }
 
+    public static CoordinateRect UnitSquare => new(0, 1, 0, 1);
+
     public bool Contains(double x, double y)
     {
         return ContainsX(x) && ContainsY(y);
@@ -114,6 +116,7 @@ public struct CoordinateRect : IEquatable<CoordinateRect>
     public static CoordinateRect Empty => new(double.NaN, double.NaN, double.NaN, double.NaN);
 
     public CoordinateRect WithTranslation(Coordinates p) => new(Left + p.X, Right + p.X, Bottom + p.Y, Top + p.Y);
+    public CoordinateRect WithTranslation(double x, double y) => new(Left + x, Right + x, Bottom + y, Top + y);
 
     public override string ToString()
     {
