@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-public class MultiplotSharedAxisManager
+public class MultiplotSharedAxisManager : IShareableManager
 {
     // TODO: improve support for plots with non-standard axis limits
     private readonly List<Plot> PlotsWithSharedX = [];
@@ -81,5 +81,10 @@ public class MultiplotSharedAxisManager
             }
         }
         return null;
+    }
+
+    public void Update()
+    {
+        UpdateSharedPlotAxisLimits();
     }
 }
