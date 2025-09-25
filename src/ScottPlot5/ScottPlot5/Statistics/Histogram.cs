@@ -124,20 +124,16 @@ public class Histogram
             return;
         }
 
-        // TODO: improve performance using binary search
-        for (int i = 0; i < Counts.Length; i++)
-        {
-            if (value >= Edges[i] && value < Edges[i + 1])
-            {
-                Counts[i] += 1;
-                break;
-            }
-        }
+        double min = Edges[0];
+        double binWidth = (Edges[^1] - min) / Counts.Length;
+        int index = (int)((value - min) / binWidth);
 
         if (value == Edges[^1])
         {
-            Counts[^1] += 1;
+            index = Counts.Length - 1;
         }
+
+        Counts[index] += 1;
     }
 
     public void AddRange(IEnumerable<double> values)
