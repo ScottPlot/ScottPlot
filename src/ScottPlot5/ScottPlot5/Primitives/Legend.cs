@@ -138,6 +138,36 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     /// </summary>
     public double HiddenItemOpacity { get; set; } = 0.25;
 
+    /// <summary>
+    /// Title text to display at the top of the legend
+    /// </summary>
+    public string? Title { get; set; } = null;
+
+    /// <summary>
+    /// Style settings for the legend title
+    /// </summary>
+    public LabelStyle TitleStyle { get; set; } = new()
+    {
+        Alignment = Alignment.MiddleCenter,
+        FontSize = 14,
+        Bold = true
+    };
+
+    /// <summary>
+    /// If set, this overrides the title's font size
+    /// </summary>
+    public float? TitleFontSize { get; set; } = null;
+
+    /// <summary>
+    /// If set, this overrides the title's font name
+    /// </summary>
+    public string? TitleFontName { get; set; } = null;
+
+    /// <summary>
+    /// If set, this overrides the title's font color
+    /// </summary>
+    public Color? TitleFontColor { get; set; } = null;
+
     public virtual LegendItem[] GetItems()
     {
         List<LegendItem> items = [];
@@ -162,6 +192,12 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             {
                 item.LabelStyle.SetBestFont();
             }
+
+            // Apply to title as well
+            if (!string.IsNullOrEmpty(Title))
+            {
+                TitleStyle.SetBestFont();
+            }
         }
 
         foreach (LegendItem item in items)
@@ -172,6 +208,17 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 item.LabelFontName = FontName;
             if (FontColor is not null)
                 item.LabelFontColor = FontColor.Value;
+        }
+
+        // Apply title font overrides
+        if (!string.IsNullOrEmpty(Title))
+        {
+            if (TitleFontSize is not null)
+                TitleStyle.FontSize = TitleFontSize.Value;
+            if (TitleFontName is not null)
+                TitleStyle.FontName = TitleFontName;
+            if (TitleFontColor is not null)
+                TitleStyle.ForeColor = TitleFontColor.Value;
         }
 
         return items.ToArray();
@@ -237,7 +284,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             return;
 
         LegendItem[] items = GetItems();
-        if (items.Length == 0)
+        if (items.Length == 0 && string.IsNullOrEmpty(Title))
             return;
 
         PixelRect dataRectAfterMargin = rp.DataRect.Contract(Margin);
@@ -250,6 +297,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             LegendRect = tightLayout.LegendRect.WithOffset(legendOffset),
             LabelRects = tightLayout.LabelRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
             SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+            TitleRect = tightLayout.TitleRect?.WithOffset(legendOffset),
         };
 
         RenderLayout(rp.Canvas, rp.Paint, layout);
@@ -258,7 +306,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public void Render(SKCanvas canvas, Paint paint, PixelRect rect, Alignment alignment)
     {
         LegendItem[] items = GetItems();
-        if (items.Length == 0)
+        if (items.Length == 0 && string.IsNullOrEmpty(Title))
             return;
 
         LegendLayout tightLayout = Layout.GetLayout(this, items, rect.Size, paint);
@@ -270,6 +318,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             LegendRect = tightLayout.LegendRect.WithOffset(legendOffset),
             LabelRects = tightLayout.LabelRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
             SymbolRects = tightLayout.SymbolRects.Select(x => x.WithOffset(legendOffset)).ToArray(),
+            TitleRect = tightLayout.TitleRect?.WithOffset(legendOffset),
         };
 
         RenderLayout(canvas, paint, layout);
@@ -291,6 +340,23 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
         PixelRect clipRect = layout.LegendRect.Contract(Padding).Expand(1f);
         canvasState.Clip(clipRect);
 
+        // Render title if present
+        if (layout.HasTitle && layout.TitleRect.HasValue && !string.IsNullOrEmpty(Title))
+        {
+            // Apply title font overrides before rendering
+            LabelStyle titleStyle = TitleStyle;
+            if (TitleFontSize is not null)
+                titleStyle.FontSize = TitleFontSize.Value;
+            if (TitleFontName is not null)
+                titleStyle.FontName = TitleFontName;
+            if (TitleFontColor is not null)
+                titleStyle.ForeColor = TitleFontColor.Value;
+
+            // Set the text and render using correct method signature
+            titleStyle.Text = Title;
+            titleStyle.Render(canvas, layout.TitleRect.Value.Center, paint);
+        }
+
         // render items inside the legend
         for (int i = 0; i < layout.LegendItems.Length; i++)
         {
@@ -306,6 +372,13 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 LineStyle ls = new() { Color = Colors.Magenta.WithAlpha(.2) };
                 Drawing.DrawRectangle(canvas, symbolRect, paint, ls);
                 Drawing.DrawRectangle(canvas, labelRect, paint, ls);
+
+                // Debug: also show title rectangle
+                if (layout.HasTitle && layout.TitleRect.HasValue)
+                {
+                    LineStyle titleLs = new() { Color = Colors.Blue.WithAlpha(.2) };
+                    Drawing.DrawRectangle(canvas, layout.TitleRect.Value, paint, titleLs);
+                }
             }
 
             // draw symbol components
