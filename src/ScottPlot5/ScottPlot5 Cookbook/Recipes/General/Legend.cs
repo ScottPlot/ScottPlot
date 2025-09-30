@@ -298,4 +298,29 @@ public class Legend : ICategory
             });
         }
     }
+
+    public class LegendTitle : RecipeBase
+    {
+        public override string Name => "Legend with Title";
+        public override string Description => "Legends can display a title at the top to describe the data series shown.";
+
+        [Test]
+        public override void Execute()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "Sine Wave";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "Cosine Wave";
+
+            var sig3 = myPlot.Add.Signal(Generate.Sin(51, 2));
+            sig3.LegendText = "High Frequency";
+
+            myPlot.Legend.IsVisible = true;
+            myPlot.Legend.Title = "Math Functions";
+            myPlot.Legend.TitleFontSize = 14;
+            myPlot.Legend.TitleFontColor = Colors.Navy;
+            myPlot.Legend.Alignment = Alignment.UpperRight;
+        }
+    }
 }
