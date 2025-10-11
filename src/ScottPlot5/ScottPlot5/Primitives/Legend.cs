@@ -142,6 +142,11 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     {
         List<LegendItem> items = [];
 
+        // manually added items with indexes come first
+        var manualItemsWithIndexes = ManualItems.Where(x => x.Index.HasValue).OrderBy(x => x.Index!.Value);
+        items.AddRange(manualItemsWithIndexes);
+
+        // items from plottables come next
         if (DisplayPlottableLegendItems)
         {
             var plottableLegendItems = Plot.PlottableList
@@ -152,7 +157,9 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
             items.AddRange(plottableLegendItems);
         }
 
-        items.AddRange(ManualItems);
+        // manually added items without indexes are last
+        var manualItemsWithoutIndexes = ManualItems.Where(x => x.Index is null);
+        items.AddRange(manualItemsWithoutIndexes);
 
         items = items.Where(x => x.IsVisible).ToList();
 
