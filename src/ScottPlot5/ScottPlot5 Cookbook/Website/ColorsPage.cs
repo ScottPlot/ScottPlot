@@ -20,12 +20,12 @@ internal class ColorsPage : PageBase
         string md = @"---
 title: Colors - ScottPlot 5
 description: Colors available in ScottPlot version 5
-url: /cookbook/5.0/colors/
+url: /cookbook/5/colors/
 type: single
 BreadcrumbNames: [""ScottPlot 5 Cookbook"", ""Colors""]
-BreadcrumbUrls: [""/cookbook/5.0/"", ""/cookbook/5.0/colors/""]
+BreadcrumbUrls: [""/cookbook/5/"", ""/cookbook/5/colors/""]
 date: {{ DATE }}
-jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.0.js""]
+jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.js""]
 ---
 
 {{ HTML }}

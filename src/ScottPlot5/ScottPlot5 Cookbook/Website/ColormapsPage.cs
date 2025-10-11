@@ -54,12 +54,12 @@ internal class ColormapsPage : PageBase
         string md = @"---
 title: Colormaps - ScottPlot 5
 description: Colormaps available in ScottPlot 5
-url: /cookbook/5.0/colormaps/
+url: /cookbook/5/colormaps/
 type: single
 BreadcrumbNames: [""ScottPlot 5 Cookbook"", ""Colormaps""]
-BreadcrumbUrls: [""/cookbook/5.0/"", ""/cookbook/5.0/colormaps/""]
+BreadcrumbUrls: [""/cookbook/5/"", ""/cookbook/5/colormaps/""]
 date: {{ DATE }}
-jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.0.js""]
+jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.js""]
 ---
 
 {{ HTML }}

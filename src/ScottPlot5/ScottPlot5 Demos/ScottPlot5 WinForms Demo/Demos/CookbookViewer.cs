@@ -18,7 +18,7 @@ public partial class CookbookViewer : Form, IDemoWindow
     {
         InitializeComponent();
 
-        string jsonFilePathInRepo = Path.GetFullPath("../../../../../../../dev/www/cookbook/5.0/recipes.json");
+        string jsonFilePathInRepo = Path.GetFullPath("../../../../../../../dev/www/cookbook/5/recipes.json");
         string jsonFilePathHere = Path.GetFullPath("recipes.json");
 
         if (File.Exists(jsonFilePathInRepo))
