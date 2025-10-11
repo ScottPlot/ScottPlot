@@ -1,10 +1,8 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using ScottPlot;
-using ScottPlot.Plottables.Interactive;
+using ScottPlot.Plottables.Interactive.SubplotPreRenderActions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -89,7 +87,7 @@ public partial class MultiPlotDraggableWindow : Window
         var p1 = pricePlot.Add.InteractiveVerticalLine(4);
         var p2 = volumePlot.Add.InteractiveVerticalLine(4);
         var p3 = rsiPlot.Add.InteractiveVerticalLine(4);
-        AvaPlot.Multiplot.Add(new SharedVerticalLineManager(p1, p2, p3));
+        AvaPlot.Multiplot.PreRenderActions.Add(new SharedVerticalLine(p1, p2, p3));
         AvaPlot.Multiplot.SharedAxes.UpdateSharedPlotAxisLimits();
 
     }

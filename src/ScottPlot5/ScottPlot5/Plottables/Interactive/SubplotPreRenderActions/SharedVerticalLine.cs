@@ -1,16 +1,16 @@
-namespace ScottPlot.Plottables.Interactive;
+namespace ScottPlot.Plottables.Interactive.SubplotPreRenderActions;
 
 /// <summary>
 ///     Demonstrates how to link multiple InteractiveVerticalLine objects so they move together.
 /// </summary>
-public class SharedVerticalLineManager : ISubplotPreRenderAction
+public class SharedVerticalLine : ISubplotPreRenderAction
 {
     private readonly List<InteractiveVerticalLine> _lines;
     private double[] _positions = [];
     private void UpdateCurrentPositions()
     => _positions = _lines.Select(l => l.X).ToArray();
 
-    public SharedVerticalLineManager(params InteractiveVerticalLine[] lines)
+    public SharedVerticalLine(params InteractiveVerticalLine[] lines)
     {
         _lines = lines.ToList();
         UpdateCurrentPositions();

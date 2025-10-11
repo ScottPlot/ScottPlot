@@ -1,5 +1,3 @@
-using ScottPlot.Interactivity.UserActionResponses;
-
 namespace ScottPlot.Plottables.Interactive;
 
 public class InteractiveVerticalLine : IPlottable, IHasInteractiveHandles
