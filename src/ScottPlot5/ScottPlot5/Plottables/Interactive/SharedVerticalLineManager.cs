@@ -3,7 +3,7 @@ namespace ScottPlot.Plottables.Interactive;
 /// <summary>
 ///     Demonstrates how to link multiple InteractiveVerticalLine objects so they move together.
 /// </summary>
-public class SharedVerticalLineManager : IShareableManager
+public class SharedVerticalLineManager : ISubplotPreRenderAction
 {
     private readonly List<InteractiveVerticalLine> _lines;
     private double[] _positions = [];
@@ -16,7 +16,7 @@ public class SharedVerticalLineManager : IShareableManager
         UpdateCurrentPositions();
     }
 
-    public void Update()
+    public void Invoke()
     {
         //figure which, if any, have moved 
         int wanted = -1;
