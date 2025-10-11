@@ -298,4 +298,35 @@ public class Legend : ICategory
             });
         }
     }
+
+    public class LegendTitle : RecipeBase
+    {
+        public override string Name => "Legend with Title";
+        public override string Description => "Place a manual legend item at the top of the list " +
+            "and style it as desired to achieve a title inside the legend area.";
+
+        [Test]
+        public override void Execute()
+        {
+            var sig1 = myPlot.Add.Signal(Generate.Sin(51));
+            sig1.LegendText = "Sine Wave";
+
+            var sig2 = myPlot.Add.Signal(Generate.Cos(51));
+            sig2.LegendText = "Cosine Wave";
+
+            var sig3 = myPlot.Add.Signal(Generate.Sin(51, 2));
+            sig3.LegendText = "High Frequency";
+
+            LegendItem legendTitle = new()
+            {
+                LabelText = "Math Functions",
+                LabelFontSize = 14,
+                LabelFontColor = Colors.Navy,
+                LabelBold = true,
+                LabelOffsetX = -20, // compensate for space used to display shape
+            };
+
+            myPlot.Legend.ManualItems.Add(legendTitle);
+        }
+    }
 }

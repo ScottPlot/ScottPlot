@@ -9,6 +9,12 @@ public class LegendItem : LabelStyleProperties, IHasMarker, IHasLine, IHasFill, 
     /// </summary>
     public IPlottable? Plottable { get; set; } = null;
 
+    /// <summary>
+    /// If populated, this legend item will appear at the top in the legend,
+    /// sequenced in order according to this index.
+    /// </summary>
+    public int? Index { get; set; } = null;
+
     public override LabelStyle LabelStyle { get; set; } = new() { Alignment = Alignment.MiddleLeft };
 
     public LineStyle LineStyle { get; set; } = new() { Width = 0 };
