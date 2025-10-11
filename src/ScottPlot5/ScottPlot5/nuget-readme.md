@@ -53,9 +53,3 @@ The [**ScottPlot Demo**](https://scottplot.net/demo/) allows you to run these ex
 The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5.0/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
 [![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://scottplot.net/cookbook/5.0/)
-
-# Versions
-
-* **ScottPlot 5.0 is the newest version of ScottPlot.** ScottPlot 5 is actively developed and supports all operating systems. The API is similar but not identical to ScottPlot 4. See the [What's New in ScottPlot 5.0](https://scottplot.net/faq/version-5.0/) page for details.
-
-* **ScottPlot 4.1 is a stable version of ScottPlot** which continues to be maintained but no longer receives major new features. ScottPlot 4 supported all operating systems through .NET 6, but after .NET 7 it can only be used in projects that target Windows.

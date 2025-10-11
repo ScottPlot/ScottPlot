@@ -21,7 +21,7 @@ internal class CategoryPage : PageBase
             SB.AppendLine(RecipeHtml.GetMarkdownForCategoryPage(recipe));
         }
 
-        string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
+        string breadcrumbName1 = "ScottPlot 5 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
         string breadcrumbName2 = Category.Name;
@@ -34,7 +34,7 @@ internal class CategoryPage : PageBase
         };
 
         Save(outputFolder,
-            title: Category.Name + " - ScottPlot 5.0 Cookbook",
+            title: Category.Name + " - ScottPlot 5 Cookbook",
             description: Category.Description,
             filename: $"{Path.GetFileName(Category.Url)}.md",
             url: Category.Url,

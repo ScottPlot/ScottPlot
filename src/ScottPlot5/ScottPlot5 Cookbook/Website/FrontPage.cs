@@ -11,7 +11,7 @@ internal class FrontPage : PageBase
 
     public void Generate(string outputFolder)
     {
-        SB.AppendLine($"# ScottPlot 5.0 Cookbook");
+        SB.AppendLine($"# ScottPlot 5 Cookbook");
         SB.AppendLine();
 
         // manage chapters manually as the simplest way to enforce ordered chapters
@@ -53,7 +53,7 @@ internal class FrontPage : PageBase
             }
         }
 
-        string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
+        string breadcrumbName1 = "ScottPlot 5 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
         string[] fm =
@@ -63,7 +63,7 @@ internal class FrontPage : PageBase
         };
 
         Save(outputFolder,
-            title: "ScottPlot 5.0 Cookbook",
+            title: "ScottPlot 5 Cookbook",
             description: "Example plots shown next to the code used to create them",
             filename: "index_.md",
             url: "/cookbook/5.0/",

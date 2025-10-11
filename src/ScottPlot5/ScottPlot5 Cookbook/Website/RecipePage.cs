@@ -13,7 +13,7 @@ internal class RecipePage : PageBase
     {
         SB.AppendLine(RecipeHtml.GetMarkdownForSingleRecipePage(Recipe));
 
-        string breadcrumbName1 = "ScottPlot 5.0 Cookbook";
+        string breadcrumbName1 = "ScottPlot 5 Cookbook";
         string breadcrumbUrl1 = "/cookbook/5.0/";
 
         string breadcrumbName2 = Recipe.Category;
@@ -32,7 +32,7 @@ internal class RecipePage : PageBase
         string categoryBaseName = Path.GetFileName(Path.GetDirectoryName(Recipe.RecipeUrl)!);
 
         Save(outputFolder,
-            title: Recipe.Name + " - ScottPlot 5.0 Cookbook",
+            title: Recipe.Name + " - ScottPlot 5 Cookbook",
             description: Recipe.Description,
             filename: $"{categoryBaseName}.{recipeBaseName}.md",
             url: Recipe.RecipeUrl,

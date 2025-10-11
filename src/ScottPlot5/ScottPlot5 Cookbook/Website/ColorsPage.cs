@@ -6,7 +6,7 @@ internal class ColorsPage : PageBase
     {
         StringBuilder sb = new();
 
-        sb.AppendLine($"# ScottPlot 5.0 Colors");
+        sb.AppendLine($"# ScottPlot 5 Colors");
         sb.AppendLine();
 
         sb.AppendLine("<ul style='list-style-type: none;'>");
@@ -18,11 +18,11 @@ internal class ColorsPage : PageBase
         sb.AppendLine("</ul>");
 
         string md = @"---
-title: Colors - ScottPlot 5.0
-description: Colors available in ScottPlot version 5.0
+title: Colors - ScottPlot 5
+description: Colors available in ScottPlot version 5
 url: /cookbook/5.0/colors/
 type: single
-BreadcrumbNames: [""ScottPlot 5.0 Cookbook"", ""Colors""]
+BreadcrumbNames: [""ScottPlot 5 Cookbook"", ""Colors""]
 BreadcrumbUrls: [""/cookbook/5.0/"", ""/cookbook/5.0/colors/""]
 date: {{ DATE }}
 jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.0.js""]

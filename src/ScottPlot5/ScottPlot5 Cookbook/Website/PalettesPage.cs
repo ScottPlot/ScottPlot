@@ -28,7 +28,7 @@ internal class PalettesPage : PageBase
         MoveFront(palettes, "Category 20");
         MoveFront(palettes, "Category 10");
 
-        sb.AppendLine($"# ScottPlot 5.0 Color Palettes");
+        sb.AppendLine($"# ScottPlot 5 Color Palettes");
         sb.AppendLine();
 
         foreach (IPalette palette in palettes)
@@ -54,11 +54,11 @@ internal class PalettesPage : PageBase
         }
 
         string md = @"---
-title: Color Palettes - ScottPlot 5.0
-description: Color palettes available in ScottPlot version 5.0
+title: Color Palettes - ScottPlot 5
+description: Color palettes available in ScottPlot version 5
 url: /cookbook/5.0/palettes/
 type: single
-BreadcrumbNames: [""ScottPlot 5.0 Cookbook"", ""Palettes""]
+BreadcrumbNames: [""ScottPlot 5 Cookbook"", ""Palettes""]
 BreadcrumbUrls: [""/cookbook/5.0/"", ""/cookbook/5.0/palettes/""]
 date: {{ DATE }}
 jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.0.js""]
