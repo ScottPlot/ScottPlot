@@ -24,7 +24,7 @@ public interface IMultiplot
     /// <summary>
     /// Actions invoked before each render to coordinate shared state between subplots.
     /// </summary>
-    public List<ISubplotPreRenderAction> PreRenderActions { get; }
+    public List<IMultiplotPreRenderAction> PreRenderActions { get; }
 
     /// <summary>
     /// Render this multiplot onto the given canvas using a layout

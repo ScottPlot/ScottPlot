@@ -5,7 +5,7 @@ public class Multiplot : IMultiplot
     public MultiplotSharedAxisManager SharedAxes { get; } = new();
     public SubplotCollection Subplots { get; } = new();
     public MultiplotLayoutSnapshot LastRender { get; } = new();
-    public List<ISubplotPreRenderAction> PreRenderActions { get; set; } = [];
+    public List<IMultiplotPreRenderAction> PreRenderActions { get; set; } = [];
     public IMultiplotLayout Layout { get; set; } = new MultiplotLayouts.Rows();
 
     public Multiplot() : this(new Plot()) { }
@@ -15,7 +15,7 @@ public class Multiplot : IMultiplot
     {
         SharedAxes.UpdateSharedPlotAxisLimits();
 
-        foreach (ISubplotPreRenderAction preRenderAction in PreRenderActions)
+        foreach (IMultiplotPreRenderAction preRenderAction in PreRenderActions)
         {
             preRenderAction.Invoke();
         }

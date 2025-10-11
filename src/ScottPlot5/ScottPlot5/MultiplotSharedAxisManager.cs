@@ -1,6 +1,6 @@
 namespace ScottPlot;
 
-public class MultiplotSharedAxisManager : ISubplotPreRenderAction
+public class MultiplotSharedAxisManager : IMultiplotPreRenderAction
 {
     // TODO: improve support for plots with non-standard axis limits
     private readonly List<Plot> PlotsWithSharedX = [];
