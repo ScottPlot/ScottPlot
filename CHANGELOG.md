@@ -14,6 +14,7 @@ _Not yet on NuGet..._
 * Palettes: Added a `ColorblindFriendlyDark` palette to improve accessibility of categorical plots with dark backgrounds (#5094) @NeilMacMullen
 * Multiplot: Added a collection of `PreRenderActions` to facilitate synchronization of data between subplots (#5095) @NeilMacMullen
 * Histogram: Optimized bin count accumulation strategy to improve performance when creating histograms (#5102) @fissssssh
+* Legend: Added support for defining an `Index` so manually added items can be displayed in preferred sequence (#5107) @timmer98
 
 ## ScottPlot 5.0.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_
