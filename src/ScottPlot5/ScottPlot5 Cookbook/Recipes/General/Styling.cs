@@ -1,5 +1,3 @@
-using SkiaSharp;
-
 namespace ScottPlotCookbook.Recipes.Introduction;
 
 public class Styling : ICategory
@@ -77,8 +75,8 @@ public class Styling : ICategory
     {
         public override string Name => "Palettes";
         public override string Description => "A palette is a set of colors, and the Plot's palette " +
-            "defines the default colors to use when adding new plottables. ScottPlot comes with many " +
-            "standard palettes, but users may also create their own.";
+            "defines the default colors to use when adding new plottables. " +
+            "https://scottplot.net/cookbook/5.0/palettes/ displays all palettes included with ScottPlot.";
 
         [Test]
         public override void Execute()
@@ -92,6 +90,90 @@ public class Styling : ICategory
                 var sig = myPlot.Add.Signal(data);
                 sig.LineWidth = 3;
             }
+        }
+    }
+
+    public class PaletteInvert : RecipeBase
+    {
+        public override string Name => "Inverted Palettes";
+        public override string Description => "Palettes can be inverted. " +
+            "Palettes that work well on light backgrounds typically work well " +
+            "on dark backgrounds if they are inverted.";
+
+        [Test]
+        public override void Execute()
+        {
+            var palette1 = new ScottPlot.Palettes.ColorblindFriendly();
+            var palette2 = palette1.Inverted();
+            var palette3 = palette1.InvertedHue();
+
+            for (int x = 0; x < palette1.Count(); x++)
+            {
+                CoordinateRect rect1 = CoordinateRect.UnitSquare.WithTranslation(x, 4);
+                CoordinateRect rect2 = CoordinateRect.UnitSquare.WithTranslation(x, 2);
+                CoordinateRect rect3 = CoordinateRect.UnitSquare.WithTranslation(x, 0);
+                var shape1 = myPlot.Add.Rectangle(rect1);
+                var shape2 = myPlot.Add.Rectangle(rect2);
+                var shape3 = myPlot.Add.Rectangle(rect3);
+
+                // set color using the palette
+                shape1.FillColor = palette1.Colors[x];
+                shape2.FillColor = palette2.Colors[x];
+                shape3.FillColor = palette3.Colors[x];
+
+                shape1.LineColor = shape1.FillColor;
+                shape2.LineColor = shape2.FillColor;
+                shape3.LineColor = shape3.FillColor;
+
+            }
+
+            myPlot.Add.Text("Standard", 0, 5.5);
+            myPlot.Add.Text("Inverted", 0, 3.5);
+            myPlot.Add.Text("Inverted Hue", 0, 1.5);
+            myPlot.HideGrid();
+        }
+    }
+
+    public class Colormaps : RecipeBase
+    {
+        public override string Name => "Colormaps";
+        public override string Description => "A colormap is a continuous gradient of multiple colors. " +
+            "It can be used to color continuous data like heatmaps and images, but colormaps may also " +
+            "be sampled directly to create collections of colors. " +
+            "https://scottplot.net/cookbook/5.0/colormaps/ displays all colormaps included with ScottPlot.";
+
+        [Test]
+        public override void Execute()
+        {
+            var colormap1 = new ScottPlot.Colormaps.Viridis();
+            var colormap2 = colormap1.Invert();
+            var colormap3 = colormap1.InvertHue();
+
+            int steps = 20;
+            for (int x = 0; x < steps; x++)
+            {
+                CoordinateRect rect1 = CoordinateRect.UnitSquare.WithTranslation(x, 4);
+                CoordinateRect rect2 = CoordinateRect.UnitSquare.WithTranslation(x, 2);
+                CoordinateRect rect3 = CoordinateRect.UnitSquare.WithTranslation(x, 0);
+                var shape1 = myPlot.Add.Rectangle(rect1);
+                var shape2 = myPlot.Add.Rectangle(rect2);
+                var shape3 = myPlot.Add.Rectangle(rect3);
+
+                // set color using the colormap
+                double fraction = (double)x / (steps - 1);
+                shape1.FillColor = colormap1.GetColor(fraction);
+                shape2.FillColor = colormap2.GetColor(fraction);
+                shape3.FillColor = colormap3.GetColor(fraction);
+
+                shape1.LineColor = shape1.FillColor;
+                shape2.LineColor = shape2.FillColor;
+                shape3.LineColor = shape3.FillColor;
+            }
+
+            myPlot.Add.Text("Standard", 0, 5.5);
+            myPlot.Add.Text("Inverted", 0, 3.5);
+            myPlot.Add.Text("Inverted Hue", 0, 1.5);
+            myPlot.HideGrid();
         }
     }
 

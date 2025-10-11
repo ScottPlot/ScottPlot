@@ -8,9 +8,9 @@ public class Custom : IPalette
 
     public string Description { get; }
 
-    public Custom(Color[] colors, string? name, string? description = null)
+    public Custom(IEnumerable<Color> colors, string? name, string? description = null)
     {
-        Colors = colors;
+        Colors = colors.ToArray();
         Name = name ?? "unnamed";
         Description = description ?? "no description";
     }
