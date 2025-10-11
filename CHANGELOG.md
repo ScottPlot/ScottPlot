@@ -15,6 +15,7 @@ _Not yet on NuGet..._
 * Multiplot: Added a collection of `PreRenderActions` to facilitate synchronization of data between subplots (#5095) @NeilMacMullen
 * Histogram: Optimized bin count accumulation strategy to improve performance when creating histograms (#5102) @fissssssh
 * Legend: Added support for defining an `Index` so manually added items can be displayed in preferred sequence (#5107) @timmer98
+* Avalonia: Improve behavior through focus release and acquisition cycles (#5109, #5105) @nbeck-SMT
 
 ## ScottPlot 5.0.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_
