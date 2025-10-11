@@ -1,7 +1,7 @@
 namespace ScottPlot.Statistics;
 
 /// <summary>
-/// A histogram that accumulates the number of values observed in a continuous range of user defined bins
+/// A histogram that accumulates the number of values observed in a continuous range of evenly-sized, user defined bins
 /// </summary>
 public class Histogram
 {
@@ -32,6 +32,11 @@ public class Histogram
 
     private Histogram(IEnumerable<double> edges)
     {
+        // WARNING: Evenly-spaced edges are REQUIRED.
+        // NOTE: Previously this class supported arbitrary user-defined bins.
+        // The present class assumes all bins have the same size, so this method is private.
+
+        // NOTE: Edges are stored for easy access as arrays for plotting, not for internal use filling bins.
         Edges = [.. edges];
         Bins = Edges.Take(Edges.Length - 1).ToArray();
         Counts = new int[Edges.Length - 1];
@@ -124,20 +129,17 @@ public class Histogram
             return;
         }
 
-        // TODO: improve performance using binary search
-        for (int i = 0; i < Counts.Length; i++)
-        {
-            if (value >= Edges[i] && value < Edges[i + 1])
-            {
-                Counts[i] += 1;
-                break;
-            }
-        }
+        // NOTE: This works, but requires that this class only uses evenly sized and spaced bins.
+        double min = Edges[0];
+        double binWidth = (Edges[^1] - min) / Counts.Length;
+        int index = (int)((value - min) / binWidth);
 
         if (value == Edges[^1])
         {
-            Counts[^1] += 1;
+            index = Counts.Length - 1;
         }
+
+        Counts[index] += 1;
     }
 
     public void AddRange(IEnumerable<double> values)

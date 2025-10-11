@@ -12,6 +12,8 @@ _Not yet on NuGet..._
 * Palette: Added `Invert()` and `InvertHue()` to `IPalette` so palettes for light backgrounds can be reused for dark backgrounds (#5094) @NeilMacMullen
 * Colormap: Added `Invert()` and `InvertHue()` to `IPalette` so palettes for light backgrounds can be reused for dark backgrounds (#5094) @NeilMacMullen
 * Palettes: Added a `ColorblindFriendlyDark` palette to improve accessibility of categorical plots with dark backgrounds (#5094) @NeilMacMullen
+* Multiplot: Added a collection of `PreRenderActions` to facilitate synchronization of data between subplots (#5095) @NeilMacMullen
+* Histogram: Optimized bin count accumulation strategy to improve performance when creating histograms (#5102) @fissssssh
 
 ## ScottPlot 5.0.56
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-08-22_
