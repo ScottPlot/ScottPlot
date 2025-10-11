@@ -302,7 +302,8 @@ public class Legend : ICategory
     public class LegendTitle : RecipeBase
     {
         public override string Name => "Legend with Title";
-        public override string Description => "Legends can display a title at the top to describe the data series shown.";
+        public override string Description => "Place a manual legend item at the top of the list " +
+            "and style it as desired to achieve a title inside the legend area.";
 
         [Test]
         public override void Execute()
@@ -316,11 +317,16 @@ public class Legend : ICategory
             var sig3 = myPlot.Add.Signal(Generate.Sin(51, 2));
             sig3.LegendText = "High Frequency";
 
-            myPlot.Legend.IsVisible = true;
-            myPlot.Legend.Title = "Math Functions";
-            myPlot.Legend.TitleFontSize = 14;
-            myPlot.Legend.TitleFontColor = Colors.Navy;
-            myPlot.Legend.Alignment = Alignment.UpperRight;
+            LegendItem legendTitle = new()
+            {
+                LabelText = "Math Functions",
+                LabelFontSize = 14,
+                LabelFontColor = Colors.Navy,
+                LabelBold = true,
+                LabelOffsetX = -20, // compensate for space used to display shape
+            };
+
+            myPlot.Legend.ManualItems.Add(legendTitle);
         }
     }
 }
