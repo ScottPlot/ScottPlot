@@ -402,8 +402,7 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
     /// </summary>
     private (int SearchedPosition, int LimitedIndex) SearchIndex(double x, IndexRange indexRange)
     {
-        NumericConversion.DoubleToGeneric((x - XOffset) / XScale, out TX x2);
-        int index = Array.BinarySearch(Xs, indexRange.Min, indexRange.Length, x2);
+        int index = BinarySearch(Xs, indexRange.Min, indexRange.Length, (x - XOffset) / XScale);
 
         // If x is not exactly matched to any value in Xs, BinarySearch returns a negative number. We can bitwise negation to obtain the position where x would be inserted (i.e., the next highest index).
         // If x is below the min Xs, BinarySearch returns -1. Here, bitwise negation returns 0 (i.e., x would be inserted at the first index of the array).
@@ -414,6 +413,29 @@ public class SignalXYSourceGenericArray<TX, TY> : ISignalXYSource, IDataSource, 
         }
 
         return (SearchedPosition: index, LimitedIndex: index > indexRange.Max ? indexRange.Max : index);
+    }
+
+    internal static int BinarySearch(TX[] array, int index, int length, double value)
+    {
+        int lo = index;
+        int hi = index + length - 1;
+        while (lo <= hi)
+        {
+            int i = lo + ((hi - lo) >> 1);
+            int order = NumericConversion.GenericToDouble(array, i).CompareTo(value);
+
+            if (order == 0) return i;
+            if (order < 0)
+            {
+                lo = i + 1;
+            }
+            else
+            {
+                hi = i - 1;
+            }
+        }
+
+        return ~lo;
     }
 
     public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
