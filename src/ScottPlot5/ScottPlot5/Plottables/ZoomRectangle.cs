@@ -7,7 +7,7 @@ public class ZoomRectangle(Plot plot) : IZoomRectangle
 {
     public bool IsVisible { get; set; } = false;
 
-    FillStyle FillStyle { get; set; } = new()
+    public FillStyle FillStyle { get; set; } = new()
     {
         Color = new Color(255, 0, 0).WithAlpha(100),
         AntiAlias = false,
