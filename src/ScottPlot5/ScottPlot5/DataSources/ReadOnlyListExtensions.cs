@@ -3,6 +3,18 @@ namespace ScottPlot.DataSources
 {
     internal static class ReadOnlyListExtensions
     {
+        internal static IReadOnlyList<TOutput> SelectView<TInput, TOutput>(this IReadOnlyList<TInput> inputList,
+            Func<TInput, TOutput> mappingFunction)
+        {
+            return new SelectListView<TInput, TOutput>(inputList, mappingFunction);
+        }
+
+        internal static IReadOnlyList<T> GrowView<T>(this IReadOnlyList<T> inputList, uint growthFactor,
+            Func<int, int, IReadOnlyList<T>, T> growthFunction)
+        {
+            return new GrowListView<T>(inputList, growthFactor, growthFunction);
+        }
+
         internal static IReadOnlyList<TOutput> ZipView<TFirst, TSecond, TOutput>(this IReadOnlyList<TFirst> inputList,
             IReadOnlyList<TSecond> toZipWith, Func<TFirst, TSecond, TOutput> zippingFunction)
         {
@@ -20,13 +32,76 @@ namespace ScottPlot.DataSources
         }
 
         /// <summary>
+        /// List view which projects elements from the original list onto a new form.
+        /// A view-only equivalent of Enumerable#Select(...).
+        /// </summary>
+        /// <typeparam name="TInput">type of the original list</typeparam>
+        /// <typeparam name="TOutput">type of the output list</typeparam>
+        private class SelectListView<TInput, TOutput> : ListViewDecorator<TOutput>
+        {
+            private readonly IReadOnlyList<TInput> _inputList;
+            private readonly Func<TInput, TOutput> _mappingFunction;
+
+            public SelectListView(IReadOnlyList<TInput> inputList, Func<TInput, TOutput> mappingFunction)
+            {
+                _inputList = inputList;
+                _mappingFunction = mappingFunction;
+            }
+
+            public override TOutput this[int index] => _mappingFunction.Invoke(_inputList[index]);
+
+            public override int Count => _inputList.Count;
+        }
+
+        /// <summary>
+        /// List view which grows the number of elements by a positive integer factor.
+        /// A growth function is applied to each element such that element 0 could expand into
+        /// element 0, 1, 2, ..., (_growthFactor - 1).
+        /// </summary>
+        /// <example>
+        /// The below example illustrates using this view to double the size of a list of strings,
+        /// adding the number of each duplicate to the end of each string.
+        /// <code>
+        /// <![CDATA[
+        /// IReadOnlyList<string> original = new string[] {"A", "B", "C"};
+        /// print(original); //"A", "B", "C"
+        /// IReadOnlyList<string> grown = new GrowListView<string>(
+        ///     original, 3, (step, originalIndex, originalList) => $"{originalList[originalIndex]}-{step}");
+        /// print(grown); //"A-0", "A-1", "A-2", "B-0", "B-1", "B-2", "C-0", "C-1", "C-2"
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// <typeparam name="T">type of the input list</typeparam>
+        private class GrowListView<T> : ListViewDecorator<T>
+        {
+            private readonly IReadOnlyList<T> _inputList;
+            private readonly uint _growthFactor;
+            private readonly Func<int, int, IReadOnlyList<T>, T> _growthFunction;
+
+            public GrowListView(IReadOnlyList<T> inputList, uint growthFactor,
+                Func<int, int, IReadOnlyList<T>, T> growthFunction)
+            {
+                _inputList = inputList;
+                _growthFactor = growthFactor;
+                _growthFunction = growthFunction;
+            }
+
+            public override T this[int index] => _growthFunction.Invoke(
+                (int)(index % _growthFactor), //current step (starts at zero)
+                (int)Math.Floor((double)index / _growthFactor), //original index
+                _inputList); //original list
+
+            public override int Count => (int)(_inputList.Count * _growthFactor);
+        }
+
+        /// <summary>
         /// List view which zips two lists together by applying a mapping function.
         /// A view-only equivalent of Enumerable#Zip(...).
         /// </summary>
         /// <typeparam name="TFirst">type of the first input list</typeparam>
         /// <typeparam name="TSecond">type of the second input list</typeparam>
         /// <typeparam name="TOutput">type of the combined output list</typeparam>
-        private class ZipListView<TFirst, TSecond, TOutput> : IReadOnlyList<TOutput>
+        private class ZipListView<TFirst, TSecond, TOutput> : ListViewDecorator<TOutput>
         {
             private readonly IReadOnlyList<TFirst> _firstInput;
             private readonly IReadOnlyList<TSecond> _secondInput;
@@ -40,22 +115,10 @@ namespace ScottPlot.DataSources
                 _zippingFunction = zippingFunction;
             }
 
-            public TOutput this[int index] => _zippingFunction.Invoke(_firstInput[index], _secondInput[index]);
+            public override TOutput this[int index] =>
+                _zippingFunction.Invoke(_firstInput[index], _secondInput[index]);
 
-            public int Count => Math.Min(_firstInput.Count, _secondInput.Count);
-
-            public IEnumerator<TOutput> GetEnumerator()
-            {
-                for (int i = 0; i < Count; i++)
-                {
-                    yield return this[i];
-                }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            public override int Count => Math.Min(_firstInput.Count, _secondInput.Count);
         }
 
         /// <summary>
@@ -63,7 +126,7 @@ namespace ScottPlot.DataSources
         /// A view-only equivalent of Enumerable#Skip(N).
         /// </summary>
         /// <typeparam name="T">type of the original list</typeparam>
-        private class SkipListView<T> : IReadOnlyList<T>
+        private class SkipListView<T> : ListViewDecorator<T>
         {
             private readonly IReadOnlyList<T> _originalList;
             private readonly int _toSkip;
@@ -74,7 +137,7 @@ namespace ScottPlot.DataSources
                 _toSkip = toSkip;
             }
 
-            public T this[int index]
+            public override T this[int index]
             {
                 get
                 {
@@ -83,20 +146,7 @@ namespace ScottPlot.DataSources
                 }
             }
 
-            public int Count => Math.Max(_originalList.Count - _toSkip, 0);
-
-            public IEnumerator<T> GetEnumerator()
-            {
-                for (int i = 0; i < Count; i++)
-                {
-                    yield return this[i];
-                }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            public override int Count => Math.Max(_originalList.Count - _toSkip, 0);
         }
 
         /// <summary>
@@ -104,7 +154,7 @@ namespace ScottPlot.DataSources
         /// A view-only equivalent of Enumerable#Take(N).
         /// </summary>
         /// <typeparam name="T">type of the original list</typeparam>
-        private class TakeListView<T> : IReadOnlyList<T>
+        private class TakeListView<T> : ListViewDecorator<T>
         {
             private readonly IReadOnlyList<T> _originalList;
             private readonly int _toTake;
@@ -115,7 +165,7 @@ namespace ScottPlot.DataSources
                 _toTake = toTake;
             }
 
-            public T this[int index]
+            public override T this[int index]
             {
                 get
                 {
@@ -124,7 +174,14 @@ namespace ScottPlot.DataSources
                 }
             }
 
-            public int Count => Math.Min(_originalList.Count, _toTake);
+            public override int Count => Math.Min(_originalList.Count, _toTake);
+        }
+
+        private abstract class ListViewDecorator<T> : IReadOnlyList<T>
+        {
+            public abstract T this[int index] { get; }
+
+            public abstract int Count { get; }
 
             public IEnumerator<T> GetEnumerator()
             {
