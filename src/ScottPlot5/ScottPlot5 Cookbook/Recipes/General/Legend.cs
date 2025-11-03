@@ -151,6 +151,34 @@ public class Legend : ICategory
         }
     }
 
+    public class LegendOverrideSymbolAutoColor : RecipeBase
+    {
+        public override string Name => "Legend Marker Shape Override with auto color";
+        public override string Description => "Use the legend shape override " +
+            "to force all legend items to display using the given marker shape.";
+
+        [Test]
+        public override void Execute()
+        {
+            List<PieSlice> slices =
+            [
+                new PieSlice() { Value = 5, FillColor = Colors.Red, Label = "Red", LegendText = "R" },
+                new PieSlice() { Value = 2, FillColor = Colors.Orange, Label = "Orange" },
+                new PieSlice() { Value = 8, FillColor = Colors.Gold, Label = "Yellow" },
+                new PieSlice() { Value = 4, FillColor = Colors.Green, Label = "Green", LegendText = "G" },
+                new PieSlice() { Value = 8, FillColor = Colors.Blue, Label = "Blue", LegendText = "B" },
+            ];
+
+            myPlot.Legend.MarkerShapeOverride = MarkerShape.FilledCircle;
+
+            var pie = myPlot.Add.Pie(slices);
+
+            myPlot.Axes.Frameless();
+            myPlot.HideGrid();
+            myPlot.ShowLegend();
+        }
+    }
+
     public class LegendOrientation : RecipeBase
     {
         public override string Name => "Legend Orientation";
