@@ -62,7 +62,8 @@ public class MouseInteractWithPlottables(MouseButton button) : IUserActionRespon
                 InteractiveHandle? pressedHandle = plot.GetInteractiveHandle(buttonPressAction.Pixel.X, buttonPressAction.Pixel.Y);
                 if (pressedHandle is not null)
                 {
-                    pressedHandle.Parent.PressHandle(pressedHandle);
+                    var cs = plot.GetCoordinates(buttonPressAction.Pixel);
+                    pressedHandle.Parent.PressHandle(pressedHandle, cs);
                     plot.HandlePressed?.Invoke(this, pressedHandle);
                     InteractingHandle = pressedHandle;
                     InteractingPlot = plot;

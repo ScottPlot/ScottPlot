@@ -14,7 +14,7 @@ public class InteractiveVerticalLine : IPlottable, IHasInteractiveHandles
     public InteractiveHandle? GetHandle(CoordinateRect rect) =>
         rect.ContainsX(X) ? new InteractiveHandle(this, Cursor) : null;
     public virtual void MoveHandle(InteractiveHandle handle, Coordinates point) => X = point.X;
-    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void PressHandle(InteractiveHandle handle, Coordinates point) { }
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
 
     public virtual void Render(RenderPack rp)

@@ -51,7 +51,7 @@ public class InteractiveVerticalLineSegment : IPlottable, IHasInteractiveHandles
         }
     }
 
-    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void PressHandle(InteractiveHandle handle, Coordinates point) { }
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
 
     public virtual void Render(RenderPack rp)

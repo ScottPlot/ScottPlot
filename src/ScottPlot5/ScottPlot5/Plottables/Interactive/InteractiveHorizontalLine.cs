@@ -14,7 +14,7 @@ public class InteractiveHorizontalLine : IPlottable, IHasInteractiveHandles
     public InteractiveHandle? GetHandle(CoordinateRect rect) =>
         rect.ContainsY(Y) ? new InteractiveHandle(this, Cursor) : null;
     public virtual void MoveHandle(InteractiveHandle handle, Coordinates point) => Y = point.Y;
-    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void PressHandle(InteractiveHandle handle, Coordinates point) { }
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
 
     public virtual void Render(RenderPack rp)

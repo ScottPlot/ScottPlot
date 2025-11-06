@@ -48,7 +48,7 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
         }
     }
 
-    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void PressHandle(InteractiveHandle handle, Coordinates point) { }
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
     public virtual void MoveHandle(InteractiveHandle handle, Coordinates point)
     {

@@ -2,6 +2,9 @@ namespace ScottPlot.Plottables.Interactive;
 
 public class InteractiveRectangle : IPlottable, IHasInteractiveHandles
 {
+    private Coordinates DragStartPoint;
+    private CoordinateRect DragBaseRect;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
@@ -87,15 +90,21 @@ public class InteractiveRectangle : IPlottable, IHasInteractiveHandles
         }
         else if (handle.Index == (int)Handles.Body)
         {
-            double x1 = point.X - Rect.Width / 2;
-            double x2 = point.X + Rect.Width / 2;
-            double y1 = point.Y - Rect.Height / 2;
-            double y2 = point.Y + Rect.Height / 2;
+            var deltaX = point.X - DragStartPoint.X;
+            var deltaY = point.Y - DragStartPoint.Y;
+            double x1 = DragBaseRect.Left + deltaX;
+            double x2 = DragBaseRect.Right + deltaX;
+            double y1 = DragBaseRect.Bottom + deltaY;
+            double y2 = DragBaseRect.Top + deltaY;
             Rect = new(x1, x2, y1, y2);
         }
     }
 
-    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void PressHandle(InteractiveHandle handle, Coordinates point)
+    {
+        DragStartPoint = point;
+        DragBaseRect = Rect;
+    }
 
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
 

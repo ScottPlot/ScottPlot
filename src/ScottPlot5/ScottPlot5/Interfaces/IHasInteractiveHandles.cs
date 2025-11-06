@@ -10,7 +10,7 @@ public interface IHasInteractiveHandles
     /// <summary>
     /// Called when the given handle has been pressed (typically the start of a drag)
     /// </summary>
-    public void PressHandle(InteractiveHandle handle);
+    public void PressHandle(InteractiveHandle handle, Coordinates point);
 
     /// <summary>
     /// Called when the given handle has been moved (typically the result of a click-drag)

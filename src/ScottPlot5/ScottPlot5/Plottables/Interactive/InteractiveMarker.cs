@@ -18,7 +18,7 @@ public class InteractiveMarker : IPlottable, IHasInteractiveHandles
         rect.Contains(Point) ? new InteractiveHandle(this, Cursor) : null;
 
     public virtual void MoveHandle(InteractiveHandle handle, Coordinates point) => Point = point;
-    public virtual void PressHandle(InteractiveHandle handle) { }
+    public virtual void PressHandle(InteractiveHandle handle, Coordinates point) { }
     public virtual void ReleaseHandle(InteractiveHandle handle) { }
     public virtual void Render(RenderPack rp)
     {
