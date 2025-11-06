@@ -751,20 +751,20 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public InteractiveRectangle InteractiveRectangle(CoordinateRect rect)
-    {
-        InteractiveRectangle plottable = new() { Rect = rect };
-        plottable.LineStyle.Color = GetNextColor();
-        plottable.FillStyle.Color = plottable.LineStyle.Color.WithAlpha(.2);
-        Plot.PlottableList.Add(plottable);
-        return plottable;
-    }
-
     public InteractivePolygon InteractivePolygon(Coordinates[] vertices)
     {
         InteractivePolygon plottable = new(vertices);
         plottable.LineStyle.Color = GetNextColor();
         plottable.FillColor = plottable.LineStyle.Color.WithAlpha(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveRectangle InteractiveRectangle(CoordinateRect rect)
+    {
+        InteractiveRectangle plottable = new() { Rect = rect };
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillStyle.Color = plottable.LineStyle.Color.WithAlpha(.2);
         Plot.PlottableList.Add(plottable);
         return plottable;
     }
