@@ -760,6 +760,15 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractivePolygon InteractivePolygon(Coordinates[] vertices)
+    {
+        InteractivePolygon plottable = new(vertices);
+        plottable.LineStyle.Color = GetNextColor();
+        plottable.FillColor = plottable.LineStyle.Color.WithAlpha(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveVerticalLine InteractiveVerticalLine(double x)
     {
         InteractiveVerticalLine plottable = new() { X = x };

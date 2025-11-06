@@ -143,4 +143,27 @@ public class InteractivePlottables : ICategory
             }
         }
     }
+
+    public class InteractivePolygon : RecipeBase
+    {
+        public override string Name => "Interactive Polygons";
+        public override string Description => "Interactive polygons can be resized by dragging their vertices " +
+            "or repositioned by dragging their bodies";
+
+        [Test]
+        public override void Execute()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var count = Generate.RandomInteger(3, 7);
+                var vertices = new Coordinates[count];
+                for (int j = 0; j < count; j++)
+                {
+                    vertices[j] = Generate.RandomCoordinates();
+                }
+
+                myPlot.Add.InteractivePolygon(vertices);
+            }
+        }
+    }
 }
