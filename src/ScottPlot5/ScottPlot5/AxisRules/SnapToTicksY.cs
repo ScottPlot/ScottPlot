@@ -12,8 +12,10 @@ public class SnapToTicksY(IYAxis yAxis) : IAxisRule
             return;
 
         var inverted = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].IsInverted;
-        var oldTop = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Max;
-        var oldBottom = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Min;
+        var oldMax = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Max;
+        var oldMin = rp.Plot.LastRender.AxisLimitsByAxis[YAxis].Min;
+        var oldTop = inverted? oldMin : oldMax;
+        var oldBottom = inverted? oldMax : oldMin;
         var newLimits = YAxis.Range;
         double newTop = newLimits.Max;
         double newBottom = newLimits.Min;

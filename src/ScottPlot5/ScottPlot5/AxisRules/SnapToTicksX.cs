@@ -14,8 +14,10 @@ public class SnapToTicksX(IXAxis xAxis) : IAxisRule
             return;
 
         var inverted = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].IsInverted;
-        var oldRight = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
-        var oldLeft = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
+        var oldMax = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Max;
+        var oldMin = rp.Plot.LastRender.AxisLimitsByAxis[XAxis].Min;
+        var oldRight = inverted ? oldMin : oldMax;
+        var oldLeft = inverted ? oldMax : oldMin;
         var newLimits = XAxis.Range;
         double newRight = newLimits.Max;
         double newLeft = newLimits.Min;
