@@ -1,9 +1,9 @@
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp.Views.Windows;
+using System;
 
 namespace ScottPlot.WinUI;
 
@@ -19,6 +19,8 @@ public partial class WinUIPlot : UserControl, IPlotControl
     public float DisplayScale { get; set; } = 1;
 
     private readonly SKXamlCanvas _canvas = CreateRenderTarget();
+
+    float _userScaleRatio = 1.0f;
 
     public WinUIPlot()
     {
@@ -73,6 +75,16 @@ public partial class WinUIPlot : UserControl, IPlotControl
         Plot = plot;
         Plot.PlotControl = this;
         Multiplot.Reset(plot);
+
+        // Reset user scale ratio to default
+        _userScaleRatio = 1.0f;
+
+        // Reapply current display scale
+        if (XamlRoot is not null)
+        {
+            DisplayScale = (float)XamlRoot.RasterizationScale;
+            Plot.ScaleFactor = DisplayScale * _userScaleRatio;
+        }
     }
 
     public void Refresh()
@@ -134,13 +146,24 @@ public partial class WinUIPlot : UserControl, IPlotControl
         UserInputProcessor.ProcessKeyUp(this, e);
         base.OnKeyUp(e);
     }
-
+    
     public float DetectDisplayScale()
     {
         if (XamlRoot is not null)
         {
-            Plot.ScaleFactor = XamlRoot.RasterizationScale;
-            DisplayScale = (float)XamlRoot.RasterizationScale;
+            var oldDpiScale = DisplayScale;
+            var newDpiScale = (float)XamlRoot.RasterizationScale;
+
+            if (oldDpiScale > 0 &&
+                Math.Abs(Plot.ScaleFactor - oldDpiScale * _userScaleRatio) > 0.001f)
+            {
+                _userScaleRatio = (float)Plot.ScaleFactor / oldDpiScale;
+            }
+
+            DisplayScale = newDpiScale;
+            Plot.ScaleFactor = newDpiScale * _userScaleRatio;
+
+            Refresh();
         }
 
         return DisplayScale;
