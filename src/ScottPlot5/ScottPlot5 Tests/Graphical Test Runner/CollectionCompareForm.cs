@@ -28,7 +28,7 @@ public partial class CollectionCompareForm : Form
         }
 
         tbBefore.Text = defaultFolder;
-        tbAfter.Text = Path.GetFullPath(@"..\..\..\..\..\..\..\dev\www\cookbook\5.0\images");
+        tbAfter.Text = Path.GetFullPath(@"..\..\..\..\..\..\..\dev\www\cookbook\5\images");
 
         btnHelp.Click += (s, e) => new HelpForm().Show();
 
@@ -70,7 +70,7 @@ public partial class CollectionCompareForm : Form
 
         btnCB.Click += (s, e) =>
         {
-            string path = Path.GetFullPath("../../../../../../../dev/www/cookbook/5.0/images");
+            string path = Path.GetFullPath("../../../../../../../dev/www/cookbook/5/images");
             Process.Start("explorer.exe", path);
         };
 

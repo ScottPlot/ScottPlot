@@ -9,12 +9,12 @@ public static class Version
     public static int Build => int.Parse(VersionString.Split('-')[0].Split('.')[2]);
 
     /// <summary>
-    /// Version formatted like "5.0.0-beta"
+    /// Version formatted like "1.2.3-beta"
     /// </summary>
     public static string VersionString { get; private set; } = GetVersionString();
 
     /// <summary>
-    /// Version formatted like "ScottPlot 5.0.0-beta"
+    /// Version formatted like "ScottPlot 1.2.3-beta"
     /// </summary>
     public static string LongString { get; private set; } = "ScottPlot " + GetVersionString();
 

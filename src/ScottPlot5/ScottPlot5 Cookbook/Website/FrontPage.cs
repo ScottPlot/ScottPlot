@@ -54,7 +54,7 @@ internal class FrontPage : PageBase
         }
 
         string breadcrumbName1 = "ScottPlot 5 Cookbook";
-        string breadcrumbUrl1 = "/cookbook/5.0/";
+        string breadcrumbUrl1 = "/cookbook/5/";
 
         string[] fm =
         {
@@ -66,7 +66,7 @@ internal class FrontPage : PageBase
             title: "ScottPlot 5 Cookbook",
             description: "Example plots shown next to the code used to create them",
             filename: "index_.md",
-            url: "/cookbook/5.0/",
+            url: "/cookbook/5/",
             frontmatter: fm);
     }
 

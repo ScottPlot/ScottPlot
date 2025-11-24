@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.WinForms;
+namespace ScottPlot.WinForms;
 
 partial class FormsPlotDesignerAlternative
 {
@@ -42,7 +42,7 @@ partial class FormsPlotDesignerAlternative
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(222, 40);
             this.label1.TabIndex = 0;
-            this.label1.Text = "ScottPlot 5.0.00";
+            this.label1.Text = "ScottPlot 5";
             // 
             // label2
             // 

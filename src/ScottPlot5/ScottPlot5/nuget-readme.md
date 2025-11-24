@@ -2,7 +2,7 @@
 
 [![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/ScottPlot.gif)](https://scottplot.net)
 
-The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5.0/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
+The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
 ## Quickstart
 
@@ -50,6 +50,6 @@ The [**ScottPlot Demo**](https://scottplot.net/demo/) allows you to run these ex
 
 ## ScottPlot Cookbook
 
-The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5.0/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
+The [**ScottPlot Cookbook**](https://scottplot.net/cookbook/5/) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
-[![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://scottplot.net/cookbook/5.0/)
+[![](https://raw.githubusercontent.com/ScottPlot/ScottPlot/master/dev/graphics/cookbook.jpg)](https://scottplot.net/cookbook/5/)

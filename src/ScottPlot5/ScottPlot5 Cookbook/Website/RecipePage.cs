@@ -14,7 +14,7 @@ internal class RecipePage : PageBase
         SB.AppendLine(RecipeHtml.GetMarkdownForSingleRecipePage(Recipe));
 
         string breadcrumbName1 = "ScottPlot 5 Cookbook";
-        string breadcrumbUrl1 = "/cookbook/5.0/";
+        string breadcrumbUrl1 = "/cookbook/5/";
 
         string breadcrumbName2 = Recipe.Category;
         string breadcrumbUrl2 = Recipe.AnchorUrl.Split("#")[0];
