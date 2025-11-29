@@ -2,6 +2,11 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Avalonia.Input;
+using Avalonia.Input.Platform;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 
 namespace ScottPlot.Avalonia;
 
@@ -25,6 +30,12 @@ public class AvaPlotMenu : IPlotMenu
             OnInvoke = OpenSaveImageDialog
         };
 
+        ContextMenuItem copyImage = new()
+        {
+            Label = "Copy to Clipboard",
+            OnInvoke = CopyToClipboard
+        };
+
         // TODO: Copying images to the clipboard is still difficult in Avalonia
         // https://github.com/AvaloniaUI/Avalonia/issues/3588
 
@@ -36,6 +47,7 @@ public class AvaPlotMenu : IPlotMenu
 
         return new ContextMenuItem[] {
             saveImage,
+            copyImage,
             autoscale,
         };
     }
@@ -90,6 +102,41 @@ public class AvaPlotMenu : IPlotMenu
         new("SVG Files") { Patterns = new List<string> { "*.svg" } },
         new("All Files") { Patterns = new List<string> { "*" } },
     };
+
+    public async void CopyToClipboard(Plot plot)
+    {
+        if (TopLevel.GetTopLevel(ThisControl)?.Clipboard is { } clipboard)
+        {
+            PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
+            var img = plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
+            var bytes = img.GetImageBytes(ImageFormat.Bmp);
+            
+            IntPtr p = IntPtr.Zero;
+
+            // Regrettably the Avalonia API takes only an IntPtr. So we just copy the bytes over
+            // There is no safe API that allows you to get an IntPtr to a byte[] w/o copying
+            // Not that Marshal.Copy is a safe API, but it doesn't require the unsafe keyword
+            try
+            {
+                p = Marshal.AllocHGlobal(bytes.Length);
+                Marshal.Copy(bytes, 0, p, bytes.Length);
+
+                Bitmap bitmap = new Bitmap(
+                    PixelFormat.Bgra8888, // This may cause problems on other platforms where SKImage isn't BGRA/ARGB
+                    AlphaFormat.Unpremul, // Ditto
+                    p,
+                    new global::Avalonia.PixelSize((int)lastRenderSize.Width, (int)lastRenderSize.Height),
+                    global::Avalonia.Vector.Zero, // (0, 0) for DPI means undefined
+                    img.Width * 4 // We're already assuming a byte-order that's 32bpp
+                );
+                await clipboard.SetValueAsync(DataFormat.Bitmap, bitmap);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(p);
+            }
+        }
+    }
 
     public void Autoscale(Plot plot)
     {
