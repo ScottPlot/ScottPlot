@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using ScottPlot.IO;
 
 namespace ScottPlot.Avalonia;
 
@@ -110,6 +111,17 @@ public class AvaPlotMenu : IPlotMenu
             PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
             var img = plot.GetImage((int)lastRenderSize.Width, (int)lastRenderSize.Height);
             var bytes = img.GetImageBytes(ImageFormat.Bmp);
+            var pixelFormat = img.PixelFormat == PixelFormat.Bgra8888 // We assume that this is one of the normal 32bpp formats
+                ? global::Avalonia.Platform.PixelFormat.Bgra8888
+                : global::Avalonia.Platform.PixelFormat.Rgba8888;
+
+            var alphaType = img.AlphaType switch
+            {
+                AlphaType.Opaque => AlphaFormat.Opaque,
+                AlphaType.Premultiplied => AlphaFormat.Premul,
+                AlphaType.Unpremultiplied => AlphaFormat.Unpremul,
+                _ => AlphaFormat.Unpremul
+            };
             
             IntPtr p = IntPtr.Zero;
 
@@ -119,15 +131,16 @@ public class AvaPlotMenu : IPlotMenu
             try
             {
                 p = Marshal.AllocHGlobal(bytes.Length);
-                Marshal.Copy(bytes, 0, p, bytes.Length);
-
+                // If we don't skip the bitmap header it will ignore what we say about the colour format
+                Marshal.Copy(bytes, BitmapHeader.FileHeaderSize, p, bytes.Length - BitmapHeader.FileHeaderSize);
+                
                 Bitmap bitmap = new Bitmap(
-                    PixelFormat.Bgra8888, // This may cause problems on other platforms where SKImage isn't BGRA/ARGB
-                    AlphaFormat.Unpremul, // Ditto
+                    pixelFormat,
+                    alphaType,
                     p,
                     new global::Avalonia.PixelSize((int)lastRenderSize.Width, (int)lastRenderSize.Height),
                     global::Avalonia.Vector.Zero, // (0, 0) for DPI means undefined
-                    img.Width * 4 // We're already assuming a byte-order that's 32bpp
+                    img.Width * 4 // We're assuming 32bpp
                 );
                 await clipboard.SetValueAsync(DataFormat.Bitmap, bitmap);
             }
