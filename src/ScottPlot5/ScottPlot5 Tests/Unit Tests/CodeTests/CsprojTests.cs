@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 namespace ScottPlotTests.CodeTests;
+
 internal class CsprojTests
 {
     readonly static Dictionary<string, string[]> ProjectFileContents = Directory
