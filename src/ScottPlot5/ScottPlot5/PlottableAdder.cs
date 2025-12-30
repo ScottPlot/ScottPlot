@@ -743,17 +743,6 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
-    public InteractiveTrendLine InteractiveTrendLine(CoordinateLine line)
-    {
-        InteractiveTrendLine plottable = new()
-        {
-            Line = line,
-            Color = GetNextColor(),
-        };
-        Plot.PlottableList.Add(plottable);
-        return plottable;
-    }
-
     public InteractiveMarker InteractiveMarker(Coordinates point)
     {
         InteractiveMarker plottable = new() { Point = point };
@@ -767,6 +756,17 @@ public class PlottableAdder(Plot plot)
         InteractiveRectangle plottable = new() { Rect = rect };
         plottable.LineStyle.Color = GetNextColor();
         plottable.FillStyle.Color = plottable.LineStyle.Color.WithAlpha(.2);
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
+    public InteractiveTrendLine InteractiveTrendLine(CoordinateLine line)
+    {
+        InteractiveTrendLine plottable = new()
+        {
+            Line = line,
+            Color = GetNextColor(),
+        };
         Plot.PlottableList.Add(plottable);
         return plottable;
     }
