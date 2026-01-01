@@ -29,13 +29,65 @@ public class InteractiveTrendLine : IPlottable, IHasInteractiveHandles
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        // First check if the mouse is directly over one of the control points
         if (rect.Contains(MutableLine.Point1))
             return new InteractiveHandle(this, Cursor, (int)Node.Point1);
 
         if (rect.Contains(MutableLine.Point2))
             return new InteractiveHandle(this, Cursor, (int)Node.Point2);
 
+        // Check if the infinite line passes through the rect. This allows the user to manipulate the line without
+        //   having to see one of the 2 points on the screen - fairly necessary due to being an infinite line
+        if (LineIntersectsRect(rect))
+        {
+            // Determine which control point is closer to the mouse and return that point
+            Coordinates mousePos = rect.Center;
+            double dist1 = mousePos.Distance(MutableLine.Point1);
+            double dist2 = mousePos.Distance(MutableLine.Point2);
+
+            return dist1 < dist2
+                ? new InteractiveHandle(this, Cursor, (int)Node.Point1)
+                : new InteractiveHandle(this, Cursor, (int)Node.Point2);
+        }
+
         return null;
+    }
+
+    /// <summary>
+    /// Check if the infinite line passes through or near the given rectangle
+    /// </summary>
+    private bool LineIntersectsRect(CoordinateRect rect)
+    {
+        CoordinateLine line = MutableLine.CoordinateLine;
+
+        // Handle vertical line case
+        var dx = line.X2 - line.X1;
+        if (Math.Abs(dx) < 1e-10)
+            return rect.ContainsX(line.X1);
+
+        // Handle horizontal line case
+        var dy = line.Y2 - line.Y1;
+        if (Math.Abs(dy) < 1e-10)
+            return rect.ContainsY(line.Y1);
+
+        // General case: check if line intersects the rectangle
+        // Calculate Y values at left and right edges of rect
+        var slope = dy / dx;
+        var yIntercept = line.Y1 - slope * line.X1;
+        var yAtLeft = slope * rect.Left + yIntercept;
+        var yAtRight = slope * rect.Right + yIntercept;
+
+        // Check if either Y value is within the rect's Y range
+        if (rect.ContainsY(yAtLeft) || rect.ContainsY(yAtRight))
+            return true;
+
+        // Also check if the line crosses through the rect vertically
+        // (i.e., one Y is above and one is below)
+        if ((yAtLeft < rect.Bottom && yAtRight > rect.Top) ||
+            (yAtLeft > rect.Top && yAtRight < rect.Bottom))
+            return true;
+
+        return false;
     }
 
     public Color Color
