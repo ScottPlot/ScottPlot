@@ -12,6 +12,5 @@ public interface IPlotMenu
 
     public void AddSeparator();
 
-
     void ShowContextMenu(Pixel pixel);
 }
