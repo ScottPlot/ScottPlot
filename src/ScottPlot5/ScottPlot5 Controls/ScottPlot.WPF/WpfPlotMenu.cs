@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.IO;
+using System.Linq;
 
 namespace ScottPlot.WPF;
 
@@ -79,7 +80,7 @@ public class WpfPlotMenu : IPlotMenu
     public void ShowContextMenu(Pixel pixel)
     {
         Plot? plot = ThisControl.GetPlotAtPixel(pixel);
-        if (plot is null)
+        if (plot is null || ContextMenuItems.Count == 0)
             return;
         var menu = GetContextMenu(plot);
         menu.PlacementTarget = ThisControl;

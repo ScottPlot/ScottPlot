@@ -119,7 +119,7 @@ public class WinUIPlotMenu : IPlotMenu
     public void ShowContextMenu(Pixel pixel)
     {
         Plot? plot = ThisControl.GetPlotAtPixel(pixel);
-        if (plot is null)
+        if (plot is null || ContextMenuItems.Count == 0)
             return;
         MenuFlyout flyout = GetContextMenu(plot);
         Windows.Foundation.Point pt = new(pixel.X, pixel.Y);
