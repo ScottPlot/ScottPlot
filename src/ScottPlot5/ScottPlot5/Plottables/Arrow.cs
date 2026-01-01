@@ -7,6 +7,7 @@ public class Arrow : IPlottable, IHasArrow, IHasLegendText
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => [new LegendItem() { ArrowStyle = ArrowStyle, LabelText = LegendText }];
     public string LegendText { get; set; } = string.Empty;
 

@@ -9,6 +9,7 @@ public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IMa
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IAxisLimitManager AxisManager { get; set; } = new Full();
     public bool Rotated { get; set; }
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };

@@ -4,6 +4,7 @@ public class Signal(ISignalSource data) : IPlottable, IHasLine, IHasMarker, IHas
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public ISignalSource Data { get; set; } = data;
 

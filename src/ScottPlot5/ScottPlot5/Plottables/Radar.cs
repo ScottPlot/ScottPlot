@@ -37,6 +37,7 @@ public class Radar() : IPlottable, IManagesAxisLimits
         get => PolarAxis.Axes;
         set => PolarAxis.Axes = value;
     }
+    public object? Tag { get; set; }
 
     public IEnumerable<LegendItem> LegendItems => Series.Select(s => new LegendItem
     {

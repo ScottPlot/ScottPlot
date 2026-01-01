@@ -17,6 +17,7 @@ public class TickModifierLabel : IPlottable
     /// The axis this tick modifier will modify tick labels for
     /// </summary>
     public IAxis Axis { get; }
+    public object? Tag { get; set; }
 
     /// <summary>
     /// This logic determines where the text will be placed relative to the data area

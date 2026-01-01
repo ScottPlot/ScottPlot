@@ -33,4 +33,9 @@ public interface IPlottable
     /// Items which will appear in the legend
     /// </summary>
     IEnumerable<LegendItem> LegendItems { get; } // TODO: this should be a method GetLegendItems()
+
+    /// <summary>
+    /// Gets or sets an arbitrary object value that can be used to store custom information about this element
+    /// </summary>
+    public object? Tag { get; set; }
 }

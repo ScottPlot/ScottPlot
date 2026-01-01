@@ -9,6 +9,7 @@ public class PopulationSymbol(Population population) : IPlottable
     private readonly List<double> RandomXs = [];
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     public double X { get; set; } = 0;

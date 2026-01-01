@@ -10,6 +10,7 @@ namespace ScottPlot.Plottables;
 public class RadialGaugePlot : IPlottable
 {
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     /// <summary>
     /// This array holds the original levels passed-in by the user. 

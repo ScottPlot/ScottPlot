@@ -4,6 +4,7 @@ public class Rectangle : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => [new LegendItem()
     {
         LabelText = LegendText,

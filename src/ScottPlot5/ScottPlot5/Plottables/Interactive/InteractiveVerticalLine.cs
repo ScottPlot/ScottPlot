@@ -4,6 +4,7 @@ public class InteractiveVerticalLine : IPlottable, IHasInteractiveHandles
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public Cursor Cursor { get; set; } = Cursor.SizeWestEast;
     public LineStyle LineStyle { get; } = new LineStyle(2, Colors.Black);

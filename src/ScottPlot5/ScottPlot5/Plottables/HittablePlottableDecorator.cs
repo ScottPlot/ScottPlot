@@ -13,6 +13,7 @@ namespace ScottPlot.Plottables
         public IPlottable Source { get; }
         public bool IsVisible { get => Source.IsVisible; set => Source.IsVisible = value; }
         public IAxes Axes { get => Source.Axes; set => Source.Axes = value; }
+        public object? Tag { get; set; }
 
         public IEnumerable<LegendItem> LegendItems => Source.LegendItems;
 

@@ -116,6 +116,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
     public Alignment ShadowAlignment { get; set; } = Alignment.LowerRight;
 
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;
 

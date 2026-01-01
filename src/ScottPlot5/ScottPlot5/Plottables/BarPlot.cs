@@ -11,6 +11,7 @@ public class BarPlot : IPlottable, IHasLegendText, IRenderLast
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public List<Bar> Bars { get; } // TODO: bar plot data source?
 

@@ -7,6 +7,7 @@ public class BoxPlot : IPlottable, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }

@@ -7,6 +7,7 @@ public class TINPlot : IPlottable
     public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public AxisLimits GetAxisLimits() => TIN.AxisLimits.AxisLimits2d;
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, MarkerStyle);

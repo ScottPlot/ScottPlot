@@ -4,6 +4,7 @@ public class ImageMarker : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public ScottPlot.Image? Image { get; set; } = null;
     public Coordinates Location { get; set; }
     public float Scale { get; set; } = 1;

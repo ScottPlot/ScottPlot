@@ -5,6 +5,7 @@ public class CandlestickPlot(IOHLCSource data) : IPlottable
     public bool IsVisible { get; set; } = true;
 
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public IOHLCSource Data { get; } = data;
 

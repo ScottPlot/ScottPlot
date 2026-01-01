@@ -4,6 +4,7 @@ public class ImageRect() : IPlottable
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public Image? Image { get; set; } = null;
     public CoordinateRect Rect { get; set; } = new(0, 1, 0, 1);
     public bool AntiAlias { get; set; } = true;

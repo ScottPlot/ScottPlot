@@ -4,6 +4,7 @@ public abstract class AxisSpan : IPlottable, IHasLine, IHasFill, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
 
     [Obsolete("set LegendText")]
