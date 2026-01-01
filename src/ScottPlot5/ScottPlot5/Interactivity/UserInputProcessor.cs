@@ -160,7 +160,7 @@ public class UserInputProcessor
     IUserActionResponse? PrimaryResponse = null;
 
     /// <summary>
-    /// Process a user input and return results of the responses that engaged with it
+    /// Process a user input
     /// </summary>
     public void Process(IUserAction userAction)
     {
