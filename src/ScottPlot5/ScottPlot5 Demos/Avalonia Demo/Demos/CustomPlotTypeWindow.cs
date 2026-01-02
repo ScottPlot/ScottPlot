@@ -1,13 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using ScottPlot;
-using ScottPlot.Plottables;
-using SkiaSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia_Demo.Demos;
 
@@ -52,6 +46,7 @@ internal class RainbowPlot : IPlottable
     // items required by IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => new(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
 
