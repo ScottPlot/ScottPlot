@@ -7,7 +7,7 @@ namespace ScottPlot;
 
 public class Plot : IDisposable
 {
-    public List<IPlottable> PlottableList { get; } = [];
+    public List<IPlottable> PlottableList { get; } = []; 
     public PlottableAdder Add { get; }
     public RenderManager RenderManager { get; }
     public RenderDetails LastRender => RenderManager.LastRender;
