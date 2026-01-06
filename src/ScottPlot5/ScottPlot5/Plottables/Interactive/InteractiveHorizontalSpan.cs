@@ -4,6 +4,7 @@ public class InteractiveHorizontalSpan : IPlottable, IHasInteractiveHandles
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public Cursor EdgeCursor { get; set; } = Cursor.SizeWestEast;
     public Cursor BodyCursor { get; set; } = Cursor.SizeAll;

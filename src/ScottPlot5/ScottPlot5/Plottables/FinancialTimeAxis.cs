@@ -12,6 +12,7 @@ public class FinancialTimeAxis(DateTime[] dateTimes) : IPlottable
     public DateTime[] DateTimes { get; set; } = dateTimes;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     double widthOfCandleInPixels;
     const string labelFormat = "   HH:mm:ss   ";

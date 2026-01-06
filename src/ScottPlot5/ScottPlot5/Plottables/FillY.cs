@@ -7,6 +7,7 @@ public class FillY : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendText
     public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get => Poly.Axes; set => Poly.Axes = value; }
+    public object? Tag { get; set; }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, FillStyle, LineStyle);
 

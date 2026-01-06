@@ -4,6 +4,7 @@ public class InteractiveMarker : IPlottable, IHasInteractiveHandles
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public Cursor Cursor { get; set; } = Cursor.Hand;
     public MarkerStyle MarkerStyle { get; set; } = new(MarkerShape.FilledCircle, 15, Colors.Black);
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;

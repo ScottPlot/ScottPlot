@@ -9,6 +9,7 @@ public class TriangularAxis(bool clockwise) : IPlottable
     public bool Clockwise { get; } = clockwise;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     public double Padding { get; set; } = 0.25;

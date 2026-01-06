@@ -7,6 +7,7 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public Cursor Cursor { get; set; } = Cursor.Hand;
 

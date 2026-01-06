@@ -10,6 +10,7 @@ public class DataStreamerXY(int capacity) : IPlottable, IManagesAxisLimits, IHas
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle);
     public string LegendText { get; set; } = string.Empty;

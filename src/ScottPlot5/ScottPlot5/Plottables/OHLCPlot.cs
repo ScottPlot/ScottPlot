@@ -5,6 +5,7 @@ public class OhlcPlot(IOHLCSource data) : IPlottable
     public bool IsVisible { get; set; } = true;
 
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     private readonly IOHLCSource Data = data;
 

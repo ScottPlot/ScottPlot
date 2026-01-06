@@ -39,6 +39,7 @@ public class Tooltip : LabelStyleProperties, IPlottable, IHasLine, IHasFill
     public IHatch? FillHatch { get => FillStyle.Hatch; set => FillStyle.Hatch = value; }
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 

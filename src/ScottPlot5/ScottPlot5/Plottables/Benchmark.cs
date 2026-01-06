@@ -6,6 +6,8 @@ public class Benchmark : LabelStyleProperties, IPlottable
 
     public IAxes Axes { get; set; } = new Axes();
 
+    public object? Tag { get; set; }
+
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
 
     public AxisLimits GetAxisLimits() => AxisLimits.NoLimits;

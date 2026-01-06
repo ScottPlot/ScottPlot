@@ -7,6 +7,7 @@ public class Markers(IScatterSource data) : IPlottable, IHasMarker, IHasLegendTe
     public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public MarkerStyle MarkerStyle { get; set; } = new() { LineWidth = 1 };
     public MarkerShape MarkerShape { get => MarkerStyle.Shape; set => MarkerStyle.Shape = value; }

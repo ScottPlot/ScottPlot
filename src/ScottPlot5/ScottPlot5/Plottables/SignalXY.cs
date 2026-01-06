@@ -8,6 +8,7 @@ public class SignalXY(ISignalXYSource dataSource) : IPlottable, IHasLine, IHasMa
     public int XAxisIndex { get; set; } = 0;
     public int YAxisIndex { get; set; } = 0;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }

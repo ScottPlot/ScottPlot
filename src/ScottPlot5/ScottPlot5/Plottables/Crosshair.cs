@@ -38,6 +38,7 @@ public class Crosshair : IPlottable, IRenderLast, IHasMarker
     public bool EnableAutoscale { get; set; } = false;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => HorizontalLine.LegendItems.Concat(VerticalLine.LegendItems);
     public AxisLimits GetAxisLimits() => EnableAutoscale ? new(X, X, Y, Y) : AxisLimits.NoLimits;
 

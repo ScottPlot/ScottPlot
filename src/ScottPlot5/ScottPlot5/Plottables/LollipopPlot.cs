@@ -5,6 +5,7 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
     public bool IsVisible { get; set; } = true;
 
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     public string LegendText { get; set; } = string.Empty;
 

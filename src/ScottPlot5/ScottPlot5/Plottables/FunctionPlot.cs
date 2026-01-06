@@ -4,6 +4,7 @@ public class FunctionPlot(IFunctionSource source) : IPlottable, IHasLine, IHasLe
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     [Obsolete("use LegendText")]
     public string Label { get => LegendText; set => LegendText = value; }
     public string LegendText { get; set; } = string.Empty;

@@ -6,6 +6,7 @@ namespace ScottPlot.Plottables
 
         public bool IsVisible { get; set; } = true;
         public IAxes Axes { get; set; } = new Axes();
+        public object? Tag { get; set; }
 
         public IReadOnlyList<double> Xs { get; set; }
         public IReadOnlyList<double> Ys { get; set; }

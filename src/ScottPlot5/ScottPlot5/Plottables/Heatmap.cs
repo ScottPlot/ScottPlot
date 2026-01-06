@@ -10,6 +10,7 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     private IColormap _colormap { get; set; } = new Colormaps.Viridis();
     public IColormap Colormap
     {

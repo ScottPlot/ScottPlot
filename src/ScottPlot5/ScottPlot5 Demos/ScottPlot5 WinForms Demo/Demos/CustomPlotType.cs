@@ -1,5 +1,4 @@
 using ScottPlot;
-using SkiaSharp;
 
 namespace WinForms_Demo.Demos;
 
@@ -32,6 +31,7 @@ class RainbowPlot : IPlottable
     // items required by IPlottable
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.None;
     public AxisLimits GetAxisLimits() => new(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
 

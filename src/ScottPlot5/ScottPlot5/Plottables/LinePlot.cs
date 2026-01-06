@@ -30,6 +30,7 @@ public class LinePlot : IPlottable, IHasLine, IHasMarker, IHasLegendText
     public string LegendText { get; set; } = string.Empty;
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public IEnumerable<LegendItem> LegendItems => LegendItem.Single(this, LegendText, LineStyle, MarkerStyle);
 
     public LineStyle LineStyle { get; set; } = new() { Width = 1 };

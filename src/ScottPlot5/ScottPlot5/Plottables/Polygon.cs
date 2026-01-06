@@ -41,6 +41,7 @@ public class Polygon : IPlottable, IHasLine, IHasFill, IHasMarker, IHasLegendTex
     public int PointCount { get => Coordinates.Length; }
 
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
 
     private AxisLimits limits;
 

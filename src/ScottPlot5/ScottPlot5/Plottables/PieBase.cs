@@ -3,6 +3,7 @@ namespace ScottPlot.Plottables;
 public abstract class PieBase : IPlottable, IManagesAxisLimits, IHasLine
 {
     public IAxes Axes { get; set; } = new Axes();
+    public object? Tag { get; set; }
     public bool IsVisible { get; set; } = true;
 
     public Angle Rotation { get; set; } = Angle.FromDegrees(-90);
