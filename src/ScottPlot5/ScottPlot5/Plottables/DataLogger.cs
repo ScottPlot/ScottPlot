@@ -142,7 +142,7 @@ public class DataLogger(List<Coordinates>? coordinates = null) : IPlottable, IMa
         Pixel[] markerPixels = Rotated ? Data.GetPixelsToDrawVertically(rp, Axes, ConnectStyle)
                                        : Data.GetPixelsToDrawHorizontally(rp, Axes, ConnectStyle);
 
-        Pixel[] linePixels = ConnectStyle switch
+        IReadOnlyList<Pixel> linePixels = ConnectStyle switch
         {
             ConnectStyle.Straight => markerPixels,
             ConnectStyle.StepHorizontal => Scatter.GetStepDisplayPixels(markerPixels, true),
