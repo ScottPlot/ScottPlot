@@ -20,6 +20,9 @@ public class InteractiveVerticalLineSegment : IPlottable, IHasInteractiveHandles
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        if (!IsVisible)
+            return null;
+
         if (rect.ContainsX(X) == false)
             return null;
 
