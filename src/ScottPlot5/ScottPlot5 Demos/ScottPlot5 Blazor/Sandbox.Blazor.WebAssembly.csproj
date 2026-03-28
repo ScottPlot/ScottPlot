@@ -1,50 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <IncludeSymbols>True</IncludeSymbols>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <IncludeSymbols>True</IncludeSymbols>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+        <GenerateStaticWebAssetsEndpointsManifest>true</GenerateStaticWebAssetsEndpointsManifest>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Optimize>True</Optimize>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BlazorObservers" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" PrivateAssets="all" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="BlazorObservers" Version="1.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.*" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.*" PrivateAssets="all" />
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    </ItemGroup>
 
-  <ItemGroup>
-      <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
-      <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Blazor\ScottPlot.Blazor.csproj" />
-      <ProjectReference Include="..\..\ScottPlot5 Cookbook\ScottPlot Cookbook.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.Blazor\ScottPlot.Blazor.csproj" />
+        <ProjectReference Include="..\..\ScottPlot5 Cookbook\ScottPlot Cookbook.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="wwwroot\js\highlight.min.js">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\languages\csharp.min.js">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+    <ItemGroup>
+        <Content Update="wwwroot\js\highlight.min.js">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\js\languages\csharp.min.js">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Shared\NavMenu.razor" />
-  </ItemGroup>
+    <ItemGroup>
+        <UpToDateCheckInput Remove="Shared\NavMenu.razor" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
-  </ItemGroup>
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Layout\NavMenu.razor" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="Layout\NavMenu.razor" />
+    </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <SignAssembly>false</SignAssembly>
         <WasmNativeStrip>false</WasmNativeStrip>
+        <GenerateStaticWebAssetsEndpointsManifest>true</GenerateStaticWebAssetsEndpointsManifest>
     </PropertyGroup>
 
     <ItemGroup>
