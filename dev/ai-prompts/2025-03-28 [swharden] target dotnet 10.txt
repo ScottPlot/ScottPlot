@@ -103,3 +103,15 @@ Added `<WindowsPackageType>None</WindowsPackageType>` to the project. This tells
 
 This is the same approach your `Sandbox.WinUI.Desktop` project already uses. Rebuild and run again from Visual Studio.
 
+---
+
+> I tried to update the Sandbox.UnoPlatform project from .NET 8 to .NET 10 now I get the following build error:
+> 
+> Assembly 'ScottPlot.WinUI' with identity 'ScottPlot.WinUI, Version=5.1.58.0, Culture=neutral, PublicKeyToken=86698dc10387c39e' uses 'WinRT.Runtime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=99ea127f02d97709' which has a higher version than referenced assembly 'WinRT.Runtime' with identity 'WinRT.Runtime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=99ea127f02d97709'
+
+The error tells us that `ScottPlot.WinUI` was compiled against `WinRT.Runtime` 2.2.0.0 (via its `Microsoft.WindowsAppSDK` 1.5.240802000 dependency), but the Uno SDK 5.3.90 resolves `WinRT.Runtime` to the older 2.0.0.0. The fix is to add an explicit package reference to `Microsoft.Windows.CsWinRT` 2.2.0 in the Uno project so NuGet resolves to the version that `ScottPlot.WinUI` expects.
+
+Let me first confirm the current file contents, then apply the fix:
+The `Microsoft.Windows.CsWinRT` package is what provides the `WinRT.Runtime` assembly. By adding an explicit reference to version **2.2.0**, NuGet will resolve `WinRT.Runtime` to 2.2.0.0 — matching what `ScottPlot.WinUI` was compiled against — instead of the older 2.0.0.0 that the Uno SDK 5.3.90 brings in by default.
+
+Rebuild the project and the version mismatch error should be resolved.
