@@ -49,8 +49,8 @@
 
     <!-- Package dependencies -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.*" Condition="'$(TargetFramework)' == 'net10.0'" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.*" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0" Condition="'$(TargetFramework)' == 'net10.0'" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0" Condition="'$(TargetFramework)' == 'net8.0'" />
         <PackageReference Include="SkiaSharp.Views.Blazor" Version="3.119.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
