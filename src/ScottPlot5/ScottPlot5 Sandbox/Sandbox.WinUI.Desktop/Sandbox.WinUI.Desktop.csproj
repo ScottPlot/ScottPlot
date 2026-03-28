@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+        <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
         <WindowsPackageType>None</WindowsPackageType>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
