@@ -131,6 +131,8 @@ public class AvaPlot : Controls.Control, IPlotControl
         {
             UserInputProcessor.ProcessMouseWheel(pixel, delta);
         }
+		
+        e.Handled = true; // Prevent the event from bubbling up to parent controls (e.g., ScrollViewer)
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
