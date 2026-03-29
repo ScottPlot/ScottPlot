@@ -16,7 +16,7 @@ internal class TriangleWithLineLeft : IMarker
         var triangleHeight = (float)(size * .8);
         var triangleWidth = (float)(size * .5);
         var centerOfTriangle = center.MovedLeft(halfWidth - (triangleWidth / 2));
-        
+
         var left = centerOfTriangle.X - (triangleWidth / 2);
         var right = centerOfTriangle.X + (triangleWidth / 2);
         var top = centerOfTriangle.Y - (triangleHeight / 2);

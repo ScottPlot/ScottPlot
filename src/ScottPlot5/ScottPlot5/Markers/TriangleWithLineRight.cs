@@ -1,6 +1,6 @@
 namespace ScottPlot.Markers;
 
-internal class TriangleWithLineRight: IMarker
+internal class TriangleWithLineRight : IMarker
 {
     public void Render(SKCanvas canvas, Paint paint, Pixel center, float size, MarkerStyle markerStyle)
     {
@@ -16,7 +16,7 @@ internal class TriangleWithLineRight: IMarker
         var triangleHeight = (float)(size * .8);
         var triangleWidth = (float)(size * .5);
         var centerOfTriangle = center.MovedRight(halfWidth - (triangleWidth / 2));
-        
+
         var left = centerOfTriangle.X - (triangleWidth / 2);
         var right = centerOfTriangle.X + (triangleWidth / 2);
         var top = centerOfTriangle.Y - (triangleHeight / 2);
