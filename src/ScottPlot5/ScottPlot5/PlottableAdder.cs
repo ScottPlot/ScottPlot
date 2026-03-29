@@ -764,6 +764,8 @@ public class PlottableAdder(Plot plot)
     {
         InteractiveVerticalLine plottable = new() { X = x };
         plottable.LineStyle.Color = GetNextColor();
+        plottable.LabelBackgroundColor = plottable.LineStyle.Color;
+        plottable.LabelFontColor = Colors.White;
         Plot.PlottableList.Add(plottable);
         return plottable;
     }
