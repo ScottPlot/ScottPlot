@@ -1,15 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <SignAssembly>false</SignAssembly>
+        <WasmNativeStrip>false</WasmNativeStrip>
+        <GenerateStaticWebAssetsEndpointsManifest>true</GenerateStaticWebAssetsEndpointsManifest>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
+        <PackageReference Include="SkiaSharp.Views.Blazor" Version="3.119.0" />
     </ItemGroup>
 
     <ItemGroup>
