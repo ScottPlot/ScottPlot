@@ -1,3 +1,10 @@
+## ScottPlot 5.1.59
+_Not yet published..._
+
+## ScottPlot 5.1.58
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
+* FillStyle: reverted change from previous version to make this class public (#5126) @jurihock
+
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_
 * The transition from ScottPlot `5.0` to `5.1` has breaking changes which are likely to affect advanced users who maintain custom plot types. Upgrading our SkiaSharp from `2.88` to `3.119` brought many improvements, but significantly changed the functionality of `SkiaSharp.SKPaint` which many of our drawing operations relied on. To minimize the impact of this change, references to `SkiaSharp.SKPaint` have been replaced with `ScottPlot.Paint` which closely resembles the original API, minimizing amount of code changes required to upgrade. This version aims at making this upgrade possible, and future versions will refine these objects to improve performance and minimize allocations.
