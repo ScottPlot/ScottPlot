@@ -16,6 +16,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
 * WinUI: Improve support for multi-monitor and custom DPI scale detection (#5150) @diluculo
 * Markers: Added shapes `CircleWithLine` and `TriangleWithLine`, each with left and right variants (#5194) @btarb24
 * Multiplot: Improved FractionRect constructor and property names (#5196) @DKahn144
+* InteractiveVerticalLine: Added properties to customize label styles (#5208) @Guillaume-Deville
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_
