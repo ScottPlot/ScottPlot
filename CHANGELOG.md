@@ -4,6 +4,7 @@ _Not yet published..._
 ## ScottPlot 5.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
 * FillStyle: reverted change from previous version to make this class public (#5126) @jurihock
+* Legend: permit custom fill color when using MarkerShapeOverride (#5137, #5136) @aespitia
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_
