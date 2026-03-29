@@ -2,6 +2,8 @@ namespace ScottPlot;
 
 public interface IPlotMenu
 {
+    public List<ContextMenuItem> ContextMenuItems { get; }
+
     public void Reset();
 
     public void Clear();
