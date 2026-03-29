@@ -10,6 +10,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
 * Axes: Removed stray debug statement from the in FloatingAxis class (#5180) @wi-fr
 * Controls: Exposed UserInputProcessor.ContextMenuItems getter to support menu customization (#5183) @btarb24
 * Controls: Do not show right-click menu if it has zero items (#5184) @btarb24
+* Microphone Demo: Improve behavior on systems with no audio input devices (#5211) @myd7349
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_
