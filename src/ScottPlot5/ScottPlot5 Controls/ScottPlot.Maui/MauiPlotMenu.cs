@@ -52,7 +52,7 @@ public class MauiPlotMenu : IPlotMenu
 
     public async void SaveImageDialog(Plot plot)
     {
-        Page? page = Application.Current?.MainPage;
+        Page? page = Application.Current?.Windows[0].Page;
         if (page == null) return;
 
         string[] formats = [
@@ -65,7 +65,7 @@ public class MauiPlotMenu : IPlotMenu
 
         try
         {
-            var format = await page.DisplayActionSheet("Select a format", null, null, formats);
+            var format = await page.DisplayActionSheetAsync("Select a format", null, null, formats);
             if (string.IsNullOrEmpty(format)) return;
             ImageFormat imageFormat = ImageFormats.FromFilename(format);
 
@@ -78,12 +78,12 @@ public class MauiPlotMenu : IPlotMenu
             PixelSize lastRenderSize = plot.RenderManager.LastRender.FigureRect.Size;
             plot.Save(Path.Combine(folder, $"{name}{format}"), (int)lastRenderSize.Width, (int)lastRenderSize.Height, imageFormat);
 
-            await page.DisplayAlert("Success", $"Image saved to {folder}", "OK");
+            await page.DisplayAlertAsync("Success", $"Image saved to {folder}", "OK");
         }
 
         catch (Exception)
         {
-            await page.DisplayAlert("Error", $"Image save failed", "OK");
+            await page.DisplayAlertAsync("Error", $"Image save failed", "OK");
             return;
         }
 

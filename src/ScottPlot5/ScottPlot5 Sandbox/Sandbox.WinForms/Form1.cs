@@ -8,14 +8,7 @@ public partial class Form1 : Form
     {
         InitializeComponent();
 
-        formsPlot1.Plot.HandlePressed += (s, e) => Text = $"{e} pressed";
-        formsPlot1.Plot.HandleMoved += (s, e) => Text = $"{e} moved";
-        formsPlot1.Plot.HandleReleased += (s, e) => Text = $"{e} dropped";
-        formsPlot1.Plot.HandleHoverChanged += (s, e) => Text = e is null ? "" : $"{e} hovered";
-
-        for (int i = 0; i < 5; i++)
-        {
-            formsPlot1.Plot.Add.InteractiveVerticalLine(Random.Shared.NextDouble());
-        }
+        formsPlot1.Plot.Add.Signal(Generate.Sin());
+        formsPlot1.Plot.Add.Signal(Generate.Cos());
     }
 }
