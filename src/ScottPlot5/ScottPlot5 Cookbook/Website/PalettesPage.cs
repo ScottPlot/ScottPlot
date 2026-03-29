@@ -53,15 +53,16 @@ internal class PalettesPage : PageBase
             sb.AppendLine();
         }
 
+
         string md = @"---
 title: Color Palettes - ScottPlot 5
 description: Color palettes available in ScottPlot version 5
-url: /cookbook/5.0/palettes/
+url: /cookbook/5/palettes/
 type: single
 BreadcrumbNames: [""ScottPlot 5 Cookbook"", ""Palettes""]
-BreadcrumbUrls: [""/cookbook/5.0/"", ""/cookbook/5.0/palettes/""]
+BreadcrumbUrls: [""/cookbook/5/"", ""/cookbook/5/palettes/""]
 date: {{ DATE }}
-jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.0.js""]
+jsFiles: [""https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"", ""/js/cookbook-search-5.js""]
 ---
 
 {{ HTML }}

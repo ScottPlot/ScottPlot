@@ -2,6 +2,7 @@
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottables;
+
 public class HistogramBars : IPlottable
 {
     public bool IsVisible { get; set; } = true;

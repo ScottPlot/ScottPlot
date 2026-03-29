@@ -1,4 +1,5 @@
 namespace WinForms_Demo.Demos;
+
 public partial class MultiplotCustom : Form, IDemoWindow
 {
     public string Title => "Custom Multiplot System";
