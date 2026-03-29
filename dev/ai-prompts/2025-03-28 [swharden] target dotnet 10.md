@@ -26,11 +26,12 @@ Perfect! The build is successful. The key changes I made to fix your Blazor WebA
 
 Summary of Fixes:
 *	Updated Package References (in Sandbox.Blazor.csproj):
-  *	Changed Microsoft.AspNetCore.Components.WebAssembly from version 8.0.10 to 10.0.0-*
-  *	Changed Microsoft.AspNetCore.Components.WebAssembly.DevServer from version 8.0.10 to 10.0.0-*
+    *	Changed Microsoft.AspNetCore.Components.WebAssembly from version 8.0.10 to 10.0.0-*
+    *	Changed Microsoft.AspNetCore.Components.WebAssembly.DevServer from version 8.0.10 to 10.0.0-*
+
 *	Updated Script Loading (in index.html):
-  *	Changed the Blazor script to use type="module" attribute: <script src="_framework/blazor.webassembly.js" type="module"></script>
-  *	This is required in .NET 10 because the Blazor WASM runtime now uses ES6 modules for better performance and modern JavaScript standards
+    *	Changed the Blazor script to use type="module" attribute: <script src="_framework/blazor.webassembly.js" type="module"></script>
+    *	This is required in .NET 10 because the Blazor WASM runtime now uses ES6 modules for better performance and modern JavaScript standards
 
 The error you were seeing (Failed to fetch dynamically imported module: https://localhost:7014/0) was caused by the mismatch between the .NET 10 runtime expecting ES6 module loading while the HTML was using the old .NET 8 script loading pattern.
 You should now be able to run your Blazor WebAssembly application successfully on .NET 10!
@@ -51,9 +52,9 @@ Now let's rebuild the project to see if this resolves the SkiaSharp native DLL i
 The build is successful. The changes I made:
 *	Updated ScottPlot.Blazor.csproj: Made Microsoft.AspNetCore.Components.Web version conditional - using 10.0.0 for .NET 10 and 8.0.0 for .NET 8
 *	Updated Sandbox.Blazor.csproj:
-  *	Added WasmNativeStrip=false to prevent stripping of native WASM bindings
-  *	Added explicit SkiaSharp.Views.Blazor package reference to ensure the WebAssembly native bindings are properly included
-  *	
+    *	Added WasmNativeStrip=false to prevent stripping of native WASM bindings
+    *	Added explicit SkiaSharp.Views.Blazor package reference to ensure the WebAssembly native bindings are properly included
+
 The WasmNativeStrip=false property is important because it prevents the linker from removing the SkiaSharp native WebAssembly libraries that are needed at runtime.
 
 Try running the application again. If you still get the SkiaSharp DLL error, we may need to check if SkiaSharp has a .NET 10-specific preview version available or if there are additional configuration steps needed for the WebAssembly native interop in .NET 10.
