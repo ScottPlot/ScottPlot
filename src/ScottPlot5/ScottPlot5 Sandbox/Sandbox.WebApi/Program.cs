@@ -3,7 +3,18 @@ var app = builder.Build();
 
 app.MapGet("/", async context =>
 {
-    string html = "<html><body><img src='random.png'></body></html>";
+    string html = """
+    <html>
+        <body style="font-family: Helvetica, Arial, sans-serif;">
+            <h1>ScottPlot API Demo</h1>
+            <p>
+                <strong>This image is generated dynamically!</strong>
+                It will change when you refresh the page.
+            </p>
+            <img src='random.png'>
+        </body>
+    </html>
+    """;
     context.Response.ContentType = "text/html";
     await context.Response.WriteAsync(html);
 });
