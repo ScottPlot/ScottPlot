@@ -47,7 +47,7 @@ public partial class MicrophoneDemo : Form, IDemoWindow
 
         comboBox1.SelectedIndexChanged += (s, e) => StartMonitoring(comboBox1.SelectedIndex);
         if (comboBox1.Items.Count > 0)
-            comboBox1.SelectedIndex = 1;
+            comboBox1.SelectedIndex = 0;
 
         RenderTimer.Tick += (s, e) =>
         {
