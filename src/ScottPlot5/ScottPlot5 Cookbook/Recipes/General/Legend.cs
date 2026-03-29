@@ -155,7 +155,8 @@ public class Legend : ICategory
     {
         public override string Name => "Legend Marker Shape Override with auto color";
         public override string Description => "Use the legend shape override " +
-            "to force all legend items to display using the given marker shape.";
+            "to force all legend items to display using the given marker shape. " +
+            "Color is determined automatically in this example.";
 
         [Test]
         public override void Execute()
