@@ -15,6 +15,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
 * Heatmap: Improve axis alignment when using SVG output (#5145) @timmer98
 * WinUI: Improve support for multi-monitor and custom DPI scale detection (#5150) @diluculo
 * Markers: Added shapes `CircleWithLine` and `TriangleWithLine`, each with left and right variants (#5194) @btarb24
+* Multiplot: Improved FractionRect constructor and property names (#5196) @DKahn144
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_

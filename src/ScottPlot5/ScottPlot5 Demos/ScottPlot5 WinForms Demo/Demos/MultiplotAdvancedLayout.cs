@@ -58,11 +58,13 @@ public partial class MultiplotAdvancedLayout : Form, IDemoWindow
     void SetupMultiColumnSpan()
     {
         CustomGrid customGrid = new();
-        customGrid.Set(formsPlot1.Multiplot.GetPlot(0), new GridCell(0, 0, 2, 1));
-        customGrid.Set(formsPlot1.Multiplot.GetPlot(1), new GridCell(1, 0, 2, 2));
-        customGrid.Set(formsPlot1.Multiplot.GetPlot(2), new GridCell(1, 1, 2, 2));
+        customGrid.Set(formsPlot1.Multiplot.GetPlot(0), new GridCell(0, 0, 4, 6, 3, 1));
+        customGrid.Set(formsPlot1.Multiplot.GetPlot(1), new GridCell(0, 1, 4, 6, 3, 5));
+        customGrid.Set(formsPlot1.Multiplot.GetPlot(2), new GridCell(3, 1, 4, 6, 1, 5));
 
         formsPlot1.Multiplot.Layout = customGrid;
+        formsPlot1.Multiplot.SharedAxes.ShareX([formsPlot1.Multiplot.GetPlot(1), formsPlot1.Multiplot.GetPlot(2)]);
+        formsPlot1.Multiplot.SharedAxes.ShareY([formsPlot1.Multiplot.GetPlot(0), formsPlot1.Multiplot.GetPlot(1)]);
 
         formsPlot1.Refresh();
     }
