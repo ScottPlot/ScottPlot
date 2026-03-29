@@ -123,7 +123,7 @@ public class EtoPlotMenu : IPlotMenu
     public void ShowContextMenu(Pixel pixel)
     {
         Plot? plot = ThisControl.GetPlotAtPixel(pixel);
-        if (plot is null)
+        if (plot is null || ContextMenuItems.Count == 0)
             return;
         var menu = GetContextMenu(plot);
         menu.Show(ThisControl, new Point((int)pixel.X, (int)pixel.Y));
