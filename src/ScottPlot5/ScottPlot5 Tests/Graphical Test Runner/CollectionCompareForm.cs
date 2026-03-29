@@ -49,7 +49,7 @@ public partial class CollectionCompareForm : Form
             if (selectedRowCount == 0)
                 return;
 
-            string selectedFilename = dataGridView1.SelectedRows[0].Cells[0].Value.ToString()!;
+            string selectedFilename = dataGridView1.SelectedRows[0].Cells[0].Value?.ToString() ?? throw new NullReferenceException();
             int index = Array.IndexOf(FolderResults.Filenames, selectedFilename);
             string path1 = FolderResults.GetPath1(index);
             string path2 = FolderResults.GetPath2(index);
@@ -149,11 +149,11 @@ public partial class CollectionCompareForm : Form
 
     private void Recolor(DataGridViewRow row)
     {
-        if (row.Cells[1].Value.ToString() == "changed")
+        if (row.Cells[1].Value?.ToString() == "changed")
         {
             row.Cells[1].Style.BackColor = System.Drawing.Color.Yellow;
         }
-        else if (row.Cells[1].Value.ToString() == "unchanged")
+        else if (row.Cells[1].Value?.ToString() == "unchanged")
         {
             for (int j = 0; j < dataGridView1.Columns.Count; j++)
             {
