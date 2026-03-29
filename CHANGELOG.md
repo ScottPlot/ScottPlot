@@ -7,6 +7,7 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
 * Legend: Permit custom fill color when using MarkerShapeOverride (#5137, #5136) @aespitia
 * Axes: Improve SnapToTicks behavior for inverted axes (#5144, #4316, #5143) @BrianAtZetica @CoderPM2011
 * Axes: Improve behavior of zooming while opposite axes are linked (#5178) @jurihock
+* Axes: Removed stray debug statement from the in FloatingAxis class (#5180) @wi-fr
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_
