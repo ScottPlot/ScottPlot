@@ -1,6 +1,6 @@
 namespace ScottPlot.Plottables.Interactive;
 
-public class InteractiveVerticalLine : LabelStyleProperties, IPlottable, IRenderLast, IHasInteractiveHandles, IHasLine
+public class InteractiveVerticalLine : LabelStyleProperties, IPlottable, IRenderLast, IHasInteractiveHandles, IHasLine, IHasLegendText
 {
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
@@ -13,6 +13,8 @@ public class InteractiveVerticalLine : LabelStyleProperties, IPlottable, IRender
     public float LineWidth { get => LineStyle.Width; set => LineStyle.Width = value; }
     public LinePattern LinePattern { get => LineStyle.Pattern; set => LineStyle.Pattern = value; }
     public Color LineColor { get => LineStyle.Color; set => LineStyle.Color = value; }
+    public string LegendText { get; set; } = string.Empty;
+    public string Text { get => LabelStyle.Text; set => LabelStyle.Text = value; }
 
     public AxisLimits GetAxisLimits() => AxisLimits.HorizontalOnly(X, X);
 
