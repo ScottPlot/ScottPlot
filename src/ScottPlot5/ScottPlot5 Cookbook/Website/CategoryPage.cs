@@ -22,7 +22,7 @@ internal class CategoryPage : PageBase
         }
 
         string breadcrumbName1 = "ScottPlot 5 Cookbook";
-        string breadcrumbUrl1 = "/cookbook/5.0/";
+        string breadcrumbUrl1 = "/cookbook/5/";
 
         string breadcrumbName2 = Category.Name;
         string breadcrumbUrl2 = Category.Url;

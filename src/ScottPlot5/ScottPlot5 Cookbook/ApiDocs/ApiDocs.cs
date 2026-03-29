@@ -66,7 +66,7 @@ internal class ApiDocs
             ---
             Title: ScottPlot 5 API
             Description: All classes, fields, properties, and methods provided by the ScottPlot package
-            URL: /api/5.0/
+            URL: /api/5/
             Date: {DateTime.Now.Year:0000}-{DateTime.Now.Month:00}-{DateTime.Now.Day:00}
             ShowEditLink: false
             ---

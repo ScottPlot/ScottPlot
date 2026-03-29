@@ -1,4 +1,5 @@
 namespace ScottPlotCookbook.Recipes.PlotTypes;
+
 public class PolarAxis : ICategory
 {
     public Chapter Chapter => Chapter.PlotTypes;
