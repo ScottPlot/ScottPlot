@@ -3,8 +3,9 @@ _Not yet published..._
 
 ## ScottPlot 5.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
-* FillStyle: reverted change from previous version to make this class public (#5126) @jurihock
-* Legend: permit custom fill color when using MarkerShapeOverride (#5137, #5136) @aespitia
+* FillStyle: Reverted change from previous version to make this class public (#5126) @jurihock
+* Legend: Permit custom fill color when using MarkerShapeOverride (#5137, #5136) @aespitia
+* Axes: Improve SnapToTicks behavior for inverted axes (#5144, #4316, #5143) @BrianAtZetica @CoderPM2011
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_
