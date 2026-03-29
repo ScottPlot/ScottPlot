@@ -1,4 +1,4 @@
-﻿namespace WinForms_Demo;
+namespace WinForms_Demo;
 
 partial class MainMenuForm
 {
@@ -56,7 +56,7 @@ partial class MainMenuForm
         label2.Name = "label2";
         label2.Size = new Size(181, 21);
         label2.TabIndex = 2;
-        label2.Text = "ScottPlot.WinForms 5.0.0";
+        label2.Text = "ScottPlot.WinForms 5";
         // 
         // label1
         // 
