@@ -131,7 +131,7 @@ public class MauiPlotMenu : IPlotMenu
     public void ShowContextMenu(Pixel pixel)
     {
         Plot? plot = ThisControl.GetPlotAtPixel(pixel);
-        if (plot is null)
+        if (plot is null || ContextMenuItems.Count == 0)
             return;
         MenuFlyout flyout = GetContextMenu(plot);
         FlyoutBase.SetContextFlyout(ThisControl, flyout);
