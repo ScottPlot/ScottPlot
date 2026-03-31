@@ -103,7 +103,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     {
         Pixel pixel = e.ToPixel(this);
         PointerUpdateKind kind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
-        UserInputProcessor.ProcessMouseDown(pixel, kind);
+        UserInputProcessor.ProcessMouseDown(pixel, kind, e.KeyModifiers);
         e.Pointer.Capture(this);
     }
 
@@ -111,7 +111,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     {
         Pixel pixel = e.ToPixel(this);
         PointerUpdateKind kind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
-        UserInputProcessor.ProcessMouseUp(pixel, kind);
+        UserInputProcessor.ProcessMouseUp(pixel, kind, e.KeyModifiers);
 
         e.Pointer.Capture(null);
     }
@@ -119,7 +119,7 @@ public class AvaPlot : Controls.Control, IPlotControl
     protected override void OnPointerMoved(PointerEventArgs e)
     {
         Pixel pixel = e.ToPixel(this);
-        UserInputProcessor.ProcessMouseMove(pixel);
+        UserInputProcessor.ProcessMouseMove(pixel, e.KeyModifiers);
     }
 
     protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
@@ -129,7 +129,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
         if (delta != 0)
         {
-            UserInputProcessor.ProcessMouseWheel(pixel, delta);
+            UserInputProcessor.ProcessMouseWheel(pixel, delta, e.KeyModifiers);
         }
     }
 

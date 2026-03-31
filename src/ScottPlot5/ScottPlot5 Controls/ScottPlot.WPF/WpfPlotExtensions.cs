@@ -20,8 +20,18 @@ internal static class WpfPlotExtensions
         return new Pixel((float)(position.X * dpiScale.DpiScaleX), (float)(position.Y * dpiScale.DpiScaleY));
     }
 
+    private static void SyncModifierKeys(Interactivity.UserInputProcessor processor)
+    {
+        ModifierKeys mods = Keyboard.Modifiers;
+        processor.KeyState.Reset();
+        if (mods.HasFlag(ModifierKeys.Alt)) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
+        if (mods.HasFlag(ModifierKeys.Control)) processor.KeyState.Add(Interactivity.StandardKeys.Control);
+        if (mods.HasFlag(ModifierKeys.Shift)) processor.KeyState.Add(Interactivity.StandardKeys.Shift);
+    }
+
     internal static void ProcessMouseDown(this Interactivity.UserInputProcessor processor, FrameworkElement fe, MouseButtonEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel pixel = e.ToPixel(fe);
 
         Interactivity.IUserAction action = e.ChangedButton switch
@@ -37,6 +47,7 @@ internal static class WpfPlotExtensions
 
     internal static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, FrameworkElement fe, MouseButtonEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel pixel = e.ToPixel(fe);
 
         Interactivity.IUserAction action = e.ChangedButton switch
@@ -52,6 +63,7 @@ internal static class WpfPlotExtensions
 
     internal static void ProcessMouseMove(this Interactivity.UserInputProcessor processor, FrameworkElement fe, MouseEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel pixel = e.ToPixel(fe);
         Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(pixel);
         processor.Process(action);
@@ -59,6 +71,7 @@ internal static class WpfPlotExtensions
 
     internal static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, FrameworkElement fe, MouseWheelEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel pixel = e.ToPixel(fe);
 
         Interactivity.IUserAction action = e.Delta > 0

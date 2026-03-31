@@ -12,8 +12,18 @@ public static class FormsPlotExtensions
         return new Pixel(e.X, e.Y);
     }
 
+    private static void SyncModifierKeys(Interactivity.UserInputProcessor processor)
+    {
+        Keys mods = System.Windows.Forms.Control.ModifierKeys;
+        processor.KeyState.Reset();
+        if (mods.HasFlag(Keys.Alt)) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
+        if (mods.HasFlag(Keys.Control)) processor.KeyState.Add(Interactivity.StandardKeys.Control);
+        if (mods.HasFlag(Keys.Shift)) processor.KeyState.Add(Interactivity.StandardKeys.Shift);
+    }
+
     public static void ProcessMouseDown(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel mousePixel = new(e.X, e.Y);
 
         Interactivity.IUserAction action = e.Button switch
@@ -29,6 +39,7 @@ public static class FormsPlotExtensions
 
     public static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel mousePixel = new(e.X, e.Y);
 
         Interactivity.IUserAction action = e.Button switch
@@ -44,6 +55,7 @@ public static class FormsPlotExtensions
 
     public static void ProcessMouseMove(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel mousePixel = new(e.X, e.Y);
         Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(mousePixel);
         processor.Process(action);
@@ -51,6 +63,7 @@ public static class FormsPlotExtensions
 
     public static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor);
         Pixel mousePixel = new(e.X, e.Y);
 
         Interactivity.IUserAction action = e.Delta > 0
