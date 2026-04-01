@@ -73,4 +73,20 @@ public class Lollipop : ICategory
             lollipop.Orientation = Orientation.Horizontal;
         }
     }
+
+    public class LollipopBaseValue : RecipeBase
+    {
+        public override string Name => "Lollipop Plot with Custom Base Value";
+        public override string Description => "The BaseValue property defines the starting point for the stems." +
+            " This is useful for showing deviations from a specific threshold instead of zero.";
+
+        [Test]
+        public override void Execute()
+        {
+            double[] values = Generate.Sin(25);
+            var lollipop = myPlot.Add.Lollipop(values);
+
+            lollipop.BaseValue = 0.5;
+        }
+    }
 }
