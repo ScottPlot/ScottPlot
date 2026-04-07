@@ -29,6 +29,9 @@ public class InteractiveTrendLine : IPlottable, IHasInteractiveHandles
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        if (!IsVisible)
+            return null;
+
         // First check if the mouse is directly over one of the control points
         if (rect.Contains(MutableLine.Point1))
             return new InteractiveHandle(this, Cursor, (int)Node.Point1);
