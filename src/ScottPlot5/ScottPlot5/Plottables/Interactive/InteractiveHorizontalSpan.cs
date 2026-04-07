@@ -24,7 +24,7 @@ public class InteractiveHorizontalSpan : IPlottable, IHasInteractiveHandles
     {
         if (!IsVisible)
         {
-           return null;
+            return null;
         }
 
         if (rect.ContainsX(X1))
