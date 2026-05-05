@@ -3,6 +3,7 @@ _Not yet published..._
 
 ## ScottPlot 5.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
+* Target .NET 10 and remove unsupported .NET targets (#5154) @swharden
 * FillStyle: Reverted change from previous version to make this class public (#5126) @jurihock
 * Legend: Permit custom fill color when using MarkerShapeOverride (#5137, #5136) @aespitia
 * Axes: Improve SnapToTicks behavior for inverted axes (#5144, #4316, #5143) @BrianAtZetica @CoderPM2011
@@ -12,6 +13,11 @@ _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
 * Controls: Do not show right-click menu if it has zero items (#5184) @btarb24
 * Microphone Demo: Improve behavior on systems with no audio input devices (#5211) @myd7349
 * Avalonia: Improve behavior of scroll wheel when interacting with plots nested in ScrollViewers (#5233) @AscendLiu
+* Heatmap: Improve axis alignment when using SVG output (#5145) @timmer98
+* WinUI: Improve support for multi-monitor and custom DPI scale detection (#5150) @diluculo
+* Markers: Added shapes `CircleWithLine` and `TriangleWithLine`, each with left and right variants (#5194) @btarb24
+* Multiplot: Improved FractionRect constructor and property names (#5196) @DKahn144
+* InteractiveVerticalLine: Added properties to customize label styles (#5208) @Guillaume-Deville
 
 ## ScottPlot 5.1.57
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2025-10-11_

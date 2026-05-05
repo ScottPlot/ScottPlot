@@ -11,7 +11,7 @@ namespace ScottPlot.IO;
 /// This struct holds values that define the first several bytes of a bitmap file.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-internal struct BitmapHeader
+public struct BitmapHeader
 {
     public const int FileHeaderSize = 54; // number of bytes in the bitmap header
     public readonly byte MagicNumberHighByte = (byte)'B';
