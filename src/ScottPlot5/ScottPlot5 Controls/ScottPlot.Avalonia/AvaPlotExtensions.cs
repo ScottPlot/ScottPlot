@@ -16,8 +16,17 @@ internal static class AvaPlotExtensions
         return new Pixel(x, y);
     }
 
-    internal static void ProcessMouseDown(this UserInputProcessor processor, Pixel pixel, PointerUpdateKind kind)
+    private static void SyncModifierKeys(UserInputProcessor processor, KeyModifiers mods)
     {
+        processor.KeyState.Reset();
+        if (mods.HasFlag(KeyModifiers.Alt)) processor.KeyState.Add(StandardKeys.Alt);
+        if (mods.HasFlag(KeyModifiers.Control)) processor.KeyState.Add(StandardKeys.Control);
+        if (mods.HasFlag(KeyModifiers.Shift)) processor.KeyState.Add(StandardKeys.Shift);
+    }
+
+    internal static void ProcessMouseDown(this UserInputProcessor processor, Pixel pixel, PointerUpdateKind kind, KeyModifiers mods)
+    {
+        SyncModifierKeys(processor, mods);
         Interactivity.IUserAction action = kind switch
         {
             PointerUpdateKind.LeftButtonPressed => new Interactivity.UserActions.LeftMouseDown(pixel),
@@ -29,8 +38,9 @@ internal static class AvaPlotExtensions
         processor.Process(action);
     }
 
-    internal static void ProcessMouseUp(this UserInputProcessor processor, Pixel pixel, PointerUpdateKind kind)
+    internal static void ProcessMouseUp(this UserInputProcessor processor, Pixel pixel, PointerUpdateKind kind, KeyModifiers mods)
     {
+        SyncModifierKeys(processor, mods);
         Interactivity.IUserAction action = kind switch
         {
             PointerUpdateKind.LeftButtonReleased => new Interactivity.UserActions.LeftMouseUp(pixel),
@@ -42,13 +52,15 @@ internal static class AvaPlotExtensions
         processor.Process(action);
     }
 
-    internal static void ProcessMouseMove(this UserInputProcessor processor, Pixel pixel)
+    internal static void ProcessMouseMove(this UserInputProcessor processor, Pixel pixel, KeyModifiers mods)
     {
+        SyncModifierKeys(processor, mods);
         processor.Process(new Interactivity.UserActions.MouseMove(pixel));
     }
 
-    internal static void ProcessMouseWheel(this UserInputProcessor processor, Pixel pixel, double delta)
+    internal static void ProcessMouseWheel(this UserInputProcessor processor, Pixel pixel, double delta, KeyModifiers mods)
     {
+        SyncModifierKeys(processor, mods);
         Interactivity.IUserAction action = delta > 0
             ? new Interactivity.UserActions.MouseWheelUp(pixel)
             : new Interactivity.UserActions.MouseWheelDown(pixel);

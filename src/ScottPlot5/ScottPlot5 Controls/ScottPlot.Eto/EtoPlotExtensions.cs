@@ -7,8 +7,17 @@ namespace ScottPlot.Eto;
 
 internal static class EtoPlotExtensions
 {
+    private static void SyncModifierKeys(Interactivity.UserInputProcessor processor, Keys mods)
+    {
+        processor.KeyState.Reset();
+        if (mods.HasFlag(Keys.Alt)) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
+        if (mods.HasFlag(Keys.Control)) processor.KeyState.Add(Interactivity.StandardKeys.Control);
+        if (mods.HasFlag(Keys.Shift)) processor.KeyState.Add(Interactivity.StandardKeys.Shift);
+    }
+
     public static void ProcessMouseDown(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor, e.Modifiers);
         Pixel pixel = e.Pixel();
 
         Interactivity.IUserAction action = e.Buttons switch
@@ -24,6 +33,7 @@ internal static class EtoPlotExtensions
 
     public static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor, e.Modifiers);
         Pixel pixel = e.Pixel();
 
         Interactivity.IUserAction action = e.Buttons switch
@@ -39,6 +49,7 @@ internal static class EtoPlotExtensions
 
     public static void ProcessMouseMove(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor, e.Modifiers);
         Pixel pixel = e.Pixel();
         Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(pixel);
         processor.Process(action);
@@ -46,6 +57,7 @@ internal static class EtoPlotExtensions
 
     public static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
+        SyncModifierKeys(processor, e.Modifiers);
         Pixel pixel = e.Pixel();
 
         Interactivity.IUserAction action = e.Delta.Height > 0
