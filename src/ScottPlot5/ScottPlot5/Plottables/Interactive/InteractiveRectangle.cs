@@ -36,6 +36,11 @@ public class InteractiveRectangle : IPlottable, IHasInteractiveHandles
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        if (!IsVisible)
+        {
+            return null;
+        }
+
         bool inVerticalRange = rect.Center.Y >= YMin && rect.Center.Y <= YMax;
         bool inHorizontalRange = rect.Center.X >= XMin && rect.Center.X <= XMax;
 
