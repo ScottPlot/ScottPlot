@@ -1,5 +1,8 @@
 ## ScottPlot 5.1.59
 _Not yet published..._
+* Avalonia: Add support for Avalonia 12 (#5233) @bclehmann
+* Avalonia: Implement cross-platform copy-to-clipboard (#5167) @bclehmann
+* Interactivity: Prevent the ability to drag invisible lines (#5215) @btarb24
 
 ## ScottPlot 5.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_

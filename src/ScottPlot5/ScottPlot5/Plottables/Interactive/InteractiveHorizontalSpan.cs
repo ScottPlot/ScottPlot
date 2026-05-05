@@ -22,6 +22,11 @@ public class InteractiveHorizontalSpan : IPlottable, IHasInteractiveHandles
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        if (!IsVisible)
+        {
+            return null;
+        }
+
         if (rect.ContainsX(X1))
         {
             return new InteractiveHandle(this, EdgeCursor, (int)Handles.Edge1);
