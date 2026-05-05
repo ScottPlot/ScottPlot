@@ -37,8 +37,6 @@ public class AvaPlotMenu : IPlotMenu
             OnInvoke = CopyToClipboard
         };
 
-        // TODO: Copying images to the clipboard is still difficult in Avalonia
-        // https://github.com/AvaloniaUI/Avalonia/issues/3588
 
         ContextMenuItem autoscale = new()
         {
@@ -122,7 +120,7 @@ public class AvaPlotMenu : IPlotMenu
                 AlphaType.Unpremultiplied => AlphaFormat.Unpremul,
                 _ => AlphaFormat.Unpremul
             };
-            
+
             IntPtr p = IntPtr.Zero;
 
             // Regrettably the Avalonia API takes only an IntPtr. So we just copy the bytes over
@@ -133,7 +131,7 @@ public class AvaPlotMenu : IPlotMenu
                 p = Marshal.AllocHGlobal(bytes.Length);
                 // If we don't skip the bitmap header it will ignore what we say about the colour format
                 Marshal.Copy(bytes, BitmapHeader.FileHeaderSize, p, bytes.Length - BitmapHeader.FileHeaderSize);
-                
+
                 Bitmap bitmap = new Bitmap(
                     pixelFormat,
                     alphaType,
