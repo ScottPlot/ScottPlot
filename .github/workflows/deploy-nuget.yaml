@@ -6,7 +6,7 @@ on:
     types: [published]
 
 env:
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: "10.0"
   ARTIFACT_FOLDER: "artifacts"
 
 jobs:
@@ -35,11 +35,14 @@ jobs:
           distribution: "microsoft"
           java-version: "17"
 
+      - name: Restore Workloads
+        working-directory: ./src/ScottPlot5/
+        run: dotnet workload restore
+
       - name: Package ScottPlot
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -48,7 +51,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinForms"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -57,7 +59,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WPF"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -66,7 +67,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Avalonia"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -75,7 +75,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Eto"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -84,7 +83,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.WinUI"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -93,7 +91,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Blazor"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"
@@ -102,7 +99,6 @@ jobs:
         env:
           PROJECT_FOLDER: "src/ScottPlot5/ScottPlot5 Controls/ScottPlot.Maui"
         run: |
-          dotnet workload restore "${{ env.PROJECT_FOLDER }}"
           dotnet restore "${{ env.PROJECT_FOLDER }}"
           dotnet build "${{ env.PROJECT_FOLDER }}" --configuration Release
           dotnet pack "${{ env.PROJECT_FOLDER }}" --configuration Release -o "${{ env.ARTIFACT_FOLDER }}"

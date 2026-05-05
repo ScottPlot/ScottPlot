@@ -468,15 +468,15 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
                 CoordinateRect rect = hm.GetAlignedExtent();
                 for (int h = 0; h < hm.Height; h++)
                 {
-                    var offsetY = (hm.Height - 1 - h) * hm.Height;
+                    var offsetY = (hm.Height - 1 - h) * hm.CellHeight;
                     for (int w = 0; w < hm.Width; w++)
                     {
-                        double offsetX = w * hm.Width;
+                        double offsetX = w * hm.CellWidth;
                         PixelRect cellRect = hm.Axes.GetPixelRect(new(
                             rect.Left + offsetX,
-                            rect.Left + offsetX + hm.Width,
+                            rect.Left + offsetX + hm.CellWidth,
                             rect.Bottom + offsetY,
-                            rect.Bottom + offsetY + hm.Height));
+                            rect.Bottom + offsetY + hm.CellHeight));
                         FillStyle.Color = Color.FromARGB(hm.CellColors[h * hm.Width + w]);
                         Drawing.FillRectangle(rp.Canvas, cellRect, rp.Paint, FillStyle);
                     }
