@@ -7,6 +7,7 @@ public class TickMarkStyle
     public bool Hairline;
     public Color Color;
     public bool AntiAlias;
+    public LinePattern Pattern = LinePattern.Solid;
 
     public void Render(SKCanvas canvas, Paint paint, PixelLine pxLine)
     {
@@ -23,5 +24,6 @@ public class TickMarkStyle
         paint.IsStroke = true;
         paint.Color = Color;
         paint.StrokeWidth = Hairline ? 1 : Width;
+        paint.SKPathEffect = Pattern.GetPathEffect();
     }
 }
