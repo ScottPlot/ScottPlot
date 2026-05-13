@@ -136,11 +136,56 @@ public class LabelStyle
 
     private readonly SKPathEffect SolidPathEffect = LinePattern.Solid.GetPathEffect();
 
+    private SKTypeface GetTextTypeface(string text)
+    {
+        SKTypeface requestedTypeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
+
+        if (string.IsNullOrWhiteSpace(text))
+            return requestedTypeface;
+
+        bool containsNonAscii = false;
+        foreach (char ch in text)
+        {
+            if (ch > 127)
+            {
+                containsNonAscii = true;
+                break;
+            }
+        }
+
+        if (!containsNonAscii)
+            return requestedTypeface;
+
+        List<int> codePoints = Fonts.GetStandaloneCodePoints(text);
+        codePoints = codePoints.Where(x => x >= 32).ToList();
+        if (codePoints.Count == 0)
+            return requestedTypeface;
+
+        int[] codePointArray = codePoints.ToArray();
+        if (requestedTypeface.ContainsGlyphs(codePointArray))
+            return requestedTypeface;
+
+        string fallbackFamilyName = Fonts.Detect(text);
+        if (string.IsNullOrWhiteSpace(fallbackFamilyName))
+            return requestedTypeface;
+
+        SKTypeface fallbackTypeface = Fonts.GetTypeface(fallbackFamilyName, Bold, Italic);
+        if (fallbackTypeface.ContainsGlyphs(codePointArray))
+            return fallbackTypeface;
+
+        return requestedTypeface;
+    }
+
     private void ApplyTextPaint(Paint paint)
+    {
+        ApplyTextPaint(paint, Text);
+    }
+
+    private void ApplyTextPaint(Paint paint, string text)
     {
         paint.TextAlign = HorizontalAlignment.Left;
         paint.IsStroke = false;
-        paint.SKTypeface = Font ?? Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.SKTypeface = GetTextTypeface(text);
         paint.TextSize = FontSize;
         paint.Color = ForeColor;
         paint.IsAntialias = AntiAliasText;
@@ -177,7 +222,7 @@ public class LabelStyle
         }
 
         string[] lines = string.IsNullOrEmpty(text) ? [] : text.Split('\n');
-        ApplyToPaint(paint);
+        ApplyTextPaint(paint, text);
         (float lineHeight, SKFontMetrics metrics) = paint.GetFontMetrics();
         float[] lineWidths = lines.Select(x => paint.MeasureText(x).Width).ToArray();
         float maxWidth = lineWidths.Length == 0 ? 0 : lineWidths.Max();

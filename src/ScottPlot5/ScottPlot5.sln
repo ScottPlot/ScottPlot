@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31717.71
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11811.120 insiders
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot5\ScottPlot.csproj", "{9EBDE18F-F155-4C30-AEDC-624D4AA13E8C}"
 EndProject
@@ -73,6 +73,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev", "Dev", "{8EC462FD-D22
 	ProjectSection(SolutionItems) = preProject
 		..\..\CHANGELOG.md = ..\..\CHANGELOG.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartsTest", "ScottPlot5 Sandbox\ScottPlot5 ChartsTest\ChartsTest.csproj", "{078D43A1-27A2-8808-6FB4-FC1AD2A773B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +175,10 @@ Global
 		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{078D43A1-27A2-8808-6FB4-FC1AD2A773B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{078D43A1-27A2-8808-6FB4-FC1AD2A773B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{078D43A1-27A2-8808-6FB4-FC1AD2A773B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{078D43A1-27A2-8808-6FB4-FC1AD2A773B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +210,7 @@ Global
 		{9648FD23-5093-49BF-ACD1-B2173A7DF856} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 		{C162BB66-53C7-468D-A643-FBB7A606D2F7} = {6500EB02-9E5D-4FDF-AAEC-84B831B4E396}
 		{C1E912A4-2541-4BC4-B6E6-4FE611F56B13} = {6500EB02-9E5D-4FDF-AAEC-84B831B4E396}
+		{078D43A1-27A2-8808-6FB4-FC1AD2A773B2} = {FE2AD947-D789-4A89-94CF-CFA5252E0579}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <LangVersion>12</LangVersion>
+        <IsPackable>false</IsPackable>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>../../Key.snk</AssemblyOriginatorKeyFile>
+        <RootNamespace>ChartsTest</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
+        <ProjectReference Include="..\..\ScottPlot5\ScottPlot.csproj" />
+    </ItemGroup>
+
+</Project>
