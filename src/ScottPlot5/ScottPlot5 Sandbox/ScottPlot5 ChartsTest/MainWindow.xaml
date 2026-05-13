@@ -8,7 +8,30 @@
     <TabControl>
         <!-- 散点图 -->
         <TabItem Header="散点图">
-            <wpf:WpfPlot x:Name="ScatterPlot" />
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8">
+                    <TextBlock Text="X 轴类型:" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <ComboBox x:Name="ScatterXAxisTypeComboBox"
+                              Width="140"
+                              SelectedIndex="0"
+                              SelectionChanged="ScatterXAxisTypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="线性 (Linear)" />
+                        <ComboBoxItem Content="对数 (Log)" />
+                        <ComboBoxItem Content="Biex" />
+                    </ComboBox>
+                    <TextBlock Text="Y 轴类型:" VerticalAlignment="Center" Margin="16,0,8,0" />
+                    <ComboBox x:Name="ScatterYAxisTypeComboBox"
+                              Width="140"
+                              SelectedIndex="0"
+                              SelectionChanged="ScatterYAxisTypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="线性 (Linear)" />
+                        <ComboBoxItem Content="对数 (Log)" />
+                        <ComboBoxItem Content="Biex" />
+                    </ComboBox>
+                </StackPanel>
+
+                <wpf:WpfPlot x:Name="ScatterPlot" />
+            </DockPanel>
         </TabItem>
 
         <!-- 热力图 / 密度图 -->
@@ -23,7 +46,21 @@
 
         <!-- 直方图 -->
         <TabItem Header="直方图">
-            <wpf:WpfPlot x:Name="HistogramPlot" />
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8">
+                    <TextBlock Text="X 轴类型:" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <ComboBox x:Name="HistogramXAxisTypeComboBox"
+                              Width="140"
+                              SelectedIndex="0"
+                              SelectionChanged="HistogramXAxisTypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="线性 (Linear)" />
+                        <ComboBoxItem Content="对数 (Log)" />
+                        <ComboBoxItem Content="Biex" />
+                    </ComboBox>
+                </StackPanel>
+
+                <wpf:WpfPlot x:Name="HistogramPlot" />
+            </DockPanel>
         </TabItem>
     </TabControl>
 </Window>
