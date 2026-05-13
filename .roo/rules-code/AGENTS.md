@@ -1,0 +1,11 @@
+# Coding Rules (Non-Obvious)
+
+- **Every file MUST have explicit `using` statements** — `ImplicitUsings` is disabled in the .csproj. The compiler will not auto-import namespaces.
+- **New `PlottableAdder` methods MUST be in alphabetical order** — a unit test in [`CodeFormatTests.cs`](src/ScottPlot5/ScottPlot5%20Tests/Unit%20Tests/CodeTests/CodeFormatTests.cs) enforces this. Insert new methods at the correct position or CI will fail.
+- **`Plot.Sync` lock is NOT optional for multi-threaded scenarios** — if you modify `PlottableList` or axis limits from a non-UI thread without `lock(Plot.Sync)`, you'll get rendering corruption. See [`Plot.cs:50`](src/ScottPlot5/ScottPlot5/Plot.cs:50).
+- **Nullable annotations are mandatory** — the project uses `<Nullable>enable</Nullable>`. All public API surface must have proper `?` annotations and null checks.
+- **Target all 5 TFMs for the core library** — `net462`, `netstandard2.0`, `net8.0`, `net9.0`, `net10.0`. New code must compile on all. For net462-only needs, use conditional `PackageReference` as shown in [`ScottPlot.csproj:59`](src/ScottPlot5/ScottPlot5/ScottPlot.csproj:59).
+- **Public API XML documentation is required** — `<GenerateDocumentationFile>true</GenerateDocumentationFile>` means all public types/methods need `<summary>` tags or you'll get CS1591 warnings (suppressed in release but visible in IDE).
+- **SkiaSharp types (`SKCanvas`, `SKSurface`, `SKPaint`) are NOT wrapped** — plottable `Render()` methods receive raw SkiaSharp objects via `RenderPack`. You must manage paint disposal properly: use `using Paint paint = Paint.NewDisposablePaint()` as shown in [`Plot.cs:200`](src/ScottPlot5/ScottPlot5/Plot.cs:200).
+- **GL Plottables require special handling** — OpenGL-bound plottables must implement `IPlottableGL`. The render pipeline surrounds them with `StoreGLState`/`RestoreGLState` actions. Adding a new GL plottable without this will corrupt SkiaSharp rendering.
+- **Colors auto-cycle from `Palette`** — every new plottable created via `PlottableAdder` gets its color from the palette's auto-incrementing index. Colors reset when `PlottableList` is cleared. See [`PlottableAdder.cs:27`](src/ScottPlot5/ScottPlot5/PlottableAdder.cs:27).
