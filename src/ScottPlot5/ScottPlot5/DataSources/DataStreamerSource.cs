@@ -98,7 +98,7 @@ public class DataStreamerSource
     public void Clear(double value = 0)
     {
         for (int i = 0; i < Data.Length; i++)
-            Data[i] = 0;
+            Data[i] = value;
 
         DataMin = value;
         DataMax = value;
