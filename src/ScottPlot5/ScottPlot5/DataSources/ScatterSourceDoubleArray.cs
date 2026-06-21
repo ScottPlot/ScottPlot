@@ -16,10 +16,9 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        return Enumerable
-            .Range(MinRenderIndex, this.GetRenderIndexCount())
-            .Select(i => new Coordinates(Xs[i], Ys[i]))
-            .ToList();
+        return Xs.ZipView(Ys, (x, y) => new Coordinates(x, y))
+            .SkipView(MinRenderIndex)
+            .TakeView(this.GetRenderIndexCount());
     }
 
     public AxisLimits GetLimits()
@@ -29,12 +28,12 @@ public class ScatterSourceDoubleArray(double[] xs, double[] ys) : IScatterSource
 
     public CoordinateRange GetLimitsX()
     {
-        return CoordinateRange.Extrema(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
+        return CoordinateRange.Extrema(Xs.SkipView(MinRenderIndex).TakeView(this.GetRenderIndexCount()));
     }
 
     public CoordinateRange GetLimitsY()
     {
-        return CoordinateRange.Extrema(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
+        return CoordinateRange.Extrema(Ys.SkipView(MinRenderIndex).TakeView(this.GetRenderIndexCount()));
     }
 
 
