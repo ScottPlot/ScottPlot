@@ -1,20 +1,22 @@
 ---
 name: tests-run
-description: Run and contribute to ScottPlot 5 unit tests. Use when adding, editing, debugging, or manually running tests in ScottPlot; restrict manual test execution to src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ and do not manually run other test projects.
+description: Run and contribute to ScottPlot 5 unit tests. Use when adding, editing, debugging, or manually running tests in ScottPlot; restrict manual test execution to src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ and src/ScottPlot5/ScottPlot5 Cookbook/ unless the user explicitly asks for another test project.
 ---
 
 # ScottPlot Unit Tests
 
-Use only the ScottPlot 5 unit test project for manual test runs:
+Use only these ScottPlot 5 test projects for manual test runs:
 
 ```powershell
 dotnet test "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj"
+dotnet test "src/ScottPlot5/ScottPlot5 Cookbook/ScottPlot Cookbook.csproj"
 ```
 
 For iteration, prefer a focused NUnit filter:
 
 ```powershell
 dotnet test "src\ScottPlot5\ScottPlot5 Tests\Unit Tests\ScottPlot Unit Tests.csproj" --filter "FullyQualifiedName~CoordinateTests"
+dotnet test "src\ScottPlot5\ScottPlot5 Cookbook\ScottPlot Cookbook.csproj" --filter "FullyQualifiedName~RecipeTests"
 ```
 
 Do not manually run other test projects unless the user explicitly overrides this skill.
@@ -22,6 +24,7 @@ Do not manually run other test projects unless the user explicitly overrides thi
 ## Adding Tests
 
 - Add tests under `src\ScottPlot5\ScottPlot5 Tests\Unit Tests`, near related coverage.
+- Add cookbook tests under `src\ScottPlot5\ScottPlot5 Cookbook`, near related cookbook coverage.
 - Match existing namespace folders, e.g. `ScottPlotTests.UnitTests...`, `ScottPlotTests.RenderTests...`, `ScottPlotTests.Statistics...`.
 - Use NUnit `[Test]` and `[TestCase]`.
 - Do not add new FluentAssertions usage; its current license model is undesirable for this project.
