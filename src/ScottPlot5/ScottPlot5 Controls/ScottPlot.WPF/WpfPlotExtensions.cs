@@ -23,7 +23,10 @@ internal static class WpfPlotExtensions
     private static void SyncModifierKeys(Interactivity.UserInputProcessor processor)
     {
         ModifierKeys mods = Keyboard.Modifiers;
-        processor.KeyState.Reset();
+        processor.KeyState.Remove(Interactivity.StandardKeys.Alt);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Control);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Shift);
+
         if (mods.HasFlag(ModifierKeys.Alt)) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
         if (mods.HasFlag(ModifierKeys.Control)) processor.KeyState.Add(Interactivity.StandardKeys.Control);
         if (mods.HasFlag(ModifierKeys.Shift)) processor.KeyState.Add(Interactivity.StandardKeys.Shift);

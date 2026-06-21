@@ -15,7 +15,10 @@ public static class FormsPlotExtensions
     private static void SyncModifierKeys(Interactivity.UserInputProcessor processor)
     {
         Keys mods = System.Windows.Forms.Control.ModifierKeys;
-        processor.KeyState.Reset();
+        processor.KeyState.Remove(Interactivity.StandardKeys.Alt);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Control);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Shift);
+
         if (mods.HasFlag(Keys.Alt)) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
         if (mods.HasFlag(Keys.Control)) processor.KeyState.Add(Interactivity.StandardKeys.Control);
         if (mods.HasFlag(Keys.Shift)) processor.KeyState.Add(Interactivity.StandardKeys.Shift);

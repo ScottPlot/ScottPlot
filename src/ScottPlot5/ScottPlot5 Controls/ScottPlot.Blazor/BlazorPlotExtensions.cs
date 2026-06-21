@@ -16,7 +16,10 @@ public static class BlazorPlotExtensions
 
     private static void SyncModifierKeys(Interactivity.UserInputProcessor processor, MouseEventArgs e)
     {
-        processor.KeyState.Reset();
+        processor.KeyState.Remove(Interactivity.StandardKeys.Alt);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Control);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Shift);
+
         if (e.AltKey) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
         if (e.CtrlKey) processor.KeyState.Add(Interactivity.StandardKeys.Control);
         if (e.ShiftKey) processor.KeyState.Add(Interactivity.StandardKeys.Shift);

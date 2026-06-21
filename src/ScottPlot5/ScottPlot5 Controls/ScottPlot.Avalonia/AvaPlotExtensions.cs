@@ -18,7 +18,10 @@ internal static class AvaPlotExtensions
 
     private static void SyncModifierKeys(UserInputProcessor processor, KeyModifiers mods)
     {
-        processor.KeyState.Reset();
+        processor.KeyState.Remove(StandardKeys.Alt);
+        processor.KeyState.Remove(StandardKeys.Control);
+        processor.KeyState.Remove(StandardKeys.Shift);
+
         if (mods.HasFlag(KeyModifiers.Alt)) processor.KeyState.Add(StandardKeys.Alt);
         if (mods.HasFlag(KeyModifiers.Control)) processor.KeyState.Add(StandardKeys.Control);
         if (mods.HasFlag(KeyModifiers.Shift)) processor.KeyState.Add(StandardKeys.Shift);
