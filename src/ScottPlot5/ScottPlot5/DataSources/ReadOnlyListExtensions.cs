@@ -23,12 +23,12 @@ namespace ScottPlot.DataSources
 
         internal static IReadOnlyList<T> SkipView<T>(this IReadOnlyList<T> inputList, int toSkip)
         {
-            return new SkipListView<T>(inputList, toSkip);
+            return new SkipListView<T>(inputList, Math.Max(0, toSkip));
         }
 
         internal static IReadOnlyList<T> TakeView<T>(this IReadOnlyList<T> inputList, int toTake)
         {
-            return new TakeListView<T>(inputList, toTake);
+            return new TakeListView<T>(inputList, Math.Max(0, toTake));
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace ScottPlot.DataSources
             {
                 get
                 {
-                    if (index > _toTake) throw new ArgumentOutOfRangeException(nameof(index));
+                    if (index < 0 || index >= Count) throw new ArgumentOutOfRangeException(nameof(index));
                     return _originalList[index];
                 }
             }
