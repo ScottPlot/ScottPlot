@@ -7,7 +7,7 @@ description: Build the full ScottPlot 5 solution only for solution-wide validati
 
 Run from `src/ScottPlot5`:
 
-```powershell
+```sh
 dotnet workload restore
 dotnet restore
 dotnet build --configuration Release
@@ -15,7 +15,7 @@ dotnet build --configuration Release
 
 If the full build succeeds and tests are requested, run:
 
-```powershell
+```sh
 dotnet test --configuration Release --no-build --verbosity minimal
 ```
 

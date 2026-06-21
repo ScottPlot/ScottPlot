@@ -7,7 +7,7 @@ description: Build the core ScottPlot 5 library and unit-test project for routin
 
 Run from repo root:
 
-```powershell
+```sh
 dotnet build "src/ScottPlot5/ScottPlot5/ScottPlot.csproj"
 dotnet build "src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ScottPlot Unit Tests.csproj"
 ```
