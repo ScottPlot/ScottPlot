@@ -25,7 +25,7 @@
 
 </div>
 
-**Contributing:** We welcome contributions from the community! We invite contributions from anyone, including developers who may be new to contributing to open-source projects. Visit https://ScottPlot.net/contributing/ to get started!
+**Contributing:** Due to [Scott's medical status](https://swharden.github.io/) **ScottPlot is open source but _not_ open to anonymous code contributions at this time.** ScottPlot has an active [Discord server](https://scottplot.net/discord/) and [issues section](https://github.com/ScottPlot/ScottPlot/issues). See [CONTRIBUTING.md](CONTRIBUTING.md) and [ScottPlot.net/contributing](https://scottplot.net/contributing/) for additional information.
 
 **License:** ScottPlot was created by [Scott W Harden](https://swharden.com/about/) and enhanced by [many contributions](https://scottplot.net/changelog/) from the [open-source community](https://scottplot.net/contributors/). It is provided under the permissive [MIT license](LICENSE) and is free to modify and use for any purpose.
 

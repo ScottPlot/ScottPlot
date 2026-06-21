@@ -17,7 +17,7 @@ public struct RecipeInfo
     public string CategoryClassName { get; }
     public readonly string SourceFilePath { get; }
 
-    public readonly string CookbookUrl = "/cookbook/5.0";
+    public readonly string CookbookUrl = "/cookbook/5";
     public readonly string CategoryUrl => $"{CookbookUrl}/{CategoryClassName}";
     public readonly string AnchoredCategoryUrl => $"{CategoryUrl}#{RecipeClassName}";
     public readonly string RecipeUrl => $"{CookbookUrl}/{CategoryClassName}/{RecipeClassName}";

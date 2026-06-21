@@ -28,7 +28,7 @@ public partial class CollectionCompareForm : Form
         }
 
         tbBefore.Text = defaultFolder;
-        tbAfter.Text = Path.GetFullPath(@"..\..\..\..\..\..\..\dev\www\cookbook\5.0\images");
+        tbAfter.Text = Path.GetFullPath(@"..\..\..\..\..\..\..\dev\www\cookbook\5\images");
 
         btnHelp.Click += (s, e) => new HelpForm().Show();
 
@@ -49,7 +49,7 @@ public partial class CollectionCompareForm : Form
             if (selectedRowCount == 0)
                 return;
 
-            string selectedFilename = dataGridView1.SelectedRows[0].Cells[0].Value.ToString()!;
+            string selectedFilename = dataGridView1.SelectedRows[0].Cells[0].Value?.ToString() ?? throw new NullReferenceException();
             int index = Array.IndexOf(FolderResults.Filenames, selectedFilename);
             string path1 = FolderResults.GetPath1(index);
             string path2 = FolderResults.GetPath2(index);
@@ -70,7 +70,7 @@ public partial class CollectionCompareForm : Form
 
         btnCB.Click += (s, e) =>
         {
-            string path = Path.GetFullPath("../../../../../../../dev/www/cookbook/5.0/images");
+            string path = Path.GetFullPath("../../../../../../../dev/www/cookbook/5/images");
             Process.Start("explorer.exe", path);
         };
 
@@ -149,11 +149,11 @@ public partial class CollectionCompareForm : Form
 
     private void Recolor(DataGridViewRow row)
     {
-        if (row.Cells[1].Value.ToString() == "changed")
+        if (row.Cells[1].Value?.ToString() == "changed")
         {
             row.Cells[1].Style.BackColor = System.Drawing.Color.Yellow;
         }
-        else if (row.Cells[1].Value.ToString() == "unchanged")
+        else if (row.Cells[1].Value?.ToString() == "unchanged")
         {
             for (int j = 0; j < dataGridView1.Columns.Count; j++)
             {

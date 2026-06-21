@@ -19,7 +19,7 @@ jobs:
       - name: ✨ Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0"
+          dotnet-version: "10.0"
       - name: 🧪 Run Code Analysis
         run: dotnet run dotnet run --project dev/CodeAnalysis
       - name: 🔐 Create Key File

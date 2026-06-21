@@ -1,9 +1,9 @@
 :: Folder the cookbook will be generated in when the test project runs
-SET CookbookSource=..\www\cookbook\5.0
+SET CookbookSource=..\www\cookbook\5
 
 :: Folder where the website repository is located
 SET ShortcodeFolder=..\..\..\ScottPlot.NET\layouts\shortcodes
-SET CookbookDest=%ShortcodeFolder%\content\cookbook\5.0
+SET CookbookDest=..\..\..\ScottPlot.NET\content\cookbook\5
 
 :: generate the demo app shortcode
 dotnet run --project "..\..\src\ScottPlot5\ScottPlot5 Demos\ScottPlot5 WinForms Demo" "%ShortcodeFolder%\demos-winforms.html"

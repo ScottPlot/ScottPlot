@@ -76,7 +76,7 @@ public class Styling : ICategory
         public override string Name => "Palettes";
         public override string Description => "A palette is a set of colors, and the Plot's palette " +
             "defines the default colors to use when adding new plottables. " +
-            "https://scottplot.net/cookbook/5.0/palettes/ displays all palettes included with ScottPlot.";
+            "https://scottplot.net/cookbook/5/palettes/ displays all palettes included with ScottPlot.";
 
         [Test]
         public override void Execute()
@@ -140,7 +140,7 @@ public class Styling : ICategory
         public override string Description => "A colormap is a continuous gradient of multiple colors. " +
             "It can be used to color continuous data like heatmaps and images, but colormaps may also " +
             "be sampled directly to create collections of colors. " +
-            "https://scottplot.net/cookbook/5.0/colormaps/ displays all colormaps included with ScottPlot.";
+            "https://scottplot.net/cookbook/5/colormaps/ displays all colormaps included with ScottPlot.";
 
         [Test]
         public override void Execute()

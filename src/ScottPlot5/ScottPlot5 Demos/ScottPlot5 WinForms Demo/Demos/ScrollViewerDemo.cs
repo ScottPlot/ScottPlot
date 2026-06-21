@@ -2,6 +2,7 @@ using ScottPlot;
 using ScottPlot.WinForms;
 
 namespace WinForms_Demo.Demos;
+
 public partial class ScrollViewerDemo : Form, IDemoWindow
 {
     public string Title => "Plot is a Scroll Viewer";

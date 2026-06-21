@@ -8,6 +8,11 @@ on:
     secrets:
       GH_TOKEN:
         required: true
+  push:
+    branches:
+      - main
+    paths:
+      - "changelog.md"
 
 jobs:
   publish-changelog:
