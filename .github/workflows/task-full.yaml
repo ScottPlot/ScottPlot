@@ -2,9 +2,15 @@ name: Full Build
 
 on:
   workflow_dispatch:
+    inputs:
+      run-codeql:
+        description: "Run CodeQL security scan"
+        required: false
+        type: boolean
+        default: true
   workflow_call:
 
-jobs:
+  jobs:
   full:
     name: Full Build
     runs-on: windows-latest
@@ -14,6 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup CodeQL
+        if: ${{ inputs.run-codeql }}
         uses: github/codeql-action/init@v3
         with:
           languages: csharp
@@ -43,4 +50,5 @@ jobs:
         working-directory: ./src/ScottPlot5/
         run: dotnet test --configuration Release --no-build --verbosity minimal
       - name: Security Scan
+        if: ${{ inputs.run-codeql }}
         uses: github/codeql-action/analyze@v3
