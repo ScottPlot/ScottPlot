@@ -2,6 +2,7 @@
 _Not yet published..._
 * Avalonia: Add support for Avalonia 12 (#5233) @bclehmann
 * Avalonia: Implement cross-platform copy-to-clipboard (#5167) @bclehmann
+* Eto: Fix PixelFormat namespace ambiguity in EtoPlot builds (#5238) @CoderPM2011
 * Interactivity: Prevent the ability to drag invisible lines (#5215) @btarb24
 
 ## ScottPlot 5.1.58
