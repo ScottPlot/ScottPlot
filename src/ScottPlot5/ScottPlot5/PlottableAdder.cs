@@ -760,10 +760,23 @@ public class PlottableAdder(Plot plot)
         return plottable;
     }
 
+    public InteractiveTrendLine InteractiveTrendLine(CoordinateLine line)
+    {
+        InteractiveTrendLine plottable = new()
+        {
+            Line = line,
+            Color = GetNextColor(),
+        };
+        Plot.PlottableList.Add(plottable);
+        return plottable;
+    }
+
     public InteractiveVerticalLine InteractiveVerticalLine(double x)
     {
         InteractiveVerticalLine plottable = new() { X = x };
         plottable.LineStyle.Color = GetNextColor();
+        plottable.LabelBackgroundColor = plottable.LineStyle.Color;
+        plottable.LabelFontColor = Colors.White;
         Plot.PlottableList.Add(plottable);
         return plottable;
     }

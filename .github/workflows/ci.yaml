@@ -35,6 +35,8 @@ jobs:
   full:
     name: "Full Build"
     uses: ./.github/workflows/task-full.yaml
+    with:
+      run-codeql: true
     permissions:
       security-events: write
 

@@ -29,6 +29,9 @@ public class InteractiveLineSegment : IPlottable, IHasInteractiveHandles
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        if (!IsVisible)
+            return null;
+
         if (rect.Contains(MutableLine.Point1))
             return new InteractiveHandle(this, Cursor, (int)Node.Point1);
 

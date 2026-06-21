@@ -19,5 +19,7 @@ jobs:
   full:
     name: "Full Build"
     uses: ./.github/workflows/task-full.yaml
+    with:
+      run-codeql: ${{ github.event_name != 'pull_request' }}
     permissions:
       security-events: write

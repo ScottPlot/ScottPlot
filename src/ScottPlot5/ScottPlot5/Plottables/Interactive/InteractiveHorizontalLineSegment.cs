@@ -20,6 +20,9 @@ public class InteractiveHorizontalLineSegment : IPlottable, IHasInteractiveHandl
 
     public InteractiveHandle? GetHandle(CoordinateRect rect)
     {
+        if (!IsVisible)
+            return null;
+
         if (rect.ContainsY(Y) == false)
             return null;
 
