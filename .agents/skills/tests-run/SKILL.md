@@ -23,7 +23,9 @@ Do not manually run other test projects unless the user explicitly overrides thi
 
 - Add tests under `src\ScottPlot5\ScottPlot5 Tests\Unit Tests`, near related coverage.
 - Match existing namespace folders, e.g. `ScottPlotTests.UnitTests...`, `ScottPlotTests.RenderTests...`, `ScottPlotTests.Statistics...`.
-- Use NUnit `[Test]` and `[TestCase]`; prefer FluentAssertions for value assertions when nearby tests use it.
+- Use NUnit `[Test]` and `[TestCase]`.
+- Do not add new FluentAssertions usage; its current license model is undesirable for this project.
+- Prefer modern NUnit assertion APIs for new and changed assertions, e.g. `Assert.That(value, Is.EqualTo(expected))`, `Assert.That(value, Is.Not.Null)`, and `Assert.Multiple(...)` when grouping related checks.
 - Name tests like `Test_Component_Behavior`.
 - For plot rendering coverage, use existing helpers: `plt.Should().RenderInMemoryWithoutThrowing()`, `plt.Should().SavePngWithoutThrowing()`, or `plt.SaveTestImage()`.
 - Keep tests deterministic, small, and behavior-focused; avoid broad snapshots unless the surrounding render tests already use image output.
