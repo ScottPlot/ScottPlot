@@ -72,7 +72,7 @@ public class EtoPlot : Drawable, IPlotControl
         SKPixmap pixels = img.ToRasterImage().PeekPixels();
         byte[] bytes = pixels.GetPixelSpan().ToArray();
 
-        var bmp = new Bitmap((int)Bounds.Width, (int)Bounds.Height, PixelFormat.Format32bppRgba);
+        var bmp = new Bitmap((int)Bounds.Width, (int)Bounds.Height, global::Eto.Drawing.PixelFormat.Format32bppRgba);
 
         using (var data = bmp.Lock())
         {
