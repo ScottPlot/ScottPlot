@@ -53,5 +53,4 @@ public class KeyboardState
             ? "KeyState with 0 pressed key"
             : $"KeyState with {PressedKeyNames.Count} pressed keys: " + string.Join(", ", PressedKeyNames.Select(x => x.ToString()));
     }
-
 }
