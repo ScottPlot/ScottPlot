@@ -1,6 +1,6 @@
 ---
 name: tests-run
-description: Run and contribute to ScottPlot 5 unit tests. Use when adding, editing, debugging, or manually running tests in ScottPlot; restrict manual test execution to src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ and src/ScottPlot5/ScottPlot5 Cookbook/ unless the user explicitly asks for another test project.
+description: "Run and contribute to ScottPlot 5 unit tests. Use when adding, editing, debugging, or manually running tests in ScottPlot; restrict manual test execution to src/ScottPlot5/ScottPlot5 Tests/Unit Tests/ and src/ScottPlot5/ScottPlot5 Cookbook/ unless the user explicitly asks for another test project."
 ---
 
 # ScottPlot Unit Tests

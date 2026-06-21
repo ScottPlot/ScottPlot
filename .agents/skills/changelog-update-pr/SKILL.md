@@ -1,6 +1,6 @@
 ---
 name: changelog-update-pr
-description: Update a changelog for exactly one pull request: the PR associated with the current checked-out branch. Use when an agent is already on a contributor branch and needs to inspect that branch's changes, add one concise changelog entry, avoid summarizing unrelated PRs, and preserve the existing changelog style.
+description: "Update a changelog for exactly one pull request: the PR associated with the current checked-out branch. Use when an agent is already on a contributor branch and needs to inspect that branch's changes, add one concise changelog entry, avoid summarizing unrelated PRs, and preserve the existing changelog style."
 ---
 
 # PR Changelog Entry

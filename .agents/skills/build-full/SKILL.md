@@ -1,6 +1,6 @@
 ---
 name: build-full
-description: Build the full ScottPlot 5 solution. Use only for solution-wide validation or changes affecting controls, demos, sandboxes, workloads, or platform projects. It may require workload restore and may be very slow. For core library or unit-test-only changes, favor build-core.
+description: "Build the full ScottPlot 5 solution. Use only for solution-wide validation or changes affecting controls, demos, sandboxes, workloads, or platform projects. It may require workload restore and may be very slow. For core library or unit-test-only changes, favor build-core."
 ---
 
 # Full Build

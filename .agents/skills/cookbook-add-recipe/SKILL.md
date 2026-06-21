@@ -1,6 +1,6 @@
 ---
 name: cookbook-add-recipe
-description: Create or extend a ScottPlot Cookbook recipe for an IPlottable. Use when adding documentation recipes for ScottPlot plottables, including finding the right cookbook category, creating a new category if needed, and keeping examples minimal and style-matched.
+description: "Create or extend a ScottPlot Cookbook recipe for an IPlottable. Use when adding documentation recipes for ScottPlot plottables, including finding the right cookbook category, creating a new category if needed, and keeping examples minimal and style-matched."
 ---
 
 # Cookbook Recipe From IPlottable
