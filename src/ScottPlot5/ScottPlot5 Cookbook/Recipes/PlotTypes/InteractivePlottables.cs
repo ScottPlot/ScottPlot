@@ -143,4 +143,19 @@ public class InteractivePlottables : ICategory
             }
         }
     }
+
+    public class InteractiveTrendLine : RecipeBase
+    {
+        public override string Name => "Interactive Trend Line";
+        public override string Description => "Interactive trend lines extend infinitely in both directions " +
+            "and can be repositioned by dragging either control point.";
+
+        [Test]
+        public override void Execute()
+        {
+            CoordinateLine line = new(1, 2, 9, 7);
+            myPlot.Add.InteractiveTrendLine(line);
+            myPlot.Axes.SetLimits(0, 10, 0, 10);
+        }
+    }
 }
