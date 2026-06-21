@@ -25,7 +25,7 @@ public static class MouseAxisManipulation
             {
                 plot.Axes.XAxes.ForEach(xAxis => xAxis.Range.ZoomFrac(fracX, xAxis.GetCoordinate(pixel.X, dataRect)));
             }
-            if (ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
+            else if (ChangeOpposingAxesTogether && axisUnderMouse.IsVertical())
             {
                 plot.Axes.YAxes.ForEach(yAxis => yAxis.Range.ZoomFrac(fracY, yAxis.GetCoordinate(pixel.Y, dataRect)));
             }

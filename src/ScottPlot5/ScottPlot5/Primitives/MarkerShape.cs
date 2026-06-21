@@ -30,6 +30,10 @@ public enum MarkerShape
     OpenCircleWithDot,
     OpenCircleWithCross,
     OpenCircleWithEks,
+    CircleWithLineLeft,
+    CircleWithLineRight,
+    TriangleWithLineLeft,
+    TriangleWithLineRight
 }
 
 public static class MarkerShapeExtensions
@@ -62,6 +66,10 @@ public static class MarkerShapeExtensions
             MarkerShape.OpenCircleWithDot => new OpenCircleWithDot(),
             MarkerShape.OpenCircleWithCross => new OpenCircleWithCross(),
             MarkerShape.OpenCircleWithEks => new OpenCircleWithEks(),
+            MarkerShape.CircleWithLineLeft => new CircleWithLineLeft(),
+            MarkerShape.CircleWithLineRight => new CircleWithLineRight(),
+            MarkerShape.TriangleWithLineLeft => new TriangleWithLineLeft(),
+            MarkerShape.TriangleWithLineRight => new TriangleWithLineRight(),
             MarkerShape.None => new None(),
             _ => throw new NotImplementedException(shape.ToString()),
         };

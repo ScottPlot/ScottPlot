@@ -52,7 +52,6 @@ public class FloatingAxis : IPlottable
     {
         float x = (float)(rp.DataRect.Width * Position + rp.DataRect.Left);
         PixelLine spineLine = new(x, rp.DataRect.Top, x, rp.DataRect.Bottom);
-        Console.WriteLine(spineLine.ToString());
         Drawing.DrawLine(rp.Canvas, rp.Paint, spineLine, SpineLineStyle);
 
         float x1 = x - TickLength / 2;
