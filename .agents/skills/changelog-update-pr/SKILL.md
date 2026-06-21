@@ -16,8 +16,9 @@ Fast path:
 
 Rules:
 - Summarize only this PR.
-- If there is no user-facing change, ask before editing.
 - Keep the entry concise and user-facing.
+- Add new bullets to the end of the latest block.
+- Do not modify text outside this bullet before asking.
 - Include `(#PR, #issue) @author` when known.
 
 Style:
@@ -27,4 +28,4 @@ Style:
 
 Choose `Component` from the PR's changed public API, feature, control, cookbook area, or affected file names. Prefer the smallest accurate user-facing name; do not default to a memorized category list. Reuse nearby changelog component wording only when it clearly matches this PR.
 
-Final response: report the exact entry added or updated, and any missing PR metadata.
+Final response: report the text added to the changelog.
