@@ -9,11 +9,11 @@ public class GridCell
 
     public GridCell(int rowIndex, int colIndex, int rowCount, int colCount, int rowSpan = 1, int colSpan = 1)
     {
-        double width = 1.0 / colCount;
-        double height = 1.0 / rowCount;
-        double xOffset = width * colIndex;
-        double yOffset = height * rowIndex;
-        FractionRect = new(xOffset, yOffset, width * rowSpan, height * colSpan);
+        double unitWidth = 1.0 / colCount;
+        double unitHeight = 1.0 / rowCount;
+        double xOffset = unitWidth * colIndex;
+        double yOffset = unitHeight * rowIndex;
+        FractionRect = new(xOffset, yOffset, unitWidth * colSpan, unitHeight * rowSpan);
     }
 
     /// <summary>

@@ -1,4 +1,6 @@
-﻿internal static class Locate
+﻿#nullable enable
+
+internal static class Locate
 {
     public static string GetRepoRootFolder()
     {

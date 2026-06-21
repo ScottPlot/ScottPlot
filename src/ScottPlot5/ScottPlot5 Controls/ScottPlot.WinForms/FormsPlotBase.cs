@@ -30,6 +30,8 @@ public abstract class FormsPlotBase : UserControl, IPlotControl
     [Browsable(false)]
     public UserInputProcessor UserInputProcessor { get; }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public float DisplayScale { get; set; }
 
     /// <summary>

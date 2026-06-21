@@ -3,6 +3,7 @@ using ScottPlot.Plottables;
 using System.Diagnostics;
 
 namespace WinForms_Demo.Demos;
+
 public partial class DataStreamer : Form, IDemoWindow
 {
     public string Title => "Data Streamer";

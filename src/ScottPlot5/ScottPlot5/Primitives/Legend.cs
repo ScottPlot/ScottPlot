@@ -321,7 +321,7 @@ public class Legend(Plot plot) : IPlottable, IHasOutline, IHasBackground, IHasSh
                 item.MarkerShape = MarkerShapeOverride.Value;
 
                 if (item.MarkerColor == Colors.Transparent)
-                    item.MarkerColor = Colors.Black;
+                    item.MarkerColor = item.FillColor;
 
                 // NOTE: Some plottables like signal plots have dynamically sized markers that can get very small
                 item.MarkerSize = Math.Max(item.LabelFontSize, item.MarkerSize);

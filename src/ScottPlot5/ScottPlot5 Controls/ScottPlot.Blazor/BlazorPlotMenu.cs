@@ -2,6 +2,8 @@ namespace ScottPlot.Blazor;
 
 public class BlazorPlotMenu : IPlotMenu
 {
+    public List<ContextMenuItem> ContextMenuItems { get; } = new();
+
     public void ShowContextMenu(Pixel pixel)
     {
         //throw new NotImplementedException();
