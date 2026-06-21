@@ -9,8 +9,14 @@ on:
         type: boolean
         default: true
   workflow_call:
+    inputs:
+      run-codeql:
+        description: "Run CodeQL security scan"
+        required: false
+        type: boolean
+        default: true
 
-  jobs:
+jobs:
   full:
     name: Full Build
     runs-on: windows-latest
