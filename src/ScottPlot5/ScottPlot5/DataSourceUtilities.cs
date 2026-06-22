@@ -44,9 +44,60 @@ public static class DataSourceUtilities
         {
             List<T> listT => listT.BinarySearch(index, length, value, comparer),
             T[] arrayT => Array.BinarySearch(arrayT, index, length, value, comparer),
+            IReadOnlyList<T> readOnlyListT => readOnlyListT.BinarySearch(index, length, value, comparer),
             CircularBuffer<T> circularBufferT => circularBufferT.BinarySearch(index, length, value, comparer),
             _ => throw new NotSupportedException($"unsupported {nameof(IList<T>)}: {sortedList.GetType().Name}")
         };
+    }
+
+    /// <summary>
+    /// Searches a range of elements in a sorted <see cref="IReadOnlyList{T}"/> for a value using a binary search algorithm.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the list.</typeparam>
+    /// <param name="sortedList">The sorted list to search.</param>
+    /// <param name="index">The starting index of the range to search.</param>
+    /// <param name="length">The number of elements in the range to search.</param>
+    /// <param name="value">The value to locate.</param>
+    /// <param name="comparer">
+    /// The comparer implementation to use when comparing elements, or <see langword="null"/> to use the default comparer.
+    /// </param>
+    /// <returns>
+    /// The zero-based index of the value in the list, if found;
+    /// otherwise, a negative number that is the bitwise complement of the index
+    /// of the next element that is larger than <paramref name="value"/>, or, if
+    /// there is no larger element, the bitwise complement of <paramref name="index"/> + <paramref name="length"/>.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="sortedList"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="index"/> or <paramref name="length"/> are invalid for the list.</exception>
+    public static int BinarySearch<T>(
+        this IReadOnlyList<T> sortedList,
+        int index,
+        int length,
+        T value,
+        IComparer<T>? comparer = null)
+    {
+        if (sortedList is null)
+            throw new ArgumentNullException(nameof(sortedList));
+        if (index < 0 || length < 0 || index + length > sortedList.Count)
+            throw new ArgumentOutOfRangeException();
+
+        comparer ??= Comparer<T>.Default;
+        int low = index;
+        int high = index + length - 1;
+
+        while (low <= high)
+        {
+            int mid = low + ((high - low) >> 1);
+            int cmp = comparer.Compare(sortedList[mid], value);
+            if (cmp == 0)
+                return mid;
+            if (cmp < 0)
+                low = mid + 1;
+            else
+                high = mid - 1;
+        }
+        // Same semantics as Array.BinarySearch
+        return ~low;
     }
 
     /// <inheritdoc cref="GetClosestIndex{TValue, TList}(TList, TValue, IndexRange, IComparer{TValue}?)"/>

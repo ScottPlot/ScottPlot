@@ -3,6 +3,21 @@ using ScottPlot.IO;
 
 namespace ScottPlot;
 
+public enum PixelFormat
+{
+    Unknown = 0,
+    Bgra8888,
+    Rgba8888,
+}
+
+public enum AlphaType
+{
+    Unknown = 0,
+    Opaque,
+    Premultiplied,
+    Unpremultiplied,
+}
+
 /// <summary>
 /// Bitmap representation of an image with helper methods for manipulating the image and enabling IO with other platforms
 /// </summary>
@@ -13,6 +28,23 @@ public class Image : IDisposable
     public int Width => SKImage.Width;
     public int Height => SKImage.Height;
     public PixelSize Size => new(Width, Height);
+    public PixelFormat PixelFormat =>
+        SKImage.ColorType switch
+        {
+            // ARGB and BGRA are actually the same, it's  just a matter of which endianness you read them in
+            SKColorType.Bgra8888 => PixelFormat.Bgra8888,
+            SKColorType.Rgba8888 => PixelFormat.Rgba8888,
+            _ => PixelFormat.Unknown
+        };
+
+    public AlphaType AlphaType => SKImage.ColorType.GetAlphaType() switch
+    {
+        SKAlphaType.Unknown => AlphaType.Unknown,
+        SKAlphaType.Opaque => AlphaType.Opaque,
+        SKAlphaType.Premul => AlphaType.Premultiplied,
+        SKAlphaType.Unpremul => AlphaType.Unpremultiplied,
+        _ => throw new ArgumentOutOfRangeException()
+    };
 
     /// <summary>
     /// Create an Image from the snapshot of an existing Surface
