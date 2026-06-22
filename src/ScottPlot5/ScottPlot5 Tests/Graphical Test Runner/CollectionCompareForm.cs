@@ -24,7 +24,7 @@ public partial class CollectionCompareForm : Form
         }
         else
         {
-            defaultFolder = "C:/path/to/old/images/";
+            throw new DirectoryNotFoundException(defaultFolder); 
         }
 
         tbBefore.Text = defaultFolder;
