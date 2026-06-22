@@ -1,5 +1,8 @@
-## ScottPlot 5.1.59
+## ScottPlot 5.1.60
 _Not yet published..._
+
+## ScottPlot 5.1.59
+_Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-06-22_
 * Avalonia: Add support for Avalonia 12 (#5233) @bclehmann
 * Avalonia: Implement cross-platform copy-to-clipboard (#5167) @bclehmann
 * Eto: Fix PixelFormat namespace ambiguity in EtoPlot builds (#5238) @CoderPM2011
