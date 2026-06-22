@@ -16,18 +16,14 @@ public class ScatterSourceCoordinatesArray(Coordinates[] coordinates) : IScatter
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
         return Coordinates
-            .Skip(MinRenderIndex)
-            .Take(this.GetRenderIndexCount())
-            .ToList();
+            .SkipView(MinRenderIndex)
+            .TakeView(this.GetRenderIndexCount());
     }
 
     public AxisLimits GetLimits()
     {
         ExpandingAxisLimits limits = new();
-        limits
-            .Expand(Coordinates
-            .Skip(MinRenderIndex)
-            .Take(this.GetRenderIndexCount()));
+        limits.Expand(Coordinates.SkipView(MinRenderIndex).TakeView(this.GetRenderIndexCount()));
         return limits.AxisLimits;
     }
 
