@@ -200,6 +200,98 @@ internal class ScatterDataTests
     }
 
     [Test]
+    public void Test_ScatterSources_GetScatterPoints_UseRenderIndexWindow()
+    {
+        foreach (IScatterSource source in GetScatterSources())
+        {
+            source.MinRenderIndex = 1;
+            source.MaxRenderIndex = 3;
+
+            IReadOnlyList<Coordinates> points = source.GetScatterPoints();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(points.Count, Is.EqualTo(3), source.GetType().Name);
+                Assert.That(points.Select(x => x.X).ToArray(), Is.EqualTo(new[] { 20.0, 30.0, 40.0 }), source.GetType().Name);
+                Assert.That(points.Select(x => x.Y).ToArray(), Is.EqualTo(new[] { 4.0, -2.0, 8.0 }), source.GetType().Name);
+            });
+        }
+    }
+
+    [Test]
+    public void Test_ScatterSources_GetLimits_UseRenderIndexWindow()
+    {
+        foreach (IScatterSource source in GetScatterSources())
+        {
+            source.MinRenderIndex = 1;
+            source.MaxRenderIndex = 3;
+
+            AxisLimits limits = source.GetLimits();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(limits.Left, Is.EqualTo(20), source.GetType().Name);
+                Assert.That(limits.Right, Is.EqualTo(40), source.GetType().Name);
+                Assert.That(limits.Bottom, Is.EqualTo(-2), source.GetType().Name);
+                Assert.That(limits.Top, Is.EqualTo(8), source.GetType().Name);
+            });
+        }
+    }
+
+    [Test]
+    public void Test_ScatterSources_GetScatterPoints_NegativeMinRenderIndexStartsAtZero()
+    {
+        foreach (IScatterSource source in GetScatterSources())
+        {
+            source.MinRenderIndex = -10;
+            source.MaxRenderIndex = 2;
+
+            IReadOnlyList<Coordinates> points = source.GetScatterPoints();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(points.Count, Is.EqualTo(3), source.GetType().Name);
+                Assert.That(points.Select(x => x.X).ToArray(), Is.EqualTo(new[] { 10.0, 20.0, 30.0 }), source.GetType().Name);
+                Assert.That(points.Select(x => x.Y).ToArray(), Is.EqualTo(new[] { 1.0, 4.0, -2.0 }), source.GetType().Name);
+            });
+        }
+    }
+
+    [Test]
+    public void Test_ScatterSourceDoubleArray_GetScatterPoints_UsesShortestInput()
+    {
+        double[] xs = [1, 2, 3, 4];
+        double[] ys = [10, 20];
+        ScatterSourceDoubleArray source = new(xs, ys);
+
+        IReadOnlyList<Coordinates> points = source.GetScatterPoints();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(points.Count, Is.EqualTo(2));
+            Assert.That(points.Select(x => x.X).ToArray(), Is.EqualTo(new[] { 1.0, 2.0 }));
+            Assert.That(points.Select(x => x.Y).ToArray(), Is.EqualTo(new[] { 10.0, 20.0 }));
+        });
+    }
+
+    private static IEnumerable<IScatterSource> GetScatterSources()
+    {
+        double[] xs = [10, 20, 30, 40, 50];
+        double[] ys = [1, 4, -2, 8, 16];
+        Coordinates[] coordinates = xs.Zip(ys, (x, y) => new Coordinates(x, y)).ToArray();
+
+        yield return new ScatterSourceDoubleArray(xs, ys);
+        yield return new ScatterSourceGenericArray<int, float>(
+            xs.Select(x => (int)x).ToArray(),
+            ys.Select(y => (float)y).ToArray());
+        yield return new ScatterSourceGenericList<int, float>(
+            xs.Select(x => (int)x).ToList(),
+            ys.Select(y => (float)y).ToList());
+        yield return new ScatterSourceCoordinatesArray(coordinates);
+        yield return new ScatterSourceCoordinatesList(coordinates.ToList());
+    }
+
+    [Test]
     public void Test_Scatter_GetNearest_CoordinatesArray()
     {
         double[] xs = Generate.Consecutive(51);

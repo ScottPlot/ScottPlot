@@ -70,6 +70,12 @@ public class FractionalAutoScaler : IAutoScaler
             double right = xAxis.Range.Max + (xAxis.Range.Span * RightFraction);
             if (NumericConversion.IsReal(left) && NumericConversion.IsReal(right))
             {
+				if (left == right)
+                {
+                    left -= 1.0;
+                    right += 1.0;
+                }
+				
                 if (InvertedX)
                 {
                     xAxis.Range.Set(right, left);
@@ -87,6 +93,12 @@ public class FractionalAutoScaler : IAutoScaler
             double top = yAxis.Range.Max + (yAxis.Range.Span * TopFraction);
             if (NumericConversion.IsReal(bottom) && NumericConversion.IsReal(top))
             {
+				if (bottom == top)
+                {
+                    bottom -= 1.0;
+                    top += 1.0;
+                }
+				
                 if (InvertedY)
                 {
                     yAxis.Range.Set(top, bottom);
