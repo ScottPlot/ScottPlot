@@ -13,6 +13,7 @@ _Not yet published..._
 * Lollipop: Add nearest-point support (#5237, #5160) @CoderPM2011
 * Ticks: Add support for custom tick line patterns (#5239) @oktrue
 * Avalonia: Add customizable mouse wheel event handling (#5241, #5240) @oktrue
+* DataStreamer: Fix `Clear(value)` to reset data to the requested value (#5245, #5244) @gutblender
 
 ## ScottPlot 5.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
