@@ -8,6 +8,7 @@ _Not yet published..._
 * Scatter: Reduce memory allocations when rendering scatter plots (#5129) @Ben-D-Anderson
 * Interactivity: Add trend lines that extend infinitely in both directions (#5181) @btarb24
 * Controls: Improve modifier key handling when plots regain focus (#5209) @btarb24
+* Autoscaling: Fix zero-span axis ranges when data has identical X and Y values (#5234) @AscendLiu
 
 ## ScottPlot 5.1.58
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-03-29_
