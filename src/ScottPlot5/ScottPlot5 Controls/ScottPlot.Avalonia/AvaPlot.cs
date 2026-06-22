@@ -21,6 +21,11 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public GRContext? GRContext => null;
 
+    /// <summary>
+    /// Prevent mouse wheel events from bubbling up to parent controls (e.g., ScrollViewer)
+    /// </summary>
+    public bool HandleMouseWheelEvent { get; set; } = true;
+
     public float DisplayScale { get; set; }
 
     public AvaPlot()
@@ -131,8 +136,8 @@ public class AvaPlot : Controls.Control, IPlotControl
         {
             UserInputProcessor.ProcessMouseWheel(pixel, delta, e.KeyModifiers);
         }
-		
-        e.Handled = true; // Prevent the event from bubbling up to parent controls (e.g., ScrollViewer)
+
+        e.Handled = HandleMouseWheelEvent;
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
