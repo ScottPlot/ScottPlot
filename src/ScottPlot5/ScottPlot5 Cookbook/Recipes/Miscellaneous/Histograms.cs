@@ -101,7 +101,8 @@ public class Histograms : ICategory
         public override string Description => "A helper method and plot type has been created " +
             "to simplify creating a bar plot that displays histogram counts. " +
             "Note that updates the histogram may appear in real time and the plot will " +
-            "automatically update to display the latest data.";
+            "automatically update to display the latest data, but axis limits must " +
+            "be recalculated after new data is added.";
 
         [Test]
         public override void Execute()
@@ -111,9 +112,11 @@ public class Histograms : ICategory
             var histPlot = myPlot.Add.Histogram(hist);
             histPlot.BarWidthFraction = 0.8;
 
-            // histogram counts are updated automatically as new data is added
+            // histogram counts are updated automatically as new data is added,
+            // but autoscaling must be applied after the counts change.
             double[] newData = SampleData.MaleHeights();
             hist.AddRange(newData);
+            myPlot.Axes.AutoScaleY();
         }
     }
 
