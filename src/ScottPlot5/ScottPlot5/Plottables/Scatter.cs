@@ -1,3 +1,5 @@
+using ScottPlot.DataSources;
+
 namespace ScottPlot.Plottables;
 
 public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IHasLegendText, IDataSource, IGetNearest
@@ -126,18 +128,13 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     {
         var coordinates = Data.GetScatterPoints();
 
-        Pixel[] markerPixels = new Pixel[coordinates.Count];
-        for (int i = 0; i < coordinates.Count; i++)
-        {
-            double x = coordinates[i].X * ScaleX + OffsetX;
-            double y = coordinates[i].Y * ScaleY + OffsetY;
-            markerPixels[i] = Axes.GetPixel(new(x, y));
-        }
+        IReadOnlyList<Pixel> markerPixels = coordinates.SelectView(coordinate =>
+            Axes.GetPixel(new(coordinate.X * ScaleX + OffsetX, coordinate.Y * ScaleY + OffsetY)));
 
-        if (markerPixels.Length == 0)
+        if (markerPixels.Count == 0)
             return;
 
-        Pixel[] linePixels = ConnectStyle switch
+        IReadOnlyList<Pixel> linePixels = ConnectStyle switch
         {
             ConnectStyle.Straight => markerPixels,
             ConnectStyle.StepHorizontal => GetStepDisplayPixels(markerPixels, true),
@@ -211,22 +208,16 @@ public class Scatter(IScatterSource data) : IPlottable, IHasLine, IHasMarker, IH
     /// </summary>
     /// <param name="points">Array of corner positions</param>
     /// <param name="right">Indicates that a line will extend to the right before rising or falling.</param>
-    public static Pixel[] GetStepDisplayPixels(IReadOnlyList<Pixel> pixels, bool right)
+    public static IReadOnlyList<Pixel> GetStepDisplayPixels(IReadOnlyList<Pixel> pixels, bool right)
     {
-        Pixel[] pixelsStep = new Pixel[pixels.Count() * 2 - 1];
-
         int offsetX = right ? 1 : 0;
         int offsetY = right ? 0 : 1;
 
-        for (int i = 0; i < pixels.Count() - 1; i++)
+        return pixels.GrowView(2, (step, originalIndex, originalList) =>
         {
-            pixelsStep[i * 2] = pixels[i];
-            pixelsStep[i * 2 + 1] = new Pixel(pixels[i + offsetX].X, pixels[i + offsetY].Y);
-        }
-
-        pixelsStep[pixelsStep.Length - 1] = pixels[pixels.Count - 1];
-
-        return pixelsStep;
+            if (step == 0 || originalIndex >= originalList.Count - 1) return originalList[originalIndex];
+            return new Pixel(originalList[originalIndex + offsetX].X, originalList[originalIndex + offsetY].Y);
+        }).TakeView(pixels.Count * 2 - 1);
     }
 
 

@@ -1,6 +1,6 @@
 namespace ScottPlot.Plottables;
 
-public class LollipopPlot : IPlottable, IHasLine, IHasMarker
+public class LollipopPlot : IPlottable, IHasLine, IHasMarker, IGetNearest
 {
     public bool IsVisible { get; set; } = true;
 
@@ -51,6 +51,18 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker
     public AxisLimits GetAxisLimits()
     {
         return new AxisLimits(Coordinates);
+    }
+
+    public DataPoint GetNearest(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        DataSources.CoordinateDataSource dataSource = new(Coordinates.ToList());
+        return DataSourceUtilities.GetNearest(dataSource, mouseLocation, renderInfo, maxDistance, Axes.XAxis, Axes.YAxis);
+    }
+
+    public DataPoint GetNearestX(Coordinates mouseLocation, RenderDetails renderInfo, float maxDistance = 15)
+    {
+        DataSources.CoordinateDataSource dataSource = new(Coordinates.ToList());
+        return DataSourceUtilities.GetNearestX(dataSource, mouseLocation, renderInfo, maxDistance, Axes.XAxis);
     }
 
     public virtual void Render(RenderPack rp)
