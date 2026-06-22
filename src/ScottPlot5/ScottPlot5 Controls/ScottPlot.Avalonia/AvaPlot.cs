@@ -21,7 +21,7 @@ public class AvaPlot : Controls.Control, IPlotControl
 
     public GRContext? GRContext => null;
 
-    public bool HandleMouseWheelEvent { get; set; }
+    public bool HandleMouseWheelEvent { get; set; } = true;
 
     public float DisplayScale { get; set; }
 
