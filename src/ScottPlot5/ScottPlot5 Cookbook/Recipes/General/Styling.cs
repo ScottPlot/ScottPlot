@@ -58,7 +58,8 @@ public class Styling : ICategory
             myPlot.Axes.Bottom.Label.Bold = false;
             myPlot.Axes.Bottom.Label.FontName = Fonts.Monospace;
 
-            myPlot.Axes.Bottom.MajorTickStyle.Length = 10;
+            myPlot.Axes.Bottom.MajorTickStyle.Pattern = LinePattern.Dotted;
+            myPlot.Axes.Bottom.MajorTickStyle.Length = 19;
             myPlot.Axes.Bottom.MajorTickStyle.Width = 3;
             myPlot.Axes.Bottom.MajorTickStyle.Color = Colors.Magenta;
             myPlot.Axes.Bottom.MinorTickStyle.Length = 5;

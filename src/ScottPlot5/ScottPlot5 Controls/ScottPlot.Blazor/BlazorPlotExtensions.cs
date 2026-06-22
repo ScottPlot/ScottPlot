@@ -14,8 +14,20 @@ public static class BlazorPlotExtensions
         return new Pixel((float)args.OffsetX, (float)args.OffsetY);
     }
 
+    private static void SyncModifierKeys(Interactivity.UserInputProcessor processor, MouseEventArgs e)
+    {
+        processor.KeyState.Remove(Interactivity.StandardKeys.Alt);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Control);
+        processor.KeyState.Remove(Interactivity.StandardKeys.Shift);
+
+        if (e.AltKey) processor.KeyState.Add(Interactivity.StandardKeys.Alt);
+        if (e.CtrlKey) processor.KeyState.Add(Interactivity.StandardKeys.Control);
+        if (e.ShiftKey) processor.KeyState.Add(Interactivity.StandardKeys.Shift);
+    }
+
     public static void ProcessMouseMove(this Interactivity.UserInputProcessor processor, PointerEventArgs e)
     {
+        SyncModifierKeys(processor, e);
         Pixel pixel = e.ToPixel();
         Interactivity.IUserAction action = new Interactivity.UserActions.MouseMove(pixel);
         processor.Process(action);
@@ -23,6 +35,7 @@ public static class BlazorPlotExtensions
 
     public static void ProcessMouseDown(this Interactivity.UserInputProcessor processor, PointerEventArgs e)
     {
+        SyncModifierKeys(processor, e);
         Pixel pixel = e.ToPixel();
 
         Interactivity.IUserAction action = e.Button switch
@@ -49,6 +62,7 @@ public static class BlazorPlotExtensions
 
     public static void ProcessMouseUp(this Interactivity.UserInputProcessor processor, PointerEventArgs e)
     {
+        SyncModifierKeys(processor, e);
         Pixel pixel = e.ToPixel();
 
         Interactivity.IUserAction action = e.Button switch
@@ -64,6 +78,7 @@ public static class BlazorPlotExtensions
 
     public static void ProcessMouseWheel(this Interactivity.UserInputProcessor processor, WheelEventArgs e)
     {
+        SyncModifierKeys(processor, e);
         Pixel pixel = e.ToPixel();
         double delta = -(float)e.DeltaY;
 
