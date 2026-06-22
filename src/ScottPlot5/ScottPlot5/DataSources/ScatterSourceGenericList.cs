@@ -17,17 +17,9 @@ public class ScatterSourceGenericList<T1, T2>(List<T1> xs, List<T2> ys) : IScatt
 
     public IReadOnlyList<Coordinates> GetScatterPoints()
     {
-        List<Coordinates> points = new(this.GetRenderIndexCount());
-
-        for (int i = MinRenderIndex; points.Count < points.Capacity; i++)
-        {
-            T1 x = Xs[i];
-            T2 y = Ys[i];
-            Coordinates c = NumericConversion.GenericToCoordinates(ref x, ref y);
-            points.Add(c);
-        }
-
-        return points;
+        return Xs.ZipView(Ys, (x, y) => NumericConversion.GenericToCoordinates(ref x, ref y))
+            .SkipView(MinRenderIndex)
+            .TakeView(this.GetRenderIndexCount());
     }
 
     public AxisLimits GetLimits()
@@ -37,13 +29,13 @@ public class ScatterSourceGenericList<T1, T2>(List<T1> xs, List<T2> ys) : IScatt
 
     public CoordinateRange GetLimitsX()
     {
-        double[] values = NumericConversion.GenericToDoubleArray(Xs.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
+        double[] values = NumericConversion.GenericToDoubleArray(Xs.SkipView(MinRenderIndex).TakeView(this.GetRenderIndexCount()));
         return CoordinateRange.Extrema(values);
     }
 
     public CoordinateRange GetLimitsY()
     {
-        double[] values = NumericConversion.GenericToDoubleArray(Ys.Skip(MinRenderIndex).Take(this.GetRenderIndexCount()));
+        double[] values = NumericConversion.GenericToDoubleArray(Ys.SkipView(MinRenderIndex).TakeView(this.GetRenderIndexCount()));
         return CoordinateRange.Extrema(values);
     }
 

@@ -33,7 +33,7 @@ public struct PolarCoordinates(double radius, Angle angle)
     public static PolarCoordinates FromCartesian(Coordinates pt, Coordinates origin)
     {
         double radius = pt.Distance(origin);
-        double degrees = Math.Atan2(pt.Y - origin.Y, pt.X - origin.X);
-        return new PolarCoordinates(radius, Angle.FromDegrees(degrees));
+        double radians = Math.Atan2(pt.Y - origin.Y, pt.X - origin.X);
+        return new PolarCoordinates(radius, Angle.FromRadians(radians));
     }
 }
