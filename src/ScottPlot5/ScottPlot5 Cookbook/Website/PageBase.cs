@@ -25,7 +25,6 @@ internal abstract class PageBase
         }
         sbfm.AppendLine($"Date: {DateTime.UtcNow:yyyy-MM-dd}");
         sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
-        sbfm.AppendLine($"Version: {ScottPlot.Version.LongString}");
         sbfm.AppendLine($"SearchUrl: \"/cookbook/5/search/\"");
         sbfm.AppendLine($"ShowEditLink: false");
         sbfm.AppendLine("---");
