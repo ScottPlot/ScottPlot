@@ -43,6 +43,8 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker, IGetNearest
 
     public Orientation Orientation { get; set; } = Orientation.Vertical;
 
+    public double BaseValue { get; set; } = 0;
+
     public LollipopPlot(IEnumerable<Coordinates> coordinates)
     {
         Coordinates = coordinates;
@@ -69,7 +71,9 @@ public class LollipopPlot : IPlottable, IHasLine, IHasMarker, IGetNearest
     {
         foreach (Coordinates c in Coordinates)
         {
-            Coordinates lineBase = (Orientation == Orientation.Vertical) ? new(c.X, 0) : new(0, c.Y);
+            Coordinates lineBase = (Orientation == Orientation.Vertical)
+                ? new(c.X, BaseValue)
+                : new(BaseValue, c.Y);
             Coordinates lineTip = c;
             CoordinateLine line = new(lineBase, lineTip);
             PixelLine pxLine = Axes.GetPixelLine(line);
