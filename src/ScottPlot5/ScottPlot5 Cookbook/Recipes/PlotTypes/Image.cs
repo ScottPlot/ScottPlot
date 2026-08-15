@@ -1,9 +1,9 @@
 namespace ScottPlotCookbook.Recipes.PlotTypes;
 
-public class Images : ICategory
+public class Image : ICategory
 {
     public Chapter Chapter => Chapter.PlotTypes;
-    public string CategoryName => "Images";
+    public string CategoryName => "Image";
     public string CategoryDescription => "Images can be placed on plots in a variety of ways";
 
     public class ImageRectQuickstart : RecipeBase
