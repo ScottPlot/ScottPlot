@@ -46,10 +46,3 @@ jobs:
     uses: ./.github/workflows/task-publish-changelog.yaml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-  publish-metrics:
-    name: "Publish"
-    needs: [full]
-    uses: ./.github/workflows/task-code-metrics.yaml
-    secrets:
-      private-ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
