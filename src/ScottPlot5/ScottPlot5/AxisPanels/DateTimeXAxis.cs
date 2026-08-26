@@ -14,7 +14,7 @@ public class DateTimeXAxis : XAxisBase, IXAxis
         set
         {
             if (value is not IDateTimeTickGenerator)
-                throw new ArgumentException($"Date axis must have a {nameof(ITickGenerator)} generator");
+                throw new ArgumentException($"Date axis must have a {nameof(IDateTimeTickGenerator)} generator");
 
             _tickGenerator = (IDateTimeTickGenerator)value;
         }

@@ -1,6 +1,6 @@
 namespace ScottPlot.TickGenerators;
 
-public class DateTimeManual : ITickGenerator
+public class DateTimeManual : IDateTimeTickGenerator
 {
     public Tick[] Ticks { get; private set; } = [];
 
@@ -31,6 +31,11 @@ public class DateTimeManual : ITickGenerator
     public void Regenerate(CoordinateRange range, Edge edge, PixelLength size, Paint paint, LabelStyle labelStyle)
     {
         Ticks = TickList.Where(x => range.Contains(x.Position)).ToArray();
+    }
+
+    public IEnumerable<double> ConvertToCoordinateSpace(IEnumerable<DateTime> dates)
+    {
+        return dates.Select(NumericConversion.ToNumber);
     }
 
     public void Add(Tick tick)
