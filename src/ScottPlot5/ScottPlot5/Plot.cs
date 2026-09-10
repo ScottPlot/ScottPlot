@@ -610,7 +610,7 @@ public class Plot : IDisposable
     public Panels.LegendPanel ShowLegend(Edge edge)
     {
         HideLegend();
-         
+
         Panels.LegendPanel legendPanel = new(Legend)
         {
             Edge = edge,
