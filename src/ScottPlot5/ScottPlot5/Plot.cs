@@ -610,15 +610,11 @@ public class Plot : IDisposable
     public Panels.LegendPanel ShowLegend(Edge edge)
     {
         HideLegend();
-
-        Legend.Orientation = edge.IsVertical()
-            ? Orientation.Vertical
-            : Orientation.Horizontal;
-
+         
         Panels.LegendPanel legendPanel = new(Legend)
         {
             Edge = edge,
-            Alignment = Alignment.MiddleCenter,
+            Alignment = Legend.Alignment,
         };
 
         Axes.AddPanel(legendPanel);

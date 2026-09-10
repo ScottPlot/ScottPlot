@@ -263,6 +263,9 @@ public class Legend : ICategory
             sig1.LegendText = "Sine";
             sig2.LegendText = "Cosine";
 
+            //display the horizontal legend outside the data area on the right side of the plot            
+            myPlot.Legend.Orientation = Orientation.Horizontal;
+
             myPlot.ShowLegend(Edge.Right);
         }
     }
