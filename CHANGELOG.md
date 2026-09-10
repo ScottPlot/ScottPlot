@@ -1,5 +1,6 @@
 ## ScottPlot 5.1.60
 _Not yet published..._
+* Lollipop: Add `BaseValue` property to set the baseline (#5255) @CoderPM2011
 
 ## ScottPlot 5.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-06-22_
