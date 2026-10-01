@@ -25,7 +25,8 @@
 
     public void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
-        Multiplot.Render(e.Surface);
+        PixelRect figure = new(0, e.Info.Width, e.Info.Height, 0);
+        Multiplot.Render(e.Surface.Canvas, figure);
     }
 
 
