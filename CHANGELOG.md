@@ -1,6 +1,8 @@
 ## ScottPlot 5.1.60
 _Not yet published..._
 * Lollipop: Add `BaseValue` property to set the baseline (#5255) @CoderPM2011
+* Speedometer: New plot type showing a value with a needle on a scale of colored sections, numbers around the band, and a value bar beneath it @IvoTops
+* Hatches: Add `Glitter` hatch with sparkles and faint streaks @IvoTops
 
 ## ScottPlot 5.1.59
 _Published on [NuGet](https://www.nuget.org/profiles/ScottPlot) on 2026-06-22_

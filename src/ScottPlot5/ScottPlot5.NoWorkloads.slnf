@@ -1,0 +1,31 @@
+{
+  "solution": {
+    "path": "ScottPlot5.sln",
+    "projects": [
+      "ScottPlot5\\ScottPlot.csproj",
+      "ScottPlot5 Controls\\ScottPlot.Avalonia\\ScottPlot.Avalonia.csproj",
+      "ScottPlot5 Controls\\ScottPlot.Blazor\\ScottPlot.Blazor.csproj",
+      "ScottPlot5 Controls\\ScottPlot.Eto\\ScottPlot.Eto.csproj",
+      "ScottPlot5 Controls\\ScottPlot.OpenGL\\ScottPlot.OpenGL.csproj",
+      "ScottPlot5 Controls\\ScottPlot.WinForms\\ScottPlot.WinForms.csproj",
+      "ScottPlot5 Controls\\ScottPlot.WPF\\ScottPlot.WPF.csproj",
+      "ScottPlot5 Cookbook\\ScottPlot Cookbook.csproj",
+      "ScottPlot5 Benchmarks\\Benchmark.csproj",
+      "ScottPlot5 Demos\\Avalonia Demo\\Avalonia Demo.csproj",
+      "ScottPlot5 Demos\\ScottPlot5 Blazor\\Sandbox.Blazor.WebAssembly.csproj",
+      "ScottPlot5 Demos\\ScottPlot5 WinForms Demo\\WinForms Demo.csproj",
+      "ScottPlot5 Demos\\ScottPlot5 WPF Demo\\WPF Demo.csproj",
+      "ScottPlot5 Tests\\Graphical Test Runner\\Graphical Test Runner.csproj",
+      "ScottPlot5 Tests\\Unit Tests\\ScottPlot Unit Tests.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.Avalonia.Desktop\\Sandbox.Avalonia.Desktop.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.Blazor\\Sandbox.Blazor.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.Console\\Sandbox.Console.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.Eto\\Sandbox.Eto.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.WebApi\\Sandbox.WebApi.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.WinForms\\Sandbox.WinForms.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.WinForms3D\\Sandbox.WinForms3D.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.WinFormsFinance\\Sandbox.WinFormsFinance.csproj",
+      "ScottPlot5 Sandbox\\Sandbox.WPF\\Sandbox.WPF.csproj"
+    ]
+  }
+}
