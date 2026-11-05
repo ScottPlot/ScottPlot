@@ -1459,6 +1459,17 @@ public class PlottableAdder(Plot plot)
     }
 
     /// <summary>
+    /// Add a speedometer showing <paramref name="value"/> with a needle on a scale from <paramref name="min"/> to <paramref name="max"/>
+    /// </summary>
+    public Speedometer Speedometer(double value, double min = 0, double max = 100)
+    {
+        Speedometer speedometer = new(min, max) { Value = value };
+        Plot.PlottableList.Add(speedometer);
+        Plot.HideAxesAndGrid();
+        return speedometer;
+    }
+
+    /// <summary>
     /// Place a stacked bar chart at a single position
     /// </summary>
     public BarPlot[] StackedRanges(List<(string name, double[] edgeValues)> ranges, IPalette? palette = null, bool horizontal = false)
