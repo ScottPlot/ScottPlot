@@ -71,12 +71,89 @@ public class SystemFontResolver : IFontResolver
 
     public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing width)
     {
-        if (!GetInstalledFonts().Contains(fontName))
+        if (GetInstalledFonts().Contains(fontName))
+        {
+            SKFontStyle style = new(weight.ToSKFontStyleWeight(), width.ToSKFontStyleWidth(), slant.ToSKFontStyleSlant());
+            SKTypeface? typeface = SKTypeface.FromFamilyName(fontName, style);
+            if (typeface is not null)
+                return typeface;
+        }
+
+        return CreateTypefaceFromFaceName(fontName, weight, slant);
+    }
+
+    /// <summary>
+    /// Faces installed on the system, keyed by every normalized name that can refer to them.
+    /// Built only when a name does not match an installed family (the uncommon case).
+    /// </summary>
+    private static readonly Lazy<Dictionary<string, (string Family, int StyleIndex)>> FaceIndex = new(BuildFaceIndex);
+
+    private static Dictionary<string, (string Family, int StyleIndex)> BuildFaceIndex()
+    {
+        Dictionary<string, (string, int)> index = [];
+
+        foreach (string family in SKFontManager.Default.FontFamilies)
+        {
+            using SKFontStyleSet styleSet = SKFontManager.Default.GetFontStyles(family);
+            for (int i = 0; i < styleSet.Count; i++)
+            {
+                using SKTypeface? face = styleSet.CreateTypeface(i);
+                if (face is null)
+                    continue;
+
+                foreach (string name in FontNames.GetNames(face, family, styleSet.GetStyleName(i)))
+                    index.TryAdd(name, (family, i));
+            }
+        }
+
+        return index;
+    }
+
+    /// <summary>
+    /// Create a typeface from a name that identifies a single font face
+    /// (e.g., the Windows font name, PostScript name, or file name) rather than a family.
+    /// The face is chosen by name, so the requested width and weight are not used to find it.
+    /// If bold or italic is requested, a sibling face from the same family is used if one exists.
+    /// </summary>
+    private static SKTypeface? CreateTypefaceFromFaceName(string fontName, FontWeight weight, FontSlant slant)
+    {
+        string key = FontNames.Normalize(fontName);
+        if (key.Length == 0 || !FaceIndex.Value.TryGetValue(key, out var match))
             return null;
 
-        SKFontStyle style = new(weight.ToSKFontStyleWeight(), width.ToSKFontStyleWidth(), slant.ToSKFontStyleSlant());
-        SKTypeface? typeface = SKTypeface.FromFamilyName(fontName, style);
-        return typeface;
+        using SKFontStyleSet styleSet = SKFontManager.Default.GetFontStyles(match.Family);
+        if (match.StyleIndex >= styleSet.Count)
+            return null;
+
+        int chosenIndex = match.StyleIndex;
+        bool wantsWeight = weight != FontWeight.Normal;
+        bool wantsSlant = slant != FontSlant.Upright;
+
+        if (wantsWeight || wantsSlant)
+        {
+            SKFontStyle matched = styleSet[match.StyleIndex];
+            int targetWeight = wantsWeight ? (int)weight : matched.Weight;
+            bool matchedHasSlant = !wantsSlant || matched.Slant == slant.ToSKFontStyleSlant();
+            int bestDistance = matchedHasSlant ? Math.Abs(matched.Weight - targetWeight) : int.MaxValue;
+
+            for (int i = 0; i < styleSet.Count; i++)
+            {
+                SKFontStyle candidate = styleSet[i];
+                if (candidate.Width != matched.Width)
+                    continue;
+                if (wantsSlant && candidate.Slant != slant.ToSKFontStyleSlant())
+                    continue;
+
+                int distance = Math.Abs(candidate.Weight - targetWeight);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    chosenIndex = i;
+                }
+            }
+        }
+
+        return styleSet.CreateTypeface(chosenIndex);
     }
 
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)

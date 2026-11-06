@@ -31,6 +31,16 @@ public static class Fonts
         FontResolvers.Add(resolver);
     }
 
+    /// <summary>
+    /// Add a font from a file and make it available by any of its names
+    /// (file name, Windows font name, PostScript name, or family name),
+    /// without needing to know the font's weight, slant, or width.
+    /// </summary>
+    public static void AddFontFile(string path)
+    {
+        FontResolvers.Add(new NamedFileFontResolver(path));
+    }
+
     public static FontWeight? DefaultWeight { get; set; }
     public static FontSlant? DefaultSlant { get; set; }
     public static FontSpacing? DefaultWidth { get; set; }
@@ -99,6 +109,8 @@ public static class Fonts
         }
 
         SKTypeface defaultTypeface = SystemFontResolver.CreateDefaultTypeface();
+        Debug.WriteLine($"Font '{fontName}' was not found; using the default font '{defaultTypeface.FamilyName}' instead. " +
+            "Use the Windows font name or file name, or call Fonts.AddFontFile(path) to load it from a file.");
         TypefaceCache.TryAdd(typefaceCacheKey, defaultTypeface);
         return defaultTypeface;
     }
@@ -198,7 +210,8 @@ public static class Fonts
     {
         int missingGlyphCount = 0;
 
-        using var typeface = SKTypeface.FromFamilyName(fontName);
+        // Resolve by family or face name so fonts grouped under another family name are not dropped
+        using var typeface = new SystemFontResolver().CreateTypeface(fontName, FontWeight.Normal, FontSlant.Upright, FontSpacing.Normal);
         if (typeface != null)
         {
             foreach (int standaloneCodePoint in standaloneCodePoints)

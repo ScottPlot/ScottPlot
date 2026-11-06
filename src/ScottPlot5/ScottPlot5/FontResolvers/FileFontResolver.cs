@@ -52,3 +52,55 @@ public class FileFontResolver(string name, string path, FontWeight weight, FontS
         return $"File font resolver: name='{FontName}', weight={Weight}, slant={Slant}, width={Width}";
     }
 }
+
+/// <summary>
+/// Font resolver that creates a typeface from a font file and matches it by any of its names
+/// (file name, Windows font name, PostScript name, family name) without requiring
+/// the caller to know the font's weight, slant, or width.
+/// </summary>
+public class NamedFileFontResolver : IFontResolver
+{
+    private string FontPath { get; }
+    private HashSet<string> Names { get; }
+
+    /// <summary>
+    /// Names (as read from the file) that this resolver responds to
+    /// </summary>
+    public IReadOnlyCollection<string> NormalizedNames => Names;
+
+    public NamedFileFontResolver(string path)
+    {
+        if (!File.Exists(path))
+            throw new FileNotFoundException(path);
+
+        FontPath = Path.GetFullPath(path);
+
+        using SKTypeface typeface = SKTypeface.FromFile(FontPath)
+            ?? throw new InvalidOperationException($"Unable to load font file: {path}");
+
+        Names = FontNames.GetNames(typeface);
+        string fileName = FontNames.Normalize(Path.GetFileNameWithoutExtension(FontPath));
+        if (fileName.Length > 0)
+            Names.Add(fileName);
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing spacing)
+    {
+        return Names.Contains(FontNames.Normalize(fontName))
+            ? SKTypeface.FromFile(FontPath)
+            : null;
+    }
+
+    public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
+    {
+        return CreateTypeface(fontName,
+            bold ? FontWeight.Bold : FontWeight.Normal,
+            italic ? FontSlant.Italic : FontSlant.Upright,
+            FontSpacing.Normal);
+    }
+
+    public override string ToString()
+    {
+        return $"Named file font resolver: path='{FontPath}'";
+    }
+}
