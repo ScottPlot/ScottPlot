@@ -102,7 +102,10 @@ public class SystemFontResolver : IFontResolver
                     continue;
 
                 foreach (string name in FontNames.GetNames(face, family, styleSet.GetStyleName(i)))
-                    index.TryAdd(name, (family, i));
+                {
+                    if (!index.ContainsKey(name))
+                        index[name] = (family, i);
+                }
             }
         }
 
