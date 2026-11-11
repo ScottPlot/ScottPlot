@@ -79,33 +79,62 @@ public class SystemFontResolver : IFontResolver
                 return typeface;
         }
 
-        return CreateTypefaceFromFaceName(fontName, weight, slant);
+        return CreateTypefaceFromFaceName(fontName, weight, slant, width);
     }
 
     /// <summary>
     /// Faces installed on the system, keyed by every normalized name that can refer to them.
     /// Built only when a name does not match an installed family (the uncommon case).
     /// </summary>
-    private static readonly Lazy<Dictionary<string, (string Family, int StyleIndex)>> FaceIndex = new(BuildFaceIndex);
+    private static readonly Lazy<FontFaceIndex<(string Family, int StyleIndex)>> FaceIndex = new(BuildFaceIndex);
 
-    private static Dictionary<string, (string Family, int StyleIndex)> BuildFaceIndex()
+    /// <summary>
+    /// Index every installed face. This never throws (an exception would be cached
+    /// and break every later lookup), so faces that cannot be read are skipped.
+    /// </summary>
+    private static FontFaceIndex<(string Family, int StyleIndex)> BuildFaceIndex()
     {
-        Dictionary<string, (string, int)> index = [];
+        FontFaceIndex<(string, int)> index = new();
 
-        foreach (string family in SKFontManager.Default.FontFamilies)
+        string[] families;
+        try
         {
-            using SKFontStyleSet styleSet = SKFontManager.Default.GetFontStyles(family);
-            for (int i = 0; i < styleSet.Count; i++)
-            {
-                using SKTypeface? face = styleSet.CreateTypeface(i);
-                if (face is null)
-                    continue;
+            families = SKFontManager.Default.FontFamilies.ToArray();
+        }
+        catch
+        {
+            return index;
+        }
 
-                foreach (string name in FontNames.GetNames(face, family, styleSet.GetStyleName(i)))
+        foreach (string family in families)
+        {
+            try
+            {
+                using SKFontStyleSet styleSet = SKFontManager.Default.GetFontStyles(family);
+                for (int i = 0; i < styleSet.Count; i++)
                 {
-                    if (!index.ContainsKey(name))
-                        index[name] = (family, i);
+                    try
+                    {
+                        using SKTypeface? face = styleSet.CreateTypeface(i);
+                        if (face is null)
+                            continue;
+
+                        // The name the system gives a face is the only one sure to identify it alone:
+                        // every instance of a variable font has the same name table, so names read
+                        // from the table (even full names) may be shared by many faces.
+                        using SKFontStyle style = styleSet[i];
+                        string systemName = $"{family} {styleSet.GetStyleName(i)}";
+                        index.Add((family, i), [family], style, [systemName], FontNames.GetNames(face));
+                    }
+                    catch
+                    {
+                        // skip faces that cannot be read
+                    }
                 }
+            }
+            catch
+            {
+                // skip families that cannot be read
             }
         }
 
@@ -113,50 +142,22 @@ public class SystemFontResolver : IFontResolver
     }
 
     /// <summary>
-    /// Create a typeface from a name that identifies a single font face
-    /// (e.g., the Windows font name, PostScript name, or file name) rather than a family.
-    /// The face is chosen by name, so the requested width and weight are not used to find it.
-    /// If bold or italic is requested, a sibling face from the same family is used if one exists.
+    /// Create a typeface from a name that does not match an installed family,
+    /// such as one that identifies a single font face (e.g., the Windows font name or PostScript name)
+    /// or a family name the system lists differently (e.g., a localized name).
+    /// If the name refers to several faces, the one closest to the requested style is used.
+    /// If the name refers to a single face it is used regardless of the requested width,
+    /// but if bold or italic is requested a sibling face from the same family is used if one exists.
     /// </summary>
-    private static SKTypeface? CreateTypefaceFromFaceName(string fontName, FontWeight weight, FontSlant slant)
+    private static SKTypeface? CreateTypefaceFromFaceName(string fontName, FontWeight weight, FontSlant slant, FontSpacing width)
     {
-        string key = FontNames.Normalize(fontName);
-        if (key.Length == 0 || !FaceIndex.Value.TryGetValue(key, out var match))
+        if (!FaceIndex.Value.TryFind(fontName, weight, slant, width, out (string Family, int StyleIndex) match))
             return null;
 
         using SKFontStyleSet styleSet = SKFontManager.Default.GetFontStyles(match.Family);
-        if (match.StyleIndex >= styleSet.Count)
-            return null;
-
-        int chosenIndex = match.StyleIndex;
-        bool wantsWeight = weight != FontWeight.Normal;
-        bool wantsSlant = slant != FontSlant.Upright;
-
-        if (wantsWeight || wantsSlant)
-        {
-            SKFontStyle matched = styleSet[match.StyleIndex];
-            int targetWeight = wantsWeight ? (int)weight : matched.Weight;
-            bool matchedHasSlant = !wantsSlant || matched.Slant == slant.ToSKFontStyleSlant();
-            int bestDistance = matchedHasSlant ? Math.Abs(matched.Weight - targetWeight) : int.MaxValue;
-
-            for (int i = 0; i < styleSet.Count; i++)
-            {
-                SKFontStyle candidate = styleSet[i];
-                if (candidate.Width != matched.Width)
-                    continue;
-                if (wantsSlant && candidate.Slant != slant.ToSKFontStyleSlant())
-                    continue;
-
-                int distance = Math.Abs(candidate.Weight - targetWeight);
-                if (distance < bestDistance)
-                {
-                    bestDistance = distance;
-                    chosenIndex = i;
-                }
-            }
-        }
-
-        return styleSet.CreateTypeface(chosenIndex);
+        return match.StyleIndex < styleSet.Count
+            ? styleSet.CreateTypeface(match.StyleIndex)
+            : null;
     }
 
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)

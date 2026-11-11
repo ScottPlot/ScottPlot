@@ -54,41 +54,113 @@ public class FileFontResolver(string name, string path, FontWeight weight, FontS
 }
 
 /// <summary>
-/// Font resolver that creates a typeface from a font file and matches it by any of its names
+/// Font resolver that creates typefaces from font files and matches them by any of their names
 /// (file name, Windows font name, PostScript name, family name) without requiring
-/// the caller to know the font's weight, slant, or width.
+/// the caller to know each font's weight, slant, or width.
+/// Every face in a font collection (.ttc) is available.
+/// When several files of the same family are added (e.g., regular and bold),
+/// a request for the family name returns the face closest to the requested style.
 /// </summary>
 public class NamedFileFontResolver : IFontResolver
 {
-    private string FontPath { get; }
-    private HashSet<string> Names { get; }
+    private readonly object Lock = new();
+    private readonly FontFaceIndex<(string Path, int FaceIndex)> Faces = new();
+    private readonly HashSet<string> Paths = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> Names = [];
+    private readonly List<string> Families = [];
 
     /// <summary>
-    /// Names (as read from the file) that this resolver responds to
+    /// Names (as read from the files) that this resolver responds to
     /// </summary>
-    public IReadOnlyCollection<string> NormalizedNames => Names;
+    public IReadOnlyCollection<string> NormalizedNames
+    {
+        get
+        {
+            lock (Lock)
+                return Names.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// Family names of the fonts that have been added
+    /// </summary>
+    public IReadOnlyCollection<string> FamilyNames
+    {
+        get
+        {
+            lock (Lock)
+                return Families.ToArray();
+        }
+    }
+
+    public NamedFileFontResolver()
+    {
+    }
 
     public NamedFileFontResolver(string path)
+    {
+        AddFile(path);
+    }
+
+    /// <summary>
+    /// Make every face in the given font file available by any of its names
+    /// </summary>
+    public void AddFile(string path)
     {
         if (!File.Exists(path))
             throw new FileNotFoundException(path);
 
-        FontPath = Path.GetFullPath(path);
+        string fullPath = Path.GetFullPath(path);
+        string fileName = Path.GetFileNameWithoutExtension(fullPath);
 
-        using SKTypeface typeface = SKTypeface.FromFile(FontPath)
-            ?? throw new InvalidOperationException($"Unable to load font file: {path}");
+        lock (Lock)
+        {
+            if (Paths.Contains(fullPath))
+                return;
 
-        Names = FontNames.GetNames(typeface);
-        string fileName = FontNames.Normalize(Path.GetFileNameWithoutExtension(FontPath));
-        if (fileName.Length > 0)
-            Names.Add(fileName);
+            // Font collections hold several faces, so load faces until there are no more
+            const int maxFaceCount = 1024;
+            int faceCount = 0;
+            for (int i = 0; i < maxFaceCount; i++)
+            {
+                using SKTypeface? typeface = SKTypeface.FromFile(fullPath, i);
+                if (typeface is null)
+                    break;
+
+                HashSet<string> familyNames = FontNames.GetFamilyNames(typeface);
+                HashSet<string> faceNames = FontNames.GetFaceNames(typeface);
+                faceNames.Add(FontNames.Normalize(fileName));
+                faceNames.Remove(string.Empty);
+
+                using SKFontStyle style = typeface.FontStyle;
+                Faces.Add((fullPath, i), familyNames, style, faceNames, familyNames);
+
+                Names.UnionWith(familyNames);
+                Names.UnionWith(faceNames);
+                if (!string.IsNullOrWhiteSpace(typeface.FamilyName) && !Families.Contains(typeface.FamilyName))
+                    Families.Add(typeface.FamilyName);
+
+                faceCount++;
+            }
+
+            if (faceCount == 0)
+                throw new InvalidOperationException($"Unable to load font file: {path}");
+
+            Paths.Add(fullPath);
+        }
     }
 
     public SKTypeface? CreateTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing spacing)
     {
-        return Names.Contains(FontNames.Normalize(fontName))
-            ? SKTypeface.FromFile(FontPath)
-            : null;
+        (string Path, int FaceIndex) face;
+
+        lock (Lock)
+        {
+            if (!Faces.TryFind(fontName, weight, slant, spacing, out face))
+                return null;
+        }
+
+        return SKTypeface.FromFile(face.Path, face.FaceIndex);
     }
 
     public SKTypeface? CreateTypeface(string fontName, bool bold, bool italic)
@@ -101,6 +173,6 @@ public class NamedFileFontResolver : IFontResolver
 
     public override string ToString()
     {
-        return $"Named file font resolver: path='{FontPath}'";
+        return $"Named file font resolver: families='{string.Join("', '", FamilyNames)}'";
     }
 }

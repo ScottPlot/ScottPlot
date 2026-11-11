@@ -12,7 +12,14 @@ public static class Fonts
      * https://github.com/ScottPlot/ScottPlot/issues/2833
      * https://github.com/ScottPlot/ScottPlot/pull/2848
      */
-    private static readonly ConcurrentDictionary<(string, FontWeight, FontSlant, FontSpacing), SKTypeface> TypefaceCache = [];
+    private static readonly ConcurrentDictionary<(string, FontWeight, FontSlant, FontSpacing), (SKTypeface Typeface, bool Found)> TypefaceCache = [];
+
+    /// <summary>
+    /// Number of font resolvers when the typeface cache was last used.
+    /// Cached typefaces (including the default typeface cached for fonts that were not found)
+    /// are discarded when resolvers are added or removed so the new resolvers get a chance to respond.
+    /// </summary>
+    private static int CachedResolverCount = -1;
 
     /// <summary>
     /// Collection of font resolvers that return typefaces from font names and style information
@@ -28,17 +35,45 @@ public static class Fonts
         FontSlant slant = italic ? FontSlant.Italic : FontSlant.Upright;
         FontSpacing width = FontSpacing.Normal;
         FontResolvers.FileFontResolver resolver = new(name, path, weight, slant, width);
-        FontResolvers.Add(resolver);
+        AddFileResolver(resolver);
+        TypefaceCache.Clear();
     }
 
     /// <summary>
     /// Add a font from a file and make it available by any of its names
     /// (file name, Windows font name, PostScript name, or family name),
     /// without needing to know the font's weight, slant, or width.
+    /// Every face in a font collection (.ttc) is added.
+    /// When several files of the same family are added (e.g., regular and bold),
+    /// requesting the family name returns the face closest to the requested style.
     /// </summary>
     public static void AddFontFile(string path)
     {
-        FontResolvers.Add(new NamedFileFontResolver(path));
+        NamedFileFontResolver? resolver = FontResolvers.OfType<NamedFileFontResolver>().FirstOrDefault();
+
+        if (resolver is null)
+        {
+            AddFileResolver(new NamedFileFontResolver(path));
+        }
+        else
+        {
+            resolver.AddFile(path);
+        }
+
+        TypefaceCache.Clear();
+    }
+
+    /// <summary>
+    /// Fonts loaded from files are placed ahead of the system font resolver
+    /// so they are used even if a font with the same name is installed
+    /// </summary>
+    private static void AddFileResolver(IFontResolver resolver)
+    {
+        int systemResolverIndex = FontResolvers.FindIndex(x => x is SystemFontResolver);
+        if (systemResolverIndex >= 0)
+            FontResolvers.Insert(systemResolverIndex, resolver);
+        else
+            FontResolvers.Add(resolver);
     }
 
     public static FontWeight? DefaultWeight { get; set; }
@@ -71,13 +106,13 @@ public static class Fonts
     /// </summary>
     public static string System => SystemFontResolver.DefaultSystemFont();
 
-    [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
+    [Obsolete("To determine if a font exists, call FindTypeface() and check for null", true)]
     public static bool Exists(string fontName)
     {
         throw new NotFiniteNumberException();
     }
 
-    [Obsolete("To determine if a font exists, call GetTypeface() and check for null", true)]
+    [Obsolete("To determine if a font exists, call FindTypeface() and check for null", true)]
     public static bool Exists(string fontName, bool bold, bool italic)
     {
         throw new NotFiniteNumberException();
@@ -85,34 +120,58 @@ public static class Fonts
 
     /// <summary>
     /// Returns a typeface for the requested font name and style.
-    /// A cached typeface will be used if it exists, 
+    /// A cached typeface will be used if it exists,
     /// otherwise one will be created, cached, and returned.
+    /// The default system typeface is returned if the font is not found.
+    /// Use <see cref="FindTypeface"/> to determine whether a font can be found.
     /// </summary>
     public static SKTypeface GetTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing spacing)
     {
+        return ResolveTypeface(fontName, weight, slant, spacing).Typeface;
+    }
+
+    /// <summary>
+    /// Returns a typeface for the requested font name and style,
+    /// or null if the font is not installed and has not been loaded from a file.
+    /// Unlike <see cref="GetTypeface(string, FontWeight, FontSlant, FontSpacing)"/>,
+    /// the default system typeface is not substituted for fonts that are not found.
+    /// </summary>
+    public static SKTypeface? FindTypeface(string fontName,
+        FontWeight weight = FontWeight.Normal,
+        FontSlant slant = FontSlant.Upright,
+        FontSpacing spacing = FontSpacing.Normal)
+    {
+        (SKTypeface typeface, bool found) = ResolveTypeface(fontName, weight, slant, spacing);
+        return found ? typeface : null;
+    }
+
+    private static (SKTypeface Typeface, bool Found) ResolveTypeface(string fontName, FontWeight weight, FontSlant slant, FontSpacing spacing)
+    {
+        // A font that was not found earlier may be found now if resolvers were added
+        int resolverCount = FontResolvers.Count;
+        if (global::System.Threading.Interlocked.Exchange(ref CachedResolverCount, resolverCount) != resolverCount)
+            TypefaceCache.Clear();
+
         var typefaceCacheKey = (fontName, weight, slant, spacing);
 
-        if (TypefaceCache.TryGetValue(typefaceCacheKey, out SKTypeface? cachedTypeface))
-        {
-            if (cachedTypeface is not null)
-                return cachedTypeface;
-        }
+        if (TypefaceCache.TryGetValue(typefaceCacheKey, out (SKTypeface Typeface, bool Found) cached))
+            return cached;
 
         foreach (IFontResolver resolver in FontResolvers)
         {
             SKTypeface? resolvedTypeface = resolver.CreateTypeface(fontName, weight, slant, spacing);
             if (resolvedTypeface is not null)
             {
-                TypefaceCache.TryAdd(typefaceCacheKey, resolvedTypeface);
-                return resolvedTypeface;
+                TypefaceCache.TryAdd(typefaceCacheKey, (resolvedTypeface, true));
+                return (resolvedTypeface, true);
             }
         }
 
         SKTypeface defaultTypeface = SystemFontResolver.CreateDefaultTypeface();
         Debug.WriteLine($"Font '{fontName}' was not found; using the default font '{defaultTypeface.FamilyName}' instead. " +
             "Use the Windows font name or file name, or call Fonts.AddFontFile(path) to load it from a file.");
-        TypefaceCache.TryAdd(typefaceCacheKey, defaultTypeface);
-        return defaultTypeface;
+        TypefaceCache.TryAdd(typefaceCacheKey, (defaultTypeface, false));
+        return (defaultTypeface, false);
     }
 
     /// <summary>
@@ -163,6 +222,17 @@ public static class Fonts
 
         List<string> candidateFontNames = GetCandidateFontsForString(standaloneCodePoints);
 
+        // Fonts loaded from files are unknown to the system font manager, so consider them too.
+        // They follow the system fonts so an installed font is favored when both render the text equally well.
+        foreach (NamedFileFontResolver fileResolver in FontResolvers.OfType<NamedFileFontResolver>())
+        {
+            foreach (string familyName in fileResolver.FamilyNames)
+            {
+                if (!candidateFontNames.Contains(familyName))
+                    candidateFontNames.Add(familyName);
+            }
+        }
+
         if (!candidateFontNames.Any())
             return string.Empty; // TODO: Signal an error somehow? Could return default font name.
 
@@ -210,8 +280,11 @@ public static class Fonts
     {
         int missingGlyphCount = 0;
 
-        // Resolve by family or face name so fonts grouped under another family name are not dropped
-        using var typeface = new SystemFontResolver().CreateTypeface(fontName, FontWeight.Normal, FontSlant.Upright, FontSpacing.Normal);
+        // Resolve by family or face name so fonts grouped under another family name are not dropped.
+        // A new typeface is created (rather than using the cache) so it can be disposed here.
+        using SKTypeface? typeface = FontResolvers
+            .Select(resolver => resolver.CreateTypeface(fontName, FontWeight.Normal, FontSlant.Upright, FontSpacing.Normal))
+            .FirstOrDefault(x => x is not null);
         if (typeface != null)
         {
             foreach (int standaloneCodePoint in standaloneCodePoints)

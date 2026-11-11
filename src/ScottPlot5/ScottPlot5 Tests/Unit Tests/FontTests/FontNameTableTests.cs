@@ -29,7 +29,7 @@ internal class FontNameTableTests
         {
             byte[] bytes = r.Platform is 0 or 3
                 ? Encoding.BigEndianUnicode.GetBytes(r.Value)
-                : Encoding.ASCII.GetBytes(r.Value);
+                : r.Value.Select(c => (byte)c).ToArray(); // each char is a raw byte value
 
             U16(header, r.Platform);
             U16(header, r.Encoding);
@@ -107,6 +107,29 @@ internal class FontNameTableTests
     }
 
     [Test]
+    public void Test_NameTable_MacRomanAccentsAreDecoded()
+    {
+        // Mac OS Roman bytes: 0x8E = é, 0x80 = Ä (first of the upper half), 0xFF = ˇ (last)
+        byte[] table = BuildNameTable(new NameRecord(1, 0, 0, 1, "Caf\u008E \u0080ÿ"));
+        FontNames.ParseNameTable(table)[1].Should().Equal("Café Äˇ");
+    }
+
+    [Test]
+    public void Test_NameTable_ReadsStyleAndWwsNames()
+    {
+        byte[] table = BuildNameTable(
+            new(3, 1, 0x409, 2, "Bold"),
+            new(3, 1, 0x409, 21, "Wws Family"),
+            new(3, 1, 0x409, 22, "Wws Style"));
+
+        var names = FontNames.ParseNameTable(table);
+
+        names[2].Should().Equal("Bold");
+        names[21].Should().Equal("Wws Family");
+        names[22].Should().Equal("Wws Style");
+    }
+
+    [Test]
     public void Test_NameTable_IgnoresUnrelatedNameIds()
     {
         byte[] table = BuildNameTable(
@@ -133,5 +156,16 @@ internal class FontNameTableTests
         FontNames.Normalize("微软雅黑 Bold").Should().Be("微软雅黑bold");
         FontNames.Normalize("ＭＳ ゴシック").Should().NotBeEmpty();
         FontNames.Normalize("Microsoft YaHei-Bold").Should().Be(FontNames.Normalize("microsoft yahei bold"));
+    }
+
+    [Test]
+    public void Test_Normalize_KeepsCombiningMarksAndSurrogatePairs()
+    {
+        // vowel signs are combining marks, not letters, but they are part of the name
+        FontNames.Normalize("हिंदी Sans").Should().Be("हिंदीsans");
+        FontNames.Normalize("ไทย-สวัสดี").Should().Be("ไทยสวัสดี");
+
+        // U+20000 is a CJK ideograph outside the basic multilingual plane (a surrogate pair in UTF-16)
+        FontNames.Normalize("\U00020000 Font").Should().Be("\U00020000font");
     }
 }
